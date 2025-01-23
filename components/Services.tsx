@@ -7,7 +7,7 @@ import { motion, useAnimation, useInView } from "framer-motion";
 import { useRef, useEffect } from "react";
 
 export default function Services() {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
   const isInView = useInView(ref, { once: true });
 
@@ -20,6 +20,15 @@ export default function Services() {
   const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 1.5, ease: "easeOut" } },
+  };
+
+  const titleVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 1, ease: "easeOut", delay: 0.5 },
+    },
   };
 
   return (
@@ -41,9 +50,15 @@ export default function Services() {
       {/* Overlay to darken the grid lines */}
       <div className="absolute inset-0 bg-black/50 pointer-events-none"></div>
 
-      <h2 className="text-4xl font-bold mb-16 text-center relative z-10">
-        <DecryptedText text="OUR SERVICES" className="text-white" />
-      </h2>
+      {/* Title Section */}
+      <div className="relative z-10 text-center">
+        <motion.h2
+          className="text-4xl font-bold mb-16 text-white"
+          variants={titleVariants}
+        >
+          <DecryptedText text="OUR SERVICES" className="text-white" />
+        </motion.h2>
+      </div>
 
       <motion.div
         className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 relative z-10"

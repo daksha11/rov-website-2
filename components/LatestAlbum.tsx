@@ -27,7 +27,7 @@ function DecryptedText({
 }
 
 export default function LatestAlbum() {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
   const isInView = useInView(ref, { once: true });
 
@@ -40,6 +40,15 @@ export default function LatestAlbum() {
   const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 1.5, ease: "easeOut" } },
+  };
+
+  const titleVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 1, ease: "easeOut", delay: 0.5 },
+    },
   };
 
   return (
@@ -68,9 +77,12 @@ export default function LatestAlbum() {
 
         {/* Album Details */}
         <motion.div className="flex-1 space-y-6" variants={sectionVariants}>
-          <h2 className="text-4xl font-bold">
+          <motion.h2
+            className="text-4xl font-bold"
+            variants={titleVariants}
+          >
             <DecryptedText text="NEW ALBUM OUT NOW" className="text-white" />
-          </h2>
+          </motion.h2>
           <h3 className="text-2xl text-gray-400">Echoes of Tomorrow</h3>
           <p className="text-gray-300">
             Experience our latest album, a journey through sound and emotion.

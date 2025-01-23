@@ -5,7 +5,7 @@ import { useRef, useEffect } from "react";
 import DecryptedText from "./DecryptedText";
 
 export default function MusicPlayer() {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
   const isInView = useInView(ref, { once: true });
 
@@ -18,6 +18,15 @@ export default function MusicPlayer() {
   const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 1.5, ease: "easeOut" } },
+  };
+
+  const titleVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 1, ease: "easeOut", delay: 0.5 },
+    },
   };
 
   return (
@@ -39,12 +48,15 @@ export default function MusicPlayer() {
       {/* Overlay to darken the grid lines */}
       <div className="absolute inset-0 bg-black/50 pointer-events-none"></div>
 
-      <motion.h2
-        className="text-4xl font-bold mb-12 text-center relative z-10"
-        variants={sectionVariants}
-      >
-        <DecryptedText text="FEATURED TRACKS" className="text-white" />
-      </motion.h2>
+      {/* Title Section */}
+      <div className="relative z-10 text-center">
+        <motion.h2
+          className="text-4xl font-bold mb-12 text-white"
+          variants={titleVariants}
+        >
+          <DecryptedText text="FEATURED TRACKS" className="text-white" />
+        </motion.h2>
+      </div>
 
       <motion.div
         className="max-w-4xl mx-auto relative z-10"

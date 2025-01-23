@@ -3,28 +3,7 @@
 import ArtistCard from "@/components/ArtistCard";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { useRef, useEffect } from "react";
-
-interface DecryptedTextProps {
-  text: string;
-  className?: string; // Applied to the text
-  parentClassName?: string; // Applied to the top-level span container
-}
-
-function DecryptedText({
-  text,
-  className = "text-white",
-  parentClassName = "",
-  ...props
-}: DecryptedTextProps) {
-  return (
-    <motion.span
-      className={`inline-block whitespace-pre-wrap relative ${parentClassName}`}
-      {...props}
-    >
-      <span className={className}>{text}</span>
-    </motion.span>
-  );
-}
+import  DecryptedText  from "@/components/DecryptedText"; // Assuming DecryptedText is in a separate file
 
 export default function FeaturedArtists() {
   const ref = useRef(null);
@@ -50,12 +29,15 @@ export default function FeaturedArtists() {
       animate={controls}
       variants={sectionVariants}
     >
+      {/* Featured Artists Heading with Animated Text */}
       <motion.h2
         className="text-4xl font-bold text-center mb-8 relative z-10"
         variants={sectionVariants}
       >
         <DecryptedText text="FEATURED ARTISTS" className="text-white" />
       </motion.h2>
+
+      {/* Horizontal Scroll for Artist Cards */}
       <motion.div
         style={{
           display: "flex",
@@ -65,26 +47,20 @@ export default function FeaturedArtists() {
         }}
         variants={sectionVariants}
       >
-        {[
-          {
-            imageUrl: "/cover1.png",
-            name: "Gibran Alcocer",
-            description:
-              "Gibran Alcocer, A Pianist From Mexico, Gaining 5 Million Monthly Listeners On Spotify With His Captivating Melodies, Including His Viral Hit “Idea 10”.",
-          },
-          {
-            imageUrl: "/cover2.png",
-            name: "Izzamuzzic",
-            description:
-              "Vadim Pavlyuchenko, Known Professionally As “Izzamuzzic,” Is An Electronic Music Artist And Accomplished Music Producer Originating From Kazakhstan.",
-          },
-          {
-            imageUrl: "/cover1.png",
-            name: "Gibran Alcocer",
-            description:
-              "Gibran Alcocer, A Pianist From Mexico, Gaining 5 Million Monthly Listeners On Spotify With His Captivating Melodies, Including His Viral Hit “Idea 10”.",
-          },
-        ].map((artist, index) => (
+        {/* Artist Cards */}
+        {[{
+          imageUrl: "/cover1.png",
+          name: "Gibran Alcocer",
+          description: "Gibran Alcocer, A Pianist From Mexico, Gaining 5 Million Monthly Listeners On Spotify With His Captivating Melodies, Including His Viral Hit “Idea 10”.",
+        }, {
+          imageUrl: "/cover2.png",
+          name: "Izzamuzzic",
+          description: "Vadim Pavlyuchenko, Known Professionally As “Izzamuzzic,” Is An Electronic Music Artist And Accomplished Music Producer Originating From Kazakhstan.",
+        }, {
+          imageUrl: "/cover1.png",
+          name: "Gibran Alcocer",
+          description: "Gibran Alcocer, A Pianist From Mexico, Gaining 5 Million Monthly Listeners On Spotify With His Captivating Melodies, Including His Viral Hit “Idea 10”.",
+        }].map((artist, index) => (
           <motion.div
             key={index}
             style={{
@@ -92,9 +68,8 @@ export default function FeaturedArtists() {
               border: "2px solid rgba(255, 255, 255, 0.2)",
               overflow: "hidden",
               marginRight: "-2px",
-              borderRadius: "8px",
             }}
-            whileHover={{ scale: 1 }}
+            whileHover={{ scale: 1 }} // Slight scale on hover
           >
             <ArtistCard
               imageUrl={artist.imageUrl}
