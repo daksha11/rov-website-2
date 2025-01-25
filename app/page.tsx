@@ -11,6 +11,7 @@ import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
 import FeaturedArtists from "@/components/FeaturedArtists";
 import Gallery from "@/components/Gallery";
+import GlassBack from "@/components/GlassComponent";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -41,7 +42,7 @@ export default function Home() {
 
       {/* Hero Section */}
       <Hero />
-
+      <GlassBack />
       {/* Services Section */}
       <Services />
 
