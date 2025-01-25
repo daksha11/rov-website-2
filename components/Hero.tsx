@@ -1,10 +1,10 @@
+{/*
 import { motion } from "framer-motion";
 import { Play } from "lucide-react";
 
 export default function Hero() {
   return (
     <section id="hero" className="relative h-screen overflow-hidden">
-      {/* Background Video */}
       <video
         autoPlay
         loop
@@ -19,10 +19,8 @@ export default function Hero() {
         />
       </video>
 
-      {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black" />
 
-      {/* Content with Animation */}
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -51,3 +49,69 @@ export default function Hero() {
     </section>
   );
 }
+*/}
+import React from 'react';
+
+const Hero: React.FC = () => {
+  return (
+    <div style={{
+      backgroundColor: 'black',
+      color: 'white',
+      height: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'relative', // For absolute positioning of the heading
+    }}>
+      {/* Leftmost Corner Logo (rov-logo) */}
+      <div style={{
+        position: 'absolute',
+        top: '20px', // Adjust as needed
+        left: '20px', // Adjust as needed
+      }}>
+        <img 
+          src="rov-logo.png" 
+          alt="ROV Logo" 
+          style={{ width: '100px', height: 'auto' }} // Adjust size as needed
+        />
+      </div>
+      {/* Centered Image */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+      }}>
+        <img 
+          src="rov-colour.png" 
+          alt="ROV" 
+          style={{ maxWidth: '100%', height: 'auto' }} 
+        />
+      </div>
+
+      {/* Rightmost Corner Heading */}
+      <div style={{
+        position: 'absolute',
+        top: '20px', // Adjust as needed
+        right: '20px', // Adjust as needed
+        textAlign: 'right',
+      }}>
+        <div style={{ fontSize: '3rem', fontWeight: 'bold', lineHeight: '1.2' }}>
+          CREATIVE<br />STUDIO
+        </div>
+      </div>
+
+      {/* Text at the Left */}
+      <div style={{
+        position: 'absolute',
+        bottom: '20px', // Adjust as needed
+        left: '20px', // Adjust as needed
+        fontSize: '1.2rem',
+      }}>
+        Creation, production & promotion of artists. In Atlanta. And everywhere.
+      </div>
+    </div>
+  );
+};
+
+export default Hero;

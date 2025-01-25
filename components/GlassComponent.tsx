@@ -24,7 +24,7 @@ export default function GlassBack() {
       {/* Background image scoped to this component */}
       <div
         className="absolute inset-0 w-full h-full bg-cover bg-center"
-        style={{ backgroundImage: "url('/GlassBackground.jpg')" }} // Replace with your image path
+        style={{ backgroundImage: "" }} // Replace with your image path
       />
 
       {/* Gradient overlay */}

@@ -39,16 +39,16 @@ export default function Home() {
       <CustomCursor />
 
       {/* Navbar */}
-      <Navbar isScrolled={isScrolled} />
+      {/*<Navbar isScrolled={isScrolled} />*/}
 
       {/* Hero Section */}
       <Hero />
-      
+      {/* Glass Back */}
+      <GlassBack />
       {/* Cards Section */}
       <Cards />
       
-      {/* Glass Back */}
-      <GlassBack />
+      
       {/* Services Section */}
       <Services />
 
