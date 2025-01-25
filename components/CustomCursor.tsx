@@ -4,38 +4,57 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
 export default function CustomCursor() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isVisible, setIsVisible] = useState(true); // State to control cursor visibility
+  const [position, setPosition] = useState({ x: 0, y: 0 }); // Track cursor position
+  const [isVisible, setIsVisible] = useState(true); // Control cursor visibility
+  const [isMobile, setIsMobile] = useState(false); // Track if the device is mobile
 
+  // Check if the device is mobile (screen width ≤ 768px)
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    // Initial check
+    checkIsMobile();
+
+    // Update on window resize
+    window.addEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
+
+  // Update cursor position on mouse move (only for desktop)
   useEffect(() => {
     const updateCursor = (e: MouseEvent) => {
       setPosition({ x: e.clientX, y: e.clientY });
     };
 
-    window.addEventListener('mousemove', updateCursor);
+    if (!isMobile) {
+      window.addEventListener('mousemove', updateCursor);
+    }
+
     return () => window.removeEventListener('mousemove', updateCursor);
-  }, []);
+  }, [isMobile]);
 
-  // Function to hide the cursor
-  const hideCursor = () => setIsVisible(false);
-  // Function to show the cursor
-  const showCursor = () => setIsVisible(true);
-
-  // Attach event listeners to the playlist iframe
+  // Hide/show cursor when hovering over an iframe (only for desktop)
   useEffect(() => {
     const iframe = document.querySelector('iframe');
-    if (iframe) {
-      iframe.addEventListener('mouseenter', hideCursor);
-      iframe.addEventListener('mouseleave', showCursor);
+    if (iframe && !isMobile) {
+      iframe.addEventListener('mouseenter', () => setIsVisible(false));
+      iframe.addEventListener('mouseleave', () => setIsVisible(true));
     }
 
     return () => {
-      if (iframe) {
-        iframe.removeEventListener('mouseenter', hideCursor);
-        iframe.removeEventListener('mouseleave', showCursor);
+      if (iframe && !isMobile) {
+        iframe.removeEventListener('mouseenter', () => setIsVisible(false));
+        iframe.removeEventListener('mouseleave', () => setIsVisible(true));
       }
     };
-  }, []);
+  }, [isMobile]);
+
+  // Don't render anything on mobile
+  if (isMobile) {
+    return null;
+  }
 
   return (
     <>
@@ -62,8 +81,8 @@ export default function CustomCursor() {
           mass: 0.5,
         }}
       />
-      
-      {/* Cursor circle */}
+
+      {/* Custom cursor circle */}
       <motion.div
         className="custom-cursor fixed w-8 h-8 rounded-full border-2 border-white z-50 pointer-events-none"
         style={{

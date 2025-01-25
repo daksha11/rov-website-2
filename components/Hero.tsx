@@ -51,66 +51,191 @@ export default function Hero() {
 }
 */}
 import React from 'react';
+import styled, { keyframes } from 'styled-components';
+
+// Keyframes for animations
+const slideInTop = keyframes`
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+`;
+
+const slideInRight = keyframes`
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+`;
+
+const typing = keyframes`
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+`;
+
+const blinkCaret = keyframes`
+  from, to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: white;
+  }
+`;
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const SlideInTop = styled.div`
+  animation: ${slideInTop} 1s ease-out forwards;
+`;
+
+const SlideInRight = styled.div`
+  animation: ${slideInRight} 1s ease-out forwards;
+`;
+
+const TypingText = styled.div`
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  letter-spacing: 0.15em;
+  opacity: 0;
+  animation: 
+    ${fadeIn} 0.1s 1.2s forwards,
+    ${typing} 4s steps(40, end) 1s forwards,
+    ${blinkCaret} 0.75s step-end 1s infinite;
+  border-right: 0.15em solid white;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    white-space: normal; // Allow text to wrap on mobile
+  }
+`;
+
+const Container = styled.div`
+  background-color: black;
+  color: white;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 20px;
+    height: auto; // Adjust height for mobile
+  }
+`;
+
+const Logo = styled(SlideInTop)`
+  position: absolute;
+  top: 20px;
+  left: 20px;
+
+  @media (max-width: 768px) {
+    position: relative;
+    top: 0;
+    left: 0;
+    margin-bottom: 20px;
+    text-align: center; // Center logo on mobile
+    width: 100%; // Full width for better alignment
+  }
+`;
+
+const CenterImage = styled(SlideInRight)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    justify-content: flex-start;
+    margin-bottom: 20px; // Add spacing below the image
+  }
+`;
+
+const Heading = styled(SlideInTop)`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  text-align: right;
+
+  @media (max-width: 768px) {
+    position: relative;
+    top: 0;
+    right: 0;
+    text-align: left;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    width: 100%; // Full width for better alignment
+  }
+`;
+
+const TypingTextWrapper = styled.div`
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  font-size: 1.2rem;
+
+  @media (max-width: 768px) {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    margin-top: 20px;
+    width: 100%; // Full width for better alignment
+  }
+`;
 
 const Hero: React.FC = () => {
   return (
-    <div style={{
-      backgroundColor: 'black',
-      color: 'white',
-      height: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      position: 'relative', // For absolute positioning of the heading
-    }}>
-      {/* Leftmost Corner Logo (rov-logo) */}
-      <div style={{
-        position: 'absolute',
-        top: '20px', // Adjust as needed
-        left: '20px', // Adjust as needed
-      }}>
+    <Container>
+      <Logo>
         <img 
           src="rov-logo.png" 
           alt="ROV Logo" 
-          style={{ width: '100px', height: 'auto' }} // Adjust size as needed
+          style={{ width: '100px', height: 'auto' }} 
         />
-      </div>
-      {/* Centered Image */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%',
-      }}>
+      </Logo>
+      <CenterImage>
         <img 
           src="rov-colour.png" 
           alt="ROV" 
           style={{ maxWidth: '100%', height: 'auto' }} 
         />
-      </div>
-
-      {/* Rightmost Corner Heading */}
-      <div style={{
-        position: 'absolute',
-        top: '20px', // Adjust as needed
-        right: '20px', // Adjust as needed
-        textAlign: 'right',
-      }}>
+      </CenterImage>
+      <Heading>
         <div style={{ fontSize: '3rem', fontWeight: 'bold', lineHeight: '1.2' }}>
           CREATIVE<br />STUDIO
         </div>
-      </div>
-
-      {/* Text at the Left */}
-      <div style={{
-        position: 'absolute',
-        bottom: '20px', // Adjust as needed
-        left: '20px', // Adjust as needed
-        fontSize: '1.2rem',
-      }}>
-        Creation, production & promotion of artists. In Atlanta. And everywhere.
-      </div>
-    </div>
+      </Heading>
+      <TypingTextWrapper>
+        <TypingText>
+          Creation, production & promotion of artists. In Atlanta. And everywhere.
+        </TypingText>
+      </TypingTextWrapper>
+    </Container>
   );
 };
 
