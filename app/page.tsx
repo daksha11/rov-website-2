@@ -12,6 +12,7 @@ import CustomCursor from "@/components/CustomCursor";
 import FeaturedArtists from "@/components/FeaturedArtists";
 import Gallery from "@/components/Gallery";
 import GlassBack from "@/components/GlassComponent";
+import Cards from "@/components/Cards";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -42,6 +43,11 @@ export default function Home() {
 
       {/* Hero Section */}
       <Hero />
+      
+      {/* Cards Section */}
+      <Cards />
+      
+      {/* Glass Back */}
       <GlassBack />
       {/* Services Section */}
       <Services />
