@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Loading from "@/components/Loading";
-import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import MusicPlayer from "@/components/MusicPlayer";
@@ -13,6 +12,7 @@ import FeaturedArtists from "@/components/FeaturedArtists";
 import Gallery from "@/components/Gallery";
 import GlassBack from "@/components/GlassComponent";
 import Cards from "@/components/Cards";
+import { NavigationDock } from "@/components/NavDoc";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -38,34 +38,45 @@ export default function Home() {
       {/* Custom Cursor */}
       <CustomCursor />
 
-      {/* Navbar */}
-      {/*<Navbar isScrolled={isScrolled} />*/}
-
       {/* Hero Section */}
-      <Hero />
+      <section id="hero">
+        <Hero />
+      </section>
+
       {/* Glass Back */}
       <GlassBack />
+
       {/* Cards Section */}
       <Cards />
       
-      
       {/* Services Section */}
-      <Services />
+      <section id="services">
+        <Services />
+      </section>
 
-      {/* Music Player Section */}
-      <MusicPlayer />
+      
 
       {/* Latest Album Section */}
+      <section id="latest-album">
+        {/* Music Player Section */}
+      <MusicPlayer />
+      </section>
       <LatestAlbum />
-
       {/* Featured Artists Section */}
-      <FeaturedArtists />
+      <section id="featured-artists">
+        <FeaturedArtists />
+      </section>
 
       {/* Gallery Section */}
-      <Gallery />
+      <section id="gallery">
+        <Gallery />
+      </section>
 
       {/* Footer */}
       <Footer />
+
+      {/* Navigation Dock */}
+      <NavigationDock />
     </main>
   );
 }
