@@ -14,6 +14,7 @@ import GlassBack from "@/components/GlassComponent";
 import Cards from "@/components/Cards";
 import { NavigationDock } from "@/components/NavDoc";
 import DigiMag from "@/components/DigiMag";
+import Carousel from "@/components/Corousel";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -46,9 +47,6 @@ export default function Home() {
 
       {/* Glass Back */}
       <GlassBack />
-
-      {/* Cards Section */}
-      <Cards />
       
       {/* Services Section */}
       <section id="services">
@@ -73,9 +71,9 @@ export default function Home() {
         <Gallery />
       </section>
       <DigiMag />
+      <Carousel />
       {/* Footer */}
       <Footer />
-
       {/* Navigation Dock */}
       <NavigationDock />
     </main>
