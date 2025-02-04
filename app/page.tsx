@@ -13,6 +13,7 @@ import Gallery from "@/components/Gallery";
 import GlassBack from "@/components/GlassComponent";
 import Cards from "@/components/Cards";
 import { NavigationDock } from "@/components/NavDoc";
+import DigiMag from "@/components/DigiMag";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -71,7 +72,7 @@ export default function Home() {
       <section id="gallery">
         <Gallery />
       </section>
-
+      <DigiMag />
       {/* Footer */}
       <Footer />
 
