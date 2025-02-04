@@ -34,22 +34,12 @@ export default function Services() {
   return (
     <motion.section
       ref={ref}
-      className="py-20 px-4 md:px-8 bg-gradient-to-b from-black to-zinc-900 relative"
+      className="py-20 px-4 md:px-8 bg-black relative"
       id="services"
-      style={{
-        backgroundImage: `
-          linear-gradient(to right, rgba(255, 255, 255, 0.2) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 1px, transparent 1px)
-        `,
-        backgroundSize: "150px 150px",
-      }}
       initial="hidden"
       animate={controls}
       variants={sectionVariants}
     >
-      {/* Overlay to darken the grid lines */}
-      <div className="absolute inset-0 bg-black/50 pointer-events-none"></div>
-
       {/* Title Section */}
       <div className="relative z-10 text-center">
         <motion.h2

@@ -59,14 +59,39 @@ export default function MusicPlayer() {
     }
   }, [volume]);
 
-  useEffect(() => {
-    // Reset audio when track changes and always start playing
+  const startPlayback = () => {
     if (audioRef.current) {
-      audioRef.current.currentTime = 0;
       audioRef.current.play();
       setIsPlaying(true);
     }
-  }, [currentTrack]);
+  };
+
+  const playNext = () => {
+    const currentIndex = tracks.findIndex(track => track.id === currentTrack.id);
+    const nextIndex = (currentIndex + 1) % tracks.length;
+    setCurrentTrack(tracks[nextIndex]);
+    // Automatically start playing for next/previous
+    setTimeout(startPlayback, 0);
+  };
+
+  const playPrevious = () => {
+    const currentIndex = tracks.findIndex(track => track.id === currentTrack.id);
+    const previousIndex = (currentIndex - 1 + tracks.length) % tracks.length;
+    setCurrentTrack(tracks[previousIndex]);
+    // Automatically start playing for next/previous
+    setTimeout(startPlayback, 0);
+  };
+
+  const handleTrackSelect = (track: Track) => {
+    if (track.id === currentTrack.id) {
+      // If selecting the current track, toggle play/pause
+      togglePlay();
+    } else {
+      // If selecting a different track, change track and start playing
+      setCurrentTrack(track);
+      setTimeout(startPlayback, 0);
+    }
+  };
 
   const togglePlay = () => {
     if (audioRef.current) {
@@ -105,18 +130,6 @@ export default function MusicPlayer() {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-  };
-
-  const playNext = () => {
-    const currentIndex = tracks.findIndex(track => track.id === currentTrack.id);
-    const nextIndex = (currentIndex + 1) % tracks.length;
-    setCurrentTrack(tracks[nextIndex]);
-  };
-
-  const playPrevious = () => {
-    const currentIndex = tracks.findIndex(track => track.id === currentTrack.id);
-    const previousIndex = (currentIndex - 1 + tracks.length) % tracks.length;
-    setCurrentTrack(tracks[previousIndex]);
   };
 
   return (
@@ -215,7 +228,7 @@ export default function MusicPlayer() {
             {tracks.map((track) => (
               <div 
                 key={track.id}
-                onClick={() => setCurrentTrack(track)}
+                onClick={() => handleTrackSelect(track)}
                 className={cn(
                   "flex items-center p-2 rounded-lg hover:bg-zinc-700/50 cursor-pointer transition",
                   currentTrack.id === track.id && "bg-zinc-700/50"

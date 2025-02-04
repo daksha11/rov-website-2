@@ -15,7 +15,7 @@ import Cards from "@/components/Cards";
 import { NavigationDock } from "@/components/NavDoc";
 import DigiMag from "@/components/DigiMag";
 import Carousel from "@/components/Corousel";
-
+import DesignBreak from "@/components/DesignBreak";
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -54,13 +54,15 @@ export default function Home() {
       </section>
 
       
-
+      <div className="bg-[url('/backgroundimage.jpg')] bg-cover bg-center" style={{height: "100vh"}}></div>
       {/* Latest Album Section */}
       <section id="latest-album">
         {/* Music Player Section */}
       <MusicPlayer />
       </section>
-      <LatestAlbum />
+      {/*<LatestAlbum />*/}
+      <DesignBreak />
+      {/* Cards Section */}
       {/* Featured Artists Section */}
       <section id="featured-artists">
         <FeaturedArtists />
