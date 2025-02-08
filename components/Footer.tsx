@@ -1,6 +1,9 @@
 import Image from 'next/image'; // Import the Image component from Next.js
 
 export default function Footer() {
+  // Get the current year dynamically
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="pt-24 pb-12 px-4 md:px-8 bg-black">
       <div className="max-w-6xl mx-auto">
@@ -57,7 +60,7 @@ export default function Footer() {
 
         {/* Copyright Bar */}
         <div className="pt-8 border-t border-gray-800">
-          <p className="text-gray-400 text-center">© 2024 Range of View. All rights reserved.</p>
+          <p className="text-gray-400 text-center">© {currentYear} Range of View. All rights reserved.</p>
         </div>
       </div>
     </footer>

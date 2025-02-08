@@ -11,10 +11,11 @@ import CustomCursor from "@/components/CustomCursor";
 import FeaturedArtists from "@/components/FeaturedArtists";
 import Gallery from "@/components/Gallery";
 import GlassBack from "@/components/GlassComponent";
-import Cards from "@/components/Cards";
+import Cards from "@/components/Card";
 import { NavigationDock } from "@/components/NavDoc";
 import DigiMag from "@/components/DigiMag";
 import Carousel from "@/components/Corousel";
+import Card from "@/components/Card";
 import DesignBreak from "@/components/DesignBreak";
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -47,6 +48,8 @@ export default function Home() {
 
       {/* Glass Back */}
       <GlassBack />
+
+      <Card />
       
       {/* Services Section */}
       <section id="services">
