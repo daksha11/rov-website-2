@@ -46,12 +46,15 @@ export default function CardList() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"],
+    offset: ["start start", "end start"], // Adjusted to prevent extra gap
   });
 
   return (
     <main>
-      <div ref={containerRef} className="relative min-h-[400vh] bg-[#0]">
+      <div
+        ref={containerRef}
+        className={`relative min-h-[${cards.length * 100}vh] bg-[#0]`} // Changed min height
+      >
         <div className="sticky top-0 h-screen overflow-hidden">
           {cards.map((card, index) => (
             <Card

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createGlobalStyle } from "styled-components";
 import Loading from "@/components/Loading";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
@@ -17,6 +18,29 @@ import DigiMag from "@/components/DigiMag";
 import Carousel from "@/components/Corousel";
 import Card from "@/components/Card";
 import DesignBreak from "@/components/DesignBreak";
+
+// Global Styles for Custom Font
+const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'FlightMaybeMaj';
+    src: url('/fonts/Flight mAybe Maj.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  * {
+    font-family: 'FlightMaybeMaj', sans-serif !important;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    color: white;
+    overflow-x: hidden;
+  }
+`;
+
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -37,50 +61,60 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-black text-white">
-      {/* Custom Cursor */}
-      <CustomCursor />
+    <>
+      <GlobalStyle /> {/* Apply Global Styles */}
+      <main className="min-h-screen bg-black text-white">
+        {/* Custom Cursor */}
+        <CustomCursor />
 
-      {/* Hero Section */}
-      <section id="hero">
-        <Hero />
-      </section>
+        {/* Hero Section */}
+        <section id="hero">
+          <Hero />
+        </section>
 
-      {/* Glass Back */}
-      <GlassBack />
+        {/* Glass Back */}
+        <GlassBack />
 
-      <Card />
-      
-      {/* Services Section */}
-      <section id="services">
-        <Services />
-      </section>
+        <Card />
 
-      
-      <div className="bg-[url('/backgroundimage.jpg')] bg-cover bg-center" style={{height: "100vh"}}></div>
-      {/* Latest Album Section */}
-      <section id="latest-album">
-        {/* Music Player Section */}
-      <MusicPlayer />
-      </section>
-      {/*<LatestAlbum />*/}
-      <DesignBreak />
-      {/* Cards Section */}
-      {/* Featured Artists Section */}
-      <section id="featured-artists">
-        <FeaturedArtists />
-      </section>
+        {/* Services Section */}
+        <section id="services">
+          <Services />
+        </section>
 
-      {/* Gallery Section */}
-      <section id="gallery">
-        <Gallery />
-      </section>
-      <DigiMag />
-      <Carousel />
-      {/* Footer */}
-      <Footer />
-      {/* Navigation Dock */}
-      <NavigationDock />
-    </main>
+        <div
+          className="bg-[url('/backgroundimage.jpg')] bg-cover bg-center"
+          style={{ height: "100vh" }}
+        ></div>
+
+        {/* Latest Album Section */}
+        <section id="latest-album">
+          {/* Music Player Section */}
+          <MusicPlayer />
+        </section>
+        {/* <LatestAlbum /> */}
+
+        <DesignBreak />
+
+        {/* Featured Artists Section */}
+        <section id="featured-artists">
+          <FeaturedArtists />
+        </section>
+
+        {/* Gallery Section */}
+        <section id="gallery">
+          <Gallery />
+        </section>
+
+        <DigiMag />
+        <Carousel />
+
+        {/* Footer */}
+        <Footer />
+
+        {/* Navigation Dock */}
+        <NavigationDock />
+      </main>
+    </>
   );
 }

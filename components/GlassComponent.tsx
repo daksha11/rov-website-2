@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import DecryptedText from "@/components/DecryptedText"; // Ensure this import is correct
+import DecryptedText from "@/components/DecryptedText";
 
 // Variants for animations
 const sectionVariants = {
@@ -20,25 +20,25 @@ export default function GlassBack() {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="relative h-screen w-full overflow-hidden">
-      {/* Background image scoped to this component */}
+    <div className="relative min-h-screen w-full overflow-hidden">
+      {/* Background image */}
       <div
         className="absolute inset-0 w-full h-full bg-cover bg-center"
-        style={{ backgroundImage: "" }} // Replace with your image path
+        style={{ backgroundImage: "" }} // Add your image URL
       />
 
       {/* Gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black" />
 
       {/* Content */}
-      <div className="relative h-full flex items-center justify-center p-8">
+      <div className="relative min-h-screen flex items-center justify-center p-4 sm:p-8">
         <div
-          className="glass-panel w-full max-w-5xl aspect-[16/9] rounded-[2rem] p-16 relative"
+          className="glass-panel w-full max-w-5xl rounded-[2rem] p-6 sm:p-16 relative"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
           <motion.div
-            className="flex h-full gap-8"
+            className="flex flex-col sm:flex-row gap-6 sm:gap-8 h-full"
             variants={sectionVariants}
             initial="hidden"
             animate="visible"
@@ -50,30 +50,24 @@ export default function GlassBack() {
                 alt="Album Cover"
                 width={500}
                 height={500}
-                className="w-full h-full object-cover rounded-lg"
+                className="w-full h-auto sm:h-full object-cover rounded-lg"
               />
             </motion.div>
 
             {/* Album Details */}
-            <motion.div className="flex-1 space-y-6" variants={sectionVariants}>
-              <motion.h2
-                className="text-4xl font-bold"
-                variants={titleVariants}
-              >
-                <DecryptedText
-                  text="NEW ALBUM OUT NOW"
-                  className="text-white"
-                />
+            <motion.div className="flex-1 space-y-4 sm:space-y-6 text-center sm:text-left" variants={sectionVariants}>
+              <motion.h2 className="text-2xl sm:text-4xl font-bold" variants={titleVariants}>
+                <DecryptedText text="NEW ALBUM OUT NOW" className="text-white" />
               </motion.h2>
-              <h3 className="text-2xl text-gray-400">Echoes of Tomorrow</h3>
-              <p className="text-gray-300">
+              <h3 className="text-lg sm:text-2xl text-gray-400">Echoes of Tomorrow</h3>
+              <p className="text-gray-300 text-sm sm:text-base">
                 Experience our latest album, a journey through sound and emotion.
               </p>
-              <div className="flex gap-4">
-                <button className="px-8 py-3 bg-white text-black rounded-full hover:bg-gray-200 transition">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center sm:items-start">
+                <button className="px-6 py-3 sm:px-8 sm:py-3 bg-white text-black rounded-full hover:bg-gray-200 transition">
                   LISTEN NOW
                 </button>
-                <button className="px-8 py-3 border border-white rounded-full hover:bg-white hover:text-black transition">
+                <button className="px-6 py-3 sm:px-8 sm:py-3 border border-white rounded-full hover:bg-white hover:text-black transition">
                   STORE
                 </button>
               </div>
