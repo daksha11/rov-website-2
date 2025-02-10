@@ -16,27 +16,59 @@ interface Track {
 const tracks: Track[] = [
   {
     id: 1,
-    title: "Midnight Dreams",
-    artist: "Luna Eclipse",
-    duration: "3:45",
-    cover: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=300&h=300&fit=crop",
-    url: "/tracks/Chuttamalle.mp3"
+    title: "Come Thru",
+    artist: "Basu",
+    duration: "2:17",
+    cover: "cover2.png", // Updated path to the image in the public folder
+    url: "/tracks/come thru master(go first).wav" // Updated to .wav
   },
   {
     id: 2,
-    title: "Ocean Waves",
-    artist: "Coastal Vibes",
-    duration: "4:20",
-    cover: "https://images.unsplash.com/photo-1616356607338-fd87169ecf1a?w=300&h=300&fit=crop",
-    url: "/tracks/NaaNaa Hyraanaa.mp3"
+    title: "LAST TIME",
+    artist: "Adil Hasan",
+    duration: "2:40",
+    cover: "cover4.png",
+    url: "/tracks/last time master.wav" // Updated to .wav 
   },
   {
     id: 3,
-    title: "Urban Sunset",
-    artist: "City Lights",
-    duration: "3:55",
+    title: "Martyr",
+    artist: "DDK",
+    duration: "2:40",
+    cover: "cover7.png",
+    url: "/tracks/martry new new master.wav" // Updated to .wav
+  },
+  {
+    id: 4,
+    title: "KOD",
+    artist: "Basu",
+    duration: "2:36",
     cover: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&h=300&fit=crop",
-    url: "/tracks/Bujji Thalli.mp3"
+    url: "/tracks/master kod.wav" // Updated to .wav
+  },
+  {
+    id: 5,
+    title: "up late, up early",
+    artist: "DDK",
+    duration: "3:12",
+    cover: "cover5.png",
+    url: "/tracks/master up late final.wav" // Updated to .wav
+  },
+  {
+    id: 6,
+    title: "ruin my life",
+    artist: "mttw, Basu",
+    duration: "2:10",
+    cover: "cover6.png",
+    url: "/tracks/ruin my life master.wav" // Updated to .wav
+  },
+  {
+    id: 7,
+    title: "you could be my woman",
+    artist: "Basu",
+    duration: "2:46",
+    cover: "cover1.png",
+    url: "/tracks/you could be my woman.wav" // Updated to .wav
   }
 ];
 

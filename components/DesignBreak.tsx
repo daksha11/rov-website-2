@@ -1,7 +1,6 @@
 "use client";
 
 import { Music } from "lucide-react";
-import { motion } from "framer-motion";
 import { useState } from "react";
 import Image from "next/image";
 
@@ -33,12 +32,13 @@ export default function DesignBreak() {
           {/* Logo */}
           <div className="col-span-3 border-r border-white/20 py-2 sm:py-6 px-1 sm:px-4 flex items-center justify-center w-full">
             <div className="bg-[#B84835] p-1.5 sm:p-4 rounded-lg">
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              >
-                <HandIcon className="w-4 sm:w-12 h-4 sm:h-12 text-black" />
-              </motion.div>
+              <Image 
+                src="/Gear_Up_Design.png" // Replace with the path to your image in the public folder
+                alt="Logo"
+                width={48} // Adjust the size as needed
+                height={48}
+                className="w-6 sm:w-12 h-4 sm:h-12"
+              />
             </div>
           </div>
 
@@ -70,20 +70,15 @@ export default function DesignBreak() {
 
           {/* Middle section */}
           <div className="col-span-5 border-r border-white/20 py-2 sm:py-6 px-1 sm:px-4 flex items-center justify-center w-full">
-            <motion.div
-              animate={{ y: [0, -5, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="text-[8px] sm:text-base text-white/70 text-center"
-            >
+            <div className="text-[8px] sm:text-base text-white/70 text-center">
               replace with other fluttering graphic
-            </motion.div>
+            </div>
           </div>
 
           {/* Since 2021 with Hand Icon */}
           <div className="col-span-3 py-2 sm:py-6 px-1 sm:px-4 flex items-center justify-center gap-1 sm:gap-3 w-full">
             <h2 className="text-[10px] sm:text-xl font-light tracking-wider">Since 2021</h2>
             <div className="relative w-3 sm:w-8 h-3 sm:h-8">
-              <HandIcon className="w-full h-full text-[#D2B48C]" />
             </div>
           </div>
         </div>
@@ -91,15 +86,3 @@ export default function DesignBreak() {
     </div>
   );
 }
-
-// Custom Hand Icon component
-const HandIcon = ({ className = "" }) => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    className={className}
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path d="M20 16V4H4v12h16m0-14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h16M8 7h3v6H8V7m5 0h3v6h-3V7Z" />
-  </svg>
-);

@@ -60,7 +60,7 @@ export default function Footer() {
 
             {/* Follow Column */}
             <div>
-              <h3 className="text-gray-400 mb-6 text-center md:text-left text-2xl">Follow</h3>
+              <h3 className="text-gray-400 mb-6 text-center md:text-left text-2xl">Reach Us</h3>
               <nav className="flex flex-col space-y-4 items-center md:items-start">
                 <div className="relative group">
                   <div className="hover:text-gray-400 transition duration-300 text-lg cursor-pointer">
