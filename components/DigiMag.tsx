@@ -26,7 +26,7 @@ const DigiMag = () => {
 
         {/* Filling Smaller Images */}
         <div className="relative col-span-1 row-span-1 group overflow-hidden">
-          <Image src="/one_at_a_time.jpg" alt="Birthday" layout="fill" className="object-cover transition-transform duration-500 group-hover:scale-110" />
+          <Image src="/one_at_a_time.JPG" alt="Birthday" layout="fill" className="object-cover transition-transform duration-500 group-hover:scale-110" />
         </div>
 
         <div className="relative col-span-1 row-span-1 group overflow-hidden">
@@ -39,7 +39,7 @@ const DigiMag = () => {
 
         {/* Filling the middle gap */}
         <div className="relative col-span-1 row-span-1 group overflow-hidden">
-          <Image src="/domcover.jpg" alt="Travel" layout="fill" className="object-cover transition-transform duration-500 group-hover:scale-110" />
+          <Image src="/domcover.JPG" alt="Travel" layout="fill" className="object-cover transition-transform duration-500 group-hover:scale-110" />
         </div>
 
         <div className="relative col-span-2 row-span-1 group overflow-hidden">
@@ -48,7 +48,7 @@ const DigiMag = () => {
 
         {/* Bottom Row Fix */}
         <div className="relative col-span-1 row-span-1 group overflow-hidden">
-          <Image src="/faithretrologothing.jpg" alt="Food" layout="fill" className="object-cover transition-transform duration-500 group-hover:scale-110" />
+          <Image src="/faithretrologothing.JPG" alt="Food" layout="fill" className="object-cover transition-transform duration-500 group-hover:scale-110" />
         </div>
 
         <div className="relative col-span-1 row-span-1 group overflow-hidden">

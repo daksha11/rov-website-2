@@ -166,7 +166,7 @@ const TypingTextWrapper = styled.div`
 
 const Hero: React.FC = () => {
   return (
-    <Container>
+    <Container style={{height: "100vh"}}>
       <Logo>
         <img 
           src="rov-logo.png" 
