@@ -10,7 +10,7 @@ export function NavigationDock() {
     { title: "services", to: "services" },
     { title: "mixes", to: "latest-album" },
     { title: "gallery", to: "digi-mag" },
-    {/*{ title: "culture", to: "featured-artists" },*/}
+    // Removed the commented-out object to prevent issues
   ];
 
   const scrollToSection = (id: string) => {
@@ -28,7 +28,6 @@ export function NavigationDock() {
       const heroSection = document.getElementById("hero");
       if (heroSection) {
         const heroRect = heroSection.getBoundingClientRect();
-        // Check if the hero section is out of view (scrolled past)
         if (heroRect.bottom <= 0) {
           setIsVisible(true);
         } else {
@@ -36,7 +35,6 @@ export function NavigationDock() {
         }
       }
 
-      // Additional logic to hide the dock when footer is in view
       const footer = document.querySelector("footer");
       if (footer) {
         const footerRect = footer.getBoundingClientRect();
@@ -58,12 +56,12 @@ export function NavigationDock() {
         {links.map((link, index) => (
           <div key={link.title} className="flex items-center">
             <button
-              onClick={() => scrollToSection(link.to)}
+              onClick={() => link.to && scrollToSection(link.to)}
               className="px-2 py-1 text-white/80 hover:text-white transition-colors cursor-pointer text-[10px] md:text-sm uppercase tracking-wide"
             >
               {link.title}
             </button>
-            {index < links.length - 2 && (
+            {index < links.length - 1 && (
               <span className="text-white/30 hidden md:inline">|</span>
             )}
           </div>
