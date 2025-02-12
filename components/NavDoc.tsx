@@ -7,10 +7,10 @@ export function NavigationDock() {
 
   const links = [
     { title: "home", to: "hero" },
-    { title: "mixes", to: "latest-album" },
     { title: "services", to: "services" },
-    { title: "gallery", to: "gallery" },
-    { title: "culture", to: "featured-artists" },
+    { title: "mixes", to: "latest-album" },
+    { title: "gallery", to: "digi-mag" },
+    {/*{ title: "culture", to: "featured-artists" },*/}
   ];
 
   const scrollToSection = (id: string) => {
@@ -63,7 +63,7 @@ export function NavigationDock() {
             >
               {link.title}
             </button>
-            {index < links.length - 1 && (
+            {index < links.length - 2 && (
               <span className="text-white/30 hidden md:inline">|</span>
             )}
           </div>

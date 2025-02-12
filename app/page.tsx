@@ -72,8 +72,10 @@ export default function Home() {
           <Hero />
         </section>
 
-        {/* Glass Back */}
-        <GlassBack />
+        <DesignBreak />
+
+        {/* Glass Back
+        <GlassBack /> */}
 
         <Card />
 
@@ -84,7 +86,7 @@ export default function Home() {
 
         <div
           className="bg-[url('/backgroundimage.jpg')] bg-cover bg-center"
-          style={{ height: "100vh" }}
+          style={{ height: "80vh" }}
         ></div>
 
         {/* Latest Album Section */}
@@ -94,17 +96,15 @@ export default function Home() {
         </section>
         {/* <LatestAlbum /> */}
 
-        <DesignBreak />
-
-        {/* Featured Artists Section */}
+        {/* Featured Artists Section
         <section id="featured-artists">
           <FeaturedArtists />
-        </section>
+        </section> */}
 
-        {/* Gallery Section */}
+        {/* Gallery Section
         <section id="gallery">
           <Gallery />
-        </section>
+        </section> */}
 
         <DigiMag />
         <Carousel />

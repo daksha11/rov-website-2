@@ -40,10 +40,10 @@ const tracks: Track[] = [
   },
   {
     id: 4,
-    title: "KOD",
-    artist: "Basu",
+    title: "Kiss Of Death",
+    artist: "DDK",
     duration: "2:36",
-    cover: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&h=300&fit=crop",
+    cover: "cover8.png",
     url: "/tracks/master kod.wav" // Updated to .wav
   },
   {

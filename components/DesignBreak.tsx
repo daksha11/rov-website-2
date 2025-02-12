@@ -33,7 +33,7 @@ export default function DesignBreak() {
           <div className="col-span-3 border-r border-white/20 py-2 sm:py-6 px-1 sm:px-4 flex items-center justify-center w-full">
             <div className="bg-[#B84835] p-1.5 sm:p-4 rounded-lg">
               <Image 
-                src="/Gear_Up_Design.png" // Replace with the path to your image in the public folder
+                src="/Gear_Up_Design.PNG" // Replace with the path to your image in the public folder
                 alt="Logo"
                 width={48} // Adjust the size as needed
                 height={48}

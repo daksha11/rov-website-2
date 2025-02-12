@@ -50,10 +50,10 @@ export default function Footer() {
                   Services
                 </button>
                 <button
-                  onClick={() => scrollToSection("featured-artists")}
+                  onClick={() => scrollToSection("digi-mag")}
                   className="hover:text-gray-400 transition duration-300 text-lg cursor-pointer"
                 >
-                  Artists
+                  Gallery
                 </button>
               </nav>
             </div>
