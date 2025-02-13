@@ -1,5 +1,22 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, createGlobalStyle } from 'styled-components';
+
+// Global styles for custom fonts
+const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'FlightMaybeMaj';
+    src: url('/fonts/Flight mAybe Maj.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'ProximaNovaBlack';
+    src: url('/fonts/proximanova_black.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+`;
 
 // Keyframes for animations
 const slideInTop = keyframes`
@@ -65,6 +82,7 @@ const TypingText = styled.div`
   white-space: nowrap;
   letter-spacing: 0.15em;
   opacity: 0;
+  font-family: 'ProximaNovaBlack', sans-serif;
   animation: 
     ${fadeIn} 0.1s 1.2s forwards,
     ${typing} 4s steps(40, end) 1s forwards,
@@ -89,6 +107,7 @@ const Container = styled.div`
   justify-content: center;
   position: relative;
   overflow: hidden;
+  font-family: 'ProximaNovaBlack', sans-serif;
 
   @media (max-width: 768px) {
     padding: 60px 10px;
@@ -142,6 +161,7 @@ const Heading = styled(SlideInTop)`
   top: 20px;
   right: 20px;
   text-align: right;
+  font-family: 'FlightMaybeMaj', sans-serif;
 
   @media (max-width: 768px) {
     top: 10px;
@@ -167,6 +187,7 @@ const TypingTextWrapper = styled.div`
 const Hero: React.FC = () => {
   return (
     <Container style={{height: "100vh"}}>
+      <GlobalStyle />
       <Logo>
         <img 
           src="rov-logo.png" 

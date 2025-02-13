@@ -35,23 +35,28 @@ export default function Footer() {
           <div className="grid grid-cols-2 gap-8 md:gap-12">
             {/* Explore Column */}
             <div>
-              <h3 className="text-gray-400 mb-6 text-center md:text-left text-2xl">Explore</h3>
+              <h3 className="text-gray-400 mb-6 text-center md:text-left text-2xl" style={{ fontFamily: "Flight Maybe Maj, sans-serif" }}>
+                Explore
+              </h3>
               <nav className="flex flex-col space-y-4 items-center md:items-start">
                 <button
                   onClick={() => scrollToSection("hero")}
                   className="hover:text-gray-400 transition duration-300 text-lg cursor-pointer"
+                  style={{ fontFamily: "Proxima Nova, sans-serif" }}
                 >
                   Home
                 </button>
                 <button
                   onClick={() => scrollToSection("services")}
                   className="hover:text-gray-400 transition duration-300 text-lg cursor-pointer"
+                  style={{ fontFamily: "Proxima Nova, sans-serif" }}
                 >
                   Services
                 </button>
                 <button
                   onClick={() => scrollToSection("digi-mag")}
                   className="hover:text-gray-400 transition duration-300 text-lg cursor-pointer"
+                  style={{ fontFamily: "Proxima Nova, sans-serif" }}
                 >
                   Gallery
                 </button>
@@ -60,10 +65,12 @@ export default function Footer() {
 
             {/* Follow Column */}
             <div>
-              <h3 className="text-gray-400 mb-6 text-center md:text-left text-2xl">Reach Us</h3>
+              <h3 className="text-gray-400 mb-6 text-center md:text-left text-2xl" style={{ fontFamily: "Flight Maybe Maj, sans-serif" }}>
+                Reach Us
+              </h3>
               <nav className="flex flex-col space-y-4 items-center md:items-start">
                 <div className="relative group">
-                  <div className="hover:text-gray-400 transition duration-300 text-lg cursor-pointer">
+                  <div className="hover:text-gray-400 transition duration-300 text-lg cursor-pointer" style={{ fontFamily: "Proxima Nova, sans-serif" }}>
                     Email
                   </div>
                   {/* Mobile-responsive tooltip */}
@@ -71,10 +78,22 @@ export default function Footer() {
                     rangeofviewmusic@gmail.com
                   </div>
                 </div>
-                <a href="https://www.instagram.com/rangeofviewmusic/?hl=en" target="_blank" rel="noopener noreferrer" className="hover:text-gray-400 transition duration-300 text-lg">
+                <a
+                  href="https://www.instagram.com/rangeofviewmusic/?hl=en"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-gray-400 transition duration-300 text-lg"
+                  style={{ fontFamily: "Proxima Nova, sans-serif" }}
+                >
                   Instagram
                 </a>
-                <a href="https://www.linkedin.com/company/range-of-view-music/" target="_blank" rel="noopener noreferrer" className="hover:text-gray-400 transition duration-300 text-lg">
+                <a
+                  href="https://www.linkedin.com/company/range-of-view-music/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-gray-400 transition duration-300 text-lg"
+                  style={{ fontFamily: "Proxima Nova, sans-serif" }}
+                >
                   LinkedIn
                 </a>
               </nav>
@@ -84,9 +103,28 @@ export default function Footer() {
 
         {/* Copyright Bar */}
         <div className="pt-8 border-t border-gray-800">
-          <p className="text-gray-400 text-center">© {currentYear} Range of View. All rights reserved.</p>
+          <p className="text-gray-400 text-center" style={{ fontFamily: "Proxima Nova, sans-serif" }}>
+            © {currentYear} Range of View. All rights reserved.
+          </p>
         </div>
       </div>
+
+      {/* Custom CSS for the fonts */}
+      <style jsx>{`
+        @font-face {
+          font-family: "Flight Maybe Maj";
+          src: url("/fonts/Flight Maybe Maj.ttf") format("truetype");
+          font-weight: normal;
+          font-style: normal;
+        }
+
+        @font-face {
+          font-family: "Proxima Nova";
+          src: url("/fonts/ProximaNova-Regular.ttf") format("truetype");
+          font-weight: normal;
+          font-style: normal;
+        }
+      `}</style>
     </footer>
   );
 }

@@ -175,8 +175,12 @@ export default function MusicPlayer() {
             className="w-32 h-32 rounded-lg shadow-lg"
           />
           <div>
-            <h2 className="text-2xl font-bold">{currentTrack.title}</h2>
-            <p className="text-zinc-400">{currentTrack.artist}</p>
+            <h2 className="text-2xl font-bold" style={{ fontFamily: 'Flight Maybe Maj, sans-serif' }}>
+              {currentTrack.title}
+            </h2>
+            <p className="text-zinc-400" style={{ fontFamily: 'Proxima Nova, sans-serif' }}>
+              {currentTrack.artist}
+            </p>
           </div>
         </div>
 
@@ -272,10 +276,16 @@ export default function MusicPlayer() {
                   className="w-12 h-12 rounded"
                 />
                 <div className="ml-4">
-                  <p className="font-medium">{track.title}</p>
-                  <p className="text-sm text-zinc-400">{track.artist}</p>
+                  <p className="font-medium" style={{ fontFamily: 'Flight Maybe Maj, sans-serif' }}>
+                    {track.title}
+                  </p>
+                  <p className="text-sm text-zinc-400" style={{ fontFamily: 'Proxima Nova, sans-serif' }}>
+                    {track.artist}
+                  </p>
                 </div>
-                <span className="ml-auto text-sm text-zinc-400">{track.duration}</span>
+                <span className="ml-auto text-sm text-zinc-400" style={{ fontFamily: 'Proxima Nova, sans-serif' }}>
+                  {track.duration}
+                </span>
               </div>
             ))}
           </div>

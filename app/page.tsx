@@ -21,16 +21,6 @@ import DesignBreak from "@/components/DesignBreak";
 
 // Global Styles for Custom Font
 const GlobalStyle = createGlobalStyle`
-  @font-face {
-    font-family: 'FlightMaybeMaj';
-    src: url('/fonts/Flight mAybe Maj.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
-
-  * {
-    font-family: 'FlightMaybeMaj', sans-serif !important;
-  }
 
   body {
     margin: 0;

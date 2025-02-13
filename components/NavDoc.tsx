@@ -58,6 +58,7 @@ export function NavigationDock() {
             <button
               onClick={() => link.to && scrollToSection(link.to)}
               className="px-2 py-1 text-white/80 hover:text-white transition-colors cursor-pointer text-[10px] md:text-sm uppercase tracking-wide"
+              style={{ fontFamily: "Flight Maybe Maj, sans-serif" }} // Apply custom font
             >
               {link.title}
             </button>
@@ -67,6 +68,16 @@ export function NavigationDock() {
           </div>
         ))}
       </nav>
+
+      {/* Custom CSS for the font */}
+      <style jsx>{`
+        @font-face {
+          font-family: "Flight Maybe Maj";
+          src: url("/fonts/Flight Maybe Maj.ttf") format("truetype");
+          font-weight: normal;
+          font-style: normal;
+        }
+      `}</style>
     </div>
   );
 }

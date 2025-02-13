@@ -8,7 +8,9 @@ const DigiMag = () => {
     <div className="w-full max-w-7xl mx-auto p-2 sm:p-4" id="digi-mag">
       {/* Header */}
       <div className="flex items-center gap-2 sm:gap-4 mb-2 sm:mb-4">
-        <h1 className="text-4xl sm:text-8xl font-bold text-white-900">DIGIMAG</h1>
+        <h1 className="text-4xl sm:text-8xl font-bold text-white-900" style={{ fontFamily: 'Flight Maybe Maj, sans-serif' }}>
+          DIGIMAG
+        </h1>
         <Image
           src="/rov-colour.png"
           alt="DigiMag Logo"

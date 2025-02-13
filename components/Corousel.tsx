@@ -55,7 +55,7 @@ const CarouselItem: React.FC<CarouselItemProps> = ({ imageUrl }) => {
               opacity: isHovered ? 1 : 0,
             }}
           />
-          {/* Updated Rounded Button */}
+          {/* Updated Rounded Button with Proxima Nova Font */}
           <a
             href="https://open.spotify.com/artist/1jvWl3rF1B79uoLznEir6D?si=jfP5_dYLQHG0oQxRymi17g"
             target="_blank"
@@ -78,6 +78,7 @@ const CarouselItem: React.FC<CarouselItemProps> = ({ imageUrl }) => {
               textDecoration: "none",
               letterSpacing: "0.5px",
               boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+              fontFamily: "Proxima Nova, sans-serif", // Set the font to Proxima Nova
             }}
           >
             Play Now

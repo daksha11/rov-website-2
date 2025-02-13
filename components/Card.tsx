@@ -1,7 +1,18 @@
-"use client";
-
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import styled, { createGlobalStyle } from "styled-components";
+
+const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'ProximaNovaBlack';
+    src: url('/fonts/proximanova_black.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  body {
+    font-family: 'ProximaNovaBlack', sans-serif;
+  }
+`;
 
 const cards = [
   {
@@ -43,9 +54,10 @@ export default function CardList() {
 
   return (
     <main>
+      <GlobalStyle />
       <div
         ref={containerRef}
-        className="relative min-h-[400vh] bg-[#0]" // Adjusted min-height
+        className="relative min-h-[400vh] bg-[#0]" 
       >
         <div className="sticky top-0 h-screen overflow-hidden">
           {cards.map((card, index) => (
@@ -94,12 +106,12 @@ export function Card({
       <div className="bg-white rounded-2xl w-full max-w-6xl h-[80vh] p-12 overflow-y-auto">
         <div className="flex justify-between items-start h-full relative">
           <div className="space-y-8 max-w-2xl">
-            <div className="text-gray-600 text-lg leading-relaxed whitespace-pre-line overflow-y-auto">
+            <div className="text-gray-600 text-lg leading-relaxed whitespace-pre-line overflow-y-auto" style={{ fontFamily: 'ProximaNovaBlack, sans-serif' }}>
               {card.description}
             </div>
           </div>
           <div
-            style={{ color: card.color }}
+            style={{ color: card.color, fontFamily: 'ProximaNovaBlack, sans-serif' }}
             className="text-[20rem] font-bold leading-none absolute right-0 top-0 -mt-8"
           >
             {card.number}

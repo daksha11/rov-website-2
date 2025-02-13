@@ -3,6 +3,16 @@
 import { Music } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
+import { createGlobalStyle } from "styled-components";
+
+const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'ProximaNovaBlack';
+    src: url('/fonts/proximanova_black.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+`;
 
 export default function DesignBreak() {
   const [text, setText] = useState("ఇచ్చిపడేద్దాం");
@@ -14,7 +24,8 @@ export default function DesignBreak() {
   };
 
   return (
-    <div className="w-full h-auto bg-black text-white flex flex-col items-center justify-center px-1 sm:px-4 overflow-hidden py-2 sm:py-8">
+    <div className="w-full h-auto bg-black text-white flex flex-col items-center justify-center px-1 sm:px-4 overflow-hidden py-2 sm:py-8" style={{ fontFamily: 'ProximaNovaBlack, sans-serif' }}>
+      <GlobalStyle />
       <header className="w-full border-y border-white/20 flex flex-col">
         {/* Top row */}
         <div className="grid grid-cols-12 border-b border-white/20 w-full">
@@ -33,9 +44,9 @@ export default function DesignBreak() {
           <div className="col-span-3 border-r border-white/20 py-2 sm:py-6 px-1 sm:px-4 flex items-center justify-center w-full">
             <div className="bg-[#B84835] p-1.5 sm:p-4 rounded-lg">
               <Image 
-                src="/Gear_Up_Design.PNG" // Replace with the path to your image in the public folder
+                src="/Gear_Up_Design.PNG" 
                 alt="Logo"
-                width={48} // Adjust the size as needed
+                width={48} 
                 height={48}
                 className="w-6 sm:w-12 h-4 sm:h-12"
               />
