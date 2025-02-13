@@ -1,8 +1,6 @@
 "use client";
 
-import { Music } from "lucide-react";
 import { useState } from "react";
-import Image from "next/image";
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
@@ -40,32 +38,18 @@ export default function DesignBreak() {
             </div>
           </div>
 
-          {/* Logo */}
-          <div className="col-span-3 border-r border-white/20 py-2 sm:py-6 px-1 sm:px-4 flex items-center justify-center w-full">
-            <div className="bg-[#B84835] p-1.5 sm:p-4 rounded-lg">
-              <Image 
-                src="/Gear_Up_Design.PNG" 
-                alt="Logo"
-                width={48} 
-                height={48}
-                className="w-6 sm:w-12 h-4 sm:h-12"
-              />
+          {/* Logo with background image */}
+          <div className="col-span-3 border-r border-white/20 py-2 sm:py-6 px-1 sm:px-4 flex items-center justify-center w-full bg-cover bg-center"
+               style={{ backgroundImage: "url('/2.svg')" }}>
+            <div className="flex justify-center items-center w-24 sm:w-32 h-24 sm:h-32">
+              {/* This will now show the background image */}
             </div>
           </div>
 
-          {/* Music Notes */}
-          <div className="col-span-4 py-2 sm:py-6 px-1 sm:px-4 flex items-center justify-center w-full">
-            <div className="flex space-x-0.5 sm:space-x-2">
-              {[...Array(8)].map((_, i) => (
-                <Music 
-                  key={i} 
-                  className="w-2 sm:w-5 h-2 sm:h-5 text-white"
-                  style={{
-                    transform: `translateY(${i % 2 ? '2px' : '-2px'})`
-                  }}
-                />
-              ))}
-            </div>
+          {/* Background Image Container */}
+          <div className="col-span-4 py-2 sm:py-6 px-1 sm:px-4 flex items-center justify-center w-full bg-cover bg-center"
+               style={{ backgroundImage: "url('/3.svg')" }}>
+            {/* The background image will cover the space, adjust if needed */}
           </div>
         </div>
 

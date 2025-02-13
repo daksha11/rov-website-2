@@ -63,27 +63,35 @@ export default function Home() {
         </section>
 
         <DesignBreak />
+        
+        {/* Latest Album Section */}
+        <section id="latest-album">
+          {/* Music Player Section */}
+          <MusicPlayer />
+        </section>
+
+        {/* Gallery Section */}
+        <section id="gallery">
+          <Gallery />
+        </section>
+        
+        <div
+          className="bg-[url('/backgroundimage.jpg')] bg-cover bg-center"
+          style={{ height: "80vh" }}
+        ></div>
+        
+        {/* Services Section */}
+        <section id="services">
+          <Services />
+        </section>
+        
+        <DigiMag />
 
         {/* Glass Back
         <GlassBack /> */}
 
         <Card />
 
-        {/* Services Section */}
-        <section id="services">
-          <Services />
-        </section>
-
-        <div
-          className="bg-[url('/backgroundimage.jpg')] bg-cover bg-center"
-          style={{ height: "80vh" }}
-        ></div>
-
-        {/* Latest Album Section */}
-        <section id="latest-album">
-          {/* Music Player Section */}
-          <MusicPlayer />
-        </section>
         {/* <LatestAlbum /> */}
 
         {/* Featured Artists Section
@@ -91,12 +99,6 @@ export default function Home() {
           <FeaturedArtists />
         </section> */}
 
-        {/* Gallery Section
-        <section id="gallery">
-          <Gallery />
-        </section> */}
-
-        <DigiMag />
         <Carousel />
 
         {/* Footer */}

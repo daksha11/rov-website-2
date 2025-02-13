@@ -62,7 +62,10 @@ function Gallery() {
         </button>
 
         {/* Title */}
-        <div className="absolute top-8 left-1/2 -translate-x-1/2 text-white text-4xl font-bold z-20">
+        <div
+          className="absolute top-8 left-1/2 -translate-x-1/2 text-white text-4xl font-bold z-20"
+          style={{ fontFamily: "Flight Maybe Maj, sans-serif" }}
+        >
           <span>
             <em>TUNE</em>&nbsp;
           </span>
@@ -106,6 +109,16 @@ function Gallery() {
           ))}
         </div>
       </div>
+
+      {/* Custom CSS for the fonts */}
+      <style jsx>{`
+        @font-face {
+          font-family: "Flight Maybe Maj";
+          src: url("/fonts/Flight Maybe Maj.ttf") format("truetype");
+          font-weight: normal;
+          font-style: normal;
+        }
+      `}</style>
     </div>
   );
 }

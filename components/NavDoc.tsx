@@ -7,8 +7,8 @@ export function NavigationDock() {
 
   const links = [
     { title: "home", to: "hero" },
-    { title: "services", to: "services" },
     { title: "mixes", to: "latest-album" },
+    { title: "services", to: "services" },
     { title: "gallery", to: "digi-mag" },
     // Removed the commented-out object to prevent issues
   ];

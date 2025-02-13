@@ -260,7 +260,7 @@ export default function MusicPlayer() {
         {/* Playlist */}
         <div className="mt-8">
           <h3 className="text-lg font-semibold mb-4">Up Next</h3>
-          <div className="space-y-2">
+          <div className="space-y-3 max-h-96 overflow-y-auto">
             {tracks.map((track) => (
               <div 
                 key={track.id}
