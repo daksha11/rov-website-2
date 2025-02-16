@@ -77,7 +77,7 @@ export default function Home() {
         
         <div
           className="bg-[url('/backgroundimage.jpg')] bg-cover bg-center"
-          style={{ height: "80vh" }}
+          style={{ height: "100vh" }}
         ></div>
         
         {/* Services Section */}
