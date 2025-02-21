@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { createGlobalStyle } from "styled-components";
+import CircularText from './CircularText';
+import Waves from "./Waves";
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -29,13 +31,12 @@ export default function DesignBreak() {
         <div className="grid grid-cols-12 border-b border-white/20 w-full">
           {/* Range Of View Collective */}
           <div className="col-span-5 border-r border-white/20 py-2 sm:py-6 px-1 sm:px-4 flex items-center justify-center w-full">
-            <div className="rounded-full border border-white/40 px-2 sm:px-6 py-1 sm:py-2">
-              <h1 className="text-[10px] sm:text-xl font-light tracking-wider text-center">
-                Range Of
-                <br />
-                View Collective
-              </h1>
-            </div>
+            <CircularText 
+              text="RANGE*OF*VIEW*STUDIOS*" 
+              spinDuration={10}
+              onHover="slowDown"
+              className="text-white"
+            />
           </div>
 
           {/* Logo with background image */}
@@ -70,10 +71,26 @@ export default function DesignBreak() {
             </div>
           </div>
 
-          {/* Since 2021 with Hand Icon */}
-          <div className="col-span-3 py-2 sm:py-6 px-1 sm:px-4 flex items-center justify-center gap-1 sm:gap-3 w-full">
-            <h2 className="text-[10px] sm:text-xl font-light tracking-wider">Since 2021</h2>
-            <div className="relative w-3 sm:w-8 h-3 sm:h-8">
+          {/* Since 2021 with Hand Icon and Waves */}
+          <div className="col-span-3 py-2 sm:py-6 px-1 sm:px-4 flex items-center justify-center gap-1 sm:gap-3 w-full relative">
+            <Waves 
+              lineColor="rgba(255, 255, 255, 0.2)"  // Light white lines with transparency
+              backgroundColor="transparent"          // Keep background transparent
+              waveSpeedX={0.0125}                    // Default values, adjust as needed
+              waveSpeedY={0.005}
+              waveAmpX={32}
+              waveAmpY={16}
+              xGap={10}
+              yGap={32}
+              friction={0.925}
+              tension={0.005}
+              maxCursorMove={100}
+              className="z-0"                        // Ensure waves are behind content
+            />
+            <div className="relative z-10 flex items-center gap-1 sm:gap-3"> {/* Added z-index to keep content above waves */}
+              <h2 className="text-[10px] sm:text-xl font-light tracking-wider">Since 2021</h2>
+              <div className="relative w-3 sm:w-8 h-3 sm:h-8">
+              </div>
             </div>
           </div>
         </div>
