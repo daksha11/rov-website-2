@@ -1,15 +1,7 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-
-// Define the CSS for the custom font globally
-const style = document.createElement("style");
-style.textContent = `
-  @font-face {
-    font-family: 'Flight Maybe Maj';
-    src: url('/fonts/Flight Maybe Maj.ttf') format('truetype');
-  }
-`;
-document.head.appendChild(style);
 
 interface TrueFocusProps {
     sentence?: string;
@@ -43,19 +35,40 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
     const containerRef = useRef<HTMLDivElement | null>(null);
     const wordRefs = useRef<(HTMLSpanElement | null)[]>([]);
     const [focusRect, setFocusRect] = useState<FocusRect>({ x: 0, y: 0, width: 0, height: 0 });
+    const [isMounted, setIsMounted] = useState(false);
 
+    // Load font and set mounted state client-side
     useEffect(() => {
-        if (!manualMode) {
-            const interval = setInterval(() => {
-                setCurrentIndex((prev) => (prev + 1) % words.length);
-            }, (animationDuration + pauseBetweenAnimations) * 1000);
+        setIsMounted(true);
+        const style = document.createElement("style");
+        style.textContent = `
+            @font-face {
+                font-family: 'Flight Maybe Maj';
+                src: url('/fonts/Flight Maybe Maj.ttf') format('truetype');
+            }
+        `;
+        document.head.appendChild(style);
 
-            return () => clearInterval(interval);
-        }
-    }, [manualMode, animationDuration, pauseBetweenAnimations, words.length]);
+        // Cleanup
+        return () => {
+            document.head.removeChild(style);
+        };
+    }, []);
 
+    // Handle automatic word cycling
     useEffect(() => {
-        if (currentIndex === null || currentIndex === -1) return;
+        if (!isMounted || manualMode) return;
+
+        const interval = setInterval(() => {
+            setCurrentIndex((prev) => (prev + 1) % words.length);
+        }, (animationDuration + pauseBetweenAnimations) * 1000);
+
+        return () => clearInterval(interval);
+    }, [isMounted, manualMode, animationDuration, pauseBetweenAnimations, words.length]);
+
+    // Update focus rectangle position
+    useEffect(() => {
+        if (!isMounted || currentIndex === null || currentIndex === -1) return;
         if (!wordRefs.current[currentIndex] || !containerRef.current) return;
 
         const parentRect = containerRef.current.getBoundingClientRect();
@@ -67,20 +80,36 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
             width: activeRect.width,
             height: activeRect.height,
         });
-    }, [currentIndex, words.length]);
+    }, [isMounted, currentIndex, words.length]);
 
     const handleMouseEnter = (index: number) => {
-        if (manualMode) {
-            setLastActiveIndex(index);
-            setCurrentIndex(index);
-        }
+        if (!isMounted || !manualMode) return;
+        setLastActiveIndex(index);
+        setCurrentIndex(index);
     };
 
     const handleMouseLeave = () => {
-        if (manualMode) {
-            setCurrentIndex(lastActiveIndex!);
+        if (!isMounted || !manualMode) return;
+        if (lastActiveIndex !== null) {
+            setCurrentIndex(lastActiveIndex);
         }
     };
+
+    if (!isMounted) {
+        // Render static content during SSR
+        return (
+            <div className="relative flex gap-4 justify-center items-center flex-wrap">
+                {words.map((word, index) => (
+                    <span
+                        key={index}
+                        className="relative text-[4rem] font-black cursor-pointer"
+                    >
+                        {word}
+                    </span>
+                ))}
+            </div>
+        );
+    }
 
     return (
         <div
@@ -93,16 +122,12 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
                     <span
                         key={index}
                         ref={(el) => (wordRefs.current[index] = el)}
-                        className="relative text-[4rem] font-black cursor-pointer" // Increased from text-[3rem] to text-[4rem]
+                        className="relative text-[4rem] font-black cursor-pointer"
                         style={{
                             fontFamily: "'Flight Maybe Maj', sans-serif",
-                            filter: manualMode
-                                ? isActive
-                                    ? `blur(0px)`
-                                    : `blur(${blurAmount}px)`
-                                : isActive
-                                    ? `blur(0px)`
-                                    : `blur(${blurAmount}px)`,
+                            filter: isActive
+                                ? `blur(0px)`
+                                : `blur(${blurAmount}px)`,
                             transition: `filter ${animationDuration}s ease`,
                         } as React.CSSProperties}
                         onMouseEnter={() => handleMouseEnter(index)}
