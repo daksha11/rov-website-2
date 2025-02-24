@@ -49,7 +49,7 @@ export default function Services() {
           </motion.h2>
         </div>
 
-        <motion.div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 relative z-10 font-proximanova" variants={sectionVariants}>
+        <motion.div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-12 relative z-10 font-proximanova" variants={sectionVariants}>
           {/* Mixing & Mastering Service */}
           <div className="group relative overflow-hidden rounded-2xl">
             <div className="aspect-square relative">
@@ -99,6 +99,34 @@ export default function Services() {
               </p>
               <button
                 className="px-6 py-2 bg-teal-600 hover:bg-teal-700 rounded-full transition-colors"
+                onClick={() => setModalOpen(true)}
+              >
+                Learn More
+              </button>
+            </div>
+          </div>
+
+          {/* Service 3 */}
+          <div className="group relative overflow-hidden rounded-2xl">
+            <div className="aspect-square relative">
+              <Image
+                src="/web.png"
+                alt="Breaking Bad theme service"
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 p-8">
+              <div className="flex items-center gap-3 mb-4">
+                <Waves className="w-8 h-8 text-yellow-400" />
+                <h3 className="text-2xl font-bold">Web Optimization</h3>
+              </div>
+              <p className="text-gray-300 mb-6 leading-relaxed">
+                Turning clicks into connections with seamless and high impact designs.
+              </p>
+              <button
+                className="px-6 py-2 bg-yellow-600 hover:bg-yellow-700 rounded-full transition-colors"
                 onClick={() => setModalOpen(true)}
               >
                 Learn More

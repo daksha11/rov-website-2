@@ -6,17 +6,18 @@ interface CircularTextProps {
   spinDuration?: number;
   onHover?: "slowDown" | "speedUp" | "pause" | "goBonkers";
   className?: string;
+  sizeClass?: string; // New prop for Tailwind size classes
 }
 
 const getRotationTransition = (
   duration: number,
   from: number,
   loop: boolean = true
-) => ({
-  from: from,
+): { from: number; to: number; ease: string; duration: number; type: string; repeat: number } => ({
+  from,
   to: from + 360,
   ease: "linear",
-  duration: duration,
+  duration,
   type: "tween",
   repeat: loop ? Infinity : 0,
 });
@@ -35,15 +36,19 @@ const CircularText: React.FC<CircularTextProps> = ({
   spinDuration = 20,
   onHover = "speedUp",
   className = "",
+  sizeClass = "w-[clamp(100px,20vw,200px)] h-[clamp(100px,20vw,200px)]", // Default responsive size
 }) => {
   const letters = Array.from(text);
   const controls = useAnimation();
-  const [currentRotation, setCurrentRotation] = useState(0);
+  const [currentRotation, setCurrentRotation] = useState<number>(0);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
 
   useEffect(() => {
+    setIsMounted(true);
     controls.start({
       rotate: currentRotation + 360,
       scale: 1,
+      opacity: 1,
       transition: getTransition(spinDuration, currentRotation),
     });
   }, [spinDuration, controls, onHover, text]);
@@ -97,12 +102,13 @@ const CircularText: React.FC<CircularTextProps> = ({
 
   return (
     <motion.div
-      initial={{ rotate: 0 }}
-      className={`mx-auto rounded-full w-[200px] h-[200px] text-white font-black text-center cursor-pointer origin-center ${className}`}
+      initial={{ rotate: 0, opacity: 0 }}
+      className={`mx-auto rounded-full text-white font-black text-center cursor-pointer origin-center ${sizeClass} ${className}`}
       animate={controls}
-      onUpdate={(latest) => setCurrentRotation(Number(latest.rotate))}
+      onUpdate={(latest: any) => setCurrentRotation(Number(latest.rotate))}
       onMouseEnter={handleHoverStart}
       onMouseLeave={handleHoverEnd}
+      style={{ visibility: isMounted ? "visible" : "hidden" }}
     >
       {letters.map((letter, i) => {
         const rotation = (360 / letters.length) * i;
@@ -114,7 +120,7 @@ const CircularText: React.FC<CircularTextProps> = ({
         return (
           <span
             key={i}
-            className="absolute inline-block inset-0 text-2xl transition-all duration-500 ease-[cubic-bezier(0,0,0,1)]"
+            className="absolute inline-block inset-0 text-[clamp(1rem,4vw,2rem)] transition-all duration-500 ease-[cubic-bezier(0,0,0,1)]"
             style={{ transform, WebkitTransform: transform }}
           >
             {letter}

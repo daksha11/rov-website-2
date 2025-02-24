@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createGlobalStyle } from "styled-components";
 import CircularText from './CircularText';
 import Waves from "./Waves";
+import FuzzyText from "./FuzzyText";
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -59,9 +60,14 @@ export default function DesignBreak() {
           {/* Telugu Text */}
           <div
             className="col-span-4 border-r border-white/20 py-2 sm:py-6 px-1 sm:px-4 flex items-center justify-center w-full"
-            onMouseEnter={handleMouseEnter}
           >
-            <h2 className="text-sm sm:text-2xl font-telugu">{text}</h2>
+          <FuzzyText 
+            baseIntensity={0.2} 
+            hoverIntensity={0.5} 
+            enableHover={false}
+          >
+            ఇచ్చిపడేద్దాం
+          </FuzzyText>
           </div>
 
           {/* Middle section */}
@@ -76,8 +82,8 @@ export default function DesignBreak() {
             <Waves 
               lineColor="rgba(255, 255, 255, 0.2)"  // Light white lines with transparency
               backgroundColor="transparent"          // Keep background transparent
-              waveSpeedX={0.0125}                    // Default values, adjust as needed
-              waveSpeedY={0.005}
+              waveSpeedX={0.09}                    // Default values, adjust as needed
+              waveSpeedY={0.05}
               waveAmpX={32}
               waveAmpY={16}
               xGap={10}

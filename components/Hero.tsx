@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { keyframes, createGlobalStyle } from 'styled-components';
+import Aurora from './Aurora'; // Adjust the import path based on your file structure
 
 // Global styles for custom fonts
 const GlobalStyle = createGlobalStyle`
@@ -118,6 +119,7 @@ const Logo = styled(SlideInTop)`
   position: absolute;
   top: 20px;
   left: 20px;
+  z-index: 10; /* Ensure logo stays above Aurora */
 
   img {
     width: 100px;
@@ -143,6 +145,8 @@ const ContentWrapper = styled.div`
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+  position: relative;
+  z-index: 5; /* Ensure content stays above Aurora */
 
   @media (max-width: 768px) {
     gap: 10px;
@@ -162,6 +166,7 @@ const Heading = styled(SlideInTop)`
   right: 20px;
   text-align: right;
   font-family: 'FlightMaybeMaj', sans-serif;
+  z-index: 10; /* Ensure heading stays above Aurora */
 
   @media (max-width: 768px) {
     top: 10px;
@@ -184,10 +189,31 @@ const TypingTextWrapper = styled.div`
   }
 `;
 
+const AuroraWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60%; /* Extend down to just above the rov-colour logo */
+  margin-bottom: 40px; /* Add gap between Aurora and the logo */
+  z-index: 1; /* Place Aurora behind logo and heading but above other content */
+
+  @media (max-width: 768px) {
+    height: 50%; /* Adjust for smaller screens */
+    margin-bottom: 20px; /* Smaller gap on mobile */
+  }
+`;
+
 const Hero: React.FC = () => {
   return (
-    <Container style={{height: "100vh"}}>
+    <Container style={{ height: "100vh" }}>
       <GlobalStyle />
+      <AuroraWrapper>
+        <Aurora 
+          colorStops={["#ff3300", "#ffbf66", "#00d8ff"]} 
+          amplitude={1.0} 
+        />
+      </AuroraWrapper>
       <Logo>
         <img 
           src="rov-logo.png" 

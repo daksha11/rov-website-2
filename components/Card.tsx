@@ -75,7 +75,6 @@ export function Card({
     4: "YOUR VISION, OUR MISSION",
   };
 
-  // Create gradient background for the image container if it's card 4
   const imageBackground = card.id === 4 
     ? { background: card.color }
     : { backgroundColor: card.color };
@@ -85,48 +84,50 @@ export function Card({
       style={{ opacity, y, position: "absolute", width: "100%", height: "100%" }}
       className="flex items-center justify-center p-4 sm:p-6 md:p-8"
     >
-      <div className="bg-white rounded-3xl w-full max-w-[90%] md:max-w-6xl min-h-[70vh] md:h-[80vh] p-8 sm:p-12 md:p-16 overflow-y-auto">
+      <div className="bg-white rounded-1xl w-full max-w-[98%] md:max-w-[84rem] min-h-[70vh] md:h-[80vh] p-8 sm:p-12 md:p-16 overflow-y-hidden">
         {/* Mobile layout */}
-        <div className="md:hidden flex flex-col h-full items-center">
-          <div className="w-full mb-4 relative aspect-square max-w-[200px] flex items-center justify-center">
-            <img
-              src={card.image}
-              alt={`Illustration ${card.id}`}
-              className="w-full h-full object-cover rounded-xl"
-              style={imageBackground}
-            />
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-bold mb-6 uppercase tracking-tighter text-center w-full">
+        <div className="md:hidden flex flex-col h-full">
+          <h2 className="text-2xl sm:text-3xl font-bold uppercase tracking-tighter text-left w-full">
             <span style={card.id === 4 ? { backgroundImage: card.color, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' } : { color: card.color }}>
               {headings[card.id]}
             </span>
           </h2>
-          <div 
-            className="text-gray-600 text-base sm:text-lg leading-relaxed whitespace-pre-line w-full"
-            style={{ fontFamily: 'ProximaNovaBlack, sans-serif' }}
-          >
-            {card.description}
+          <div className="flex flex-col items-center">
+            <div className="w-full max-w-[200px] aspect-square mb-6">
+              <img
+                src={card.image}
+                alt={`Illustration ${card.id}`}
+                className="w-full h-full object-cover rounded-xl"
+                style={imageBackground}
+              />
+            </div>
+            <div 
+              className="text-gray-600 text-base sm:text-lg leading-relaxed whitespace-pre-line w-full mt-8"
+              style={{ fontFamily: 'ProximaNovaBlack, sans-serif' }}
+            >
+              {card.description}
+            </div>
           </div>
         </div>
 
         {/* Desktop layout */}
-        <div className="hidden md:flex h-full gap-8 items-start">
-          <div className="w-[400px] relative aspect-square flex-shrink-0">
-            <img
-              src={card.image}
-              alt={`Illustration ${card.id}`}
-              className="w-full h-full object-cover rounded-xl"
-              style={imageBackground}
-            />
-          </div>
-          <div className="flex flex-col gap-4 pt-4">
-            <h2 className="text-4xl font-bold uppercase tracking-tighter leading-tight">
-              <span style={card.id === 4 ? { backgroundImage: card.color, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' } : { color: card.color }}>
-                {headings[card.id]}
-              </span>
-            </h2>
+        <div className="hidden md:flex flex-col h-full">
+          <h2 className="text-4xl font-bold uppercase tracking-tighter leading-tight mb-8">
+            <span style={card.id === 4 ? { backgroundImage: card.color, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' } : { color: card.color }}>
+              {headings[card.id]}
+            </span>
+          </h2>
+          <div className="flex gap-8">
+            <div className="w-[400px] aspect-square flex-shrink-0">
+              <img
+                src={card.image}
+                alt={`Illustration ${card.id}`}
+                className="w-full h-full object-cover rounded-xl"
+                style={imageBackground}
+              />
+            </div>
             <div 
-              className="text-gray-600 text-lg leading-relaxed whitespace-pre-line"
+              className="text-gray-600 text-lg leading-relaxed whitespace-pre-line flex-1 mt-8"
               style={{ fontFamily: 'ProximaNovaBlack, sans-serif' }}
             >
               {card.description}

@@ -9,7 +9,7 @@ const DigiMag = () => {
   return (
     <div className="w-full max-w-7xl mx-auto p-2 sm:p-4" id="digi-mag">
       {/* Header */}
-      <div className="flex items-center gap-2 sm:gap-4 mb-2 sm:mb-4">
+      <div className="flex items-center gap-2 sm:gap-4 mb-6 sm:mb-2 md:mb-4">
         <TrueFocus
           sentence="DIGI MAG"
           manualMode={false}
@@ -18,18 +18,12 @@ const DigiMag = () => {
           glowColor="rgba(255, 255, 255, 0.6)"
           animationDuration={0.3}
           pauseBetweenAnimations={1.5}
-        />
-        <Image
-          src="/rov-colour.png"
-          alt="DigiMag Logo"
-          width={70}
-          height={70}
-          className="w-[70px] h-[70px] sm:w-[140px] sm:h-[140px]"
+          className="text-[2rem] sm:text-[3rem] md:text-[4rem]"
         />
       </div>
 
       {/* Bento Grid */}
-      <div className="grid grid-cols-4 gap-1 sm:gap-4 auto-rows-[150px] sm:auto-rows-[300px]">
+      <div className="grid grid-cols-4 gap-1 sm:gap-4 auto-rows-[120px] sm:auto-rows-[150px] md:auto-rows-[300px]">
         {/* Large Feature Image */}
         <div className="relative col-span-2 row-span-2 group overflow-visible">
           <TiltedCard
@@ -40,11 +34,11 @@ const DigiMag = () => {
             containerWidth="100%"
             imageHeight="100%"
             imageWidth="100%"
-            scaleOnHover={1} // Disable zoom animation
+            scaleOnHover={1}
             rotateAmplitude={15}
             showMobileWarning={false}
             showTooltip={false}
-            overlayContent={<div className="p-4 text-white bg-black/50">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>}
+            //overlayContent={<div className="p-2 sm:p-4 text-white bg-black/50 text-xs sm:text-base">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>}
             displayOverlayContent={true}
           />
         </div>
@@ -59,11 +53,11 @@ const DigiMag = () => {
             containerWidth="100%"
             imageHeight="100%"
             imageWidth="100%"
-            scaleOnHover={1} // Disable zoom animation
+            scaleOnHover={1}
             rotateAmplitude={15}
             showMobileWarning={false}
             showTooltip={false}
-            overlayContent={<div className="p-4 text-white bg-black/50">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>}
+            //overlayContent={<div className="p-2 sm:p-4 text-white bg-black/50 text-xs sm:text-base">Lorem ipsum</div>}
             displayOverlayContent={true}
           />
         </div>
@@ -77,11 +71,11 @@ const DigiMag = () => {
             containerWidth="100%"
             imageHeight="100%"
             imageWidth="100%"
-            scaleOnHover={1} // Disable zoom animation
+            scaleOnHover={1}
             rotateAmplitude={15}
             showMobileWarning={false}
             showTooltip={false}
-            overlayContent={<div className="p-4 text-white bg-black/50">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>}
+            //overlayContent={<div className="p-2 sm:p-4 text-white bg-black/50 text-xs sm:text-base">Lorem ipsum</div>}
             displayOverlayContent={true}
           />
         </div>
@@ -95,11 +89,11 @@ const DigiMag = () => {
             containerWidth="100%"
             imageHeight="100%"
             imageWidth="100%"
-            scaleOnHover={1} // Disable zoom animation
+            scaleOnHover={1}
             rotateAmplitude={15}
             showMobileWarning={false}
             showTooltip={false}
-            overlayContent={<div className="p-4 text-white bg-black/50">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>}
+            //overlayContent={<div className="p-2 sm:p-4 text-white bg-black/50 text-xs sm:text-base">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>}
             displayOverlayContent={true}
           />
         </div>
@@ -114,11 +108,11 @@ const DigiMag = () => {
             containerWidth="100%"
             imageHeight="100%"
             imageWidth="100%"
-            scaleOnHover={1} // Disable zoom animation
+            scaleOnHover={1}
             rotateAmplitude={15}
             showMobileWarning={false}
             showTooltip={false}
-            overlayContent={<div className="p-4 text-white bg-black/50">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>}
+            //overlayContent={<div className="p-2 sm:p-4 text-white bg-black/50 text-xs sm:text-base">Lorem ipsum</div>}
             displayOverlayContent={true}
           />
         </div>
@@ -132,11 +126,11 @@ const DigiMag = () => {
             containerWidth="100%"
             imageHeight="100%"
             imageWidth="100%"
-            scaleOnHover={1} // Disable zoom animation
+            scaleOnHover={1}
             rotateAmplitude={15}
             showMobileWarning={false}
             showTooltip={false}
-            overlayContent={<div className="p-4 text-white bg-black/50">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>}
+            //overlayContent={<div className="p-2 sm:p-4 text-white bg-black/50 text-xs sm:text-base">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>}
             displayOverlayContent={true}
           />
         </div>
@@ -151,11 +145,11 @@ const DigiMag = () => {
             containerWidth="100%"
             imageHeight="100%"
             imageWidth="100%"
-            scaleOnHover={1} // Disable zoom animation
+            scaleOnHover={1}
             rotateAmplitude={15}
             showMobileWarning={false}
             showTooltip={false}
-            overlayContent={<div className="p-4 text-white bg-black/50">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>}
+            //overlayContent={<div className="p-2 sm:p-4 text-white bg-black/50 text-xs sm:text-base">Lorem ipsum</div>}
             displayOverlayContent={true}
           />
         </div>
@@ -169,11 +163,11 @@ const DigiMag = () => {
             containerWidth="100%"
             imageHeight="100%"
             imageWidth="100%"
-            scaleOnHover={1} // Disable zoom animation
+            scaleOnHover={1}
             rotateAmplitude={15}
             showMobileWarning={false}
             showTooltip={false}
-            overlayContent={<div className="p-4 text-white bg-black/50">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>}
+            //overlayContent={<div className="p-2 sm:p-4 text-white bg-black/50 text-xs sm:text-base">Lorem ipsum</div>}
             displayOverlayContent={true}
           />
         </div>
@@ -188,11 +182,11 @@ const DigiMag = () => {
             containerWidth="100%"
             imageHeight="100%"
             imageWidth="100%"
-            scaleOnHover={1} // Disable zoom animation
+            scaleOnHover={1}
             rotateAmplitude={15}
             showMobileWarning={false}
             showTooltip={false}
-            overlayContent={<div className="p-4 text-white bg-black/50">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>}
+            //overlayContent={<div className="p-2 sm:p-4 text-white bg-black/50 text-xs sm:text-base">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>}
             displayOverlayContent={true}
           />
         </div>
@@ -206,24 +200,15 @@ const DigiMag = () => {
             containerWidth="100%"
             imageHeight="100%"
             imageWidth="100%"
-            scaleOnHover={1} // Disable zoom animation
+            scaleOnHover={1}
             rotateAmplitude={15}
             showMobileWarning={false}
             showTooltip={false}
-            overlayContent={<div className="p-4 text-white bg-black/50">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>}
+            //overlayContent={<div className="p-2 sm:p-4 text-white bg-black/50 text-xs sm:text-base">Lorem ipsum</div>}
             displayOverlayContent={true}
           />
         </div>
       </div>
-
-      {/* Custom CSS for Mobile View */}
-      <style jsx>{`
-        @media (max-width: 639px) {
-          .grid {
-            grid-auto-rows: calc(25vw - 0.5rem);
-          }
-        }
-      `}</style>
     </div>
   );
 };

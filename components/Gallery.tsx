@@ -61,19 +61,6 @@ function Gallery() {
           <ArrowRight className="w-8 h-8" />
         </button>
 
-        {/* Title */}
-        <div
-          className="absolute top-8 left-1/2 -translate-x-1/2 text-white text-4xl font-bold z-20"
-          style={{ fontFamily: "Flight Maybe Maj, sans-serif" }}
-        >
-          <span>
-            <em>TUNE</em>&nbsp;
-          </span>
-          <span className="text-transparent [-webkit-text-stroke:1px_white]">
-            IN
-          </span>
-        </div>
-
         {/* Carousel */}
         <div className="relative w-full h-full [perspective:1000px]">
           {items.map((item, index) => (
