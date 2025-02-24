@@ -18,7 +18,6 @@ const DigiMag = () => {
           glowColor="rgba(255, 255, 255, 0.6)"
           animationDuration={0.3}
           pauseBetweenAnimations={1.5}
-          className="text-[2rem] sm:text-[3rem] md:text-[4rem]"
         />
       </div>
 
