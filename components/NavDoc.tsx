@@ -2,7 +2,11 @@
 
 import { useEffect, useState } from "react";
 
-export function NavigationDock() {
+interface NavigationDockProps {
+  className?: string; // Add className prop
+}
+
+export function NavigationDock({ className }: NavigationDockProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   const links = [
@@ -50,7 +54,7 @@ export function NavigationDock() {
 
   return (
     <div
-      className={`fixed bottom-6 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-md px-6 py-2 rounded-full border border-white/10 z-50 max-w-[90%] md:max-w-none transition-opacity duration-500 ${isVisible ? "opacity-100" : "opacity-0"}`}
+      className={`fixed bottom-6 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-md px-6 py-2 rounded-full border border-white/10 z-50 max-w-[90%] md:max-w-none transition-opacity duration-500 ${isVisible ? "opacity-100" : "opacity-0"} ${className || ""}`} // Apply className prop
     >
       <nav className="flex items-center space-x-2 justify-center">
         {links.map((link, index) => (
