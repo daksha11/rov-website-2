@@ -7,10 +7,10 @@ interface TiltedCardProps {
   imageSrc: React.ComponentProps<"img">["src"];
   altText?: string;
   captionText?: string;
-  containerHeight?: React.CSSProperties['height'];
-  containerWidth?: React.CSSProperties['width'];
-  imageHeight?: React.CSSProperties['height'];
-  imageWidth?: React.CSSProperties['width'];
+  containerHeight?: React.CSSProperties["height"];
+  containerWidth?: React.CSSProperties["width"];
+  imageHeight?: React.CSSProperties["height"];
+  imageWidth?: React.CSSProperties["width"];
   scaleOnHover?: number;
   rotateAmplitude?: number;
   showMobileWarning?: boolean;
@@ -89,6 +89,9 @@ export default function TiltedCard({
     rotateFigcaption.set(0);
   }
 
+  // Check if the source is a video (MP4)
+  const isVideo = typeof imageSrc === "string" && imageSrc.endsWith(".mp4");
+
   return (
     <figure
       ref={ref}
@@ -117,15 +120,32 @@ export default function TiltedCard({
           scale,
         }}
       >
-        <motion.img
-          src={imageSrc}
-          alt={altText}
-          className="absolute top-0 left-0 object-cover rounded-[15px] will-change-transform [transform:translateZ(0)]"
-          style={{
-            width: imageWidth,
-            height: imageHeight,
-          }}
-        />
+        {isVideo ? (
+          <motion.video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute top-0 left-0 object-cover rounded-[15px] will-change-transform [transform:translateZ(0)]"
+            style={{
+              width: imageWidth,
+              height: imageHeight,
+            }}
+          >
+            <source src={imageSrc} type="video/mp4" />
+            Your browser does not support the video tag.
+          </motion.video>
+        ) : (
+          <motion.img
+            src={imageSrc}
+            alt={altText}
+            className="absolute top-0 left-0 object-cover rounded-[15px] will-change-transform [transform:translateZ(0)]"
+            style={{
+              width: imageWidth,
+              height: imageHeight,
+            }}
+          />
+        )}
 
         {displayOverlayContent && overlayContent && (
           <motion.div

@@ -37,7 +37,6 @@ const DigiMag = () => {
             rotateAmplitude={15}
             showMobileWarning={false}
             showTooltip={false}
-            //overlayContent={<div className="p-2 sm:p-4 text-white bg-black/50 text-xs sm:text-base">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>}
             displayOverlayContent={true}
           />
         </div>
@@ -45,7 +44,7 @@ const DigiMag = () => {
         {/* Filling Smaller Images */}
         <div className="relative col-span-1 row-span-1 group overflow-visible">
           <TiltedCard
-            imageSrc="/one_at_a_time.JPG"
+            imageSrc="/ddk_1.png"
             altText="Birthday"
             captionText="Celebrate Life's Moments"
             containerHeight="100%"
@@ -56,16 +55,16 @@ const DigiMag = () => {
             rotateAmplitude={15}
             showMobileWarning={false}
             showTooltip={false}
-            //overlayContent={<div className="p-2 sm:p-4 text-white bg-black/50 text-xs sm:text-base">Lorem ipsum</div>}
             displayOverlayContent={true}
           />
         </div>
 
+        {/* Video 1 */}
         <div className="relative col-span-1 row-span-1 group overflow-visible">
           <TiltedCard
-            imageSrc="/changeit.jpg"
-            altText="Fashion"
-            captionText="Redefine Your Style"
+            imageSrc="/ddk_vid_1.mp4"
+            altText="Video 1"
+            captionText="Dynamic Visuals"
             containerHeight="100%"
             containerWidth="100%"
             imageHeight="100%"
@@ -74,7 +73,6 @@ const DigiMag = () => {
             rotateAmplitude={15}
             showMobileWarning={false}
             showTooltip={false}
-            //overlayContent={<div className="p-2 sm:p-4 text-white bg-black/50 text-xs sm:text-base">Lorem ipsum</div>}
             displayOverlayContent={true}
           />
         </div>
@@ -92,7 +90,6 @@ const DigiMag = () => {
             rotateAmplitude={15}
             showMobileWarning={false}
             showTooltip={false}
-            //overlayContent={<div className="p-2 sm:p-4 text-white bg-black/50 text-xs sm:text-base">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>}
             displayOverlayContent={true}
           />
         </div>
@@ -100,7 +97,7 @@ const DigiMag = () => {
         {/* Filling the middle gap */}
         <div className="relative col-span-1 row-span-1 group overflow-visible">
           <TiltedCard
-            imageSrc="/domcover.JPG"
+            imageSrc="/ddk_2.png"
             altText="Travel"
             captionText="Discover New Horizons"
             containerHeight="100%"
@@ -111,16 +108,16 @@ const DigiMag = () => {
             rotateAmplitude={15}
             showMobileWarning={false}
             showTooltip={false}
-            //overlayContent={<div className="p-2 sm:p-4 text-white bg-black/50 text-xs sm:text-base">Lorem ipsum</div>}
             displayOverlayContent={true}
           />
         </div>
 
+        {/* Video 2 */}
         <div className="relative col-span-2 row-span-1 group overflow-visible">
           <TiltedCard
-            imageSrc="/cybertruck2.png"
-            altText="Culture"
-            captionText="Embrace the Future"
+            imageSrc="/james.mp4"
+            altText="Video 2"
+            captionText="Cinematic Experience"
             containerHeight="100%"
             containerWidth="100%"
             imageHeight="100%"
@@ -129,7 +126,6 @@ const DigiMag = () => {
             rotateAmplitude={15}
             showMobileWarning={false}
             showTooltip={false}
-            //overlayContent={<div className="p-2 sm:p-4 text-white bg-black/50 text-xs sm:text-base">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>}
             displayOverlayContent={true}
           />
         </div>
@@ -137,7 +133,7 @@ const DigiMag = () => {
         {/* Bottom Row Fix */}
         <div className="relative col-span-1 row-span-1 group overflow-visible">
           <TiltedCard
-            imageSrc="/faithretrologothing.JPG"
+            imageSrc="/cover7.png"
             altText="Food"
             captionText="Savor the Flavors"
             containerHeight="100%"
@@ -148,14 +144,13 @@ const DigiMag = () => {
             rotateAmplitude={15}
             showMobileWarning={false}
             showTooltip={false}
-            //overlayContent={<div className="p-2 sm:p-4 text-white bg-black/50 text-xs sm:text-base">Lorem ipsum</div>}
             displayOverlayContent={true}
           />
         </div>
 
         <div className="relative col-span-1 row-span-1 group overflow-visible">
           <TiltedCard
-            imageSrc="/chain.png"
+            imageSrc="/art showcase.png"
             altText="Art"
             captionText="Artistic Expressions"
             containerHeight="100%"
@@ -166,33 +161,13 @@ const DigiMag = () => {
             rotateAmplitude={15}
             showMobileWarning={false}
             showTooltip={false}
-            //overlayContent={<div className="p-2 sm:p-4 text-white bg-black/50 text-xs sm:text-base">Lorem ipsum</div>}
             displayOverlayContent={true}
           />
         </div>
 
-        {/* Filling Last Row Completely */}
         <div className="relative col-span-2 row-span-1 group overflow-visible">
           <TiltedCard
             imageSrc="/event_3.jpg"
-            altText="Design"
-            captionText="Design the Extraordinary"
-            containerHeight="100%"
-            containerWidth="100%"
-            imageHeight="100%"
-            imageWidth="100%"
-            scaleOnHover={1}
-            rotateAmplitude={15}
-            showMobileWarning={false}
-            showTooltip={false}
-            //overlayContent={<div className="p-2 sm:p-4 text-white bg-black/50 text-xs sm:text-base">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>}
-            displayOverlayContent={true}
-          />
-        </div>
-
-        <div className="relative col-span-1 row-span-1 group overflow-visible">
-          <TiltedCard
-            imageSrc="/cover1.png"
             altText="Photography"
             captionText="Capture the Moment"
             containerHeight="100%"
@@ -203,7 +178,24 @@ const DigiMag = () => {
             rotateAmplitude={15}
             showMobileWarning={false}
             showTooltip={false}
-            //overlayContent={<div className="p-2 sm:p-4 text-white bg-black/50 text-xs sm:text-base">Lorem ipsum</div>}
+            displayOverlayContent={true}
+          />
+        </div>
+
+        {/* Video 3 */}
+        <div className="relative col-span-1 row-span-1 group overflow-visible">
+          <TiltedCard
+            imageSrc="/ddk_vid_2.mp4"
+            altText="Video 3"
+            captionText="Immersive Content"
+            containerHeight="100%"
+            containerWidth="100%"
+            imageHeight="100%"
+            imageWidth="100%"
+            scaleOnHover={1}
+            rotateAmplitude={15}
+            showMobileWarning={false}
+            showTooltip={false}
             displayOverlayContent={true}
           />
         </div>

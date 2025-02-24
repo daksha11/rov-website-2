@@ -88,7 +88,7 @@ export default function Home() {
         </section>
 
         <div
-          className="bg-[url('/backgroundimage.jpg')] bg-cover bg-center w-full"
+          className="bg-[url('/backgroundimage.png')] bg-cover bg-center w-full"
           style={{ 
             height: "100vh",
           }}
