@@ -9,13 +9,14 @@ interface CarouselItem {
 }
 
 const items: CarouselItem[] = [
-  { id: 1, title: "", image: "/cover1.png", number: "" },
+  { id: 1, title: "", image: "/changeit.jpg", number: "" },
   { id: 2, title: "", image: "/cover2.png", number: "" },
-  { id: 3, title: "", image: "/cover3.png", number: "" },
-  { id: 4, title: "", image: "/rov_album_4.webp", number: "" },
-  { id: 5, title: "", image: "/rov_album_1.webp", number: "" },
-  { id: 6, title: "", image: "/rov_album_2.webp", number: "" },
-  { id: 7, title: "", image: "/rov_album_3.webp", number: "" },
+  { id: 3, title: "", image: "/catchthelight.png", number: "" },
+  { id: 4, title: "", image: "/domcover.JPG", number: "" },
+  { id: 5, title: "", image: "/faithretrologothing.JPG", number: "" },
+  { id: 6, title: "", image: "/miliy1.png", number: "" },
+  { id: 7, title: "", image: "/miliy2.png", number: "" },
+  { id: 8, title: "", image: "/one_at_a_time.JPG", number: "" }
 ];
 
 function Gallery() {
@@ -46,7 +47,8 @@ function Gallery() {
 
   return (
     <div className="min-h-screen bg-black">
-      <div className="relative w-full h-screen bg-black overflow-hidden flex items-center justify-center">
+      {/* Increase the height of the container to accommodate the rotated images */}
+      <div className="relative w-full h-[150vh] bg-black overflow-hidden flex items-center justify-center">
         {/* Navigation Buttons */}
         <button
           onClick={handlePrev}
@@ -66,11 +68,11 @@ function Gallery() {
           {items.map((item, index) => (
             <div
               key={item.id}
-              className="absolute w-[320px] h-[480px] left-1/2 top-1/2 -ml-[160px] -mt-[240px] transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]"
+              className="absolute w-[320px] h-[320px] left-1/2 top-1/2 -ml-[160px] -mt-[160px] transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]"
               style={getItemStyle(index)}
             >
               <div
-                className={`relative w-full h-full rounded-[20px] overflow-hidden cursor-pointer shadow-lg transition-transform duration-300 hover:scale-[1.02] ${
+                className={`relative w-full h-full rounded-[5px] overflow-hidden cursor-pointer shadow-lg transition-transform duration-300 hover:scale-[1.02] ${
                   index === activeIndex ? "scale-105 z-[100]" : "scale-95"
                 }`}
               >

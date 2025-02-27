@@ -10,7 +10,7 @@ import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
 import Gallery from "@/components/Gallery";
 import DigiMag from "@/components/DigiMag";
-import Carousel from "@/components/Corousel"; // Fixed spelling from 'Corousel'
+import Carousel from "@/components/Corousel";
 import Card from "@/components/Card";
 import DesignBreak from "@/components/DesignBreak";
 import { NavigationDock } from "@/components/NavDoc";
@@ -71,7 +71,6 @@ export default function Home() {
     <>
       <GlobalStyle />
       <main className="min-h-screen bg-black text-white">
-        <CustomCursor />
 
         <section id="hero">
           <Hero />
@@ -87,12 +86,14 @@ export default function Home() {
           <Gallery />
         </section>
 
-        <div
+        {/* <div
           className="bg-[url('/backgroundimage.png')] bg-cover bg-center w-full"
           style={{ 
             height: "100vh",
           }}
-        />
+        /> */}
+
+        <img src="/backgroundimage.png" alt="Page Tear Image"/>
 
         <section id="services">
           <Services />

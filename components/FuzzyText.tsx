@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 interface FuzzyTextProps {
-  children: React.ReactNode;
+  text: string; // Changed from children to text
   fontSize?: number | string;
   fontWeight?: string | number;
   fontFamily?: string;
@@ -12,8 +12,8 @@ interface FuzzyTextProps {
 }
 
 const FuzzyText: React.FC<FuzzyTextProps> = ({
-  children,
-  fontSize = "3rem", // Adjusted to smaller size
+  text, // Updated to use text prop
+  fontSize = "3rem",
   fontWeight = 900,
   fontFamily = "inherit",
   color = "#fff",
@@ -27,14 +27,14 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
   useEffect(() => {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
-      if (screenWidth < 768) { // Adjust this breakpoint as needed
-        setComputedFontSize("2rem"); // Smaller font size for mobile
+      if (screenWidth < 768) {
+        setComputedFontSize("2rem");
       } else {
         setComputedFontSize(fontSize);
       }
     };
 
-    handleResize(); // Initial call to set the font size
+    handleResize();
     window.addEventListener("resize", handleResize);
 
     return () => {
@@ -75,8 +75,6 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
         numericFontSize = parseFloat(computedSize);
         document.body.removeChild(temp);
       }
-
-      const text = React.Children.toArray(children).join("");
 
       const offscreen = document.createElement("canvas");
       const offCtx = offscreen.getContext("2d");
@@ -213,7 +211,7 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
       }
     };
   }, [
-    children,
+    text, // Updated dependency
     computedFontSize,
     fontWeight,
     fontFamily,

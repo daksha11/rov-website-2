@@ -60,14 +60,14 @@ export default function DesignBreak() {
           {/* Telugu Text */}
           <div
             className="col-span-4 border-r border-white/20 py-2 sm:py-6 px-1 sm:px-4 flex items-center justify-center w-full"
+            onMouseEnter={handleMouseEnter}
           >
-          <FuzzyText 
-            baseIntensity={0.2} 
-            hoverIntensity={0.5} 
-            enableHover={false}
-          >
-            ఇచ్చిపడేద్దాం
-          </FuzzyText>
+            <FuzzyText 
+              text={text} // Pass the text state
+              baseIntensity={0.2} 
+              hoverIntensity={0.5} 
+              enableHover={false}
+            />
           </div>
 
           {/* Middle section */}
