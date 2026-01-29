@@ -2,9 +2,9 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-import { ScrollTrigger, Flip, ScrollToPlugin } from 'gsap/all';
+import { ScrollTrigger, Flip, ScrollToPlugin, Observer } from 'gsap/all';
 
-gsap.registerPlugin(ScrollTrigger, Flip, ScrollToPlugin);
+gsap.registerPlugin(ScrollTrigger, Flip, ScrollToPlugin, Observer);
 
 interface BentoGalleryProps {
     images?: string[];
@@ -45,25 +45,36 @@ const BentoFlipGallery: React.FC<BentoGalleryProps> = ({ images = defaultImages 
 
         setActiveProject(index);
         const gallery = galleryRef.current;
-        const items = gallery.querySelectorAll('.gallery__item');
+        const items = Array.from(gallery.querySelectorAll('.gallery__item'));
         const selectedItem = items[index];
 
         // Capture current state
         const state = Flip.getState(items);
 
-        // Apply focused classes
+        // Apply focused classes - immediately hide others to let Flip handle the transition
         gallery.classList.add('gallery--focused');
         selectedItem.classList.add('is-focused');
+
         items.forEach((item, i) => {
-            if (i !== index) item.classList.add('not-focused');
+            if (i !== index) {
+                // Instead of immediate opacity 0 class, we'll let Flip/GSAP handle it
+                item.classList.add('not-focused');
+            }
         });
 
         // Animate to focused state
         Flip.from(state, {
             duration: 1.2,
             ease: "expo.inOut",
+            absolute: true, // Crucial for grid to single item transitions
             onStart: () => {
                 setIsFlipped(true);
+                // Fade out non-selected items cleanly
+                gsap.to(items.filter((_, i) => i !== index), {
+                    opacity: 0,
+                    duration: 0.6,
+                    ease: "power2.inOut"
+                });
             },
             onComplete: () => {
                 // Fade in text
@@ -81,13 +92,13 @@ const BentoFlipGallery: React.FC<BentoGalleryProps> = ({ images = defaultImages 
         if (!isFlipped || !galleryRef.current) return;
 
         const gallery = galleryRef.current;
-        const items = gallery.querySelectorAll('.gallery__item');
+        const items = Array.from(gallery.querySelectorAll('.gallery__item'));
 
         // Fade out text first
         gsap.to(textRef.current, {
             opacity: 0,
             y: 20,
-            duration: 0.4,
+            duration: 0.3,
             onComplete: () => {
                 const state = Flip.getState(items);
 
@@ -99,8 +110,17 @@ const BentoFlipGallery: React.FC<BentoGalleryProps> = ({ images = defaultImages 
 
                 // Animate back
                 Flip.from(state, {
-                    duration: 1,
+                    duration: 1.2,
                     ease: "expo.inOut",
+                    absolute: true,
+                    onStart: () => {
+                        // Fade in items back
+                        gsap.to(items, {
+                            opacity: 1,
+                            duration: 0.8,
+                            ease: "power2.inOut"
+                        });
+                    },
                     onComplete: () => {
                         setIsFlipped(false);
                     }
@@ -130,6 +150,20 @@ const BentoFlipGallery: React.FC<BentoGalleryProps> = ({ images = defaultImages 
                     revertFlip();
                 }
             });
+
+            // Use Observer to catch upward scroll gesture even at the top of the page
+            if (isFlipped) {
+                Observer.create({
+                    target: window,
+                    type: "wheel,touch,pointer",
+                    onDown: () => {
+                        // onDown triggers on wheel up or swipe down (intended for scrolling up)
+                        revertFlip();
+                    },
+                    tolerance: 10,
+                    preventDefault: false
+                });
+            }
         });
 
         return () => ctxRef.current?.revert();
@@ -168,7 +202,7 @@ const BentoFlipGallery: React.FC<BentoGalleryProps> = ({ images = defaultImages 
         .gallery__item {
           cursor: pointer;
           overflow: hidden;
-          transition: filter 0.5s ease;
+          will-change: transform, opacity;
         }
 
         .gallery__item.is-focused {
@@ -179,7 +213,6 @@ const BentoFlipGallery: React.FC<BentoGalleryProps> = ({ images = defaultImages 
         }
 
         .gallery__item.not-focused {
-          opacity: 0;
           pointer-events: none;
         }
 
@@ -212,7 +245,7 @@ const BentoFlipGallery: React.FC<BentoGalleryProps> = ({ images = defaultImages 
                             <img
                                 src={src}
                                 alt={`Gallery image ${index + 1}`}
-                                className="object-cover w-full h-full transform transition-transform duration-700 hover:scale-105"
+                                className="object-cover w-full h-full"
                             />
                         </div>
                     ))}

@@ -312,7 +312,7 @@ const ElevateSection: React.FC = () => {
               <ArrowButton
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => window.location.href = '/video-production'}
+                onClick={() => window.location.href = '/casestudy'}
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M5 12h14M12 5l7 7-7 7" />
@@ -320,7 +320,7 @@ const ElevateSection: React.FC = () => {
               </ArrowButton>
 
               <CTAButton
-                href="/video-production"
+                href="/casestudy"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
