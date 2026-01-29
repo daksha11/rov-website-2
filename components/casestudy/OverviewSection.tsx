@@ -13,7 +13,7 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
     title,
     content,
     titleColor = '#C90000',
-    titleFont = 'Brush Script MT, cursive'
+    titleFont = 'Pearl Jean, cursive'
 }) => {
     return (
         <div>
@@ -26,7 +26,7 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
             >
                 {title}
             </h2>
-            <p className="text-lg text-white leading-relaxed">
+            <p className="text-lg text-white leading-relaxed" style={{ fontFamily: 'Roboto, sans-serif' }}>
                 {content}
             </p>
         </div>

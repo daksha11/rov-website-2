@@ -9,15 +9,22 @@ interface ChallengeSectionProps {
 
 export const ChallengeSection: React.FC<ChallengeSectionProps> = ({ title, content }) => {
     return (
-        <div className="border border-gray-700 rounded-3xl p-8 md:p-10 bg-black/60">
+        <div
+            className="p-8 md:p-10 bg-black/60"
+            style={{
+                borderRadius: '30px',
+                border: '2px solid #CC6200'
+            }}
+        >
             <div className="flex flex-col md:flex-row gap-6 md:gap-12 items-start">
                 <h3
                     className="text-4xl md:text-5xl font-bold whitespace-nowrap flex-shrink-0"
                     style={{
-                        background: 'linear-gradient(180deg, rgba(215, 108, 0, 1) 0%, rgba(149, 50, 0, 1) 100%)',
+                        fontFamily: 'Pearl Jean, cursive',
+                        background: 'linear-gradient(91deg, #D76C00 0.74%, #953200 100%)',
+                        backgroundClip: 'text',
                         WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        backgroundClip: 'text'
+                        WebkitTextFillColor: 'transparent'
                     }}
                 >
                     {title}
@@ -25,10 +32,11 @@ export const ChallengeSection: React.FC<ChallengeSectionProps> = ({ title, conte
                 <p
                     className="text-base md:text-lg leading-relaxed"
                     style={{
-                        background: 'linear-gradient(180deg, rgba(215, 108, 0, 1) 0%, rgba(149, 50, 0, 1) 100%)',
+                        fontFamily: 'Roboto, sans-serif',
+                        background: 'linear-gradient(91deg, #D76C00 0.74%, #953200 100%)',
+                        backgroundClip: 'text',
                         WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        backgroundClip: 'text'
+                        WebkitTextFillColor: 'transparent'
                     }}
                 >
                     {content}

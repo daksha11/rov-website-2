@@ -194,7 +194,7 @@ const Footer = () => {
             className="object-contain"
             style={{
               objectPosition: 'bottom right',
-              transform: 'scale(1.3)',
+              transform: 'scale(1.4) translate(5%, 8%)',
               transformOrigin: 'bottom right'
             }}
           />
@@ -212,7 +212,7 @@ const Footer = () => {
             className="object-contain"
             style={{
               objectPosition: 'bottom right',
-              transform: 'scale(1.3)',
+              transform: 'scale(1.4) translate(5%, 8%)',
               transformOrigin: 'bottom right',
               filter: 'brightness(1.25) contrast(1.15) saturate(1.1)'
             }}

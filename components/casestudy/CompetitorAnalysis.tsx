@@ -32,13 +32,13 @@ export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
             {/* Title */}
             <h3
                 className="text-5xl md:text-6xl font-black mb-6 uppercase tracking-tight"
-                style={{ color: '#C90000' }}
+                style={{ color: '#C90000', fontFamily: 'Pearl Jean, cursive' }}
             >
                 {title}
             </h3>
 
             {/* Description */}
-            <p className="text-lg text-gray-300 mb-12 leading-relaxed">
+            <p className="text-lg text-gray-300 mb-12 leading-relaxed" style={{ fontFamily: 'Roboto, sans-serif' }}>
                 {description}
             </p>
 
@@ -133,15 +133,31 @@ export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
             </div>
 
             {/* Insight Box */}
-            <div className="border-2 border-gray-700 rounded-2xl p-6 bg-black/40">
+            <div
+                className="p-6 bg-black/40"
+                style={{
+                    borderRadius: '20px',
+                    border: '2px solid #953200'
+                }}
+            >
                 <div className="flex items-start gap-4">
                     <span
-                        className="px-4 py-2 rounded-full text-sm font-bold text-white whitespace-nowrap"
-                        style={{ backgroundColor: '#8B4513' }}
+                        className="px-4 py-2 text-sm font-bold text-white whitespace-nowrap"
+                        style={{
+                            borderRadius: '26.5px',
+                            background: '#953200',
+                            fontFamily: 'Pearl Jean, cursive',
+                            letterSpacing: '0.05em'
+                        }}
                     >
                         INSIGHT
                     </span>
-                    <p className="text-gray-300 leading-relaxed">{insight}</p>
+                    <p
+                        className="text-white leading-relaxed text-lg"
+                        style={{ fontFamily: 'Roboto, sans-serif' }}
+                    >
+                        {insight}
+                    </p>
                 </div>
             </div>
         </div>

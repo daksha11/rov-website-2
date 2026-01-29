@@ -59,13 +59,13 @@ export const DesignSystem: React.FC<DesignSystemProps> = ({
             {/* Title */}
             <h3
                 className="text-5xl md:text-6xl font-black mb-4 uppercase tracking-tight"
-                style={{ color: '#C90000' }}
+                style={{ color: '#C90000', fontFamily: 'Pearl Jean, cursive' }}
             >
                 {title}
             </h3>
 
             {/* Description */}
-            <p className="text-lg text-gray-300 mb-12 leading-relaxed">
+            <p className="text-lg text-gray-300 mb-12 leading-relaxed" style={{ fontFamily: 'Roboto, sans-serif' }}>
                 {description}
             </p>
 

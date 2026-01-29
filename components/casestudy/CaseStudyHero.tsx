@@ -21,17 +21,22 @@ export const CaseStudyHero: React.FC<CaseStudyHeroProps> = ({ title, titleColors
             }}
         >
             {/* Dark Overlay */}
-            <div className="absolute inset-0 bg-black/60" />
+            <div
+                className="absolute inset-0"
+                style={{
+                    background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.80) 0%, rgba(0, 0, 0, 0.20) 100%)'
+                }}
+            />
 
             {/* Content */}
             <div className="relative z-10 max-w-5xl mx-auto text-center">
-                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold leading-tight">
+                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-8xl font-bold leading-relaxed">
                     {title.map((word, index) => (
                         <span
                             key={index}
                             className="block"
                             style={{
-                                fontFamily: "Sedgwick Ave Display, sans-serif",
+                                fontFamily: "Pearl Jean, sans-serif",
                                 color: titleColors[index] || "#C90000",
                                 textShadow: "4px 4px 8px rgba(0, 0, 0, 0.8)"
                             }}

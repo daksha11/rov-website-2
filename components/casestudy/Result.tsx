@@ -22,7 +22,7 @@ export const Result: React.FC<ResultProps> = ({
             {/* Title */}
             <h3
                 className="text-5xl md:text-6xl font-black mb-16 uppercase tracking-tight"
-                style={{ color: '#C90000' }}
+                style={{ color: '#C90000', fontFamily: 'Pearl Jean, cursive' }}
             >
                 {title}
             </h3>
@@ -34,8 +34,11 @@ export const Result: React.FC<ResultProps> = ({
                     <p
                         className="font-black leading-none"
                         style={{
-                            fontSize: 'clamp(8rem, 20vw, 16rem)',
-                            color: '#A84000'
+                            fontSize: 'clamp(6rem, 15vw, 12rem)',
+                            background: 'linear-gradient(91deg, #D76C00 0.74%, #953200 100%)',
+                            backgroundClip: 'text',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent'
                         }}
                     >
                         {statistic}
@@ -44,17 +47,17 @@ export const Result: React.FC<ResultProps> = ({
 
                 {/* Description */}
                 <div className="flex-1">
-                    <p className="text-lg md:text-xl text-gray-300 leading-relaxed">
+                    <p className="text-lg md:text-xl text-gray-300 leading-relaxed" style={{ fontFamily: 'Roboto, sans-serif' }}>
                         {description}
                     </p>
                 </div>
             </div>
 
             {/* CTA Button */}
-            <div className="flex justify-center">
+            <div className="flex justify-center items-center w-full text-center mx-auto">
                 <a
                     href={ctaLink}
-                    className="inline-block px-12 py-4 text-lg font-semibold text-white border-2 border-[#C90000] rounded-xl transition-all duration-300 hover:bg-[#C90000] hover:scale-105"
+                    className="inline-block px-12 py-4 text-lg font-semibold text-white border-2 border-[#C90000] rounded-xl transition-all duration-300 hover:bg-[#C90000] hover:scale-105 mx-auto"
                 >
                     {ctaText}
                 </a>

@@ -50,7 +50,7 @@ export const Approach: React.FC<ApproachProps> = ({
             {/* Title */}
             <h3
                 className="text-5xl md:text-6xl font-black mb-12 uppercase tracking-tight"
-                style={{ color: '#C90000' }}
+                style={{ color: '#C90000', fontFamily: 'Pearl Jean, cursive' }}
             >
                 {title}
             </h3>
@@ -60,16 +60,19 @@ export const Approach: React.FC<ApproachProps> = ({
                 {items.map((item, index) => (
                     <div
                         key={index}
-                        className="group relative rounded-3xl p-8 md:p-10 transition-all duration-300 border-2"
+                        className="group relative p-8 md:p-10 transition-all duration-300"
                         style={{
-                            backgroundColor: '#1A0A0A',
-                            borderColor: '#8B4513'
+                            borderRadius: '17px',
+                            border: '2px solid #371606',
+                            backgroundColor: '#0E0A08'
                         }}
                         onMouseEnter={(e) => {
-                            e.currentTarget.style.borderColor = '#C90000';
+                            e.currentTarget.style.borderColor = '#953200';
+                            e.currentTarget.style.backgroundColor = 'rgba(149, 50, 0, 0.10)';
                         }}
                         onMouseLeave={(e) => {
-                            e.currentTarget.style.borderColor = '#8B4513';
+                            e.currentTarget.style.borderColor = '#371606';
+                            e.currentTarget.style.backgroundColor = '#0E0A08';
                         }}
                     >
                         <div className="flex flex-col md:flex-row gap-6 md:gap-12 items-start">
@@ -84,6 +87,7 @@ export const Approach: React.FC<ApproachProps> = ({
                                     <p
                                         key={descIndex}
                                         className="text-lg text-gray-300 leading-relaxed"
+                                        style={{ fontFamily: 'Roboto, sans-serif' }}
                                     >
                                         {desc}
                                     </p>
