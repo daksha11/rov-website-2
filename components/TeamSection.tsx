@@ -17,6 +17,7 @@ interface TeamMember {
     specialties?: string;
     shadowColor?: string;
     imageRotation?: number;
+    portfolioLink?: string;
 }
 
 const teamMembers: TeamMember[] = [
@@ -156,6 +157,7 @@ const teamMembers: TeamMember[] = [
         role: "UI/UX DESIGNER & DESIGN SYSTEMS SPECIALIST",
         skills: ["UI/UX Design", "Design Systems", "Web Design", "Design Infrastructure", "Brand Guidelines", "Design Standards"],
         location: "Atlanta",
+        portfolioLink: "https://www.kavyaray.com/",
         specialties: "SCAD-trained designer who brings enterprise-level design rigor from work with major brands like Porsche, Lowe's, and UBS.",
         shadowColor: "100, 100, 100"
     },
@@ -288,6 +290,17 @@ const TeamSection: React.FC = () => {
                                                     <div>
                                                         <h4 className="font-sink text-lg font-black uppercase text-[#F7F2E4] mb-4">Specialties</h4>
                                                         <p className="font-norwige text-sm text-[#F7F2E4]/80 leading-relaxed">{expandedMember.specialties}</p>
+                                                        {expandedMember.portfolioLink && (
+                                                            <a
+                                                                href={expandedMember.portfolioLink}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full text-white text-xs font-bold uppercase tracking-widest transition-all hover:scale-105"
+                                                            >
+                                                                View Portfolio
+                                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7" /></svg>
+                                                            </a>
+                                                        )}
                                                     </div>
                                                 )}
                                                 <div>

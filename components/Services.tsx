@@ -25,7 +25,7 @@ const darkenColor = (hex: string, percent: number): string => {
   return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
 };
 
-const InteractiveFolderIcon: React.FC = () => {
+const InteractiveFolderIcon: React.FC<{ folderImages?: string[] }> = ({ folderImages }) => {
   const maxItems = 3;
   const [open, setOpen] = useState(false);
   const [paperOffsets, setPaperOffsets] = useState<{ x: number; y: number }[]>(
@@ -33,13 +33,33 @@ const InteractiveFolderIcon: React.FC = () => {
   );
   const rafRef = useRef<number | null>(null);
 
+  const defaultImages = ['/rov_album_1.webp', '/rov_album_2.webp', '/rov_album_3.webp'];
+  const sourceImages = folderImages || defaultImages;
+
+  // State to hold the currently displayed (shuffled) images
+  const [displayImages, setDisplayImages] = useState<string[]>(sourceImages);
+
+  // Effect to update default display if prop changes (though shuffle happens on hover)
+  React.useEffect(() => {
+    setDisplayImages(folderImages || defaultImages);
+  }, [folderImages]);
+
   const handleMouseEnter = () => {
+    // Shuffle images on hover
+    const shuffled = [...sourceImages];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    setDisplayImages(shuffled);
     setOpen(true);
   };
 
   const handleMouseLeave = () => {
     setOpen(false);
     setPaperOffsets(Array.from({ length: maxItems }, () => ({ x: 0, y: 0 })));
+    // Optional: Reset back to original order on leave, or keep last shuffle. 
+    // Keeping last shuffle feels smoother.
   };
 
   const handlePaperMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
@@ -82,7 +102,7 @@ const InteractiveFolderIcon: React.FC = () => {
     return '';
   };
 
-  const images = ['/rov_album_1.webp', '/rov_album_2.webp', '/rov_album_3.webp'];
+
 
   return (
     <div className="relative mb-8 sm:mb-12 md:mb-20" style={{ transform: 'scale(1.5)', transformOrigin: 'center' }}>
@@ -124,7 +144,7 @@ const InteractiveFolderIcon: React.FC = () => {
           </div>
 
           {/* Images that pop out */}
-          {images.map((src, i) => {
+          {displayImages.map((src, i) => {
             let sizeClasses = '';
             if (i === 0) sizeClasses = 'w-[50%] h-[45%]';
             if (i === 1) sizeClasses = 'w-[55%] h-[48%]';
@@ -153,7 +173,7 @@ const InteractiveFolderIcon: React.FC = () => {
               >
                 <Image
                   src={src}
-                  alt={`ROV Album ${i + 1}`}
+                  alt={`Item ${i + 1}`}
                   fill
                   className="object-cover"
                 />
@@ -217,6 +237,7 @@ interface ServiceCardProps {
   onMouseEnter: () => void;
   onMouseLeave: () => void;
   link?: string;
+  previewImages?: string[];
 }
 
 const ServiceCard: React.FC<ServiceCardProps> = ({
@@ -229,6 +250,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   onMouseEnter,
   onMouseLeave,
   link = "#",
+  previewImages,
 }) => {
   return (
     <Link href={link}>
@@ -245,7 +267,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
           }}
         >
           {/* Interactive Fggbolder Component */}
-          <InteractiveFolderIcon />
+          <InteractiveFolderIcon folderImages={previewImages} />
 
           {/* Service Title - Inside the card */}
           <h3
@@ -282,6 +304,11 @@ export default function Services() {
       description: "Turning clicks into connections with seamless and high impact designs.",
       position: "top-left" as const,
       link: "/web",
+      previewImages: [
+        '/heroassets/webfolder1.png',
+        '/heroassets/webfolder2.png',
+        '/heroassets/webfolder3.png'
+      ],
     },
     {
       id: "sound",
@@ -290,6 +317,11 @@ export default function Services() {
       description: "Audio production & mixing that brings your content to life with crystal-clear quality.",
       position: "top-right" as const,
       link: "/sound",
+      previewImages: [
+        '/heroassets/flimage1.png',
+        '/heroassets/flimage2.jpg',
+        '/heroassets/event_3.webp'
+      ],
     },
     {
       id: "video",
@@ -298,6 +330,11 @@ export default function Services() {
       description: "Cinematic content & aerial media that captures attention and delivers your message.",
       position: "bottom-left" as const,
       link: "/video-production",
+      previewImages: [
+        '/heroassets/hydvideoframe.png',
+        '/heroassets/ponceshowframe.png',
+        '/heroassets/samxbasuvid.png'
+      ],
     },
     {
       id: "ai",
@@ -306,6 +343,11 @@ export default function Services() {
       description: "Custom automation solutions powered by AI to streamline your business processes.",
       position: "bottom-right" as const,
       link: "/ai-automation",
+      previewImages: [
+        '/heroassets/codingframe.png',
+        '/heroassets/excelframe.jpeg',
+        '/heroassets/n8nframe.jpeg'
+      ],
     },
   ];
 
@@ -430,6 +472,7 @@ export default function Services() {
               onMouseEnter={() => handleCardHover(service.id)}
               onMouseLeave={handleMouseLeave}
               link={service.link}
+              previewImages={service.previewImages}
             />
           ))}
         </div>

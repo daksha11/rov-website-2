@@ -1,110 +1,136 @@
 "use client";
 
+import Image from "next/image";
+
 export default function HaveAnIdeaSection() {
+    const companyLogos = [
+        { src: "/webdev/bandologo.png", alt: "The Bando" },
+        { src: "/webdev/iknalogo white.png", alt: "Ikna" },
+    ];
+
     return (
         <section className="relative py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-black">
             <div className="max-w-7xl mx-auto">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                    {/* Left Side - CTA Card */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                    {/* Left Side - CTA Card - Takes up 2 columns */}
                     <div
-                        className="relative rounded-3xl p-8 md:p-12 overflow-hidden"
+                        className="lg:col-span-2 relative p-8 md:p-12 overflow-hidden"
                         style={{
-                            background: "linear-gradient(135deg, #EA9A61 0%, #B16937 30%, #A64D2B 60%, #42201C 100%)",
+                            borderRadius: "15px",
+                            background: "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)",
                         }}
                     >
-                        {/* Logo Icon */}
-                        <div className="mb-6">
-                            <div
-                                className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-black flex items-center justify-center"
-                            >
-                                <svg
-                                    width="40"
-                                    height="40"
-                                    viewBox="0 0 50 50"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
+                        {/* Horizontal Layout: Logo on left, Content on right */}
+                        <div className="flex items-center gap-6 md:gap-10">
+                            {/* Logo Icon - reduced size for sleeker look */}
+                            <div className="flex-shrink-0">
+                                <div
+                                    className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-black flex items-center justify-center p-4 relative overflow-hidden"
                                 >
-                                    <text
-                                        x="50%"
-                                        y="50%"
-                                        dominantBaseline="middle"
-                                        textAnchor="middle"
-                                        fill="white"
-                                        fontSize="24"
-                                        fontWeight="bold"
-                                        fontFamily="Roboto, sans-serif"
-                                    >
-                                        ROV
-                                    </text>
-                                </svg>
+                                    <Image
+                                        src="/rov-logo.webp"
+                                        alt="ROV Logo"
+                                        fill
+                                        className="object-contain p-4"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Content */}
+                            <div className="flex-1 space-y-4">
+                                {/* Heading - Smaller, more horizontal feel */}
+                                <h2
+                                    className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight"
+                                    style={{
+                                        fontFamily: "Roboto, sans-serif",
+                                    }}
+                                >
+                                    Have an Idea?
+                                </h2>
+
+                                {/* Description - More compact */}
+                                <p
+                                    className="text-base md:text-lg text-white/90 leading-relaxed max-w-2xl"
+                                    style={{
+                                        fontFamily: "Norwige, sans-serif",
+                                        fontStyle: "italic",
+                                    }}
+                                >
+                                    Book a call to discover how we can strengthen your digital platform and bring your vision to life.
+                                </p>
+
+                                {/* CTA Button - Smaller, pill shape */}
+                                {/* CTA Button - Smaller, pill shape */}
+                                <a
+                                    href="https://calendly.com/rangeofviewmusic/30min"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="px-6 py-3 bg-white text-black text-base md:text-lg rounded-full font-medium hover:bg-white/90 transition-colors inline-block"
+                                    style={{
+                                        fontFamily: "Roboto, sans-serif",
+                                    }}
+                                >
+                                    Schedule a Call
+                                </a>
                             </div>
                         </div>
-
-                        {/* Heading */}
-                        <h2
-                            className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4"
-                            style={{
-                                fontFamily: "Roboto, sans-serif",
-                            }}
-                        >
-                            Have an Idea?
-                        </h2>
-
-                        {/* Description */}
-                        <p
-                            className="text-base md:text-lg text-white/90 mb-6"
-                            style={{
-                                fontFamily: "Norwige, sans-serif",
-                                fontStyle: "italic",
-                            }}
-                        >
-                            Book a call to discover how we can strengthen your digital platform and bring your vision to life.
-                        </p>
-
-                        {/* Optional CTA Button */}
-                        <button
-                            className="px-6 py-3 bg-white text-black rounded-full font-medium hover:bg-white/90 transition-colors"
-                            style={{
-                                fontFamily: "Roboto, sans-serif",
-                            }}
-                        >
-                            Schedule a Call
-                        </button>
                     </div>
 
                     {/* Right Side - Companies Section */}
-                    <div className="flex flex-col items-center lg:items-start">
-                        <div className="mb-6">
-                            <p
-                                className="text-sm md:text-base text-white/70 flex items-center gap-2"
-                                style={{
-                                    fontFamily: "Norwige, sans-serif",
-                                    fontStyle: "italic",
-                                }}
-                            >
-                                Companies that trusted us
-                                <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-white/20 text-white text-xs">
-                                    ?
-                                </span>
-                            </p>
+                    <div
+                        className="h-full rounded-[15px] p-8 md:p-10 flex flex-col justify-center"
+                        style={{
+                            background: "linear-gradient(145deg, #000000 0%, #2C1810 100%)",
+                            border: "1px solid rgba(255, 255, 255, 0.05)"
+                        }}
+                    >
+                        <div className="mb-10 w-full">
+                            <div className="flex flex-nowrap items-center gap-x-3 whitespace-nowrap overflow-visible">
+                                <h3
+                                    className="text-lg md:text-xl font-bold text-white shrink-0"
+                                    style={{ fontFamily: "Roboto, sans-serif" }}
+                                >
+                                    Companies that
+                                </h3>
+                                <div className="relative flex items-center shrink-0">
+                                    {/* Main Pill */}
+                                    <div
+                                        className="relative z-10 bg-[#968266] text-white text-lg md:text-xl font-bold px-4 py-1.5 rounded-full"
+                                        style={{ fontFamily: "Roboto, sans-serif" }}
+                                    >
+                                        trusted us
+                                    </div>
+                                    {/* Effect Circles */}
+                                    <div className="w-8 h-8 md:w-10 md:h-10 bg-[#968266] opacity-60 rounded-full -ml-3 z-0" />
+                                    <div className="w-8 h-8 md:w-10 md:h-10 border-2 border-white rounded-full -ml-6 z-20" />
+                                </div>
+                            </div>
                         </div>
 
-                        {/* Company Logos - Placeholder Circles */}
-                        <div className="flex gap-4 md:gap-6">
-                            {[1, 2, 3].map((index) => (
+                        {/* Company Logos */}
+                        <div className="flex items-center gap-8 md:gap-14 pl-2">
+                            {companyLogos.map((logo, index) => (
                                 <div
                                     key={index}
-                                    className="w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 rounded-full bg-white/90 flex items-center justify-center hover:scale-105 transition-transform duration-300"
-                                    style={{
-                                        boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-                                    }}
+                                    className="relative w-48 h-24 md:w-72 md:h-40 hover:scale-105 transition-transform duration-300"
                                 >
-                                    {/* Placeholder for company logo */}
-                                    <div className="text-black/30 text-xs font-medium">
-                                        LOGO
-                                    </div>
+                                    <Image
+                                        src={logo.src}
+                                        alt={logo.alt}
+                                        fill
+                                        className="object-contain"
+                                    />
                                 </div>
                             ))}
+                            {/* Third placeholder - removed circle background */}
+                            <div
+                                className="relative w-48 h-24 md:w-72 md:h-40 flex items-center justify-center border border-white/10 rounded-lg hover:scale-105 transition-transform duration-300"
+                            >
+                                {/* Placeholder for third company logo */}
+                                <div className="text-white/20 text-sm font-medium">
+                                    LOGO
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

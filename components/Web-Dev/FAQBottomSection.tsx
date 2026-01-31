@@ -10,20 +10,28 @@ type FaqItem = {
 
 const faqItems: FaqItem[] = [
     {
-        question: "How long does it take to build a custom website?",
-        answer: "Typically, a custom website takes 4-8 weeks depending on complexity, features, and revisions. We'll provide you with a detailed timeline during our initial consultation."
+        question: "How much does a website cost?",
+        answer: "Our website projects typically range from $2,000 to $10,000+ depending on the scope and features you need. A simple 5-page business website with custom design starts around $2,000, while more complex sites with e-commerce, custom functionality, or extensive content can go higher. Every project is different, so we provide a detailed proposal after understanding your specific goals, timeline, and requirements. We're transparent about pricing from the start and work with you to find the right balance between your vision and budget."
     },
     {
-        question: "Do you offer website maintenance after launch?",
-        answer: "Yes! We offer various maintenance packages to keep your website secure, updated, and performing optimally. We can discuss ongoing support options that fit your needs."
+        question: "How long does it take to build a website?",
+        answer: "Most websites take 6 to 8 weeks from kickoff to launch. This includes discovery and strategy, design mockups, development, content integration, testing, and launch support. Simpler sites can be completed in 4 to 5 weeks, while more complex projects with e-commerce or custom features may take 10 to 12 weeks. The timeline also depends on how quickly you can provide feedback and content during the process. We'll give you a clear timeline during our initial consultation so you know exactly what to expect."
     },
     {
-        question: "Can you redesign my existing website?",
-        answer: "Absolutely! We specialize in website redesigns that modernize your brand presence, improve user experience, and optimize for conversions while maintaining your existing content and SEO rankings."
+        question: "Will my website be mobile-friendly?",
+        answer: "Absolutely. Every website we build is fully responsive, meaning it automatically adapts to look great and function perfectly on phones, tablets, and desktops. With over 60% of web traffic coming from mobile devices, we actually design for mobile first and then scale up to larger screens. Your site will load quickly, be easy to navigate, and provide a seamless experience no matter what device your visitors are using."
     },
     {
-        question: "What technologies do you use for web development?",
-        answer: "We use modern, cutting-edge technologies including Next.js, React, TypeScript, and Tailwind CSS to build fast, scalable, and maintainable websites that provide excellent user experiences."
+        question: "What platforms do you build websites on?",
+        answer: "We primarily build custom websites using Next.js and modern web technologies, which gives you maximum flexibility, fast performance, and complete control over your site's design and functionality. For clients who need robust e-commerce capabilities, we can integrate platforms like Shopify or set up custom shopping solutions depending on your product catalog size and business needs. We choose the right technology based on your specific goals, whether that's a portfolio site, business site, or full online store. The advantage of our approach is that you're not locked into a template or limited by platform constraints."
+    },
+    {
+        question: "Will I be able to update my website myself?",
+        answer: "Yes, we build sites with user-friendly content management systems that let you make basic updates like changing text, adding images, or posting blog content without needing technical skills. During the handoff process, we provide training and documentation so you feel confident making these changes. For more complex updates like design changes, new features, or technical modifications, we're always available to help. The goal is to give you control over day-to-day content while having expert support when you need it."
+    },
+    {
+        question: "Do you handle ongoing website updates and maintenance?",
+        answer: "Yes, we offer flexible maintenance packages for clients who want ongoing support after launch. This can include regular content updates, security monitoring, performance optimization, plugin updates, and technical troubleshooting. Some clients prefer to handle simple updates themselves and call us for bigger changes, while others want us to manage everything. We'll work with you to create a maintenance plan that fits your needs and budget, whether that's a monthly retainer or on-demand support as issues come up."
     }
 ];
 
@@ -98,7 +106,10 @@ export default function FAQBottomSection() {
                                     />
 
                                     {/* Center Filled Circle with Arrow */}
-                                    <button
+                                    <a
+                                        href="https://calendly.com/rangeofviewmusic/30min"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                         className="w-12 h-12 md:w-14 md:h-14 flex-shrink-0 rounded-full bg-[#FFF4E3] flex items-center justify-center hover:scale-110 transition-transform relative z-10"
                                         aria-label="Get started"
                                     >
@@ -118,7 +129,7 @@ export default function FAQBottomSection() {
                                                 strokeLinejoin="round"
                                             />
                                         </svg>
-                                    </button>
+                                    </a>
 
                                     {/* Right Outlined Circle */}
                                     <div
@@ -131,8 +142,11 @@ export default function FAQBottomSection() {
                                 </div>
 
                                 {/* Let's Create Button */}
-                                <button
-                                    className="flex-1 px-6 py-3 md:px-8 md:py-4 rounded-full font-medium hover:opacity-90 transition-opacity uppercase tracking-wide text-sm md:text-base"
+                                <a
+                                    href="https://calendly.com/rangeofviewmusic/30min"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex-1 px-6 py-3 md:px-8 md:py-4 rounded-full font-medium hover:opacity-90 transition-opacity uppercase tracking-wide text-sm md:text-base flex items-center justify-center"
                                     style={{
                                         background: "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)",
                                         fontFamily: "Roboto, sans-serif",
@@ -140,7 +154,7 @@ export default function FAQBottomSection() {
                                     }}
                                 >
                                     LET&apos;S CREATE!
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>

@@ -128,11 +128,35 @@ const RightSection = styled.div`
   }
 `;
 
-const ArrowButton = styled(motion.button)`
+
+const CircleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
+  /* Negative margin to pull items closer if needed, 
+     but visual overlap is handled by the items themselves or negative margins on children */
+  gap: 0; 
+`;
+
+const OutlineCircle = styled.div`
   width: clamp(3rem, 5vw, 3.75rem);
   height: clamp(3rem, 5vw, 3.75rem);
   border-radius: 50%;
-  background-color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: transparent;
+  flex-shrink: 0;
+  
+  @media (max-width: 768px) {
+    width: clamp(2.75rem, 8vw, 3.25rem);
+    height: clamp(2.75rem, 8vw, 3.25rem);
+  }
+`;
+
+const ArrowButton = styled(motion.a)`
+  width: clamp(3rem, 5vw, 3.75rem);
+  height: clamp(3rem, 5vw, 3.75rem);
+  border-radius: 50%;
+  background-color: #F7F2E4; /* Using the off-white/cream color from screenshot */
   border: none;
   display: flex;
   align-items: center;
@@ -142,10 +166,12 @@ const ArrowButton = styled(motion.button)`
   position: relative;
   z-index: 2;
   flex-shrink: 0;
+  margin: 0 -10px; /* Overlap effect */
   
   &:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 10;
   }
   
   svg {
@@ -208,18 +234,26 @@ const ProjectStrip: React.FC = () => {
         </LeftSection>
 
         <RightSection>
-          <ArrowButton
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => window.location.href = '/contact'}
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </ArrowButton>
+          <CircleContainer>
+            <OutlineCircle />
+            <ArrowButton
+              href="https://calendly.com/rangeofviewmusic/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </ArrowButton>
+            <OutlineCircle />
+          </CircleContainer>
 
           <CTAButton
-            href="/contact"
+            href="https://calendly.com/rangeofviewmusic/30min"
+            target="_blank"
+            rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >

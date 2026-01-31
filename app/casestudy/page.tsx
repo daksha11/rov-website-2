@@ -52,7 +52,7 @@ export default function CaseStudyPage() {
             <NavigationDock />
 
             <CaseStudyHero
-                title={["Crafting The", "Bando's Online", "Experience"]}
+                title={["Crafting The", "Bando's", "Online Experience"]}
                 titleColors={["#C90000", "#FFD600", "#C90000"]}
                 backgroundImage="/casestudyheroimg.png"
             />

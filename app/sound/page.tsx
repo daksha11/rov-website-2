@@ -1,65 +1,36 @@
-import MusicPlayer from "@/components/sound_page/MusicPlayer";
+import dynamic from "next/dynamic";
 import Footer from "@/components/Footer";
 import { NavigationDock } from "@/components/NavDoc";
-import FAQBottomSection from "@/components/Web-Dev/FAQBottomSection";
+import SoundHero from "@/components/sound_page/SoundHero";
+
+// Dynamic imports for heavy components to improve initial load
+const MusicPlayer = dynamic(() => import("@/components/sound_page/MusicPlayer"), {
+    loading: () => (
+        <div className="bg-black min-h-[70vh] flex items-center justify-center">
+            <div className="text-white/60 text-sm">Loading player...</div>
+        </div>
+    ),
+    ssr: false // Client-side only for interactive features
+});
+
+const FAQBottomSection = dynamic(() => import("@/components/sound_page/FAQBottomSection"), {
+    loading: () => (
+        <div className="bg-black min-h-[40vh] flex items-center justify-center">
+            <div className="text-white/60 text-sm">Loading...</div>
+        </div>
+    )
+});
 
 export default function Page() {
     return (
         <>
-            {/* Top Hero Section with Toggle */}
-            <section className="flex items-center justify-center relative bg-black px-6 md:px-12 py-16 md:py-20">
-                <div className="max-w-7xl w-full">
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 md:gap-6">
-                        {/* Left side - Toggle and tagline */}
-                        <div className="flex flex-col gap-4">
-                            {/* RAW/REFINED Toggle */}
-                            <div className="flex items-center gap-4">
-                                <span className="text-white text-2xl md:text-3xl lg:text-4xl font-bold italic" style={{ fontFamily: 'Norwige, sans-serif' }}>
-                                    RAW.
-                                </span>
-                                <div className="relative inline-flex items-center">
-                                    {/* Toggle pill background */}
-                                    <div className="w-24 h-12 bg-gradient-to-r from-amber-700 to-amber-600 rounded-full shadow-lg flex items-center justify-between px-1.5">
-                                        {/* Toggle circle */}
-                                        <div className="w-9 h-9 bg-white rounded-full shadow-md"></div>
-                                    </div>
-                                </div>
-                                <span className="text-white text-2xl md:text-3xl lg:text-4xl font-bold italic" style={{ fontFamily: 'Norwige, sans-serif' }}>
-                                    REFINED.
-                                </span>
-                            </div>
-
-                            {/* RELEASED text */}
-                            <h1 className="text-white text-2xl md:text-3xl lg:text-4xl font-bold italic" style={{ fontFamily: 'Norwige, sans-serif' }}>
-                                RELEASED.
-                            </h1>
-                        </div>
-
-                        {/* Right side - Description */}
-                        <div className="max-w-md">
-                            <p className="text-white text-base md:text-lg italic leading-relaxed" style={{ fontFamily: 'Norwige, sans-serif' }}>
-                                From bedroom demos to radio-ready hits, your sound unleashed in just 48 hours.
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Bottom CTA */}
-                    <div className="mt-12 md:mt-16">
-                        <h2 className="text-white text-3xl md:text-4xl lg:text-5xl font-bold italic leading-tight" style={{ fontFamily: 'Norwige, sans-serif' }}>
-                            Don't Believe Us.<br />
-                            Hear the Difference.
-                        </h2>
-                    </div>
-                </div>
-            </section>
+            <SoundHero />
 
             {/* Music Player Section */}
-            <section className="min-h-screen flex items-center justify-center relative bg-gradient-to-br from-zinc-900 via-black to-zinc-900">
-                <div className="absolute inset-0 bg-[url('/assets/background/music_player_bg.png')] bg-cover bg-center opacity-20" />
-                <div className="relative z-10 w-full">
-                    <MusicPlayer />
-                </div>
-            </section>
+            {/* Music Player Section */}
+            <div className="bg-black">
+                <MusicPlayer />
+            </div>
 
             {/* Promotional CTA Strip */}
             <section className="relative bg-black px-6 md:px-12 py-8">
@@ -98,7 +69,12 @@ export default function Page() {
                         {/* Right side - Buttons */}
                         <div className="flex items-center gap-4 flex-shrink-0">
                             {/* Arrow Button */}
-                            <button className="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors">
+                            <a
+                                href="https://calendly.com/rangeofviewmusic/30min"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors"
+                            >
                                 <svg
                                     width="20"
                                     height="20"
@@ -111,15 +87,18 @@ export default function Page() {
                                 >
                                     <path d="M5 12h14M12 5l7 7-7 7" />
                                 </svg>
-                            </button>
+                            </a>
 
                             {/* LET'S CREATE Button */}
-                            <button
-                                className="px-6 py-3 bg-black text-white rounded-full hover:bg-gray-900 transition-colors uppercase tracking-wide text-sm md:text-base font-bold"
+                            <a
+                                href="https://calendly.com/rangeofviewmusic/30min"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-6 py-3 bg-black text-white rounded-full hover:bg-gray-900 transition-colors uppercase tracking-wide text-sm md:text-base font-bold flex items-center justify-center"
                                 style={{ fontFamily: 'Norwige, sans-serif' }}
                             >
                                 LET'S CREATE!
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>

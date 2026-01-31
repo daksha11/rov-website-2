@@ -10,6 +10,7 @@ type ApproachStep = {
   title: string;
   points: string[];
   description?: string;
+  expandableContent?: string[];
   accentColor: string;
   textColor: string;
   bgColor: string;
@@ -17,30 +18,79 @@ type ApproachStep = {
 
 const approachSteps: ApproachStep[] = [
   {
-    title: "IDEATE",
-    points: ["Discovery Deep Dive", "Strategic Alignment"],
+    title: "DISCOVER",
+    points: [],
+    description: "We dig deep into your vision, challenges, and goals to map out exactly what your website needs to accomplish.",
+    expandableContent: [
+      "Every great website starts with understanding the real problem we're solving. We kick things off with a discovery session where we learn about your business, your audience, and what success looks like for you.",
+      "From there, we create a detailed sitemap that outlines your site structure and a visual moodboard that captures the aesthetic direction. This ensures we're tackling your needs cohesively before a single line of code is written.",
+      "By the end of this phase, you'll have a clear roadmap of what we're building and why every piece matters."
+    ],
     accentColor: "#FFF4E3",
     textColor: "#FFF4E3",
     bgColor: "#1A1A1A"
   },
   {
-    title: "FILM",
+    title: "DESIGN",
     points: [],
-    description: "Capture the essence of your vision with high-quality visuals, lighting, and direction – turning ideas into reality.",
+    description: "We design detailed wireframes in Figma for every page, giving you a pixel-perfect preview of your site before development begins.",
+    expandableContent: [
+      "This is where your website comes to life visually. Using Figma, we design wireframes for every page of your site, mapping out the layout, content hierarchy, and user flow.",
+      "You'll see exactly how each section will look and function, from your homepage to contact forms to product pages. This phase is all about collaboration. We share the designs with you, gather feedback, and refine until everything feels right.",
+      "Once you approve the design, we have a locked-in blueprint that guides the entire build. No surprises, just a clear vision ready to execute."
+    ],
     accentColor: "linear-gradient(135deg, #EA9A61 0%, #B16937 50%, #A64D2B 100%)",
     textColor: "#FFF4E3",
     bgColor: "#2A2420"
   },
   {
-    title: "EDIT",
-    points: ["Discovery Deep Dive", "Strategic Alignment"],
+    title: "BUILD",
+    points: [],
+    description: "We code your custom website and host it live on Vercel so you can watch real-time progress as we build.",
+    expandableContent: [
+      "Now we turn those designs into a fully functional website. We write clean, modern code using Next.js and host your site live on Vercel from day one.",
+      "That means you can click a link anytime and see real progress as we build, not just wait weeks wondering what's happening. This transparency keeps you in the loop and lets us catch issues early.",
+      "We build everything mobile-first, ensuring your site works flawlessly on phones, tablets, and desktops. By the end of this phase, your site structure and core functionality are live and working."
+    ],
     accentColor: "#FFF4E3",
     textColor: "#FFF4E3",
     bgColor: "#1A1A1A"
   },
   {
-    title: "POLISH",
-    points: ["Discovery Deep Dive"],
+    title: "REFINE",
+    points: [],
+    description: "We polish the UI details and test the user experience through multiple feedback rounds to ensure everything feels intuitive.",
+    expandableContent: [
+      "The details make the difference. In this phase, we focus on perfecting the UI with thoughtful touches like button animations, hover states, transitions, and micro-interactions that make your site feel premium.",
+      "Then we shift to UX testing, where we put ourselves in your users' shoes and move through every flow, every click, every form. We run feedback rounds with you and real users to identify friction points and make sure the experience is smooth and intuitive.",
+      "Nothing ships until it feels effortless to navigate and genuinely enjoyable to use."
+    ],
+    accentColor: "#FFF4E3",
+    textColor: "#FFF4E3",
+    bgColor: "#1A1A1A"
+  },
+  {
+    title: "OPTIMIZE",
+    points: [],
+    description: "We run performance checks, fix bugs, optimize for SEO, and set up analytics and email systems so your site is launch-ready.",
+    expandableContent: [
+      "A beautiful website means nothing if it's slow, buggy, or invisible to search engines. We thoroughly test your site for bugs and performance issues, then optimize load times and SEO fundamentals like meta tags, alt text, and site structure.",
+      "We also handle the technical setup you need to run your business, including Google Analytics for tracking visitors, email integration with platforms like Squarespace or custom domains, and any other tools your workflow requires.",
+      "By the time we're done, your site is fast, stable, trackable, and ready to convert visitors into customers."
+    ],
+    accentColor: "#FFF4E3",
+    textColor: "#FFF4E3",
+    bgColor: "#1A1A1A"
+  },
+  {
+    title: "LAUNCH & GROW",
+    points: [],
+    description: "We launch your site to the world and map out a growth plan to keep your brand evolving beyond day one.",
+    expandableContent: [
+      "Launch day is just the beginning. We handle the final deployment, making sure your site goes live smoothly with zero downtime.",
+      "But we don't just hand you the keys and disappear. We sit down with you to discuss what's next: how to update content, where to expand features, and how to grow your digital presence over time.",
+      "Whether it's adding e-commerce, scaling your blog, or building out new landing pages, we help you see the long-term potential. You'll leave this phase with a live website and a clear roadmap for how to keep your brand flourishing."
+    ],
     accentColor: "#FFF4E3",
     textColor: "#FFF4E3",
     bgColor: "#1A1A1A"
@@ -270,7 +320,7 @@ export default function OurApproachSection() {
             Our Approach
           </h2>
           <p className="text-[#FFF4E3]/40 font-mono text-sm tracking-widest mt-4 md:mt-0 md:mb-4">
-            PHASE [01-04]
+            PHASE [01-06]
           </p>
         </div>
 
@@ -321,61 +371,68 @@ export default function OurApproachSection() {
                     </div>
                   </div>
 
-                  {/* Right Side - Content */}
-                  <div className="flex flex-col justify-center h-full lg:items-end">
-                    <div
-                      className={`transition-all duration-700 cubic-bezier(0.23, 1, 0.32, 1) ${activeCardIndex === index
-                        ? "opacity-100 translate-y-0"
-                        : "opacity-0 translate-y-12 pointer-events-none"
-                        }`}
-                    >
-                      <div className="space-y-6 md:space-y-8 lg:text-right">
-                        {step.points.length > 0 ? (
-                          step.points.map((point, pointIndex) => (
-                            <div
-                              key={pointIndex}
-                              className="flex items-start space-x-6 lg:space-x-reverse lg:flex-row-reverse group/item"
-                            >
-                              <div className="relative mt-3">
-                                <span className="block w-2.5 h-2.5 rounded-full bg-[#EA9A61] transition-transform duration-300 group-hover/item:scale-125" />
-                                <span className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-[#EA9A61] animate-ping opacity-20" />
-                              </div>
-                              <p
-                                className="step-text text-xl md:text-2xl lg:text-3xl font-light tracking-tight"
-                                style={{
-                                  fontFamily: "Roboto, sans-serif",
-                                  color: "#FFFFFF",
-                                  lineHeight: "1.2"
-                                }}
-                              >
-                                {point}
-                              </p>
-                            </div>
-                          ))
-                        ) : (
-                          step.description && (
-                            <p
-                              className="step-text text-lg md:text-xl lg:text-2xl leading-relaxed font-light opacity-90"
-                              style={{
-                                fontFamily: "Roboto, sans-serif",
-                                color: "#FFFFFF",
-                              }}
-                            >
-                              {step.description}
-                            </p>
-                          )
-                        )}
-                      </div>
+                  {/* Right Side - Content removed from card preview */}
+                  {/* Description only shows in modal when clicked */}
+                </div>
+              </div>
+
+              {/* Interaction Hint - Prominent with Shine Animation */}
+              <div className="absolute bottom-8 right-8 md:bottom-10 md:right-10">
+                <div className="relative group cursor-pointer">
+                  {/* Glow effect */}
+                  <div className="absolute inset-0 bg-[#EA9A61] opacity-20 blur-xl rounded-full animate-pulse" />
+
+                  {/* Main button */}
+                  <div className="relative flex items-center space-x-3 px-6 py-3 rounded-full border border-[#EA9A61]/40 bg-black/60 backdrop-blur-sm hover:bg-[#EA9A61]/10 transition-all duration-300 overflow-hidden">
+                    {/* Shine animation overlay */}
+                    <div className="absolute inset-0 w-full h-full">
+                      <div className="absolute inset-0 -translate-x-full animate-shine bg-gradient-to-r from-transparent via-white/20 to-transparent" />
                     </div>
+
+                    {/* Icon */}
+                    <svg
+                      className="w-4 h-4 text-[#EA9A61] group-hover:scale-110 transition-transform"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+
+                    {/* Text */}
+                    <span className="relative text-[#EA9A61] font-mono text-xs md:text-sm tracking-[0.2em] uppercase font-semibold group-hover:text-[#FFF4E3] transition-colors">
+                      CLICK TO EXPLORE
+                    </span>
+
+                    {/* Arrow */}
+                    <svg
+                      className="w-4 h-4 text-[#EA9A61] group-hover:translate-x-1 transition-transform"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
                   </div>
                 </div>
               </div>
 
-              {/* Interaction Hint */}
-              <div className="absolute bottom-10 right-10 flex items-center space-x-3 text-[#FFF4E3]/30 font-mono text-[10px] tracking-[0.3em] uppercase">
-                <span className={`w-12 h-[1px] bg-[#FFF4E3]/20 transition-all duration-500 ${activeCardIndex === index ? "w-20 bg-[#EA9A61]" : "w-12"}`} />
-                <span>{activeCardIndex === index ? "MINIMIZE" : "EXPLORE"}</span>
-              </div>
+              {/* Shine animation keyframes */}
+              <style jsx>{`
+                @keyframes shine {
+                  0% {
+                    transform: translateX(-100%);
+                  }
+                  100% {
+                    transform: translateX(100%);
+                  }
+                }
+                
+                .animate-shine {
+                  animation: shine 3s ease-in-out infinite;
+                }
+              `}</style>
             </div>
           ))}
         </div>
@@ -422,27 +479,16 @@ export default function OurApproachSection() {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20">
-              <div className="space-y-8">
-                <p className="text-[#FFF4E3] text-lg md:text-xl leading-relaxed font-light opacity-95">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            <div className="space-y-6">
+              {approachSteps[modalIndex].expandableContent?.map((paragraph, index) => (
+                <p
+                  key={index}
+                  className="text-[#FFF4E3] text-lg md:text-xl leading-relaxed font-light opacity-95"
+                  style={{ fontFamily: "Roboto, sans-serif" }}
+                >
+                  {paragraph}
                 </p>
-                <p className="text-[#FFF4E3]/70 text-base leading-relaxed font-light">
-                  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
-              </div>
-
-              <div className="space-y-8">
-                <h4 className="text-[#EA9A61] font-mono text-sm tracking-[0.3em] uppercase opacity-50">Key Objectives</h4>
-                <ul className="space-y-6">
-                  {["Phase 01 Strategy", "Visual Identity Audit", "Creative Direction"].map((item, i) => (
-                    <li key={i} className="flex items-center space-x-4">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#EA9A61]" />
-                      <span className="text-[#FFF4E3] text-lg font-light">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              ))}
             </div>
           </div>
         )}
