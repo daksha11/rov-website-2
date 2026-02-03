@@ -47,8 +47,8 @@ export default function ChatWidget() {
     }
   }, [messages, open]);
 
-  async function sendMessage() {
-    const trimmed = input.trim();
+  async function sendMessage(messageText?: string) {
+    const trimmed = messageText || input.trim();
     if (!trimmed || loading) return;
 
     const userMsg: Msg = { id: crypto.randomUUID(), role: "user", text: trimmed };
@@ -88,6 +88,10 @@ export default function ChatWidget() {
     } finally {
       setLoading(false);
     }
+  }
+
+  function handleSampleQuestion(question: string) {
+    sendMessage(question);
   }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
@@ -137,8 +141,33 @@ export default function ChatWidget() {
             className="flex-1 overflow-y-auto p-6 space-y-4 bg-transparent scrollbar-hide"
           >
             {messages.length === 0 && (
-              <div className="text-sm text-white/60 font-medium px-2" style={{ fontFamily: "Futura, sans-serif" }}>
-                Hi! Ask me about our products, services, or support.
+              <div className="space-y-4">
+                <div className="text-sm text-white/60 font-medium px-2" style={{ fontFamily: "Futura, sans-serif" }}>
+                  Hi! Ask me about our products, services, or support.
+                </div>
+                <div className="flex flex-col gap-3 mt-6">
+                  <button
+                    onClick={() => handleSampleQuestion("What is ROV?")}
+                    className="w-full text-left px-5 py-4 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 text-white/80 hover:bg-white/10 hover:border-white/20 transition-all duration-200 text-sm shadow-sm"
+                    style={{ fontFamily: "Futura, sans-serif" }}
+                  >
+                    What is ROV?
+                  </button>
+                  <button
+                    onClick={() => handleSampleQuestion("What services are provided by ROV?")}
+                    className="w-full text-left px-5 py-4 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 text-white/80 hover:bg-white/10 hover:border-white/20 transition-all duration-200 text-sm shadow-sm"
+                    style={{ fontFamily: "Futura, sans-serif" }}
+                  >
+                    What services are provided by ROV?
+                  </button>
+                  <button
+                    onClick={() => handleSampleQuestion("How to contact the ROV team?")}
+                    className="w-full text-left px-5 py-4 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 text-white/80 hover:bg-white/10 hover:border-white/20 transition-all duration-200 text-sm shadow-sm"
+                    style={{ fontFamily: "Futura, sans-serif" }}
+                  >
+                    How to contact the ROV team?
+                  </button>
+                </div>
               </div>
             )}
             {messages.map((m) => (
