@@ -210,7 +210,7 @@ export default function ChatWidget() {
                 />
               </div>
               <button
-                onClick={sendMessage}
+                onClick={() => sendMessage()}
                 disabled={loading || !input.trim()}
                 className="h-[56px] px-6 flex items-center justify-center rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-white disabled:opacity-20 hover:bg-white/20 active:scale-95 transition-all shadow-lg"
               >
