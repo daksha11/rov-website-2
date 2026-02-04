@@ -33,7 +33,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
   return (
     <>
       <div
-        className={`fixed bottom-6 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-md px-8 py-2.5 rounded-full border border-white/10 z-[100] max-w-[90%] md:max-w-none transition-opacity duration-500 overflow-hidden group ${className || ""}`}
+        className={`fixed bottom-6 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-md px-6 py-2.5 rounded-full border border-white/10 z-[100] w-max max-w-[calc(100vw-2rem)] md:max-w-none transition-opacity duration-500 overflow-hidden group ${className || ""}`}
       >
         {/* Shimmer effect covering entire nav container */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-300">
@@ -46,7 +46,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
               {link.isLink ? (
                 <Link
                   href={link.to || "#"}
-                  className="px-1.5 py-1.5 text-white/80 hover:text-white transition-colors cursor-pointer text-[10px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
+                  className="px-1.5 py-1.5 text-white/80 hover:text-white transition-colors cursor-pointer text-xs sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
                   style={{ fontFamily: "Futura, sans-serif" }}
                 >
                   {link.title}
@@ -54,7 +54,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
               ) : (
                 <button
                   onClick={() => link.to ? scrollToSection(link.to) : setModalOpen(true)}
-                  className="px-1.5 py-1.5 text-white/80 hover:text-white transition-colors cursor-pointer text-[10px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
+                  className="px-1.5 py-1.5 text-white/80 hover:text-white transition-colors cursor-pointer text-xs sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
                   style={{ fontFamily: "Futura, sans-serif" }}
                 >
                   {link.title}
@@ -75,7 +75,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
               style={{ fontFamily: "Futura, sans-serif" }}
             >
               <Menu className="w-3 h-3 md:w-5 md:h-5" />
-              <span className="text-[10px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap">Menu</span>
+              <span className="text-xs sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap">Menu</span>
             </button>
           </div>
         </nav>

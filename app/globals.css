@@ -231,12 +231,18 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
 
 body {
   background-color: #110808;
   /* This overrides the @apply bg-background */
   overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+  position: relative; /* Ensure relative positioning for absolute children */
   scroll-behavior: smooth;
 }
 
