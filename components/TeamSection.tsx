@@ -352,7 +352,6 @@ const TeamSection: React.FC = () => {
                 border: "1px solid rgba(255, 255, 255, 0.1)",
                 minHeight: "100vh", padding: "40px 0", position: "relative",
                 display: "flex", flexDirection: "column", alignItems: "center",
-                overflow: "hidden",
             }}
         >
             {/* Top Left Gradient Blob */}

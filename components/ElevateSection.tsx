@@ -13,7 +13,6 @@ const SectionContainer = styled.section`
   align-items: center;
   justify-content: center;
   position: relative;
-  overflow: hidden;
   
   @media (max-width: 768px) {
     padding: clamp(2rem, 4vw, 2.5rem) clamp(1rem, 4vw, 1.5rem);
@@ -331,19 +330,17 @@ const ElevateSection: React.FC = () => {
           </LeftContent>
 
           <RightSection>
-            <div className="w-full max-w-[380px]">
-              <CardSwap width="100%" height={280} delay={4000}>
-                <Card>
-                  <img src="/rov_album_1.webp" alt="ROV Album 1" className="w-full h-full object-cover rounded-xl" />
-                </Card>
-                <Card>
-                  <img src="/rov_album_2.webp" alt="ROV Album 2" className="w-full h-full object-cover rounded-xl" />
-                </Card>
-                <Card>
-                  <img src="/rov_album_3.webp" alt="ROV Album 3" className="w-full h-full object-cover rounded-xl" />
-                </Card>
-              </CardSwap>
-            </div>
+            <CardSwap width={380} height={280} delay={4000}>
+              <Card>
+                <img src="/rov_album_1.webp" alt="ROV Album 1" className="w-full h-full object-cover rounded-xl" />
+              </Card>
+              <Card>
+                <img src="/rov_album_2.webp" alt="ROV Album 2" className="w-full h-full object-cover rounded-xl" />
+              </Card>
+              <Card>
+                <img src="/rov_album_3.webp" alt="ROV Album 3" className="w-full h-full object-cover rounded-xl" />
+              </Card>
+            </CardSwap>
           </RightSection>
         </ContentWrapper>
       </BannerCard>

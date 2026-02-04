@@ -60,9 +60,25 @@ const CarouselItem: React.FC<CarouselItemProps> = ({ imageUrl }) => {
             href="https://open.spotify.com/artist/1jvWl3rF1B79uoLznEir6D?si=jfP5_dYLQHG0oQxRymi17g"
             target="_blank"
             rel="noopener noreferrer"
-            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white text-black px-4 py-2 md:px-8 md:py-3 rounded-[50px] cursor-pointer text-xs md:text-sm font-medium text-center transition-all duration-300 no-underline tracking-[0.5px] shadow-md hover:scale-105 opacity-0 ${isHovered ? "!opacity-100" : ""}`}
             style={{
-              fontFamily: "Proxima Nova, sans-serif",
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              backgroundColor: "#ffffff",
+              color: "black",
+              padding: "12px 32px",
+              borderRadius: "50px",
+              cursor: "pointer",
+              fontSize: "14px",
+              fontWeight: "500",
+              textAlign: "center",
+              transition: "all 0.3s ease-in-out",
+              opacity: isHovered ? 1 : 0,
+              textDecoration: "none",
+              letterSpacing: "0.5px",
+              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+              fontFamily: "Proxima Nova, sans-serif", // Set the font to Proxima Nova
             }}
           >
             Play Now
@@ -75,27 +91,6 @@ const CarouselItem: React.FC<CarouselItemProps> = ({ imageUrl }) => {
 
 const Carousel: React.FC = () => {
   const items: CarouselItemProps[] = [
-    { imageUrl: "/rov_album_4.webp" },
-    { imageUrl: "/rov_album_1.webp" },
-    { imageUrl: "/rov_album_2.webp" },
-    { imageUrl: "/rov_album_3.webp" },
-    { imageUrl: "/cover1.webp" },
-    { imageUrl: "/cover2.webp" },
-    { imageUrl: "/cover3.webp" },
-    { imageUrl: "/rov_album_4.webp" },
-    { imageUrl: "/rov_album_1.webp" },
-    { imageUrl: "/rov_album_2.webp" },
-    { imageUrl: "/rov_album_3.webp" },
-    { imageUrl: "/cover1.webp" },
-    { imageUrl: "/cover2.webp" },
-    { imageUrl: "/cover3.webp" },
-    { imageUrl: "/rov_album_4.webp" },
-    { imageUrl: "/rov_album_1.webp" },
-    { imageUrl: "/rov_album_2.webp" },
-    { imageUrl: "/rov_album_3.webp" },
-    { imageUrl: "/cover1.webp" },
-    { imageUrl: "/cover2.webp" },
-    { imageUrl: "/cover3.webp" },
     { imageUrl: "/rov_album_4.webp" },
     { imageUrl: "/rov_album_1.webp" },
     { imageUrl: "/rov_album_2.webp" },
@@ -150,11 +145,12 @@ const Carousel: React.FC = () => {
 
   return (
     <div
-      className="w-full overflow-hidden"
       style={{
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+
+        width: "100%",
         height: "400px",
         position: "relative",
         paddingTop: "100px",
