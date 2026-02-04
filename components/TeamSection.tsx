@@ -172,6 +172,17 @@ const teamMembers: TeamMember[] = [
         specialties: "SCAD-trained design talent based in Savannah with exceptional vision for overall design strategy.",
         shadowColor: "130, 100, 160"
     },
+    {
+        id: 15,
+        image: "/teammembers/samtm.webp",
+        category: "Creative",
+        name: "Sam Suen",
+        role: "HEAD OF ARTIST DEVELOPMENT",
+        skills: ["Artist Development", "Creative Strategy", "Talent Management", "Music Industry Relations", "Brand Building"],
+        location: "Atlanta",
+        specialties: "Leads artist development initiatives, guiding emerging talent through creative growth and strategic brand positioning in the music industry.",
+        shadowColor: "140, 90, 110"
+    },
 ];
 
 const categories: Category[] = ["Creative", "Tech", "Systems"];
