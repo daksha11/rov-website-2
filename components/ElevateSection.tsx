@@ -13,6 +13,7 @@ const SectionContainer = styled.section`
   align-items: center;
   justify-content: center;
   position: relative;
+  overflow: hidden;
   
   @media (max-width: 768px) {
     padding: clamp(2rem, 4vw, 2.5rem) clamp(1rem, 4vw, 1.5rem);

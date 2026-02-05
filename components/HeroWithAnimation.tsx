@@ -45,8 +45,10 @@ const ProgressNumber = styled.div`
 const AnimationSection = styled.section`
   position: relative;
   width: 100%;
-  height: 500vh; /* Natural height for scrolling */
+  height: 100vh; /* Single viewport - will be pinned during scroll */
   background: black;
+  margin-bottom: 0;
+  z-index: 100; /* Stay on top of other content while pinned */
 `;
 
 const StickyContainer = styled.div`
@@ -344,43 +346,39 @@ const HeroWithAnimation: React.FC = () => {
       scrollTrigger: {
         trigger: section,
         start: 'top top',
-        end: 'bottom bottom',
+        end: '+=3000', // Scroll distance for smooth animation
         scrub: 0.5,
-      }
-    });
+        pin: true, // Pin the section while scrolling
+        pinSpacing: true, // Keep spacing so content below doesn't scroll
+        onUpdate: (self) => {
+          const progress = self.progress;
 
-    // Text Animation Trigger
-    ScrollTrigger.create({
-      trigger: section,
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 0.5,
-      onUpdate: (self) => {
-        const progress = self.progress;
-
-        // Update words based on progress
-        if (progress < 0.2) {
-          setCurrentWord("Identity");
-          setDimOpacity(0);
-          setShowHero(true);
-        } else if (progress < 0.4) {
-          setCurrentWord("Systems");
-          setDimOpacity(0);
-          setShowHero(true);
-        } else if (progress < 0.6) {
-          setCurrentWord("Strategy");
-          setDimOpacity(0);
-          setShowHero(true);
-        } else {
-          // Fade out
-          const fadeProgress = Math.min((progress - 0.6) / 0.4, 1);
-          setDimOpacity(fadeProgress);
-          if (progress > 0.95) {
-            setShowHero(false);
+          // Update text based on progress
+          if (progress < 0.3) {
+            setCurrentWord("Identity");
+            setDimOpacity(0);
+            setShowHero(true);
+          } else if (progress < 0.6) {
+            setCurrentWord("Systems");
+            setDimOpacity(0);
+            setShowHero(true);
+          } else if (progress < 0.9) {
+            setCurrentWord("Strategy");
+            setDimOpacity(0);
+            setShowHero(true);
+          } else {
+            // Quick fade in final 5-10%
+            const fadeProgress = Math.min((progress - 0.95) / 0.05, 1);
+            setDimOpacity(fadeProgress);
+            if (progress > 0.98) {
+              setShowHero(false);
+            }
           }
         }
       }
     });
+
+
 
     // Cleanup
     return () => {

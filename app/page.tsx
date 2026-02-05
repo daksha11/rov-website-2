@@ -24,7 +24,7 @@ const DigiMag = dynamic(() => import("@/components/DigiMag"), {
   ssr: false
 });
 
-const Carousel = dynamic(() => import("@/components/Corousel"), {
+const AlbumCoverLoop = dynamic(() => import("@/components/AlbumCoverLoop"), {
   loading: () => <div className="min-h-[600px]" />,
   ssr: false
 });
@@ -100,6 +100,16 @@ export default function Home() {
     }
   }, [isLoading]);
 
+  const albumCovers = [
+    { src: "/rov_album_4.webp", alt: "Album Cover 4" },
+    { src: "/rov_album_1.webp", alt: "Album Cover 1" },
+    { src: "/rov_album_2.webp", alt: "Album Cover 2" },
+    { src: "/rov_album_3.webp", alt: "Album Cover 3" },
+    { src: "/cover1.webp", alt: "Cover 1" },
+    { src: "/cover2.webp", alt: "Cover 2" },
+    { src: "/cover3.webp", alt: "Cover 3" },
+  ];
+
   // Loading state with better transition
   if (isLoading) {
     return (
@@ -113,9 +123,9 @@ export default function Home() {
   return (
     <>
       <GlobalStyle />
-      <main className="min-h-screen bg-black text-white">
+      <main className="min-h-screen bg-black text-white overflow-x-hidden">
 
-        <section id="hero-with-animation">
+        <section id="hero-with-animation" style={{ margin: 0, padding: 0 }}>
           <HeroWithAnimation />
         </section>
 
@@ -130,7 +140,7 @@ export default function Home() {
 
         {/* <img src="/backgroundimage.webp" alt="Page Tear Image" /> */}
 
-        <section id="services">
+        <section id="services" style={{ margin: 0, padding: 0 }}>
           <Services />
         </section>
 
@@ -144,7 +154,15 @@ export default function Home() {
 
         {/* <Card /> */}
 
-        <Carousel />
+        <div className="py-20">
+          <AlbumCoverLoop
+            logos={albumCovers}
+            speed={100}
+            logoHeight={300}
+            gap={20}
+            direction="left"
+          />
+        </div>
 
         <Footer />
 

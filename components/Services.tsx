@@ -352,7 +352,7 @@ export default function Services() {
   ];
 
   return (
-    <section className="min-h-screen bg-black py-20 w-full px-6 sm:px-12 md:px-16 relative flex flex-col justify-center">
+    <section className="min-h-screen bg-black py-20 w-full px-6 sm:px-12 md:px-16 relative flex flex-col justify-center overflow-hidden">
       {/* Top Left Gradient Blob */}
       <div
         className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full pointer-events-none z-0"
