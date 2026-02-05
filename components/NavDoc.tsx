@@ -33,7 +33,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
   return (
     <>
       <div
-        className={`fixed bottom-6 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-md px-8 py-2.5 rounded-full border border-white/10 z-[100] max-w-[90%] md:max-w-none transition-opacity duration-500 overflow-hidden group ${className || ""}`}
+        className={`fixed bottom-6 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-md px-8 py-2.5 rounded-full border border-white/10 z-[999] max-w-[90%] md:max-w-none transition-opacity duration-500 overflow-hidden group ${className || ""}`}
       >
         {/* Shimmer effect covering entire nav container */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-300">
@@ -123,7 +123,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
 
       {/* Expanded Menu Glass Pane */}
       <div
-        className={`fixed bottom-20 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-md rounded-3xl border border-white/10 z-[99] overflow-hidden transition-all duration-500 ease-in-out ${menuOpen
+        className={`fixed bottom-20 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-md rounded-3xl border border-white/10 z-[998] overflow-hidden transition-all duration-500 ease-in-out ${menuOpen
           ? "w-[90%] md:w-[600px] h-[400px] opacity-100 scale-100"
           : "w-0 h-0 opacity-0 scale-95"
           }`}
@@ -191,7 +191,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
 
       {/* Modal with consistent font */}
       {modalOpen && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-[101]">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-[1000]">
           <div
             className="bg-black/50 backdrop-blur-md text-white p-8 rounded-3xl shadow-lg text-center w-96 relative border border-white/10 md:w-96 sm:w-full sm:p-6"
             style={{ fontFamily: "futura" }}
