@@ -350,7 +350,7 @@ const HeroWithAnimation: React.FC = () => {
         scrub: 0.5,
         pin: true, // Pin the section while scrolling
         pinSpacing: true, // Keep spacing so content below doesn't scroll
-        onUpdate: (self) => {
+        onUpdate: (self: any) => {
           const progress = self.progress;
 
           // Update text based on progress
