@@ -51,7 +51,7 @@ function Gallery() {
     <div
       className="min-h-screen pt-16 rounded-t-[30px] md:rounded-t-[50px]"
       style={{
-        backgroundColor: "#18130f",
+        background: "linear-gradient(to bottom, #18130f 0%, #18130f 50%, #000000 100%)",
       }}
     >
       {/* Gallery Heading without italic */}
@@ -67,15 +67,17 @@ function Gallery() {
         {/* Navigation Buttons */}
         <button
           onClick={handlePrev}
-          className="absolute left-8 top-1/2 -translate-y-1/2 bg-transparent border-none text-white cursor-pointer z-20 p-4 transition-opacity duration-300 hover:opacity-70"
+          className="absolute left-8 md:left-16 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full p-4 cursor-pointer z-50 transition-all duration-300 hover:bg-white/20 hover:scale-110 active:scale-95 group"
+          aria-label="Previous image"
         >
-          <ArrowLeft className="w-8 h-8" />
+          <ArrowLeft className="w-8 h-8 transition-transform group-hover:-translate-x-1" />
         </button>
         <button
           onClick={handleNext}
-          className="absolute right-8 top-1/2 -translate-y-1/2 bg-transparent border-none text-white cursor-pointer z-20 p-4 transition-opacity duration-300 hover:opacity-70"
+          className="absolute right-8 md:right-16 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full p-4 cursor-pointer z-50 transition-all duration-300 hover:bg-white/20 hover:scale-110 active:scale-95 group"
+          aria-label="Next image"
         >
-          <ArrowRight className="w-8 h-8" />
+          <ArrowRight className="w-8 h-8 transition-transform group-hover:translate-x-1" />
         </button>
 
         {/* Carousel */}

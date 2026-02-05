@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import Footer from "@/components/Footer";
 import { NavigationDock } from "@/components/NavDoc";
 import SoundHero from "@/components/sound_page/SoundHero";
+import Gallery from "@/components/Gallery";
 
 // Dynamic imports for heavy components to improve initial load
 const MusicPlayer = dynamic(() => import("@/components/sound_page/MusicPlayer"), {
@@ -30,6 +31,11 @@ export default function Page() {
             {/* Music Player Section */}
             <div className="bg-black">
                 <MusicPlayer />
+            </div>
+
+            {/* Gallery Section */}
+            <div className="bg-black">
+                <Gallery />
             </div>
 
             {/* Promotional CTA Strip */}
