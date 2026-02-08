@@ -67,6 +67,26 @@ const CanvasElement = styled.canvas`
   height: 100%;
   object-fit: cover;
   z-index: 0;
+  display: block;
+
+  @media (max-width: 767px) {
+    display: none;
+  }
+`;
+
+const VideoElement = styled.video`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  display: none;
+
+  @media (max-width: 767px) {
+    display: block;
+  }
 `;
 
 const DimOverlay = styled.div<{ $opacity: number }>`
@@ -218,7 +238,16 @@ function imageSequence(config: {
   container?: HTMLElement,
   scrollTrigger?: any,
   onUpdate?: () => void
+  isMobile?: boolean; // Add isMobile flag
 }) {
+  if (config.isMobile) {
+    // If mobile, just create a dummy tween to drive the scrolltrigger
+    // The video plays independently
+    return gsap.to({}, {
+      scrollTrigger: config.scrollTrigger
+    });
+  }
+
   let playhead = { frame: 0 };
   let ctx = config.canvas.getContext("2d");
   let onUpdate = config.onUpdate;
@@ -284,6 +313,7 @@ const HeroWithAnimation: React.FC = () => {
   const [showHero, setShowHero] = useState(true);
   const [currentWord, setCurrentWord] = useState("Identity");
   const [dimOpacity, setDimOpacity] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   // New loading states
   const [isLoading, setIsLoading] = useState(true);
@@ -304,7 +334,18 @@ const HeroWithAnimation: React.FC = () => {
     };
 
     window.addEventListener('resize', handleResize);
+    handleResize(); // Initialize on mount
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    // Check if mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   useEffect(() => {
@@ -343,6 +384,7 @@ const HeroWithAnimation: React.FC = () => {
       urls,
       canvas: canvasRef.current,
       container: stickyRef.current,
+      isMobile, // Pass isMobile flag
       scrollTrigger: {
         trigger: section,
         start: 'top top',
@@ -416,6 +458,14 @@ const HeroWithAnimation: React.FC = () => {
 
       <StickyContainer ref={stickyRef}>
         <CanvasElement ref={canvasRef} />
+        <VideoElement
+          src="/intro.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          id="hero-video"
+        />
         <DimOverlay $opacity={dimOpacity} />
         <HeroOverlay $isVisible={showHero}>
           <Logo>
