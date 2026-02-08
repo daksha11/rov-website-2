@@ -105,16 +105,20 @@ const InteractiveFolderIcon: React.FC<{ folderImages?: string[] }> = ({ folderIm
 
 
   return (
-    <div className="relative mb-8 sm:mb-12 md:mb-20" style={{ transform: 'scale(1.5)', transformOrigin: 'center' }}>
+    <div className="relative mb-8 sm:mb-12 md:mb-20">
       <style jsx>{`
+        .folder-container {
+          transform: scale(0.85);
+          transform-origin: center;
+        }
         @media (min-width: 640px) {
           .folder-container {
-            transform: scale(2.5);
+            transform: scale(1.5);
           }
         }
         @media (min-width: 1024px) {
           .folder-container {
-            transform: scale(3.5);
+            transform: scale(2.5);
           }
         }
       `}</style>
@@ -122,7 +126,7 @@ const InteractiveFolderIcon: React.FC<{ folderImages?: string[] }> = ({ folderIm
         className="group relative cursor-pointer folder-container"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        style={{ transform: 'scale(1.5)', transformOrigin: 'center' }}
+      // Removed inline transform to let CSS handle it
       >
         <div className="relative w-[100px] h-[80px]">
           {/* Folder Back - always visible (darker, behind) */}
@@ -257,13 +261,12 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
       <div className="relative group cursor-pointer">
         {/* Main Card */}
         <div
-          className="flex flex-col items-center justify-center gap-2.5 transition-all duration-300 hover:shadow-lg p-8 md:py-[60px] md:px-[80px]"
+          className="flex flex-col items-center justify-center gap-2.5 transition-all duration-300 hover:shadow-lg p-4 md:py-[60px] md:px-[80px] min-h-[280px] md:min-h-[500px]"
           style={{
             borderRadius: '28px',
             border: '1px solid #D0BEA5',
             background: '#110C09',
             boxShadow: '0 4px 4px 0 rgba(0, 0, 0, 0.25)',
-            minHeight: '500px'
           }}
         >
           {/* Interactive Fggbolder Component */}
@@ -271,7 +274,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
 
           {/* Service Title - Inside the card */}
           <h3
-            className="text-2xl md:text-3xl text-center font-normal mt-8"
+            className="text-lg md:text-3xl text-center font-normal mt-4 md:mt-8"
             style={{ fontFamily: 'Roboto, sans-serif', color: '#FFF4E3' }}
           >
             {title}
@@ -372,6 +375,16 @@ export default function Services() {
         }}
       />
 
+      {/* Top Gradient Fade - Blends with previous section */}
+      <div
+        className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-5 pointer-events-none"
+      />
+
+      {/* Bottom Gradient Fade - Blends with next section */}
+      <div
+        className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent z-5 pointer-events-none"
+      />
+
       {/* Decorative stars - REMOVED */}
 
       <div className="w-full relative z-10">
@@ -388,8 +401,8 @@ export default function Services() {
 
           .services-grid {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
             min-height: auto;
           }
 
@@ -400,6 +413,11 @@ export default function Services() {
               height: auto;
               gap: 2rem;
             }
+             /* Use larger min-height on desktop via explicit style override if needed, 
+                but handling via className/style props is better. 
+                Added style block for specific desktop min-height override on cards if needed,
+                but inline styles on the card handle the base. Let's add a utility class or just rely on inline styles.
+             */
           }
 
           .services-grid.has-expanded {
