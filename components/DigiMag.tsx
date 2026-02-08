@@ -41,7 +41,7 @@ const DigiMag = () => {
               glowColor="rgba(255,255,255,0.6)"
               animationDuration={0.15}
               pauseBetweenAnimations={1.5}
-              fontSize="clamp(4rem, 10vw, 14rem)"
+              fontSize="clamp(3rem, 15vw, 14rem)"
               fontFamily="Norwige"
               letterSpacing="0.05em"
               className="justify-start"
@@ -53,7 +53,7 @@ const DigiMag = () => {
         <div className="relative group/mag">
           <div
             className="
-            grid grid-cols-4
+            grid grid-cols-2 md:grid-cols-4
             gap-3 sm:gap-4
             overflow-hidden
             max-h-[400px] sm:max-h-[550px] md:max-h-[750px]
@@ -135,13 +135,13 @@ const DigiMag = () => {
           </div>
 
           {/* Glassy "View More" Button */}
-          <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 z-30">
+          <div className="absolute -bottom-12 md:-bottom-16 left-1/2 -translate-x-1/2 z-30">
             <Link href="/ctrla">
               <button
                 className="
-                  group relative px-8 py-3 rounded-full 
+                  group relative px-6 py-2.5 md:px-8 md:py-3 rounded-full 
                   bg-white/5 backdrop-blur-xl border border-white/10
-                  text-white text-sm font-medium tracking-[0.2em]
+                  text-white text-xs md:text-sm font-medium tracking-[0.2em]
                   transition-all duration-300 hover:bg-white/10 hover:border-white/20
                   flex items-center gap-3 overflow-hidden
                   shadow-[0_0_20px_rgba(0,0,0,0.5)]
