@@ -459,7 +459,7 @@ const HeroWithAnimation: React.FC = () => {
       <StickyContainer ref={stickyRef}>
         <CanvasElement ref={canvasRef} />
         <VideoElement
-          src="/intro.mp4"
+          src="/SpiralShotHorizontal.mp4"
           autoPlay
           muted
           loop
