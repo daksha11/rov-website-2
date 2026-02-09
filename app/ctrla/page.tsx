@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import TiltedCard from "@/components/TiltedCard";
 import DigiMagCtrlA from "@/components/DigiMagCtrlA";
+import CtrlAFooter from "@/components/CtrlAFooter";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -192,12 +193,12 @@ export default function CtrlAPage() {
   }, []);
 
   return (
-    <div style={{ backgroundColor: '#000000', minHeight: '100vh' }}>
+    <div style={{ backgroundColor: '#000000', minHeight: '100vh', overflowX: 'hidden', width: '100%' }}>
       {/* Hero Section */}
       <section
         style={{
           position: 'relative',
-          width: '100vw',
+          width: '100%',
           height: '100vh',
           backgroundColor: '#808080',
           overflow: 'hidden',
@@ -741,6 +742,9 @@ export default function CtrlAPage() {
           </a>
         </div>
       </section>
+
+      {/* Custom Footer for CTRL A Page */}
+      <CtrlAFooter />
     </div>
   );
 }
