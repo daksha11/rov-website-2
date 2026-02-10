@@ -1,8 +1,8 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import CardSwap, { Card } from './CardSwap';
 
 const SectionContainer = styled.section`
@@ -267,7 +267,81 @@ const CTAButton = styled(motion.a)`
   }
 `;
 
+const PreviewContainer = styled(motion.div)`
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-bottom: 1.5rem;
+  width: 320px;
+  height: 200px;
+  z-index: 50;
+  pointer-events: none;
+  display: none;
+
+  @media (min-width: 768px) {
+    display: block;
+  }
+`;
+
+const PreviewCard = styled.div`
+  width: 100%;
+  height: 100%;
+  background: #000;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  position: relative;
+`;
+
+const PreviewLoading = styled.div`
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 0.75rem;
+  font-family: monospace;
+`;
+
+const PreviewIframe = styled.iframe`
+  position: relative;
+  width: 200%;
+  height: 200%;
+  transform-origin: top left;
+  transform: scale(0.5);
+  border: none;
+  background: white;
+`;
+
+const PreviewOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+  pointer-events: none;
+`;
+
+const PreviewArrow = styled.div`
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  transform: translateX(-50%) rotate(45deg);
+  width: 16px;
+  height: 16px;
+  background: #000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+`;
+
+const RelativeWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
 const ElevateSection: React.FC = () => {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <SectionContainer>
       {/* Top Left Gradient Blob */}
@@ -320,13 +394,41 @@ const ElevateSection: React.FC = () => {
                 </svg>
               </ArrowButton>
 
-              <CTAButton
-                href="/casestudy"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <RelativeWrapper
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
               >
-                READ THE STORY
-              </CTAButton>
+                <AnimatePresence>
+                  {isHovered && (
+                    <PreviewContainer
+                      initial={{ opacity: 0, y: 20, scale: 0.9, x: '-50%' }}
+                      animate={{ opacity: 1, y: 0, scale: 1, x: '-50%' }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95, x: '-50%' }}
+                      transition={{ duration: 0.2 }}
+                      id="hover-preview-container"
+                    >
+                      <PreviewCard>
+                        <PreviewLoading>LOADING PREVIEW...</PreviewLoading>
+                        <PreviewIframe
+                          src="/casestudy"
+                          title="Case Study Preview"
+                          loading="lazy"
+                        />
+                        <PreviewOverlay />
+                      </PreviewCard>
+                      <PreviewArrow />
+                    </PreviewContainer>
+                  )}
+                </AnimatePresence>
+
+                <CTAButton
+                  href="/casestudy"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  READ THE STORY
+                </CTAButton>
+              </RelativeWrapper>
             </CTAWrapper>
           </LeftContent>
 
