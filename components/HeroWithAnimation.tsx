@@ -379,48 +379,67 @@ const HeroWithAnimation: React.FC = () => {
       };
     });
 
-    // Image Sequence Animation
-    const sequence = imageSequence({
-      urls,
-      canvas: canvasRef.current,
-      container: stickyRef.current,
-      isMobile, // Pass isMobile flag
-      scrollTrigger: {
-        trigger: section,
-        start: 'top top',
-        end: '+=3000', // Scroll distance for smooth animation
-        scrub: 0.5,
-        pin: true, // Pin the section while scrolling
-        pinSpacing: true, // Keep spacing so content below doesn't scroll
-        onUpdate: (self: any) => {
-          const progress = self.progress;
+    // Wrap animation logic in a function so it can be re-run
+    const initAnimations = () => {
+      // Kill all existing ScrollTriggers to prevent duplicates
+      ScrollTrigger.getAll().forEach(t => t.kill());
 
-          // Update text based on progress
-          if (progress < 0.3) {
-            setCurrentWord("Identity");
-            setDimOpacity(0);
-            setShowHero(true);
-          } else if (progress < 0.6) {
-            setCurrentWord("Systems");
-            setDimOpacity(0);
-            setShowHero(true);
-          } else if (progress < 0.9) {
-            setCurrentWord("Strategy");
-            setDimOpacity(0);
-            setShowHero(true);
-          } else {
-            // Quick fade in final 5-10%
-            const fadeProgress = Math.min((progress - 0.95) / 0.05, 1);
-            setDimOpacity(fadeProgress);
-            if (progress > 0.98) {
-              setShowHero(false);
+      // Image Sequence Animation
+      return imageSequence({
+        urls,
+        canvas: canvasRef.current!,
+        container: stickyRef.current!,
+        isMobile, // Pass isMobile flag
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: '+=3000', // Scroll distance for smooth animation
+          scrub: 0.5,
+          pin: true, // Pin the section while scrolling
+          pinSpacing: true, // Keep spacing so content below doesn't scroll
+          onUpdate: (self: any) => {
+            const progress = self.progress;
+
+            // Update text based on progress
+            if (progress < 0.3) {
+              setCurrentWord("Identity");
+              setDimOpacity(0);
+              setShowHero(true);
+            } else if (progress < 0.6) {
+              setCurrentWord("Systems");
+              setDimOpacity(0);
+              setShowHero(true);
+            } else if (progress < 0.9) {
+              setCurrentWord("Strategy");
+              setDimOpacity(0);
+              setShowHero(true);
+            } else {
+              // Quick fade in final 5-10%
+              const fadeProgress = Math.min((progress - 0.95) / 0.05, 1);
+              setDimOpacity(fadeProgress);
+              if (progress > 0.98) {
+                setShowHero(false);
+              }
             }
           }
         }
-      }
+      });
+    };
+
+    // Run animations immediately
+    let sequence = initAnimations();
+
+    // Re-run animations after fonts are loaded to ensure correct height calculations
+    document.fonts.ready.then(() => {
+      sequence = initAnimations();
+      ScrollTrigger.refresh();
     });
 
-
+    // Fallback: Re-run animations after 500ms to ensure DOM is fully settled
+    setTimeout(() => {
+      sequence = initAnimations();
+      ScrollTrigger.refresh();
+    }, 500);
 
     // Cleanup
     return () => {

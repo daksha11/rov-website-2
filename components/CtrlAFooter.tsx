@@ -132,12 +132,13 @@ const CtrlAFooter = () => {
                         {/* Main ROV Text */}
                         <div className="relative w-full flex items-center justify-center py-8">
                             <h1
-                                className="text-white text-center"
+                                className="text-white text-center w-full"
                                 style={{
                                     fontFamily: 'Sarina, cursive',
-                                    fontSize: 'clamp(4rem, 15vw, 12rem)',
+                                    fontSize: '20vw',
                                     letterSpacing: '0.05em',
                                     margin: 0,
+                                    lineHeight: 0.8,
                                 }}
                             >
                                 R.O.V.
@@ -145,17 +146,8 @@ const CtrlAFooter = () => {
                         </div>
                     </div>
                 </div>
-
-                {/* Dotted line separator at top */}
-                <div
-                    className="absolute top-0 left-0 right-0 h-px"
-                    style={{
-                        backgroundImage: 'repeating-linear-gradient(to right, white 0, white 10px, transparent 10px, transparent 20px)',
-                    }}
-                />
             </footer>
         </>
     );
 };
-
 export default CtrlAFooter;

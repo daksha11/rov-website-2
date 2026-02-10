@@ -131,88 +131,109 @@ export default function OurApproachSection() {
   useGSAP(() => {
     if (!containerRef.current) return;
 
-    // Help with sync
-    ScrollTrigger.normalizeScroll(true);
-    ScrollTrigger.config({ limitCallbacks: true });
+    // Wrap animation logic in a function so it can be re-run
+    const initAnimations = () => {
+      // Kill all existing ScrollTriggers to prevent duplicates
+      ScrollTrigger.getAll().forEach(t => t.kill());
 
-    const panels = gsap.utils.toArray<HTMLElement>(".card-panel");
-    const lastPanel = panels[panels.length - 1];
+      // Help with sync
+      ScrollTrigger.normalizeScroll(true);
+      ScrollTrigger.config({ limitCallbacks: true });
 
-    panels.forEach((panel, index) => {
-      const isLast = index === panels.length - 1;
-      if (isLast) return;
+      const panels = gsap.utils.toArray<HTMLElement>(".card-panel");
+      const lastPanel = panels[panels.length - 1];
 
-      const inner = panel.querySelector<HTMLElement>(".card-inner");
-      if (!inner) return;
+      panels.forEach((panel, index) => {
+        const isLast = index === panels.length - 1;
+        if (isLast) return;
 
-      const calculateLayout = () => {
-        const panelHeight = inner.offsetHeight;
-        const windowHeight = window.innerHeight;
-        const difference = panelHeight - windowHeight;
-        const fakeScrollRatio = difference > 0 ? difference / (difference + windowHeight) : 0;
+        const inner = panel.querySelector<HTMLElement>(".card-inner");
+        if (!inner) return;
+
+        const calculateLayout = () => {
+          const panelHeight = inner.offsetHeight;
+          const windowHeight = window.innerHeight;
+          const difference = panelHeight - windowHeight;
+          const fakeScrollRatio = difference > 0 ? difference / (difference + windowHeight) : 0;
+
+          if (fakeScrollRatio) {
+            panel.style.marginBottom = `${panelHeight * fakeScrollRatio}px`;
+          } else {
+            panel.style.marginBottom = "0px";
+          }
+          return { fakeScrollRatio, innerHeight: inner.offsetHeight, windowHeight };
+        };
+
+        const { fakeScrollRatio, windowHeight: wh } = calculateLayout();
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: panel,
+            start: "bottom bottom",
+            end: fakeScrollRatio ? `+=${inner.offsetHeight}` : "bottom top",
+            pin: true,
+            pinSpacing: false,
+            scrub: 1,
+            anticipatePin: 1,
+            fastScrollEnd: true,
+            preventOverlaps: true,
+            invalidateOnRefresh: true,
+            onToggle: (self) => {
+              if (self.isActive) {
+                setActiveCardIndex(index);
+              }
+            }
+          },
+        });
 
         if (fakeScrollRatio) {
-          panel.style.marginBottom = `${panelHeight * fakeScrollRatio}px`;
-        } else {
-          panel.style.marginBottom = "0px";
+          tl.to(inner, {
+            yPercent: -100,
+            y: wh,
+            duration: 1 / (1 - fakeScrollRatio) - 1,
+            ease: "none",
+          });
         }
-        return { fakeScrollRatio, innerHeight: inner.offsetHeight, windowHeight };
-      };
 
-      const { fakeScrollRatio, windowHeight: wh } = calculateLayout();
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: panel,
-          start: "bottom bottom",
-          end: fakeScrollRatio ? `+=${inner.offsetHeight}` : "bottom top",
-          pin: true,
-          pinSpacing: false,
-          scrub: 1,
-          anticipatePin: 1,
-          fastScrollEnd: true,
-          preventOverlaps: true,
-          invalidateOnRefresh: true,
-          onToggle: (self) => {
-            if (self.isActive) {
-              setActiveCardIndex(index);
-            }
+        tl.fromTo(
+          panel,
+          { scale: 1, opacity: 1 },
+          {
+            scale: 0.8,
+            opacity: 0,
+            duration: 0.5,
+            ease: "power2.inOut"
           }
-        },
+        );
       });
 
-      if (fakeScrollRatio) {
-        tl.to(inner, {
-          yPercent: -100,
-          y: wh,
-          duration: 1 / (1 - fakeScrollRatio) - 1,
-          ease: "none",
-        });
-      }
-
-      tl.fromTo(
-        panel,
-        { scale: 1, opacity: 1 },
-        {
-          scale: 0.8,
-          opacity: 0,
-          duration: 0.5,
-          ease: "power2.inOut"
+      // Special trigger for the last card to become active
+      ScrollTrigger.create({
+        trigger: lastPanel,
+        start: "top 80%",
+        end: "bottom center",
+        onToggle: (self) => {
+          if (self.isActive) {
+            setActiveCardIndex(panels.length - 1);
+          }
         }
-      );
+      });
+    };
+
+    // Run animations immediately
+    initAnimations();
+
+    // Re-run animations after fonts are loaded to ensure correct height calculations
+    document.fonts.ready.then(() => {
+      initAnimations();
+      ScrollTrigger.refresh();
     });
 
-    // Special trigger for the last card to become active
-    ScrollTrigger.create({
-      trigger: lastPanel,
-      start: "top 80%",
-      end: "bottom center",
-      onToggle: (self) => {
-        if (self.isActive) {
-          setActiveCardIndex(panels.length - 1);
-        }
-      }
-    });
+    // Fallback: Re-run animations after 500ms to ensure DOM is fully settled
+    setTimeout(() => {
+      initAnimations();
+      ScrollTrigger.refresh();
+    }, 500);
 
     return () => {
       ScrollTrigger.normalizeScroll(false);
@@ -354,7 +375,7 @@ export default function OurApproachSection() {
                   {/* Left Side - Title */}
                   <div className="flex items-center">
                     <div className="relative">
-                      <span className="absolute -top-8 -left-2 text-[#EA9A61] font-mono text-lg opacity-50">
+                      <span className="absolute -top-12 left-1 text-[#EA9A61] font-mono text-4xl md:text-5xl opacity-80">
                         0{index + 1}
                       </span>
                       <h3
@@ -377,42 +398,42 @@ export default function OurApproachSection() {
               </div>
 
               {/* Interaction Hint - Prominent with Shine Animation */}
-              <div className="absolute bottom-8 right-8 md:bottom-10 md:right-10">
+              <div className="absolute bottom-8 right-8 md:bottom-12 md:right-12">
                 <div className="relative group cursor-pointer">
                   {/* Glow effect */}
-                  <div className="absolute inset-0 bg-[#EA9A61] opacity-20 blur-xl rounded-full animate-pulse" />
+                  <div className="absolute inset-0 bg-[#EA9A61] opacity-40 blur-xl rounded-full animate-pulse" />
 
                   {/* Main button */}
-                  <div className="relative flex items-center space-x-3 px-6 py-3 rounded-full border border-[#EA9A61]/40 bg-black/60 backdrop-blur-sm hover:bg-[#EA9A61]/10 transition-all duration-300 overflow-hidden">
+                  <div className="relative flex items-center space-x-4 px-8 py-4 md:px-10 md:py-5 rounded-full border-2 border-[#EA9A61] bg-black/80 backdrop-blur-md hover:bg-[#EA9A61]/20 transition-all duration-300 overflow-hidden shadow-[0_0_30px_rgba(234,154,97,0.3)]">
                     {/* Shine animation overlay */}
                     <div className="absolute inset-0 w-full h-full">
-                      <div className="absolute inset-0 -translate-x-full animate-shine bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                      <div className="absolute inset-0 -translate-x-full animate-shine bg-gradient-to-r from-transparent via-white/30 to-transparent" />
                     </div>
 
                     {/* Icon */}
                     <svg
-                      className="w-4 h-4 text-[#EA9A61] group-hover:scale-110 transition-transform"
+                      className="w-6 h-6 text-[#EA9A61] group-hover:scale-110 transition-transform"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
 
                     {/* Text */}
-                    <span className="relative text-[#EA9A61] font-mono text-xs md:text-sm tracking-[0.2em] uppercase font-semibold group-hover:text-[#FFF4E3] transition-colors">
+                    <span className="relative text-[#EA9A61] font-mono text-sm md:text-base tracking-[0.2em] uppercase font-bold group-hover:text-[#FFF4E3] transition-colors">
                       CLICK TO EXPLORE
                     </span>
 
                     {/* Arrow */}
                     <svg
-                      className="w-4 h-4 text-[#EA9A61] group-hover:translate-x-1 transition-transform"
+                      className="w-6 h-6 text-[#EA9A61] group-hover:translate-x-2 transition-transform"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                     </svg>
                   </div>
                 </div>
