@@ -201,7 +201,7 @@ export default function CtrlAPage() {
           position: 'relative',
           width: '100%',
           height: '100vh',
-          backgroundColor: '#808080',
+          backgroundColor: '#FFFFFF',
           overflow: 'hidden',
           display: 'flex',
           alignItems: 'center',
@@ -214,12 +214,89 @@ export default function CtrlAPage() {
         <div
           style={{
             position: 'absolute',
-            top: '48px',
-            left: '40px',
-            width: '106px',
-            height: '106px',
-            backgroundColor: 'white',
-            borderRadius: '12px',
+            top: '5%',
+            left: '5%',
+            width: '180px',
+            height: '180px',
+            backgroundImage: 'url(/ctrla/andresticker.webp)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+          }}
+        />
+
+        {/* ATL Sticker - Bottom Center Left */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '15%',
+            left: '28%',
+            width: '200px',
+            height: '200px',
+            backgroundImage: 'url(/ctrla/atlsticker.webp)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+          }}
+        />
+
+        {/* i85 Sticker - Top Center Left */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '8%',
+            left: '25%',
+            width: '190px',
+            height: '190px',
+            backgroundImage: 'url(/ctrla/i85sticker.webp)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+          }}
+        />
+
+        {/* Car Sticker - Top Left Center */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '25%',
+            left: '15%',
+            width: '180px',
+            height: '180px',
+            backgroundImage: 'url(/ctrla/carsticker.webp)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+          }}
+        />
+
+        {/* King and Queen Sticker - Top Center Right */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '12%',
+            right: '28%',
+            width: '200px',
+            height: '200px',
+            backgroundImage: 'url(/ctrla/kignandqueensticker.webp)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+          }}
+        />
+
+        {/* Grill Sticker - Top Right Center */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '28%',
+            right: '18%',
+            width: '190px',
+            height: '190px',
+            backgroundImage: 'url(/ctrla/grillsticker.webp)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
           }}
         />
 
@@ -227,12 +304,60 @@ export default function CtrlAPage() {
         <div
           style={{
             position: 'absolute',
-            top: '148px',
-            right: '66px',
-            width: '132px',
-            height: '132px',
-            backgroundColor: 'white',
-            borderRadius: '12px',
+            top: '5%',
+            right: '5%',
+            width: '210px',
+            height: '210px',
+            backgroundImage: 'url(/ctrla/benzsticker.webp)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+          }}
+        />
+
+        {/* Pencil Sticker - Bottom Center Right */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '18%',
+            right: '25%',
+            width: '170px',
+            height: '170px',
+            backgroundImage: 'url(/ctrla/pencilsticker.webp)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+          }}
+        />
+
+        {/* Lemon Pepper Sticker - Mid Left */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '45%',
+            left: '8%',
+            width: '185px',
+            height: '185px',
+            backgroundImage: 'url(/ctrla/lemonpepperstick.webp)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+          }}
+        />
+
+        {/* Waffle House Sticker - Mid Top Center */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '15%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '210px',
+            height: '210px',
+            backgroundImage: 'url(/ctrla/wafflehousesticker.webp)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
           }}
         />
 
@@ -240,12 +365,29 @@ export default function CtrlAPage() {
         <div
           style={{
             position: 'absolute',
-            bottom: '134px',
-            left: '226px',
-            width: '80px',
-            height: '80px',
-            backgroundColor: 'white',
-            borderRadius: '12px',
+            bottom: '10%',
+            left: '5%',
+            width: '220px',
+            height: '220px',
+            backgroundImage: 'url(/ctrla/gradysticker.webp)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+          }}
+        />
+
+        {/* Marta Sticker - Mid Right */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            right: '8%',
+            width: '195px',
+            height: '195px',
+            backgroundImage: 'url(/ctrla/martasticker.webp)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
           }}
         />
 
@@ -253,12 +395,14 @@ export default function CtrlAPage() {
         <div
           style={{
             position: 'absolute',
-            bottom: '92px',
-            right: '246px',
-            width: '98px',
-            height: '98px',
-            backgroundColor: 'white',
-            borderRadius: '12px',
+            bottom: '8%',
+            right: '5%',
+            width: '205px',
+            height: '205px',
+            backgroundImage: 'url(/ctrla/tunnelsticker.webp)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
           }}
         />
 
@@ -269,10 +413,12 @@ export default function CtrlAPage() {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%) translateY(40px)',
-            width: '140px',
-            height: '140px',
-            backgroundColor: 'white',
-            borderRadius: '12px',
+            width: '350px',
+            height: '350px',
+            backgroundImage: 'url(/ctrla/futuresticker.webp)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
             zIndex: 1,
           }}
         />
@@ -362,181 +508,205 @@ export default function CtrlAPage() {
         >
           {/* MUSIC Card */}
           <div style={{ transform: 'rotate(-8deg)', transformOrigin: 'center' }}>
-            <TiltedCard
-              imageSrc="/music-card.svg"
-              altText="Music"
-              containerHeight="400px"
-              containerWidth="320px"
-              imageHeight="400px"
-              imageWidth="320px"
-              scaleOnHover={1.05}
-              rotateAmplitude={12}
-              showMobileWarning={false}
-              showTooltip={false}
-              displayOverlayContent={true}
-              overlayContent={
-                <div
-                  style={{
-                    background: 'linear-gradient(135deg, #D4845C 0%, #8B5A3C 100%)',
-                    borderRadius: '15px',
-                    padding: '40px',
-                    height: '400px',
-                    width: '320px',
-                    position: 'relative',
-                    overflow: 'hidden',
-                  }}
-                >
-                  {/* Geometric shapes */}
-                  <div style={{ position: 'absolute', top: '30px', left: '30px', width: '60px', height: '60px', border: '3px solid rgba(255,255,255,0.3)', borderRadius: '8px' }} />
-                  <div style={{ position: 'absolute', top: '140px', left: '50%', transform: 'translateX(-50%)', width: '180px', height: '180px', border: '3px solid rgba(255,255,255,0.3)', borderRadius: '50%' }} />
-                  <div style={{ position: 'absolute', bottom: '100px', right: '30px', width: '80px', height: '80px', border: '3px solid rgba(255,255,255,0.3)', borderRadius: '8px' }} />
-
-                  {/* Text */}
-                  <h3
+            <a
+              href="https://www.notion.so/Music-2f4055fcd3f88089b425e57ad165b3a9?source=copy_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: 'block' }}
+            >
+              <TiltedCard
+                imageSrc="/music-card.svg"
+                altText="Music"
+                containerHeight="400px"
+                containerWidth="320px"
+                imageHeight="400px"
+                imageWidth="320px"
+                scaleOnHover={1.05}
+                rotateAmplitude={12}
+                showMobileWarning={false}
+                showTooltip={false}
+                displayOverlayContent={true}
+                overlayContent={
+                  <div
                     style={{
-                      position: 'absolute',
-                      bottom: '40px',
-                      left: '40px',
-                      fontSize: '42px',
-                      fontWeight: '900',
-                      color: '#FFFFFF',
-                      margin: 0,
-                      textTransform: 'uppercase',
-                      letterSpacing: '1px',
-                      fontFamily: 'Norwige',
+                      background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
+                      borderRadius: '25.018px',
+                      boxShadow: '0 39.091px 78.182px -18.764px rgba(0, 0, 0, 0.25)',
+                      padding: '40px',
+                      height: '400px',
+                      width: '320px',
+                      position: 'relative',
+                      overflow: 'hidden',
                     }}
                   >
-                    MUSIC
-                  </h3>
-                </div>
-              }
-            />
+                    {/* Geometric shapes */}
+                    <div style={{ position: 'absolute', top: '30px', left: '30px', width: '60px', height: '60px', border: '3px solid rgba(255,255,255,0.3)', borderRadius: '8px' }} />
+                    <div style={{ position: 'absolute', top: '140px', left: '50%', transform: 'translateX(-50%)', width: '180px', height: '180px', border: '3px solid rgba(255,255,255,0.3)', borderRadius: '50%' }} />
+                    <div style={{ position: 'absolute', bottom: '100px', right: '30px', width: '80px', height: '80px', border: '3px solid rgba(255,255,255,0.3)', borderRadius: '8px' }} />
+
+                    {/* Text */}
+                    <h3
+                      style={{
+                        position: 'absolute',
+                        bottom: '40px',
+                        left: '40px',
+                        fontSize: '42px',
+                        fontWeight: '900',
+                        color: '#FFFFFF',
+                        margin: 0,
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px',
+                        fontFamily: 'Norwige',
+                      }}
+                    >
+                      MUSIC
+                    </h3>
+                  </div>
+                }
+              />
+            </a>
           </div>
 
           {/* WEB DEVELOPMENT Card */}
           <div style={{ transform: 'rotate(2deg)', transformOrigin: 'center' }}>
-            <TiltedCard
-              imageSrc="/web-card.svg"
-              altText="Web Development"
-              containerHeight="400px"
-              containerWidth="320px"
-              imageHeight="400px"
-              imageWidth="320px"
-              scaleOnHover={1.05}
-              rotateAmplitude={12}
-              showMobileWarning={false}
-              showTooltip={false}
-              displayOverlayContent={true}
-              overlayContent={
-                <div
-                  style={{
-                    background: 'linear-gradient(135deg, #5C4A3C 0%, #3A2F26 100%)',
-                    borderRadius: '15px',
-                    padding: '40px',
-                    height: '400px',
-                    width: '320px',
-                    position: 'relative',
-                    overflow: 'hidden',
-                  }}
-                >
-                  {/* Geometric shapes */}
-                  <div style={{ position: 'absolute', top: '30px', right: '30px', width: '70px', height: '70px', border: '3px solid rgba(255,255,255,0.3)', borderRadius: '8px' }} />
-                  <div style={{ position: 'absolute', top: '140px', left: '50%', transform: 'translateX(-50%)', width: '200px', height: '200px', border: '3px solid rgba(255,255,255,0.3)', borderRadius: '50%' }} />
-                  <div style={{ position: 'absolute', bottom: '140px', left: '40px', width: '90px', height: '90px', border: '3px solid rgba(255,255,255,0.3)', borderRadius: '8px' }} />
-
-                  {/* Text */}
+            <a
+              href="https://www.notion.so/Dev-2f4055fcd3f880fcbefac116b9373821?source=copy_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: 'block' }}
+            >
+              <TiltedCard
+                imageSrc="/web-card.svg"
+                altText="Web Development"
+                containerHeight="400px"
+                containerWidth="320px"
+                imageHeight="400px"
+                imageWidth="320px"
+                scaleOnHover={1.05}
+                rotateAmplitude={12}
+                showMobileWarning={false}
+                showTooltip={false}
+                displayOverlayContent={true}
+                overlayContent={
                   <div
                     style={{
-                      position: 'absolute',
-                      bottom: '40px',
-                      left: '40px',
-                      right: '40px',
+                      background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
+                      borderRadius: '25.018px',
+                      boxShadow: '0 39.091px 78.182px -18.764px rgba(0, 0, 0, 0.25)',
+                      padding: '40px',
+                      height: '400px',
+                      width: '320px',
+                      position: 'relative',
+                      overflow: 'hidden',
                     }}
                   >
-                    <h3
+                    {/* Geometric shapes */}
+                    <div style={{ position: 'absolute', top: '30px', right: '30px', width: '70px', height: '70px', border: '3px solid rgba(255,255,255,0.3)', borderRadius: '8px' }} />
+                    <div style={{ position: 'absolute', top: '140px', left: '50%', transform: 'translateX(-50%)', width: '200px', height: '200px', border: '3px solid rgba(255,255,255,0.3)', borderRadius: '50%' }} />
+                    <div style={{ position: 'absolute', bottom: '140px', left: '40px', width: '90px', height: '90px', border: '3px solid rgba(255,255,255,0.3)', borderRadius: '8px' }} />
+
+                    {/* Text */}
+                    <div
                       style={{
-                        fontSize: '32px',
-                        fontWeight: '900',
-                        color: '#FFFFFF',
-                        margin: 0,
-                        textTransform: 'uppercase',
-                        letterSpacing: '1px',
-                        lineHeight: '1.2',
-                        fontFamily: 'Norwige',
+                        position: 'absolute',
+                        bottom: '40px',
+                        left: '40px',
+                        right: '40px',
                       }}
                     >
-                      WEB
-                    </h3>
-                    <h3
-                      style={{
-                        fontSize: '32px',
-                        fontWeight: '900',
-                        color: '#FFFFFF',
-                        margin: 0,
-                        textTransform: 'uppercase',
-                        letterSpacing: '1px',
-                        fontFamily: 'Norwige',
-                      }}
-                    >
-                      DEVELOPMENT
-                    </h3>
+                      <h3
+                        style={{
+                          fontSize: '32px',
+                          fontWeight: '900',
+                          color: '#FFFFFF',
+                          margin: 0,
+                          textTransform: 'uppercase',
+                          letterSpacing: '1px',
+                          lineHeight: '1.2',
+                          fontFamily: 'Norwige',
+                        }}
+                      >
+                        WEB
+                      </h3>
+                      <h3
+                        style={{
+                          fontSize: '32px',
+                          fontWeight: '900',
+                          color: '#FFFFFF',
+                          margin: 0,
+                          textTransform: 'uppercase',
+                          letterSpacing: '1px',
+                          fontFamily: 'Norwige',
+                        }}
+                      >
+                        DEVELOPMENT
+                      </h3>
+                    </div>
                   </div>
-                </div>
-              }
-            />
+                }
+              />
+            </a>
           </div>
 
           {/* DESIGN Card */}
           <div style={{ transform: 'rotate(-5deg)', transformOrigin: 'center' }}>
-            <TiltedCard
-              imageSrc="/design-card.svg"
-              altText="Design"
-              containerHeight="400px"
-              containerWidth="320px"
-              imageHeight="400px"
-              imageWidth="320px"
-              scaleOnHover={1.05}
-              rotateAmplitude={12}
-              showMobileWarning={false}
-              showTooltip={false}
-              displayOverlayContent={true}
-              overlayContent={
-                <div
-                  style={{
-                    background: 'linear-gradient(135deg, #6B5447 0%, #4A3A2F 100%)',
-                    borderRadius: '15px',
-                    padding: '40px',
-                    height: '400px',
-                    width: '320px',
-                    position: 'relative',
-                    overflow: 'hidden',
-                  }}
-                >
-                  {/* Geometric shapes */}
-                  <div style={{ position: 'absolute', top: '30px', left: '30px', width: '65px', height: '65px', border: '3px solid rgba(255,255,255,0.3)', borderRadius: '8px' }} />
-                  <div style={{ position: 'absolute', top: '120px', right: '40px', width: '220px', height: '220px', border: '3px solid rgba(255,255,255,0.3)', borderRadius: '50%' }} />
-                  <div style={{ position: 'absolute', bottom: '100px', left: '50px', width: '75px', height: '75px', border: '3px solid rgba(255,255,255,0.3)', borderRadius: '8px' }} />
-
-                  {/* Text */}
-                  <h3
+            <a
+              href="https://www.notion.so/Design-2f4055fcd3f880e8b6cdefdc57baa6b9?source=copy_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: 'block' }}
+            >
+              <TiltedCard
+                imageSrc="/design-card.svg"
+                altText="Design"
+                containerHeight="400px"
+                containerWidth="320px"
+                imageHeight="400px"
+                imageWidth="320px"
+                scaleOnHover={1.05}
+                rotateAmplitude={12}
+                showMobileWarning={false}
+                showTooltip={false}
+                displayOverlayContent={true}
+                overlayContent={
+                  <div
                     style={{
-                      position: 'absolute',
-                      bottom: '40px',
-                      right: '40px',
-                      fontSize: '42px',
-                      fontWeight: '900',
-                      color: '#FFFFFF',
-                      margin: 0,
-                      textTransform: 'uppercase',
-                      letterSpacing: '1px',
-                      fontFamily: 'Norwige',
+                      background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
+                      borderRadius: '25.018px',
+                      boxShadow: '0 39.091px 78.182px -18.764px rgba(0, 0, 0, 0.25)',
+                      padding: '40px',
+                      height: '400px',
+                      width: '320px',
+                      position: 'relative',
+                      overflow: 'hidden',
                     }}
                   >
-                    DESIGN
-                  </h3>
-                </div>
-              }
-            />
+                    {/* Geometric shapes */}
+                    <div style={{ position: 'absolute', top: '30px', left: '30px', width: '65px', height: '65px', border: '3px solid rgba(255,255,255,0.3)', borderRadius: '8px' }} />
+                    <div style={{ position: 'absolute', top: '120px', right: '40px', width: '220px', height: '220px', border: '3px solid rgba(255,255,255,0.3)', borderRadius: '50%' }} />
+                    <div style={{ position: 'absolute', bottom: '100px', left: '50px', width: '75px', height: '75px', border: '3px solid rgba(255,255,255,0.3)', borderRadius: '8px' }} />
+
+                    {/* Text */}
+                    <h3
+                      style={{
+                        position: 'absolute',
+                        bottom: '40px',
+                        right: '40px',
+                        fontSize: '42px',
+                        fontWeight: '900',
+                        color: '#FFFFFF',
+                        margin: 0,
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px',
+                        fontFamily: 'Norwige',
+                      }}
+                    >
+                      DESIGN
+                    </h3>
+                  </div>
+                }
+              />
+            </a>
           </div>
         </div>
       </section>
