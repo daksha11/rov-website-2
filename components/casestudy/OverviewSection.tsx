@@ -7,13 +7,15 @@ interface OverviewSectionProps {
     content: string;
     titleColor?: string;
     titleFont?: string;
+    textColor?: string;
 }
 
 export const OverviewSection: React.FC<OverviewSectionProps> = ({
     title,
     content,
     titleColor = '#C90000',
-    titleFont = 'Pearl Jean, cursive'
+    titleFont = 'Hornset',
+    textColor = 'white'
 }) => {
     return (
         <div>
@@ -21,12 +23,13 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
                 className="text-4xl md:text-5xl font-bold mb-6"
                 style={{
                     fontFamily: titleFont,
-                    color: titleColor
+                    color: titleColor,
+                    letterSpacing: '0.1em'
                 }}
             >
                 {title}
             </h2>
-            <p className="text-lg text-white leading-relaxed" style={{ fontFamily: 'Roboto, sans-serif' }}>
+            <p className="text-lg leading-relaxed" style={{ fontFamily: 'HellasFun', color: textColor }}>
                 {content}
             </p>
         </div>

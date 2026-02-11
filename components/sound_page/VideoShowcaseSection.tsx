@@ -1,0 +1,171 @@
+"use client";
+
+import { useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger);
+
+export default function VideoShowcaseSection() {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [activeCardIndex, setActiveCardIndex] = useState<number | null>(null);
+
+    const videos = [
+        { src: "/soundpage/starscollidemv.mp4", title: "STARS COLLIDE" },
+        { src: "/video/starboymv.mp4", title: "STARBOY" },
+        { src: "/ctrla/ykwiwvidweb.mp4", title: "YOU KNOW WHAT I WANT" },
+    ];
+
+    useGSAP(() => {
+        if (!containerRef.current) return;
+
+        ScrollTrigger.normalizeScroll(true);
+        ScrollTrigger.config({ limitCallbacks: true });
+
+        const panels = gsap.utils.toArray<HTMLElement>(".video-card-panel");
+
+        panels.forEach((panel, index) => {
+            const isLast = index === panels.length - 1;
+            if (isLast) return;
+
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: panel,
+                    start: "bottom bottom",
+                    end: "bottom top",
+                    pin: true,
+                    pinSpacing: false,
+                    scrub: 1,
+                    anticipatePin: 1,
+                    fastScrollEnd: true,
+                    preventOverlaps: true,
+                    invalidateOnRefresh: true,
+                    onToggle: (self) => {
+                        if (self.isActive) {
+                            setActiveCardIndex(index);
+                        }
+                    }
+                },
+            }).fromTo(
+                panel,
+                { scale: 1, opacity: 1 },
+                {
+                    scale: 0.8,
+                    opacity: 0,
+                    duration: 0.5,
+                    ease: "power2.inOut"
+                }
+            );
+        });
+
+        // Last card activation
+        const lastPanel = panels[panels.length - 1];
+        ScrollTrigger.create({
+            trigger: lastPanel,
+            start: "top 80%",
+            end: "bottom center",
+            onToggle: (self) => {
+                if (self.isActive) {
+                    setActiveCardIndex(panels.length - 1);
+                }
+            }
+        });
+
+        return () => {
+            ScrollTrigger.normalizeScroll(false);
+            ScrollTrigger.getAll().forEach((t) => t.kill());
+        };
+    }, { scope: containerRef });
+
+    return (
+        <section className="relative w-full bg-black py-16 md:py-24 lg:py-32 px-4 sm:px-6 lg:px-8">
+            {/* Gradient Blobs */}
+            <div
+                className="absolute bottom-0 right-0 w-[400px] h-[400px] md:w-[600px] md:h-[600px] rounded-full pointer-events-none z-0"
+                style={{
+                    background: "radial-gradient(circle, rgba(234, 154, 97, 0.15) 0%, transparent 70%)",
+                    filter: "blur(80px)",
+                }}
+            />
+
+            <div className="max-w-7xl mx-auto relative z-10" ref={containerRef}>
+                {/* Section Header */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24">
+                    <h2
+                        className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"
+                        style={{
+                            fontFamily: "Norwige, sans-serif",
+                            fontStyle: "italic",
+                            color: "#FFF4E3",
+                        }}
+                    >
+                        Music Videos
+                    </h2>
+                    <p className="text-[#FFF4E3]/40 font-mono text-sm tracking-widest mt-4 md:mt-0 md:mb-4">
+                        VISUAL [01-03]
+                    </p>
+                </div>
+
+                {/* Stacked Video Cards */}
+                <div className="relative flex flex-col items-center w-full">
+                    {videos.map((video, index) => (
+                        <div
+                            key={index}
+                            className="video-card-panel relative w-full rounded-[2.5rem] overflow-hidden mb-12"
+                            style={{
+                                backgroundColor: activeCardIndex === index ? "#1E1A17" : "#111111",
+                                border: activeCardIndex === index
+                                    ? "1px solid rgba(234, 154, 97, 0.3)"
+                                    : "1px solid rgba(255, 255, 255, 0.08)",
+                                minHeight: "calc(100vh - 120px)",
+                                display: "flex",
+                                flexDirection: "column",
+                                transition: "background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease",
+                                zIndex: activeCardIndex === index ? 40 : 10 + index,
+                                boxShadow: activeCardIndex === index
+                                    ? "0 40px 100px -20px rgba(0, 0, 0, 0.8), 0 0 40px rgba(234, 154, 97, 0.1)"
+                                    : "none",
+                            }}
+                        >
+                            <div className="card-inner w-full flex flex-col items-center justify-center min-h-[calc(100vh-120px)] pt-16 pb-6 px-6 md:pt-24 md:pb-10 md:px-10 relative z-10">
+                                {/* Video Container - Natural Ratio */}
+                                <div className="relative w-full flex justify-center items-center mb-8 group-hover:scale-[1.02] transition-transform duration-700">
+                                    <video
+                                        autoPlay
+                                        loop
+                                        muted
+                                        playsInline
+                                        className="max-w-full max-h-[70vh] rounded-3xl shadow-2xl"
+                                        style={{ width: 'auto', height: 'auto' }}
+                                    >
+                                        <source src={video.src} type="video/mp4" />
+                                    </video>
+                                </div>
+
+                                {/* Text Container - Smaller and Below */}
+                                <div className="flex items-center gap-6 z-20">
+                                    <span className="text-[#EA9A61] font-mono text-lg opacity-80 tracking-widest">
+                                        0{index + 1}
+                                    </span>
+                                    <div className="h-[1px] w-12 bg-[#EA9A61]/50" />
+                                    <h3
+                                        className="text-4xl md:text-5xl font-bold tracking-wide uppercase"
+                                        style={{
+                                            fontFamily: "Norwige, sans-serif",
+                                            fontStyle: "italic",
+                                            color: activeCardIndex === index ? "#EA9A61" : "#FFF4E3",
+                                            transition: "color 0.6s ease",
+                                        }}
+                                    >
+                                        {video.title}
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+}

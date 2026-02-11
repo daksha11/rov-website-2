@@ -102,6 +102,27 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'HellasFun';
+  src: url('../public/font/HellasFun Bold.ttf');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Hornset';
+  src: url('../public/font/Hornset.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'LostInSouth';
+  src: url('../public/font/lost_in_south/Lost in South.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
 
 /* --- THEME DEFINITIONS --- */
 @custom-variant dark (&:is(.dark *));

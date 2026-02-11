@@ -56,10 +56,22 @@ function Gallery() {
     >
       {/* Gallery Heading without italic */}
       <div
-        className="text-[#f5e7d1] text-5xl md:text-7xl lg:text-[140px] uppercase font-bold text-center drop-shadow-xl px-4"
+        className="text-[#f5e7d1] text-5xl md:text-7xl lg:text-[140px] uppercase font-bold text-center drop-shadow-xl px-4 relative"
         style={{ fontFamily: "Norwige" }}
       >
-        COVER ARTS
+        <span
+          className="relative inline-block"
+          style={{
+            background: 'linear-gradient(90deg, #f5e7d1 0%, #ffffff 25%, #f5e7d1 50%, #ffffff 75%, #f5e7d1 100%)',
+            backgroundSize: '200% 100%',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            animation: 'shine 3s linear infinite'
+          }}
+        >
+          MUSIC ARTWORK
+        </span>
       </div>
 
       {/* Carousel container */}
@@ -118,6 +130,15 @@ function Gallery() {
           src: url("/fonts/Flight Maybe Maj.ttf") format("truetype");
           font-weight: normal;
           font-style: normal;
+        }
+        
+        @keyframes shine {
+          0% {
+            background-position: 200% center;
+          }
+          100% {
+            background-position: -200% center;
+          }
         }
       `}</style>
     </div>

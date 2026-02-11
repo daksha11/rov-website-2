@@ -18,6 +18,13 @@ interface CompetitorAnalysisProps {
     competitors: Competitor[];
     comparisonData: ComparisonRow[];
     insight: string;
+    titleColor?: string;
+    highlightBorderColor?: string;
+    highlightRowBgColor?: string;
+    insightBadgeColor?: string;
+    insightBorderColor?: string;
+    checkColor?: string;
+    textColor?: string;
 }
 
 export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
@@ -26,19 +33,26 @@ export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
     competitors,
     comparisonData,
     insight,
+    titleColor = '#C90000',
+    highlightBorderColor = '#C90000',
+    highlightRowBgColor = '#2A0A0A',
+    insightBadgeColor = '#953200',
+    insightBorderColor = '#953200',
+    checkColor = '#C90000',
+    textColor = '#d1d5db' // text-gray-300
 }) => {
     return (
         <div>
             {/* Title */}
             <h3
                 className="text-5xl md:text-6xl font-black mb-6 uppercase tracking-tight"
-                style={{ color: '#C90000', fontFamily: 'Pearl Jean, cursive' }}
+                style={{ color: titleColor, fontFamily: 'Hornset', letterSpacing: '0.1em' }}
             >
                 {title}
             </h3>
 
             {/* Description */}
-            <p className="text-lg text-gray-300 mb-12 leading-relaxed" style={{ fontFamily: 'Roboto, sans-serif' }}>
+            <p className="text-lg mb-12 leading-relaxed" style={{ fontFamily: 'HellasFun', color: textColor }}>
                 {description}
             </p>
 
@@ -56,10 +70,15 @@ export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
                                 return (
                                     <th
                                         key={index}
-                                        className={`py-6 px-6 align-middle ${isHighlightColumn
-                                            ? 'border-x-2 border-t-2 border-b-0 border-[#C90000] rounded-t-2xl'
-                                            : 'border-r border-gray-700'
-                                            }`}
+                                        className={`py-6 px-6 align-middle border-r border-gray-700`}
+                                        style={isHighlightColumn ? {
+                                            borderLeft: `2px solid ${highlightBorderColor}`,
+                                            borderRight: `2px solid ${highlightBorderColor}`,
+                                            borderTop: `2px solid ${highlightBorderColor}`,
+                                            borderBottom: 'none',
+                                            borderTopLeftRadius: '1rem',
+                                            borderTopRightRadius: '1rem'
+                                        } : {}}
                                     >
                                         <div className="flex items-center justify-center">
                                             <div className="rounded-lg px-6 py-4 bg-white flex items-center justify-center min-w-[160px]">
@@ -74,7 +93,7 @@ export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
                             })}
                         </tr>
                     </thead>
-                    <tbody className="text-gray-300">
+                    <tbody style={{ color: textColor }}>
                         {comparisonData.map((row, rowIndex) => {
                             const isLastRow = rowIndex === comparisonData.length - 1;
                             return (
@@ -87,18 +106,20 @@ export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
                                         return (
                                             <td
                                                 key={colIndex}
-                                                className={`text-center py-6 px-6 border-t border-gray-800 ${isHighlightColumn
-                                                    ? `bg-[#2A0A0A] border-l-2 border-r-2 border-[#C90000] ${isLastRow ? 'border-b-2 rounded-b-2xl' : ''
-                                                    }`
-                                                    : 'border-r border-gray-800'
-                                                    }`}
+                                                className={`text-center py-6 px-6 border-t border-gray-800 border-r border-gray-800`}
+                                                style={isHighlightColumn ? {
+                                                    backgroundColor: highlightRowBgColor,
+                                                    borderLeft: `2px solid ${highlightBorderColor}`,
+                                                    borderRight: `2px solid ${highlightBorderColor}`,
+                                                    borderBottom: isLastRow ? `2px solid ${highlightBorderColor}` : undefined,
+                                                    borderBottomLeftRadius: isLastRow ? '1rem' : undefined,
+                                                    borderBottomRightRadius: isLastRow ? '1rem' : undefined,
+                                                } : {}}
                                             >
                                                 {hasFeature ? (
                                                     <div
-                                                        className={`w-4 h-4 rounded-full mx-auto ${isHighlightColumn
-                                                            ? 'bg-[#C90000]'
-                                                            : 'bg-white'
-                                                            }`}
+                                                        className={`w-4 h-4 rounded-full mx-auto`}
+                                                        style={{ backgroundColor: isHighlightColumn ? checkColor : 'white' }}
                                                     ></div>
                                                 ) : (
                                                     <span className="text-3xl font-light">×</span>
@@ -124,7 +145,7 @@ export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
                 >
                     <path
                         d="M20 0 L20 45 M5 30 L20 45 L35 30"
-                        stroke="#C90000"
+                        stroke={insightBadgeColor}
                         strokeWidth="3"
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -137,7 +158,7 @@ export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
                 className="p-6 bg-black/40"
                 style={{
                     borderRadius: '20px',
-                    border: '2px solid #953200'
+                    border: `2px solid ${insightBorderColor}`
                 }}
             >
                 <div className="flex items-start gap-4">
@@ -145,16 +166,16 @@ export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
                         className="px-4 py-2 text-sm font-bold text-white whitespace-nowrap"
                         style={{
                             borderRadius: '26.5px',
-                            background: '#953200',
-                            fontFamily: 'Pearl Jean, cursive',
+                            background: insightBadgeColor,
+                            fontFamily: 'LostInSouth',
                             letterSpacing: '0.05em'
                         }}
                     >
                         INSIGHT
                     </span>
                     <p
-                        className="text-white leading-relaxed text-lg"
-                        style={{ fontFamily: 'Roboto, sans-serif' }}
+                        className="leading-relaxed text-lg"
+                        style={{ fontFamily: 'HellasFun', color: 'white' }} // Keep this white as the box has bg-black/40
                     >
                         {insight}
                     </p>
