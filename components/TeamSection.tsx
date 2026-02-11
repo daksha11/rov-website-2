@@ -289,18 +289,18 @@ const TeamSection: React.FC = () => {
                                             <img src={expandedMember.image} className="w-full aspect-[4/5] object-cover rounded-2xl shadow-2xl" alt={expandedMember.name} />
                                         </div>
                                         <div className="flex-1">
-                                            <h3 className="font-sink text-[clamp(2.5rem,5vw,4rem)] font-black text-[#F7F2E4] uppercase leading-none mb-4">
+                                            <h3 className="text-[clamp(2.5rem,5vw,4rem)] font-black text-[#F7F2E4] uppercase leading-none mb-4" style={{ fontFamily: 'Norwige, sans-serif' }}>
                                                 {expandedMember.name}
                                             </h3>
-                                            <p className="font-norwige text-sm tracking-[0.2em] uppercase text-[#DAA520] mb-8">
+                                            <p className="text-sm tracking-[0.2em] uppercase text-[#DAA520] mb-8" style={{ fontFamily: 'Roboto, sans-serif' }}>
                                                 {expandedMember.role} • {expandedMember.location}
                                             </p>
 
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                                 {expandedMember.specialties && (
                                                     <div>
-                                                        <h4 className="font-sink text-lg font-black uppercase text-[#F7F2E4] mb-4">Specialties</h4>
-                                                        <p className="font-norwige text-sm text-[#F7F2E4]/80 leading-relaxed">{expandedMember.specialties}</p>
+                                                        <h4 className="text-lg font-black uppercase text-[#F7F2E4] mb-4" style={{ fontFamily: 'Norwige, sans-serif' }}>Specialties</h4>
+                                                        <p className="text-sm text-[#F7F2E4]/80 leading-relaxed" style={{ fontFamily: 'Roboto, sans-serif' }}>{expandedMember.specialties}</p>
                                                         {expandedMember.portfolioLink && (
                                                             <a
                                                                 href={expandedMember.portfolioLink}
@@ -315,7 +315,7 @@ const TeamSection: React.FC = () => {
                                                     </div>
                                                 )}
                                                 <div>
-                                                    <h4 className="font-sink text-lg font-black uppercase text-[#F7F2E4] mb-4">Skills</h4>
+                                                    <h4 className="text-lg font-black uppercase text-[#F7F2E4] mb-4" style={{ fontFamily: 'Norwige, sans-serif' }}>Skills</h4>
                                                     <div className="flex flex-wrap gap-2">
                                                         {expandedMember.skills.map((s, i) => (
                                                             <span key={i} className="px-3 py-1 bg-white/10 border border-white/10 rounded-full text-[10px] text-white uppercase tracking-widest">{s}</span>
@@ -344,8 +344,8 @@ const TeamSection: React.FC = () => {
                             <img src={member.image} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={member.name} />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                             <div className="absolute bottom-6 left-6 right-6">
-                                <h4 className="font-sink text-2xl font-black text-white uppercase">{member.name}</h4>
-                                <p className="font-norwige text-[10px] tracking-[0.2em] text-[#DAA520] uppercase">{member.role}</p>
+                                <h4 className="text-2xl font-black text-white uppercase" style={{ fontFamily: 'Norwige, sans-serif' }}>{member.name}</h4>
+                                <p className="text-[10px] tracking-[0.2em] text-[#DAA520] uppercase" style={{ fontFamily: 'Roboto, sans-serif' }}>{member.role}</p>
                             </div>
                         </motion.div>
                     ))}

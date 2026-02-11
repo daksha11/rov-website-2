@@ -1,12 +1,13 @@
 "use client";
 
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { motion } from 'framer-motion';
 import { NavigationDock } from "@/components/NavDoc";
 import Footer from "@/components/Footer";
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
+import SplitText from '@/components/SplitText';
 
 /* 
  * MAIN PAGE WRAPPER 
@@ -66,6 +67,17 @@ const GradientBlob = styled.div<{ color: string; top?: string; left?: string; ri
   z-index: 0;
 `;
 
+/* --- SHIMMER ANIMATION --- */
+
+const shimmer = keyframes`
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+`;
+
 /* --- HEADER SECTION --- */
 
 const HeaderSection = styled.header`
@@ -83,12 +95,23 @@ const Title = styled(motion.h1)`
   line-height: 0.9;
   letter-spacing: -0.02em;
   margin-bottom: 2rem;
-  color: #fff;
+  color: #FFF4E3;
+`;
+
+const TitleWrapper = styled.div`
+  h1 {
+    font-family: 'Norwige', serif; 
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    font-weight: 400;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: #FFF4E3;
+  }
 `;
 
 const Subtitle = styled(motion.p)`
   font-size: clamp(1rem, 1.5vw, 1.25rem);
-  color: rgba(255, 255, 255, 0.6);
+  color: #FFF4E3;
   max-width: 500px;
   line-height: 1.6;
 `;
@@ -97,19 +120,29 @@ const SectionLabel = styled.div`
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  font-size: 0.8rem;
+  font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #cf3737;
   margin-bottom: 4rem;
   font-weight: 600;
+  background: linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: ${shimmer} 6s linear 1;
+  cursor: pointer;
+
+  &:hover {
+    animation: ${shimmer} 6s linear infinite;
+  }
 
   &::before {
     content: '';
     display: block;
     width: 8px;
     height: 8px;
-    background: currentColor;
+    background: #FFF4E3;
     border-radius: 50%;
   }
 `;
@@ -187,13 +220,25 @@ const ProjectTitle = styled.h2`
   line-height: 0.9;
   margin-bottom: 1.5rem;
   text-transform: uppercase;
-  color: #fff;
   letter-spacing: -0.02em;
+  background: linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: ${shimmer} 8s linear 1;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    animation: ${shimmer} 8s linear infinite;
+    transform: scale(1.02);
+  }
 `;
 
 const ProjectDescription = styled.p`
   font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: #FFF4E3;
   line-height: 1.6;
   max-width: 450px;
   margin-bottom: 3rem;
@@ -204,9 +249,9 @@ const ViewProjectLink = styled(Link)`
   align-items: center;
   gap: 0.75rem;
   padding: 0.8rem 1.8rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 244, 227, 0.2);
   border-radius: 100px;
-  color: #fff;
+  color: #FFF4E3;
   text-decoration: none;
   font-size: 0.9rem;
   text-transform: uppercase;
@@ -215,9 +260,9 @@ const ViewProjectLink = styled(Link)`
   width: fit-content;
 
   &:hover {
-    background: white;
+    background: #FFF4E3;
     color: black;
-    border-color: white;
+    border-color: #FFF4E3;
   }
 `;
 
@@ -225,14 +270,14 @@ const caseStudies = [
   {
     id: 'bando',
     title: 'The Bando',
-    description: 'Bringing unapologetic brand energy to a digital fried chicken experience. A blend of modern aesthetics and raw street culture.',
+    description: 'Bold, unapologetically Atlanta—we transformed a Black history museum and fried chicken spot\'s digital presence to match their in-person energy, cutting bounce rate by 60%.',
     image: '/casestudyheroimg.png',
     href: '/casestudy/bando'
   },
   {
     id: 'ikna',
-    title: 'IKNA',
-    description: 'Elevating digital presence for high-end technology consulting services through strategic design and minimalistic elegance.',
+    title: 'Aysegul Ikna',
+    description: 'Luxury that justifies the price tag—we built a sophisticated digital home for a sustainable fashion brand at Ponce City Market, driving 30% sales growth through elevated design and seamless e-commerce.',
     image: '/webdev/ayseiknawebhome.png',
     href: '/casestudy/ikna'
   }
@@ -243,22 +288,43 @@ export default function CaseStudySelectionPage() {
     <PageWrapper>
       <NavigationDock />
 
-      {/* 
-              Changed offsets to PX/VH values to avoid massive footer spacing.
-              -200px from top and -300px from bottom (clipping ensures no scrollbar extension).
-            */}
-      <GradientBlob color="#C90000" top="-200px" left="-200px" />
-      <GradientBlob color="#00f2ff" bottom="-300px" right="-200px" size="800px" />
+      {/* Top Left Gradient Blob */}
+      <div
+        className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full pointer-events-none z-0"
+        style={{
+          background: 'rgba(96, 62, 37, 0.90)',
+          filter: 'blur(200px)',
+          transform: 'translate(-30%, -30%)'
+        }}
+      />
+      {/* Bottom Right Gradient Blob */}
+      <div
+        className="absolute bottom-0 right-0 w-[800px] h-[800px] rounded-full pointer-events-none z-0"
+        style={{
+          background: 'rgba(96, 62, 37, 0.90)',
+          filter: 'blur(200px)',
+          transform: 'translate(30%, 30%)'
+        }}
+      />
 
       <ContentContainer>
         <HeaderSection>
-          <Title
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            Our Case Studies
-          </Title>
+          <TitleWrapper style={{ marginBottom: '2rem' }}>
+            <SplitText
+              text="Client Case Studies"
+              tag="h1"
+              className=""
+              delay={30}
+              duration={1}
+              ease="power3.out"
+              splitType="chars"
+              from={{ opacity: 0, y: 40 }}
+              to={{ opacity: 1, y: 0 }}
+              threshold={0.1}
+              rootMargin="-50px"
+              textAlign="inherit"
+            />
+          </TitleWrapper>
           <Subtitle
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

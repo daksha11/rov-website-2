@@ -80,12 +80,22 @@ export default function VideoShowcaseSection() {
 
     return (
         <section className="relative w-full bg-black py-16 md:py-24 lg:py-32 px-4 sm:px-6 lg:px-8">
-            {/* Gradient Blobs */}
+            {/* Top Left Gradient Blob */}
             <div
-                className="absolute bottom-0 right-0 w-[400px] h-[400px] md:w-[600px] md:h-[600px] rounded-full pointer-events-none z-0"
+                className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full pointer-events-none z-0"
                 style={{
-                    background: "radial-gradient(circle, rgba(234, 154, 97, 0.15) 0%, transparent 70%)",
-                    filter: "blur(80px)",
+                    background: 'rgba(96, 62, 37, 0.90)',
+                    filter: 'blur(200px)',
+                    transform: 'translate(-30%, -30%)'
+                }}
+            />
+            {/* Bottom Right Gradient Blob */}
+            <div
+                className="absolute bottom-0 right-0 w-[800px] h-[800px] rounded-full pointer-events-none z-0"
+                style={{
+                    background: 'rgba(96, 62, 37, 0.90)',
+                    filter: 'blur(200px)',
+                    transform: 'translate(30%, 30%)'
                 }}
             />
 
