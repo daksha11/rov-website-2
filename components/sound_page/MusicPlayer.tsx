@@ -269,7 +269,7 @@ export default function MusicPlayer() {
             </div>
 
             <div className="w-full max-w-[95%] md:max-w-7xl px-6 md:px-12 pb-20">
-                <section className="relative w-full min-h-[70vh] flex flex-col items-center justify-center pt-10 overflow-hidden font-sans rounded-[2.5rem] border border-white/5">
+                <section className="relative w-full min-h-[60vh] md:min-h-[70vh] flex flex-col items-center justify-center pt-6 md:pt-10 overflow-hidden font-sans rounded-[2.5rem] border border-white/5">
                     {/* Background Image - Clean, no full screen glass */}
                     <div
                         className="absolute inset-0 bg-cover bg-center blur-sm scale-110" // Added blur-sm and scale-110 to avoid blurred edges
@@ -283,10 +283,10 @@ export default function MusicPlayer() {
                     <div className="container max-w-6xl mx-auto px-4 flex flex-col items-center relative z-10">
 
                         {/* Simple Top Toggle (No Glassmorphism headers) */}
-                        <div className="flex bg-black/40 rounded-full p-1 mb-12 border border-white/10">
+                        <div className="flex bg-black/40 rounded-full p-1 mb-6 md:mb-12 border border-white/10 scale-90 md:scale-100 origin-top">
                             <button
                                 onClick={() => toggleBeforeAfter(false)}
-                                className={`px-8 py-2 rounded-full text-sm font-bold tracking-widest uppercase transition-all duration-300 ${!isAfter
+                                className={`px-6 md:px-8 py-2 rounded-full text-xs md:text-sm font-bold tracking-widest uppercase transition-all duration-300 ${!isAfter
                                     ? "bg-white/20 backdrop-blur-md text-white shadow-lg border border-white/10"
                                     : "text-white/60 hover:text-white"
                                     }`}
@@ -295,7 +295,7 @@ export default function MusicPlayer() {
                             </button>
                             <button
                                 onClick={() => toggleBeforeAfter(true)}
-                                className={`px-8 py-2 rounded-full text-sm font-bold tracking-widest uppercase transition-all duration-300 ${isAfter
+                                className={`px-6 md:px-8 py-2 rounded-full text-xs md:text-sm font-bold tracking-widest uppercase transition-all duration-300 ${isAfter
                                     ? "bg-white/20 backdrop-blur-md text-white shadow-lg border border-white/10"
                                     : "text-white/60 hover:text-white"
                                     }`}
@@ -305,7 +305,7 @@ export default function MusicPlayer() {
                         </div>
 
                         {/* 3D Carousel (Cover Flow) */}
-                        <div className="relative w-full h-[380px] md:h-[420px] flex items-center justify-center mb-0" style={{ perspective: "1000px" }}>
+                        <div className="relative w-full h-[320px] md:h-[420px] flex items-center justify-center mb-0" style={{ perspective: "1000px" }}>
                             <div ref={carouselRef} className="relative w-full h-full flex items-center justify-center" style={{ transformStyle: "preserve-3d" }}>
                                 {songData.map((song, i) => (
                                     <div
@@ -373,10 +373,10 @@ export default function MusicPlayer() {
                         {/* Exact Reference Dashboard Design */}
                         <div className="w-full max-w-[50rem] bg-[#2A2A2A]/90 backdrop-blur-2xl border border-white/5 rounded-full p-2 shadow-2xl relative z-[100]">
 
-                            <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-2 w-full h-full">
+                            <div className="flex flex-wrap md:flex-nowrap items-center justify-between gap-y-4 md:gap-2 w-full h-full">
 
                                 {/* Left: Playback Controls (Simple Icons) */}
-                                <div className="flex items-center gap-6 pl-6 pr-2 py-2 md:py-0 order-2 md:order-1">
+                                <div className="flex items-center justify-center md:justify-start gap-6 pl-2 md:pl-6 pr-2 py-2 md:py-0 order-2 md:order-1 w-1/2 md:w-auto border-r border-white/5 md:border-none">
                                     <button onClick={prevSong} className="text-white hover:text-white/70 transition">
                                         <SkipBack size={24} fill="currentColor" />
                                     </button>
@@ -389,7 +389,7 @@ export default function MusicPlayer() {
                                 </div>
 
                                 {/* Center: Inner Dark Pill (Metadata & Status) */}
-                                <div className="flex-1 w-full md:w-auto h-20 relative group order-1 md:order-2">
+                                <div className="flex-1 w-full md:w-auto h-16 md:h-20 relative group order-1 md:order-2">
 
                                     {/* 1. Background & Visual Track Layer - CLIPPED to shape */}
                                     <div className="absolute inset-0 rounded-[1.5rem] bg-[#181818] overflow-hidden">
@@ -435,20 +435,20 @@ export default function MusicPlayer() {
                                                 rel="noopener noreferrer"
                                                 className="flex items-center gap-3 min-w-0 group/info cursor-pointer hover:opacity-80 transition-opacity"
                                             >
-                                                <div className="w-10 h-10 rounded-md overflow-hidden flex-shrink-0 relative">
+                                                <div className="w-8 h-8 md:w-10 md:h-10 rounded-md overflow-hidden flex-shrink-0 relative">
                                                     <Image src={songData[currentIndex].cover} fill className="object-cover" alt="art" sizes="40px" priority />
                                                 </div>
-                                                <div className="flex flex-col min-w-0 justify-center">
-                                                    <span className="text-white text-[13px] font-semibold truncate leading-tight group-hover/info:text-[#1DB954] transition-colors">{songData[currentIndex].title}</span>
-                                                    <span className="text-[#9CA3AF] text-[11px] truncate leading-tight">{songData[currentIndex].artist} - {songData[currentIndex].album}</span>
+                                                <div className="flex flex-col min-w-0 justify-center text-left">
+                                                    <span className="text-white text-xs md:text-[13px] font-semibold truncate leading-tight group-hover/info:text-[#1DB954] transition-colors">{songData[currentIndex].title}</span>
+                                                    <span className="text-[#9CA3AF] text-[10px] md:text-[11px] truncate leading-tight">{songData[currentIndex].artist} - {songData[currentIndex].album}</span>
                                                 </div>
                                             </a>
 
                                             {/* Timer Status Icon (Pulse) */}
                                             <div className="flex items-center gap-3 flex-shrink-0">
-                                                <span className="text-[#9CA3AF] text-xs font-mono tabular-nums">{formatTime(currentTime)} / {formatTime(duration)}</span>
-                                                <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center">
-                                                    <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                                                <span className="text-[#9CA3AF] text-[10px] md:text-xs font-mono tabular-nums">{formatTime(currentTime)} / {formatTime(duration)}</span>
+                                                <div className="w-4 h-4 md:w-5 md:h-5 rounded-full bg-white/10 flex items-center justify-center">
+                                                    <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-white animate-pulse" />
                                                 </div>
                                             </div>
                                         </div>
@@ -456,7 +456,7 @@ export default function MusicPlayer() {
                                 </div>
 
                                 {/* Right: Auxiliary Controls (Functional) */}
-                                <div className="flex items-center gap-5 pr-6 pl-2 py-2 md:py-0 order-3 md:order-3 text-[#E5E7EB]">
+                                <div className="flex items-center justify-center md:justify-end gap-5 pr-2 pl-2 md:pl-2 md:pr-6 py-2 md:py-0 order-3 md:order-3 text-[#E5E7EB] w-1/2 md:w-auto">
                                     {/* Playlist Toggle */}
                                     <button
                                         onClick={() => setShowPlaylist(!showPlaylist)}

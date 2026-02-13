@@ -86,6 +86,7 @@ const VideoElement = styled.video`
 
   @media (max-width: 767px) {
     display: block;
+    filter: blur(3px);
   }
 `;
 
@@ -348,6 +349,21 @@ const HeroWithAnimation: React.FC = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Auto-rotate words on mobile
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const words = ["Identity", "Systems", "Strategy"];
+    let currentIndex = 0;
+
+    const interval = setInterval(() => {
+      currentIndex = (currentIndex + 1) % words.length;
+      setCurrentWord(words[currentIndex]);
+    }, 2000); // Change word every 2 seconds
+
+    return () => clearInterval(interval);
+  }, [isMobile]);
+
   useEffect(() => {
     const section = sectionRef.current;
     if (!section || !canvasRef.current || !stickyRef.current) return;
@@ -393,32 +409,47 @@ const HeroWithAnimation: React.FC = () => {
         scrollTrigger: {
           trigger: section,
           start: 'top top',
-          end: '+=3000', // Scroll distance for smooth animation
-          scrub: 0.5,
-          pin: true, // Pin the section while scrolling
-          pinSpacing: true, // Keep spacing so content below doesn't scroll
+          end: isMobile ? '+=100' : '+=3000', // Short scroll on mobile, long on desktop
+          scrub: isMobile ? false : 0.5, // No scrub on mobile
+          pin: isMobile ? false : true, // No pinning on mobile
+          pinSpacing: isMobile ? false : true, // No pin spacing on mobile
           onUpdate: (self: any) => {
             const progress = self.progress;
 
-            // Update text based on progress
-            if (progress < 0.3) {
-              setCurrentWord("Identity");
-              setDimOpacity(0);
-              setShowHero(true);
-            } else if (progress < 0.6) {
-              setCurrentWord("Systems");
-              setDimOpacity(0);
-              setShowHero(true);
-            } else if (progress < 0.9) {
-              setCurrentWord("Strategy");
-              setDimOpacity(0);
-              setShowHero(true);
+            // Only update text based on scroll on desktop
+            if (!isMobile) {
+              // Update text based on progress
+              if (progress < 0.3) {
+                setCurrentWord("Identity");
+                setDimOpacity(0);
+                setShowHero(true);
+              } else if (progress < 0.6) {
+                setCurrentWord("Systems");
+                setDimOpacity(0);
+                setShowHero(true);
+              } else if (progress < 0.9) {
+                setCurrentWord("Strategy");
+                setDimOpacity(0);
+                setShowHero(true);
+              } else {
+                // Quick fade in final 5-10%
+                const fadeProgress = Math.min((progress - 0.95) / 0.05, 1);
+                setDimOpacity(fadeProgress);
+                if (progress > 0.98) {
+                  setShowHero(false);
+                }
+              }
             } else {
-              // Quick fade in final 5-10%
-              const fadeProgress = Math.min((progress - 0.95) / 0.05, 1);
-              setDimOpacity(fadeProgress);
-              if (progress > 0.98) {
-                setShowHero(false);
+              // On mobile, just handle the fade/hero visibility
+              if (progress < 0.9) {
+                setDimOpacity(0);
+                setShowHero(true);
+              } else {
+                const fadeProgress = Math.min((progress - 0.95) / 0.05, 1);
+                setDimOpacity(fadeProgress);
+                if (progress > 0.98) {
+                  setShowHero(false);
+                }
               }
             }
           }
@@ -446,7 +477,7 @@ const HeroWithAnimation: React.FC = () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
       sequence.scrollTrigger?.kill();
     };
-  }, [dimensions]);
+  }, [dimensions, isMobile]);
 
   // Animate the changing word
   useEffect(() => {

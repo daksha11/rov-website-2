@@ -28,28 +28,28 @@ const SoundHero: React.FC = () => {
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-12 md:gap-6 pb-12">
                         {/* Left side - Tagline */}
                         <div className="flex flex-col">
-                            <div className="flex items-center gap-3">
-                                <span className="text-[#FFF4E3] text-4xl md:text-5xl lg:text-6xl font-bold italic tracking-wide" style={{ fontFamily: 'Norwige, sans-serif' }}>
+                            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                                <span className="text-[#FFF4E3] text-3xl md:text-5xl lg:text-6xl font-bold italic tracking-wide" style={{ fontFamily: 'Norwige, sans-serif' }}>
                                     RAW.
                                 </span>
 
-                                <div className="relative flex items-center">
+                                <div className="relative flex items-center scale-90 md:scale-100 origin-left">
                                     {/* Refined Pill */}
                                     <span
-                                        className="bg-[#8B7355] text-[#FFF4E3] text-4xl md:text-5xl lg:text-6xl font-bold italic px-6 py-2 rounded-2xl tracking-wide relative z-20"
+                                        className="bg-[#8B7355] text-[#FFF4E3] text-3xl md:text-5xl lg:text-6xl font-bold italic px-4 md:px-6 py-1 md:py-2 rounded-2xl tracking-wide relative z-20"
                                         style={{ fontFamily: 'Norwige, sans-serif' }}
                                     >
                                         REFINED.
                                     </span>
                                     {/* Filled Brown Circle - Adjusted margin for separation */}
-                                    <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#8B7355] -ml-4 relative z-10" />
+                                    <div className="w-10 h-10 md:w-16 md:h-16 rounded-full bg-[#8B7355] -ml-3 md:-ml-4 relative z-10" />
 
                                     {/* Outlined White Circle */}
-                                    <div className="w-14 h-14 md:w-16 md:h-16 rounded-full border-2 border-[#FFF4E3] -ml-8 relative z-30" />
+                                    <div className="w-10 h-10 md:w-16 md:h-16 rounded-full border-2 border-[#FFF4E3] -ml-6 md:-ml-8 relative z-30" />
                                 </div>
                             </div>
 
-                            <span className="text-[#FFF4E3] text-4xl md:text-5xl lg:text-6xl font-bold italic tracking-wide mt-2" style={{ fontFamily: 'Norwige, sans-serif' }}>
+                            <span className="text-[#FFF4E3] text-3xl md:text-5xl lg:text-6xl font-bold italic tracking-wide mt-2" style={{ fontFamily: 'Norwige, sans-serif' }}>
                                 RELEASED.
                             </span>
                         </div>
