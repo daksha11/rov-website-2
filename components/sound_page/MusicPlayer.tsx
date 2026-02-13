@@ -17,52 +17,58 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const songData = [
     {
+        title: "GIVE ME YOUR LOVE",
+        artist: "Lorenzo Barns",
+        album: "Single",
+        beforeSrc: "/audio/beforemp3/gimmeyourlovebefore.mp3",
+        afterSrc: "/audio/aftermp3/gimmeyourloveafter.mp3",
+        cover: "/audio/covers/gimmeyourlovecober.webp",
+        spotifyUrl: "https://open.spotify.com/track/38SRgJ4K6R1KaeX9YHRZVn?si=3082b3830a2c4c67"
+    },
+    {
+        title: "TALK MY SHIT",
+        artist: "DDK",
+        album: "Single",
+        beforeSrc: "/audio/beforemp3/talkmyshitbefore.mp3",
+        afterSrc: "/audio/aftermp3/talkmyshitafter.mp3",
+        cover: "/audio/covers/talkmyshitcover.webp",
+        spotifyUrl: "https://open.spotify.com/track/5Wdqmd6QqHFivymlHbMWg7?si=3d15de75aa1b4b78"
+    },
+    {
         title: "MARTYR",
         artist: "DDK",
-        album: "Vision",
-        beforeSrc: "/audio/before/09.wav",
-        afterSrc: "/audio/after/09.wav",
-        cover: "/assets/songCovers/01.webp"
+        album: "Single",
+        beforeSrc: "/audio/beforemp3/martyrbefore.mp3",
+        afterSrc: "/audio/aftermp3/martyrafter.mp3",
+        cover: "/audio/covers/martyrcover.webp",
+        spotifyUrl: "https://open.spotify.com/track/2CDURlegHo60zais4SyNbN?si=257a4a94facc48d2"
     },
     {
-        title: "BE MY TINE",
+        title: "YKWIW",
+        artist: "Basu",
+        album: "Single",
+        beforeSrc: "/audio/beforemp3/ykwiwbefore.mp3",
+        afterSrc: "/audio/aftermp3/ykwiwafter.mp3",
+        cover: "/audio/covers/ykwiwcover.png",
+        spotifyUrl: "https://open.spotify.com/track/5lsskTv7eUZYIbLTEtq1cz?si=4b9532cacbf24733"
+    },
+    {
+        title: "GUAP",
+        artist: "Dafes",
+        album: "Single",
+        beforeSrc: "/audio/beforemp3/guapbefore.mp3",
+        afterSrc: "/audio/aftermp3/guapafter.mp3",
+        cover: "/audio/covers/guapcover.jpg",
+        spotifyUrl: "https://open.spotify.com/track/0xVvZTr5prKOC6Fv9aIfwU?si=59e9ab9eaba94806"
+    },
+    {
+        title: "BACK IN TIME",
         artist: "Sam Suen",
-        album: "Reflections",
-        beforeSrc: "/audio/before/01.wav",
-        afterSrc: "/audio/after/01.wav",
-        cover: "/assets/songCovers/02.webp"
-    },
-    {
-        title: "YOU COULD BE MY WOMEN",
-        artist: "Basu",
-        album: "Raw Soul",
-        beforeSrc: "/audio/before/14.wav",
-        afterSrc: "/audio/after/14.wav",
-        cover: "/assets/songCovers/03.webp"
-    },
-    {
-        title: "Kiss of Death",
-        artist: "Sniper J",
-        album: "Midnight",
-        beforeSrc: "/audio/before/07.wav",
-        afterSrc: "/audio/after/07.wav",
-        cover: "/assets/songCovers/07.webp"
-    },
-    {
-        title: "ONE AT A TIME",
-        artist: "Basu",
-        album: "Studio Sessions",
-        beforeSrc: "/audio/before/08.wav",
-        afterSrc: "/audio/after/08.wav",
-        cover: "/assets/songCovers/13.webp"
-    },
-    {
-        title: "UP LATE UP EARLY",
-        artist: "Basu",
-        album: "Dreamland",
-        beforeSrc: "/audio/before/12.wav",
-        afterSrc: "/audio/after/12.wav",
-        cover: "/assets/songCovers/14.webp"
+        album: "Single",
+        beforeSrc: "/audio/beforemp3/backintimebefore.mp3",
+        afterSrc: "/audio/aftermp3/backintimeafter.mp3",
+        cover: "/audio/covers/backintimecover.jpg",
+        spotifyUrl: "https://open.spotify.com/track/7MC8JAS25hJWvFXClSzFND?si=17a6d47209d14fd6"
     }
 ];
 
@@ -84,6 +90,7 @@ export default function MusicPlayer() {
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const carouselRef = useRef<HTMLDivElement>(null);
     const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+    const savedTimeRef = useRef<number>(0);
 
     const togglePlay = () => {
         if (!audioRef.current) return;
@@ -133,10 +140,20 @@ export default function MusicPlayer() {
         setCurrentIndex((prev) => (prev - 1 + songData.length) % songData.length);
     };
 
+    const toggleBeforeAfter = (newValue: boolean) => {
+        // Save current playback position before switching
+        if (audioRef.current && audioRef.current.currentTime > 0) {
+            savedTimeRef.current = audioRef.current.currentTime;
+        }
+        setIsAfter(newValue);
+    };
+
     // Audio Logic
     useEffect(() => {
         const audio = audioRef.current;
         if (!audio) return;
+
+        const wasPlaying = isPlaying;
 
         // Initialize volume
         audio.volume = volume;
@@ -154,22 +171,28 @@ export default function MusicPlayer() {
             nextSong();
         };
 
-        const handleLoadedMetadata = () => {
+        const handleLoadedData = () => {
             setDuration(audio.duration);
+
+            // Restore playback position after new audio loads
+            if (savedTimeRef.current > 0) {
+                audio.currentTime = savedTimeRef.current;
+            }
+
+            // Resume playback if it was playing before
+            if (wasPlaying) {
+                audio.play().catch(() => setIsPlaying(false));
+            }
         };
 
         audio.addEventListener("timeupdate", updateProgress);
         audio.addEventListener("ended", handleEnded);
-        audio.addEventListener("loadedmetadata", handleLoadedMetadata);
-
-        if (isPlaying) {
-            audio.play().catch(() => setIsPlaying(false));
-        }
+        audio.addEventListener("loadeddata", handleLoadedData);
 
         return () => {
             audio.removeEventListener("timeupdate", updateProgress);
             audio.removeEventListener("ended", handleEnded);
-            audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+            audio.removeEventListener("loadeddata", handleLoadedData);
         };
     }, [currentIndex, isAfter]);
 
@@ -228,6 +251,14 @@ export default function MusicPlayer() {
         return `${minutes}:${seconds}`;
     };
 
+    const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newTime = parseFloat(e.target.value);
+        if (audioRef.current) {
+            audioRef.current.currentTime = newTime;
+            setCurrentTime(newTime);
+        }
+    };
+
     return (
         <div className="w-full flex flex-col items-center bg-black">
             <div className="w-full max-w-[95%] md:max-w-7xl px-6 md:px-12 text-left py-12 md:py-16">
@@ -254,7 +285,7 @@ export default function MusicPlayer() {
                         {/* Simple Top Toggle (No Glassmorphism headers) */}
                         <div className="flex bg-black/40 rounded-full p-1 mb-12 border border-white/10">
                             <button
-                                onClick={() => setIsAfter(false)}
+                                onClick={() => toggleBeforeAfter(false)}
                                 className={`px-8 py-2 rounded-full text-sm font-bold tracking-widest uppercase transition-all duration-300 ${!isAfter
                                     ? "bg-white/20 backdrop-blur-md text-white shadow-lg border border-white/10"
                                     : "text-white/60 hover:text-white"
@@ -263,7 +294,7 @@ export default function MusicPlayer() {
                                 Before
                             </button>
                             <button
-                                onClick={() => setIsAfter(true)}
+                                onClick={() => toggleBeforeAfter(true)}
                                 className={`px-8 py-2 rounded-full text-sm font-bold tracking-widest uppercase transition-all duration-300 ${isAfter
                                     ? "bg-white/20 backdrop-blur-md text-white shadow-lg border border-white/10"
                                     : "text-white/60 hover:text-white"
@@ -297,10 +328,17 @@ export default function MusicPlayer() {
 
                         {/* Metadata Pill (Reference: Small, Dark, Below Active Card) */}
                         <div className="flex justify-center mb-12 relative z-20 mt-[-20px]">
-                            <div className="px-8 py-2 rounded-full bg-[#000000]/60 backdrop-blur-xl border border-white/5 flex flex-col items-center shadow-lg transition-all hover:bg-[#000000]/80">
-                                <h3 className="text-white text-sm font-bold tracking-wide leading-tight">{songData[currentIndex].title}</h3>
-                                <p className="text-[#9CA3AF] text-[11px] font-medium leading-tight mt-0.5">{songData[currentIndex].artist}</p>
-                            </div>
+                            <a
+                                href={songData[currentIndex].spotifyUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-8 py-2 rounded-full bg-[#000000]/60 backdrop-blur-xl border border-white/5 flex items-center gap-3 shadow-lg transition-all hover:bg-[#000000]/80 group hover:scale-105 cursor-pointer"
+                            >
+                                <div className="flex flex-col items-center">
+                                    <h3 className="text-white text-sm font-bold tracking-wide leading-tight group-hover:text-[#1DB954] transition-colors">{songData[currentIndex].title}</h3>
+                                    <p className="text-[#9CA3AF] text-[11px] font-medium leading-tight mt-0.5">{songData[currentIndex].artist}</p>
+                                </div>
+                            </a>
                         </div>
 
                         {/* Playlist Popover (Conditional) */}
@@ -351,37 +389,67 @@ export default function MusicPlayer() {
                                 </div>
 
                                 {/* Center: Inner Dark Pill (Metadata & Status) */}
-                                <div className="flex-1 w-full md:w-auto bg-[#181818] rounded-full h-14 flex items-center px-2 pr-6 relative group overflow-hidden order-1 md:order-2">
+                                <div className="flex-1 w-full md:w-auto h-20 relative group order-1 md:order-2">
 
-                                    {/* Progress Bar Background (Subtle) */}
-                                    <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/5">
-                                        <motion.div
-                                            className="h-full bg-white/30"
-                                            initial={{ width: 0 }}
-                                            animate={{ width: `${(currentTime / (duration || 1)) * 100}%` }}
-                                            transition={{ ease: "linear", duration: 0.1 }}
+                                    {/* 1. Background & Visual Track Layer - CLIPPED to shape */}
+                                    <div className="absolute inset-0 rounded-[1.5rem] bg-[#181818] overflow-hidden">
+                                        {/* Track Background */}
+                                        <div className="absolute top-0 left-0 right-0 h-1.5 bg-white/10 w-full">
+                                            {/* Progress Fill */}
+                                            <div
+                                                className="absolute h-full bg-gradient-to-r from-[#EA9A61] to-[#B16937] transition-all duration-100 ease-linear"
+                                                style={{ width: `${(currentTime / (duration || 1)) * 100}%` }}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* 2. Interactive Slider Layer - UNCLIPPED for Thumb */}
+                                    <div className="absolute top-0 left-0 right-0 h-1.5 w-full cursor-pointer group/slider z-20 rounded-[1.5rem]">
+                                        {/* Interactive Hover Area & Input */}
+                                        <div className="absolute -top-2 -bottom-2 inset-x-0 flex items-center group-hover/slider:h-4 transition-all">
+                                            <input
+                                                type="range"
+                                                min="0"
+                                                max={duration || 0}
+                                                step="0.1"
+                                                value={currentTime}
+                                                onChange={handleSeek}
+                                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                            />
+                                        </div>
+
+                                        {/* Thumb indicator */}
+                                        <div
+                                            className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-lg opacity-0 group-hover/slider:opacity-100 transition-opacity pointer-events-none"
+                                            style={{ left: `${(currentTime / (duration || 1)) * 100}%`, transform: 'translate(-50%, -50%)' }}
                                         />
                                     </div>
 
-                                    <div className="flex items-center justify-between w-full gap-4">
-                                        {/* Art + Info */}
-                                        <div className="flex items-center gap-3 min-w-0">
-                                            <div className="w-10 h-10 rounded-md overflow-hidden flex-shrink-0 relative">
-                                                <Image src={songData[currentIndex].cover} fill className="object-cover" alt="art" sizes="40px" priority />
-                                                {/* Hover Overlay for Inner Pill */}
-                                                <div className="absolute inset-0 bg-black/20 hidden group-hover:block" />
-                                            </div>
-                                            <div className="flex flex-col min-w-0 justify-center">
-                                                <span className="text-white text-[13px] font-semibold truncate leading-tight">{songData[currentIndex].title}</span>
-                                                <span className="text-[#9CA3AF] text-[11px] truncate leading-tight">{songData[currentIndex].artist} - {songData[currentIndex].album}</span>
-                                            </div>
-                                        </div>
+                                    {/* 3. Content Layer - Relative to sit above background */}
+                                    <div className="relative h-full flex flex-col justify-center px-4 z-10 pointer-events-none">
+                                        <div className="flex items-center justify-between w-full gap-4 mt-2 pointer-events-auto">
+                                            {/* Art + Info (Link to Spotify) */}
+                                            <a
+                                                href={songData[currentIndex].spotifyUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-3 min-w-0 group/info cursor-pointer hover:opacity-80 transition-opacity"
+                                            >
+                                                <div className="w-10 h-10 rounded-md overflow-hidden flex-shrink-0 relative">
+                                                    <Image src={songData[currentIndex].cover} fill className="object-cover" alt="art" sizes="40px" priority />
+                                                </div>
+                                                <div className="flex flex-col min-w-0 justify-center">
+                                                    <span className="text-white text-[13px] font-semibold truncate leading-tight group-hover/info:text-[#1DB954] transition-colors">{songData[currentIndex].title}</span>
+                                                    <span className="text-[#9CA3AF] text-[11px] truncate leading-tight">{songData[currentIndex].artist} - {songData[currentIndex].album}</span>
+                                                </div>
+                                            </a>
 
-                                        {/* Timer Status Icon (Pulse) */}
-                                        <div className="flex items-center gap-3 flex-shrink-0">
-                                            <span className="text-[#9CA3AF] text-xs font-mono tabular-nums">{formatTime(currentTime)}</span>
-                                            <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center">
-                                                <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                                            {/* Timer Status Icon (Pulse) */}
+                                            <div className="flex items-center gap-3 flex-shrink-0">
+                                                <span className="text-[#9CA3AF] text-xs font-mono tabular-nums">{formatTime(currentTime)} / {formatTime(duration)}</span>
+                                                <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center">
+                                                    <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

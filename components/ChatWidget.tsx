@@ -15,7 +15,11 @@ export default function ChatWidget() {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [sessionId] = useState(() => crypto.randomUUID());
+
+  // Helper function to generate IDs (works in non-secure contexts like localhost on mobile)
+  const generateId = () => Math.random().toString(36).substring(2, 9) + Date.now().toString(36);
+
+  const [sessionId] = useState(() => generateId());
   const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -51,7 +55,7 @@ export default function ChatWidget() {
     const trimmed = messageText || input.trim();
     if (!trimmed || loading) return;
 
-    const userMsg: Msg = { id: crypto.randomUUID(), role: "user", text: trimmed };
+    const userMsg: Msg = { id: generateId(), role: "user", text: trimmed };
     setMessages((m) => [...m, userMsg]);
     setInput("");
     setLoading(true);
@@ -73,14 +77,14 @@ export default function ChatWidget() {
         (typeof data === "string" ? data : JSON.stringify(data));
 
       const botMsg: Msg = {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: "assistant",
         text: reply,
       };
       setMessages((m) => [...m, botMsg]);
     } catch (err: any) {
       const botErr: Msg = {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: "assistant",
         text: `Error: ${err.message || "Failed to receive response"}`,
       };
