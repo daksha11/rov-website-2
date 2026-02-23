@@ -1,6 +1,6 @@
 "use client";
 
-import { Instagram, Linkedin, Mail, Menu, X } from "lucide-react";
+import { Instagram, Linkedin, Mail, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
@@ -14,7 +14,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
 
   const links = [
     { title: "home", to: "/", isLink: true },
-    { title: "services", to: "/#services", isLink: true },
+    { title: "services", to: null, isLink: false },
     { title: "contact us", to: "https://calendly.com/rangeofviewmusic/30min", isLink: true },
   ];
 
@@ -53,7 +53,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
                 </Link>
               ) : (
                 <button
-                  onClick={() => link.to ? scrollToSection(link.to) : setModalOpen(true)}
+                  onClick={() => link.title === "services" ? setMenuOpen(true) : (link.to ? scrollToSection(link.to) : setModalOpen(true))}
                   className="px-1.5 py-1.5 text-white/80 hover:text-white transition-colors cursor-pointer text-[10px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
                   style={{ fontFamily: "Futura, sans-serif" }}
                 >
@@ -66,17 +66,16 @@ export function NavigationDock({ className }: NavigationDockProps) {
             </div>
           ))}
 
-          {/* Menu Button with Hamburger Icon */}
+          {/* CTRL A Link */}
           <div className="flex items-center">
             <span className="text-white/30 text-[10px] md:text-base mx-0.5">|</span>
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="px-1.5 py-1.5 text-white/80 hover:text-white transition-colors cursor-pointer flex items-center gap-1"
+            <Link
+              href="/ctrla"
+              className="px-1.5 py-1.5 text-white/80 hover:text-white transition-colors cursor-pointer text-[10px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
               style={{ fontFamily: "Futura, sans-serif" }}
             >
-              <Menu className="w-3 h-3 md:w-5 md:h-5" />
-              <span className="text-[10px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap">Menu</span>
-            </button>
+              CTRL A
+            </Link>
           </div>
         </nav>
 

@@ -175,7 +175,7 @@ const Footer = () => {
             loop
             muted
             playsInline
-            className="hidden md:block md:h-[140px] w-auto object-contain md:ml-auto md:mr-16 md:-mt-4"
+            className="hidden md:block md:h-[140px] w-auto object-contain md:ml-auto md:mr-36 md:-mt-4"
           />
         </div>
       </div>

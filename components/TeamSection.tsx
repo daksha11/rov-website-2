@@ -23,7 +23,7 @@ interface TeamMember {
 const teamMembers: TeamMember[] = [
     {
         id: 1,
-        image: "/teammembers/basutm.png",
+        image: "/teammembers/basutm2.png",
         category: "Creative",
         name: "Basu",
         role: "FOUNDER & CREATIVE DIRECTOR",
@@ -111,7 +111,7 @@ const teamMembers: TeamMember[] = [
     },
     {
         id: 9,
-        image: "/teammembers/basutm.png",
+        image: "/teammembers/basutm2.png",
         category: "Tech",
         name: "Basu",
         role: "FOUNDER & CREATIVE DIRECTOR",
