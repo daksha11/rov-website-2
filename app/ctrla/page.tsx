@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import TiltedCard from "@/components/TiltedCard";
 import DigiMagCtrlA from "@/components/DigiMagCtrlA";
 import CtrlAFooter from "@/components/CtrlAFooter";
+import styled from "styled-components";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -174,6 +175,94 @@ function VideoShowcaseSection() {
   );
 }
 
+const StyledHeroBackground = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background-color: #000000;
+  overflow: hidden;
+
+  .glow-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    opacity: 0.6;
+    z-index: 1;
+  }
+
+  .glow-1 {
+    top: -10%;
+    left: -10%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(234, 154, 97, 0.3) 0%, transparent 70%);
+  }
+
+  .glow-2 {
+    bottom: -10%;
+    right: -10%;
+    width: 50%;
+    height: 50%;
+    background: radial-gradient(circle, rgba(177, 105, 55, 0.2) 0%, transparent 70%);
+  }
+
+  .void-pulse {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(10, 10, 10, 0.3);
+    filter: url(#void-texture);
+    position: relative;
+    z-index: 2;
+  }
+
+  .orbit-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.5) 100%);
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .texture-filter {
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+`;
+
+const HeroBackground = () => {
+  return (
+    <StyledHeroBackground>
+      {/* Background Glows */}
+      <div className="glow-blob glow-1" />
+      <div className="glow-blob glow-2" />
+
+      {/* Texture Layer */}
+      <div className="void-pulse">
+        <span className="orbit-overlay" />
+        <svg className="texture-filter">
+          <filter id="void-texture">
+            <feTurbulence result="noise" numOctaves={4} baseFrequency="0.015" type="turbulence" />
+            <feGaussianBlur result="blur" stdDeviation={0.5} in="noise" />
+            <feSpecularLighting result="specular" lightingColor="#EA9A61" specularExponent={40} specularConstant={0.5} surfaceScale={2} in="blur">
+              <feDistantLight elevation={45} azimuth={90} />
+            </feSpecularLighting>
+            <feComposite result="lit" operator="over" in2="SourceGraphic" in="specular" />
+            <feBlend mode="screen" in2="lit" in="SourceGraphic" />
+          </filter>
+        </svg>
+      </div>
+    </StyledHeroBackground>
+  );
+}
+
 
 export default function CtrlAPage() {
   // Reset scroll on mount
@@ -201,13 +290,14 @@ export default function CtrlAPage() {
           position: 'relative',
           width: '100%',
           height: '100vh',
-          backgroundColor: '#FFFFFF',
+          backgroundColor: '#000000',
           overflow: 'hidden',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
+        <HeroBackground />
         {/* White rounded squares positioned around the page */}
 
         {/* Top-left square */}
@@ -441,7 +531,7 @@ export default function CtrlAPage() {
               fontSize: '120px',
               fontWeight: '900',
               fontStyle: 'italic',
-              color: '#000000',
+              color: '#FFFFFF',
               margin: 0,
               lineHeight: '1',
               letterSpacing: '-2px',
@@ -456,10 +546,11 @@ export default function CtrlAPage() {
             style={{
               fontSize: '28px',
               fontWeight: '700',
-              color: '#2C3E50',
+              color: '#FFF4E3',
               margin: 0,
               letterSpacing: '0.5px',
               fontFamily: 'Norwige',
+              opacity: 0.8,
             }}
           >
             Small Description

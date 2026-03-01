@@ -1,4 +1,5 @@
 // components/ChatWidget.tsx
+// Version: 2.0 - Enhanced markdown link parsing with debugging
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -7,6 +8,132 @@ import { MessageCircle, X } from "lucide-react";
 
 type Role = "user" | "assistant";
 type Msg = { id: string; role: Role; text: string };
+
+// Component to render text with clickable links and markdown formatting
+function MessageText({ text }: { text: string }) {
+  const parseText = (input: string): (string | JSX.Element)[] => {
+    const elements: (string | JSX.Element)[] = [];
+    let remaining = input;
+    let keyCounter = 0;
+
+    console.log("🔍 MessageText parsing:", JSON.stringify(input.substring(0, 200)));
+
+    // Process the text until nothing is left
+    while (remaining.length > 0) {
+      // Try to match patterns in priority order
+
+      // 1. Bold markdown link: **[text](url)** or **[text] (url)**
+      const boldLinkMatch = remaining.match(/^\*\*\[([^\]]+)\]\s*\(([^)]+)\)\*\*/);
+      if (boldLinkMatch) {
+        console.log("✅ Found bold link:", boldLinkMatch[1], "->", boldLinkMatch[2]);
+        elements.push(
+          <strong key={`bl-${keyCounter++}`}>
+            <a
+              href={boldLinkMatch[2]}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-300 hover:text-blue-200 underline transition-colors font-semibold"
+            >
+              {boldLinkMatch[1]}
+            </a>
+          </strong>
+        );
+        remaining = remaining.slice(boldLinkMatch[0].length);
+        continue;
+      }
+
+      // 2. Regular markdown link: [text](url) or [text] (url) - including newlines
+      const linkMatch = remaining.match(/^\[([^\]]+)\]\s*\(([^)]+)\)/);
+      if (linkMatch) {
+        console.log("✅ Found link:", linkMatch[1], "->", linkMatch[2]);
+        elements.push(
+          <a
+            key={`l-${keyCounter++}`}
+            href={linkMatch[2]}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-300 hover:text-blue-200 underline transition-colors"
+          >
+            {linkMatch[1]}
+          </a>
+        );
+        remaining = remaining.slice(linkMatch[0].length);
+        continue;
+      }
+
+      // 3. HTML link: <a href="url">text</a>
+      const htmlLinkMatch = remaining.match(/^<a\s+href=["']([^"']+)["'][^>]*>([^<]+)<\/a>/i);
+      if (htmlLinkMatch) {
+        elements.push(
+          <a
+            key={`hl-${keyCounter++}`}
+            href={htmlLinkMatch[1]}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-300 hover:text-blue-200 underline transition-colors"
+          >
+            {htmlLinkMatch[2]}
+          </a>
+        );
+        remaining = remaining.slice(htmlLinkMatch[0].length);
+        continue;
+      }
+
+      // 4. Plain URL: https://...
+      const urlMatch = remaining.match(/^(https?:\/\/[^\s<)]+)/);
+      if (urlMatch) {
+        elements.push(
+          <a
+            key={`u-${keyCounter++}`}
+            href={urlMatch[1]}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-300 hover:text-blue-200 underline transition-colors"
+          >
+            {urlMatch[1]}
+          </a>
+        );
+        remaining = remaining.slice(urlMatch[0].length);
+        continue;
+      }
+
+      // 5. Bold text: **text**
+      const boldMatch = remaining.match(/^\*\*([^*]+)\*\*/);
+      if (boldMatch) {
+        elements.push(
+          <strong key={`b-${keyCounter++}`} className="font-semibold">
+            {boldMatch[1]}
+          </strong>
+        );
+        remaining = remaining.slice(boldMatch[0].length);
+        continue;
+      }
+
+      // No pattern matched, consume one character as plain text
+      const nextSpecialChar = remaining.search(/[\[*<h]/);
+      if (nextSpecialChar === -1) {
+        // No more special characters, add the rest as text
+        if (remaining.length > 0) {
+          elements.push(remaining);
+        }
+        break;
+      } else if (nextSpecialChar === 0) {
+        // Special char at start but didn't match pattern, skip it
+        elements.push(remaining[0]);
+        remaining = remaining.slice(1);
+      } else {
+        // Add text up to the next special character
+        elements.push(remaining.slice(0, nextSpecialChar));
+        remaining = remaining.slice(nextSpecialChar);
+      }
+    }
+
+    return elements;
+  };
+
+  const result = parseText(text);
+  return <>{result}</>;
+}
 
 export default function ChatWidget() {
   const pathname = usePathname();
@@ -186,7 +313,7 @@ export default function ChatWidget() {
                     }`}
                   style={{ fontFamily: "Futura, sans-serif" }}
                 >
-                  {m.text}
+                  <MessageText text={m.text} />
                 </div>
               </div>
             ))}
