@@ -11,25 +11,20 @@ type Msg = { id: string; role: Role; text: string };
 
 // Component to render text with clickable links and markdown formatting
 function MessageText({ text }: { text: string }) {
-  const parseText = (input: string): (string | JSX.Element)[] => {
+  // Parse inline elements (links, bold text) within a line
+  const parseInline = (input: string): (string | JSX.Element)[] => {
     const elements: (string | JSX.Element)[] = [];
     let remaining = input;
     let keyCounter = 0;
 
-    console.log("🔍 MessageText parsing:", JSON.stringify(input.substring(0, 200)));
-
-    // Process the text until nothing is left
     while (remaining.length > 0) {
-      // Try to match patterns in priority order
-
-      // 1. Bold markdown link: **[text](url)** or **[text] (url)**
+      // 1. Bold markdown link: **[text](url)**
       const boldLinkMatch = remaining.match(/^\*\*\[([^\]]+)\]\s*\(([^)]+)\)\*\*/);
       if (boldLinkMatch) {
-        console.log("✅ Found bold link:", boldLinkMatch[1], "->", boldLinkMatch[2]);
         elements.push(
           <strong key={`bl-${keyCounter++}`}>
             <a
-              href={boldLinkMatch[2]}
+              href={boldLinkMatch[2].trim()}
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-300 hover:text-blue-200 underline transition-colors font-semibold"
@@ -42,14 +37,13 @@ function MessageText({ text }: { text: string }) {
         continue;
       }
 
-      // 2. Regular markdown link: [text](url) or [text] (url) - including newlines
+      // 2. Regular markdown link: [text](url)
       const linkMatch = remaining.match(/^\[([^\]]+)\]\s*\(([^)]+)\)/);
       if (linkMatch) {
-        console.log("✅ Found link:", linkMatch[1], "->", linkMatch[2]);
         elements.push(
           <a
             key={`l-${keyCounter++}`}
-            href={linkMatch[2]}
+            href={linkMatch[2].trim()}
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-300 hover:text-blue-200 underline transition-colors"
@@ -67,7 +61,7 @@ function MessageText({ text }: { text: string }) {
         elements.push(
           <a
             key={`hl-${keyCounter++}`}
-            href={htmlLinkMatch[1]}
+            href={htmlLinkMatch[1].trim()}
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-300 hover:text-blue-200 underline transition-colors"
@@ -98,10 +92,10 @@ function MessageText({ text }: { text: string }) {
       }
 
       // 5. Bold text: **text**
-      const boldMatch = remaining.match(/^\*\*([^*]+)\*\*/);
+      const boldMatch = remaining.match(/^\*\*([^*\n]+)\*\*/);
       if (boldMatch) {
         elements.push(
-          <strong key={`b-${keyCounter++}`} className="font-semibold">
+          <strong key={`b-${keyCounter++}`} className="font-semibold text-white">
             {boldMatch[1]}
           </strong>
         );
@@ -109,20 +103,17 @@ function MessageText({ text }: { text: string }) {
         continue;
       }
 
-      // No pattern matched, consume one character as plain text
+      // No pattern matched, consume text until next special character
       const nextSpecialChar = remaining.search(/[\[*<h]/);
       if (nextSpecialChar === -1) {
-        // No more special characters, add the rest as text
         if (remaining.length > 0) {
           elements.push(remaining);
         }
         break;
       } else if (nextSpecialChar === 0) {
-        // Special char at start but didn't match pattern, skip it
         elements.push(remaining[0]);
         remaining = remaining.slice(1);
       } else {
-        // Add text up to the next special character
         elements.push(remaining.slice(0, nextSpecialChar));
         remaining = remaining.slice(nextSpecialChar);
       }
@@ -131,8 +122,64 @@ function MessageText({ text }: { text: string }) {
     return elements;
   };
 
-  const result = parseText(text);
-  return <>{result}</>;
+  // Parse the full text into block elements (headings, lists, paragraphs)
+  const lines = text.split('\n');
+  const blocks: JSX.Element[] = [];
+  let lineKey = 0;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Empty line - add spacing
+    if (line.trim() === '') {
+      blocks.push(<br key={`br-${lineKey++}`} />);
+      continue;
+    }
+
+    // Heading: ### Text or ## Text or # Text
+    const headingMatch = line.match(/^(#{1,3})\s+(.+)$/);
+    if (headingMatch) {
+      const level = headingMatch[1].length;
+      const headingText = headingMatch[2];
+      const HeadingTag = `h${Math.min(level + 2, 6)}` as keyof JSX.IntrinsicElements;
+
+      blocks.push(
+        <HeadingTag
+          key={`h-${lineKey++}`}
+          className={`font-bold text-white ${
+            level === 1 ? 'text-lg mt-4 mb-2' :
+            level === 2 ? 'text-base mt-3 mb-2' :
+            'text-sm mt-3 mb-1'
+          }`}
+        >
+          {parseInline(headingText)}
+        </HeadingTag>
+      );
+      continue;
+    }
+
+    // List item: - Text or * Text or + Text
+    const listMatch = line.match(/^[\-\*\+]\s+(.+)$/);
+    if (listMatch) {
+      const listText = listMatch[1];
+      blocks.push(
+        <div key={`li-${lineKey++}`} className="flex gap-2 my-1">
+          <span className="text-white/70 select-none flex-shrink-0">•</span>
+          <span className="text-white/90">{parseInline(listText)}</span>
+        </div>
+      );
+      continue;
+    }
+
+    // Regular paragraph
+    blocks.push(
+      <div key={`p-${lineKey++}`} className="text-white/90">
+        {parseInline(line)}
+      </div>
+    );
+  }
+
+  return <div className="space-y-1">{blocks}</div>;
 }
 
 export default function ChatWidget() {
@@ -142,12 +189,14 @@ export default function ChatWidget() {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [cooldown, setCooldown] = useState(false);
 
   // Helper function to generate IDs (works in non-secure contexts like localhost on mobile)
   const generateId = () => Math.random().toString(36).substring(2, 9) + Date.now().toString(36);
 
   const [sessionId] = useState(() => generateId());
   const listRef = useRef<HTMLDivElement>(null);
+  const lastRequestTime = useRef<number>(0);
 
   useEffect(() => {
     if (pathname === "/") {
@@ -180,7 +229,26 @@ export default function ChatWidget() {
 
   async function sendMessage(messageText?: string) {
     const trimmed = messageText || input.trim();
-    if (!trimmed || loading) return;
+    if (!trimmed || loading || cooldown) return;
+
+    // Rate limiting: minimum 2 seconds between requests
+    const now = Date.now();
+    const timeSinceLastRequest = now - lastRequestTime.current;
+    const minDelay = 2000; // 2 seconds
+
+    if (timeSinceLastRequest < minDelay) {
+      const waitTime = Math.ceil((minDelay - timeSinceLastRequest) / 1000);
+      const cooldownMsg: Msg = {
+        id: generateId(),
+        role: "assistant",
+        text: `Please wait ${waitTime} second${waitTime > 1 ? 's' : ''} before sending another message.`,
+      };
+      setMessages((m) => [...m, cooldownMsg]);
+      return;
+    }
+
+    lastRequestTime.current = now;
+    setCooldown(true);
 
     const userMsg: Msg = { id: generateId(), role: "user", text: trimmed };
     setMessages((m) => [...m, userMsg]);
@@ -218,6 +286,8 @@ export default function ChatWidget() {
       setMessages((m) => [...m, botErr]);
     } finally {
       setLoading(false);
+      // Reset cooldown after 2 seconds
+      setTimeout(() => setCooldown(false), minDelay);
     }
   }
 
@@ -342,7 +412,7 @@ export default function ChatWidget() {
               </div>
               <button
                 onClick={() => sendMessage()}
-                disabled={loading || !input.trim()}
+                disabled={loading || !input.trim() || cooldown}
                 className="h-[56px] px-6 flex items-center justify-center rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-white disabled:opacity-20 hover:bg-white/20 active:scale-95 transition-all shadow-lg"
               >
                 <span className="font-semibold text-sm" style={{ fontFamily: "Futura, sans-serif" }}>Send</span>
