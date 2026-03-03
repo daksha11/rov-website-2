@@ -32,225 +32,9 @@ export default function AIAutomationPage() {
                 zIndex: 1,
             }}></div>
 
-            {/* Grainy Overlay */}
-            <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E")`,
-                opacity: 0.6,
-                pointerEvents: 'none',
-                zIndex: 2,
-            }}></div>
+
 
             {/* Hero Section */}
-            <section style={{
-                minHeight: '100vh',
-                display: 'flex',
-                alignItems: 'flex-end',
-                position: 'relative',
-                zIndex: 3,
-                justifyContent: 'space-between',
-                padding: '0 8% 8% 8%',
-                gap: '80px',
-            }}
-                className="flex-col md:flex-row gap-8 md:gap-20 p-4 md:p-8 pb-12 md:pb-16"
-            >
-                {/* Left Side - Main Heading and CTA */}
-                <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8 }}
-                    style={{
-                        flex: 1,
-                        maxWidth: '650px',
-                    }}
-                    className="w-full md:max-w-[650px]"
-                >
-                    <h1 style={{
-                        fontFamily: 'Norwige, sans-serif',
-                        fontSize: 'clamp(2rem, 8vw, 7rem)',
-                        fontWeight: '900',
-                        color: 'white',
-                        lineHeight: '1.1',
-                        marginBottom: '40px',
-                        letterSpacing: '0.02em',
-                        textShadow: '0 0 20px rgba(255, 255, 255, 0.3)',
-                    }}
-                        className="text-left mb-6 md:mb-10"
-                    >
-                        AI SOLUTIONS THAT DRIVE YOUR{' '}
-                        <span style={{
-                            display: 'block',
-                            fontSize: 'clamp(2.5rem, 9vw, 8rem)',
-                            marginTop: '20px',
-                            animation: 'glowPulse 6s ease-in-out infinite',
-                        }}>
-                            BUSINESS FORWARD
-                        </span>
-
-                        <style jsx>{`
-                            @keyframes glowPulse {
-                                0%, 100% {
-                                    text-shadow: 
-                                        0 0 5px rgba(255, 255, 255, 0.2),
-                                        0 0 10px rgba(255, 255, 255, 0.1);
-                                }
-                                40%, 60% {
-                                    text-shadow: 
-                                        0 0 10px rgba(255, 255, 255, 0.8),
-                                        0 0 20px rgba(255, 255, 255, 0.6),
-                                        0 0 40px rgba(255, 255, 255, 0.4),
-                                        0 0 60px rgba(255, 255, 255, 0.3);
-                                }
-                            }
-                        `}</style>
-                    </h1>
-
-                    <Link href="https://calendly.com/rangeofviewmusic/30min" target="_blank">
-                        <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="project-button w-full md:w-auto"
-                            style={{
-                                fontFamily: 'Norwige, sans-serif',
-                                fontSize: 'clamp(0.9rem, 2vw, 1.3rem)',
-                                fontWeight: '600',
-                                color: 'white',
-                                background: 'transparent',
-                                border: '3px solid white',
-                                borderRadius: '60px',
-                                padding: '16px 40px',
-                                cursor: 'pointer',
-                                letterSpacing: '0.1em',
-                                textTransform: 'uppercase',
-                                transition: 'all 0.3s ease',
-                                position: 'relative',
-                                overflow: 'hidden',
-                            }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.background = 'white';
-                                e.currentTarget.style.color = 'black';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.background = 'transparent';
-                                e.currentTarget.style.color = 'white';
-                            }}
-                        >
-                            START MY PROJECT
-                        </motion.button>
-
-                        <style jsx>{`
-                            .project-button::before {
-                                content: '';
-                                position: absolute;
-                                top: 0;
-                                left: -100%;
-                                width: 100%;
-                                height: 100%;
-                                background: linear-gradient(
-                                    90deg,
-                                    transparent,
-                                    rgba(255, 255, 255, 0.3),
-                                    transparent
-                                );
-                                transition: left 0.6s ease;
-                            }
-
-                            .project-button:hover::before {
-                                left: 100%;
-                            }
-                        `}</style>
-                    </Link>
-                </motion.div>
-
-                {/* Right Side - Description Text */}
-                <motion.div
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                    style={{
-                        flex: 1,
-                        maxWidth: '500px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'flex-end',
-                        alignItems: 'flex-end',
-                        textAlign: 'right',
-                    }}
-                    className="w-full md:max-w-[500px] items-start md:items-end text-left md:text-right"
-                >
-                    <p style={{
-                        fontFamily: 'Roboto, sans-serif',
-                        fontSize: 'clamp(0.9rem, 1.5vw, 1.2rem)',
-                        lineHeight: '1.8',
-                        color: 'white',
-                        marginBottom: '40px',
-                        textAlign: 'justify',
-                    }}
-                        className="text-left md:text-justify mb-6 md:mb-10"
-                    >
-                        We build intelligent workflows that connect your tools, eliminate repetitive tasks, and let you focus on what actually grows your business.
-                    </p>
-
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '20px',
-                    }}
-                        className="w-full items-start md:items-end gap-3 md:gap-5"
-                    >
-                        <motion.h3
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4 }}
-                            style={{
-                                fontFamily: 'Norwige, sans-serif',
-                                fontSize: 'clamp(1rem, 2vw, 1.5rem)',
-                                fontWeight: '600',
-                                color: 'white',
-                                margin: 0,
-                            }}
-                        >
-                            Automate the chaos.
-                        </motion.h3>
-
-                        <motion.h3
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.5 }}
-                            style={{
-                                fontFamily: 'Norwige, sans-serif',
-                                fontSize: 'clamp(1rem, 2vw, 1.5rem)',
-                                fontWeight: '600',
-                                color: 'white',
-                                margin: 0,
-                            }}
-                        >
-                            Simple systems.
-                        </motion.h3>
-
-                        <motion.h3
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.6 }}
-                            style={{
-                                fontFamily: 'Norwige, sans-serif',
-                                fontSize: 'clamp(1rem, 2vw, 1.5rem)',
-                                fontWeight: '600',
-                                color: 'white',
-                                margin: 0,
-                            }}
-                        >
-                            Real results.
-                        </motion.h3>
-                    </div>
-                </motion.div>
-            </section>
-
-            {/* Technology Stack Section */}
             <section style={{
                 minHeight: '100vh',
                 display: 'flex',
@@ -259,107 +43,461 @@ export default function AIAutomationPage() {
                 justifyContent: 'center',
                 position: 'relative',
                 zIndex: 3,
-                padding: '80px 8%',
-            }}
-                className="py-12 md:py-20 px-4 md:px-8"
-            >
+                padding: '120px 8% 80px 8%',
+                textAlign: 'center',
+            }}>
+                {/* Pill Badge */}
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                    style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        background: 'rgba(126, 42, 12, 0.20)',
+                        border: '1px solid rgba(202, 53, 0, 0.30)',
+                        borderRadius: '9999px',
+                        padding: '8px 20px',
+                        marginBottom: '40px',
+                        backdropFilter: 'blur(8px)',
+                    }}
+                >
+                    <span style={{ color: '#E8914A', fontSize: '0.85rem' }}>✦</span>
+                    <span style={{
+                        fontFamily: 'Roboto, sans-serif',
+                        fontSize: '0.78rem',
+                        fontWeight: '600',
+                        color: '#E8914A',
+                        letterSpacing: '0.12em',
+                        textTransform: 'uppercase',
+                    }}>
+                        AI Systems &amp; Solutions
+                    </span>
+                </motion.div>
+
+                {/* Main Heading */}
+                <motion.h1
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.15 }}
+                    style={{
+                        fontFamily: 'TestSohne-Extrafett, Norwige, sans-serif',
+                        fontSize: 'clamp(2.8rem, 7vw, 6.5rem)',
+                        fontWeight: '800',
+                        color: 'white',
+                        lineHeight: '1.08',
+                        letterSpacing: '-0.01em',
+                        marginBottom: '0',
+                        maxWidth: '900px',
+                    }}
+                >
+                    AI that works the way
+                    <br />
+                    <span style={{
+                        fontFamily: 'Norwige, sans-serif',
+                        fontStyle: 'italic',
+                        fontWeight: 600,
+                        fontSize: '96px',
+                        lineHeight: '120px',
+                        display: 'block',
+                        textAlign: 'center',
+                        background: 'linear-gradient(90deg, #FF8904 0%, #F54900 100%)',
+                        backgroundClip: 'text',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                    }}>
+                        your brand thinks
+                    </span>
+                </motion.h1>
+
+                {/* Subtitle */}
+                <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.3 }}
+                    style={{
+                        fontFamily: 'Roboto, sans-serif',
+                        fontSize: 'clamp(0.95rem, 1.6vw, 1.1rem)',
+                        lineHeight: '1.7',
+                        color: 'rgba(255,255,255,0.65)',
+                        marginTop: '30px',
+                        marginBottom: '48px',
+                        maxWidth: '520px',
+                    }}
+                >
+                    Custom AI systems that save time and make money. Not generic chatbots. Intelligent solutions engineered for your unique workflow.
+                </motion.p>
+
+                {/* CTA Buttons */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.45 }}
+                    style={{
+                        display: 'flex',
+                        gap: '16px',
+                        flexWrap: 'wrap',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Link href="https://calendly.com/rangeofviewmusic/30min" target="_blank">
+                        <motion.button
+                            whileHover={{ scale: 1.04 }}
+                            whileTap={{ scale: 0.97 }}
+                            style={{
+                                fontFamily: 'Roboto, sans-serif',
+                                fontSize: '0.82rem',
+                                fontWeight: '700',
+                                color: 'white',
+                                background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
+                                border: 'none',
+                                borderRadius: '9999px',
+                                padding: '15px 32px',
+                                cursor: 'pointer',
+                                letterSpacing: '0.1em',
+                                textTransform: 'uppercase',
+                                transition: 'all 0.3s ease',
+                                boxShadow: '0 4px 24px rgba(160, 90, 40, 0.45)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                            }}
+                        >
+                            START YOUR AI JOURNEY <span style={{ fontSize: '1rem' }}>→</span>
+                        </motion.button>
+                    </Link>
+
+                    <Link href="#ai-in-action">
+                        <motion.button
+                            whileHover={{ scale: 1.04, background: 'rgba(255,255,255,0.08)' }}
+                            whileTap={{ scale: 0.97 }}
+                            style={{
+                                fontFamily: 'Roboto, sans-serif',
+                                fontSize: '0.82rem',
+                                fontWeight: '700',
+                                color: 'white',
+                                background: 'transparent',
+                                border: '1.5px solid rgba(255,255,255,0.55)',
+                                borderRadius: '999px',
+                                padding: '15px 32px',
+                                cursor: 'pointer',
+                                letterSpacing: '0.1em',
+                                textTransform: 'uppercase',
+                                transition: 'all 0.3s ease',
+                            }}
+                        >
+                            SEE AI IN ACTION
+                        </motion.button>
+                    </Link>
+                </motion.div>
+            </section>
+
+
+
+            {/* Project Strip CTA */}
+            <ProjectStrip />
+
+            {/* Measurable Results Section */}
+            <section style={{
+                position: 'relative',
+                zIndex: 3,
+                padding: '100px 8%',
+                textAlign: 'center',
+            }}>
+                {/* Heading */}
                 <motion.h2
-                    initial={{ opacity: 0, y: -30 }}
+                    initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
                     viewport={{ once: true }}
                     style={{
                         fontFamily: 'Norwige, sans-serif',
-                        fontSize: 'clamp(2rem, 5vw, 4rem)',
-                        fontWeight: '900',
+                        fontStyle: 'italic',
+                        fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
+                        fontWeight: 600,
                         color: 'white',
-                        textAlign: 'center',
-                        marginBottom: '80px',
-                        letterSpacing: '0.1em',
+                        marginBottom: '16px',
+                        lineHeight: 1.15,
                     }}
-                    className="mb-8 md:mb-16"
                 >
-                    TECHNOLOGY STACK
+                    Measurable Results, Real ROI
                 </motion.h2>
 
-                {/* Technology Grid */}
-                <div
+                <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.15 }}
+                    viewport={{ once: true }}
                     style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(5, 1fr)',
-                        gap: '30px',
-                        maxWidth: '1200px',
-                        width: '100%',
-                        padding: '40px',
-                        background: 'rgba(255, 255, 255, 0.02)',
-                        borderRadius: '30px',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
-                        backdropFilter: 'blur(10px)',
+                        fontFamily: 'Roboto, sans-serif',
+                        fontSize: 'clamp(0.9rem, 1.4vw, 1rem)',
+                        color: 'rgba(255,255,255,0.5)',
+                        marginBottom: '64px',
+                        maxWidth: '480px',
+                        margin: '0 auto 64px auto',
+                        lineHeight: 1.7,
                     }}
-                    className="grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 p-4 md:p-8 rounded-2xl md:rounded-3xl"
                 >
+                    Our clients see tangible returns within the first 90 days. Here's what AI implementation delivers.
+                </motion.p>
+
+                {/* Stats Grid */}
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(4, 1fr)',
+                    gap: '20px',
+                    maxWidth: '1100px',
+                    margin: '0 auto',
+                }}>
                     {[
-                        { name: 'n8n', icon: '∞' },
-                        { name: 'claude', icon: '✦' },
-                        { name: 'chatgpt', icon: '◎' },
-                        { name: 'perplexity', icon: '✺' },
-                        { name: 'langchain', icon: '🔗' },
-                        { name: 'notion', icon: 'N' },
-                        { name: 'serp api', icon: '◐' },
-                        { name: 'google cloud', icon: '☁' },
-                        { name: 'gmail', icon: 'M' },
-                        { name: 'pinecone', icon: '❋' },
-                    ].map((tech, index) => (
+                        {
+                            icon: '⏱',
+                            stat: '80%',
+                            label: 'Reduction in content production time',
+                            sub: 'What took 10 hours now takes 2',
+                        },
+                        {
+                            icon: '👥',
+                            stat: '3x',
+                            label: 'More customer interactions handled',
+                            sub: 'Without increasing headcount',
+                        },
+                        {
+                            icon: '$',
+                            stat: '$50K+',
+                            label: 'Saved annually on repetitive tasks',
+                            sub: 'Per team implementing AI',
+                        },
+                        {
+                            icon: '↗',
+                            stat: '45%',
+                            label: 'Increase in conversion rates',
+                            sub: 'Through personalisation & optimization',
+                        },
+                    ].map((item, i) => (
                         <motion.div
-                            key={tech.name}
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
+                            key={i}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: i * 0.1 }}
                             viewport={{ once: true }}
-                            whileHover={{ scale: 1.05 }}
+                            whileHover={{ scale: 1.03 }}
                             style={{
-                                background: 'rgba(0, 0, 0, 0.6)',
+                                background: 'rgba(126, 42, 12, 0.15)',
+                                border: '1px solid rgba(202, 53, 0, 0.20)',
                                 borderRadius: '20px',
-                                padding: '30px 20px',
+                                padding: '36px 24px',
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',
-                                justifyContent: 'center',
-                                gap: '15px',
-                                border: '1px solid rgba(255, 255, 255, 0.1)',
-                                backdropFilter: 'blur(5px)',
-                                cursor: 'pointer',
+                                gap: '12px',
+                                cursor: 'default',
                                 transition: 'all 0.3s ease',
                             }}
-                            className="p-4 md:p-6 gap-2 md:gap-4 rounded-xl md:rounded-2xl"
                         >
+                            {/* Icon */}
                             <div style={{
-                                fontSize: 'clamp(2rem, 4vw, 3rem)',
-                                color: 'white',
-                            }}
-                                className="text-3xl md:text-4xl"
-                            >
-                                {tech.icon}
+                                width: '44px',
+                                height: '44px',
+                                borderRadius: '50%',
+                                background: 'rgba(202, 53, 0, 0.15)',
+                                border: '1px solid rgba(202, 53, 0, 0.25)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '1.1rem',
+                                color: '#FF8904',
+                            }}>
+                                {item.icon}
                             </div>
+
+                            {/* Big Stat */}
+                            <span style={{
+                                fontFamily: 'Norwige, sans-serif',
+                                fontStyle: 'italic',
+                                fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
+                                fontWeight: 600,
+                                background: 'linear-gradient(90deg, #FF8904 0%, #F54900 100%)',
+                                backgroundClip: 'text',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                                lineHeight: 1,
+                            }}>
+                                {item.stat}
+                            </span>
+
+                            {/* Label */}
                             <p style={{
                                 fontFamily: 'Roboto, sans-serif',
-                                fontSize: 'clamp(0.8rem, 1.2vw, 1rem)',
-                                color: 'white',
+                                fontSize: '0.88rem',
+                                fontWeight: 600,
+                                color: 'rgba(255,255,255,0.85)',
                                 margin: 0,
                                 textAlign: 'center',
-                                letterSpacing: '0.05em',
-                            }}
-                                className="text-xs md:text-sm"
-                            >
-                                {tech.name}
+                                lineHeight: 1.4,
+                            }}>
+                                {item.label}
+                            </p>
+
+                            {/* Sub */}
+                            <p style={{
+                                fontFamily: 'Roboto, sans-serif',
+                                fontSize: '0.75rem',
+                                color: 'rgba(255,255,255,0.35)',
+                                margin: 0,
+                                textAlign: 'center',
+                                lineHeight: 1.4,
+                            }}>
+                                {item.sub}
                             </p>
                         </motion.div>
                     ))}
                 </div>
             </section>
 
-            {/* Project Strip CTA */}
-            <ProjectStrip />
+            {/* Technology Stack & Integrations Section */}
+            <section style={{
+                position: 'relative',
+                zIndex: 3,
+                padding: '0 8% 100px 8%',
+            }}>
+                {/* Heading */}
+                <motion.h2
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    viewport={{ once: true }}
+                    style={{
+                        fontFamily: 'Norwige, sans-serif',
+                        fontStyle: 'italic',
+                        fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
+                        fontWeight: 600,
+                        color: 'white',
+                        marginBottom: '16px',
+                        lineHeight: 1.15,
+                    }}
+                >
+                    Technology Stack &amp; Integrations
+                </motion.h2>
+
+                <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.15 }}
+                    viewport={{ once: true }}
+                    style={{
+                        fontFamily: 'Roboto, sans-serif',
+                        fontSize: 'clamp(0.9rem, 1.4vw, 1rem)',
+                        color: 'rgba(255,255,255,0.5)',
+                        marginBottom: '48px',
+                        maxWidth: '480px',
+                        lineHeight: 1.7,
+                    }}
+                >
+                    We work with best-in-class AI platforms and integrate seamlessly with your existing tools.
+                </motion.p>
+
+                {/* 2x2 Cards Grid */}
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(2, 1fr)',
+                    gap: '20px',
+                    maxWidth: '1100px',
+                }}>
+                    {[
+                        {
+                            icon: '🤖',
+                            title: 'AI Models & Platforms',
+                            tags: ['OpenAI GPT-4', 'Anthropic Claude', 'Google Gemini', 'Custom Fine-tuned Models', 'Stable Diffusion', 'Midjourney API'],
+                        },
+                        {
+                            icon: '🔗',
+                            title: 'Integration Capabilities',
+                            tags: ['Slack', 'Microsoft Teams', 'Salesforce', 'HubSpot', 'Shopify', 'WordPress', 'Webflow', 'Zapier', 'Make.com'],
+                        },
+                        {
+                            icon: '☁',
+                            title: 'Infrastructure',
+                            tags: ['AWS', 'Google Cloud', 'Azure', 'Vector Databases', 'Real-time APIs', 'Secure Webhooks'],
+                        },
+                        {
+                            icon: '</>',
+                            title: 'Development Tools',
+                            tags: ['LangChain', 'LlamaIndex', 'Python', 'Node.js', 'React', 'API Development'],
+                        },
+                    ].map((card, i) => (
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: i * 0.1 }}
+                            viewport={{ once: true }}
+                            style={{
+                                background: 'linear-gradient(135deg, rgba(126, 42, 12, 0.20) 0%, rgba(159, 45, 0, 0.10) 100%)',
+                                border: '1px solid rgba(159, 45, 0, 0.30)',
+                                borderRadius: '10px',
+                                padding: '32px 28px',
+                            }}
+                        >
+                            {/* Card Header */}
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '12px',
+                                marginBottom: '24px',
+                            }}>
+                                <div style={{
+                                    width: '38px',
+                                    height: '38px',
+                                    borderRadius: '10px',
+                                    background: 'rgba(202, 53, 0, 0.15)',
+                                    border: '1px solid rgba(202, 53, 0, 0.25)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontSize: '1rem',
+                                    color: '#FF8904',
+                                    fontFamily: 'monospace',
+                                }}>
+                                    {card.icon}
+                                </div>
+                                <span style={{
+                                    fontFamily: 'Roboto, sans-serif',
+                                    fontWeight: 700,
+                                    fontSize: '1rem',
+                                    color: 'rgba(255,255,255,0.9)',
+                                    letterSpacing: '0.01em',
+                                }}>
+                                    {card.title}
+                                </span>
+                            </div>
+
+                            {/* Tags */}
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                {card.tags.map((tag) => (
+                                    <span
+                                        key={tag}
+                                        style={{
+                                            fontFamily: 'Roboto, sans-serif',
+                                            fontSize: '0.78rem',
+                                            fontWeight: 500,
+                                            color: 'rgba(255,255,255,0.65)',
+                                            background: 'rgba(126, 42, 12, 0.20)',
+                                            border: '1px solid rgba(159, 45, 0, 0.40)',
+                                            borderRadius: '9999px',
+                                            padding: '5px 14px',
+                                        }}
+                                    >
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
+            </section>
 
             {/* Our Approach Section */}
             <OurApproachSection />
