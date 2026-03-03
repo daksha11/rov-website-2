@@ -255,25 +255,25 @@ export default function AIAutomationPage() {
                 }}>
                     {[
                         {
-                            icon: '⏱',
+                            icon: '/aipage/clocksvg.svg',
                             stat: '80%',
                             label: 'Reduction in content production time',
                             sub: 'What took 10 hours now takes 2',
                         },
                         {
-                            icon: '👥',
+                            icon: '/aipage/peoplesvg.svg',
                             stat: '3x',
                             label: 'More customer interactions handled',
                             sub: 'Without increasing headcount',
                         },
                         {
-                            icon: '$',
+                            icon: '/aipage/dollarsignsvg.svg',
                             stat: '$50K+',
                             label: 'Saved annually on repetitive tasks',
                             sub: 'Per team implementing AI',
                         },
                         {
-                            icon: '↗',
+                            icon: '/aipage/arrowsvg.svg',
                             stat: '45%',
                             label: 'Increase in conversion rates',
                             sub: 'Through personalisation & optimization',
@@ -309,10 +309,18 @@ export default function AIAutomationPage() {
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                fontSize: '1.1rem',
-                                color: '#FF8904',
+                                padding: '10px',
                             }}>
-                                {item.icon}
+                                <img
+                                    src={item.icon}
+                                    alt={item.label}
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'contain',
+                                        filter: 'brightness(0) saturate(100%) invert(58%) sepia(52%) saturate(1988%) hue-rotate(358deg) brightness(103%) contrast(101%)',
+                                    }}
+                                />
                             </div>
 
                             {/* Big Stat */}
@@ -410,22 +418,22 @@ export default function AIAutomationPage() {
                 }}>
                     {[
                         {
-                            icon: '🤖',
+                            icon: '/aipage/gearsvg.svg',
                             title: 'AI Models & Platforms',
                             tags: ['OpenAI GPT-4', 'Anthropic Claude', 'Google Gemini', 'Custom Fine-tuned Models', 'Stable Diffusion', 'Midjourney API'],
                         },
                         {
-                            icon: '🔗',
+                            icon: '/aipage/linksvg.svg',
                             title: 'Integration Capabilities',
                             tags: ['Slack', 'Microsoft Teams', 'Salesforce', 'HubSpot', 'Shopify', 'WordPress', 'Webflow', 'Zapier', 'Make.com'],
                         },
                         {
-                            icon: '☁',
+                            icon: '/aipage/cloudsvg.svg',
                             title: 'Infrastructure',
                             tags: ['AWS', 'Google Cloud', 'Azure', 'Vector Databases', 'Real-time APIs', 'Secure Webhooks'],
                         },
                         {
-                            icon: '</>',
+                            icon: '/aipage/arrow2svg.svg',
                             title: 'Development Tools',
                             tags: ['LangChain', 'LlamaIndex', 'Python', 'Node.js', 'React', 'API Development'],
                         },
@@ -459,11 +467,18 @@ export default function AIAutomationPage() {
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    fontSize: '1rem',
-                                    color: '#FF8904',
-                                    fontFamily: 'monospace',
+                                    padding: '8px',
                                 }}>
-                                    {card.icon}
+                                    <img
+                                        src={card.icon}
+                                        alt={card.title}
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'contain',
+                                            filter: 'brightness(0) saturate(100%) invert(58%) sepia(52%) saturate(1988%) hue-rotate(358deg) brightness(103%) contrast(101%)',
+                                        }}
+                                    />
                                 </div>
                                 <span style={{
                                     fontFamily: 'Roboto, sans-serif',
