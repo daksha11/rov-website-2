@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
+import Link from "next/link";
 
 interface NavbarProps {
   isScrolled: boolean;
@@ -7,6 +8,7 @@ interface NavbarProps {
 
 export default function Navbar({ isScrolled }: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isServicesDropdownOpen, setIsServicesDropdownOpen] = useState(false);
 
   // Function to handle smooth scrolling
   const handleScroll = (id: string) => {
@@ -16,6 +18,13 @@ export default function Navbar({ isScrolled }: NavbarProps) {
     }
     setIsMobileMenuOpen(false); // Close mobile menu after clicking a link
   };
+
+  const services = [
+    { name: "Web Optimization", path: "/web" },
+    { name: "Sound Engineering", path: "/sound" },
+    { name: "Video Production", path: "/video-production" },
+    { name: "AI Integration", path: "/ai-automation" },
+  ];
 
   return (
     <>
@@ -41,16 +50,33 @@ export default function Navbar({ isScrolled }: NavbarProps) {
 
             {/* Desktop Navigation Links */}
             <div className="hidden md:flex items-center space-x-8">
-              <a
-                href="#services"
-                className="text-sm uppercase tracking-widest hover:text-gray-300 transition-colors"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleScroll("services"); // Scroll to the services section
-                }}
+              {/* Services Dropdown */}
+              <div
+                className="relative"
+                onMouseEnter={() => setIsServicesDropdownOpen(true)}
+                onMouseLeave={() => setIsServicesDropdownOpen(false)}
               >
-                Services
-              </a>
+                <button className="flex items-center gap-1 text-sm uppercase tracking-widest hover:text-gray-300 transition-colors">
+                  Services
+                  <ChevronDown className={`w-4 h-4 transition-transform ${isServicesDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {/* Dropdown Menu */}
+                {isServicesDropdownOpen && (
+                  <div className="absolute top-full left-0 mt-2 w-56 bg-black/95 backdrop-blur-sm border border-white/20 rounded-lg overflow-hidden">
+                    {services.map((service) => (
+                      <Link
+                        key={service.path}
+                        href={service.path}
+                        className="block px-4 py-3 text-sm tracking-wide hover:bg-white/10 transition-colors"
+                      >
+                        {service.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               <a
                 href="#music"
                 className="text-sm uppercase tracking-widest hover:text-gray-300 transition-colors"
@@ -101,16 +127,31 @@ export default function Navbar({ isScrolled }: NavbarProps) {
               }`}
           >
             <div className="px-4 py-6 space-y-4">
-              <a
-                href="#services"
-                className="block text-sm uppercase tracking-widest hover:text-gray-300 transition-colors"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleScroll("services"); // Scroll to the services section
-                }}
-              >
-                Services
-              </a>
+              {/* Services with expandable submenu */}
+              <div>
+                <button
+                  className="flex items-center gap-1 text-sm uppercase tracking-widest hover:text-gray-300 transition-colors w-full"
+                  onClick={() => setIsServicesDropdownOpen(!isServicesDropdownOpen)}
+                >
+                  Services
+                  <ChevronDown className={`w-4 h-4 transition-transform ${isServicesDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {isServicesDropdownOpen && (
+                  <div className="pl-4 mt-2 space-y-2">
+                    {services.map((service) => (
+                      <Link
+                        key={service.path}
+                        href={service.path}
+                        className="block text-sm tracking-wide hover:text-gray-300 transition-colors py-1"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {service.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               <a
                 href="#music"
                 className="block text-sm uppercase tracking-widest hover:text-gray-300 transition-colors"

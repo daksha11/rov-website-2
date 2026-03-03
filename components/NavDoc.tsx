@@ -148,40 +148,44 @@ export function NavigationDock({ className }: NavigationDockProps) {
 
             <ul className="space-y-4 w-full max-w-md">
               <li>
-                <a
-                  href="/#services"
+                <Link
+                  href="/sound"
                   className="block px-6 py-3 text-white/80 hover:text-white text-base md:text-lg transition-all hover:bg-white/5 rounded-xl border border-transparent hover:border-white/10 text-center"
                   style={{ fontFamily: "futura" }}
+                  onClick={() => setMenuOpen(false)}
                 >
                   • Sound Engineering
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/#services"
+                <Link
+                  href="/web"
                   className="block px-6 py-3 text-white/80 hover:text-white text-base md:text-lg transition-all hover:bg-white/5 rounded-xl border border-transparent hover:border-white/10 text-center"
                   style={{ fontFamily: "futura" }}
+                  onClick={() => setMenuOpen(false)}
                 >
                   • Web Development
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/#services"
+                <Link
+                  href="/video-production"
                   className="block px-6 py-3 text-white/80 hover:text-white text-base md:text-lg transition-all hover:bg-white/5 rounded-xl border border-transparent hover:border-white/10 text-center"
                   style={{ fontFamily: "futura" }}
+                  onClick={() => setMenuOpen(false)}
                 >
                   • Aerial Media Production
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/#services"
+                <Link
+                  href="/ai-automation"
                   className="block px-6 py-3 text-white/80 hover:text-white text-base md:text-lg transition-all hover:bg-white/5 rounded-xl border border-transparent hover:border-white/10 text-center"
                   style={{ fontFamily: "futura" }}
+                  onClick={() => setMenuOpen(false)}
                 >
                   • Custom AI Automations
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
