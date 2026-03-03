@@ -25,11 +25,11 @@ const teamMembers: TeamMember[] = [
         id: 1,
         image: "/teammembers/basutm2.png",
         category: "Creative",
-        name: "Basu",
+        name: "Ayush",
         role: "FOUNDER & CREATIVE DIRECTOR",
         skills: ["Creative Direction", "Brand Strategy", "Web Development", "Design Systems", "Client Relations"],
         location: "Atlanta",
-        specialties: "Leads creative direction across all client projects and internal initiatives while overseeing company operations. Contributes hands-on to design, development, and client communications, ensuring R.O.V.'s vision stays consistent from pitch to delivery.",
+        specialties: "I lead creative direction across all client projects and internal initiatives while overseeing company operations. I contribute hands-on to design, development, and client communications—making sure R.O.V.'s vision stays consistent from pitch to delivery.",
         shadowColor: "101, 67, 33"
     },
     {
@@ -37,10 +37,10 @@ const teamMembers: TeamMember[] = [
         image: "/teammembers/jahnavitm.png",
         category: "Creative",
         name: "Jahnavi",
-        role: "HEAD OF DESIGN",
+        role: "DESIGN ASSISTANT",
         skills: ["UI/UX Design", "Brand Identity", "Design Systems", "Illustration", "Visual Design", "Prototyping"],
         location: "India",
-        specialties: "Masters every design discipline—from UI/UX and visual systems to custom illustration and brand identity. Creates cohesive, polished design solutions across all touchpoints, ensuring R.O.V.'s work is as functional as it is beautiful.",
+        specialties: "I master every design discipline—from UI/UX and visual systems to custom illustration and brand identity. I create cohesive, polished design solutions across all touchpoints, making sure R.O.V.'s work is as functional as it is beautiful.",
         shadowColor: "150, 100, 120"
     },
     {
@@ -62,7 +62,7 @@ const teamMembers: TeamMember[] = [
         role: "DESIGN & SOCIAL MEDIA STRATEGIST",
         skills: ["Social Media Design", "UI/UX", "Content Strategy", "Creative Ideation", "Campaign Visuals"],
         location: "India",
-        specialties: "Drives social media design and visual content strategy while playing a key role in ideating and brainstorming direction for new projects. Brings fresh UI/UX perspectives and ensures digital touchpoints feel modern and engaging.",
+        specialties: "I drive social media design and visual content strategy while playing a key role in ideating and brainstorming direction for new projects. I bring fresh UI/UX perspectives and make sure every digital touchpoint feels modern and engaging.",
         shadowColor: "140, 110, 140"
     },
     {
@@ -73,7 +73,7 @@ const teamMembers: TeamMember[] = [
         role: "VIDEO EDITOR & MOTION DESIGNER",
         skills: ["Video Editing", "Motion Graphics", "After Effects Design", "Creative Concepting", "Rapid Turnaround Production"],
         location: "India",
-        specialties: "Expert video editor who brings fresh creative ideas and fast execution to R.O.V.'s edits and media production. Specializes in After Effects wizardry and communicates seamlessly to turn concepts into polished, dynamic visuals on tight timelines.",
+        specialties: "I bring fresh creative ideas and fast execution to R.O.V.'s edits and media production. Whether it's complex motion work or quick-turn content, I specialize in After Effects wizardry and turn concepts into polished, dynamic visuals—even on tight timelines.",
         shadowColor: "200, 100, 50"
     },
     {
@@ -84,7 +84,7 @@ const teamMembers: TeamMember[] = [
         role: "3D CREATIVE DIRECTOR",
         skills: ["3D Product Visualization", "Custom Texturing", "Modeling", "Lighting & Rendering", "Creative Direction"],
         location: "USA",
-        specialties: "Creates sophisticated, photorealistic 3D product visualizations using advanced Blender techniques. Specializes in custom texturing, modeling, and lighting that bring digital assets to life with cinematic quality.",
+        specialties: "I create sophisticated, photorealistic 3D product visualizations using advanced Blender techniques. From custom texturing and modeling to lighting and rendering, I bring digital assets to life with cinematic quality.",
         shadowColor: "100, 150, 200"
     },
     {
@@ -95,7 +95,7 @@ const teamMembers: TeamMember[] = [
         role: "HEAD OF DEVELOPMENT",
         skills: ["Full-Stack Development", "Technical Architecture", "Complex Problem Solving", "Performance Optimization", "Code Standards"],
         location: "India",
-        specialties: "R.O.V.'s go-to technical lead for complex coding challenges and scalable solutions. Solves the toughest tech problems, architects robust systems, and ensures every build is performant, maintainable, and production-ready.",
+        specialties: "I'm R.O.V.'s go-to technical lead for complex coding challenges and scalable solutions. I solve the toughest tech problems, architect robust systems, and make sure every build is performant, maintainable, and production-ready.",
         shadowColor: "90, 120, 150"
     },
     {
@@ -106,18 +106,18 @@ const teamMembers: TeamMember[] = [
         role: "DEVELOPER & FRONTEND SPECIALIST",
         skills: ["Frontend Development", "Creative Problem Solving", "UI Implementation", "Interactive Features", "Component Development"],
         location: "Atlanta",
-        specialties: "Assists with coding across projects while solving complex technical problems and creating innovative frontend solutions. Brings creative thinking to development, finding elegant ways to implement ambitious design ideas.",
+        specialties: "I work across projects solving complex technical problems and building innovative frontend solutions. I bring creative thinking to development—always looking for elegant ways to turn ambitious design ideas into reality.",
         shadowColor: "120, 140, 100"
     },
     {
         id: 9,
         image: "/teammembers/basutm2.png",
         category: "Tech",
-        name: "Basu",
+        name: "Ayush",
         role: "FOUNDER & CREATIVE DIRECTOR",
         skills: ["Creative Direction", "Brand Strategy", "Web Development", "Design Systems", "Client Relations"],
         location: "Atlanta",
-        specialties: "Leads creative direction across all client projects and internal initiatives while overseeing company operations.",
+        specialties: "I lead creative direction across all client projects and internal initiatives while overseeing company operations. I contribute hands-on to design, development, and client communications—making sure R.O.V.'s vision stays consistent from pitch to delivery.",
     },
     {
         id: 10,
@@ -127,7 +127,7 @@ const teamMembers: TeamMember[] = [
         role: "CO-FOUNDER & SYSTEMS ARCHITECT",
         skills: ["Operations Strategy", "AI Systems Development", "Financial Management", "Sales & Client Relations", "Process Automation"],
         location: "Atlanta",
-        specialties: "Joined as co-founder to build the operational backbone of R.O.V.",
+        specialties: "I joined as co-founder to build the operational backbone of R.O.V.",
     },
     {
         id: 12,
@@ -137,7 +137,7 @@ const teamMembers: TeamMember[] = [
         role: "CO-FOUNDER & SYSTEMS ARCHITECT",
         skills: ["Operations Strategy", "AI Systems Development", "Financial Management", "Sales & Client Relations", "Process Automation"],
         location: "Atlanta",
-        specialties: "Joined as co-founder to build the operational backbone of R.O.V.",
+        specialties: "I joined as co-founder to build the operational backbone of R.O.V.",
     },
     {
         id: 11,
@@ -147,7 +147,7 @@ const teamMembers: TeamMember[] = [
         role: "HEAD OF DEVELOPMENT",
         skills: ["Full-Stack Development", "Technical Architecture", "Complex Problem Solving", "Performance Optimization", "Code Standards"],
         location: "India",
-        specialties: "R.O.V.'s go-to technical lead for complex coding challenges.",
+        specialties: "I'm R.O.V.'s go-to technical lead for complex coding challenges and scalable solutions. I solve the toughest tech problems, architect robust systems, and make sure every build is performant, maintainable, and production-ready.",
     },
     {
         id: 13,
@@ -158,7 +158,7 @@ const teamMembers: TeamMember[] = [
         skills: ["UI/UX Design", "Design Systems", "Web Design", "Design Infrastructure", "Brand Guidelines", "Design Standards"],
         location: "Atlanta",
         portfolioLink: "https://www.kavyaray.com/",
-        specialties: "SCAD-trained designer who brings enterprise-level design rigor from work with major brands like Porsche, Lowe's, and UBS.",
+        specialties: "I'm a SCAD-trained designer who brings enterprise-level design rigor from my work with major brands like Porsche, Lowe's, and UBS.",
         shadowColor: "100, 100, 100"
     },
     {
@@ -169,7 +169,7 @@ const teamMembers: TeamMember[] = [
         role: "UI/UX DESIGNER & ILLUSTRATOR",
         skills: ["UI/UX Design", "Design Strategy", "Illustration", "Interface Design", "User Experience", "Visual Design Systems"],
         location: "Savannah",
-        specialties: "SCAD-trained design talent based in Savannah with exceptional vision for overall design strategy.",
+        specialties: "I'm a SCAD-trained designer based in Savannah with an exceptional eye for overall design strategy.",
         shadowColor: "130, 100, 160"
     },
     {
@@ -180,7 +180,7 @@ const teamMembers: TeamMember[] = [
         role: "HEAD OF ARTIST DEVELOPMENT",
         skills: ["Artist Development", "Creative Strategy", "Talent Management", "Music Industry Relations", "Brand Building"],
         location: "Atlanta",
-        specialties: "Leads artist development initiatives, guiding emerging talent through creative growth and strategic brand positioning in the music industry.",
+        specialties: "I lead artist development initiatives, guiding emerging talent through creative growth and strategic brand positioning in the music industry.",
         shadowColor: "140, 90, 110"
     },
 ];
@@ -408,7 +408,7 @@ const TeamSection: React.FC = () => {
                                 {[...Array(4)].map((_, i) => (
                                     <React.Fragment key={`r1-${i}`}>
                                         <div className="text-block"><h2>MEET</h2></div>
-                                        <ImageCard src={teamMembers[0].image} alt="Basu" name={teamMembers[0].name} role={teamMembers[0].role} onClick={() => handleMarqueeMemberClick(teamMembers[0])} />
+                                        <ImageCard src={teamMembers[0].image} alt="Ayush" name={teamMembers[0].name} role={teamMembers[0].role} onClick={() => handleMarqueeMemberClick(teamMembers[0])} />
                                         <ImageCard src={teamMembers[9].image} alt="Suchet" name={teamMembers[9].name} role={teamMembers[9].role} onClick={() => handleMarqueeMemberClick(teamMembers[9])} />
                                         <button className="category-button" onClick={() => setActiveCategory("Creative")}>CREATIVE</button>
                                         <ImageCard src={teamMembers[6].image} alt="Daksha" name={teamMembers[6].name} role={teamMembers[6].role} onClick={() => handleMarqueeMemberClick(teamMembers[6])} />
