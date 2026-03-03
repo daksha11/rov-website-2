@@ -8,6 +8,8 @@ import Footer from '@/components/Footer';
 import OurApproachSection from '@/components/Web-Dev/OurApproachSection';
 import FAQBottomSection from '@/components/Web-Dev/FAQBottomSection';
 import ProjectStrip from '@/components/ProjectStrip';
+import LogoLoop from '@/components/LogoLoop';
+import { SiNotion, SiGooglecloud, SiGmail, SiOpenai, SiN8N } from 'react-icons/si';
 
 export default function AIAutomationPage() {
     return (
@@ -496,6 +498,106 @@ export default function AIAutomationPage() {
                             </div>
                         </motion.div>
                     ))}
+                </div>
+            </section>
+
+            {/* Logo Loop Section */}
+            <section style={{
+                position: 'relative',
+                zIndex: 3,
+                padding: '60px 8% 100px 8%',
+            }}>
+                <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    viewport={{ once: true }}
+                    style={{
+                        fontFamily: 'Roboto, sans-serif',
+                        fontSize: 'clamp(0.9rem, 1.4vw, 1rem)',
+                        color: 'rgba(255,255,255,0.5)',
+                        marginBottom: '48px',
+                        textAlign: 'center',
+                        lineHeight: 1.7,
+                    }}
+                >
+                    Trusted by industry-leading platforms
+                </motion.p>
+
+                <div style={{ height: '120px', position: 'relative', overflow: 'hidden' }}>
+                    <LogoLoop
+                        logos={[
+                            {
+                                node: <SiN8N className="text-white" />,
+                                title: "n8n",
+                                href: "https://n8n.io",
+                                ariaLabel: "n8n automation platform"
+                            },
+                            {
+                                src: "/logos/claude.svg",
+                                alt: "Claude",
+                                href: "https://www.anthropic.com",
+                                title: "Claude AI"
+                            },
+                            {
+                                node: <SiOpenai className="text-white" />,
+                                title: "ChatGPT",
+                                href: "https://openai.com",
+                                ariaLabel: "ChatGPT"
+                            },
+                            {
+                                src: "/logos/perplexity.svg",
+                                alt: "Perplexity",
+                                href: "https://www.perplexity.ai",
+                                title: "Perplexity AI"
+                            },
+                            {
+                                src: "/logos/langchain.svg",
+                                alt: "LangChain",
+                                href: "https://www.langchain.com",
+                                title: "LangChain"
+                            },
+                            {
+                                node: <SiNotion className="text-white" />,
+                                title: "Notion",
+                                href: "https://www.notion.so",
+                                ariaLabel: "Notion"
+                            },
+                            {
+                                src: "/logos/serpapi.svg",
+                                alt: "SERP API",
+                                href: "https://serpapi.com",
+                                title: "SERP API"
+                            },
+                            {
+                                node: <SiGooglecloud className="text-white" />,
+                                title: "Google Cloud",
+                                href: "https://cloud.google.com",
+                                ariaLabel: "Google Cloud"
+                            },
+                            {
+                                node: <SiGmail className="text-white" />,
+                                title: "Gmail",
+                                href: "https://gmail.com",
+                                ariaLabel: "Gmail"
+                            },
+                            {
+                                src: "/logos/pinecone.svg",
+                                alt: "Pinecone",
+                                href: "https://www.pinecone.io",
+                                title: "Pinecone"
+                            },
+                        ]}
+                        speed={50}
+                        direction="left"
+                        logoHeight={60}
+                        gap={60}
+                        hoverSpeed={0}
+                        scaleOnHover
+                        fadeOut
+                        fadeOutColor="#000000"
+                        ariaLabel="AI Technology partners and integrations"
+                    />
                 </div>
             </section>
 
