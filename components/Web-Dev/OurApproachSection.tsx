@@ -329,9 +329,9 @@ export default function OurApproachSection() {
 
       <div className="max-w-7xl mx-auto relative z-10" ref={containerRef}>
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-16 lg:mb-24">
           <h2
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold"
             style={{
               fontFamily: "Norwige, sans-serif",
               fontStyle: "italic",
@@ -340,7 +340,7 @@ export default function OurApproachSection() {
           >
             Our Approach
           </h2>
-          <p className="text-[#FFF4E3]/40 font-mono text-sm tracking-widest mt-4 md:mt-0 md:mb-4">
+          <p className="text-[#FFF4E3]/40 font-mono text-xs sm:text-sm tracking-widest mt-4 md:mt-0 md:mb-4">
             PHASE [01-06]
           </p>
         </div>
@@ -354,13 +354,13 @@ export default function OurApproachSection() {
                 cardsRef.current[index] = el;
               }}
               onClick={() => toggleCard(index)}
-              className="card-panel relative w-full rounded-[2.5rem] overflow-hidden cursor-pointer group mb-12"
+              className="card-panel relative w-full rounded-2xl sm:rounded-3xl md:rounded-[2.5rem] overflow-hidden cursor-pointer group mb-6 sm:mb-8 md:mb-10 lg:mb-12"
               style={{
                 backgroundColor: activeCardIndex === index ? "#1E1A17" : "#111111",
                 border: activeCardIndex === index
                   ? "1px solid rgba(234, 154, 97, 0.3)"
                   : "1px solid rgba(255, 255, 255, 0.08)",
-                minHeight: "calc(100vh - 120px)",
+                minHeight: "min(calc(100vh - 120px), 600px)",
                 display: "flex",
                 flexDirection: "column",
                 transition: "background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease",
@@ -370,21 +370,23 @@ export default function OurApproachSection() {
                   : "none",
               }}
             >
-              <div className="card-inner w-full flex flex-col justify-center min-h-[calc(100vh-120px)] p-8 md:p-12 lg:p-24 relative z-10">
+              <div className="card-inner w-full flex flex-col justify-center min-h-[min(calc(100vh-120px),600px)] p-6 sm:p-8 md:p-12 lg:p-16 xl:p-24 relative z-10">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
                   {/* Left Side - Title */}
                   <div className="flex items-center">
-                    <div className="relative">
-                      <span className="absolute -top-12 left-1 text-[#EA9A61] font-mono text-4xl md:text-5xl opacity-80">
+                    <div className="relative w-full">
+                      <span className="absolute -top-6 sm:-top-8 md:-top-12 left-0 sm:left-1 text-[#EA9A61] font-mono text-2xl sm:text-3xl md:text-4xl lg:text-5xl opacity-80">
                         0{index + 1}
                       </span>
                       <h3
-                        className="step-title text-7xl sm:text-8xl md:text-9xl lg:text-[11rem] font-bold leading-none tracking-tighter"
+                        className="step-title text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl 2xl:text-[11rem] font-bold leading-none tracking-tighter break-words"
                         style={{
                           fontFamily: "Norwige, sans-serif",
                           fontStyle: "italic",
                           color: activeCardIndex === index ? "#EA9A61" : "#FFF4E3",
                           transition: "color 0.6s ease",
+                          wordBreak: "break-word",
+                          hyphens: "auto",
                         }}
                       >
                         {step.title}
@@ -398,13 +400,13 @@ export default function OurApproachSection() {
               </div>
 
               {/* Interaction Hint - Prominent with Shine Animation */}
-              <div className="absolute bottom-8 right-8 md:bottom-12 md:right-12">
+              <div className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-auto md:bottom-8 md:right-8 lg:bottom-12 lg:right-12 z-20">
                 <div className="relative group cursor-pointer">
                   {/* Glow effect */}
                   <div className="absolute inset-0 bg-[#EA9A61] opacity-40 blur-xl rounded-full animate-pulse" />
 
                   {/* Main button */}
-                  <div className="relative flex items-center space-x-4 px-8 py-4 md:px-10 md:py-5 rounded-full border-2 border-[#EA9A61] bg-black/80 backdrop-blur-md hover:bg-[#EA9A61]/20 transition-all duration-300 overflow-hidden shadow-[0_0_30px_rgba(234,154,97,0.3)]">
+                  <div className="relative flex items-center space-x-2 sm:space-x-3 md:space-x-4 px-4 py-3 sm:px-6 sm:py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 rounded-full border-2 border-[#EA9A61] bg-black/80 backdrop-blur-md hover:bg-[#EA9A61]/20 transition-all duration-300 overflow-hidden shadow-[0_0_30px_rgba(234,154,97,0.3)]">
                     {/* Shine animation overlay */}
                     <div className="absolute inset-0 w-full h-full">
                       <div className="absolute inset-0 -translate-x-full animate-shine bg-gradient-to-r from-transparent via-white/30 to-transparent" />
@@ -412,7 +414,7 @@ export default function OurApproachSection() {
 
                     {/* Icon */}
                     <svg
-                      className="w-6 h-6 text-[#EA9A61] group-hover:scale-110 transition-transform"
+                      className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-[#EA9A61] group-hover:scale-110 transition-transform"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -422,13 +424,14 @@ export default function OurApproachSection() {
                     </svg>
 
                     {/* Text */}
-                    <span className="relative text-[#EA9A61] font-mono text-sm md:text-base tracking-[0.2em] uppercase font-bold group-hover:text-[#FFF4E3] transition-colors">
-                      CLICK TO EXPLORE
+                    <span className="relative text-[#EA9A61] font-mono text-xs sm:text-sm md:text-base tracking-[0.15em] sm:tracking-[0.2em] uppercase font-bold group-hover:text-[#FFF4E3] transition-colors whitespace-nowrap">
+                      <span className="hidden sm:inline">CLICK TO EXPLORE</span>
+                      <span className="sm:hidden">EXPLORE</span>
                     </span>
 
                     {/* Arrow */}
                     <svg
-                      className="w-6 h-6 text-[#EA9A61] group-hover:translate-x-2 transition-transform"
+                      className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-[#EA9A61] group-hover:translate-x-2 transition-transform"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -469,7 +472,7 @@ export default function OurApproachSection() {
         {modalIndex !== null && (
           <div
             ref={modalContentRef}
-            className="relative w-full max-w-5xl rounded-[3rem] p-8 md:p-16 lg:p-24 overflow-y-auto max-h-[90vh]"
+            className="relative w-full max-w-5xl rounded-xl sm:rounded-2xl md:rounded-3xl lg:rounded-[3rem] p-5 sm:p-6 md:p-10 lg:p-14 xl:p-20 overflow-y-auto max-h-[85vh] sm:max-h-[90vh]"
             style={{
               backgroundColor: "#1E1A17",
               border: "1px solid rgba(234, 154, 97, 0.3)",
@@ -479,32 +482,35 @@ export default function OurApproachSection() {
           >
             <button
               onClick={closeModal}
-              className="absolute top-8 right-8 text-[#FFF4E3]/40 hover:text-[#EA9A61] transition-colors font-mono text-sm tracking-widest flex items-center space-x-2 group/close"
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 md:top-6 md:right-6 lg:top-8 lg:right-8 text-[#FFF4E3]/40 hover:text-[#EA9A61] transition-colors font-mono text-[10px] sm:text-xs md:text-sm tracking-wider sm:tracking-widest flex items-center space-x-1 sm:space-x-2 group/close"
             >
               <span>CLOSE</span>
-              <span className="w-10 h-[1px] bg-[#FFF4E3]/20 group-hover/close:w-16 group-hover/close:bg-[#EA9A61] transition-all duration-300" />
+              <span className="w-4 sm:w-6 md:w-10 h-[1px] bg-[#FFF4E3]/20 group-hover/close:w-6 sm:group-hover/close:w-10 md:group-hover/close:w-16 group-hover/close:bg-[#EA9A61] transition-all duration-300" />
             </button>
 
-            <div className="relative mb-12">
-              <span className="absolute -top-12 left-0 text-[#EA9A61] font-mono text-xl opacity-50">
+            <div className="relative mb-6 sm:mb-8 md:mb-10 lg:mb-12 pt-6 sm:pt-0">
+              <span className="absolute -top-4 sm:-top-6 md:-top-8 lg:-top-12 left-0 text-[#EA9A61] font-mono text-xs sm:text-sm md:text-base lg:text-xl opacity-50">
                 0{modalIndex + 1}
               </span>
               <h2
-                className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold italic"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold italic break-words pr-12 sm:pr-0"
                 style={{
                   fontFamily: "Norwige, sans-serif",
                   color: "#EA9A61",
+                  wordBreak: "break-word",
+                  hyphens: "auto",
+                  lineHeight: "1.1",
                 }}
               >
                 {approachSteps[modalIndex].title}
               </h2>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-3 sm:space-y-4 md:space-y-5 lg:space-y-6">
               {approachSteps[modalIndex].expandableContent?.map((paragraph, index) => (
                 <p
                   key={index}
-                  className="text-[#FFF4E3] text-lg md:text-xl leading-relaxed font-light opacity-95"
+                  className="text-[#FFF4E3] text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed sm:leading-relaxed md:leading-loose font-light opacity-95"
                   style={{ fontFamily: "Roboto, sans-serif" }}
                 >
                   {paragraph}

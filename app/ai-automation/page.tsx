@@ -12,6 +12,21 @@ import LogoLoop from '@/components/LogoLoop';
 import { SiNotion, SiGooglecloud, SiGmail, SiOpenai, SiN8N } from 'react-icons/si';
 
 export default function AIAutomationPage() {
+    // Add style tag to override global Inter font
+    React.useEffect(() => {
+        const style = document.createElement('style');
+        style.textContent = `
+            .norwige-italic-text {
+                font-family: 'Norwige', sans-serif !important;
+                font-style: italic !important;
+                font-weight: 600 !important;
+            }
+        `;
+        document.head.appendChild(style);
+        return () => {
+            document.head.removeChild(style);
+        };
+    }, []);
     return (
         <div style={{
             minHeight: '100vh',
@@ -45,7 +60,7 @@ export default function AIAutomationPage() {
                 justifyContent: 'center',
                 position: 'relative',
                 zIndex: 3,
-                padding: '120px 8% 80px 8%',
+                padding: 'clamp(100px, 15vh, 120px) clamp(16px, 8%, 8%) clamp(60px, 10vh, 80px) clamp(16px, 8%, 8%)',
                 textAlign: 'center',
             }}>
                 {/* Pill Badge */}
@@ -96,19 +111,19 @@ export default function AIAutomationPage() {
                 >
                     AI that works the way
                     <br />
-                    <span style={{
-                        fontFamily: 'Norwige, sans-serif',
-                        fontStyle: 'italic',
-                        fontWeight: 600,
-                        fontSize: '96px',
-                        lineHeight: '120px',
-                        display: 'block',
-                        textAlign: 'center',
-                        background: 'linear-gradient(90deg, #FF8904 0%, #F54900 100%)',
-                        backgroundClip: 'text',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                    }}>
+                    <span
+                        className="norwige-italic-text"
+                        style={{
+                            fontSize: 'clamp(2.8rem, 7vw, 6rem)',
+                            lineHeight: '1.15',
+                            display: 'block',
+                            textAlign: 'center',
+                            background: 'linear-gradient(90deg, #FF8904 0%, #F54900 100%)',
+                            backgroundClip: 'text',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                        }}
+                    >
                         your brand thinks
                     </span>
                 </motion.h1>
@@ -205,7 +220,7 @@ export default function AIAutomationPage() {
             <section style={{
                 position: 'relative',
                 zIndex: 3,
-                padding: '100px 8%',
+                padding: 'clamp(60px, 10vw, 100px) clamp(16px, 8%, 8%)',
                 textAlign: 'center',
             }}>
                 {/* Heading */}
@@ -248,7 +263,7 @@ export default function AIAutomationPage() {
                 {/* Stats Grid */}
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(4, 1fr)',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))',
                     gap: '20px',
                     maxWidth: '1100px',
                     margin: '0 auto',
@@ -290,7 +305,7 @@ export default function AIAutomationPage() {
                                 background: 'rgba(126, 42, 12, 0.15)',
                                 border: '1px solid rgba(202, 53, 0, 0.20)',
                                 borderRadius: '20px',
-                                padding: '36px 24px',
+                                padding: 'clamp(24px, 5vw, 36px) clamp(16px, 4vw, 24px)',
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',
@@ -371,7 +386,7 @@ export default function AIAutomationPage() {
             <section style={{
                 position: 'relative',
                 zIndex: 3,
-                padding: '0 8% 100px 8%',
+                padding: '0 clamp(16px, 8%, 8%) clamp(60px, 10vw, 100px) clamp(16px, 8%, 8%)',
             }}>
                 {/* Heading */}
                 <motion.h2
@@ -412,7 +427,7 @@ export default function AIAutomationPage() {
                 {/* 2x2 Cards Grid */}
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(2, 1fr)',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))',
                     gap: '20px',
                     maxWidth: '1100px',
                 }}>
@@ -448,7 +463,7 @@ export default function AIAutomationPage() {
                                 background: 'linear-gradient(135deg, rgba(126, 42, 12, 0.20) 0%, rgba(159, 45, 0, 0.10) 100%)',
                                 border: '1px solid rgba(159, 45, 0, 0.30)',
                                 borderRadius: '10px',
-                                padding: '32px 28px',
+                                padding: 'clamp(20px, 4vw, 32px) clamp(16px, 3.5vw, 28px)',
                             }}
                         >
                             {/* Card Header */}
@@ -520,7 +535,7 @@ export default function AIAutomationPage() {
             <section style={{
                 position: 'relative',
                 zIndex: 3,
-                padding: '60px 8% 100px 8%',
+                padding: 'clamp(40px, 8vw, 60px) clamp(16px, 8%, 8%) clamp(60px, 10vw, 100px) clamp(16px, 8%, 8%)',
             }}>
                 <motion.p
                     initial={{ opacity: 0, y: 20 }}

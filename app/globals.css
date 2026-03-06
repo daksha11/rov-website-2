@@ -83,15 +83,15 @@
 
 @font-face {
   font-family: 'Norwige';
-  src: url('../public/font/norwige-font-family-1750004186-0/Norwige-Italic-BF68175f3258945.otf');
-  font-weight: normal;
-  font-style: normal;
+  src: url('../public/font/norwige-font-family-1750004186-0/Norwige-MediumItalic-BF68175f325d0c2.otf');
+  font-weight: 500;
+  font-style: italic;
 }
 
 @font-face {
   font-family: 'Norwige';
-  src: url('../public/font/norwige-font-family-1750004186-0/Norwige-Italic-BF68175f3258945.otf');
-  font-weight: normal;
+  src: url('../public/font/norwige-font-family-1750004186-0/Norwige-SemiBoldItalic-BF68175f326e730.otf');
+  font-weight: 600;
   font-style: italic;
 }
 
