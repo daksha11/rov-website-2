@@ -379,14 +379,15 @@ export default function OurApproachSection() {
                         0{index + 1}
                       </span>
                       <h3
-                        className="step-title text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl 2xl:text-[11rem] font-bold leading-none tracking-tighter break-words"
+                        className="step-title text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl 2xl:text-[11rem] font-bold leading-tight tracking-tighter"
                         style={{
                           fontFamily: "Norwige, sans-serif",
                           fontStyle: "italic",
                           color: activeCardIndex === index ? "#EA9A61" : "#FFF4E3",
                           transition: "color 0.6s ease",
-                          wordBreak: "break-word",
-                          hyphens: "auto",
+                          wordBreak: "keep-all",
+                          overflowWrap: "normal",
+                          hyphens: "none",
                         }}
                       >
                         {step.title}
@@ -493,12 +494,13 @@ export default function OurApproachSection() {
                 0{modalIndex + 1}
               </span>
               <h2
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold italic break-words pr-12 sm:pr-0"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold italic pr-12 sm:pr-0"
                 style={{
                   fontFamily: "Norwige, sans-serif",
                   color: "#EA9A61",
-                  wordBreak: "break-word",
-                  hyphens: "auto",
+                  wordBreak: "keep-all",
+                  overflowWrap: "normal",
+                  hyphens: "none",
                   lineHeight: "1.1",
                 }}
               >

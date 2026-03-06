@@ -427,7 +427,7 @@ export default function AIAutomationPage() {
                 {/* 2x2 Cards Grid */}
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 450px), 1fr))',
                     gap: '20px',
                     maxWidth: '1100px',
                 }}>
