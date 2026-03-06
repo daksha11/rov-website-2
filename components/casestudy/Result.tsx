@@ -9,6 +9,7 @@ interface ResultProps {
     ctaText?: string;
     ctaLink?: string;
     titleColor?: string;
+    titleFont?: string;
     statisticGradient?: string;
     ctaBorderColor?: string;
     ctaHoverBgColor?: string;
@@ -22,6 +23,7 @@ export const Result: React.FC<ResultProps> = ({
     ctaText = "Explore Our Services",
     ctaLink = "/#services",
     titleColor = '#C90000',
+    titleFont = 'Hornset',
     statisticGradient = 'linear-gradient(91deg, #D76C00 0.74%, #953200 100%)',
     ctaBorderColor = '#C90000',
     ctaHoverBgColor = '#C90000',
@@ -32,7 +34,7 @@ export const Result: React.FC<ResultProps> = ({
             {/* Title */}
             <h3
                 className="text-5xl md:text-6xl font-black mb-16 uppercase tracking-tight"
-                style={{ color: titleColor, fontFamily: 'Hornset', letterSpacing: '0.1em' }}
+                style={{ color: titleColor, fontFamily: titleFont, letterSpacing: '0.1em' }}
             >
                 {title}
             </h3>
@@ -44,7 +46,7 @@ export const Result: React.FC<ResultProps> = ({
                     <p
                         className="font-black leading-none text-white"
                         style={{
-                            fontFamily: 'Hornset',
+                            fontFamily: titleFont,
                             letterSpacing: '0.1em',
                             fontSize: 'clamp(6rem, 15vw, 12rem)',
                         }}

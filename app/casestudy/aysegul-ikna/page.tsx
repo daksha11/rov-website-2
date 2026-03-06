@@ -99,7 +99,16 @@ export default function AysegulIknaCaseStudyPage() {
     ];
 
     return (
-        <main className="relative min-h-screen bg-white">
+        <main id="ikna-case-study" className="relative min-h-screen bg-white">
+            <style jsx global>{`
+                #ikna-case-study h1,
+                #ikna-case-study h2,
+                #ikna-case-study h3,
+                #ikna-case-study h4,
+                #ikna-case-study .font-heading {
+                    font-family: 'anton', sans-serif !important;
+                }
+            `}</style>
             <NavigationDock />
 
             {/* Hero Section */}
@@ -107,8 +116,9 @@ export default function AysegulIknaCaseStudyPage() {
                 title={["ELEVATING", "IKNA'S", "DIGITAL PRESENCE"]}
                 titleColors={["#ffffff", "#1A4D2E", "#ffffff"]}
                 backgroundImage="/webdev/ayseiknawebhome.png"
-                titleFont="Hornset"
+                titleFont="'anton', sans-serif"
                 enableBlur={true}
+                liveLink="https://www.aysegulikna.com/"
             />
 
             {/* Case Study Section */}
@@ -123,6 +133,7 @@ export default function AysegulIknaCaseStudyPage() {
                                 title="Overview"
                                 content="A luxury digital transformation for Aysegul Ikna, a high-fashion sustainable brand at Citizen Supply in Ponce City Market. We created an elevated online presence that justifies premium pricing through sophisticated design and seamless e-commerce integration."
                                 titleColor="#1A4D2E"
+                                titleFont="anton"
                                 textColor="#262626"
                             />
                         </div>
@@ -133,6 +144,7 @@ export default function AysegulIknaCaseStudyPage() {
                                 content="Aysegul Ikna's handcrafted, sustainable pieces commanded luxury prices, but her digital presence didn't reflect that value. Without a cohesive online brand experience, potential customers couldn't understand or justify the investment in her high-end garments."
                                 gradient="linear-gradient(91deg, #1A4D2E 0.74%, #2E5C42 100%)"
                                 backgroundColor="rgba(255, 255, 255, 0.8)"
+                                titleFont="anton"
                             />
 
                             <div className="mt-12">
@@ -143,6 +155,7 @@ export default function AysegulIknaCaseStudyPage() {
                                     comparisonData={comparisonData}
                                     insight="Sustainability credentials alone don't justify premium pricing. Luxury perception requires visual sophistication, seamless experience, and brand cohesion across every touchpoint."
                                     titleColor="#1A4D2E"
+                                    titleFont="anton"
                                     highlightBorderColor="#1A4D2E"
                                     highlightRowBgColor="rgba(26, 77, 46, 0.10)"
                                     insightBadgeColor="#1A4D2E"
@@ -160,6 +173,7 @@ export default function AysegulIknaCaseStudyPage() {
                                 colors={designSystemColors}
                                 typography={designSystemTypography}
                                 titleColor="#1A4D2E"
+                                titleFont="anton"
                                 textColor="#262626"
                             />
                         </div>
@@ -169,6 +183,7 @@ export default function AysegulIknaCaseStudyPage() {
                                 title="Approach"
                                 items={approachItems}
                                 titleColor="#1A4D2E"
+                                titleFont="anton"
                                 borderColor="#e5e7eb"
                                 hoverBorderColor="#1A4D2E"
                                 hoverBgColor="rgba(26, 77, 46, 0.05)"
@@ -183,6 +198,7 @@ export default function AysegulIknaCaseStudyPage() {
                                 statistic="30%"
                                 description="Within months of launch, Aysegul Ikna saw a 30% increase in monthly sales with significantly improved digital brand recognition. The online experience now commands the same respect and price point as her physical boutique presence at Ponce City Market."
                                 titleColor="#1A4D2E"
+                                titleFont="anton"
                                 statisticGradient="linear-gradient(91deg, #1A4D2E 0.74%, #2E5C42 100%)"
                                 ctaBorderColor="#1A4D2E"
                                 ctaHoverBgColor="#1A4D2E"

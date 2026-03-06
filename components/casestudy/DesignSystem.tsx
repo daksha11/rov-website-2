@@ -21,6 +21,7 @@ interface DesignSystemProps {
     colors?: ColorItem[];
     typography?: TypographyItem[];
     titleColor?: string;
+    titleFont?: string;
     textColor?: string;
 }
 
@@ -56,6 +57,7 @@ export const DesignSystem: React.FC<DesignSystemProps> = ({
         },
     ],
     titleColor = '#C90000',
+    titleFont = 'Hornset',
     textColor = '#d1d5db'
 }) => {
     return (
@@ -63,7 +65,7 @@ export const DesignSystem: React.FC<DesignSystemProps> = ({
             {/* Title */}
             <h3
                 className="text-5xl md:text-6xl font-black mb-4 uppercase tracking-tight"
-                style={{ color: titleColor, fontFamily: 'Hornset', letterSpacing: '0.1em' }}
+                style={{ color: titleColor, fontFamily: titleFont, letterSpacing: '0.1em' }}
             >
                 {title}
             </h3>

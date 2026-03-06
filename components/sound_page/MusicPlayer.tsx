@@ -262,7 +262,7 @@ export default function MusicPlayer() {
     return (
         <div className="w-full flex flex-col items-center bg-black">
             <div className="w-full max-w-[95%] md:max-w-7xl px-6 md:px-12 text-left py-12 md:py-16">
-                <h2 className="text-[#FFF4E3] text-3xl md:text-4xl lg:text-5xl font-bold italic leading-tight" style={{ fontFamily: 'Norwige, sans-serif' }}>
+                <h2 className="text-[#FFF4E3] text-3xl md:text-4xl lg:text-5xl leading-tight" style={{ fontFamily: 'NorwigeHeroItalic, sans-serif', fontWeight: 'normal' }}>
                     Don't Believe Us.<br />
                     Hear the Difference.
                 </h2>
@@ -370,115 +370,98 @@ export default function MusicPlayer() {
                             )}
                         </AnimatePresence>
 
-                        {/* Exact Reference Dashboard Design */}
-                        <div className="w-full max-w-[50rem] bg-[#2A2A2A]/90 backdrop-blur-2xl border border-white/5 rounded-full p-2 shadow-2xl relative z-[100]">
+                        {/* Exact Reference Dashboard Design REIMAGINED */}
+                        <div className="w-full max-w-[55rem] bg-[#141414]/80 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] shadow-2xl relative z-[100] overflow-hidden group/dashboard transition-all hover:bg-[#1A1A1A]/90 hover:border-white/20">
 
-                            <div className="flex flex-wrap md:flex-nowrap items-center justify-between gap-y-4 md:gap-2 w-full h-full">
+                            {/* 1. Progress Bar - Top Edge */}
+                            <div className="absolute top-0 left-0 right-0 h-1.5 w-full bg-black/40 z-20 group-hover/dashboard:h-2 transition-all cursor-pointer">
+                                {/* Progress Fill */}
+                                <div
+                                    className="absolute h-full bg-gradient-to-r from-[#EA9A61] to-[#B16937] transition-all duration-100 ease-linear shadow-[0_0_10px_rgba(234,154,97,0.5)]"
+                                    style={{ width: `${(currentTime / (duration || 1)) * 100}%` }}
+                                >
+                                    {/* Glowing Head */}
+                                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)] opacity-0 group-hover/dashboard:opacity-100 transition-opacity" />
+                                </div>
+                                {/* Interactive Input */}
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max={duration || 0}
+                                    step="0.1"
+                                    value={currentTime}
+                                    onChange={handleSeek}
+                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                />
+                            </div>
 
-                                {/* Left: Playback Controls (Simple Icons) */}
-                                <div className="flex items-center justify-center md:justify-start gap-6 pl-2 md:pl-6 pr-2 py-2 md:py-0 order-2 md:order-1 w-1/2 md:w-auto border-r border-white/5 md:border-none">
-                                    <button onClick={prevSong} className="text-white hover:text-white/70 transition">
+                            <div className="flex flex-col md:flex-row items-center justify-between w-full p-5 md:px-8 md:py-5 mt-1 gap-y-6 md:gap-y-0">
+
+                                {/* Left: Track Info & Art */}
+                                <div className="flex items-center w-full md:w-1/3 justify-start order-1">
+                                    <a
+                                        href={songData[currentIndex].spotifyUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-4 group/info cursor-pointer w-full"
+                                    >
+                                        <div className="w-14 h-14 rounded-xl overflow-hidden shadow-lg relative flex-shrink-0 group-hover/info:shadow-[#EA9A61]/20 transition-all border border-white/5">
+                                            <Image src={songData[currentIndex].cover} fill className="object-cover" alt="art" sizes="56px" priority />
+                                        </div>
+                                        <div className="flex flex-col min-w-0 justify-center">
+                                            <h3 className="text-white text-base font-bold tracking-wide truncate group-hover/info:text-[#EA9A61] transition-colors">
+                                                {songData[currentIndex].title}
+                                            </h3>
+                                            <p className="text-white/50 text-sm font-medium truncate mt-0.5">
+                                                {songData[currentIndex].artist}
+                                            </p>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                {/* Center: Playback Controls */}
+                                <div className="flex items-center justify-center w-full md:w-1/3 gap-8 order-3 md:order-2 pt-6 md:pt-0 border-t border-white/10 md:border-none">
+                                    <button onClick={prevSong} className="text-white/70 hover:text-white hover:scale-110 transition-all active:scale-95">
                                         <SkipBack size={24} fill="currentColor" />
                                     </button>
-                                    <button onClick={togglePlay} className="text-white hover:scale-110 transition">
-                                        {isPlaying ? <Pause size={30} fill="currentColor" /> : <Play size={30} fill="currentColor" />}
+
+                                    <button
+                                        onClick={togglePlay}
+                                        className="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all active:scale-95"
+                                    >
+                                        {isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" className="ml-1" />}
                                     </button>
-                                    <button onClick={nextSong} className="text-white hover:text-white/70 transition">
+
+                                    <button onClick={nextSong} className="text-white/70 hover:text-white hover:scale-110 transition-all active:scale-95">
                                         <SkipForward size={24} fill="currentColor" />
                                     </button>
                                 </div>
 
-                                {/* Center: Inner Dark Pill (Metadata & Status) */}
-                                <div className="flex-1 w-full md:w-auto h-16 md:h-20 relative group order-1 md:order-2">
-
-                                    {/* 1. Background & Visual Track Layer - CLIPPED to shape */}
-                                    <div className="absolute inset-0 rounded-[1.5rem] bg-[#181818] overflow-hidden">
-                                        {/* Track Background */}
-                                        <div className="absolute top-0 left-0 right-0 h-1.5 bg-white/10 w-full">
-                                            {/* Progress Fill */}
-                                            <div
-                                                className="absolute h-full bg-gradient-to-r from-[#EA9A61] to-[#B16937] transition-all duration-100 ease-linear"
-                                                style={{ width: `${(currentTime / (duration || 1)) * 100}%` }}
-                                            />
-                                        </div>
+                                {/* Right: Time, Playlist, Volume */}
+                                <div className="flex flex-row items-center justify-between md:justify-end w-full md:w-1/3 order-2 md:order-3">
+                                    {/* Time Display */}
+                                    <div className="text-xs md:text-sm font-mono text-white/50 tabular-nums">
+                                        {formatTime(currentTime)} / {formatTime(duration)}
                                     </div>
 
-                                    {/* 2. Interactive Slider Layer - UNCLIPPED for Thumb */}
-                                    <div className="absolute top-0 left-0 right-0 h-1.5 w-full cursor-pointer group/slider z-20 rounded-[1.5rem]">
-                                        {/* Interactive Hover Area & Input */}
-                                        <div className="absolute -top-2 -bottom-2 inset-x-0 flex items-center group-hover/slider:h-4 transition-all">
-                                            <input
-                                                type="range"
-                                                min="0"
-                                                max={duration || 0}
-                                                step="0.1"
-                                                value={currentTime}
-                                                onChange={handleSeek}
-                                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                            />
-                                        </div>
+                                    <div className="flex items-center gap-5 md:gap-6 text-white/70">
+                                        {/* Playlist Toggle */}
+                                        <button
+                                            onClick={() => setShowPlaylist(!showPlaylist)}
+                                            className={`hover:text-white transition-colors ${showPlaylist ? "text-[#EA9A61]" : ""}`}
+                                        >
+                                            <ListMusic size={20} className="stroke-[2.5]" />
+                                        </button>
 
-                                        {/* Thumb indicator */}
+                                        {/* Volume Control */}
                                         <div
-                                            className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-lg opacity-0 group-hover/slider:opacity-100 transition-opacity pointer-events-none"
-                                            style={{ left: `${(currentTime / (duration || 1)) * 100}%`, transform: 'translate(-50%, -50%)' }}
-                                        />
-                                    </div>
-
-                                    {/* 3. Content Layer - Relative to sit above background */}
-                                    <div className="relative h-full flex flex-col justify-center px-4 z-10 pointer-events-none">
-                                        <div className="flex items-center justify-between w-full gap-4 mt-2 pointer-events-auto">
-                                            {/* Art + Info (Link to Spotify) */}
-                                            <a
-                                                href={songData[currentIndex].spotifyUrl}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="flex items-center gap-3 min-w-0 group/info cursor-pointer hover:opacity-80 transition-opacity"
-                                            >
-                                                <div className="w-8 h-8 md:w-10 md:h-10 rounded-md overflow-hidden flex-shrink-0 relative">
-                                                    <Image src={songData[currentIndex].cover} fill className="object-cover" alt="art" sizes="40px" priority />
-                                                </div>
-                                                <div className="flex flex-col min-w-0 justify-center text-left">
-                                                    <span className="text-white text-xs md:text-[13px] font-semibold truncate leading-tight group-hover/info:text-[#1DB954] transition-colors">{songData[currentIndex].title}</span>
-                                                    <span className="text-[#9CA3AF] text-[10px] md:text-[11px] truncate leading-tight">{songData[currentIndex].artist} - {songData[currentIndex].album}</span>
-                                                </div>
-                                            </a>
-
-                                            {/* Timer Status Icon (Pulse) */}
-                                            <div className="flex items-center gap-3 flex-shrink-0">
-                                                <span className="text-[#9CA3AF] text-[10px] md:text-xs font-mono tabular-nums">{formatTime(currentTime)} / {formatTime(duration)}</span>
-                                                <div className="w-4 h-4 md:w-5 md:h-5 rounded-full bg-white/10 flex items-center justify-center">
-                                                    <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-white animate-pulse" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Right: Auxiliary Controls (Functional) */}
-                                <div className="flex items-center justify-center md:justify-end gap-5 pr-2 pl-2 md:pl-2 md:pr-6 py-2 md:py-0 order-3 md:order-3 text-[#E5E7EB] w-1/2 md:w-auto">
-                                    {/* Playlist Toggle */}
-                                    <button
-                                        onClick={() => setShowPlaylist(!showPlaylist)}
-                                        className={`hover:text-white transition ${showPlaylist ? "text-[#EA9A61]" : ""}`}
-                                    >
-                                        <ListMusic size={22} className="stroke-[2.5]" />
-                                    </button>
-
-                                    {/* Volume Control with Stable Slider */}
-                                    <div
-                                        className="relative flex items-center"
-                                        onMouseEnter={() => setShowVolume(true)}
-                                        onMouseLeave={() => setShowVolume(false)}
-                                    >
-                                        <AnimatePresence>
-                                            {showVolume && (
-                                                <motion.div
-                                                    initial={{ opacity: 0, scale: 0.9, y: 10 }}
-                                                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                                                    exit={{ opacity: 0, scale: 0.9, y: 10 }}
-                                                    className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 flex items-center justify-center bg-[#1A1A1A] p-2 rounded-lg border border-white/10 shadow-xl z-[160]"
-                                                >
+                                            className="relative flex items-center group/volume"
+                                            onMouseEnter={() => setShowVolume(true)}
+                                            onMouseLeave={() => setShowVolume(false)}
+                                        >
+                                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 opacity-0 pointer-events-none group-hover/volume:opacity-100 group-hover/volume:pointer-events-auto transition-opacity duration-200">
+                                                <div className="bg-[#1A1A1A] p-3 rounded-xl border border-white/10 shadow-2xl flex flex-col items-center">
+                                                    <div className="text-[10px] font-bold text-white/50 mb-2">{Math.round(volume * 100)}%</div>
                                                     <input
                                                         type="range"
                                                         min="0"
@@ -486,18 +469,17 @@ export default function MusicPlayer() {
                                                         step="0.01"
                                                         value={volume}
                                                         onChange={handleVolumeChange}
-                                                        className="h-24 w-1 appearance-none bg-white/20 rounded-full cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white"
+                                                        className="h-24 w-1.5 appearance-none bg-white/20 rounded-full cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:h-3.5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-lg hover:[&::-webkit-slider-thumb]:scale-125 transition-all"
                                                         style={{ writingMode: "vertical-lr", direction: "rtl" }}
                                                     />
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
-                                        <button onClick={toggleMute} className="hover:text-white transition w-8 flex justify-center">
-                                            {volume === 0 ? <Volume2 size={22} className="stroke-[2.5] opacity-50" /> : <Volume2 size={22} className="stroke-[2.5]" />}
-                                        </button>
+                                                </div>
+                                            </div>
+                                            <button onClick={toggleMute} className="hover:text-white transition-colors flex justify-center w-6">
+                                                {volume === 0 ? <Volume2 size={20} className="stroke-[2.5] opacity-50" /> : <Volume2 size={20} className="stroke-[2.5]" />}
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
 

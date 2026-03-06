@@ -150,9 +150,9 @@ const TextOverlay = styled.div<{ $isVisible: boolean }>`
 
 const CreativeText = styled.div`
   color: #FFF4E3;
-  font-family: 'Norwige Light', sans-serif;
+  font-family: 'NorwigeMedium_Hero', sans-serif;
   font-size: clamp(2.5rem, 12vw, 100px); /* Slightly smaller min-size for mobile */
-  font-weight: 300;
+  font-weight: normal;
   font-style: normal;
   letter-spacing: 0.02em;
   line-height: 110%;
@@ -171,10 +171,10 @@ const CreativeText = styled.div`
 
 const ChangingWord = styled.div`
   color: #FFF4E3;
-  font-family: 'Norwige', sans-serif;
+  font-family: 'NorwigeExtraBoldItalic_Hero', sans-serif;
   font-size: clamp(2.5rem, 12vw, 100px); /* Matching mobile size adjustment */
-  font-weight: 800;
-  font-style: italic;
+  font-weight: normal;
+  font-style: normal;
   letter-spacing: -1px; /* Tighter letter spacing on mobile */
   line-height: 110%;
   text-align: center;

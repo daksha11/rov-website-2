@@ -11,6 +11,7 @@ interface ApproachProps {
     title?: string;
     items?: ApproachItem[];
     titleColor?: string;
+    titleFont?: string;
     borderColor?: string;
     hoverBorderColor?: string;
     hoverBgColor?: string;
@@ -51,6 +52,7 @@ export const Approach: React.FC<ApproachProps> = ({
         }
     ],
     titleColor = '#C90000',
+    titleFont = 'Hornset',
     borderColor = '#371606',
     hoverBorderColor = '#953200',
     hoverBgColor = 'rgba(149, 50, 0, 0.10)',
@@ -62,7 +64,7 @@ export const Approach: React.FC<ApproachProps> = ({
             {/* Title */}
             <h3
                 className="text-5xl md:text-6xl font-black mb-12 uppercase tracking-tight"
-                style={{ color: titleColor, fontFamily: 'Hornset', letterSpacing: '0.1em' }}
+                style={{ color: titleColor, fontFamily: titleFont, letterSpacing: '0.1em' }}
             >
                 {title}
             </h3>
@@ -91,7 +93,7 @@ export const Approach: React.FC<ApproachProps> = ({
                             {/* Left: Title */}
                             <h4
                                 className="text-2xl md:text-3xl font-semibold flex-shrink-0 md:w-1/3"
-                                style={{ fontFamily: 'Hornset', letterSpacing: '0.1em', color: textColor === '#d1d5db' ? 'white' : textColor }}
+                                style={{ fontFamily: titleFont, letterSpacing: '0.1em', color: textColor === '#d1d5db' ? 'white' : textColor }}
                             >
                                 {item.title}
                             </h4>

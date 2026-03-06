@@ -1,6 +1,12 @@
 "use client";
 
 import { NavigationDock } from "@/components/NavDoc";
+import { Roboto } from "next/font/google";
+
+const roboto = Roboto({
+    weight: ['300', '400', '500', '700'],
+    subsets: ['latin'],
+});
 import Footer from "@/components/Footer";
 import { CaseStudyHero } from "@/components/casestudy/CaseStudyHero";
 import { CaseStudySidebar } from "@/components/casestudy/CaseStudySidebar";
@@ -45,13 +51,23 @@ export default function BandoCaseStudyPage() {
     ];
 
     return (
-        <main className="relative min-h-screen bg-black">
+        <main id="bando-case-study" className={`relative min-h-screen bg-black ${roboto.className}`}>
+            <style jsx global>{`
+                #bando-case-study h1,
+                #bando-case-study h2,
+                #bando-case-study h3,
+                #bando-case-study h4,
+                #bando-case-study .font-heading {
+                    font-family: 'Pearl Jean', sans-serif !important;
+                }
+            `}</style>
             <NavigationDock />
 
             <CaseStudyHero
                 title={["Crafting The", "Bando's", "Online Experience"]}
                 titleColors={["#C90000", "#FFD600", "#C90000"]}
                 backgroundImage="/casestudyheroimg.png"
+                titleFont="'Pearl Jean', sans-serif"
             />
 
             {/* Case Study Section */}

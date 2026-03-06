@@ -7,13 +7,15 @@ interface ChallengeSectionProps {
     content: string;
     gradient?: string;
     backgroundColor?: string;
+    titleFont?: string;
 }
 
 export const ChallengeSection: React.FC<ChallengeSectionProps> = ({
     title,
     content,
     gradient = 'linear-gradient(91deg, #D76C00 0.74%, #953200 100%)',
-    backgroundColor = 'rgba(0, 0, 0, 0.60)'
+    backgroundColor = 'rgba(0, 0, 0, 0.60)',
+    titleFont = 'Hornset'
 }) => {
     return (
         <div
@@ -30,7 +32,7 @@ export const ChallengeSection: React.FC<ChallengeSectionProps> = ({
                 <h3
                     className="text-4xl md:text-5xl font-bold whitespace-nowrap flex-shrink-0 text-white"
                     style={{
-                        fontFamily: 'Hornset',
+                        fontFamily: titleFont,
                         letterSpacing: '0.1em'
                     }}
                 >

@@ -5,7 +5,7 @@ import React from 'react';
 const SoundHero: React.FC = () => {
     return (
         <section className="flex flex-col items-center justify-center relative px-6 md:px-12 py-8 bg-black min-h-[90vh]">
-            <div className="w-full max-w-[95%] md:max-w-7xl relative z-10 rounded-[2.5rem] overflow-hidden shadow-2xl h-[80vh] flex flex-col justify-start pt-16 md:pt-24">
+            <div className="w-full max-w-[95%] md:max-w-7xl relative z-10 rounded-[2.5rem] overflow-hidden shadow-2xl h-[80vh] flex flex-col justify-start pt-10 md:pt-16">
                 {/* Background Image */}
                 {/* Background Video */}
                 <video
@@ -25,37 +25,37 @@ const SoundHero: React.FC = () => {
 
                 {/* Content */}
                 <div className="relative z-20 px-8 md:px-16 w-full">
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-12 md:gap-6 pb-12">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-start gap-12 md:gap-6 pb-12 pt-2 md:pt-4">
                         {/* Left side - Tagline */}
                         <div className="flex flex-col">
                             <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                                <span className="text-[#FFF4E3] text-3xl md:text-5xl lg:text-6xl font-bold italic tracking-wide" style={{ fontFamily: 'Norwige, sans-serif' }}>
+                                <span className="text-[#FFF4E3] text-3xl md:text-5xl lg:text-6xl tracking-wide leading-none" style={{ fontFamily: 'NorwigeHeroItalic, sans-serif', fontWeight: 'normal' }}>
                                     RAW.
                                 </span>
 
                                 <div className="relative flex items-center scale-90 md:scale-100 origin-left">
                                     {/* Refined Pill */}
                                     <span
-                                        className="bg-[#8B7355] text-[#FFF4E3] text-3xl md:text-5xl lg:text-6xl font-bold italic px-4 md:px-6 py-1 md:py-2 rounded-2xl tracking-wide relative z-20"
-                                        style={{ fontFamily: 'Norwige, sans-serif' }}
+                                        className="bg-[#8B7355] text-[#FFF4E3] text-3xl md:text-5xl lg:text-6xl px-4 md:px-6 py-1 md:py-2 rounded-2xl tracking-wide relative z-20"
+                                        style={{ fontFamily: 'NorwigeHeroItalic, sans-serif', fontWeight: 'normal' }}
                                     >
                                         REFINED.
                                     </span>
                                     {/* Filled Brown Circle - Adjusted margin for separation */}
-                                    <div className="w-10 h-10 md:w-16 md:h-16 rounded-full bg-[#8B7355] -ml-3 md:-ml-4 relative z-10" />
+                                    <div className="w-10 h-10 md:w-16 md:h-16 rounded-full bg-[#8B7355] -ml-1 md:-ml-2 relative z-10" />
 
                                     {/* Outlined White Circle */}
-                                    <div className="w-10 h-10 md:w-16 md:h-16 rounded-full border-2 border-[#FFF4E3] -ml-6 md:-ml-8 relative z-30" />
+                                    <div className="w-10 h-10 md:w-16 md:h-16 rounded-full border-2 border-[#FFF4E3] -ml-4 md:-ml-6 relative z-30" />
                                 </div>
                             </div>
 
-                            <span className="text-[#FFF4E3] text-3xl md:text-5xl lg:text-6xl font-bold italic tracking-wide mt-2" style={{ fontFamily: 'Norwige, sans-serif' }}>
+                            <span className="text-[#FFF4E3] text-3xl md:text-5xl lg:text-6xl tracking-wide mt-2" style={{ fontFamily: 'NorwigeHeroItalic, sans-serif', fontWeight: 'normal' }}>
                                 RELEASED.
                             </span>
                         </div>
 
                         {/* Right side - Description */}
-                        <div className="max-w-sm mb-2">
+                        <div className="max-w-sm pt-2">
                             <p className="text-[#FFF4E3] text-lg md:text-xl italic leading-tight text-right md:text-left drop-shadow-md" style={{ fontFamily: 'Norwige, sans-serif' }}>
                                 From bedroom demos to radio-<br />ready hits, your sound unleashed<br />in just 48 hours.
                             </p>

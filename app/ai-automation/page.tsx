@@ -7,26 +7,12 @@ import { NavigationDock } from '@/components/NavDoc';
 import Footer from '@/components/Footer';
 import OurApproachSection from '@/components/Web-Dev/OurApproachSection';
 import FAQBottomSection from '@/components/Web-Dev/FAQBottomSection';
+import AIWorkflowsSection from '@/components/ai-automation/AIWorkflowsSection';
 import ProjectStrip from '@/components/ProjectStrip';
 import LogoLoop from '@/components/LogoLoop';
 import { SiNotion, SiGooglecloud, SiGmail, SiOpenai, SiN8N } from 'react-icons/si';
 
 export default function AIAutomationPage() {
-    // Add style tag to override global Inter font
-    React.useEffect(() => {
-        const style = document.createElement('style');
-        style.textContent = `
-            .norwige-italic-text {
-                font-family: 'Norwige', sans-serif !important;
-                font-style: italic !important;
-                font-weight: 600 !important;
-            }
-        `;
-        document.head.appendChild(style);
-        return () => {
-            document.head.removeChild(style);
-        };
-    }, []);
     return (
         <div style={{
             minHeight: '100vh',
@@ -112,8 +98,9 @@ export default function AIAutomationPage() {
                     AI that works the way
                     <br />
                     <span
-                        className="norwige-italic-text"
                         style={{
+                            fontFamily: 'NorwigeHeroItalic, sans-serif',
+                            fontWeight: 'normal',
                             fontSize: 'clamp(2.8rem, 7vw, 6rem)',
                             lineHeight: '1.15',
                             display: 'block',
@@ -230,10 +217,9 @@ export default function AIAutomationPage() {
                     transition={{ duration: 0.8 }}
                     viewport={{ once: true }}
                     style={{
-                        fontFamily: 'Norwige, sans-serif',
-                        fontStyle: 'italic',
+                        fontFamily: 'NorwigeHeroItalic, sans-serif',
+                        fontWeight: 'normal',
                         fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
-                        fontWeight: 600,
                         color: 'white',
                         marginBottom: '16px',
                         lineHeight: 1.15,
@@ -382,6 +368,9 @@ export default function AIAutomationPage() {
                 </div>
             </section>
 
+            {/* AI Workflows Section */}
+            <AIWorkflowsSection />
+
             {/* Technology Stack & Integrations Section */}
             <section style={{
                 position: 'relative',
@@ -395,10 +384,9 @@ export default function AIAutomationPage() {
                     transition={{ duration: 0.8 }}
                     viewport={{ once: true }}
                     style={{
-                        fontFamily: 'Norwige, sans-serif',
-                        fontStyle: 'italic',
+                        fontFamily: 'NorwigeHeroItalic, sans-serif',
+                        fontWeight: 'normal',
                         fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
-                        fontWeight: 600,
                         color: 'white',
                         marginBottom: '16px',
                         lineHeight: 1.15,
@@ -537,22 +525,6 @@ export default function AIAutomationPage() {
                 zIndex: 3,
                 padding: 'clamp(40px, 8vw, 60px) clamp(16px, 8%, 8%) clamp(60px, 10vw, 100px) clamp(16px, 8%, 8%)',
             }}>
-                <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                    viewport={{ once: true }}
-                    style={{
-                        fontFamily: 'Roboto, sans-serif',
-                        fontSize: 'clamp(0.9rem, 1.4vw, 1rem)',
-                        color: 'rgba(255,255,255,0.5)',
-                        marginBottom: '48px',
-                        textAlign: 'center',
-                        lineHeight: 1.7,
-                    }}
-                >
-                    Trusted by industry-leading platforms
-                </motion.p>
 
                 <div style={{ height: '120px', position: 'relative', overflow: 'hidden' }}>
                     <LogoLoop

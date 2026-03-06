@@ -19,6 +19,7 @@ interface CompetitorAnalysisProps {
     comparisonData: ComparisonRow[];
     insight: string;
     titleColor?: string;
+    titleFont?: string;
     highlightBorderColor?: string;
     highlightRowBgColor?: string;
     insightBadgeColor?: string;
@@ -34,6 +35,7 @@ export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
     comparisonData,
     insight,
     titleColor = '#C90000',
+    titleFont = 'Hornset',
     highlightBorderColor = '#C90000',
     highlightRowBgColor = '#2A0A0A',
     insightBadgeColor = '#953200',
@@ -46,7 +48,7 @@ export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
             {/* Title */}
             <h3
                 className="text-5xl md:text-6xl font-black mb-6 uppercase tracking-tight"
-                style={{ color: titleColor, fontFamily: 'Hornset', letterSpacing: '0.1em' }}
+                style={{ color: titleColor, fontFamily: titleFont, letterSpacing: '0.1em' }}
             >
                 {title}
             </h3>

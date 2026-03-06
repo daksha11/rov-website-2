@@ -96,6 +96,30 @@
 }
 
 @font-face {
+  font-family: 'NorwigeHeroItalic';
+  src: url('../public/font/norwige-font-family-1750004186-0/Norwige-MediumItalicItalic-BF68175f3266281.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NorwigeMedium_Hero';
+  src: url('../public/font/norwige-font-family-1750004186-0/Norwige-MediumItalic-BF68175f325d0c2.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NorwigeExtraBoldItalic_Hero';
+  src: url('../public/font/norwige-font-family-1750004186-0/Norwige-ExtraBoldItalicItalic-BF68175f3224386.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'Sedgwick Ave Display';
   src: url('../public/font/Sedgwick_Ave_Display/SedgwickAveDisplay-Regular.ttf');
   font-weight: normal;

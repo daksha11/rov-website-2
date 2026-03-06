@@ -9,6 +9,7 @@ interface CaseStudyHeroProps {
     backgroundImage: string;
     titleFont?: string;
     enableBlur?: boolean;
+    liveLink?: string;
 }
 
 export const CaseStudyHero: React.FC<CaseStudyHeroProps> = ({
@@ -16,7 +17,8 @@ export const CaseStudyHero: React.FC<CaseStudyHeroProps> = ({
     titleColors,
     backgroundImage,
     titleFont = "Pearl Jean, sans-serif",
-    enableBlur = false
+    enableBlur = false,
+    liveLink = "https://www.thebandoatl.com/"
 }) => {
     return (
         <section
@@ -44,8 +46,8 @@ export const CaseStudyHero: React.FC<CaseStudyHeroProps> = ({
             />
 
             {/* Content */}
-            <div className="relative z-10 max-w-7xl mx-auto text-center">
-                <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] font-bold leading-relaxed">
+            <div className="relative z-10 max-w-7xl mx-auto text-center w-full px-4 overflow-hidden">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-relaxed">
                     {title.map((word, index) => (
                         <span
                             key={index}
@@ -71,24 +73,37 @@ export const CaseStudyHero: React.FC<CaseStudyHeroProps> = ({
                         </span>
                     ))}
                 </h1>
-                {/* Arrow */}
-                <div className="mt-12">
-                    <svg
-                        width="60"
-                        height="80"
-                        viewBox="0 0 60 80"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="mx-auto animate-bounce"
-                    >
-                        <path
-                            d="M30 0 L30 60 M10 40 L30 60 L50 40"
-                            stroke="#1A4D2E"
-                            strokeWidth="4"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        />
-                    </svg>
+                {/* CTA Button */}
+                <div className="mt-16 pb-8 flex justify-center">
+                    <div className="relative group/btn cursor-pointer">
+                        {/* Animated Glow Behind Button */}
+                        <div className="absolute -inset-1.5 bg-gradient-to-r from-[#C90000] via-[#FFD600] to-[#C90000] rounded-full blur-md opacity-30 group-hover/btn:opacity-75 transition duration-500 group-hover/btn:duration-200" style={{ backgroundSize: '200% 200%', animation: 'gradient-xy 3s ease infinite' }}></div>
+
+                        <a
+                            href={liveLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="relative flex items-center justify-center gap-4 px-10 py-5 bg-black/80 backdrop-blur-xl border border-white/10 rounded-full text-white font-bold tracking-[0.25em] uppercase text-xs md:text-sm transition-all duration-300 group-hover/btn:bg-[#C90000]/20 group-hover/btn:shadow-[inset_0_0_20px_rgba(201,0,0,0.5)] group-hover/btn:border-[#C90000]/50 font-sans"
+                        >
+                            <span>Visit Live Website</span>
+                            <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center transition-colors duration-300 group-hover/btn:bg-[#FFD600]">
+                                <svg
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className="transform transition-transform duration-300 group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5 group-hover/btn:text-black"
+                                >
+                                    <path d="M5 12h14" />
+                                    <path d="M12 5l7 7-7 7" />
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
