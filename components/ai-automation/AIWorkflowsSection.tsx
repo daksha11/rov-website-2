@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const workflows = [
     {
@@ -32,11 +32,11 @@ const workflows = [
         imageUrl: "/aipage/aiwf2.png",
         downloadUrl: "/aipage/appointment_booking.json",
         tools: [
-            { label: "OpenAI", color: "#10A37F" },
-            { label: "HubSpot", color: "#FF7A59" },
-            { label: "Gmail", color: "#EA4335" },
+            { label: "Claude", color: "#D4A27F" },
+            { label: "Slack", color: "#4A154B" },
+            { label: "Zendesk", color: "#03363D" },
         ],
-        extraTools: 2,
+        extraTools: 0,
         nodes: [
             { x: 14, label: "Form\nSubmit" },
             { x: 30, label: "AI\nScore" },
@@ -52,11 +52,11 @@ const workflows = [
         imageUrl: "/aipage/aiwf3.png",
         downloadUrl: "/aipage/website_inbound_crm.json",
         tools: [
-            { label: "Claude", color: "#D4A27F" },
-            { label: "Slack", color: "#4A154B" },
-            { label: "Zendesk", color: "#03363D" },
+            { label: "OpenAI", color: "#10A37F" },
+            { label: "HubSpot", color: "#FF7A59" },
+            { label: "Gmail", color: "#EA4335" },
         ],
-        extraTools: 0,
+        extraTools: 2,
         nodes: [
             { x: 14, label: "Ticket\nInbound" },
             { x: 30, label: "Classify\nIntent" },
@@ -133,6 +133,28 @@ function WorkflowDiagram({ nodes }: { nodes: { x: number; label: string }[] }) {
 }
 
 export default function AIWorkflowsSection() {
+    const [downloadConfirmation, setDownloadConfirmation] = useState<{ title: string; url: string } | null>(null);
+
+    const handleDownloadClick = (title: string, url: string) => {
+        setDownloadConfirmation({ title, url });
+    };
+
+    const confirmDownload = () => {
+        if (downloadConfirmation) {
+            const link = document.createElement('a');
+            link.href = downloadConfirmation.url;
+            link.download = downloadConfirmation.url.split('/').pop() || 'workflow.json';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setDownloadConfirmation(null);
+        }
+    };
+
+    const cancelDownload = () => {
+        setDownloadConfirmation(null);
+    };
+
     return (
         <section
             style={{
@@ -351,9 +373,8 @@ export default function AIWorkflowsSection() {
 
                             {/* Download Button */}
                             {wf.downloadUrl && (
-                                <a
-                                    href={wf.downloadUrl}
-                                    download
+                                <button
+                                    onClick={() => handleDownloadClick(wf.title, wf.downloadUrl!)}
                                     style={{
                                         display: "inline-flex",
                                         alignItems: "center",
@@ -361,7 +382,8 @@ export default function AIWorkflowsSection() {
                                         gap: "8px",
                                         background: "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)",
                                         color: "white",
-                                        textDecoration: "none",
+                                        border: "none",
+                                        cursor: "pointer",
                                         fontWeight: 700,
                                         fontFamily: "Roboto, sans-serif",
                                         fontSize: "0.82rem",
@@ -386,12 +408,175 @@ export default function AIWorkflowsSection() {
                                         <line x1="12" y1="15" x2="12" y2="3"></line>
                                     </svg>
                                     Download Workflow
-                                </a>
+                                </button>
                             )}
                         </div>
                     </motion.div>
                 ))}
             </div>
+
+            {/* Download Confirmation Modal */}
+            <AnimatePresence>
+                {downloadConfirmation && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{
+                            position: "fixed",
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            backgroundColor: "rgba(0, 0, 0, 0.85)",
+                            backdropFilter: "blur(8px)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            zIndex: 9999,
+                            padding: "20px",
+                        }}
+                        onClick={cancelDownload}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, y: 20 }}
+                            animate={{ scale: 1, y: 0 }}
+                            exit={{ scale: 0.9, y: 20 }}
+                            onClick={(e) => e.stopPropagation()}
+                            style={{
+                                background: "linear-gradient(160deg, rgba(126,42,12,0.30) 0%, rgba(0,0,0,0.50) 100%)",
+                                border: "1px solid rgba(234, 154, 97, 0.3)",
+                                borderRadius: "20px",
+                                padding: "clamp(32px, 5vw, 48px)",
+                                maxWidth: "500px",
+                                width: "100%",
+                                boxShadow: "0 40px 100px -20px rgba(0, 0, 0, 0.8), 0 0 40px rgba(234, 154, 97, 0.1)",
+                            }}
+                        >
+                            {/* Icon */}
+                            <div
+                                style={{
+                                    width: "64px",
+                                    height: "64px",
+                                    borderRadius: "16px",
+                                    background: "rgba(234, 154, 97, 0.15)",
+                                    border: "1px solid rgba(234, 154, 97, 0.3)",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    margin: "0 auto 24px",
+                                }}
+                            >
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#EA9A61" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                            </div>
+
+                            {/* Title */}
+                            <h3
+                                style={{
+                                    fontFamily: "Norwige, sans-serif",
+                                    fontStyle: "italic",
+                                    fontSize: "clamp(1.5rem, 4vw, 2rem)",
+                                    fontWeight: 600,
+                                    color: "#EA9A61",
+                                    textAlign: "center",
+                                    marginBottom: "12px",
+                                    lineHeight: 1.2,
+                                }}
+                            >
+                                Download Workflow?
+                            </h3>
+
+                            {/* Description */}
+                            <p
+                                style={{
+                                    fontFamily: "Roboto, sans-serif",
+                                    fontSize: "clamp(0.9rem, 2vw, 1rem)",
+                                    color: "rgba(255, 255, 255, 0.7)",
+                                    textAlign: "center",
+                                    marginBottom: "32px",
+                                    lineHeight: 1.6,
+                                }}
+                            >
+                                You&apos;re about to download <strong style={{ color: "rgba(255, 255, 255, 0.9)" }}>{downloadConfirmation.title}</strong> workflow template.
+                            </p>
+
+                            {/* Buttons */}
+                            <div
+                                style={{
+                                    display: "flex",
+                                    gap: "12px",
+                                    flexDirection: "row",
+                                }}
+                            >
+                                {/* Cancel Button */}
+                                <button
+                                    onClick={cancelDownload}
+                                    style={{
+                                        flex: 1,
+                                        padding: "14px 24px",
+                                        borderRadius: "9999px",
+                                        border: "1px solid rgba(255, 255, 255, 0.15)",
+                                        background: "rgba(255, 255, 255, 0.05)",
+                                        color: "rgba(255, 255, 255, 0.8)",
+                                        fontFamily: "Roboto, sans-serif",
+                                        fontSize: "0.9rem",
+                                        fontWeight: 600,
+                                        cursor: "pointer",
+                                        transition: "all 0.2s ease",
+                                        textTransform: "uppercase",
+                                        letterSpacing: "0.05em",
+                                    }}
+                                    onMouseOver={(e) => {
+                                        e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)";
+                                        e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.25)";
+                                    }}
+                                    onMouseOut={(e) => {
+                                        e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)";
+                                        e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.15)";
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+
+                                {/* Confirm Button */}
+                                <button
+                                    onClick={confirmDownload}
+                                    style={{
+                                        flex: 1,
+                                        padding: "14px 24px",
+                                        borderRadius: "9999px",
+                                        border: "none",
+                                        background: "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)",
+                                        color: "white",
+                                        fontFamily: "Roboto, sans-serif",
+                                        fontSize: "0.9rem",
+                                        fontWeight: 700,
+                                        cursor: "pointer",
+                                        transition: "all 0.2s ease",
+                                        textTransform: "uppercase",
+                                        letterSpacing: "0.05em",
+                                        boxShadow: "0 4px 24px rgba(234, 154, 97, 0.35)",
+                                    }}
+                                    onMouseOver={(e) => {
+                                        e.currentTarget.style.transform = "scale(1.02)";
+                                        e.currentTarget.style.boxShadow = "0 6px 32px rgba(234, 154, 97, 0.45)";
+                                    }}
+                                    onMouseOut={(e) => {
+                                        e.currentTarget.style.transform = "scale(1)";
+                                        e.currentTarget.style.boxShadow = "0 4px 24px rgba(234, 154, 97, 0.35)";
+                                    }}
+                                >
+                                    Download
+                                </button>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </section>
     );
 }
