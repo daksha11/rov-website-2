@@ -169,7 +169,7 @@ export default function OurApproachSection() {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: panel,
-            start: "bottom bottom",
+            start: "center center",
             end: fakeScrollRatio ? `+=${inner.offsetHeight}` : "bottom top",
             pin: true,
             pinSpacing: false,
@@ -354,7 +354,7 @@ export default function OurApproachSection() {
                 cardsRef.current[index] = el;
               }}
               onClick={() => toggleCard(index)}
-              className="card-panel relative w-full rounded-2xl sm:rounded-3xl md:rounded-[2.5rem] overflow-hidden cursor-pointer group mb-6 sm:mb-8 md:mb-10 lg:mb-12 min-h-[300px] sm:min-h-[400px] md:min-h-[min(calc(100vh-120px),600px)]"
+              className="card-panel relative w-full rounded-2xl sm:rounded-3xl md:rounded-[2.5rem] overflow-hidden cursor-pointer group mb-6 sm:mb-8 md:mb-10 lg:mb-12"
               style={{
                 backgroundColor: activeCardIndex === index ? "#1E1A17" : "#111111",
                 border: activeCardIndex === index
@@ -362,6 +362,8 @@ export default function OurApproachSection() {
                   : "1px solid rgba(255, 255, 255, 0.08)",
                 display: "flex",
                 flexDirection: "column",
+                justifyContent: "center",
+                minHeight: "clamp(400px, 55vh, 650px)",
                 transition: "background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease",
                 zIndex: activeCardIndex === index ? 40 : 10 + index,
                 boxShadow: activeCardIndex === index
@@ -369,7 +371,7 @@ export default function OurApproachSection() {
                   : "none",
               }}
             >
-              <div className="card-inner w-full flex flex-col justify-center min-h-[300px] sm:min-h-[400px] md:min-h-[min(calc(100vh-120px),600px)] p-6 sm:p-8 md:p-12 lg:p-16 xl:p-24 relative z-10">
+              <div className="card-inner w-full flex flex-col justify-center p-6 sm:p-8 md:p-12 lg:p-16 xl:p-24 relative z-10">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
                   {/* Left Side - Title */}
                   <div className="flex items-center">

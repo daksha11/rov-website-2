@@ -130,7 +130,7 @@ export default function AIAutomationPage() {
                         maxWidth: '520px',
                     }}
                 >
-                    Custom AI systems that save time and make money. Not generic chatbots. Intelligent solutions engineered for your unique workflow.
+                    Custom AI systems that save time and make money.
                 </motion.p>
 
                 {/* CTA Buttons */}
@@ -416,8 +416,9 @@ export default function AIAutomationPage() {
                 <div style={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 450px), 1fr))',
-                    gap: '20px',
-                    maxWidth: '1100px',
+                    gap: 'clamp(20px, 2.5vw, 40px)',
+                    maxWidth: '1200px',
+                    margin: '0 auto',
                 }}>
                     {[
                         {
@@ -450,27 +451,31 @@ export default function AIAutomationPage() {
                             style={{
                                 background: 'linear-gradient(135deg, rgba(126, 42, 12, 0.20) 0%, rgba(159, 45, 0, 0.10) 100%)',
                                 border: '1px solid rgba(159, 45, 0, 0.30)',
-                                borderRadius: '10px',
-                                padding: 'clamp(20px, 4vw, 32px) clamp(16px, 3.5vw, 28px)',
+                                borderRadius: 'clamp(12px, 1.5vw, 20px)',
+                                padding: 'clamp(24px, 3vw, 40px)',
+                                minHeight: '240px',
+                                display: 'flex',
+                                flexDirection: 'column',
                             }}
                         >
                             {/* Card Header */}
                             <div style={{
                                 display: 'flex',
                                 alignItems: 'center',
-                                gap: '12px',
-                                marginBottom: '24px',
+                                gap: 'clamp(12px, 1vw, 16px)',
+                                marginBottom: 'clamp(20px, 2vw, 28px)',
                             }}>
                                 <div style={{
-                                    width: '38px',
-                                    height: '38px',
-                                    borderRadius: '10px',
+                                    width: 'clamp(40px, 3vw, 50px)',
+                                    height: 'clamp(40px, 3vw, 50px)',
+                                    borderRadius: 'clamp(8px, 1vw, 12px)',
                                     background: 'rgba(202, 53, 0, 0.15)',
                                     border: '1px solid rgba(202, 53, 0, 0.25)',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    padding: '8px',
+                                    padding: 'clamp(8px, 0.8vw, 12px)',
+                                    flexShrink: 0,
                                 }}>
                                     <img
                                         src={card.icon}
@@ -486,28 +491,36 @@ export default function AIAutomationPage() {
                                 <span style={{
                                     fontFamily: 'Roboto, sans-serif',
                                     fontWeight: 700,
-                                    fontSize: '1rem',
+                                    fontSize: 'clamp(0.95rem, 1.2vw, 1.1rem)',
                                     color: 'rgba(255,255,255,0.9)',
                                     letterSpacing: '0.01em',
+                                    lineHeight: 1.3,
                                 }}>
                                     {card.title}
                                 </span>
                             </div>
 
                             {/* Tags */}
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                            <div style={{
+                                display: 'flex',
+                                flexWrap: 'wrap',
+                                gap: 'clamp(8px, 0.8vw, 12px)',
+                                flex: 1,
+                                alignContent: 'flex-start',
+                            }}>
                                 {card.tags.map((tag) => (
                                     <span
                                         key={tag}
                                         style={{
                                             fontFamily: 'Roboto, sans-serif',
-                                            fontSize: '0.78rem',
+                                            fontSize: 'clamp(0.75rem, 0.9vw, 0.85rem)',
                                             fontWeight: 500,
                                             color: 'rgba(255,255,255,0.65)',
                                             background: 'rgba(126, 42, 12, 0.20)',
                                             border: '1px solid rgba(159, 45, 0, 0.40)',
                                             borderRadius: '9999px',
-                                            padding: '5px 14px',
+                                            padding: 'clamp(6px, 0.5vw, 8px) clamp(12px, 1.2vw, 16px)',
+                                            whiteSpace: 'nowrap',
                                         }}
                                     >
                                         {tag}
