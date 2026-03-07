@@ -26,11 +26,11 @@ const workflows = [
         ],
     },
     {
-        title: "Lead Qualification & CRM Sync",
-        category: "Sales Automation",
-        description: "Captures inbound website leads, enriches contact data, sends automated follow-ups, and syncs qualified prospects directly into HubSpot CRM.",
+        title: "AI Appointment Booking Agent",
+        category: "Support & Operations",
+        description: "Handles inbound appointment requests automatically. Checks calendar availability in real time, confirms open slots with users, and books meetings instantly while capturing customer details.",
         imageUrl: "/aipage/aiwf2.png",
-        downloadUrl: "/aipage/website_inbound_crm.json",
+        downloadUrl: "/aipage/appointment_booking.json",
         tools: [
             { label: "OpenAI", color: "#10A37F" },
             { label: "HubSpot", color: "#FF7A59" },
@@ -46,11 +46,11 @@ const workflows = [
         ],
     },
     {
-        title: "Customer Support AI Agent",
-        category: "Support & Operations",
-        description: "Handles inbound appointment requests automatically. Checks calendar availability in real time, confirms open slots with users, and books meetings instantly while capturing customer details.",
+        title: "Website Inbound Lead Collection & CRM Sync",
+        category: "Sales Automation",
+        description: "Captures inbound website leads, enriches contact data, sends automated follow-ups, and syncs qualified prospects directly into HubSpot CRM.",
         imageUrl: "/aipage/aiwf3.png",
-        downloadUrl: "/aipage/appointment_booking.json",
+        downloadUrl: "/aipage/website_inbound_crm.json",
         tools: [
             { label: "Claude", color: "#D4A27F" },
             { label: "Slack", color: "#4A154B" },
