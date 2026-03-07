@@ -1,0 +1,250 @@
+{
+  "name": "ROV Appointment Booking",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "appointment-webhook",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        352
+      ],
+      "id": "0e2a1223-db6a-44dd-949e-88aef9485a21",
+      "name": "Webhook",
+      "webhookId": "6e9d32dc-f5ad-4101-9512-c1adb5b455d1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.2,
+      "position": [
+        2048,
+        352
+      ],
+      "id": "83d60786-fa10-44e1-b8b7-8f6b8fc90729",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "url": "https://api.cal.com/v1/slots",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "calApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "startTime",
+              "value": "={{ $json.body.startTime }}"
+            },
+            {
+              "name": "endTime",
+              "value": "={{DateTime.fromISO($json.body.startTime, { zone: 'Asia/Kolkata' })\n  .set({ hour: 18, minute: 0, second: 0 })\n.format(\"yyyy-MM-dd'T'HH:mm:ssZZ\")}}"
+            },
+            {
+              "name": "eventTypeId",
+              "value": "event_type_id"
+            },
+            {
+              "name": "timeZone",
+              "value": "Asia/Kolkata"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1760,
+        240
+      ],
+      "id": "57567697-fa21-4170-824c-fbd4dcf933d7",
+      "name": "Check available slot in Cal.com"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.cal.com/v1/bookings",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "calApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"eventTypeId\": event_type_id,\n  \"start\": \"{{ $json.body.startTime }}\",\n  \"end\": \"{{ DateTime.fromISO($json.body.startTime).plus({ minutes: 30 }).format(\"yyyy-MM-dd'T'HH:mm:ssZZ\") }}\",\n  \"responses\": {\n    \"name\": \"{{ $json.body.name }}\",\n    \"email\": \"{{ $json.body.email }}\"\n  },\n  \"timeZone\": \"Asia/Kolkata\",\n  \"language\": \"en\",\n  \"title\": \"Test\",\n\"metadata\":{}\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1760,
+        448
+      ],
+      "id": "d0f61561-4503-4e05-b6ff-fcfcf9945872",
+      "name": "Book an Appointment"
+    },
+    {
+      "parameters": {
+        "content": "## ElevenLabs Setup\n\n### First Message:\n- Thanks for calling to InfyOm Technologies. How can i help you?\n\n### System Prompt:\n\n#### 1. Personality\nYou are a clear, helpful, and respectful assistant focused solely on **booking appointments** for clients.\n- **Identity**: A virtual appointment scheduler.\n- **Core Traits**: Polite, efficient, conversational, respectful.\n- **Role**: Guide users through choosing a time, checking availability, and finalizing the booking.\n\n#### 2. Tone\nYour tone is polite, professional, and engaging-friendly enough to feel human, but focused enough to stay on task.\n- Use conversational cues like “Okay,” “Got it,” “Sounds good,” etc.  \n- Maintain a warm but efficient pacing.  \n- Speak clearly and respectfully at all times.  \n- Ensure the conversation is helpful and pleasant while staying on-topic.\n#### 3. Goal\nYour task is to **book an appointment** for the client.\n#### Step-by-step Conversation Flow\n1. **Greeting & Purpose**\n   - Greet politely and state purpose.\n   - Example: “Hi! I’m here to help you book an appointment.”\n2. **Request Preferred Time**\n   - Ask: “Can you please tell me your preferred time slot for the appointment?”\n   - Understand user's date and if not clear then ask full date with month and year.\n3. **Check Availability**\n   - Use the `checkAvailableSlot` tool with the user’s preferred time.\n   - If the slot **is available**:\n     - Confirm with the user: “That slot is available. Should I go ahead and book it for you?”\n     - If user agrees → Use `bookSlot`.\n   - If the slot **is not available**:\n     - Say: “It looks like that time isn’t available... Would you like to look for the same time on the next day?”\n4. **Handle Next-Day Option**\n   - If the user agrees, check availability for the same time on the next day using `checkAvailableSlot`.\n     - If available → confirm and use `bookSlot`.\n     - If not → politely inform and ask for a different time.\n\n5. **Close the Call**\n   - Confirm the booking if done.\n   - Example: “Great! Your appointment is booked. Thank you and have a wonderful day!”\n#### 4. Guardrails\n- **Do not** discuss anything unrelated to appointment booking.\n- If the user asks for something outside your scope:\n  - Say: “I’m only here to help with appointment bookings. For other questions, please contact our support team.”\n- Never speculate about unavailable data or functions.\n- Never ask date format from User like Say date in Day Month and Year format. If you can't understand user date then say Please speak full date.\n\n#### 5. Tools\nYou can use the following tools to help book appointments:\n- `checkAvailableSlot`: Use this to check if the user’s requested time is open.\n- `bookSlot`: Use this to confirm the appointment after the user agrees.\n\n#### End call\n- Always says Thanks for reaching with us. Have a nice day.",
+        "height": 1480,
+        "width": 760
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "abdea631-0a8d-41ae-a6d1-e305589f666b",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Tool Setup \n1. Name: bookSlot\n#### Description:\n- Use this tool when user confirm their slot and appointment. When you have proper name and email of their. \n\n#### POST: webhook_url\n\n2. Name: checkAvailableSlot\n#### Description:\n- Use this slot for check Available slots in our calender.\n#### POST: webhook_url",
+        "height": 340,
+        "width": 480,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        784,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "a7163d37-a345-4eb5-977d-ce97adc8b478",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "249d32bd-5a1d-44fe-8b33-975827cef795",
+              "leftValue": "={{ $json.body.tool }}",
+              "rightValue": "checkAvailableSlot",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1552,
+        352
+      ],
+      "id": "7dd4d0e5-4b83-4e4b-8a9e-195f7ca93a7d",
+      "name": "Check Is Request For Available Slot"
+    },
+    {
+      "parameters": {
+        "content": "## Cal.com  Setup\n\n- Go to cal.com and generate API Key.\n- Create new Cal API credentials in n8n.\n- Set this API Key in this credentials.",
+        "width": 480
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        784,
+        608
+      ],
+      "typeVersion": 1,
+      "id": "3b0a11f5-6e17-4fa1-8989-87185fd42e76",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "BUILDING BUILDING BUILDING BUILDING....\n"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1408,
+        608
+      ],
+      "id": "0d46743a-d365-404d-8233-115f00fb0b9c",
+      "name": "Sticky Note3"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Check Is Request For Available Slot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check available slot in Cal.com": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Book an Appointment": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Is Request For Available Slot": {
+      "main": [
+        [
+          {
+            "node": "Check available slot in Cal.com",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Book an Appointment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "f364732c-6c54-4b73-a833-a0700cf96704",
+  "meta": {
+    "instanceId": "9ef239066365292e04e22ac1594e9ba735563ad742cd3341b83509c07f465ad9"
+  },
+  "id": "daRfqDsuAQ1bqMsA",
+  "tags": []
+}

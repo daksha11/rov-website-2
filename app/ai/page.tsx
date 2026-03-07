@@ -2,8 +2,8 @@
 
 import { NavigationDock } from "@/components/NavDoc";
 import Footer from "@/components/Footer";
-import OurApproachSection from "@/components/Web-Dev/OurApproachSection";
-import FAQBottomSection from "@/components/Web-Dev/FAQBottomSection";
+import OurApproachSection from "@/components/ai-automation/OurApproachSection";
+import FAQBottomSection from "@/components/ai-automation/FAQBottomSection";
 import ProjectStrip from "@/components/ProjectStrip";
 import { useState } from "react";
 
