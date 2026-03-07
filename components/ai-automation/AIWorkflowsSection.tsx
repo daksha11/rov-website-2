@@ -28,9 +28,9 @@ const workflows = [
     {
         title: "Lead Qualification & CRM Sync",
         category: "Sales Automation",
-        description: "Scores inbound leads using AI, enriches contact data, and syncs qualified prospects into your CRM with follow-up tasks created automatically.",
+        description: "Captures inbound website leads, enriches contact data, sends automated follow-ups, and syncs qualified prospects directly into HubSpot CRM.",
         imageUrl: "/aipage/aiwf2.png",
-        downloadUrl: "/aipage/lead_crm_collection.json",
+        downloadUrl: "/aipage/website_inbound_crm.json",
         tools: [
             { label: "OpenAI", color: "#10A37F" },
             { label: "HubSpot", color: "#FF7A59" },
@@ -48,7 +48,7 @@ const workflows = [
     {
         title: "Customer Support AI Agent",
         category: "Support & Operations",
-        description: "Classifies, triages, and auto-resolves tier-1 support tickets. Escalates complex cases to your team — pre-drafted — within seconds.",
+        description: "Handles inbound appointment requests automatically. Checks calendar availability in real time, confirms open slots with users, and books meetings instantly while capturing customer details.",
         imageUrl: "/aipage/aiwf3.png",
         downloadUrl: "/aipage/appointment_booking.json",
         tools: [
