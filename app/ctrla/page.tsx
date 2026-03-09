@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import TiltedCard from "@/components/TiltedCard";
 import DigiMagCtrlA from "@/components/DigiMagCtrlA";
 import CtrlAFooter from "@/components/CtrlAFooter";
+import { NavigationDock } from "@/components/NavDoc";
 import styled from "styled-components";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -284,6 +285,7 @@ export default function CtrlAPage() {
 
   return (
     <div style={{ backgroundColor: '#000000', minHeight: '100vh', width: '100%', overflowX: 'hidden' }}>
+      <NavigationDock />
       {/* Hero Section */}
       <section
         style={{
