@@ -33,15 +33,16 @@ const teamMembers: TeamMember[] = [
         shadowColor: "101, 67, 33"
     },
     {
-        id: 2,
-        image: "/teammembers/jahnavitm.png",
+        id: 13,
+        image: "/teammembers/kavyatm.png",
         category: "Creative",
-        name: "Jahnavi",
-        role: "DESIGN ASSISTANT",
-        skills: ["UI/UX Design", "Brand Identity", "Design Systems", "Illustration", "Visual Design", "Prototyping"],
-        location: "India",
-        specialties: "I master every design discipline—from UI/UX and visual systems to custom illustration and brand identity. I create cohesive, polished design solutions across all touchpoints, making sure R.O.V.'s work is as functional as it is beautiful.",
-        shadowColor: "150, 100, 120"
+        name: "Kavya",
+        role: "DIRECTOR OF DESIGN — UI/UX & DESIGN SYSTEMS",
+        skills: ["UI/UX Design", "Design Systems", "Web Design", "Design Infrastructure", "Brand Guidelines", "Design Standards", "Team Leadership", "Project Delegation", "Client Relations", "Creative Strategy"],
+        location: "Atlanta",
+        portfolioLink: "https://www.kavyaray.com/",
+        specialties: "I'm ROV Studios' Director of Design — a SCAD-trained UI/UX designer and design systems specialist with enterprise-level experience from brands like Porsche, Lowe's, and UBS. Based in Atlanta, I lead the design team end-to-end: from delegating creative tasks and setting design standards to managing client relationships and delivering polished, system-driven work at every touchpoint.",
+        shadowColor: "100, 100, 100"
     },
     {
         id: 3,
@@ -66,15 +67,15 @@ const teamMembers: TeamMember[] = [
         shadowColor: "140, 110, 140"
     },
     {
-        id: 5,
-        image: "/teammembers/chamantm.png",
+        id: 14,
+        image: "/teammembers/jinwontm.png",
         category: "Creative",
-        name: "Chaman",
-        role: "VIDEO EDITOR & MOTION DESIGNER",
-        skills: ["Video Editing", "Motion Graphics", "After Effects Design", "Creative Concepting", "Rapid Turnaround Production"],
-        location: "India",
-        specialties: "I bring fresh creative ideas and fast execution to R.O.V.'s edits and media production. Whether it's complex motion work or quick-turn content, I specialize in After Effects wizardry and turn concepts into polished, dynamic visuals—even on tight timelines.",
-        shadowColor: "200, 100, 50"
+        name: "Jiwon",
+        role: "UI/UX DESIGNER & ILLUSTRATOR",
+        skills: ["UI/UX Design", "Design Strategy", "Illustration", "Interface Design", "User Experience", "Visual Design Systems"],
+        location: "Savannah",
+        specialties: "I'm a SCAD-trained designer based in Savannah with an exceptional eye for overall design strategy.",
+        shadowColor: "130, 100, 160"
     },
     {
         id: 6,
@@ -150,27 +151,26 @@ const teamMembers: TeamMember[] = [
         specialties: "I'm R.O.V.'s go-to technical lead for complex coding challenges and scalable solutions. I solve the toughest tech problems, architect robust systems, and make sure every build is performant, maintainable, and production-ready.",
     },
     {
-        id: 13,
-        image: "/teammembers/kavyatm.png",
+        id: 2,
+        image: "/teammembers/jahnavitm.png",
         category: "Creative",
-        name: "Kavya",
-        role: "UI/UX DESIGNER & DESIGN SYSTEMS SPECIALIST",
-        skills: ["UI/UX Design", "Design Systems", "Web Design", "Design Infrastructure", "Brand Guidelines", "Design Standards"],
-        location: "Atlanta",
-        portfolioLink: "https://www.kavyaray.com/",
-        specialties: "I'm a SCAD-trained designer who brings enterprise-level design rigor from my work with major brands like Porsche, Lowe's, and UBS.",
-        shadowColor: "100, 100, 100"
+        name: "Jahnavi",
+        role: "DESIGN ASSISTANT",
+        skills: ["UI/UX Design", "Brand Identity", "Design Systems", "Illustration", "Visual Design", "Prototyping"],
+        location: "India",
+        specialties: "I master every design discipline—from UI/UX and visual systems to custom illustration and brand identity. I create cohesive, polished design solutions across all touchpoints, making sure R.O.V.'s work is as functional as it is beautiful.",
+        shadowColor: "150, 100, 120"
     },
     {
-        id: 14,
-        image: "/teammembers/jinwontm.png",
+        id: 5,
+        image: "/teammembers/chamantm.png",
         category: "Creative",
-        name: "Jiwon",
-        role: "UI/UX DESIGNER & ILLUSTRATOR",
-        skills: ["UI/UX Design", "Design Strategy", "Illustration", "Interface Design", "User Experience", "Visual Design Systems"],
-        location: "Savannah",
-        specialties: "I'm a SCAD-trained designer based in Savannah with an exceptional eye for overall design strategy.",
-        shadowColor: "130, 100, 160"
+        name: "Chaman",
+        role: "VIDEO EDITOR & MOTION DESIGNER",
+        skills: ["Video Editing", "Motion Graphics", "After Effects Design", "Creative Concepting", "Rapid Turnaround Production"],
+        location: "India",
+        specialties: "I bring fresh creative ideas and fast execution to R.O.V.'s edits and media production. Whether it's complex motion work or quick-turn content, I specialize in After Effects wizardry and turn concepts into polished, dynamic visuals—even on tight timelines.",
+        shadowColor: "200, 100, 50"
     },
     {
         id: 15,

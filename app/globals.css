@@ -6,98 +6,98 @@
 /* --- FONT DECLARATIONS --- */
 /* @font-face {
   font-family: 'palmore';
-  src: url('../public/font/palmore_light.ttf');
+  src: url('/font/palmore_light.ttf');
   font-weight: normal;
   font-style: normal;
 } */
 
 @font-face {
   font-family: 'anton';
-  src: url('../public/font/Anton-Regular.ttf');
+  src: url('/font/Anton-Regular.ttf');
   font-weight: normal;
   font-style: normal;
 }
 
 /* @font-face {
   font-family: 'impact';
-  src: url('../public/font/impact.ttf');
+  src: url('/font/impact.ttf');
   font-weight: normal;
   font-style: normal;
 } */
 
 @font-face {
   font-family: 'futura';
-  src: url('../public/font/Futura Regular.ttf');
+  src: url('/font/Futura Regular.ttf');
   font-weight: normal;
   font-style: normal;
 }
 
 /* @font-face {
   font-family: 'apricots';
-  src: url('../public/font/Apricot-BF650c4a6357ce1.otf');
+  src: url('/font/Apricot-BF650c4a6357ce1.otf');
   font-weight: normal;
   font-style: normal;
 } */
 
 /* @font-face {
   font-family: 'pagaki';
-  src: url('../public/font/pagkaki-regular.ttf');
+  src: url('/font/pagkaki-regular.ttf');
   font-weight: normal;
   font-style: normal;
 } */
 
 /* @font-face {
   font-family: 'sink';
-  src: url('../public/font/Sink.ttf');
+  src: url('/font/Sink.ttf');
   font-weight: normal;
   font-style: normal;
 } */
 
 /* @font-face {
   font-family: 'pluma';
-  src: url('../public/font/Pluma.otf');
+  src: url('/font/Pluma.otf');
   font-weight: normal;
   font-style: normal;
 } */
 
 /* @font-face {
   font-family: 'Big Shoulders Display';
-  src: url('../public/font/BigShoulders-VariableFont_opsz\,wght.ttf');
+  src: url('/font/BigShoulders-VariableFont_opsz\,wght.ttf');
   font-weight: normal;
   font-style: normal;
 } */
 
 @font-face {
   font-family: 'Boke Rough';
-  src: url('../public/font/ZRTW-BokeRoughPersonalUse.otf');
+  src: url('/font/ZRTW-BokeRoughPersonalUse.otf');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Norwige Light';
-  src: url('../public/font/norwige-font-family-1750004186-0/Norwige-LightItalic-BF68175f322ddb6.otf');
+  src: url('/font/norwige-font-family-1750004186-0/Norwige-LightItalic-BF68175f322ddb6.otf');
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Norwige';
-  src: url('../public/font/norwige-font-family-1750004186-0/Norwige-MediumItalic-BF68175f325d0c2.otf');
+  src: url('/font/norwige-font-family-1750004186-0/Norwige-MediumItalic-BF68175f325d0c2.otf');
   font-weight: 500;
   font-style: italic;
 }
 
 @font-face {
   font-family: 'Norwige';
-  src: url('../public/font/norwige-font-family-1750004186-0/Norwige-SemiBoldItalic-BF68175f326e730.otf');
+  src: url('/font/norwige-font-family-1750004186-0/Norwige-SemiBoldItalic-BF68175f326e730.otf');
   font-weight: 600;
   font-style: italic;
 }
 
 @font-face {
   font-family: 'NorwigeHeroItalic';
-  src: url('../public/font/norwige-font-family-1750004186-0/Norwige-MediumItalicItalic-BF68175f3266281.otf') format('opentype');
+  src: url('/font/norwige-font-family-1750004186-0/Norwige-MediumItalicItalic-BF68175f3266281.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -105,7 +105,7 @@
 
 @font-face {
   font-family: 'NorwigeMedium_Hero';
-  src: url('../public/font/norwige-font-family-1750004186-0/Norwige-MediumItalic-BF68175f325d0c2.otf') format('opentype');
+  src: url('/font/norwige-font-family-1750004186-0/Norwige-MediumItalic-BF68175f325d0c2.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -113,7 +113,7 @@
 
 @font-face {
   font-family: 'NorwigeExtraBoldItalic_Hero';
-  src: url('../public/font/norwige-font-family-1750004186-0/Norwige-ExtraBoldItalicItalic-BF68175f3224386.otf') format('opentype');
+  src: url('/font/norwige-font-family-1750004186-0/Norwige-ExtraBoldItalicItalic-BF68175f3224386.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -121,35 +121,35 @@
 
 @font-face {
   font-family: 'Sedgwick Ave Display';
-  src: url('../public/font/Sedgwick_Ave_Display/SedgwickAveDisplay-Regular.ttf');
+  src: url('/font/Sedgwick_Ave_Display/SedgwickAveDisplay-Regular.ttf');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Pearl Jean';
-  src: url('../public/font/pearl-jean.ttf');
+  src: url('/font/pearl-jean.ttf');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'HellasFun';
-  src: url('../public/font/HellasFun Bold.ttf');
+  src: url('/font/HellasFun Bold.ttf');
   font-weight: bold;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Hornset';
-  src: url('../public/font/Hornset.ttf');
+  src: url('/font/Hornset.ttf');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'LostInSouth';
-  src: url('../public/font/lost_in_south/Lost in South.ttf');
+  src: url('/font/lost_in_south/Lost in South.ttf');
   font-weight: normal;
   font-style: normal;
 }
