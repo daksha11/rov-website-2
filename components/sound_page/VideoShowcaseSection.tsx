@@ -1,21 +1,56 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const videos = [
+    { src: "/soundpage/starscollidemv.mp4", title: "STARS COLLIDE" },
+    { src: "/video/starboymv.mp4", title: "STARBOY" },
+    { src: "/ctrla/ykwiwvidweb.mp4", title: "YOU KNOW WHAT I WANT" },
+];
+
 export default function VideoShowcaseSection() {
     const containerRef = useRef<HTMLDivElement>(null);
+    const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
     const [activeCardIndex, setActiveCardIndex] = useState<number | null>(null);
 
-    const videos = [
-        { src: "/soundpage/starscollidemv.mp4", title: "STARS COLLIDE" },
-        { src: "/video/starboymv.mp4", title: "STARBOY" },
-        { src: "/ctrla/ykwiwvidweb.mp4", title: "YOU KNOW WHAT I WANT" },
-    ];
+    // Play only the active video, pause and clear src on others
+    const manageVideos = useCallback((newActiveIndex: number | null) => {
+        videoRefs.current.forEach((vid, i) => {
+            if (!vid) return;
+            if (i === newActiveIndex) {
+                if (!vid.src || !vid.src.endsWith(videos[i].src)) {
+                    vid.src = videos[i].src;
+                    vid.load();
+                }
+                vid.play().catch(() => { });
+            } else {
+                vid.pause();
+                vid.removeAttribute("src");
+                vid.load();
+            }
+        });
+    }, []);
+
+    useEffect(() => {
+        manageVideos(activeCardIndex);
+    }, [activeCardIndex, manageVideos]);
+
+    // Start first video on mount since ScrollTrigger may not fire for already-visible cards
+    useEffect(() => {
+        if (activeCardIndex === null) {
+            const firstVid = videoRefs.current[0];
+            if (firstVid) {
+                firstVid.src = videos[0].src;
+                firstVid.load();
+                firstVid.play().catch(() => { });
+            }
+        }
+    }, []);
 
     useGSAP(() => {
         if (!containerRef.current) return;
@@ -79,26 +114,12 @@ export default function VideoShowcaseSection() {
     }, { scope: containerRef });
 
     return (
-        <section className="relative w-full bg-black py-16 md:py-24 lg:py-32 px-4 sm:px-6 lg:px-8">
-            {/* Top Left Gradient Blob */}
-            <div
-                className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full pointer-events-none z-0"
-                style={{
-                    background: 'rgba(96, 62, 37, 0.90)',
-                    filter: 'blur(200px)',
-                    transform: 'translate(-30%, -30%)'
-                }}
-            />
-            {/* Bottom Right Gradient Blob */}
-            <div
-                className="absolute bottom-0 right-0 w-[800px] h-[800px] rounded-full pointer-events-none z-0"
-                style={{
-                    background: 'rgba(96, 62, 37, 0.90)',
-                    filter: 'blur(200px)',
-                    transform: 'translate(30%, 30%)'
-                }}
-            />
-
+        <section
+            className="relative w-full bg-black py-16 md:py-24 lg:py-32 px-4 sm:px-6 lg:px-8"
+            style={{
+                background: 'radial-gradient(ellipse at top left, rgba(96,62,37,0.35) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(96,62,37,0.35) 0%, transparent 50%), #000'
+            }}
+        >
             <div className="max-w-7xl mx-auto relative z-10" ref={containerRef}>
                 {/* Section Header */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24">
@@ -142,15 +163,13 @@ export default function VideoShowcaseSection() {
                                 {/* Video Container - Natural Ratio */}
                                 <div className="relative w-full flex justify-center items-center mb-8 group-hover:scale-[1.02] transition-transform duration-700">
                                     <video
-                                        autoPlay
+                                        ref={el => { videoRefs.current[index] = el; }}
                                         loop
                                         muted
                                         playsInline
                                         className="max-w-full max-h-[70vh] rounded-3xl shadow-2xl"
                                         style={{ width: 'auto', height: 'auto' }}
-                                    >
-                                        <source src={video.src} type="video/mp4" />
-                                    </video>
+                                    />
                                 </div>
 
                                 {/* Text Container - Smaller and Below */}

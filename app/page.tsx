@@ -7,15 +7,10 @@ import Loading from "@/components/Loading";
 import HeroWithAnimation from "@/components/HeroWithAnimation";
 import Services from "@/components/Services";
 import ElevateSection from "@/components/ElevateSection";
-import MusicPlayer from "@/components/MusicPlayer";
 import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
-import Gallery from "@/components/Gallery";
 import TeamSection from "@/components/TeamSection";
-import Card from "@/components/Card";
-import DesignBreak from "@/components/DesignBreak";
 import { NavigationDock } from "@/components/NavDoc";
-import TestHero from "@/components/TestHero";
 import ProjectStrip from "@/components/ProjectStrip";
 
 // Lazy load heavy components to reduce initial memory usage
@@ -28,6 +23,16 @@ const AlbumCoverLoop = dynamic(() => import("@/components/AlbumCoverLoop"), {
   loading: () => <div className="min-h-[600px]" />,
   ssr: false
 });
+
+const albumCovers = [
+  { src: "/rov_album_4.webp", alt: "Album Cover 4" },
+  { src: "/rov_album_1.webp", alt: "Album Cover 1" },
+  { src: "/rov_album_2.webp", alt: "Album Cover 2" },
+  { src: "/rov_album_3.webp", alt: "Album Cover 3" },
+  { src: "/cover1.webp", alt: "Cover 1" },
+  { src: "/cover2.webp", alt: "Cover 2" },
+  { src: "/cover3.webp", alt: "Cover 3" },
+];
 
 // Global Styles for Custom Font
 const GlobalStyle = createGlobalStyle`
@@ -43,7 +48,6 @@ const GlobalStyle = createGlobalStyle`
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
-  const [isScrolled, setIsScrolled] = useState(false);
 
   // Reset scroll on mount
   useEffect(() => {
@@ -79,15 +83,8 @@ export default function Home() {
       window.addEventListener("load", handleLoad);
     }
 
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
     // Cleanup
     return () => {
-      window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("load", handleLoad);
       document.body.style.overflow = '';
       document.body.style.height = '';
@@ -99,16 +96,6 @@ export default function Home() {
       window.dispatchEvent(new Event("rov-home-loaded"));
     }
   }, [isLoading]);
-
-  const albumCovers = [
-    { src: "/rov_album_4.webp", alt: "Album Cover 4" },
-    { src: "/rov_album_1.webp", alt: "Album Cover 1" },
-    { src: "/rov_album_2.webp", alt: "Album Cover 2" },
-    { src: "/rov_album_3.webp", alt: "Album Cover 3" },
-    { src: "/cover1.webp", alt: "Cover 1" },
-    { src: "/cover2.webp", alt: "Cover 2" },
-    { src: "/cover3.webp", alt: "Cover 3" },
-  ];
 
   // Loading state with better transition
   if (isLoading) {
@@ -166,7 +153,7 @@ export default function Home() {
 
         <Footer />
 
-        <NavigationDock className={isScrolled ? "scrolled" : ""} />
+        <NavigationDock />
 
 
         {/*

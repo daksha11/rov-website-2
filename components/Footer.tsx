@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Github, Instagram, Linkedin } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -8,6 +8,7 @@ import Link from "next/link";
 const Footer = () => {
   const [isIndia, setIsIndia] = useState<boolean>(false);
   const [localTime, setLocalTime] = useState<string>("");
+  const footerRef = useRef<HTMLElement>(null);
 
   const getTime = (zone: string): string => {
     return new Date().toLocaleTimeString("en-US", {
@@ -18,6 +19,7 @@ const Footer = () => {
     });
   };
 
+  // Only tick the timer when the footer is visible
   useEffect(() => {
     const updateTime = () => {
       const zone = isIndia ? "Asia/Kolkata" : "America/New_York";
@@ -25,9 +27,30 @@ const Footer = () => {
     };
 
     updateTime();
-    const timer = setInterval(updateTime, 1000);
 
-    return () => clearInterval(timer);
+    let timer: ReturnType<typeof setInterval> | null = null;
+    const node = footerRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          updateTime();
+          timer = setInterval(updateTime, 1000);
+        } else if (timer) {
+          clearInterval(timer);
+          timer = null;
+        }
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+      if (timer) clearInterval(timer);
+    };
   }, [isIndia]);
 
   const handleToggle = (): void => {
@@ -35,7 +58,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative w-full bg-black text-white overflow-hidden min-h-[600px]">
+    <footer ref={footerRef} className="relative w-full bg-black text-white overflow-hidden min-h-[600px]">
       {/* Top Section with Logo and Studios */}
       <div className="px-6 md:px-12 pl-6 md:pl-16 pt-10 pb-16">
         <div className="flex items-center gap-4 md:gap-6">
@@ -208,7 +231,7 @@ const Footer = () => {
             src="/hydskyline.PNG"
             alt="Hyderabad Skyline"
             fill
-            priority
+            loading="lazy"
             className="object-contain"
             style={{
               objectPosition: 'bottom right',

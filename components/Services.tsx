@@ -1,11 +1,10 @@
 "use client";
 
 import React, { useState, useCallback, useRef } from "react";
-import { User, Video, Headphones, Cpu, ExternalLink } from "lucide-react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import StarBorder from "./StarBorder";
 import Image from "next/image";
+import GradientBlob from "./GradientBlob";
 
 const darkenColor = (hex: string, percent: number): string => {
   let color = hex.startsWith('#') ? hex.slice(1) : hex;
@@ -231,28 +230,13 @@ const InteractiveFolderIcon: React.FC<{ folderImages?: string[] }> = ({ folderIm
 };
 
 interface ServiceCardProps {
-  id: string;
   title: string;
-  description: string;
-  icon: React.ReactNode;
-  position: "top-left" | "top-right" | "bottom-left" | "bottom-right";
-  isExpanded: boolean;
-  expandedCard: string | null;
-  onMouseEnter: () => void;
-  onMouseLeave: () => void;
   link?: string;
   previewImages?: string[];
 }
 
 const ServiceCard: React.FC<ServiceCardProps> = ({
   title,
-  description,
-  icon,
-  position,
-  isExpanded,
-  expandedCard,
-  onMouseEnter,
-  onMouseLeave,
   link = "#",
   previewImages,
 }) => {
@@ -288,24 +272,10 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
 };
 
 export default function Services() {
-  const router = useRouter();
-  const [expandedCard, setExpandedCard] = useState<string | null>(null);
-
-  const handleCardHover = (id: string) => {
-    setExpandedCard(id);
-  };
-
-  const handleMouseLeave = () => {
-    setExpandedCard(null);
-  };
-
   const services = [
     {
       id: "web",
       title: "Web Optimization",
-      icon: <User className="w-16 h-16 text-white/80" />,
-      description: "Turning clicks into connections with seamless and high impact designs.",
-      position: "top-left" as const,
       link: "/web",
       previewImages: [
         '/heroassets/webfolder1.png',
@@ -316,9 +286,6 @@ export default function Services() {
     {
       id: "sound",
       title: "Sound Engineering",
-      icon: <Headphones className="w-16 h-16 text-white/80" />,
-      description: "Audio production & mixing that brings your content to life with crystal-clear quality.",
-      position: "top-right" as const,
       link: "/sound",
       previewImages: [
         '/heroassets/flimage1.png',
@@ -329,9 +296,6 @@ export default function Services() {
     {
       id: "video",
       title: "Video Production",
-      icon: <Video className="w-16 h-16 text-white/80" />,
-      description: "Cinematic content & aerial media that captures attention and delivers your message.",
-      position: "bottom-left" as const,
       link: "/video-production",
       previewImages: [
         '/heroassets/hydvideoframe.png',
@@ -342,9 +306,6 @@ export default function Services() {
     {
       id: "ai",
       title: "AI Integration",
-      icon: <Cpu className="w-16 h-16 text-white/80" />,
-      description: "Custom automation solutions powered by AI to streamline your business processes.",
-      position: "bottom-right" as const,
       link: "/ai-automation",
       previewImages: [
         '/heroassets/codingframe.png',
@@ -356,24 +317,8 @@ export default function Services() {
 
   return (
     <section className="min-h-screen bg-black py-20 w-full px-6 sm:px-12 md:px-16 relative flex flex-col justify-center overflow-hidden">
-      {/* Top Left Gradient Blob */}
-      <div
-        className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full pointer-events-none z-0"
-        style={{
-          background: 'rgba(96, 62, 37, 0.60)',
-          filter: 'blur(200px)',
-          transform: 'translate(-30%, -30%)'
-        }}
-      />
-      {/* Bottom Right Gradient Blob */}
-      <div
-        className="absolute bottom-0 right-0 w-[800px] h-[800px] rounded-full pointer-events-none z-0"
-        style={{
-          background: 'rgba(96, 62, 37, 0.60)',
-          filter: 'blur(200px)',
-          transform: 'translate(30%, 30%)'
-        }}
-      />
+      <GradientBlob position="top-left" />
+      <GradientBlob position="bottom-right" />
 
       {/* Top Gradient Fade - Blends with previous section */}
       <div
@@ -451,19 +396,6 @@ export default function Services() {
             /* Default positioning in 2x2 grid */
           }
 
-          @font-face {
-            font-family: "Flight Maybe Maj";
-            src: url("/fonts/Flight Maybe Maj.ttf") format("truetype");
-            font-weight: normal;
-            font-style: normal;
-          }
-
-          @font-face {
-            font-family: "ZRTW Bokerough";
-            src: url("/fonts/ZRTW-BokeRoughPersonalUse.otf") format("opentype");
-            font-weight: normal;
-            font-style: normal;
-          }
         `}</style>
 
         <div className="mb-12">
@@ -476,19 +408,11 @@ export default function Services() {
         </div>
 
         {/* Dynamic grid */}
-        <div className={`services-grid ${expandedCard ? "has-expanded" : ""}`}>
+        <div className="services-grid">
           {services.map((service) => (
             <ServiceCard
               key={service.id}
-              id={service.id}
               title={service.title}
-              description={service.description}
-              icon={service.icon}
-              position={service.position}
-              isExpanded={expandedCard === service.id}
-              expandedCard={expandedCard}
-              onMouseEnter={() => handleCardHover(service.id)}
-              onMouseLeave={handleMouseLeave}
               link={service.link}
               previewImages={service.previewImages}
             />

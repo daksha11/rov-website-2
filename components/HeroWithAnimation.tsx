@@ -332,21 +332,12 @@ const HeroWithAnimation: React.FC = () => {
         width: window.innerWidth,
         height: window.innerHeight
       });
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize(); // Initialize on mount
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    // Check if mobile
-    const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+
+    handleResize(); // Initialize on mount
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Auto-rotate words on mobile
@@ -362,6 +353,34 @@ const HeroWithAnimation: React.FC = () => {
     }, 2000); // Change word every 2 seconds
 
     return () => clearInterval(interval);
+  }, [isMobile]);
+
+  // Preload images once (not on every resize)
+  const preloadedRef = useRef(false);
+  useEffect(() => {
+    if (preloadedRef.current) return;
+    preloadedRef.current = true;
+
+    if (!isMobile) {
+      const frameCount = 651;
+      const totalFrames = frameCount + 1;
+      let loadedCount = 0;
+      for (let i = 0; i <= frameCount; i++) {
+        const numStr = String(i).padStart(5, '0');
+        const img = new Image();
+        img.src = `/videoFrames/SpiralShotHorizontal60fpsV2_${numStr}.webp`;
+        img.onload = () => {
+          loadedCount++;
+          if (loadedCount % 10 === 0 || loadedCount === totalFrames) {
+            setLoadProgress(Math.round((loadedCount / totalFrames) * 100));
+          }
+          if (loadedCount > totalFrames * 0.15) setIsLoading(false);
+        };
+      }
+    } else {
+      setIsLoading(false);
+      setLoadProgress(100);
+    }
   }, [isMobile]);
 
   useEffect(() => {
@@ -381,44 +400,37 @@ const HeroWithAnimation: React.FC = () => {
       urls.push(`/videoFrames/SpiralShotHorizontal60fpsV2_${numStr}.webp`);
     }
 
-    // Preload Logic (Simulated for UX, GSAP loads images too)
-    let loadedCount = 0;
-    const totalFrames = urls.length;
-    urls.forEach(url => {
-      const img = new Image();
-      img.src = url;
-      img.onload = () => {
-        loadedCount++;
-        setLoadProgress(Math.round((loadedCount / totalFrames) * 100));
-        // Start showing after enough frames are loaded (e.g. 15%)
-        if (loadedCount > totalFrames * 0.15) setIsLoading(false);
-      };
-    });
+    const HERO_TRIGGER_ID = 'hero-image-sequence';
+
+    // Kill only hero-owned ScrollTriggers to prevent duplicates
+    const killHeroTriggers = () => {
+      ScrollTrigger.getAll()
+        .filter(t => t.vars?.id === HERO_TRIGGER_ID)
+        .forEach(t => t.kill());
+    };
 
     // Wrap animation logic in a function so it can be re-run
     const initAnimations = () => {
-      // Kill all existing ScrollTriggers to prevent duplicates
-      ScrollTrigger.getAll().forEach(t => t.kill());
+      killHeroTriggers();
 
       // Image Sequence Animation
       return imageSequence({
         urls,
         canvas: canvasRef.current!,
         container: stickyRef.current!,
-        isMobile, // Pass isMobile flag
+        isMobile,
         scrollTrigger: {
+          id: HERO_TRIGGER_ID,
           trigger: section,
           start: 'top top',
-          end: isMobile ? '+=100' : '+=3000', // Short scroll on mobile, long on desktop
-          scrub: isMobile ? false : 0.5, // No scrub on mobile
-          pin: isMobile ? false : true, // No pinning on mobile
-          pinSpacing: isMobile ? false : true, // No pin spacing on mobile
+          end: isMobile ? '+=100' : '+=3000',
+          scrub: isMobile ? false : 0.5,
+          pin: isMobile ? false : true,
+          pinSpacing: isMobile ? false : true,
           onUpdate: (self: any) => {
             const progress = self.progress;
 
-            // Only update text based on scroll on desktop
             if (!isMobile) {
-              // Update text based on progress
               if (progress < 0.3) {
                 setCurrentWord("Identity");
                 setDimOpacity(0);
@@ -432,7 +444,6 @@ const HeroWithAnimation: React.FC = () => {
                 setDimOpacity(0);
                 setShowHero(true);
               } else {
-                // Quick fade in final 5-10%
                 const fadeProgress = Math.min((progress - 0.95) / 0.05, 1);
                 setDimOpacity(fadeProgress);
                 if (progress > 0.98) {
@@ -440,7 +451,6 @@ const HeroWithAnimation: React.FC = () => {
                 }
               }
             } else {
-              // On mobile, just handle the fade/hero visibility
               if (progress < 0.9) {
                 setDimOpacity(0);
                 setShowHero(true);
@@ -457,25 +467,27 @@ const HeroWithAnimation: React.FC = () => {
       });
     };
 
-    // Run animations immediately
-    let sequence = initAnimations();
+    // Initialize once after fonts are ready (with timeout fallback)
+    let sequence: gsap.core.Tween | undefined;
+    let settled = false;
 
-    // Re-run animations after fonts are loaded to ensure correct height calculations
-    document.fonts.ready.then(() => {
+    const settle = () => {
+      if (settled) return;
+      settled = true;
       sequence = initAnimations();
       ScrollTrigger.refresh();
-    });
+    };
 
-    // Fallback: Re-run animations after 500ms to ensure DOM is fully settled
-    setTimeout(() => {
-      sequence = initAnimations();
-      ScrollTrigger.refresh();
-    }, 500);
+    // Primary: wait for fonts
+    document.fonts.ready.then(settle);
+    // Fallback: settle after 500ms if fonts.ready hasn't fired
+    const fallbackTimer = setTimeout(settle, 500);
 
     // Cleanup
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-      sequence.scrollTrigger?.kill();
+      clearTimeout(fallbackTimer);
+      killHeroTriggers();
+      sequence?.scrollTrigger?.kill();
     };
   }, [dimensions, isMobile]);
 

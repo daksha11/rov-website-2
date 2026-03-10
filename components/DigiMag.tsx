@@ -3,6 +3,7 @@
 import Link from "next/link";
 import TrueFocus from "./TrueFocus";
 import TiltedCard from "./TiltedCard";
+import GradientBlob from "./GradientBlob";
 
 const DigiMag = () => {
   return (
@@ -10,24 +11,8 @@ const DigiMag = () => {
       id="digi-mag"
       className="w-full px-6 sm:px-12 md:px-16 mt-16 mb-24 relative"
     >
-      {/* Top Left Gradient Blob */}
-      <div
-        className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full pointer-events-none z-0"
-        style={{
-          background: 'rgba(96, 62, 37, 0.60)',
-          filter: 'blur(200px)',
-          transform: 'translate(-30%, -30%)'
-        }}
-      />
-      {/* Bottom Right Gradient Blob */}
-      <div
-        className="absolute bottom-0 right-0 w-[800px] h-[800px] rounded-full pointer-events-none z-0"
-        style={{
-          background: 'rgba(96, 62, 37, 0.60)',
-          filter: 'blur(200px)',
-          transform: 'translate(30%, 30%)'
-        }}
-      />
+      <GradientBlob position="top-left" />
+      <GradientBlob position="bottom-right" />
 
       <div className="relative z-10">
         {/* Header */}

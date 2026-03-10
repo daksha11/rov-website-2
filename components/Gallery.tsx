@@ -1,28 +1,28 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import Image from "next/image";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 interface CarouselItem {
   id: number;
-  title: string;
   image: string;
-  number: string;
 }
 
 const items: CarouselItem[] = [
-  { id: 1, title: "", image: "/changeit.webp", number: "" },
-  { id: 2, title: "", image: "/cover2.webp", number: "" },
-  { id: 3, title: "", image: "/catchthelight.webp", number: "" },
-  { id: 4, title: "", image: "/domcover.webp", number: "" },
-  { id: 5, title: "", image: "/faithretrologothing.webp", number: "" },
-  { id: 6, title: "", image: "/miliy1.webp", number: "" },
-  { id: 7, title: "", image: "/miliy2.webp", number: "" },
-  { id: 8, title: "", image: "/one_at_a_time.webp", number: "" }
+  { id: 1, image: "/changeit.webp" },
+  { id: 2, image: "/cover2.webp" },
+  { id: 3, image: "/catchthelight.webp" },
+  { id: 4, image: "/domcover.webp" },
+  { id: 5, image: "/faithretrologothing.webp" },
+  { id: 6, image: "/miliy1.webp" },
+  { id: 7, image: "/miliy2.webp" },
+  { id: 8, image: "/one_at_a_time.webp" }
 ];
 
 function Gallery() {
   const [activeIndex, setActiveIndex] = useState(5);
+  const touchStartX = useRef<number | null>(null);
 
   const handleNext = () => {
     setActiveIndex((prev) => (prev + 1) % items.length);
@@ -30,6 +30,19 @@ function Gallery() {
 
   const handlePrev = () => {
     setActiveIndex((prev) => (prev - 1 + items.length) % items.length);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(deltaX) > 50) {
+      deltaX < 0 ? handleNext() : handlePrev();
+    }
+    touchStartX.current = null;
   };
 
   const getItemStyle = (index: number) => {
@@ -75,7 +88,11 @@ function Gallery() {
       </div>
 
       {/* Carousel container */}
-      <div className="relative w-full h-[110vh] overflow-hidden flex items-center justify-center">
+      <div
+        className="relative w-full h-[60vh] sm:h-[70vh] md:h-[80vh] overflow-hidden flex items-center justify-center"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         {/* Navigation Buttons */}
         <button
           onClick={handlePrev}
@@ -104,20 +121,14 @@ function Gallery() {
                 className={`relative w-full h-full rounded-[5px] overflow-hidden cursor-pointer shadow-lg transition-transform duration-300 hover:scale-[1.02] ${index === activeIndex ? "scale-105 z-[100]" : "scale-95"
                   }`}
               >
-                <img
+                <Image
                   src={item.image}
-                  alt={item.title}
-                  className="w-full h-full object-cover"
+                  alt={`Album artwork ${item.id}`}
+                  fill
+                  className="object-cover"
+                  sizes="320px"
+                  priority={index === activeIndex}
                 />
-                <div className="absolute bottom-8 left-8 right-8 z-20 text-white">
-                  <h3 className="text-2xl font-bold mb-4">{item.title}</h3>
-                  <div className="absolute right-0 bottom-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    <ArrowRight className="w-6 h-6" />
-                  </div>
-                  <div className="absolute -top-12 right-0 text-3xl font-bold opacity-100">
-                    {item.number}
-                  </div>
-                </div>
               </div>
             </div>
           ))}
@@ -125,13 +136,6 @@ function Gallery() {
       </div>
 
       <style jsx>{`
-        @font-face {
-          font-family: "Flight Maybe Maj";
-          src: url("/fonts/Flight Maybe Maj.ttf") format("truetype");
-          font-weight: normal;
-          font-style: normal;
-        }
-        
         @keyframes shine {
           0% {
             background-position: 200% center;

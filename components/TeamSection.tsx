@@ -3,6 +3,8 @@
 import React, { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import Image from "next/image";
+import GradientBlob from "./GradientBlob";
 
 type Category = "All" | "Creative" | "Tech" | "Systems";
 
@@ -205,15 +207,14 @@ const TeamSection: React.FC = () => {
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >
-                <img
+                <Image
                     src={src}
                     alt={alt}
+                    fill
+                    sizes="(max-width: 768px) 240px, 450px"
+                    loading="lazy"
+                    className="object-cover object-center"
                     style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        objectPosition: 'center center',
-                        display: 'block',
                         transform: rotation !== 0 ? `rotate(${rotation}deg)` : undefined
                     }}
                 />
@@ -279,14 +280,16 @@ const TeamSection: React.FC = () => {
                                 </button>
 
                                 <div className="absolute inset-0 z-0">
-                                    <img src={expandedMember.image} className="w-full h-full object-cover opacity-20 blur-sm" alt="" />
+                                    <Image src={expandedMember.image} alt="" fill sizes="100vw" className="object-cover opacity-20 blur-sm" loading="lazy" />
                                     <div className="absolute inset-0 bg-black/60" />
                                 </div>
 
                                 <div className="relative z-10">
                                     <div className="flex flex-col lg:flex-row gap-12">
                                         <div className="w-full lg:w-1/3">
-                                            <img src={expandedMember.image} className="w-full aspect-[4/5] object-cover rounded-2xl shadow-2xl" alt={expandedMember.name} />
+                                            <div className="relative w-full aspect-[4/5]">
+                                                <Image src={expandedMember.image} alt={expandedMember.name} fill sizes="(max-width: 1024px) 100vw, 33vw" className="object-cover rounded-2xl shadow-2xl" loading="lazy" />
+                                            </div>
                                         </div>
                                         <div className="flex-1">
                                             <h3 className="text-[clamp(2.5rem,5vw,4rem)] font-black text-[#F7F2E4] uppercase leading-none mb-4" style={{ fontFamily: 'Norwige, sans-serif' }}>
@@ -341,7 +344,7 @@ const TeamSection: React.FC = () => {
                             className="relative h-[300px] rounded-2xl overflow-hidden cursor-pointer group border border-white/10"
                             onClick={() => setExpandedMemberId(member.id)}
                         >
-                            <img src={member.image} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={member.name} />
+                            <Image src={member.image} alt={member.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                             <div className="absolute bottom-6 left-6 right-6">
                                 <h4 className="text-2xl font-black text-white uppercase" style={{ fontFamily: 'Norwige, sans-serif' }}>{member.name}</h4>
@@ -366,21 +369,8 @@ const TeamSection: React.FC = () => {
                 overflow: "hidden"
             }}
         >
-            {/* Top Left Gradient Blob */}
-            {/* Top Left Gradient Blob */}
-            <div
-                className="absolute top-0 left-0 rounded-full pointer-events-none z-0 blob-gradient"
-                style={{
-                    transform: 'translate(-30%, -30%)'
-                }}
-            />
-            {/* Bottom Right Gradient Blob */}
-            <div
-                className="absolute bottom-0 right-0 rounded-full pointer-events-none z-0 blob-gradient"
-                style={{
-                    transform: 'translate(30%, 30%)'
-                }}
-            />
+            <GradientBlob position="top-left" opacity={0.45} size="600px" blur="150px" />
+            <GradientBlob position="bottom-right" opacity={0.45} size="600px" blur="150px" />
             <div className="z-50 mb-8 md:mb-12 flex flex-wrap items-center gap-2 md:gap-6 justify-center md:justify-end w-full px-2 md:px-8">
                 <button
                     onClick={() => { setActiveCategory("All"); setExpandedMemberId(null); }}
@@ -405,7 +395,7 @@ const TeamSection: React.FC = () => {
                     <motion.div key="marquee" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full">
                         <div className="marquee-row">
                             <div className="marquee-track scroll-left">
-                                {[...Array(4)].map((_, i) => (
+                                {[...Array(2)].map((_, i) => (
                                     <React.Fragment key={`r1-${i}`}>
                                         <div className="text-block"><h2>MEET</h2></div>
                                         <ImageCard src={teamMembers[0].image} alt="Ayush" name={teamMembers[0].name} role={teamMembers[0].role} onClick={() => handleMarqueeMemberClick(teamMembers[0])} />
@@ -420,7 +410,7 @@ const TeamSection: React.FC = () => {
 
                         <div className="marquee-row">
                             <div className="marquee-track scroll-right">
-                                {[...Array(4)].map((_, i) => (
+                                {[...Array(2)].map((_, i) => (
                                     <React.Fragment key={`r2-${i}`}>
                                         <button className="category-button" onClick={() => setActiveCategory("Tech")}>TECH</button>
                                         <ImageCard src={teamMembers[12].image} alt="Kavya" name={teamMembers[12].name} role={teamMembers[12].role} onClick={() => handleMarqueeMemberClick(teamMembers[12])} />
@@ -435,7 +425,7 @@ const TeamSection: React.FC = () => {
 
                         <div className="marquee-row">
                             <div className="marquee-track scroll-left">
-                                {[...Array(4)].map((_, i) => (
+                                {[...Array(2)].map((_, i) => (
                                     <React.Fragment key={`r3-${i}`}>
                                         <ImageCard src={teamMembers[5].image} alt="David" name={teamMembers[5].name} role={teamMembers[5].role} onClick={() => handleMarqueeMemberClick(teamMembers[5])} />
                                         <ImageCard src={teamMembers[4].image} alt="Chaman" name={teamMembers[4].name} role={teamMembers[4].role} onClick={() => handleMarqueeMemberClick(teamMembers[4])} rotation={teamMembers[4].imageRotation} />
@@ -464,21 +454,6 @@ const TeamSection: React.FC = () => {
                 @keyframes scrollLeft { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
                 @keyframes scrollRight { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
                 @media (max-width: 768px) { .image-card { width: 240px !important; height: 135px !important; } .category-button { height: 135px; padding: 20px 10px; } }
-
-                .blob-gradient {
-                    width: 400px;
-                    height: 400px;
-                    background: rgba(96, 62, 37, 0.30);
-                    filter: blur(60px);
-                }
-                @media (min-width: 768px) {
-                    .blob-gradient {
-                        width: 600px;
-                        height: 600px;
-                        background: rgba(96, 62, 37, 0.45);
-                        filter: blur(150px);
-                    }
-                }
             `}</style>
         </section>
     );

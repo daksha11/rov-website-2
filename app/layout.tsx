@@ -4,7 +4,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import dynamic from "next/dynamic";
 import Script from "next/script";
-import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 

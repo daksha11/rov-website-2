@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 
 const FONT = "Norwige, sans-serif";
 const ACCENT = "#8B6F47";
@@ -121,17 +121,24 @@ export default function VideoPortfolioSection() {
 
     const currentVideo = currentSub.videos[videoIndex % currentSub.videos.length];
 
-    const handleCatChange = (catId: string) => {
-        setActiveCat(catId);
+    const activeCatRef = useRef(activeCat);
+    activeCatRef.current = activeCat;
+    const activeSubCatRef = useRef(activeSubCat);
+    activeSubCatRef.current = activeSubCat;
+
+    const handleCatChange = useCallback((catId: string) => {
+        if (catId === activeCatRef.current) return;
         const cat = categories.find((c) => c.id === catId)!;
+        setActiveCat(catId);
         setActiveSubCat(cat.subcategories[0].id);
         setVideoIndex(0);
-    };
+    }, []);
 
-    const handleSubCatChange = (subId: string) => {
+    const handleSubCatChange = useCallback((subId: string) => {
+        if (subId === activeSubCatRef.current) return;
         setActiveSubCat(subId);
         setVideoIndex(0);
-    };
+    }, []);
 
     // Stable ref so callbacks never close over stale array length
     const videosLengthRef = useRef(currentSub.videos.length);
@@ -150,6 +157,21 @@ export default function VideoPortfolioSection() {
         setVideoIndex((prev) => (prev - 1 + videosLengthRef.current) % videosLengthRef.current);
     }, []);
 
+    const [videoReady, setVideoReady] = useState(true);
+
+    useEffect(() => {
+        const vid = videoRef.current;
+        if (!vid) return;
+        setVideoReady(false);
+        vid.src = currentVideo;
+        vid.load();
+        const onCanPlay = () => {
+            vid.play().catch(() => { });
+            setVideoReady(true);
+        };
+        vid.addEventListener("canplay", onCanPlay, { once: true });
+        return () => vid.removeEventListener("canplay", onCanPlay);
+    }, [currentVideo]);
 
     return (
         <section className="relative bg-black text-white py-24 px-6 md:px-12 lg:px-16">
@@ -166,8 +188,9 @@ export default function VideoPortfolioSection() {
                 {categories.map((cat) => (
                     <button
                         key={cat.id}
+                        onMouseEnter={() => handleCatChange(cat.id)}
                         onClick={() => handleCatChange(cat.id)}
-                        className={`flex-1 relative overflow-hidden rounded-[2.5rem] p-10 md:p-14 text-left transition-all duration-700 isolate group ${activeCat === cat.id
+                        className={`flex-1 relative overflow-hidden rounded-[2.5rem] p-6 md:p-10 lg:p-14 text-left transition-all duration-700 isolate group ${activeCat === cat.id
                             ? "ring-1 ring-[#8B6F47]/50 shadow-[0_0_50px_rgba(139,111,71,0.15)] bg-black"
                             : "bg-white/[0.02] hover:bg-white/[0.04]"
                             }`}
@@ -177,9 +200,9 @@ export default function VideoPortfolioSection() {
                             <div className="absolute inset-0 bg-gradient-to-br from-[#8B6F47]/20 via-transparent to-transparent opacity-50 z-[-1]" />
                         )}
 
-                        <div className="relative z-10 flex flex-col h-full justify-between gap-12">
+                        <div className="relative z-10 flex flex-col h-full justify-between gap-6 md:gap-12">
                             <h3
-                                className="text-5xl md:text-6xl lg:text-7xl font-light tracking-tight"
+                                className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-light tracking-tight"
                                 style={{
                                     fontFamily: FONT,
                                     fontStyle: 'italic',
@@ -222,19 +245,16 @@ export default function VideoPortfolioSection() {
                 <div className="relative rounded-3xl overflow-hidden bg-black/40 border border-white/10 aspect-video group">
                     <video
                         ref={videoRef}
-                        key={currentVideo}
-                        src={currentVideo}
-                        autoPlay
                         muted
                         playsInline
-                        preload="metadata"
+                        preload="auto"
                         onEnded={handleVideoEnded}
-                        className="w-full h-full object-contain"
+                        className={`w-full h-full object-contain transition-opacity duration-300 ${videoReady ? "opacity-100" : "opacity-0"}`}
                     />
 
                     {/* Prev/Next Overlay Controls */}
                     {currentSub.videos.length > 1 && (
-                        <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="absolute inset-0 flex items-center justify-between p-4 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                             <button
                                 onClick={handlePrevVideo}
                                 className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white hover:bg-[#8B6F47] transition-all duration-300 border border-white/10"
@@ -270,6 +290,8 @@ export default function VideoPortfolioSection() {
                                 <button
                                     key={i}
                                     onClick={() => setVideoIndex(i)}
+                                    aria-label={`Go to clip ${i + 1}`}
+                                    aria-current={i === videoIndex % currentSub.videos.length ? "true" : undefined}
                                     className={`w-2 h-2 rounded-full transition-all duration-300 ${i === videoIndex % currentSub.videos.length
                                         ? "bg-white scale-125"
                                         : "bg-white/30"

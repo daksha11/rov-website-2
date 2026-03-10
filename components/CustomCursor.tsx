@@ -1,12 +1,26 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+
+const springConfig = { damping: 20, stiffness: 400, mass: 0.5 };
 
 export default function CustomCursor() {
-  const [position, setPosition] = useState({ x: 0, y: 0 }); // Track cursor position
-  const [isVisible, setIsVisible] = useState(true); // Control cursor visibility
-  const [isMobile, setIsMobile] = useState(false); // Track if the device is mobile
+  const [isVisible, setIsVisible] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const smoothX = useSpring(mouseX, springConfig);
+  const smoothY = useSpring(mouseY, springConfig);
+
+  // Derived values for spotlight (offset by -250) and cursor (offset by -16)
+  const spotlightX = useTransform(smoothX, v => v - 250);
+  const spotlightY = useTransform(smoothY, v => v - 250);
+  const cursorX = useTransform(smoothX, v => v - 16);
+  const cursorY = useTransform(smoothY, v => v - 16);
+
+  const rafRef = useRef<number | null>(null);
 
   // Check if the device is mobile (screen width ≤ 768px)
   useEffect(() => {
@@ -14,44 +28,55 @@ export default function CustomCursor() {
       setIsMobile(window.innerWidth <= 768);
     };
 
-    // Initial check
     checkIsMobile();
 
-    // Update on window resize
     window.addEventListener('resize', checkIsMobile);
     return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
 
-  // Update cursor position on mouse move (only for desktop)
+  // Update cursor position on mouse move, throttled to one update per frame
   useEffect(() => {
+    if (isMobile) return;
+
     const updateCursor = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+      if (rafRef.current !== null) return;
+      rafRef.current = requestAnimationFrame(() => {
+        mouseX.set(e.clientX);
+        mouseY.set(e.clientY);
+        rafRef.current = null;
+      });
     };
 
-    if (!isMobile) {
-      window.addEventListener('mousemove', updateCursor);
-    }
-
-    return () => window.removeEventListener('mousemove', updateCursor);
-  }, [isMobile]);
-
-  // Hide/show cursor when hovering over an iframe (only for desktop)
-  useEffect(() => {
-    const iframe = document.querySelector('iframe');
-    if (iframe && !isMobile) {
-      iframe.addEventListener('mouseenter', () => setIsVisible(false));
-      iframe.addEventListener('mouseleave', () => setIsVisible(true));
-    }
+    window.addEventListener('mousemove', updateCursor);
 
     return () => {
-      if (iframe && !isMobile) {
-        iframe.removeEventListener('mouseenter', () => setIsVisible(false));
-        iframe.removeEventListener('mouseleave', () => setIsVisible(true));
+      window.removeEventListener('mousemove', updateCursor);
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
       }
+    };
+  }, [isMobile, mouseX, mouseY]);
+
+  // Hide/show cursor when hovering over an iframe
+  useEffect(() => {
+    if (isMobile) return;
+
+    const iframe = document.querySelector('iframe');
+    if (!iframe) return;
+
+    const hide = () => setIsVisible(false);
+    const show = () => setIsVisible(true);
+
+    iframe.addEventListener('mouseenter', hide);
+    iframe.addEventListener('mouseleave', show);
+
+    return () => {
+      iframe.removeEventListener('mouseenter', hide);
+      iframe.removeEventListener('mouseleave', show);
     };
   }, [isMobile]);
 
-  // Don't render anything on mobile
   if (isMobile) {
     return null;
   }
@@ -60,43 +85,27 @@ export default function CustomCursor() {
     <>
       {/* Spotlight effect */}
       <motion.div
-        className="spotlight fixed w-[500px] h-[500px] rounded-full pointer-events-none"
+        className="spotlight fixed top-0 left-0 w-[500px] h-[500px] rounded-full pointer-events-none"
         style={{
+          x: spotlightX,
+          y: spotlightY,
           background: `radial-gradient(
             circle at center,
             rgba(255, 255, 255, 0.1) 0%,
             rgba(255, 255, 255, 0) 70%
           )`,
           filter: 'blur(50px)',
-          opacity: isVisible ? 1 : 0, // Hide spotlight when cursor is hidden
-        }}
-        animate={{
-          x: position.x - 250, // Center the spotlight on the cursor
-          y: position.y - 250, // Center the spotlight on the cursor
-        }}
-        transition={{
-          type: "spring",
-          damping: 20,
-          stiffness: 400,
-          mass: 0.5,
+          opacity: isVisible ? 1 : 0,
         }}
       />
 
       {/* Custom cursor circle */}
       <motion.div
-        className="custom-cursor fixed w-8 h-8 rounded-full border-2 border-white z-50 pointer-events-none"
+        className="custom-cursor fixed top-0 left-0 w-8 h-8 rounded-full border-2 border-white z-50 pointer-events-none"
         style={{
-          opacity: isVisible ? 1 : 0, // Hide cursor when not visible
-        }}
-        animate={{
-          x: position.x - 16, // Center the cursor circle on the mouse position
-          y: position.y - 16, // Center the cursor circle on the mouse position
-        }}
-        transition={{
-          type: "spring",
-          damping: 20,
-          stiffness: 400,
-          mass: 0.5,
+          x: cursorX,
+          y: cursorY,
+          opacity: isVisible ? 1 : 0,
         }}
       />
     </>

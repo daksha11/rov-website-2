@@ -37,7 +37,6 @@ export default function Page() {
             <SoundHero />
 
             {/* Music Player Section */}
-            {/* Music Player Section */}
             <div className="bg-black">
                 <MusicPlayer />
             </div>

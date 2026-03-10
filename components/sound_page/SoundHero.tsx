@@ -21,7 +21,7 @@ const SoundHero: React.FC = () => {
                 </video>
 
                 {/* Dark & Blurred Overlay */}
-                <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+                <div className="absolute inset-0 bg-black/40" />
 
                 {/* Content */}
                 <div className="relative z-20 px-8 md:px-16 w-full">

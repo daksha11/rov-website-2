@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from "react";
 const FONT = "Norwige, sans-serif";
 const ACCENT = "#8B6F47";
 const ACCENT_GRADIENT = "linear-gradient(135deg, #8B6F47 0%, #6B5437 100%)";
-const INACTIVE_BG = "rgba(59, 33, 20, 0.30)";
+
 
 interface VideoPair {
     id: string;
@@ -38,14 +38,23 @@ function VideoTogglePair({ pair }: { pair: VideoPair }) {
     const logRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
-        if (mode === "color") {
-            colorRef.current?.play().catch(() => { });
-            logRef.current?.pause();
-        } else {
-            logRef.current?.play().catch(() => { });
-            colorRef.current?.pause();
+        const active = mode === "color" ? colorRef.current : logRef.current;
+        const inactive = mode === "color" ? logRef.current : colorRef.current;
+        const activeSrc = mode === "color" ? pair.colorGraded : pair.logFootage;
+
+        if (active) {
+            if (!active.src || !active.src.endsWith(activeSrc)) {
+                active.src = activeSrc;
+                active.load();
+            }
+            active.play().catch(() => { });
         }
-    }, [mode]);
+        if (inactive) {
+            inactive.pause();
+            inactive.removeAttribute("src");
+            inactive.load();
+        }
+    }, [mode, pair.colorGraded, pair.logFootage]);
 
     return (
         <div className="flex flex-col gap-6">
@@ -54,23 +63,18 @@ function VideoTogglePair({ pair }: { pair: VideoPair }) {
                 {/* Color Graded */}
                 <video
                     ref={colorRef}
-                    src={pair.colorGraded}
                     loop
                     muted
                     playsInline
-                    preload="auto"
-                    autoPlay
                     className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ${mode === "color" ? "opacity-100 z-10" : "opacity-0 z-0"
                         }`}
                 />
                 {/* Log Footage */}
                 <video
                     ref={logRef}
-                    src={pair.logFootage}
                     loop
                     muted
                     playsInline
-                    preload="metadata"
                     className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ${mode === "log" ? "opacity-100 z-10" : "opacity-0 z-0"
                         }`}
                 />

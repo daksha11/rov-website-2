@@ -10,8 +10,6 @@ import {
     SkipForward,
     Volume2,
     ListMusic,
-    MessageSquare,
-    MoreHorizontal
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -83,23 +81,31 @@ export default function MusicPlayer() {
     // State for new features
     const [volume, setVolume] = useState(1);
     const [prevVolume, setPrevVolume] = useState(1);
-    const [isMuted, setIsMuted] = useState(false);
     const [showPlaylist, setShowPlaylist] = useState(false);
-    const [showVolume, setShowVolume] = useState(false);
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const carouselRef = useRef<HTMLDivElement>(null);
     const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
     const savedTimeRef = useRef<number>(0);
+    const playlistRef = useRef<HTMLDivElement>(null);
+    const playlistBtnRef = useRef<HTMLButtonElement>(null);
+
+    // Refs to avoid stale closures in audio effect
+    const isPlayingRef = useRef(isPlaying);
+    isPlayingRef.current = isPlaying;
+    const volumeRef = useRef(volume);
+    volumeRef.current = volume;
 
     const togglePlay = () => {
-        if (!audioRef.current) return;
+        const audio = audioRef.current;
+        if (!audio) return;
         if (isPlaying) {
-            audioRef.current.pause();
+            audio.pause();
+            setIsPlaying(false);
         } else {
-            audioRef.current.play();
+            audio.play().catch(() => { });
+            setIsPlaying(true);
         }
-        setIsPlaying(!isPlaying);
     };
 
     const toggleMute = () => {
@@ -107,61 +113,44 @@ export default function MusicPlayer() {
         if (volume > 0) {
             setPrevVolume(volume);
             setVolume(0);
-            setIsMuted(true);
             audioRef.current.volume = 0;
         } else {
             const restoreVol = prevVolume > 0 ? prevVolume : 0.5;
             setVolume(restoreVol);
-            setIsMuted(false);
             audioRef.current.volume = restoreVol;
         }
     };
 
-    const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const val = parseFloat(e.target.value);
-        setVolume(val);
-        if (audioRef.current) {
-            audioRef.current.volume = val;
-            setIsMuted(val === 0);
-        }
-    };
-
     const selectSong = (index: number) => {
+        savedTimeRef.current = 0;
         setCurrentIndex(index);
         setShowPlaylist(false);
         setIsPlaying(true);
     };
 
     const nextSong = () => {
-        savedTimeRef.current = 0; // always restart the new track from the top
+        savedTimeRef.current = 0;
         setCurrentIndex((prev) => (prev + 1) % songData.length);
         setIsPlaying(true);
     };
 
     const prevSong = () => {
-        savedTimeRef.current = 0; // always restart the new track from the top
+        savedTimeRef.current = 0;
         setCurrentIndex((prev) => (prev - 1 + songData.length) % songData.length);
         setIsPlaying(true);
     };
 
     const toggleBeforeAfter = (newValue: boolean) => {
-        // Save current playback position before switching
         if (audioRef.current && audioRef.current.currentTime > 0) {
             savedTimeRef.current = audioRef.current.currentTime;
         }
         setIsAfter(newValue);
     };
 
-    // Audio Logic
+    // Consolidated audio logic — uses refs to read fresh isPlaying/volume
     useEffect(() => {
         const audio = audioRef.current;
         if (!audio) return;
-
-        const wasPlaying = isPlaying;
-
-        // Initialize volume
-        audio.volume = volume;
-        audio.muted = isMuted;
 
         const updateProgress = () => {
             setCurrentTime(audio.currentTime);
@@ -172,19 +161,23 @@ export default function MusicPlayer() {
         };
 
         const handleEnded = () => {
-            nextSong();
+            savedTimeRef.current = 0;
+            setCurrentIndex((prev) => (prev + 1) % songData.length);
+            setIsPlaying(true);
         };
 
         const handleLoadedData = () => {
+            // Apply current volume from ref (always fresh)
+            audio.volume = volumeRef.current;
             setDuration(audio.duration);
 
-            // Restore playback position after new audio loads
             if (savedTimeRef.current > 0) {
                 audio.currentTime = savedTimeRef.current;
+                savedTimeRef.current = 0;
             }
 
-            // Resume playback if it was playing before
-            if (wasPlaying) {
+            // Only play if isPlaying is true (read from ref for fresh value)
+            if (isPlayingRef.current) {
                 audio.play().catch(() => setIsPlaying(false));
             }
         };
@@ -200,15 +193,18 @@ export default function MusicPlayer() {
         };
     }, [currentIndex, isAfter]);
 
-    // Handle Play/Pause from state
+    // Close playlist on outside click
     useEffect(() => {
-        if (!audioRef.current) return;
-        if (isPlaying) {
-            audioRef.current.play().catch(() => setIsPlaying(false));
-        } else {
-            audioRef.current.pause();
-        }
-    }, [isPlaying]);
+        if (!showPlaylist) return;
+        const handleClickOutside = (e: MouseEvent) => {
+            const target = e.target as Node;
+            if (playlistRef.current && !playlistRef.current.contains(target) && playlistBtnRef.current && !playlistBtnRef.current.contains(target)) {
+                setShowPlaylist(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [showPlaylist]);
 
     // 3D Carousel Animation Logic
     useEffect(() => {
@@ -217,12 +213,17 @@ export default function MusicPlayer() {
         const cards = cardsRef.current;
         const total = cards.length;
 
+        // Kill any in-flight tweens before starting new ones
+        cards.forEach((card) => {
+            if (card) gsap.killTweensOf(card);
+        });
+
         cards.forEach((card, i) => {
             if (!card) return;
 
             let diff = i - currentIndex;
 
-            // Infinite loop logic logic handles wrapping
+            // Infinite loop logic handles wrapping
             if (diff > total / 2) diff -= total;
             if (diff < -total / 2) diff += total;
 
@@ -236,8 +237,8 @@ export default function MusicPlayer() {
             }
 
             gsap.to(card, {
-                x: diff * 200, // Tighter overlap
-                z: isCenter ? 0 : -200, // Less deep z-space for tighter feel
+                x: diff * 200,
+                z: isCenter ? 0 : -200,
                 rotationY: rotationY,
                 scale: isCenter ? 1.0 : 0.8,
                 opacity: absDiff > 2 ? 0 : (isCenter ? 1 : 0.8),
@@ -349,6 +350,7 @@ export default function MusicPlayer() {
                         <AnimatePresence>
                             {showPlaylist && (
                                 <motion.div
+                                    ref={playlistRef}
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: 20 }}
@@ -362,7 +364,7 @@ export default function MusicPlayer() {
                                                 onClick={() => selectSong(i)}
                                                 className={`flex items-center gap-3 p-2 rounded-lg transition-colors text-left ${i === currentIndex ? "bg-white/10" : "hover:bg-white/5"}`}
                                             >
-                                                <img src={song.cover} className="w-8 h-8 rounded object-cover" alt="mini" />
+                                                <Image src={song.cover} width={32} height={32} className="rounded object-cover" alt={song.title} />
                                                 <div className="flex flex-col min-w-0">
                                                     <span className={`text-sm font-medium truncate ${i === currentIndex ? "text-[#EA9A61]" : "text-white"}`}>{song.title}</span>
                                                     <span className="text-xs text-white/40 truncate">{song.artist}</span>
@@ -425,63 +427,49 @@ export default function MusicPlayer() {
 
                                 {/* Center: Playback Controls */}
                                 <div className="flex items-center justify-center w-full md:w-1/3 gap-8 order-3 md:order-2 pt-6 md:pt-0 border-t border-white/10 md:border-none">
-                                    <button onClick={prevSong} className="text-white/70 hover:text-white hover:scale-110 transition-all active:scale-95">
+                                    <button onClick={prevSong} className="text-white/70 hover:text-white hover:scale-110 transition-all active:scale-95" aria-label="Previous song">
                                         <SkipBack size={24} fill="currentColor" />
                                     </button>
 
                                     <button
                                         onClick={togglePlay}
                                         className="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all active:scale-95"
+                                        aria-label={isPlaying ? "Pause" : "Play"}
                                     >
                                         {isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" className="ml-1" />}
                                     </button>
 
-                                    <button onClick={nextSong} className="text-white/70 hover:text-white hover:scale-110 transition-all active:scale-95">
+                                    <button onClick={nextSong} className="text-white/70 hover:text-white hover:scale-110 transition-all active:scale-95" aria-label="Next song">
                                         <SkipForward size={24} fill="currentColor" />
                                     </button>
                                 </div>
 
                                 {/* Right: Time, Playlist, Volume */}
-                                <div className="flex flex-row items-center justify-between md:justify-end w-full md:w-1/3 order-2 md:order-3">
+                                <div className="flex flex-row items-center justify-between md:justify-end gap-6 md:gap-8 w-full md:w-1/3 order-2 md:order-3">
                                     {/* Time Display */}
                                     <div className="text-xs md:text-sm font-mono text-white/50 tabular-nums">
                                         {formatTime(currentTime)} / {formatTime(duration)}
                                     </div>
 
-                                    <div className="flex items-center gap-5 md:gap-6 text-white/70">
+                                    <div className="flex items-center gap-6 md:gap-8 text-white/70">
                                         {/* Playlist Toggle */}
                                         <button
+                                            ref={playlistBtnRef}
                                             onClick={() => setShowPlaylist(!showPlaylist)}
                                             className={`hover:text-white transition-colors ${showPlaylist ? "text-[#EA9A61]" : ""}`}
+                                            aria-label="Toggle playlist"
                                         >
                                             <ListMusic size={20} className="stroke-[2.5]" />
                                         </button>
 
-                                        {/* Volume Control */}
-                                        <div
-                                            className="relative flex items-center group/volume"
-                                            onMouseEnter={() => setShowVolume(true)}
-                                            onMouseLeave={() => setShowVolume(false)}
+                                        {/* Mute/Unmute Toggle */}
+                                        <button
+                                            onClick={toggleMute}
+                                            className="hover:text-white transition-colors flex justify-center w-6"
+                                            aria-label={volume === 0 ? "Unmute" : "Mute"}
                                         >
-                                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 opacity-0 pointer-events-none group-hover/volume:opacity-100 group-hover/volume:pointer-events-auto transition-opacity duration-200">
-                                                <div className="bg-[#1A1A1A] p-3 rounded-xl border border-white/10 shadow-2xl flex flex-col items-center">
-                                                    <div className="text-[10px] font-bold text-white/50 mb-2">{Math.round(volume * 100)}%</div>
-                                                    <input
-                                                        type="range"
-                                                        min="0"
-                                                        max="1"
-                                                        step="0.01"
-                                                        value={volume}
-                                                        onChange={handleVolumeChange}
-                                                        className="h-24 w-1.5 appearance-none bg-white/20 rounded-full cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:h-3.5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-lg hover:[&::-webkit-slider-thumb]:scale-125 transition-all"
-                                                        style={{ writingMode: "vertical-lr", direction: "rtl" }}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <button onClick={toggleMute} className="hover:text-white transition-colors flex justify-center w-6">
-                                                {volume === 0 ? <Volume2 size={20} className="stroke-[2.5] opacity-50" /> : <Volume2 size={20} className="stroke-[2.5]" />}
-                                            </button>
-                                        </div>
+                                            {volume === 0 ? <Volume2 size={20} className="stroke-[2.5] opacity-50" /> : <Volume2 size={20} className="stroke-[2.5]" />}
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -490,9 +478,12 @@ export default function MusicPlayer() {
                         {/* Carousel Indicators */}
                         <div className="flex gap-2 mt-8">
                             {songData.map((_, i) => (
-                                <div
+                                <button
                                     key={i}
-                                    className={`w-2 h-2 rounded-full transition-all duration-300 ${i === currentIndex ? "bg-white/40 w-6 shadow-[0_0_10px_rgba(255,255,255,0.3)]" : "bg-white/20"}`}
+                                    onClick={() => selectSong(i)}
+                                    aria-label={`Go to song ${i + 1}`}
+                                    aria-current={i === currentIndex ? "true" : undefined}
+                                    className={`h-2 rounded-full transition-all duration-300 ${i === currentIndex ? "bg-white/40 w-6 shadow-[0_0_10px_rgba(255,255,255,0.3)]" : "bg-white/20 w-2"}`}
                                 />
                             ))}
                         </div>
