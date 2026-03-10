@@ -5,187 +5,103 @@ import Footer from "@/components/Footer";
 import OurApproachSection from "@/components/Web-Dev/OurApproachSection";
 import FAQBottomSection from "@/components/Web-Dev/FAQBottomSection";
 import ProjectStrip from "@/components/ProjectStrip";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import VideoPortfolioSection from "@/components/video-production/VideoPortfolioSection";
+import PostProductionSection from "@/components/video-production/PostProductionSection";
+
+const videos = [
+    "/videoprod/Atlskylineweb.mp4",
+    "/videoprod/Gladshotweb.mp4",
+    "/videoprod/Laketipweb.mp4",
+    "/videoprod/Mountainweb.mp4",
+    "/videoprod/Redstairs.mp4",
+    "/videoprod/Signiabenzweb.mp4"
+];
 
 export default function VideoProductionPage() {
-    const [activeCategory, setActiveCategory] = useState<string>("real-estate");
+    const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+    const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
-    const categories = [
-        { id: "real-estate", label: "REAL ESTATE" },
-        { id: "misc", label: "MISC" },
-        { id: "creative", label: "CREATIVE PROJECTS" },
-        { id: "events", label: "EVENT PLANNING", loading: true },
-    ];
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentVideoIndex((prev) => (prev + 1) % videos.length);
+        }, 5000);
+        return () => clearInterval(timer);
+    }, []);
+
+    useEffect(() => {
+        videoRefs.current.forEach((video, index) => {
+            if (!video) return;
+            if (index === currentVideoIndex) {
+                // Play the current video from the beginning
+                video.currentTime = 0;
+                video.play().catch(() => { });
+            } else {
+                // Pause inactive videos to prevent browser glitching/lag
+                video.pause();
+            }
+        });
+    }, [currentVideoIndex]);
 
     return (
         <main className="relative min-h-screen bg-black text-white">
             <NavigationDock />
 
-            {/* Hero Section */}
-            <section className="relative min-h-screen flex flex-col justify-between px-6 md:px-12 lg:px-16 py-20 pt-32">
-                {/* Top Section - Headline and Tagline */}
-                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-start gap-8 mb-20">
-                    {/* Left - Main Headline */}
-                    <div className="flex-1">
-                        <h1
-                            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light leading-tight"
-                            style={{ fontFamily: 'Norwige, sans-serif', fontStyle: 'italic' }}
-                        >
-                            Turn moments into{" "}
-                            <span className="relative inline-flex items-center gap-3">
-                                <span
-                                    className="px-5 py-1 rounded-full font-medium"
-                                    style={{
-                                        background: 'linear-gradient(135deg, #8B6F47 0%, #6B5437 100%)',
-                                        fontFamily: 'Norwige, sans-serif',
-                                        fontStyle: 'normal'
-                                    }}
-                                >
-                                    powerful
-                                </span>
-                                {/* Decorative Circle */}
-                                <span
-                                    className="w-10 h-10 md:w-12 md:h-12 rounded-full border-[3px] border-white/80 inline-flex"
-                                    style={{ background: 'transparent' }}
-                                />
-                            </span>
-                            <br />
-                            visuals
-                        </h1>
-                    </div>
+            {/* New Video Carousel Hero Section */}
+            <section className="relative w-full h-screen overflow-hidden flex items-center justify-center bg-black">
+                {videos.map((vid, index) => (
+                    <video
+                        key={vid}
+                        ref={(el) => { videoRefs.current[index] = el; }}
+                        src={vid}
+                        loop
+                        muted
+                        playsInline
+                        preload={index === currentVideoIndex ? "auto" : "none"}
+                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${index === currentVideoIndex ? "opacity-100 z-0" : "opacity-0 -z-10"
+                            }`}
+                    />
+                ))}
 
-                    {/* Right - Tagline */}
-                    <div className="lg:max-w-md">
-                        <p
-                            className="text-sm md:text-base leading-relaxed"
-                            style={{ fontFamily: 'Norwige, sans-serif', fontStyle: 'italic' }}
-                        >
-                            We craft cinematic video content that brings stories to life and leaves a lasting impression.
-                        </p>
-                    </div>
+                {/* Overlay to ensure text readability */}
+                <div className="absolute inset-0 bg-black/40 z-10" />
+
+                <div className="relative z-20 text-center px-4 md:px-12 flex flex-col items-center max-w-5xl mx-auto pt-20">
+                    <h1
+                        className="text-5xl md:text-7xl lg:text-8xl font-light mb-6 leading-tight"
+                        style={{ fontFamily: 'Norwige, sans-serif', fontStyle: 'italic' }}
+                    >
+                        Breathtaking <br />
+                        <span style={{
+                            background: 'linear-gradient(135deg, #8B6F47 0%, #6B5437 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            fontStyle: 'normal'
+                        }}>Visuals</span>
+                    </h1>
+                    <p className="text-lg md:text-xl text-white/90 max-w-2xl font-light mb-10" style={{ fontFamily: 'Norwige, sans-serif', fontStyle: 'italic' }}>
+                        We capture life in motion. Experience cinematic video production that elevates your brand and tells compelling stories.
+                    </p>
                 </div>
 
-                {/* Bottom Section - What We Capture */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-                    {/* Left - Categories */}
-                    <div>
-                        <h2
-                            className="text-5xl md:text-6xl lg:text-7xl font-light mb-12 leading-tight"
-                            style={{ fontFamily: 'Norwige, sans-serif', fontStyle: 'italic' }}
-                        >
-                            What We
-                            <br />
-                            Capture
-                        </h2>
-
-                        {/* Category Pills - Custom Layout */}
-                        <div className="flex flex-col gap-4 max-w-lg">
-                            {/* First Row - REAL ESTATE and MISC */}
-                            <div className="flex gap-4">
-                                <button
-                                    onClick={() => setActiveCategory("real-estate")}
-                                    className={`
-                                        px-6 py-4 font-medium text-sm md:text-base
-                                        transition-all duration-300 ease-out
-                                        ${activeCategory === "real-estate"
-                                            ? 'bg-[#8B6F47] text-white opacity-100'
-                                            : 'text-gray-400'
-                                        }
-                                    `}
-                                    style={{
-                                        fontFamily: 'Norwige, sans-serif',
-                                        borderRadius: '40px',
-                                        opacity: activeCategory === "real-estate" ? 1 : 0.6,
-                                        background: activeCategory === "real-estate" ? '#8B6F47' : 'rgba(59, 33, 20, 0.30)'
-                                    }}
-                                >
-                                    REAL ESTATE
-                                </button>
-                                <button
-                                    onClick={() => setActiveCategory("misc")}
-                                    className={`
-                                        px-6 py-4 font-medium text-sm md:text-base
-                                        transition-all duration-300 ease-out
-                                        ${activeCategory === "misc"
-                                            ? 'bg-[#8B6F47] text-white opacity-100'
-                                            : 'text-gray-400'
-                                        }
-                                    `}
-                                    style={{
-                                        fontFamily: 'Norwige, sans-serif',
-                                        borderRadius: '40px',
-                                        opacity: activeCategory === "misc" ? 1 : 0.6,
-                                        background: activeCategory === "misc" ? '#8B6F47' : 'rgba(59, 33, 20, 0.30)'
-                                    }}
-                                >
-                                    MISC
-                                </button>
-                            </div>
-
-                            {/* Second Row - CREATIVE PROJECTS */}
-                            <button
-                                onClick={() => setActiveCategory("creative")}
-                                className={`
-                                    px-6 py-4 font-medium text-sm md:text-base text-left
-                                    transition-all duration-300 ease-out
-                                    ${activeCategory === "creative"
-                                        ? 'bg-[#8B6F47] text-white opacity-100'
-                                        : 'text-gray-400'
-                                    }
-                                `}
-                                style={{
-                                    fontFamily: 'Norwige, sans-serif',
-                                    borderRadius: '40px',
-                                    opacity: activeCategory === "creative" ? 1 : 0.6,
-                                    background: activeCategory === "creative" ? '#8B6F47' : 'rgba(59, 33, 20, 0.30)'
-                                }}
-                            >
-                                CREATIVE PROJECTS
-                            </button>
-
-                            {/* Third Row - EVENT PLANNING with loading icon */}
-                            <button
-                                onClick={() => setActiveCategory("events")}
-                                className={`
-                                    px-6 py-4 font-medium text-sm md:text-base text-left
-                                    transition-all duration-300 ease-out
-                                    ${activeCategory === "events"
-                                        ? 'bg-[#8B6F47] text-white opacity-100'
-                                        : 'text-gray-400'
-                                    }
-                                `}
-                                style={{
-                                    fontFamily: 'Norwige, sans-serif',
-                                    borderRadius: '40px',
-                                    opacity: activeCategory === "events" ? 1 : 0.6,
-                                    background: activeCategory === "events" ? '#8B6F47' : 'rgba(59, 33, 20, 0.30)'
-                                }}
-                            >
-                                <span className="flex items-center gap-3">
-                                    <span className="relative flex h-4 w-4">
-                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full border-2 border-white opacity-75"></span>
-                                        <span className="relative inline-flex rounded-full h-4 w-4 border-2 border-white"></span>
-                                    </span>
-                                    EVENT PLANNING
-                                </span>
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Right - Video Showcase */}
-                    <div className="relative">
-                        <div
-                            className="relative w-full aspect-video rounded-3xl overflow-hidden group cursor-pointer"
-                            style={{
-                                background: 'linear-gradient(135deg, #4A4A4A 0%, #3A3A3A 100%)',
-                            }}
-                        >
-                            {/* Placeholder - Empty for now */}
-                            <div className="absolute inset-0" />
-                        </div>
-                    </div>
+                {/* Carousel Indicators */}
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex gap-3">
+                    {videos.map((_, idx) => (
+                        <button
+                            key={idx}
+                            onClick={() => setCurrentVideoIndex(idx)}
+                            className={`w-3 h-3 rounded-full transition-all duration-300 ${idx === currentVideoIndex ? "bg-white scale-125" : "bg-white/40"
+                                }`}
+                        />
+                    ))}
                 </div>
             </section>
+
+            {/* Portfolio Showcase — Real Estate & Events */}
+            <VideoPortfolioSection />
+
+            {/* Post Production — Color vs Log Toggle */}
+            <PostProductionSection />
 
             {/* Project Strip CTA */}
             <ProjectStrip />
@@ -200,3 +116,4 @@ export default function VideoProductionPage() {
         </main>
     );
 }
+

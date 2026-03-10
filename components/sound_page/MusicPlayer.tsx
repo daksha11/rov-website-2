@@ -133,11 +133,15 @@ export default function MusicPlayer() {
     };
 
     const nextSong = () => {
+        savedTimeRef.current = 0; // always restart the new track from the top
         setCurrentIndex((prev) => (prev + 1) % songData.length);
+        setIsPlaying(true);
     };
 
     const prevSong = () => {
+        savedTimeRef.current = 0; // always restart the new track from the top
         setCurrentIndex((prev) => (prev - 1 + songData.length) % songData.length);
+        setIsPlaying(true);
     };
 
     const toggleBeforeAfter = (newValue: boolean) => {

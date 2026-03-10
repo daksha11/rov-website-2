@@ -174,7 +174,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
                   style={{ fontFamily: "futura" }}
                   onClick={() => setMenuOpen(false)}
                 >
-                  • Aerial Media Production
+                  • Media Production
                 </Link>
               </li>
               <li>
