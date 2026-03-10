@@ -157,6 +157,7 @@ export default function AIWorkflowsSection() {
 
     return (
         <section
+            id="ai-in-action"
             style={{
                 position: "relative",
                 zIndex: 3,

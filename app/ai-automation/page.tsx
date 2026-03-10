@@ -10,6 +10,7 @@ import FAQBottomSection from '@/components/ai-automation/FAQBottomSection';
 import AIWorkflowsSection from '@/components/ai-automation/AIWorkflowsSection';
 import ProjectStrip from '@/components/ProjectStrip';
 import LogoLoop from '@/components/LogoLoop';
+import FaultyTerminal from '@/components/FaultyTerminal';
 import { SiNotion, SiGooglecloud, SiGmail, SiOpenai, SiN8N } from 'react-icons/si';
 
 export default function AIAutomationPage() {
@@ -34,6 +35,38 @@ export default function AIAutomationPage() {
                 pointerEvents: 'none',
                 zIndex: 1,
             }}></div>
+
+            {/* FaultyTerminal Background */}
+            <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100vh',
+                pointerEvents: 'none',
+                zIndex: 2,
+            }}>
+                <FaultyTerminal
+                    scale={1.9}
+                    gridMul={[2, 1]}
+                    digitSize={1.2}
+                    timeScale={0.3}
+                    pause={false}
+                    scanlineIntensity={0.5}
+                    glitchAmount={1}
+                    flickerAmount={1}
+                    noiseAmp={1}
+                    chromaticAberration={0}
+                    dither={0}
+                    curvature={0.28}
+                    tint="#90422c"
+                    mouseReact
+                    mouseStrength={0.7}
+                    pageLoadAnimation
+                    brightness={0.3}
+                    style={{ width: '100%', height: '100%' }}
+                />
+            </div>
 
 
 

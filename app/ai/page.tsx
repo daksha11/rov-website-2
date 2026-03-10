@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import OurApproachSection from "@/components/ai-automation/OurApproachSection";
 import FAQBottomSection from "@/components/ai-automation/FAQBottomSection";
 import ProjectStrip from "@/components/ProjectStrip";
+import FaultyTerminal from "@/components/FaultyTerminal";
 import { useState } from "react";
 
 export default function AIPage() {
@@ -23,8 +24,31 @@ export default function AIPage() {
 
             {/* Hero Section */}
             <section className="relative min-h-screen flex flex-col justify-between px-6 md:px-12 lg:px-16 py-20 pt-32">
+                {/* FaultyTerminal Background */}
+                <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+                    <FaultyTerminal
+                        scale={1.9}
+                        gridMul={[2, 1]}
+                        digitSize={1.2}
+                        timeScale={0.3}
+                        pause={false}
+                        scanlineIntensity={0.5}
+                        glitchAmount={1}
+                        flickerAmount={1}
+                        noiseAmp={1}
+                        chromaticAberration={0}
+                        dither={0}
+                        curvature={0.28}
+                        tint="#90422c"
+                        mouseReact
+                        mouseStrength={0.4}
+                        pageLoadAnimation
+                        brightness={0.3}
+                        style={{ width: '100%', height: '100%' }}
+                    />
+                </div>
                 {/* Top Section - Headline and Tagline */}
-                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-start gap-8 mb-20">
+                <div className="relative flex flex-col lg:flex-row justify-between items-start lg:items-start gap-8 mb-20" style={{ zIndex: 1 }}>
                     {/* Left - Main Headline */}
                     <div className="flex-1">
                         <h1
@@ -66,7 +90,7 @@ export default function AIPage() {
                 </div>
 
                 {/* Bottom Section - What We Build */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+                <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start" style={{ zIndex: 1 }}>
                     {/* Left - Categories */}
                     <div>
                         <h2
