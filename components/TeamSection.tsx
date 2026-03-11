@@ -358,7 +358,10 @@ const TeamSection: React.FC = () => {
     };
 
     return (
+        <>
+        <div id="team-members" style={{ marginTop: '-200px', paddingTop: '200px', pointerEvents: 'none' }} />
         <section
+            id="team"
             style={{
                 borderRadius: "20px",
                 background: 'rgba(255, 255, 255, 0.05)',
@@ -456,6 +459,7 @@ const TeamSection: React.FC = () => {
                 @media (max-width: 768px) { .image-card { width: 240px !important; height: 135px !important; } .category-button { height: 135px; padding: 20px 10px; } }
             `}</style>
         </section>
+        </>
     );
 };
 

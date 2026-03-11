@@ -391,3 +391,15 @@ body {
 input[type="range"]::-webkit-slider-thumb {
   background: #302218;
 }
+
+/* Navigation Dock font override */
+.nav-dock-font,
+.nav-dock-font *,
+.nav-dock-font a,
+.nav-dock-font button,
+.nav-dock-font span,
+.nav-dock-font h2,
+.nav-dock-font h3,
+.nav-dock-font li {
+  font-family: 'futura', sans-serif !important;
+}

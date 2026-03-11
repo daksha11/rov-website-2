@@ -1,180 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import TiltedCard from "@/components/TiltedCard";
-import DigiMagCtrlA from "@/components/DigiMagCtrlA";
 import CtrlAFooter from "@/components/CtrlAFooter";
 import { NavigationDock } from "@/components/NavDoc";
 import styled from "styled-components";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(ScrollTrigger);
-
-// Video Showcase Section Component
-function VideoShowcaseSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [activeCardIndex, setActiveCardIndex] = useState<number | null>(null);
-
-  const videos = [
-    { src: "/soundpage/starscollidemv.mp4", title: "STARS COLLIDE" },
-    { src: "/video/starboymv.mp4", title: "STARBOY" },
-    { src: "/ctrla/ykwiwvidweb.mp4", title: "YOU KNOW WHAT I WANT" },
-  ];
-
-  useGSAP(() => {
-    if (!containerRef.current) return;
-
-    ScrollTrigger.normalizeScroll(true);
-    ScrollTrigger.config({ limitCallbacks: true });
-
-    const panels = gsap.utils.toArray<HTMLElement>(".video-card-panel");
-
-    panels.forEach((panel, index) => {
-      const isLast = index === panels.length - 1;
-      if (isLast) return;
-
-      gsap.timeline({
-        scrollTrigger: {
-          trigger: panel,
-          start: "bottom bottom",
-          end: "bottom top",
-          pin: true,
-          pinSpacing: false,
-          scrub: 1,
-          anticipatePin: 1,
-          fastScrollEnd: true,
-          preventOverlaps: true,
-          invalidateOnRefresh: true,
-          onToggle: (self) => {
-            if (self.isActive) {
-              setActiveCardIndex(index);
-            }
-          }
-        },
-      }).fromTo(
-        panel,
-        { scale: 1, opacity: 1 },
-        {
-          scale: 0.8,
-          opacity: 0,
-          duration: 0.5,
-          ease: "power2.inOut"
-        }
-      );
-    });
-
-    // Last card activation
-    const lastPanel = panels[panels.length - 1];
-    ScrollTrigger.create({
-      trigger: lastPanel,
-      start: "top 80%",
-      end: "bottom center",
-      onToggle: (self) => {
-        if (self.isActive) {
-          setActiveCardIndex(panels.length - 1);
-        }
-      }
-    });
-
-    return () => {
-      ScrollTrigger.normalizeScroll(false);
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-    };
-  }, { scope: containerRef });
-
-  return (
-    <section className="relative w-full bg-black py-16 md:py-24 lg:py-32 px-4 sm:px-6 lg:px-8">
-      {/* Gradient Blobs */}
-      <div
-        className="absolute bottom-0 right-0 w-[400px] h-[400px] md:w-[600px] md:h-[600px] rounded-full pointer-events-none z-0"
-        style={{
-          background: "radial-gradient(circle, rgba(234, 154, 97, 0.15) 0%, transparent 70%)",
-          filter: "blur(80px)",
-        }}
-      />
-
-      <div className="max-w-7xl mx-auto relative z-10" ref={containerRef}>
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24">
-          <h2
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"
-            style={{
-              fontFamily: "Norwige, sans-serif",
-              fontStyle: "italic",
-              color: "#FFF4E3",
-            }}
-          >
-            Music Videos
-          </h2>
-          <p className="text-[#FFF4E3]/40 font-mono text-sm tracking-widest mt-4 md:mt-0 md:mb-4">
-            VISUAL [01-03]
-          </p>
-        </div>
-
-        {/* Stacked Video Cards */}
-        <div className="relative flex flex-col items-center w-full">
-          {videos.map((video, index) => (
-            <div
-              key={index}
-              className="video-card-panel relative w-full rounded-[2.5rem] overflow-hidden mb-12"
-              style={{
-                backgroundColor: activeCardIndex === index ? "#1E1A17" : "#111111",
-                border: activeCardIndex === index
-                  ? "1px solid rgba(234, 154, 97, 0.3)"
-                  : "1px solid rgba(255, 255, 255, 0.08)",
-                minHeight: "calc(100vh - 120px)",
-                display: "flex",
-                flexDirection: "column",
-                transition: "background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease",
-                zIndex: activeCardIndex === index ? 40 : 10 + index,
-                boxShadow: activeCardIndex === index
-                  ? "0 40px 100px -20px rgba(0, 0, 0, 0.8), 0 0 40px rgba(234, 154, 97, 0.1)"
-                  : "none",
-              }}
-            >
-              <div className="card-inner w-full flex flex-col items-center justify-center min-h-[calc(100vh-120px)] pt-16 pb-6 px-6 md:pt-24 md:pb-10 md:px-10 relative z-10">
-                {/* Video Container - Natural Ratio */}
-                <div className="relative w-full flex justify-center items-center mb-8 group-hover:scale-[1.02] transition-transform duration-700">
-                  <video
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="max-w-full max-h-[70vh] rounded-3xl shadow-2xl"
-                    style={{ width: 'auto', height: 'auto' }}
-                  >
-                    <source src={video.src} type="video/mp4" />
-                  </video>
-                </div>
-
-                {/* Text Container - Smaller and Below */}
-                <div className="flex items-center gap-6 z-20">
-                  <span className="text-[#EA9A61] font-mono text-lg opacity-80 tracking-widest">
-                    0{index + 1}
-                  </span>
-                  <div className="h-[1px] w-12 bg-[#EA9A61]/50" />
-                  <h3
-                    className="text-4xl md:text-5xl font-bold tracking-wide uppercase"
-                    style={{
-                      fontFamily: "Norwige, sans-serif",
-                      fontStyle: "italic",
-                      color: activeCardIndex === index ? "#EA9A61" : "#FFF4E3",
-                      transition: "color 0.6s ease",
-                    }}
-                  >
-                    {video.title}
-                  </h3>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 const StyledHeroBackground = styled.div`
   position: absolute;
@@ -264,6 +95,200 @@ const HeroBackground = () => {
   );
 }
 
+const StyledCursor = styled.span`
+  display: inline-block;
+  width: 3px;
+  height: clamp(48px, 9vw, 108px);
+  background: #EA9A61;
+  margin-left: 6px;
+  vertical-align: middle;
+  border-radius: 2px;
+  animation: blink 1s step-end infinite;
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+`;
+
+const StyledProgressFill = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #EA9A61, #B16937);
+  border-radius: 2px;
+  animation: fillBar 2.5s ease-out 0.5s forwards;
+
+  @keyframes fillBar {
+    to { width: 68%; }
+  }
+`;
+
+function ComingSoonHero() {
+  return (
+    <section
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '100vh',
+        backgroundColor: '#000000',
+        overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <HeroBackground />
+
+      {/* Stickers — desktop only */}
+      <div className="hidden md:block" style={{ position: 'absolute', top: '5%', left: '4%', width: '160px', height: '160px', backgroundImage: 'url(/ctrla/andresticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
+      <div className="hidden md:block" style={{ position: 'absolute', top: '6%', right: '5%', width: '175px', height: '175px', backgroundImage: 'url(/ctrla/benzsticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
+      <div className="hidden md:block" style={{ position: 'absolute', bottom: '8%', left: '5%', width: '185px', height: '185px', backgroundImage: 'url(/ctrla/gradysticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
+      <div className="hidden md:block" style={{ position: 'absolute', bottom: '10%', right: '5%', width: '170px', height: '170px', backgroundImage: 'url(/ctrla/tunnelsticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
+      <div className="hidden lg:block" style={{ position: 'absolute', top: '20%', left: '14%', width: '155px', height: '155px', backgroundImage: 'url(/ctrla/carsticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
+      <div className="hidden lg:block" style={{ position: 'absolute', top: '20%', right: '14%', width: '165px', height: '165px', backgroundImage: 'url(/ctrla/grillsticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
+      <div className="hidden lg:block" style={{ position: 'absolute', bottom: '20%', left: '20%', width: '155px', height: '155px', backgroundImage: 'url(/ctrla/atlsticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
+      <div className="hidden lg:block" style={{ position: 'absolute', bottom: '22%', right: '18%', width: '150px', height: '150px', backgroundImage: 'url(/ctrla/martasticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
+
+      {/* Center ghost sticker */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%) translateY(30px)',
+          width: 'clamp(220px, 30vw, 320px)',
+          height: 'clamp(220px, 30vw, 320px)',
+          backgroundImage: 'url(/ctrla/futuresticker.webp)',
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          zIndex: 1,
+          opacity: 0.25,
+        }}
+      />
+
+      {/* Center content */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 2,
+          textAlign: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '20px',
+          padding: '0 20px',
+        }}
+      >
+        {/* Top label */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <div style={{ width: 'clamp(24px, 4vw, 48px)', height: '1px', backgroundColor: 'rgba(234,154,97,0.5)' }} />
+          <span
+            style={{
+              fontFamily: 'Norwige, sans-serif',
+              fontStyle: 'italic',
+              color: '#EA9A61',
+              fontSize: 'clamp(11px, 1.5vw, 15px)',
+              letterSpacing: '5px',
+              opacity: 0.9,
+            }}
+          >
+            CTRL A
+          </span>
+          <div style={{ width: 'clamp(24px, 4vw, 48px)', height: '1px', backgroundColor: 'rgba(234,154,97,0.5)' }} />
+        </div>
+
+        {/* Main heading */}
+        <div style={{ lineHeight: '0.88', position: 'relative' }}>
+          <h1
+            style={{
+              fontSize: 'clamp(64px, 13vw, 140px)',
+              fontWeight: '900',
+              fontStyle: 'italic',
+              color: '#FFFFFF',
+              margin: 0,
+              letterSpacing: '-1px',
+              fontFamily: 'Norwige, sans-serif',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            COMING
+          </h1>
+          <h1
+            style={{
+              fontSize: 'clamp(64px, 13vw, 140px)',
+              fontWeight: '900',
+              fontStyle: 'italic',
+              color: '#FFFFFF',
+              margin: 0,
+              letterSpacing: '-1px',
+              fontFamily: 'Norwige, sans-serif',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            SOON
+            <StyledCursor />
+          </h1>
+        </div>
+
+        {/* Dashed badge — ctrl+a wordplay */}
+        <div
+          style={{
+            border: '1px dashed rgba(234,154,97,0.35)',
+            borderRadius: '4px',
+            padding: 'clamp(6px, 1vw, 10px) clamp(16px, 3vw, 28px)',
+            marginTop: '4px',
+          }}
+        >
+          <span
+            style={{
+              fontFamily: 'Norwige, sans-serif',
+              fontStyle: 'italic',
+              color: 'rgba(255,244,227,0.55)',
+              fontSize: 'clamp(10px, 1.4vw, 14px)',
+              letterSpacing: '5px',
+            }}
+          >
+            SELECT WHAT&apos;S NEXT
+          </span>
+        </div>
+
+        {/* Progress bar */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', marginTop: '8px', width: 'clamp(160px, 20vw, 240px)' }}>
+          <div
+            style={{
+              width: '100%',
+              height: '2px',
+              backgroundColor: 'rgba(255,255,255,0.08)',
+              borderRadius: '2px',
+              position: 'relative',
+              overflow: 'hidden',
+            }}
+          >
+            <StyledProgressFill />
+          </div>
+          <span
+            style={{
+              fontFamily: 'monospace',
+              color: 'rgba(234,154,97,0.45)',
+              fontSize: 'clamp(9px, 1.1vw, 11px)',
+              letterSpacing: '3px',
+            }}
+          >
+            IN THE WORKS
+          </span>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function CtrlAPage() {
   // Reset scroll on mount
@@ -287,278 +312,7 @@ export default function CtrlAPage() {
     <div style={{ backgroundColor: '#000000', minHeight: '100vh', width: '100%', overflowX: 'hidden' }}>
       <NavigationDock />
       {/* Hero Section */}
-      <section
-        style={{
-          position: 'relative',
-          width: '100%',
-          height: '100vh',
-          backgroundColor: '#000000',
-          overflow: 'hidden',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <HeroBackground />
-        {/* White rounded squares positioned around the page */}
-
-        {/* Top-left square */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '5%',
-            left: '5%',
-            width: '180px',
-            height: '180px',
-            backgroundImage: 'url(/ctrla/andresticker.webp)',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-          }}
-        />
-
-        {/* ATL Sticker - Bottom Center Left */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '15%',
-            left: '28%',
-            width: '200px',
-            height: '200px',
-            backgroundImage: 'url(/ctrla/atlsticker.webp)',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-          }}
-        />
-
-        {/* i85 Sticker - Top Center Left */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '8%',
-            left: '25%',
-            width: '190px',
-            height: '190px',
-            backgroundImage: 'url(/ctrla/i85sticker.webp)',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-          }}
-        />
-
-        {/* Car Sticker - Top Left Center */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '25%',
-            left: '15%',
-            width: '180px',
-            height: '180px',
-            backgroundImage: 'url(/ctrla/carsticker.webp)',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-          }}
-        />
-
-        {/* King and Queen Sticker - Top Center Right */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '12%',
-            right: '28%',
-            width: '200px',
-            height: '200px',
-            backgroundImage: 'url(/ctrla/kignandqueensticker.webp)',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-          }}
-        />
-
-        {/* Grill Sticker - Top Right Center */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '28%',
-            right: '18%',
-            width: '190px',
-            height: '190px',
-            backgroundImage: 'url(/ctrla/grillsticker.webp)',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-          }}
-        />
-
-        {/* Top-right square */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '5%',
-            right: '5%',
-            width: '210px',
-            height: '210px',
-            backgroundImage: 'url(/ctrla/benzsticker.webp)',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-          }}
-        />
-
-        {/* Pencil Sticker - Bottom Center Right */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '18%',
-            right: '25%',
-            width: '170px',
-            height: '170px',
-            backgroundImage: 'url(/ctrla/pencilsticker.webp)',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-          }}
-        />
-
-        {/* Lemon Pepper Sticker - Mid Left */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '45%',
-            left: '8%',
-            width: '185px',
-            height: '185px',
-            backgroundImage: 'url(/ctrla/lemonpepperstick.webp)',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-          }}
-        />
-
-        {/* Waffle House Sticker - Mid Top Center */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '15%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '210px',
-            height: '210px',
-            backgroundImage: 'url(/ctrla/wafflehousesticker.webp)',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-          }}
-        />
-
-        {/* Bottom-left square */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '10%',
-            left: '5%',
-            width: '220px',
-            height: '220px',
-            backgroundImage: 'url(/ctrla/gradysticker.webp)',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-          }}
-        />
-
-        {/* Marta Sticker - Mid Right */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '50%',
-            right: '8%',
-            width: '195px',
-            height: '195px',
-            backgroundImage: 'url(/ctrla/martasticker.webp)',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-          }}
-        />
-
-        {/* Bottom-right square */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '8%',
-            right: '5%',
-            width: '205px',
-            height: '205px',
-            backgroundImage: 'url(/ctrla/tunnelsticker.webp)',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-          }}
-        />
-
-        {/* Center white square (behind text) */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%) translateY(40px)',
-            width: '350px',
-            height: '350px',
-            backgroundImage: 'url(/ctrla/futuresticker.webp)',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            zIndex: 1,
-          }}
-        />
-
-        {/* Center content */}
-        <div
-          style={{
-            position: 'relative',
-            zIndex: 2,
-            textAlign: 'center',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '24px',
-          }}
-        >
-          {/* CTRL A text */}
-          <h1
-            style={{
-              fontSize: '120px',
-              fontWeight: '900',
-              fontStyle: 'italic',
-              color: '#FFFFFF',
-              margin: 0,
-              lineHeight: '1',
-              letterSpacing: '-2px',
-              fontFamily: 'Norwige',
-            }}
-          >
-            CTRL A
-          </h1>
-
-          {/* Small Description */}
-          <p
-            style={{
-              fontSize: '28px',
-              fontWeight: '700',
-              color: '#FFF4E3',
-              margin: 0,
-              letterSpacing: '0.5px',
-              fontFamily: 'Norwige',
-              opacity: 0.8,
-            }}
-          >
-            Small Description
-          </p>
-        </div>
-      </section>
+      <ComingSoonHero />
 
       {/* Tool Kit Section */}
       <section
@@ -803,12 +557,6 @@ export default function CtrlAPage() {
           </div>
         </div>
       </section>
-
-      {/* Digital Magazine Section */}
-      <DigiMagCtrlA />
-
-      {/* Video Showcase Section - OurApproach Style */}
-      <VideoShowcaseSection />
 
       {/* Stay In Touch Section */}
       <section

@@ -49,10 +49,12 @@ const GlobalStyle = createGlobalStyle`
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
 
-  // Reset scroll on mount
+  // Reset scroll on mount (skip if navigating to a hash anchor)
   useEffect(() => {
-    window.scrollTo(0, 0);
-    document.documentElement.scrollTop = 0;
+    if (!window.location.hash) {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+    }
   }, []);
 
   useEffect(() => {
@@ -63,11 +65,19 @@ export default function Home() {
     } else {
       document.body.style.overflow = '';
       document.body.style.height = '';
-      // Reset scroll position to top when loading finishes
+      // After loading finishes, scroll to hash anchor or reset to top
       setTimeout(() => {
-        window.scrollTo(0, 0);
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
+        const hash = window.location.hash.slice(1);
+        if (hash) {
+          const el = document.getElementById(hash);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth' });
+          }
+        } else {
+          window.scrollTo(0, 0);
+          document.documentElement.scrollTop = 0;
+          document.body.scrollTop = 0;
+        }
       }, 100);
     }
 

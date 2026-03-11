@@ -15,7 +15,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
   const links = [
     { title: "home", to: "/", isLink: true },
     { title: "services", to: null, isLink: false },
-    { title: "contact us", to: "https://calendly.com/rangeofviewmusic/30min", isLink: true },
+    { title: "contact us", to: "https://calendly.com/rangeofviewmusic/30min", isLink: true, external: true },
   ];
 
   const scrollToSection = (id: string) => {
@@ -33,7 +33,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
   return (
     <>
       <div
-        className={`fixed bottom-6 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-md px-8 py-2.5 rounded-full border border-white/10 z-[999] max-w-[90%] md:max-w-none transition-opacity duration-500 overflow-hidden group ${className || ""}`}
+        className={`nav-dock-font fixed bottom-6 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-md px-8 py-2.5 rounded-full border border-white/10 z-[999] max-w-[90%] md:max-w-none transition-opacity duration-500 overflow-hidden group ${className || ""}`}
       >
         {/* Shimmer effect covering entire nav container */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-300">
@@ -47,7 +47,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
                 <Link
                   href={link.to || "#"}
                   className="px-1.5 py-1.5 text-white/80 hover:text-white transition-colors cursor-pointer text-[10px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
-                  style={{ fontFamily: "Futura, sans-serif" }}
+                  {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 >
                   {link.title}
                 </Link>
@@ -55,7 +55,6 @@ export function NavigationDock({ className }: NavigationDockProps) {
                 <button
                   onClick={() => link.title === "services" ? setMenuOpen(true) : (link.to ? scrollToSection(link.to) : setModalOpen(true))}
                   className="px-1.5 py-1.5 text-white/80 hover:text-white transition-colors cursor-pointer text-[10px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
-                  style={{ fontFamily: "Futura, sans-serif" }}
                 >
                   {link.title}
                 </button>
@@ -72,7 +71,6 @@ export function NavigationDock({ className }: NavigationDockProps) {
             <Link
               href="/ctrla"
               className="px-1.5 py-1.5 text-white/80 hover:text-white transition-colors cursor-pointer text-[10px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
-              style={{ fontFamily: "Futura, sans-serif" }}
             >
               CTRL A
             </Link>
@@ -122,7 +120,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
 
       {/* Expanded Menu Glass Pane */}
       <div
-        className={`fixed bottom-20 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-md rounded-3xl border border-white/10 z-[998] overflow-hidden transition-all duration-500 ease-in-out ${menuOpen
+        className={`nav-dock-font fixed bottom-20 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-md rounded-3xl border border-white/10 z-[998] overflow-hidden transition-all duration-500 ease-in-out ${menuOpen
           ? "w-[90%] md:w-[600px] h-[400px] opacity-100 scale-100"
           : "w-0 h-0 opacity-0 scale-95"
           }`}
@@ -140,7 +138,6 @@ export function NavigationDock({ className }: NavigationDockProps) {
           <div className="flex flex-col items-center justify-center h-full">
             <h2
               className="text-white/60 text-sm md:text-base uppercase tracking-widest mb-8"
-              style={{ fontFamily: "futura" }}
             >
               R.O.V Services
             </h2>
@@ -151,7 +148,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
                 <Link
                   href="/sound"
                   className="block px-6 py-3 text-white/80 hover:text-white text-base md:text-lg transition-all hover:bg-white/5 rounded-xl border border-transparent hover:border-white/10 text-center"
-                  style={{ fontFamily: "futura" }}
+    
                   onClick={() => setMenuOpen(false)}
                 >
                   • Sound Engineering
@@ -161,7 +158,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
                 <Link
                   href="/web"
                   className="block px-6 py-3 text-white/80 hover:text-white text-base md:text-lg transition-all hover:bg-white/5 rounded-xl border border-transparent hover:border-white/10 text-center"
-                  style={{ fontFamily: "futura" }}
+    
                   onClick={() => setMenuOpen(false)}
                 >
                   • Web Development
@@ -171,7 +168,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
                 <Link
                   href="/video-production"
                   className="block px-6 py-3 text-white/80 hover:text-white text-base md:text-lg transition-all hover:bg-white/5 rounded-xl border border-transparent hover:border-white/10 text-center"
-                  style={{ fontFamily: "futura" }}
+    
                   onClick={() => setMenuOpen(false)}
                 >
                   • Media Production
@@ -181,7 +178,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
                 <Link
                   href="/ai-automation"
                   className="block px-6 py-3 text-white/80 hover:text-white text-base md:text-lg transition-all hover:bg-white/5 rounded-xl border border-transparent hover:border-white/10 text-center"
-                  style={{ fontFamily: "futura" }}
+    
                   onClick={() => setMenuOpen(false)}
                 >
                   • Custom AI Automations
@@ -196,8 +193,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
       {modalOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-[1000]">
           <div
-            className="bg-black/50 backdrop-blur-md text-white p-8 rounded-3xl shadow-lg text-center w-96 relative border border-white/10 md:w-96 sm:w-full sm:p-6"
-            style={{ fontFamily: "futura" }}
+            className="nav-dock-font bg-black/50 backdrop-blur-md text-white p-8 rounded-3xl shadow-lg text-center w-96 relative border border-white/10 md:w-96 sm:w-full sm:p-6"
           >
             <button
               className="absolute top-4 right-4 text-white/60 hover:text-white transition-colors"
