@@ -457,22 +457,22 @@ export default function AIAutomationPage() {
                         {
                             icon: '/aipage/gearsvg.svg',
                             title: 'AI Models & Platforms',
-                            tags: ['OpenAI GPT-4', 'Anthropic Claude', 'Google Gemini', 'Custom Fine-tuned Models', 'Stable Diffusion', 'Midjourney API'],
+                            tags: ['OpenAI GPT-4o', 'Anthropic Claude', 'Google Gemini', 'Mistral AI', 'ElevenLabs', 'Stable Diffusion', 'Custom Fine-tuned Models'],
                         },
                         {
                             icon: '/aipage/linksvg.svg',
                             title: 'Integration Capabilities',
-                            tags: ['Slack', 'Microsoft Teams', 'Salesforce', 'HubSpot', 'Shopify', 'WordPress', 'Webflow', 'Zapier', 'Make.com'],
+                            tags: ['Slack', 'Gmail', 'HubSpot', 'Salesforce', 'Notion', 'Airtable', 'Shopify', 'Stripe', 'Twilio', 'WhatsApp', 'Zapier', 'Make.com'],
                         },
                         {
                             icon: '/aipage/cloudsvg.svg',
                             title: 'Infrastructure',
-                            tags: ['AWS', 'Google Cloud', 'Azure', 'Vector Databases', 'Real-time APIs', 'Secure Webhooks'],
+                            tags: ['AWS', 'Google Cloud', 'Azure', 'Supabase', 'Vector Databases', 'PostgreSQL', 'Redis', 'Secure Webhooks', 'Real-time APIs'],
                         },
                         {
                             icon: '/aipage/arrow2svg.svg',
                             title: 'Development Tools',
-                            tags: ['LangChain', 'LlamaIndex', 'Python', 'Node.js', 'React', 'API Development'],
+                            tags: ['LangChain', 'LlamaIndex', 'Python', 'Node.js', 'React', 'GitHub', 'Docker', 'REST APIs'],
                         },
                     ].map((card, i) => (
                         <motion.div

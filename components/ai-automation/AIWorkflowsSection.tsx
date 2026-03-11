@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 const workflows = [
     {
         title: "RAG Chatbot",
-        category: "Content & Marketing",
-        description: "Automatically drafts, schedules, and posts brand-aligned social content across multiple platforms from a single trigger.",
+        category: "AI Assistant",
+        description: "A 24/7 AI sales agent trained on your brand. Answers questions, handles objections, and converts visitors into customers while you sleep.",
         imageUrl: "/aipage/aiwf1.png",
         downloadUrl: "/aipage/rag_chatbot.json",
         tools: [
@@ -27,8 +28,8 @@ const workflows = [
     },
     {
         title: "AI Appointment Booking Agent",
-        category: "Support & Operations",
-        description: "Handles inbound appointment requests automatically. Checks calendar availability in real time, confirms open slots with users, and books meetings instantly while capturing customer details.",
+        category: "Scheduling & Booking",
+        description: "Never miss a booking again. This agent handles scheduling automatically, checks availability, confirms slots, and locks in meetings without any back-and-forth.",
         imageUrl: "/aipage/aiwf2.png",
         downloadUrl: "/aipage/appointment_booking.json",
         tools: [
@@ -47,7 +48,7 @@ const workflows = [
     },
     {
         title: "Website Inbound Lead Collection & CRM Sync",
-        category: "Sales Automation",
+        category: "CRM & Lead Generation",
         description: "Captures inbound website leads, enriches contact data, sends automated follow-ups, and syncs qualified prospects directly into HubSpot CRM.",
         imageUrl: "/aipage/aiwf3.png",
         downloadUrl: "/aipage/website_inbound_crm.json",
@@ -195,7 +196,7 @@ export default function AIWorkflowsSection() {
                         margin: 0,
                     }}
                 >
-                    Explore real-world AI systems we build for our clients — from content engines to fully automated support pipelines.
+                    Steal our workflows. Download, Customize, and Launch for FREE
                 </p>
             </motion.div>
 
@@ -270,62 +271,17 @@ export default function AIWorkflowsSection() {
 
                         {/* Card Footer */}
                         <div style={{ padding: "20px 22px 24px", display: "flex", flexDirection: "column", gap: "14px", flex: 1 }}>
-                            {/* Tool Pills + Category Badge */}
+                            {/* Category Badge */}
                             <div
                                 style={{
                                     display: "flex",
                                     alignItems: "center",
-                                    justifyContent: "space-between",
+                                    justifyContent: "flex-start",
                                     gap: "10px",
                                     flexWrap: "wrap",
+                                    marginLeft: "-12px", // offsets horizontal padding to align text
                                 }}
                             >
-                                {/* Tool dots */}
-                                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                                    {wf.tools.map((tool, ti) => (
-                                        <div
-                                            key={ti}
-                                            title={tool.label}
-                                            style={{
-                                                width: "28px",
-                                                height: "28px",
-                                                borderRadius: "8px",
-                                                background: "rgba(126,42,12,0.30)",
-                                                border: "1px solid rgba(202,53,0,0.35)",
-                                                display: "flex",
-                                                alignItems: "center",
-                                                justifyContent: "center",
-                                            }}
-                                        >
-                                            <span
-                                                style={{
-                                                    fontFamily: "Roboto, sans-serif",
-                                                    fontSize: "0.55rem",
-                                                    fontWeight: 700,
-                                                    color: "rgba(255,255,255,0.75)",
-                                                    letterSpacing: "0.02em",
-                                                    textAlign: "center",
-                                                }}
-                                            >
-                                                {tool.label.slice(0, 3).toUpperCase()}
-                                            </span>
-                                        </div>
-                                    ))}
-                                    {wf.extraTools > 0 && (
-                                        <span
-                                            style={{
-                                                fontFamily: "Roboto, sans-serif",
-                                                fontSize: "0.75rem",
-                                                color: "rgba(255,255,255,0.4)",
-                                                fontWeight: 500,
-                                            }}
-                                        >
-                                            +{wf.extraTools}
-                                        </span>
-                                    )}
-                                </div>
-
-                                {/* Category badge */}
                                 <span
                                     style={{
                                         fontFamily: "Roboto, sans-serif",
@@ -416,7 +372,8 @@ export default function AIWorkflowsSection() {
                 ))}
             </div>
 
-            {/* Download Confirmation Modal */}
+            {/* Download Confirmation Modal - rendered via portal to escape stacking context */}
+            {typeof document !== "undefined" && createPortal(
             <AnimatePresence>
                 {downloadConfirmation && (
                     <motion.div
@@ -577,7 +534,9 @@ export default function AIWorkflowsSection() {
                         </motion.div>
                     </motion.div>
                 )}
-            </AnimatePresence>
+            </AnimatePresence>,
+            document.body
+            )}
         </section>
     );
 }
