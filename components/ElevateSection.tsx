@@ -52,9 +52,8 @@ const ElevateSection: React.FC = () => {
 
             {/* CTA Wrapper */}
             <div
-              className="flex items-center justify-start w-full max-[968px]:justify-center max-[968px]:pl-0 max-[640px]:flex-col max-[640px]:items-center max-[640px]:gap-6"
+              className="flex items-center justify-start w-full gap-[calc(clamp(3.5rem,5vw,4.25rem)*0.625)] max-[968px]:justify-center max-[968px]:pl-0 max-[968px]:gap-6 max-[640px]:flex-col max-[640px]:items-center"
               style={{
-                gap: 'clamp(1rem, 2vw, 1.5rem)',
                 marginTop: 'clamp(1rem, 2vw, 2rem)',
                 paddingLeft: 'clamp(1.875rem, 3vw, 2.5rem)',
               }}
@@ -64,13 +63,17 @@ const ElevateSection: React.FC = () => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => window.location.href = '/casestudy'}
-                className="elevate-arrow-btn rounded-full bg-[#FFF4E3] border-2 border-[#FFF4E3] flex items-center justify-center cursor-pointer transition-all duration-300 relative z-2 shrink-0 hover:shadow-md"
+                className="elevate-arrow-btn rounded-full bg-[#FFF4E3] flex items-center justify-center cursor-pointer transition-all duration-300 relative z-[2] shrink-0 hover:shadow-md"
                 style={{
-                  width: 'clamp(3.75rem, 6vw, 5rem)',
-                  height: 'clamp(3.75rem, 6vw, 5rem)',
+                  width: 'clamp(3.5rem, 5vw, 4.25rem)',
+                  height: 'clamp(3.5rem, 5vw, 4.25rem)',
                 }}
               >
-                <svg viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2" className="w-[35%] h-[35%]">
+                {/* Decorative Circles */}
+                <div className="absolute w-full h-full border-[2px] border-[#FFF4E3] rounded-full left-[-62.5%] z-[-1] hidden min-[969px]:block pointer-events-none" />
+                <div className="absolute w-full h-full border-[2px] border-[#FFF4E3] rounded-full right-[-62.5%] z-[-1] hidden min-[969px]:block pointer-events-none" />
+                
+                <svg viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2" className="w-[35%] h-[35%] relative z-10 pointer-events-none">
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </motion.button>
@@ -112,9 +115,10 @@ const ElevateSection: React.FC = () => {
                   href="/casestudy"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="inline-block no-underline border-none rounded-full text-white font-semibold cursor-pointer transition-all duration-300 whitespace-nowrap relative z-1"
+                  className="flex items-center justify-center no-underline border-none rounded-full text-white font-semibold cursor-pointer transition-all duration-300 whitespace-nowrap relative z-1"
                   style={{
-                    padding: 'clamp(0.75rem, 1.5vw, 1.125rem) clamp(1.5rem, 3vw, 2.5rem)',
+                    height: 'clamp(3.5rem, 5vw, 4.25rem)',
+                    padding: '0 clamp(1.5rem, 3vw, 2.5rem)',
                     borderRadius: '41.444px',
                     background: 'linear-gradient(112deg, #EA9A61 6.46%, #B16937 34.96%, #A64D2B 63.88%, #42201C 97.63%)',
                     boxShadow: '3px 4px 4px 0 rgba(255, 244, 227, 0.15) inset, 0 4.385px 4.385px 0 rgba(0, 0, 0, 0.25)',
@@ -132,7 +136,7 @@ const ElevateSection: React.FC = () => {
           {/* Right Section - Card Swap */}
           <div className="flex-1 flex justify-center items-center relative min-h-[450px] w-full max-[968px]:mt-8 max-[968px]:min-h-[350px]">
             <CardSwap width={380} height={280} delay={4000}>
-              <Card>
+               <Card>
                 <Image src="/rov_album_1.webp" alt="ROV Album 1" fill sizes="380px" className="object-cover rounded-xl" loading="lazy" />
               </Card>
               <Card>
@@ -145,34 +149,6 @@ const ElevateSection: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Arrow button decorative circles (desktop only) */}
-      <style jsx>{`
-        @media (min-width: 969px) {
-          .elevate-arrow-btn::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            left: -62.5%;
-            border-radius: 50%;
-            border: 2px solid #FFF4E3;
-            background: transparent;
-            z-index: -1;
-          }
-          .elevate-arrow-btn::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            right: -62.5%;
-            border-radius: 50%;
-            border: 2px solid #FFF4E3;
-            background: transparent;
-            z-index: -1;
-          }
-        }
-      `}</style>
     </section>
   );
 };

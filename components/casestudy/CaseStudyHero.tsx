@@ -10,6 +10,8 @@ interface CaseStudyHeroProps {
     titleFont?: string;
     enableBlur?: boolean;
     liveLink?: string;
+    buttonAccentColor?: string;
+    buttonFont?: string;
 }
 
 export const CaseStudyHero: React.FC<CaseStudyHeroProps> = ({
@@ -18,7 +20,9 @@ export const CaseStudyHero: React.FC<CaseStudyHeroProps> = ({
     backgroundImage,
     titleFont = "Pearl Jean, sans-serif",
     enableBlur = false,
-    liveLink = "https://www.thebandoatl.com/"
+    liveLink = "https://www.thebandoatl.com/",
+    buttonAccentColor = "#C90000",
+    buttonFont = "sans-serif"
 }) => {
     return (
         <section
@@ -77,13 +81,24 @@ export const CaseStudyHero: React.FC<CaseStudyHeroProps> = ({
                 <div className="mt-16 pb-8 flex justify-center">
                     <div className="relative group/btn cursor-pointer">
                         {/* Animated Glow Behind Button */}
-                        <div className="absolute -inset-1.5 bg-gradient-to-r from-[#C90000] via-[#FFD600] to-[#C90000] rounded-full blur-md opacity-30 group-hover/btn:opacity-75 transition duration-500 group-hover/btn:duration-200" style={{ backgroundSize: '200% 200%', animation: 'gradient-xy 3s ease infinite' }}></div>
+                        <div className="absolute -inset-1.5 bg-gradient-to-r rounded-full blur-md opacity-30 group-hover/btn:opacity-75 transition duration-500 group-hover/btn:duration-200" style={{ backgroundImage: `linear-gradient(to right, ${buttonAccentColor}, #FFD600, ${buttonAccentColor})`, backgroundSize: '200% 200%', animation: 'gradient-xy 3s ease infinite' }}></div>
 
                         <a
                             href={liveLink}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="relative flex items-center justify-center gap-4 px-10 py-5 bg-black/80 backdrop-blur-xl border border-white/10 rounded-full text-white font-bold tracking-[0.25em] uppercase text-xs md:text-sm transition-all duration-300 group-hover/btn:bg-[#C90000]/20 group-hover/btn:shadow-[inset_0_0_20px_rgba(201,0,0,0.5)] group-hover/btn:border-[#C90000]/50 font-sans"
+                            className="relative flex items-center justify-center gap-4 px-10 py-5 bg-black/80 backdrop-blur-xl border border-white/10 rounded-full text-white font-bold tracking-[0.25em] uppercase text-xs md:text-sm transition-all duration-300"
+                            style={{ fontFamily: buttonFont }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = `${buttonAccentColor}33`; // 20% opacity
+                                e.currentTarget.style.boxShadow = `inset 0 0 20px ${buttonAccentColor}80`; // 50% opacity
+                                e.currentTarget.style.borderColor = `${buttonAccentColor}80`; // 50% opacity
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.8)';
+                                e.currentTarget.style.boxShadow = 'none';
+                                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
+                            }}
                         >
                             <span>Visit Live Website</span>
                             <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center transition-colors duration-300 group-hover/btn:bg-[#FFD600]">

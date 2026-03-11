@@ -271,7 +271,7 @@ const caseStudies = [
     id: 'bando',
     title: 'The Bando',
     description: 'Bold, unapologetically Atlanta—we transformed a Black history museum and fried chicken spot\'s digital presence to match their in-person energy, cutting bounce rate by 60%.',
-    image: '/casestudyheroimg.png',
+    image: '/casestudy/Evertriedcrack.jpeg',
     href: '/casestudy/bando'
   },
   {
@@ -280,6 +280,13 @@ const caseStudies = [
     description: 'Luxury that justifies the price tag—we built a sophisticated digital home for a sustainable fashion brand at Ponce City Market, driving 30% sales growth through elevated design and seamless e-commerce.',
     image: '/webdev/ayseiknawebhome.png',
     href: '/casestudy/ikna'
+  },
+  {
+    id: 'dkm',
+    title: 'DKM Corp',
+    description: 'Scaling Global Operations. A comprehensive brand identity and digital infrastructure project for a private growth and operations partner spanning India, Australia, the US, and Dubai.',
+    image: '/casestudy/dubaiskyline.jpg',
+    href: '/casestudy/dkm'
   }
 ];
 
