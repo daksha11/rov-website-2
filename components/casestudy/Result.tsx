@@ -14,6 +14,7 @@ interface ResultProps {
     ctaBorderColor?: string;
     ctaHoverBgColor?: string;
     textColor?: string;
+    bodyFont?: string;
 }
 
 export const Result: React.FC<ResultProps> = ({
@@ -27,10 +28,16 @@ export const Result: React.FC<ResultProps> = ({
     statisticGradient = 'linear-gradient(91deg, #D76C00 0.74%, #953200 100%)',
     ctaBorderColor = '#C90000',
     ctaHoverBgColor = '#C90000',
-    textColor = '#d1d5db'
+    textColor = '#d1d5db',
+    bodyFont = 'HellasFun'
 }) => {
     return (
         <div>
+            <style>{`
+                .result-cta-btn:hover {
+                    background-color: var(--cta-hover-bg) !important;
+                }
+            `}</style>
             {/* Title */}
             <h3
                 className="text-5xl md:text-6xl font-black mb-16 uppercase tracking-tight"
@@ -44,11 +51,15 @@ export const Result: React.FC<ResultProps> = ({
                 {/* Large Statistic */}
                 <div className="flex-shrink-0">
                     <p
-                        className="font-black leading-none text-white"
+                        className="font-black leading-none"
                         style={{
                             fontFamily: titleFont,
                             letterSpacing: '0.1em',
                             fontSize: 'clamp(6rem, 15vw, 12rem)',
+                            background: statisticGradient,
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
                         }}
                     >
                         {statistic}
@@ -57,7 +68,7 @@ export const Result: React.FC<ResultProps> = ({
 
                 {/* Description */}
                 <div className="flex-1">
-                    <p className="text-lg md:text-xl leading-relaxed" style={{ fontFamily: 'HellasFun', color: textColor }}>
+                    <p className="text-lg md:text-xl leading-relaxed" style={{ fontFamily: bodyFont, color: textColor }}>
                         {description}
                     </p>
                 </div>
@@ -67,24 +78,14 @@ export const Result: React.FC<ResultProps> = ({
             <div className="flex justify-center items-center w-full text-center mx-auto">
                 <a
                     href={ctaLink}
-                    className="inline-block px-12 py-4 text-lg font-semibold text-white border-2 rounded-xl transition-all duration-300 hover:scale-105 mx-auto"
+                    className="result-cta-btn inline-block px-12 py-4 text-lg font-semibold border-2 rounded-xl transition-all duration-300 hover:scale-105 mx-auto"
                     style={{
-                        fontFamily: 'HellasFun',
+                        fontFamily: bodyFont,
                         borderColor: ctaBorderColor,
-                        // Using a data attribute or class approach for hover might be cleaner, 
-                        // but inline styles for hover require state or CSS-in-JS.
-                        // For simplicity, we'll use a style tag or rely on tailwind classes if we could, 
-                        // but these are dynamic colors.
-                        // Let's use a ref or style tag trick, OR just set the color variable if using CSS variables.
-                        // Actually, for this specific case, standard style prop doesn't support hover.
-                        // I will add a dynamic style tag safely.
-                    }}
-                    onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = ctaHoverBgColor;
-                    }}
-                    onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = 'transparent';
-                    }}
+                        color: textColor,
+                        backgroundColor: 'transparent',
+                        '--cta-hover-bg': ctaHoverBgColor,
+                    } as React.CSSProperties}
                 >
                     {ctaText}
                 </a>

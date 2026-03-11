@@ -114,7 +114,7 @@ function Gallery() {
           {items.map((item, index) => (
             <div
               key={item.id}
-              className="absolute w-[320px] h-[320px] left-1/2 top-1/2 -ml-[160px] -mt-[160px] transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]"
+              className="absolute w-[320px] h-[320px] left-1/2 top-1/2 -ml-[160px] -mt-[160px] transition-all duration-700 [transition-timing-function:cubic-bezier(0.23,1,0.32,1)]"
               style={getItemStyle(index)}
             >
               <div

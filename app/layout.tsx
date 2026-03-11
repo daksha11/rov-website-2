@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import dynamic from "next/dynamic";
 import Script from "next/script";
+import StyledComponentsRegistry from "@/lib/registry";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,8 +14,65 @@ const ChatWidget = dynamic(() => import("@/components/ChatWidget"), {
 });
 
 export const metadata: Metadata = {
-  title: "Range of View Studios",
-  description: "Official website of Range of View Studios.",
+  metadataBase: new URL("https://rovstudios.com"),
+  title: {
+    default: "Range of View Studios | Creative Production Agency",
+    template: "%s | Range of View Studios",
+  },
+  description:
+    "Range of View Studios is a creative production agency specializing in sound engineering, web development, video production, and AI automation. Based in Atlanta.",
+  keywords: [
+    "creative agency",
+    "sound engineering",
+    "web development",
+    "video production",
+    "AI automation",
+    "Atlanta",
+    "Range of View Studios",
+    "music production",
+    "mixing and mastering",
+  ],
+  authors: [{ name: "Range of View Studios" }],
+  creator: "Range of View Studios",
+  publisher: "Range of View Studios",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://rovstudios.com",
+    siteName: "Range of View Studios",
+    title: "Range of View Studios | Creative Production Agency",
+    description:
+      "Creative production agency specializing in sound engineering, web development, video production, and AI automation.",
+    images: [
+      {
+        url: "/og/og-default.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Range of View Studios",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Range of View Studios | Creative Production Agency",
+    description:
+      "Creative production agency specializing in sound engineering, web development, video production, and AI automation.",
+    images: ["/og/og-default.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "https://rovstudios.com",
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -23,16 +81,6 @@ export const metadata: Metadata = {
     ],
     apple: [
       { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    ],
-    other: [
-      {
-        rel: "android-chrome-192x192",
-        url: "/android-chrome-192x192.png",
-      },
-      {
-        rel: "android-chrome-512x512",
-        url: "/android-chrome-512x512.png",
-      },
     ],
   },
   manifest: "/site.webmanifest",
@@ -60,7 +108,9 @@ export default function RootLayout({
           `}
         </Script>
 
-        {children}
+        <StyledComponentsRegistry>
+          {children}
+        </StyledComponentsRegistry>
         {/* Floating chatbot */}
         <ChatWidget />
       </body>

@@ -8,6 +8,7 @@ interface OverviewSectionProps {
     titleColor?: string;
     titleFont?: string;
     textColor?: string;
+    bodyFont?: string;
 }
 
 export const OverviewSection: React.FC<OverviewSectionProps> = ({
@@ -15,7 +16,8 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
     content,
     titleColor = '#C90000',
     titleFont = 'Hornset',
-    textColor = 'white'
+    textColor = 'white',
+    bodyFont = 'HellasFun'
 }) => {
     return (
         <div>
@@ -29,7 +31,7 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
             >
                 {title}
             </h2>
-            <p className="text-lg leading-relaxed" style={{ fontFamily: 'HellasFun', color: textColor }}>
+            <p className="text-lg leading-relaxed" style={{ fontFamily: bodyFont, color: textColor }}>
                 {content}
             </p>
         </div>

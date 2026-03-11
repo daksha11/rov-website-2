@@ -17,6 +17,8 @@ interface ApproachProps {
     hoverBgColor?: string;
     bgColor?: string;
     textColor?: string;
+    bodyFont?: string;
+    labelColor?: string;
 }
 
 export const Approach: React.FC<ApproachProps> = ({
@@ -57,7 +59,9 @@ export const Approach: React.FC<ApproachProps> = ({
     hoverBorderColor = '#953200',
     hoverBgColor = 'rgba(149, 50, 0, 0.10)',
     bgColor = '#0E0A08',
-    textColor = '#d1d5db'
+    textColor = '#d1d5db',
+    bodyFont = 'HellasFun',
+    labelColor = 'white'
 }) => {
     return (
         <div>
@@ -93,7 +97,7 @@ export const Approach: React.FC<ApproachProps> = ({
                             {/* Left: Title */}
                             <h4
                                 className="text-2xl md:text-3xl font-semibold flex-shrink-0 md:w-1/3"
-                                style={{ fontFamily: titleFont, letterSpacing: '0.1em', color: textColor === '#d1d5db' ? 'white' : textColor }}
+                                style={{ fontFamily: titleFont, letterSpacing: '0.1em', color: labelColor }}
                             >
                                 {item.title}
                             </h4>
@@ -104,7 +108,7 @@ export const Approach: React.FC<ApproachProps> = ({
                                     <p
                                         key={descIndex}
                                         className="text-lg leading-relaxed"
-                                        style={{ fontFamily: 'HellasFun', color: textColor }}
+                                        style={{ fontFamily: bodyFont, color: textColor }}
                                     >
                                         {desc}
                                     </p>

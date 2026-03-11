@@ -23,6 +23,9 @@ interface DesignSystemProps {
     titleColor?: string;
     titleFont?: string;
     textColor?: string;
+    bodyFont?: string;
+    labelColor?: string;
+    secondaryColor?: string;
 }
 
 export const DesignSystem: React.FC<DesignSystemProps> = ({
@@ -58,7 +61,10 @@ export const DesignSystem: React.FC<DesignSystemProps> = ({
     ],
     titleColor = '#C90000',
     titleFont = 'Hornset',
-    textColor = '#d1d5db'
+    textColor = '#d1d5db',
+    bodyFont = 'HellasFun',
+    labelColor = 'white',
+    secondaryColor = '#9ca3af'
 }) => {
     return (
         <div>
@@ -71,25 +77,29 @@ export const DesignSystem: React.FC<DesignSystemProps> = ({
             </h3>
 
             {/* Description */}
-            <p className="text-lg mb-12 leading-relaxed" style={{ fontFamily: 'HellasFun', color: textColor }}>
+            <p className="text-lg mb-12 leading-relaxed" style={{ fontFamily: bodyFont, color: textColor }}>
                 {description}
             </p>
 
-            <div className="flex flex-col lg:flex-row gap-12">
+            <div className="flex flex-col gap-12">
                 {/* Color Palette */}
-                <div className="flex-shrink-0">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="w-full">
+                    <div className="flex flex-wrap gap-4">
                         {colors.map((colorItem, index) => (
-                            <div key={index} className="flex flex-col border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                            <div
+                                key={index}
+                                className="flex-shrink-0 flex flex-col border border-gray-200 rounded-xl overflow-hidden shadow-sm"
+                                style={{ width: '140px' }}
+                            >
                                 <div
                                     className="h-24 w-full"
                                     style={{ backgroundColor: colorItem.color }}
                                 ></div>
                                 <div className="px-3 py-3">
-                                    <p className="text-xs font-medium text-white mb-1">
+                                    <p className="text-xs font-medium mb-1" style={{ color: labelColor }}>
                                         {colorItem.name}
                                     </p>
-                                    <p className="text-xs text-gray-400 font-mono">
+                                    <p className="text-xs font-mono" style={{ color: secondaryColor, opacity: 0.7 }}>
                                         {colorItem.hex}
                                     </p>
                                 </div>
@@ -102,10 +112,10 @@ export const DesignSystem: React.FC<DesignSystemProps> = ({
                 <div className="flex-1 space-y-8">
                     {typography.map((typo, index) => (
                         <div key={index}>
-                            <p className="text-xs mb-2" style={{ color: textColor === '#d1d5db' ? '#9ca3af' : textColor, opacity: 0.7 }}>
+                            <p className="text-xs mb-2" style={{ color: secondaryColor, opacity: 0.7 }}>
                                 {typo.label}
                             </p>
-                            <p className="leading-tight" style={{ ...typo.style, color: textColor === '#d1d5db' ? 'white' : textColor }}>
+                            <p className="leading-tight" style={{ ...typo.style, color: labelColor }}>
                                 {typo.text}
                             </p>
                         </div>

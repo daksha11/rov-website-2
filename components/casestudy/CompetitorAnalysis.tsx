@@ -26,6 +26,8 @@ interface CompetitorAnalysisProps {
     insightBorderColor?: string;
     checkColor?: string;
     textColor?: string;
+    insightBoxBgColor?: string;
+    bodyFont?: string;
 }
 
 export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
@@ -41,7 +43,9 @@ export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
     insightBadgeColor = '#953200',
     insightBorderColor = '#953200',
     checkColor = '#C90000',
-    textColor = '#d1d5db' // text-gray-300
+    textColor = '#d1d5db',
+    insightBoxBgColor = 'rgba(0, 0, 0, 0.40)',
+    bodyFont = 'HellasFun'
 }) => {
     return (
         <div>
@@ -54,17 +58,17 @@ export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
             </h3>
 
             {/* Description */}
-            <p className="text-lg mb-12 leading-relaxed" style={{ fontFamily: 'HellasFun', color: textColor }}>
+            <p className="text-lg mb-12 leading-relaxed" style={{ fontFamily: bodyFont, color: textColor }}>
                 {description}
             </p>
 
             {/* Comparison Table with Logos as Headers */}
-            <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
+            <div className="overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0">
+                <table className="w-full border-collapse" style={{ minWidth: `${(competitors.length + 1) * 140}px` }}>
                     <thead>
                         <tr>
                             {/* Empty cell for row labels */}
-                            <th className="py-6 px-6 border-r border-gray-700"></th>
+                            <th className="py-4 px-3 md:py-6 md:px-6 border-r border-gray-700" style={{ minWidth: '120px' }}></th>
 
                             {/* Competitor Logo Headers */}
                             {competitors.map((competitor, index) => {
@@ -72,19 +76,21 @@ export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
                                 return (
                                     <th
                                         key={index}
-                                        className={`py-6 px-6 align-middle border-r border-gray-700`}
-                                        style={isHighlightColumn ? {
-                                            borderLeft: `2px solid ${highlightBorderColor}`,
-                                            borderRight: `2px solid ${highlightBorderColor}`,
-                                            borderTop: `2px solid ${highlightBorderColor}`,
-                                            borderBottom: 'none',
-                                            borderTopLeftRadius: '1rem',
-                                            borderTopRightRadius: '1rem'
-                                        } : {}}
+                                        className="py-4 px-3 md:py-6 md:px-6 align-middle border-r border-gray-700"
+                                        style={{
+                                            minWidth: '140px',
+                                            ...(isHighlightColumn ? {
+                                                borderLeft: `2px solid ${highlightBorderColor}`,
+                                                borderRight: `2px solid ${highlightBorderColor}`,
+                                                borderTop: `2px solid ${highlightBorderColor}`,
+                                                borderBottom: 'none',
+                                                borderTopLeftRadius: '1rem',
+                                                borderTopRightRadius: '1rem'
+                                            } : {})
+                                        }}
                                     >
                                         <div className="flex items-center justify-center">
-                                            <div className="rounded-lg px-6 py-4 bg-white flex items-center justify-center min-w-[160px]">
-
+                                            <div className="rounded-lg px-4 py-3 md:px-6 md:py-4 bg-white flex items-center justify-center min-w-[120px] md:min-w-[160px]">
                                                 <span style={competitor.logoStyle}>
                                                     {competitor.name}
                                                 </span>
@@ -100,7 +106,7 @@ export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
                             const isLastRow = rowIndex === comparisonData.length - 1;
                             return (
                                 <tr key={rowIndex}>
-                                    <td className="py-6 px-6 text-lg border-r border-gray-800">
+                                    <td className="py-4 px-3 md:py-6 md:px-6 text-sm md:text-lg border-r border-gray-800" style={{ minWidth: '120px' }}>
                                         {row.label}
                                     </td>
                                     {row.data.map((hasFeature, colIndex) => {
@@ -108,7 +114,7 @@ export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
                                         return (
                                             <td
                                                 key={colIndex}
-                                                className={`text-center py-6 px-6 border-t border-gray-800 border-r border-gray-800`}
+                                                className="text-center py-4 px-3 md:py-6 md:px-6 border-t border-r border-gray-800"
                                                 style={isHighlightColumn ? {
                                                     backgroundColor: highlightRowBgColor,
                                                     borderLeft: `2px solid ${highlightBorderColor}`,
@@ -157,10 +163,11 @@ export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
 
             {/* Insight Box */}
             <div
-                className="p-6 bg-black/40"
+                className="p-6"
                 style={{
                     borderRadius: '20px',
-                    border: `2px solid ${insightBorderColor}`
+                    border: `2px solid ${insightBorderColor}`,
+                    backgroundColor: insightBoxBgColor
                 }}
             >
                 <div className="flex items-start gap-4">
@@ -177,7 +184,7 @@ export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
                     </span>
                     <p
                         className="leading-relaxed text-lg"
-                        style={{ fontFamily: 'HellasFun', color: 'white' }} // Keep this white as the box has bg-black/40
+                        style={{ fontFamily: bodyFont, color: 'white' }}
                     >
                         {insight}
                     </p>

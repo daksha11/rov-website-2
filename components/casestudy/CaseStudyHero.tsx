@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import TextType from '@/components/TextType';
 
 interface CaseStudyHeroProps {
@@ -32,18 +33,23 @@ export const CaseStudyHero: React.FC<CaseStudyHeroProps> = ({
             <div
                 className="absolute inset-0 z-0"
                 style={{
-                    backgroundImage: `url('${backgroundImage}')`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat",
                     filter: enableBlur ? "blur(8px)" : "none",
                     transform: enableBlur ? "scale(1.1)" : "none"
                 }}
-            />
+            >
+                <Image
+                    src={backgroundImage}
+                    alt=""
+                    fill
+                    priority
+                    sizes="100vw"
+                    style={{ objectFit: 'cover' }}
+                />
+            </div>
 
             {/* Dark Overlay */}
             <div
-                className="absolute inset-0 z-1"
+                className="absolute inset-0 z-[1]"
                 style={{
                     background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.80) 0%, rgba(0, 0, 0, 0.20) 100%)'
                 }}

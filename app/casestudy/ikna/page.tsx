@@ -1,5 +1,4 @@
-"use client";
-
+import type { Metadata } from 'next';
 import { NavigationDock } from "@/components/NavDoc";
 import Footer from "@/components/Footer";
 import { CaseStudyHero } from "@/components/casestudy/CaseStudyHero";
@@ -10,6 +9,27 @@ import { CompetitorAnalysis } from "@/components/casestudy/CompetitorAnalysis";
 import { DesignSystem } from "@/components/casestudy/DesignSystem";
 import { Approach } from "@/components/casestudy/Approach";
 import { Result } from "@/components/casestudy/Result";
+
+export const metadata: Metadata = {
+    title: 'Aysegul Ikna - Case Study',
+    description: 'How Range of View Studios built a sophisticated digital home for Aysegul Ikna, a sustainable fashion brand at Ponce City Market. 30% sales growth achieved.',
+    alternates: {
+        canonical: 'https://rovstudios.com/casestudy/ikna',
+    },
+    openGraph: {
+        title: 'Aysegul Ikna Case Study | Range of View Studios',
+        description: 'Luxury sustainable fashion meets digital — 30% increase in monthly sales.',
+        images: [{ url: '/casestudy/iknacasestudy.png', width: 1200, height: 630, alt: 'Aysegul Ikna website by ROV Studios' }],
+        type: 'article',
+        url: 'https://rovstudios.com/casestudy/ikna',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Aysegul Ikna Case Study | Range of View Studios',
+        description: 'Luxury sustainable fashion meets digital — 30% increase in monthly sales.',
+        images: ['/casestudy/iknacasestudy.png'],
+    },
+};
 
 export default function IknaCaseStudyPage() {
     const sidebarItems = [
@@ -106,15 +126,16 @@ export default function IknaCaseStudyPage() {
             <CaseStudyHero
                 title={["ELEVATING", "IKNA'S", "DIGITAL PRESENCE"]}
                 titleColors={["#ffffff", "#1A4D2E", "#ffffff"]}
-                backgroundImage="/webdev/ayseiknawebhome.png"
+                backgroundImage="/casestudy/iknacasestudy.png"
                 titleFont="Hornset"
                 enableBlur={true}
+                liveLink="https://www.aysegulikna.com/"
             />
 
             {/* Case Study Section */}
             <section className="relative bg-black text-white py-16 px-6 md:px-12 lg:px-16">
                 <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8">
-                    <CaseStudySidebar items={sidebarItems} />
+                    <CaseStudySidebar items={sidebarItems} activeColor="#1A4D2E" />
 
                     {/* Main Content */}
                     <div className="flex-1 space-y-12">

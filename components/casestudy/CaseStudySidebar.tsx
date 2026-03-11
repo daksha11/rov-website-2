@@ -10,15 +10,20 @@ interface SidebarItem {
 interface CaseStudySidebarProps {
     items: SidebarItem[];
     activeSection?: string;
+    activeColor?: string;
     onSectionClick?: (id: string) => void;
 }
 
 export const CaseStudySidebar: React.FC<CaseStudySidebarProps> = ({
     items,
     activeSection = items[0]?.id || '',
+    activeColor = '#920000',
     onSectionClick
 }) => {
     const [active, setActive] = useState(activeSection);
+
+    // Stable reference for item IDs to avoid re-creating the observer on every render
+    const itemIds = items.map(i => i.id).join(',');
 
     // Scroll spy effect
     useEffect(() => {
@@ -39,8 +44,9 @@ export const CaseStudySidebar: React.FC<CaseStudySidebarProps> = ({
         const observer = new IntersectionObserver(observerCallback, observerOptions);
 
         // Observe all sections
-        items.forEach((item) => {
-            const element = document.getElementById(item.id);
+        const ids = itemIds.split(',');
+        ids.forEach((id) => {
+            const element = document.getElementById(id);
             if (element) {
                 observer.observe(element);
             }
@@ -49,7 +55,8 @@ export const CaseStudySidebar: React.FC<CaseStudySidebarProps> = ({
         return () => {
             observer.disconnect();
         };
-    }, [items]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [itemIds]);
 
     const handleClick = (id: string) => {
         setActive(id);
@@ -74,7 +81,7 @@ export const CaseStudySidebar: React.FC<CaseStudySidebarProps> = ({
                         onClick={() => handleClick(item.id)}
                         className="w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-300"
                         style={{
-                            color: active === item.id ? '#920000' : '#000000',
+                            color: active === item.id ? activeColor : '#000000',
                             backgroundColor: 'transparent'
                         }}
                     >
