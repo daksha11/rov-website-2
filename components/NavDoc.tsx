@@ -151,7 +151,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
     
                   onClick={() => setMenuOpen(false)}
                 >
-                  • Sound Engineering
+                  Sound Engineering
                 </Link>
               </li>
               <li>
@@ -161,7 +161,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
     
                   onClick={() => setMenuOpen(false)}
                 >
-                  • Web Development
+                  Web Development
                 </Link>
               </li>
               <li>
@@ -171,7 +171,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
     
                   onClick={() => setMenuOpen(false)}
                 >
-                  • Media Production
+                  Media Production
                 </Link>
               </li>
               <li>
@@ -181,7 +181,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
     
                   onClick={() => setMenuOpen(false)}
                 >
-                  • Custom AI Automations
+                  AI Solutions
                 </Link>
               </li>
             </ul>

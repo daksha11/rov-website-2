@@ -305,7 +305,7 @@ export default function Services() {
     },
     {
       id: "ai",
-      title: "AI Integration",
+      title: "AI Solutions",
       link: "/ai-automation",
       previewImages: [
         '/heroassets/codingframe.png',

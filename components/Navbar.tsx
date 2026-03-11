@@ -23,7 +23,7 @@ export default function Navbar({ isScrolled }: NavbarProps) {
     { name: "Web Optimization", path: "/web" },
     { name: "Sound Engineering", path: "/sound" },
     { name: "Video Production", path: "/video-production" },
-    { name: "AI Integration", path: "/ai-automation" },
+    { name: "AI Solutions", path: "/ai-automation" },
   ];
 
   return (

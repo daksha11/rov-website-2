@@ -2,8 +2,8 @@
 
 import { NavigationDock } from "@/components/NavDoc";
 import Footer from "@/components/Footer";
-import OurApproachSection from "@/components/Web-Dev/OurApproachSection";
-import FAQBottomSection from "@/components/Web-Dev/FAQBottomSection";
+import OurApproachSection from "@/components/video-production/OurApproachSection";
+import FAQSection from "@/components/video-production/FAQSection";
 import ProjectStrip from "@/components/ProjectStrip";
 import { useCallback, useEffect, useRef, useState } from "react";
 import VideoPortfolioSection from "@/components/video-production/VideoPortfolioSection";
@@ -164,7 +164,7 @@ export default function VideoProductionPage() {
             <OurApproachSection />
 
             {/* FAQ Section */}
-            <FAQBottomSection />
+            <FAQSection />
 
             <Footer />
         </main>
