@@ -7,11 +7,13 @@ import Image from "next/image";
 import GradientBlob from "./GradientBlob";
 
 type Category = "All" | "Creative" | "Tech" | "Systems";
+type CreativeSubcategory = "UI/UX" | "Motion" | "Illustrative";
 
 interface TeamMember {
     id: number;
     image: string;
     category: Category;
+    creativeSubcategory?: CreativeSubcategory;
     name: string;
     role: string;
     skills: string[];
@@ -38,6 +40,7 @@ const teamMembers: TeamMember[] = [
         id: 13,
         image: "/teammembers/kavyatm.webp",
         category: "Creative",
+        creativeSubcategory: "UI/UX",
         name: "Kavya",
         role: "DIRECTOR OF DESIGN — UI/UX & DESIGN SYSTEMS",
         skills: ["UI/UX Design", "Design Systems", "Web Design", "Design Infrastructure", "Brand Guidelines", "Design Standards", "Team Leadership", "Project Delegation", "Client Relations", "Creative Strategy"],
@@ -50,6 +53,7 @@ const teamMembers: TeamMember[] = [
         id: 3,
         image: "/teammembers/vaishnavitm.webp",
         category: "Creative",
+        creativeSubcategory: "Motion",
         name: "Vaishnavi",
         role: "CREATIVE DIRECTOR & VIDEO STRATEGIST",
         skills: ["Video Creative Direction", "Visual Storytelling", "Campaign Strategy", "Motion Design"],
@@ -61,6 +65,7 @@ const teamMembers: TeamMember[] = [
         id: 4,
         image: "/teammembers/tanvitm.webp",
         category: "Creative",
+        creativeSubcategory: "Illustrative",
         name: "Tanvi",
         role: "DESIGN & SOCIAL MEDIA STRATEGIST",
         skills: ["Social Media Design", "UI/UX", "Content Strategy", "Creative Ideation", "Campaign Visuals"],
@@ -72,6 +77,7 @@ const teamMembers: TeamMember[] = [
         id: 14,
         image: "/teammembers/jinwontm.webp",
         category: "Creative",
+        creativeSubcategory: "UI/UX",
         name: "Jiwon",
         role: "UI/UX DESIGNER & ILLUSTRATOR",
         skills: ["UI/UX Design", "Design Strategy", "Illustration", "Interface Design", "User Experience", "Visual Design Systems"],
@@ -83,6 +89,7 @@ const teamMembers: TeamMember[] = [
         id: 6,
         image: "/teammembers/davidtm.webp",
         category: "Creative",
+        creativeSubcategory: "Motion",
         name: "David",
         role: "3D CREATIVE DIRECTOR",
         skills: ["3D Product Visualization", "Custom Texturing", "Modeling", "Lighting & Rendering", "Creative Direction"],
@@ -156,6 +163,7 @@ const teamMembers: TeamMember[] = [
         id: 2,
         image: "/teammembers/jahnavitm.webp",
         category: "Creative",
+        creativeSubcategory: "Illustrative",
         name: "Jahnavi",
         role: "DESIGN ASSISTANT",
         skills: ["UI/UX Design", "Brand Identity", "Design Systems", "Illustration", "Visual Design", "Prototyping"],
@@ -167,6 +175,7 @@ const teamMembers: TeamMember[] = [
         id: 5,
         image: "/teammembers/chamantm.webp",
         category: "Creative",
+        creativeSubcategory: "Motion",
         name: "Chaman",
         role: "VIDEO EDITOR & MOTION DESIGNER",
         skills: ["Video Editing", "Motion Graphics", "After Effects Design", "Creative Concepting", "Rapid Turnaround Production"],
@@ -189,6 +198,7 @@ const teamMembers: TeamMember[] = [
         id: 16,
         image: "/teammembers/anishtm2.png",
         category: "Creative",
+        creativeSubcategory: "UI/UX",
         name: "Anish Goel",
         role: "WEB & GRAPHIC DESIGNER",
         skills: ["Web Design", "Graphic Design", "Visual Communication", "Brand Collateral Design", "Design Strategy"],
@@ -199,9 +209,11 @@ const teamMembers: TeamMember[] = [
 ];
 
 const categories: Category[] = ["Creative", "Tech", "Systems"];
+const creativeSubcategories: CreativeSubcategory[] = ["UI/UX", "Motion", "Illustrative"];
 
 const TeamSection: React.FC = () => {
     const [activeCategory, setActiveCategory] = useState<Category>("All");
+    const [activeCreativeSub, setActiveCreativeSub] = useState<CreativeSubcategory | "All">("All");
     const [expandedMemberId, setExpandedMemberId] = useState<number | null>(null);
 
     const handleMarqueeMemberClick = (member: TeamMember) => {
@@ -259,8 +271,101 @@ const TeamSection: React.FC = () => {
 
     const filteredMembers = activeCategory === "All" ? teamMembers : teamMembers.filter(m => m.category === activeCategory);
 
-    // Fixed CategorySection definition to accept props correctly
-    const CategorySection = ({ category, members }: { category: Category, members: TeamMember[] }) => {
+    const ExpandedMemberView = ({ expandedMember }: { expandedMember: TeamMember }) => (
+        <motion.div
+            key="expanded-view"
+            initial={{ opacity: 0, height: 0, marginBottom: 0 }}
+            animate={{ opacity: 1, height: 'auto', marginBottom: 48 }}
+            exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+            className="w-full"
+        >
+            <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-white/10 to-white/5 p-8 border border-white/20"
+                style={{ boxShadow: `0 25px 50px -12px rgba(${expandedMember.shadowColor || '101, 67, 33'}, 0.5)` }}>
+
+                <button
+                    onClick={() => setExpandedMemberId(null)}
+                    className="absolute top-6 right-6 z-20 text-white/60 hover:text-white transition-colors"
+                >
+                    <X className="w-6 h-6" />
+                </button>
+
+                <div className="absolute inset-0 z-0">
+                    <Image src={expandedMember.image} alt={`${expandedMember.name} - ${expandedMember.role}`} fill sizes="100vw" className="object-cover opacity-20 blur-sm" loading="lazy" />
+                    <div className="absolute inset-0 bg-black/60" />
+                </div>
+
+                <div className="relative z-10">
+                    <div className="flex flex-col lg:flex-row gap-12">
+                        <div className="w-full lg:w-1/3">
+                            <div className="relative w-full aspect-[4/5]">
+                                <Image src={expandedMember.image} alt={expandedMember.name} fill sizes="(max-width: 1024px) 100vw, 33vw" className="object-cover rounded-2xl shadow-2xl" loading="lazy" />
+                            </div>
+                        </div>
+                        <div className="flex-1">
+                            <h3 className="text-[clamp(2.5rem,5vw,4rem)] font-black text-[#F7F2E4] uppercase leading-none mb-4" style={{ fontFamily: 'Norwige, sans-serif' }}>
+                                {expandedMember.name}
+                            </h3>
+                            <p className="text-sm tracking-[0.2em] uppercase text-[#DAA520] mb-8" style={{ fontFamily: 'Roboto, sans-serif' }}>
+                                {expandedMember.role} • {expandedMember.location}
+                            </p>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                {expandedMember.specialties && (
+                                    <div>
+                                        <h4 className="text-lg font-black uppercase text-[#F7F2E4] mb-4" style={{ fontFamily: 'Norwige, sans-serif' }}>Specialties</h4>
+                                        <p className="text-sm text-[#F7F2E4]/80 leading-relaxed" style={{ fontFamily: 'Roboto, sans-serif' }}>{expandedMember.specialties}</p>
+                                        {expandedMember.portfolioLink && (
+                                            <a
+                                                href={expandedMember.portfolioLink}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full text-white text-xs font-bold uppercase tracking-widest transition-all hover:scale-105"
+                                            >
+                                                View Portfolio
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7" /></svg>
+                                            </a>
+                                        )}
+                                    </div>
+                                )}
+                                <div>
+                                    <h4 className="text-lg font-black uppercase text-[#F7F2E4] mb-4" style={{ fontFamily: 'Norwige, sans-serif' }}>Skills</h4>
+                                    <div className="flex flex-wrap gap-2">
+                                        {expandedMember.skills.map((s, i) => (
+                                            <span key={i} className="px-3 py-1 bg-white/10 border border-white/10 rounded-full text-[10px] text-white uppercase tracking-widest">{s}</span>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </motion.div>
+    );
+
+    const MemberGrid = ({ members }: { members: TeamMember[] }) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {members.map((member) => (
+                <motion.div
+                    layout
+                    key={member.id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="relative h-[300px] rounded-2xl overflow-hidden cursor-pointer group border border-white/10"
+                    onClick={() => setExpandedMemberId(member.id)}
+                >
+                    <Image src={member.image} alt={member.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+                    <div className="absolute bottom-6 left-6 right-6">
+                        <h4 className="text-2xl font-black text-white uppercase" style={{ fontFamily: 'Norwige, sans-serif' }}>{member.name}</h4>
+                        <p className="text-[10px] tracking-[0.2em] text-[#DAA520] uppercase" style={{ fontFamily: 'Roboto, sans-serif' }}>{member.role}</p>
+                    </div>
+                </motion.div>
+            ))}
+        </div>
+    );
+
+    const CategorySection = ({ members }: { category: Category, members: TeamMember[] }) => {
         const expandedMember = members.find(m => m.id === expandedMemberId);
         const gridMembers = members.filter(m => m.id !== expandedMemberId);
 
@@ -272,98 +377,88 @@ const TeamSection: React.FC = () => {
                 className="w-full max-w-7xl mx-auto px-4"
             >
                 <AnimatePresence mode="wait">
-                    {expandedMember && (
-                        <motion.div
-                            key="expanded-view"
-                            initial={{ opacity: 0, height: 0, marginBottom: 0 }}
-                            animate={{ opacity: 1, height: 'auto', marginBottom: 48 }}
-                            exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-                            className="w-full"
-                        >
-                            <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-white/10 to-white/5 p-8 border border-white/20"
-                                style={{ boxShadow: `0 25px 50px -12px rgba(${expandedMember.shadowColor || '101, 67, 33'}, 0.5)` }}>
-
-                                <button
-                                    onClick={() => setExpandedMemberId(null)}
-                                    className="absolute top-6 right-6 z-20 text-white/60 hover:text-white transition-colors"
-                                >
-                                    <X className="w-6 h-6" />
-                                </button>
-
-                                <div className="absolute inset-0 z-0">
-                                    <Image src={expandedMember.image} alt={`${expandedMember.name} - ${expandedMember.role}`} fill sizes="100vw" className="object-cover opacity-20 blur-sm" loading="lazy" />
-                                    <div className="absolute inset-0 bg-black/60" />
-                                </div>
-
-                                <div className="relative z-10">
-                                    <div className="flex flex-col lg:flex-row gap-12">
-                                        <div className="w-full lg:w-1/3">
-                                            <div className="relative w-full aspect-[4/5]">
-                                                <Image src={expandedMember.image} alt={expandedMember.name} fill sizes="(max-width: 1024px) 100vw, 33vw" className="object-cover rounded-2xl shadow-2xl" loading="lazy" />
-                                            </div>
-                                        </div>
-                                        <div className="flex-1">
-                                            <h3 className="text-[clamp(2.5rem,5vw,4rem)] font-black text-[#F7F2E4] uppercase leading-none mb-4" style={{ fontFamily: 'Norwige, sans-serif' }}>
-                                                {expandedMember.name}
-                                            </h3>
-                                            <p className="text-sm tracking-[0.2em] uppercase text-[#DAA520] mb-8" style={{ fontFamily: 'Roboto, sans-serif' }}>
-                                                {expandedMember.role} • {expandedMember.location}
-                                            </p>
-
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                                {expandedMember.specialties && (
-                                                    <div>
-                                                        <h4 className="text-lg font-black uppercase text-[#F7F2E4] mb-4" style={{ fontFamily: 'Norwige, sans-serif' }}>Specialties</h4>
-                                                        <p className="text-sm text-[#F7F2E4]/80 leading-relaxed" style={{ fontFamily: 'Roboto, sans-serif' }}>{expandedMember.specialties}</p>
-                                                        {expandedMember.portfolioLink && (
-                                                            <a
-                                                                href={expandedMember.portfolioLink}
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                                className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full text-white text-xs font-bold uppercase tracking-widest transition-all hover:scale-105"
-                                                            >
-                                                                View Portfolio
-                                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7" /></svg>
-                                                            </a>
-                                                        )}
-                                                    </div>
-                                                )}
-                                                <div>
-                                                    <h4 className="text-lg font-black uppercase text-[#F7F2E4] mb-4" style={{ fontFamily: 'Norwige, sans-serif' }}>Skills</h4>
-                                                    <div className="flex flex-wrap gap-2">
-                                                        {expandedMember.skills.map((s, i) => (
-                                                            <span key={i} className="px-3 py-1 bg-white/10 border border-white/10 rounded-full text-[10px] text-white uppercase tracking-widest">{s}</span>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </motion.div>
-                    )}
+                    {expandedMember && <ExpandedMemberView expandedMember={expandedMember} />}
                 </AnimatePresence>
+                <MemberGrid members={gridMembers} />
+            </motion.div>
+        );
+    };
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {gridMembers.map((member) => (
-                        <motion.div
-                            layout
-                            key={member.id}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="relative h-[300px] rounded-2xl overflow-hidden cursor-pointer group border border-white/10"
-                            onClick={() => setExpandedMemberId(member.id)}
+    const CreativeSection = ({ members }: { members: TeamMember[] }) => {
+        const expandedMember = members.find(m => m.id === expandedMemberId);
+        // Leadership members (no subcategory — Ayush, Sam)
+        const leadershipMembers = members.filter(m => !m.creativeSubcategory && m.id !== expandedMemberId);
+
+        // Get members for the active sub-filter
+        const getSubMembers = () => {
+            if (activeCreativeSub === "All") {
+                return members.filter(m => m.creativeSubcategory && m.id !== expandedMemberId);
+            }
+            return members.filter(m => m.creativeSubcategory === activeCreativeSub && m.id !== expandedMemberId);
+        };
+
+        const subMembers = getSubMembers();
+
+        // Group by subcategory for "All" view
+        const groupedBySubcategory = activeCreativeSub === "All"
+            ? creativeSubcategories.map(sub => ({
+                label: sub,
+                members: members.filter(m => m.creativeSubcategory === sub && m.id !== expandedMemberId),
+            })).filter(g => g.members.length > 0)
+            : [];
+
+        return (
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="w-full max-w-7xl mx-auto px-4"
+            >
+                {/* Sub-filter pills */}
+                <div className="flex items-center gap-3 mb-8 justify-center flex-wrap">
+                    {(["All", ...creativeSubcategories] as const).map((sub) => (
+                        <button
+                            key={sub}
+                            onClick={() => { setActiveCreativeSub(sub); setExpandedMemberId(null); }}
+                            className={`px-4 py-1.5 rounded-full text-xs uppercase tracking-[0.15em] border transition-all duration-300 ${
+                                activeCreativeSub === sub
+                                    ? "bg-white/15 border-white/30 text-white"
+                                    : "bg-transparent border-white/10 text-white/40 hover:text-white/70 hover:border-white/20"
+                            }`}
+                            style={{ fontFamily: 'Roboto, sans-serif' }}
                         >
-                            <Image src={member.image} alt={member.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-                            <div className="absolute bottom-6 left-6 right-6">
-                                <h4 className="text-2xl font-black text-white uppercase" style={{ fontFamily: 'Norwige, sans-serif' }}>{member.name}</h4>
-                                <p className="text-[10px] tracking-[0.2em] text-[#DAA520] uppercase" style={{ fontFamily: 'Roboto, sans-serif' }}>{member.role}</p>
-                            </div>
-                        </motion.div>
+                            {sub}
+                        </button>
                     ))}
                 </div>
+
+                <AnimatePresence mode="wait">
+                    {expandedMember && <ExpandedMemberView expandedMember={expandedMember} />}
+                </AnimatePresence>
+
+                {/* Leadership row — always visible */}
+                {leadershipMembers.length > 0 && (
+                    <div className="mb-10">
+                        <h3 className="text-xs tracking-[0.3em] uppercase text-white/30 mb-4 pl-1" style={{ fontFamily: 'Roboto, sans-serif' }}>
+                            Creative Direction
+                        </h3>
+                        <MemberGrid members={leadershipMembers} />
+                    </div>
+                )}
+
+                {/* Grouped view when "All" sub is active */}
+                {activeCreativeSub === "All" ? (
+                    groupedBySubcategory.map((group) => (
+                        <div key={group.label} className="mb-10">
+                            <h3 className="text-xs tracking-[0.3em] uppercase text-white/30 mb-4 pl-1" style={{ fontFamily: 'Roboto, sans-serif' }}>
+                                {group.label}
+                            </h3>
+                            <MemberGrid members={group.members} />
+                        </div>
+                    ))
+                ) : (
+                    <MemberGrid members={subMembers} />
+                )}
             </motion.div>
         );
     };
@@ -387,7 +482,7 @@ const TeamSection: React.FC = () => {
             <GradientBlob position="bottom-right" opacity={0.45} size="600px" blur="150px" />
             <div className="z-50 mb-8 md:mb-12 flex flex-wrap items-center gap-2 md:gap-6 justify-center md:justify-end w-full px-2 md:px-8">
                 <button
-                    onClick={() => { setActiveCategory("All"); setExpandedMemberId(null); }}
+                    onClick={() => { setActiveCategory("All"); setActiveCreativeSub("All"); setExpandedMemberId(null); }}
                     className={`text-sm md:text-xl font-normal transition-all duration-300 ${activeCategory === "All" ? "text-white" : "text-white/50 hover:text-white/80"}`}
                     style={{ fontFamily: 'Roboto, sans-serif' }}
                 > ALL </button>
@@ -395,7 +490,7 @@ const TeamSection: React.FC = () => {
                 {categories.map((cat, index) => (
                     <React.Fragment key={cat}>
                         <button
-                            onClick={() => { setActiveCategory(cat); setExpandedMemberId(null); }}
+                            onClick={() => { setActiveCategory(cat); setActiveCreativeSub("All"); setExpandedMemberId(null); }}
                             className={`text-sm md:text-xl font-normal transition-all duration-300 ${activeCategory === cat ? "text-white" : "text-white/50 hover:text-white/80"}`}
                             style={{ fontFamily: 'Roboto, sans-serif' }}
                         > {cat.toUpperCase()} </button>
@@ -453,6 +548,8 @@ const TeamSection: React.FC = () => {
                             </div>
                         </div>
                     </motion.div>
+                ) : activeCategory === "Creative" ? (
+                    <CreativeSection members={filteredMembers} />
                 ) : (
                     <CategorySection category={activeCategory} members={filteredMembers} />
                 )}
