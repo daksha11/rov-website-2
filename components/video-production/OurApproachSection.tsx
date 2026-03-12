@@ -448,7 +448,7 @@ export default function OurApproachSection() {
                     transform: translateX(100%);
                   }
                 }
-                
+
                 .animate-shine {
                   animation: shine 3s ease-in-out infinite;
                 }

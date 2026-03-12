@@ -9,24 +9,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import VideoPortfolioSection from "@/components/video-production/VideoPortfolioSection";
 import PostProductionSection from "@/components/video-production/PostProductionSection";
 
-function LazySection({ children, rootMargin = "200px" }: { children: React.ReactNode; rootMargin?: string }) {
-    const ref = useRef<HTMLDivElement>(null);
-    const [visible, setVisible] = useState(false);
-
-    useEffect(() => {
-        const el = ref.current;
-        if (!el) return;
-        const observer = new IntersectionObserver(
-            ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
-            { rootMargin }
-        );
-        observer.observe(el);
-        return () => observer.disconnect();
-    }, [rootMargin]);
-
-    return <div ref={ref}>{visible ? children : <div className="min-h-[50vh]" />}</div>;
-}
-
 const videos = [
     "/videoprod/Atlskylineweb.mp4",
     "/videoprod/Gladshotweb.mp4",
@@ -148,14 +130,10 @@ export default function VideoProductionContent() {
             </section>
 
             {/* Portfolio Showcase — Real Estate & Events */}
-            <LazySection>
-                <VideoPortfolioSection />
-            </LazySection>
+            <VideoPortfolioSection />
 
             {/* Post Production — Color vs Log Toggle */}
-            <LazySection>
-                <PostProductionSection />
-            </LazySection>
+            <PostProductionSection />
 
             {/* Project Strip CTA */}
             <ProjectStrip />

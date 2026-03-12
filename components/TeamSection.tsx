@@ -187,7 +187,7 @@ const teamMembers: TeamMember[] = [
     },
     {
         id: 16,
-        image: "/teammembers/anishtm.png",
+        image: "/teammembers/anishtm2.png",
         category: "Creative",
         name: "Anish Goel",
         role: "WEB & GRAPHIC DESIGNER",
