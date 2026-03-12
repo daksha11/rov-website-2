@@ -5,6 +5,7 @@ export function VideoSchema({
   uploadDate,
   contentUrl,
   duration,
+  pageUrl,
 }: {
   name: string;
   description: string;
@@ -12,6 +13,7 @@ export function VideoSchema({
   uploadDate: string;
   contentUrl?: string;
   duration?: string;
+  pageUrl?: string;
 }) {
   const schema = {
     "@context": "https://schema.org",
@@ -22,6 +24,9 @@ export function VideoSchema({
     uploadDate,
     ...(contentUrl && { contentUrl: `https://rovstudios.com${contentUrl}` }),
     ...(duration && { duration }),
+    ...(pageUrl && { url: `https://rovstudios.com${pageUrl}` }),
+    isFamilyFriendly: true,
+    inLanguage: "en",
     publisher: {
       "@type": "Organization",
       name: "Range of View Studios",

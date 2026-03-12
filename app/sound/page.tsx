@@ -85,6 +85,7 @@ export default function Page() {
                 uploadDate="2025-01-10"
                 contentUrl="/soundpage/starscollidemv.mp4"
                 duration="PT3M30S"
+                pageUrl="/sound"
             />
             <VideoSchema
                 name="Starboy Music Video"
@@ -93,6 +94,7 @@ export default function Page() {
                 uploadDate="2025-01-15"
                 contentUrl="/video/starboymv.mp4"
                 duration="PT3M"
+                pageUrl="/sound"
             />
             <SoundHero />
 

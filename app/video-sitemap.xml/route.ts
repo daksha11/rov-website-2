@@ -6,6 +6,8 @@ export async function GET() {
             description: "Cinematic aerial footage of the Atlanta skyline captured by Range of View Studios for real estate and commercial clients.",
             contentUrl: "https://rovstudios.com/videoprod/Atlskylineweb.mp4",
             thumbnailUrl: "https://rovstudios.com/thumbnails/videohero1.webp",
+            duration: 30,
+            publicationDate: "2025-01-15",
         },
         {
             loc: "https://rovstudios.com/video-production",
@@ -13,6 +15,8 @@ export async function GET() {
             description: "Premium real estate video walkthrough showcasing dynamic visual storytelling by ROV Studios.",
             contentUrl: "https://rovstudios.com/videoprod/Gladshotweb.mp4",
             thumbnailUrl: "https://rovstudios.com/thumbnails/videohero2.webp",
+            duration: 25,
+            publicationDate: "2025-01-15",
         },
         {
             loc: "https://rovstudios.com/video-production",
@@ -20,6 +24,8 @@ export async function GET() {
             description: "Breathtaking mountain landscape captured from above by Range of View Studios drone cinematography team.",
             contentUrl: "https://rovstudios.com/videoprod/Mountainweb.mp4",
             thumbnailUrl: "https://rovstudios.com/thumbnails/videohero3.webp",
+            duration: 20,
+            publicationDate: "2025-01-15",
         },
         {
             loc: "https://rovstudios.com/video-production",
@@ -27,6 +33,8 @@ export async function GET() {
             description: "High-energy boxing event videography capturing raw intensity frame by frame, produced by ROV Studios.",
             contentUrl: "https://rovstudios.com/videoprod/postprod/Boxingeditcolor.mp4",
             thumbnailUrl: "https://rovstudios.com/thumbnails/boxing1.webp",
+            duration: 35,
+            publicationDate: "2025-02-01",
         },
         {
             loc: "https://rovstudios.com/sound",
@@ -34,6 +42,8 @@ export async function GET() {
             description: "Stars Collide official music video, mixed and mastered by Range of View Studios sound engineering team.",
             contentUrl: "https://rovstudios.com/soundpage/starscollidemv.mp4",
             thumbnailUrl: "https://rovstudios.com/thumbnails/soundhero.webp",
+            duration: 210,
+            publicationDate: "2025-01-10",
         },
         {
             loc: "https://rovstudios.com/sound",
@@ -41,6 +51,8 @@ export async function GET() {
             description: "Starboy official music video, produced and engineered by Range of View Studios.",
             contentUrl: "https://rovstudios.com/video/starboymv.mp4",
             thumbnailUrl: "https://rovstudios.com/thumbnails/starboythumb.webp",
+            duration: 180,
+            publicationDate: "2025-01-15",
         },
     ];
 
@@ -59,6 +71,10 @@ ${videos
       <video:title>${escapeXml(v.title)}</video:title>
       <video:description>${escapeXml(v.description)}</video:description>
       <video:content_loc>${escapeXml(v.contentUrl)}</video:content_loc>
+      <video:duration>${v.duration}</video:duration>
+      <video:publication_date>${v.publicationDate}</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:live>no</video:live>
     </video:video>
   </url>`
     )
@@ -66,6 +82,10 @@ ${videos
 </urlset>`;
 
     return new Response(xml, {
-        headers: { "Content-Type": "application/xml" },
+        headers: {
+            "Content-Type": "application/xml",
+            "Cache-Control": "public, max-age=3600, s-maxage=86400",
+            "X-Robots-Tag": "noindex",
+        },
     });
 }

@@ -55,6 +55,7 @@ export default function VideoProductionPage() {
                 uploadDate="2025-01-15"
                 contentUrl="/videoprod/Atlskylineweb.mp4"
                 duration="PT30S"
+                pageUrl="/video-production"
             />
             <VideoSchema
                 name="Gladstone Property Walkthrough"
@@ -63,6 +64,7 @@ export default function VideoProductionPage() {
                 uploadDate="2025-01-15"
                 contentUrl="/videoprod/Gladshotweb.mp4"
                 duration="PT25S"
+                pageUrl="/video-production"
             />
             <VideoSchema
                 name="Mountain Landscape Aerial Footage"
@@ -71,6 +73,7 @@ export default function VideoProductionPage() {
                 uploadDate="2025-01-15"
                 contentUrl="/videoprod/Mountainweb.mp4"
                 duration="PT20S"
+                pageUrl="/video-production"
             />
             <VideoSchema
                 name="Boxing Event Coverage"
@@ -79,6 +82,7 @@ export default function VideoProductionPage() {
                 uploadDate="2025-02-01"
                 contentUrl="/videoprod/postprod/Boxingeditcolor.mp4"
                 duration="PT35S"
+                pageUrl="/video-production"
             />
             <VideoProductionContent />
         </>
