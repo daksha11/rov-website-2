@@ -116,7 +116,7 @@ const BookACall = () => {
         <div className="mt-4 md:mt-0">
           <div className="flex flex-col md:text-2xl text-lg">
             <span>FOR FURTHER INQUIRIES </span><span><a
-              href="mailto:@rangeofviewstudios"
+              href="mailto:rangeofview@rovstudios.com"
               className="hover:text-[#2c2420]/40 transition-colors duration-300"
             >↳ @rangeofviewstudios </a></span>
           </div>

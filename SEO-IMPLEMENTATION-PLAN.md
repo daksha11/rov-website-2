@@ -81,12 +81,16 @@
 
 ### Phase 10: Web Manifest & Verification — COMPLETE
 - Fixed `site.webmanifest`: added name ("Range of View Studios"), short_name ("ROV Studios"), description, start_url, scope, and corrected theme/background colors from white to black.
-- Verified OG meta tags across all 11 pages — all have correct og:title, og:description, og:image, og:url, twitter:card, and canonical URLs.
-- Verified all OG images load correctly from `/og/` directory (11 images).
-- Confirmed sitemap.xml contains all 11 routes with correct priorities.
-- Confirmed robots.txt has correct allow/disallow rules.
-- Note: Some live site discrepancies (video-sitemap 404, Bando OG image, CTRL A Twitter tags) are deployment issues — code is correct and will resolve on next deploy.
-- **Files updated:** public/site.webmanifest, SEO-IMPLEMENTATION-PLAN.md.
+- Fixed CaseStudyHero.tsx type error: `title` (string[]) passed to `alt` (string) — added `.join(' ')`.
+- **Post-deploy verification (2026-03-12):**
+  - OG tags verified on all 11 pages — correct og:title, og:description, og:image, og:url, twitter:card, canonical URLs.
+  - OG images loading from `/og/` directory on 9/11 pages. Bando and CTRL A showing cached old values (code is correct, CDN cache issue).
+  - Video sitemap live at `/video-sitemap.xml` — all 6 videos present with correct content URLs and thumbnails.
+  - Manifest live and correct: name, short_name, description, black theme, icons.
+  - Sitemap.xml: all 11 routes with correct priorities (1.0 → 0.7).
+  - Redirects working: `/casestudy/aysegul-ikna` → `/casestudy/ikna` (308→308→200), `/services/*` → `/*` (308→308→200).
+  - robots.txt: CDN may still cache old version (missing video-sitemap ref); code is correct.
+- **Files updated:** public/site.webmanifest, components/casestudy/CaseStudyHero.tsx, SEO-IMPLEMENTATION-PLAN.md.
 
 ---
 
