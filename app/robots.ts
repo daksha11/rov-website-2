@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
             // Prevent crawling of private/admin routes if any exist in future
             disallow: '/api/auth/',
         },
-        sitemap: ['https://rovstudios.com/sitemap.xml', 'https://rovstudios.com/video-sitemap.xml'],
+        sitemap: ['https://rovstudios.com/sitemap-index.xml', 'https://rovstudios.com/sitemap.xml', 'https://rovstudios.com/video-sitemap.xml'],
         host: 'https://rovstudios.com',
     };
 }
