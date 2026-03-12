@@ -270,6 +270,8 @@ const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
 
   return (
     <div
+      role="img"
+      aria-label="ROV Studios music production environment"
       className="relative h-auto py-24 w-full bg-cover bg-center flex flex-col md:flex-row items-center justify-between"
       style={{ backgroundImage: "url('/assets/background/1.png')" }}
     >
@@ -398,7 +400,7 @@ const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
                   <img
                     src={currentSong?.coverl_img || "/assets/images/musicimg.webp"}
                     className="h-full w-full object-contain pt-6"
-                    alt="album cover"
+                    alt={currentSong?.title ? `${currentSong.title} album cover` : "Album cover"}
                   />
                 </div>
                 <button

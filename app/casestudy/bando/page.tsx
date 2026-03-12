@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import BandoContent from "./BandoContent";
+import { CreativeWorkSchema } from "@/components/CreativeWorkSchema";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 
 export const metadata: Metadata = {
     title: "The Bando - Case Study",
@@ -10,10 +12,33 @@ export const metadata: Metadata = {
         title: "The Bando Case Study | Range of View Studios",
         description: "Bold, unapologetically Atlanta — we cut bounce rate by 60% with a culturally-driven redesign.",
         url: "https://rovstudios.com/casestudy/bando",
-        images: [{ url: "/casestudy/Evertriedcrack.jpeg", width: 1200, height: 630, alt: "The Bando website redesign by ROV Studios" }],
+        images: [{ url: "/og/og-bando.jpg", width: 1200, height: 630, alt: "The Bando website redesign by ROV Studios" }],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "The Bando Case Study | Range of View Studios",
+        description: "Bold, unapologetically Atlanta — we cut bounce rate by 60% with a culturally-driven redesign.",
+        images: ["/og/og-bando.jpg"],
     },
 };
 
 export default function BandoCaseStudyPage() {
-    return <BandoContent />;
+    return (
+        <>
+            <CreativeWorkSchema
+                name="The Bando Website Redesign"
+                description="Website redesign for The Bando, a Black history museum and fried chicken restaurant in Atlanta. Achieved 60% bounce rate reduction."
+                dateCreated="2025-01-01"
+                url="/casestudy/bando"
+                image="/og/og-bando.jpg"
+                aboutName="The Bando"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "" },
+                { name: "Case Studies", url: "/casestudy" },
+                { name: "The Bando", url: "/casestudy/bando" },
+            ]} />
+            <BandoContent />
+        </>
+    );
 }

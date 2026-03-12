@@ -13,7 +13,7 @@ export default function TakeWork() {
       <div className="absolute top-0 right-4  md:right-8 xl:block hidden md:w-28 lg:w-72 z-10">
         <Image
           src="/assets/images/arrowvision.png"
-          alt="Decoration"
+          alt=""
           width={250}
           height={250}
           className="object-contain w-full h-auto float-y"

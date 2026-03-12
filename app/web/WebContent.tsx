@@ -41,15 +41,15 @@ export default function WebContent() {
                 {/* Main Content Container */}
                 <div className="max-w-7xl w-full text-center relative z-10">
                     {/* Hero Text */}
-                    <div className="mb-8 md:mb-12">
-                        <h2
-                            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white/90 mb-2 font-bold"
+                    <h1 className="mb-8 md:mb-12">
+                        <span
+                            className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white/90 mb-2 font-bold"
                             style={{ fontFamily: "Norwige, sans-serif", fontStyle: "italic" }}
                         >
                             Your Website
-                        </h2>
-                        <h1
-                            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"
+                        </span>
+                        <span
+                            className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"
                             style={{
                                 fontFamily: "Norwige, sans-serif",
                                 fontStyle: "italic",
@@ -57,8 +57,8 @@ export default function WebContent() {
                             }}
                         >
                             Reimagined
-                        </h1>
-                    </div>
+                        </span>
+                    </h1>
 
                     {/* CTA Button */}
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20 md:mb-32">

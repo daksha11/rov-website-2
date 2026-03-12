@@ -28,6 +28,8 @@ const HeroSection: React.FC = () => {
                 loop
                 muted
                 playsInline
+                aria-label="Aerial drone footage of Lake Lanier by ROV Studios"
+                title="Aerial Cinematography - ROV Studios"
               >
                 <source src="/video/1.mp4" type="video/mp4" />
               </video>
@@ -38,18 +40,15 @@ const HeroSection: React.FC = () => {
                   {/* Left Column */}
                   <div className="flex flex-col justify-between">
                     <h1
-                     
-                      className="text-4xl md:text-6xl lg:text-8xl text-white leading-tight tracking-wider"
+                      className="flex flex-col justify-between h-full"
                       style={{fontFamily: "anton"}}
                     >
-                      ELEVATE YOUR <br /> VISION
-                    </h1>
-                    <h1
-                      
-                      className="text-4xl md:text-7xl lg:text-8xl text-white tracking-wider"
-                      style={{fontFamily: "anton"}}
-                    >
-                      LITERALLY.
+                      <span className="text-4xl md:text-6xl lg:text-8xl text-white leading-tight tracking-wider">
+                        ELEVATE YOUR <br /> VISION
+                      </span>
+                      <span className="text-4xl md:text-7xl lg:text-8xl text-white tracking-wider">
+                        LITERALLY.
+                      </span>
                     </h1>
                   </div>
 
@@ -82,7 +81,7 @@ const HeroSection: React.FC = () => {
       <div className="custom-prev md:block hidden absolute top-1/2 -translate-y-1/2 left-4 z-10 cursor-pointer mt-8">
         <Image
           src="/assets/images/swiperarrowleft.png"
-          alt="Prev"
+          alt="Previous slide"
           width={80}
           height={56}
           className="object-contain"
@@ -91,7 +90,7 @@ const HeroSection: React.FC = () => {
       <div className="custom-next md:block hidden absolute top-1/2 -translate-y-1/2 right-4 z-10 cursor-pointer mt-8">
         <Image
           src="/assets/images/swiperarrowright.webp"
-          alt="Next"
+          alt="Next slide"
           width={80}
           height={56}
           className="object-contain"

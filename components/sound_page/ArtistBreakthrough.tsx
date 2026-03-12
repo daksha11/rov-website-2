@@ -62,7 +62,7 @@ export default function ArtistBreakthrough() {
             <img
               src="/assets/images/gallery10.webp"
               className="h-full w-full p-6"
-              alt=""
+              alt="ROV Studios artist breakthrough showcase"
             />
           </div>
         </div>

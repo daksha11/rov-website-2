@@ -12,14 +12,14 @@ export default function FeaturedWorksSection() {
             id: 1,
             title: "THE BANDO",
             description: "Website Redesign & Immersive Branding",
-            image: "/casestudyheroimg.png",
+            image: "/casestudyheroimg.webp",
             link: "/casestudy"
         },
         {
             id: 2,
             title: "Aysegul Ikna",
             description: "Website Design & Development",
-            image: "/webdev/ayseiknawebhome.png",
+            image: "/webdev/ayseiknawebhome.webp",
             link: "/casestudy/aysegul-ikna"
         },
         {

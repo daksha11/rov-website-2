@@ -38,7 +38,7 @@ const BookACall = () => {
         <section
             className="relative bg-[#872e2a] text-center py-16 md:pt-24 pb-10  px-4 md:px-6 "
             style={{
-                backgroundImage: "url('/assets/background/new9.png')",
+                backgroundImage: "url('/assets/background/new9.webp')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
             }}

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import DkmContent from "./DkmContent";
+import { CreativeWorkSchema } from "@/components/CreativeWorkSchema";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 
 export const metadata: Metadata = {
     title: "DKM Corp - Case Study",
@@ -10,10 +12,33 @@ export const metadata: Metadata = {
         title: "DKM Corp Case Study | Range of View Studios",
         description: "Scaling global operations — 100% execution across four primary markets.",
         url: "https://rovstudios.com/casestudy/dkm",
-        images: [{ url: "/casestudy/dubaiskyline.jpg", width: 1200, height: 630, alt: "DKM Corp case study by ROV Studios" }],
+        images: [{ url: "/og/og-dkm.jpg", width: 1200, height: 630, alt: "DKM Corp case study by ROV Studios" }],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "DKM Corp Case Study | Range of View Studios",
+        description: "Scaling global operations — 100% execution across four primary markets.",
+        images: ["/og/og-dkm.jpg"],
     },
 };
 
 export default function DkmCaseStudyPage() {
-    return <DkmContent />;
+    return (
+        <>
+            <CreativeWorkSchema
+                name="DKM Corp Global Digital Infrastructure"
+                description="Global digital infrastructure built for DKM Corp, a private growth partner spanning India, Australia, the US, and Dubai. 100% execution across four primary markets."
+                dateCreated="2025-02-01"
+                url="/casestudy/dkm"
+                image="/og/og-dkm.jpg"
+                aboutName="DKM Corp"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "" },
+                { name: "Case Studies", url: "/casestudy" },
+                { name: "DKM Corp", url: "/casestudy/dkm" },
+            ]} />
+            <DkmContent />
+        </>
+    );
 }

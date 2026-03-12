@@ -27,7 +27,7 @@ export default function AgencyIntro() {
         >
           {/* Front Side (Heading) */}
           <div className="absolute inset-0 flex items-center justify-center [backface-visibility:hidden]">
-            <h1
+            <h2
               style={{ fontFamily: "anton" }}
               className="text-[#f5e7d1] text-5xl  md:text-7xl lg:text-[140px] uppercase leading-snug sm:leading-tight md:leading-tight text-center drop-shadow-xl px-4"
             >
@@ -40,7 +40,7 @@ export default function AgencyIntro() {
                   className="w-8 h-16 sm:w-10 sm:h-20 md:w-14 md:h-36 transform rotate-20 animate-bounce mt-2 sm:mt-5"
                 />
               </span>
-            </h1>
+            </h2>
           </div>
 
           {/* Back Side (Details) */}

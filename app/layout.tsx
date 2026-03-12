@@ -5,6 +5,7 @@ import "./globals.css";
 import dynamic from "next/dynamic";
 import Script from "next/script";
 import StyledComponentsRegistry from "@/lib/registry";
+import { OrganizationSchema } from "@/components/OrganizationSchema";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -94,6 +95,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <OrganizationSchema />
         {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-YCZYQKQYRQ"

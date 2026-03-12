@@ -212,29 +212,16 @@ function ComingSoonHero() {
               margin: 0,
               letterSpacing: '-1px',
               fontFamily: 'Norwige, sans-serif',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              textAlign: 'center',
             }}
           >
-            COMING
-          </h1>
-          <h1
-            style={{
-              fontSize: 'clamp(64px, 13vw, 140px)',
-              fontWeight: '900',
-              fontStyle: 'italic',
-              color: '#FFFFFF',
-              margin: 0,
-              letterSpacing: '-1px',
-              fontFamily: 'Norwige, sans-serif',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            SOON
-            <StyledCursor />
+            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              COMING
+            </span>
+            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              SOON
+              <StyledCursor />
+            </span>
           </h1>
         </div>
 

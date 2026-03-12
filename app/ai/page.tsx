@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import AIContent from "./AIContent";
+import { ServiceSchema } from "@/components/ServiceSchema";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 
 export const metadata: Metadata = {
     title: "AI Services",
@@ -12,8 +14,29 @@ export const metadata: Metadata = {
         url: "https://rovstudios.com/ai",
         images: [{ url: "/og/og-ai.jpg", width: 1200, height: 630, alt: "ROV Studios AI services" }],
     },
+    twitter: {
+        card: "summary_large_image",
+        title: "AI Services | Range of View Studios",
+        description: "Transform your business with intelligent automation.",
+        images: ["/og/og-ai.jpg"],
+    },
 };
 
 export default function AIPage() {
-    return <AIContent />;
+    return (
+        <>
+            <ServiceSchema
+                name="AI Services"
+                description="Transform your business with intelligent automation. Custom AI solutions for content, customer interactions, and operations."
+                serviceType="AI Services"
+                url="/ai"
+                image="/og/og-ai.jpg"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "" },
+                { name: "AI Services", url: "/ai" },
+            ]} />
+            <AIContent />
+        </>
+    );
 }

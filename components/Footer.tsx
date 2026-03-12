@@ -94,6 +94,7 @@ const Footer = () => {
             loop
             muted
             playsInline
+            aria-hidden="true"
             className="absolute right-0 -top-6 h-[80px] w-auto object-contain md:hidden"
           />
           <h3
@@ -198,6 +199,7 @@ const Footer = () => {
             loop
             muted
             playsInline
+            aria-hidden="true"
             className="hidden md:block md:h-[140px] w-auto object-contain md:ml-auto md:mr-36 md:-mt-4"
           />
         </div>
@@ -210,7 +212,7 @@ const Footer = () => {
           className={`absolute inset-0 transition-opacity duration-700 ease-in-out will-change-opacity transform-gpu ${isIndia ? 'opacity-0' : 'opacity-100'}`}
         >
           <Image
-            src="/atlskylinefooter.png"
+            src="/atlskylinefooter.webp"
             alt="Atlanta Skyline"
             fill
             priority

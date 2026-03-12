@@ -40,7 +40,7 @@ export default function Culture() {
         <div className="flex justify-end  md:-mr-[30px] md:-mb-[5%] mt-6 md:mt-0">
             <Image
             src="/assets/images/bridg.webp"
-            alt="Bridge"
+            alt="Atlanta bridge representing CTRL A creative culture"
             width={400}
             height={300}
             className="w-72 lg:w-[400px] h-auto object-contain"

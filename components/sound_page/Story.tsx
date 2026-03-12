@@ -32,6 +32,8 @@ export default function Story() {
 
   return (
   <div
+  role="img"
+  aria-label="ROV Studios atmospheric studio environment"
   className="relative py-16 md:py-20 overflow-hidden -mt-[20px] md:-mt-[27px] rounded-t-[30px] md:rounded-t-[50px] bg-cover bg-center"
   style={{ backgroundImage: "url('/assets/background/5.jpg')" }}
 >
@@ -71,7 +73,7 @@ export default function Story() {
       >
         <img
           src="/assets/images/mictwo.webp"
-          alt="Microphone"
+          alt="Professional studio microphone at ROV Studios"
           className="w-28 h-28 md:w-64 md:h-56  object-cover "
         />
       </motion.div>
@@ -91,7 +93,7 @@ export default function Story() {
             repeat: Infinity,
           }}
         >
-          <img src="/assets/images/arrowright2.webp" className="transform rotate-6"  alt="Arrow" />
+          <img src="/assets/images/arrowright2.webp" className="transform rotate-6"  alt="" />
         </motion.div>
       </div>
 

@@ -66,7 +66,7 @@ export default function WhatMakesUsDifferent() {
     <div className="relative w-full h-24 sm:h-28 md:h-32">
       <Image
         src="/assets/images/diffImg.webp"
-        alt="Logo"
+        alt="ROV Studios brand identity architecture"
         fill
         className="object-cover"
       />

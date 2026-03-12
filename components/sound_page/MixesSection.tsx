@@ -1,6 +1,6 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function MixesSection() {
   const [flipped, setFlipped] = useState(false);
@@ -26,12 +26,14 @@ export default function MixesSection() {
           ].map((src, i) => (
             <div
               key={i}
-              className="w-full aspect-square bg-[#b7ac9c] shadow-lg overflow-hidden rounded-sm"
+              className="relative w-full aspect-square bg-[#b7ac9c] shadow-lg overflow-hidden rounded-sm p-2"
             >
-              <img
+              <Image
                 src={src}
-                alt={`album-${i}`}
-                className="w-full h-full object-cover p-2"
+                alt={`ROV Studios music production portfolio ${i + 1}`}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 33vw, 16vw"
               />
             </div>
           ))}

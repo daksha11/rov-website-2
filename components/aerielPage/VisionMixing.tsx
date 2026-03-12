@@ -119,7 +119,7 @@ export default function MixingSection() {
       >
         <Image
           src="/assets/images/mictwo.webp"
-          alt="Mic"
+          alt="Professional studio microphone"
           width={200}
           height={300}
           className="object-contain w-full h-auto"

@@ -85,7 +85,7 @@ export default function HowWeWorkSection() {
       >
         <Image
           src="/assets/images/mic.png"
-          alt="Mic"
+          alt="Microphone illustration representing ROV Studios creative process"
           fill
           className="object-cover object-top"
         />
@@ -105,7 +105,7 @@ export default function HowWeWorkSection() {
       >
         <Image
           src="/assets/images/arrow.png"
-          alt="Arrow"
+          alt=""
           fill
           className="object-cover"
         />

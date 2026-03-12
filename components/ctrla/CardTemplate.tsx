@@ -12,7 +12,7 @@ export default function CardTemplate({ heading, para1, para2 }: CardTemplateProp
   return (
     <section
       className="relative pb-16 bg-[#36391f] min-h-screen text-white font-['Poppins'] bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: "url('/assets/background/new8.png')", }}
+      style={{ backgroundImage: "url('/assets/background/new8.webp')", }}
     >
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/30"></div>
@@ -33,7 +33,7 @@ export default function CardTemplate({ heading, para1, para2 }: CardTemplateProp
             <div className="bg-black overflow-hidden w-full max-w-md">
               <Image
                 src="/assets/images/dishes.webp"
-                alt="Food"
+                alt="CTRL A creative showcase"
                 width={300}
                 height={300}
                 className="object-cover w-full h-full p-3 transition-transform duration-500 ease-in-out transform 

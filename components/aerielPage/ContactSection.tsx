@@ -10,6 +10,8 @@ export default function ContactSection() {
                 loop
                 muted
                 playsInline
+                aria-label="Aerial drone footage background by ROV Studios"
+                title="ROV Studios Aerial Contact"
             >
                 <source src="/bg-video.mp4" type="video/mp4" />
                 Your browser does not support the video tag.

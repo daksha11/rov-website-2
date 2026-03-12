@@ -8,9 +8,9 @@ import { useGSAP } from "@gsap/react";
 gsap.registerPlugin(ScrollTrigger);
 
 const videos = [
-    { src: "/soundpage/starscollidemv.mp4", title: "STARS COLLIDE" },
-    { src: "/video/starboymv.mp4", title: "STARBOY" },
-    { src: "/ctrla/ykwiwvidweb.mp4", title: "YOU KNOW WHAT I WANT" },
+    { src: "/soundpage/starscollidemv.mp4", title: "STARS COLLIDE", poster: "/thumbnails/soundhero.webp" },
+    { src: "/video/starboymv.mp4", title: "STARBOY", poster: "/thumbnails/starboythumb.webp" },
+    { src: "/ctrla/ykwiwvidweb.mp4", title: "YOU KNOW WHAT I WANT", poster: "/thumbnails/ykwiw1.webp" },
 ];
 
 export default function VideoShowcaseSection() {
@@ -167,6 +167,9 @@ export default function VideoShowcaseSection() {
                                         loop
                                         muted
                                         playsInline
+                                        poster={video.poster}
+                                        aria-label={`${video.title} music video by ROV Studios`}
+                                        title={`${video.title} - ROV Studios`}
                                         className="max-w-full max-h-[70vh] rounded-3xl shadow-2xl"
                                         style={{ width: 'auto', height: 'auto' }}
                                     />

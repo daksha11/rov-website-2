@@ -12,6 +12,7 @@ interface VideoPair {
     title: string;
     colorGraded: string;
     logFootage: string;
+    poster?: string;
 }
 
 // Pairs array — swap in real before/after files when ready
@@ -21,12 +22,14 @@ const pairs: VideoPair[] = [
         title: "Boxing Edit — Color vs Log",
         colorGraded: "/videoprod/postprod/Boxingeditcolor.mp4",
         logFootage: "/videoprod/postprod/Boxingeditdlog.mp4",
+        poster: "/thumbnails/boxing1.webp",
     },
     {
         id: "pair-2",
         title: "Property Walkthrough",
         colorGraded: "/videoprod/Gladshotweb.mp4",
         logFootage: "/videoprod/Redstairs.mp4", // placeholder for raw log
+        poster: "/thumbnails/commercial1.webp",
     },
 ];
 
@@ -66,6 +69,9 @@ function VideoTogglePair({ pair }: { pair: VideoPair }) {
                     loop
                     muted
                     playsInline
+                    poster={pair.poster}
+                    aria-label={`${pair.title} - color graded version by ROV Studios`}
+                    title={`${pair.title} - Color Graded`}
                     className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ${mode === "color" ? "opacity-100 z-10" : "opacity-0 z-0"
                         }`}
                 />
@@ -75,6 +81,9 @@ function VideoTogglePair({ pair }: { pair: VideoPair }) {
                     loop
                     muted
                     playsInline
+                    poster={pair.poster}
+                    aria-label={`${pair.title} - raw log footage by ROV Studios`}
+                    title={`${pair.title} - Raw Log`}
                     className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ${mode === "log" ? "opacity-100 z-10" : "opacity-0 z-0"
                         }`}
                 />

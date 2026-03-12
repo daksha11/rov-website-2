@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { createGlobalStyle } from "styled-components";
 import CircularText from './CircularText';
 import Waves from "./Waves";
@@ -62,11 +63,11 @@ export default function DesignBreak() {
           </div>
 
           {/* Image that changes on hover */}
-          <div 
-            className="col-span-3 border-r border-white/20 w-full h-full flex items-center justify-center"
+          <div
+            className="col-span-3 border-r border-white/20 w-full h-full flex items-center justify-center relative"
             onMouseEnter={handleImageHover}
           >
-            <img src={currentImage} alt="Logo" className="w-full h-full object-cover" />
+            <Image src={currentImage} alt="ROV Studios brand identity" fill className="object-cover" sizes="25vw" />
           </div>
 
           {/* Background Image Container */}

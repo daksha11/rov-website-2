@@ -25,7 +25,7 @@ interface TeamMember {
 const teamMembers: TeamMember[] = [
     {
         id: 1,
-        image: "/teammembers/basutm2.png",
+        image: "/teammembers/basutm2.webp",
         category: "Creative",
         name: "Ayush",
         role: "FOUNDER & CREATIVE DIRECTOR",
@@ -36,7 +36,7 @@ const teamMembers: TeamMember[] = [
     },
     {
         id: 13,
-        image: "/teammembers/kavyatm.png",
+        image: "/teammembers/kavyatm.webp",
         category: "Creative",
         name: "Kavya",
         role: "DIRECTOR OF DESIGN — UI/UX & DESIGN SYSTEMS",
@@ -48,7 +48,7 @@ const teamMembers: TeamMember[] = [
     },
     {
         id: 3,
-        image: "/teammembers/vaishnavitm.png?v=3",
+        image: "/teammembers/vaishnavitm.webp",
         category: "Creative",
         name: "Vaishnavi",
         role: "CREATIVE DIRECTOR & VIDEO STRATEGIST",
@@ -59,7 +59,7 @@ const teamMembers: TeamMember[] = [
     },
     {
         id: 4,
-        image: "/teammembers/tanvitm.png",
+        image: "/teammembers/tanvitm.webp",
         category: "Creative",
         name: "Tanvi",
         role: "DESIGN & SOCIAL MEDIA STRATEGIST",
@@ -70,7 +70,7 @@ const teamMembers: TeamMember[] = [
     },
     {
         id: 14,
-        image: "/teammembers/jinwontm.png",
+        image: "/teammembers/jinwontm.webp",
         category: "Creative",
         name: "Jiwon",
         role: "UI/UX DESIGNER & ILLUSTRATOR",
@@ -81,7 +81,7 @@ const teamMembers: TeamMember[] = [
     },
     {
         id: 6,
-        image: "/teammembers/davidtm.png",
+        image: "/teammembers/davidtm.webp",
         category: "Creative",
         name: "David",
         role: "3D CREATIVE DIRECTOR",
@@ -92,7 +92,7 @@ const teamMembers: TeamMember[] = [
     },
     {
         id: 7,
-        image: "/teammembers/dakshatm.png",
+        image: "/teammembers/dakshatm.webp",
         category: "Tech",
         name: "Daksha",
         role: "HEAD OF DEVELOPMENT",
@@ -103,7 +103,7 @@ const teamMembers: TeamMember[] = [
     },
     {
         id: 8,
-        image: "/teammembers/jasnoortm.png",
+        image: "/teammembers/jasnoortm.webp",
         category: "Tech",
         name: "Jasnoor",
         role: "DEVELOPER & FRONTEND SPECIALIST",
@@ -114,7 +114,7 @@ const teamMembers: TeamMember[] = [
     },
     {
         id: 9,
-        image: "/teammembers/basutm2.png",
+        image: "/teammembers/basutm2.webp",
         category: "Tech",
         name: "Ayush",
         role: "FOUNDER & CREATIVE DIRECTOR",
@@ -124,7 +124,7 @@ const teamMembers: TeamMember[] = [
     },
     {
         id: 10,
-        image: "/teammembers/suchettm.png",
+        image: "/teammembers/suchettm.webp",
         category: "Tech",
         name: "Suchet",
         role: "CO-FOUNDER & SYSTEMS ARCHITECT",
@@ -134,7 +134,7 @@ const teamMembers: TeamMember[] = [
     },
     {
         id: 12,
-        image: "/teammembers/suchettm.png",
+        image: "/teammembers/suchettm.webp",
         category: "Systems",
         name: "Suchet",
         role: "CO-FOUNDER & SYSTEMS ARCHITECT",
@@ -144,7 +144,7 @@ const teamMembers: TeamMember[] = [
     },
     {
         id: 11,
-        image: "/teammembers/dakshatm.png",
+        image: "/teammembers/dakshatm.webp",
         category: "Systems",
         name: "Daksha",
         role: "HEAD OF DEVELOPMENT",
@@ -154,7 +154,7 @@ const teamMembers: TeamMember[] = [
     },
     {
         id: 2,
-        image: "/teammembers/jahnavitm.png",
+        image: "/teammembers/jahnavitm.webp",
         category: "Creative",
         name: "Jahnavi",
         role: "DESIGN ASSISTANT",
@@ -165,7 +165,7 @@ const teamMembers: TeamMember[] = [
     },
     {
         id: 5,
-        image: "/teammembers/chamantm.png",
+        image: "/teammembers/chamantm.webp",
         category: "Creative",
         name: "Chaman",
         role: "VIDEO EDITOR & MOTION DESIGNER",
@@ -291,7 +291,7 @@ const TeamSection: React.FC = () => {
                                 </button>
 
                                 <div className="absolute inset-0 z-0">
-                                    <Image src={expandedMember.image} alt="" fill sizes="100vw" className="object-cover opacity-20 blur-sm" loading="lazy" />
+                                    <Image src={expandedMember.image} alt={`${expandedMember.name} - ${expandedMember.role}`} fill sizes="100vw" className="object-cover opacity-20 blur-sm" loading="lazy" />
                                     <div className="absolute inset-0 bg-black/60" />
                                 </div>
 

@@ -4,6 +4,10 @@ import Footer from "@/components/Footer";
 import { NavigationDock } from "@/components/NavDoc";
 import SoundHero from "@/components/sound_page/SoundHero";
 import Gallery from "@/components/Gallery";
+import { VideoSchema } from "@/components/VideoSchema";
+import { ServiceSchema } from "@/components/ServiceSchema";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import { FAQPageSchema } from "@/components/FAQPageSchema";
 
 export const metadata: Metadata = {
     title: "Sound Engineering & Music Production",
@@ -54,6 +58,42 @@ const VideoShowcaseSection = dynamic(() => import("@/components/sound_page/Video
 export default function Page() {
     return (
         <>
+            <ServiceSchema
+                name="Sound Engineering & Music Production"
+                description="Professional sound engineering, mixing, and mastering services. From demo to final master in 48 hours."
+                serviceType="Sound Engineering"
+                url="/sound"
+                image="/og/og-sound.jpg"
+                offerDescription="Free demo snippets with no strings attached"
+            />
+            <BreadcrumbSchema items={[
+                { name: "Home", url: "" },
+                { name: "Sound Engineering", url: "/sound" },
+            ]} />
+            <FAQPageSchema faqs={[
+                { question: "How much do you charge for mixing and mastering?", answer: "We charge $50 per song for vocal mixing and mastering. That includes balancing your vocals, cleaning up the sound, adding creative effects where needed, and making sure it hits the right loudness for streaming. If you need a full trackout mixed (beat stems, instruments, vocals, everything), pricing is higher depending on the complexity and number of stems. Reach out with your project details and we'll give you a custom quote." },
+                { question: "How long does it take to get my song mixed and mastered?", answer: "Turnaround is 2 days from the time we receive your properly labeled stems and any notes. If you're recording with us in-house, your song is also mixed and mastered within 2 days after the session. If you're on a tight schedule for a rollout, let us know and we'll plan the timeline with you." },
+                { question: "What do you need from me to mix my track properly?", answer: "We need all your stems exported and labeled clearly before you send them over. That means things like \"Lead Vocals,\" \"Adlibs,\" \"Kick,\" \"808,\" \"Guitar,\" and so on, not \"Audio_01.\" Make sure everything is the same tempo and starts from the same bar so it lines up. You'll email the stems along with a rough mix or reference track and any notes about the vibe you're going for." },
+                { question: "Do you offer discounts for multiple songs or full projects?", answer: "Yes. If you're bringing a full project, EP, or a batch of singles, we offer discounted rates on mixing and mastering. The more songs we're working on together, the better we can lock in a package price. Tell us how many tracks you have, your timeline, and what extra services you might need, and we'll build a custom quote." },
+                { question: "What makes your mixes stand out on streaming platforms?", answer: "We mix competitively for streaming loudness, so your records hit hard without sounding crushed. Our work has landed on placements like SoundCloud Song of the Day, On The Radar, Apple Radio, and more, so we know what translates well on real playlists and radios. The goal is a mix that feels big in the car, on headphones, and on all major platforms." },
+                { question: "Can you help with cover art, rollouts, and visuals for my release?", answer: "Yes, this is where we really go full service. Beyond mixing and mastering, we can create cover art, website pages or microsites, merch designs, tracklists, and full rollout assets. If you need music videos or visual content to support the release, we can handle that too. We're set up to take you from recording to release, so you don't have to piece together a different person for every part of your rollout." },
+            ]} />
+            <VideoSchema
+                name="Stars Collide Music Video"
+                description="Stars Collide official music video, mixed and mastered by Range of View Studios sound engineering team."
+                thumbnailUrl="/thumbnails/soundhero.webp"
+                uploadDate="2025-01-10"
+                contentUrl="/soundpage/starscollidemv.mp4"
+                duration="PT3M30S"
+            />
+            <VideoSchema
+                name="Starboy Music Video"
+                description="Starboy music video produced and engineered by Range of View Studios."
+                thumbnailUrl="/thumbnails/starboythumb.webp"
+                uploadDate="2025-01-15"
+                contentUrl="/video/starboymv.mp4"
+                duration="PT3M"
+            />
             <SoundHero />
 
             {/* Music Player Section */}

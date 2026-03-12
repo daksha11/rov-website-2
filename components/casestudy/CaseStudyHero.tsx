@@ -39,7 +39,7 @@ export const CaseStudyHero: React.FC<CaseStudyHeroProps> = ({
             >
                 <Image
                     src={backgroundImage}
-                    alt=""
+                    alt={title}
                     fill
                     priority
                     sizes="100vw"

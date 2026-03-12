@@ -279,8 +279,8 @@ export default function Services() {
       link: "/web",
       previewImages: [
         '/heroassets/webfolder1.png',
-        '/heroassets/webfolder2.png',
-        '/heroassets/webfolder3.png'
+        '/heroassets/webfolder2.webp',
+        '/heroassets/webfolder3.webp'
       ],
     },
     {
@@ -298,9 +298,9 @@ export default function Services() {
       title: "Video Production",
       link: "/video-production",
       previewImages: [
-        '/heroassets/hydvideoframe.png',
+        '/heroassets/hydvideoframe.webp',
         '/heroassets/ponceshowframe.png',
-        '/heroassets/samxbasuvid.png'
+        '/heroassets/samxbasuvid.webp'
       ],
     },
     {

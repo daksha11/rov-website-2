@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { CreativeWorkSchema } from "@/components/CreativeWorkSchema";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { NavigationDock } from "@/components/NavDoc";
 import Footer from "@/components/Footer";
 import { CaseStudyHero } from "@/components/casestudy/CaseStudyHero";
@@ -19,7 +21,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Aysegul Ikna Case Study | Range of View Studios',
         description: 'Luxury sustainable fashion meets digital — 30% increase in monthly sales.',
-        images: [{ url: '/casestudy/iknacasestudy.png', width: 1200, height: 630, alt: 'Aysegul Ikna website by ROV Studios' }],
+        images: [{ url: '/og/og-ikna.jpg', width: 1200, height: 630, alt: 'Aysegul Ikna website by ROV Studios' }],
         type: 'article',
         url: 'https://rovstudios.com/casestudy/ikna',
     },
@@ -27,7 +29,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Aysegul Ikna Case Study | Range of View Studios',
         description: 'Luxury sustainable fashion meets digital — 30% increase in monthly sales.',
-        images: ['/casestudy/iknacasestudy.png'],
+        images: ['/og/og-ikna.jpg'],
     },
 };
 
@@ -119,6 +121,20 @@ export default function IknaCaseStudyPage() {
     ];
 
     return (
+        <>
+        <CreativeWorkSchema
+            name="Aysegul Ikna Website Design"
+            description="Luxury digital transformation for Aysegul Ikna, a sustainable fashion brand at Ponce City Market. 30% increase in monthly sales achieved."
+            dateCreated="2025-01-15"
+            url="/casestudy/ikna"
+            image="/og/og-ikna.jpg"
+            aboutName="Aysegul Ikna"
+        />
+        <BreadcrumbSchema items={[
+            { name: "Home", url: "" },
+            { name: "Case Studies", url: "/casestudy" },
+            { name: "Aysegul Ikna", url: "/casestudy/ikna" },
+        ]} />
         <main className="relative min-h-screen bg-black">
             <NavigationDock />
 
@@ -126,7 +142,7 @@ export default function IknaCaseStudyPage() {
             <CaseStudyHero
                 title={["ELEVATING", "IKNA'S", "DIGITAL PRESENCE"]}
                 titleColors={["#ffffff", "#1A4D2E", "#ffffff"]}
-                backgroundImage="/casestudy/iknacasestudy.png"
+                backgroundImage="/casestudy/iknacasestudy.webp"
                 titleFont="Hornset"
                 enableBlur={true}
                 liveLink="https://www.aysegulikna.com/"
@@ -210,5 +226,6 @@ export default function IknaCaseStudyPage() {
 
             <Footer />
         </main>
+        </>
     );
 }
