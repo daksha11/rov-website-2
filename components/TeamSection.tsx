@@ -185,6 +185,17 @@ const teamMembers: TeamMember[] = [
         specialties: "I lead artist development initiatives, guiding emerging talent through creative growth and strategic brand positioning in the music industry.",
         shadowColor: "140, 90, 110"
     },
+    {
+        id: 16,
+        image: "/teammembers/anishtm.png",
+        category: "Creative",
+        name: "Anish Goel",
+        role: "WEB & GRAPHIC DESIGNER",
+        skills: ["Web Design", "Graphic Design", "Visual Communication", "Brand Collateral Design", "Design Strategy"],
+        location: "Savannah, Georgia",
+        specialties: "Bridges creativity and clarity through thoughtful web and graphic design. Translates R.O.V.'s ideas into compelling visual communication, ensuring concepts are expressed with precision, polish, and purpose across digital and branded touchpoints.",
+        shadowColor: "150, 120, 90"
+    },
 ];
 
 const categories: Category[] = ["Creative", "Tech", "Systems"];
@@ -405,7 +416,8 @@ const TeamSection: React.FC = () => {
                                         <ImageCard src={teamMembers[9].image} alt="Suchet" name={teamMembers[9].name} role={teamMembers[9].role} onClick={() => handleMarqueeMemberClick(teamMembers[9])} />
                                         <button className="category-button" onClick={() => setActiveCategory("Creative")}>CREATIVE</button>
                                         <ImageCard src={teamMembers[6].image} alt="Daksha" name={teamMembers[6].name} role={teamMembers[6].role} onClick={() => handleMarqueeMemberClick(teamMembers[6])} />
-                                        <ImageCard src={teamMembers[1].image} alt="Jahnavi" name={teamMembers[1].name} role={teamMembers[1].role} onClick={() => handleMarqueeMemberClick(teamMembers[1])} />
+                                        <ImageCard src={teamMembers[1].image} alt="Kavya" name={teamMembers[1].name} role={teamMembers[1].role} onClick={() => handleMarqueeMemberClick(teamMembers[1])} />
+                                        <ImageCard src={teamMembers[14].image} alt="Anish" name={teamMembers[14].name} role={teamMembers[14].role} onClick={() => handleMarqueeMemberClick(teamMembers[14])} />
                                     </React.Fragment>
                                 ))}
                             </div>
