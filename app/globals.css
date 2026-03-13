@@ -305,6 +305,21 @@ body {
   }
 }
 
+@keyframes mockup-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .will-change-transform {
+    animation: none !important;
+  }
+}
+
 @keyframes float-x {
   0% {
     transform: translateX(0);

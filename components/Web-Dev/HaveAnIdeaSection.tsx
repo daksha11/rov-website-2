@@ -122,14 +122,15 @@ export default function HaveAnIdeaSection() {
                                     />
                                 </div>
                             ))}
-                            {/* Third placeholder - removed circle background */}
                             <div
-                                className="relative w-48 h-24 md:w-72 md:h-40 flex items-center justify-center border border-white/10 rounded-lg hover:scale-105 transition-transform duration-300"
+                                className="relative w-48 h-24 md:w-72 md:h-40 flex items-center justify-center hover:scale-105 transition-transform duration-300"
                             >
-                                {/* Placeholder for third company logo */}
-                                <div className="text-white/20 text-sm font-medium">
-                                    LOGO
-                                </div>
+                                <span
+                                    className="text-white text-2xl md:text-3xl font-bold tracking-[0.15em]"
+                                    style={{ fontFamily: "Roboto, sans-serif" }}
+                                >
+                                    DKM CORP
+                                </span>
                             </div>
                         </div>
                     </div>

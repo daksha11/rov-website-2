@@ -1,159 +1,342 @@
 "use client";
 
-import { useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
+
+const projects = [
+    {
+        id: 1,
+        title: "THE BANDO",
+        category: "Website Redesign & Immersive Branding",
+        tags: ["Design", "Development", "Branding", "UI/UX"],
+        year: "2025",
+        media: "/video/bando video website.mp4",
+        mediaType: "video" as const,
+        poster: "/casestudyheroimg.webp",
+        link: "/casestudy",
+    },
+    {
+        id: 2,
+        title: "AYSEGUL IKNA",
+        category: "Website Design & Development",
+        tags: ["Design", "UX", "Development"],
+        year: "2025",
+        media: "/video/Aysegul Ikna website.mp4",
+        mediaType: "video" as const,
+        poster: "/webdev/ayseiknawebhome.webp",
+        link: "/casestudy/aysegul-ikna",
+    },
+    {
+        id: 3,
+        title: "DKM CORP",
+        category: "Global Digital Infrastructure & Brand Identity",
+        tags: ["Design", "Development", "Branding"],
+        year: "2025",
+        media: "/casestudy/dubaiskyline.jpg",
+        mediaType: "image" as const,
+        link: "/casestudy/dkm",
+    },
+];
 
 export default function FeaturedWorksSection() {
-    const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [canScrollPrev, setCanScrollPrev] = useState(false);
+    const [canScrollNext, setCanScrollNext] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
-    const projects = [
-        {
-            id: 1,
-            title: "THE BANDO",
-            description: "Website Redesign & Immersive Branding",
-            image: "/casestudyheroimg.webp",
-            link: "/casestudy"
-        },
-        {
-            id: 2,
-            title: "Aysegul Ikna",
-            description: "Website Design & Development",
-            image: "/webdev/ayseiknawebhome.webp",
-            link: "/casestudy/aysegul-ikna"
-        },
-        {
-            id: 3,
-            title: "Project Three",
-            description: "Creative Design & Development",
-        },
-        {
-            id: 4,
-            title: "Project Four",
-            description: "Brand Identity & Web Design",
-        },
-    ];
+    const autoplayPlugin = useRef(
+        Autoplay({ delay: 4000, stopOnInteraction: false, stopOnMouseEnter: true })
+    );
 
-    return (
-        <section className="relative py-20 md:py-32 px-4 sm:px-6 lg:px-8 bg-black overflow-hidden">
-            {/* Section Title */}
-            <div className="max-w-7xl mx-auto mb-12 md:mb-16">
-                <h2
-                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white"
-                    style={{
-                        fontFamily: "Norwige, sans-serif",
-                        fontStyle: "italic",
-                    }}
-                >
-                    Featured Works
-                </h2>
-            </div>
+    const [emblaRef, emblaApi] = useEmblaCarousel(
+        {
+            loop: true,
+            duration: 40,
+            align: "start",
+        },
+        [autoplayPlugin.current]
+    );
 
-            {/* Scrollable Container */}
-            <div
-                ref={scrollContainerRef}
-                className="flex gap-6 md:gap-8 overflow-x-auto scrollbar-hide px-4 sm:px-6 lg:px-8 pb-4"
-                style={{
-                    scrollbarWidth: "none",
-                    msOverflowStyle: "none",
-                }}
-            >
-                {projects.map((project) => {
-                    const CardContent = (
-                        <div
-                            key={project.id}
-                            className="flex-shrink-0 group cursor-pointer"
-                            style={{
-                                width: "clamp(300px, 80vw, 420px)",
-                            }}
-                        >
-                            {/* Project Image */}
-                            <div
-                                className="w-full aspect-[4/3] bg-white rounded-2xl mb-6 overflow-hidden relative group-hover:scale-[1.02] transition-transform duration-300"
-                                style={{
-                                    background: project.image ? "transparent" : "linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%)",
-                                }}
-                            >
-                                {project.image && (
+    useEffect(() => {
+        const check = () => setIsMobile(window.innerWidth < 768);
+        check();
+        window.addEventListener("resize", check);
+        return () => window.removeEventListener("resize", check);
+    }, []);
+
+    const onSelect = useCallback(() => {
+        if (!emblaApi) return;
+        setActiveIndex(emblaApi.selectedScrollSnap());
+        setCanScrollPrev(emblaApi.canScrollPrev());
+        setCanScrollNext(emblaApi.canScrollNext());
+    }, [emblaApi]);
+
+    useEffect(() => {
+        if (!emblaApi) return;
+        onSelect();
+        emblaApi.on("select", onSelect);
+        emblaApi.on("reInit", onSelect);
+        return () => {
+            emblaApi.off("select", onSelect);
+            emblaApi.off("reInit", onSelect);
+        };
+    }, [emblaApi, onSelect]);
+
+    const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+    const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+
+    // Mobile: vertical stack fallback
+    if (isMobile) {
+        return (
+            <section id="featured-works" className="relative bg-black py-16 px-4">
+                <div className="mb-10">
+                    <p
+                        className="text-sm uppercase tracking-[0.2em] text-white/40 mb-3"
+                        style={{ fontFamily: "Roboto, sans-serif" }}
+                    >
+                        Selected Works
+                    </p>
+                    <h2
+                        className="text-4xl font-bold text-white"
+                        style={{ fontFamily: "Norwige, sans-serif", fontStyle: "italic" }}
+                    >
+                        Our Recent Projects
+                    </h2>
+                </div>
+                <div className="flex flex-col gap-6">
+                    {projects.map((project, index) => (
+                        <Link key={project.id} href={project.link}>
+                            <div className="group relative w-full h-[50vh] rounded-2xl overflow-hidden">
+                                {project.mediaType === "video" ? (
+                                    <video
+                                        src={project.media}
+                                        autoPlay
+                                        muted
+                                        loop
+                                        playsInline
+                                        poster={project.poster}
+                                        className="absolute inset-0 w-full h-full object-cover"
+                                    />
+                                ) : (
                                     <Image
-                                        src={project.image}
-                                        alt={project.title}
+                                        src={project.media}
+                                        alt={`${project.title} - ${project.category}`}
                                         fill
                                         className="object-cover"
-                                        sizes="(max-width: 768px) 80vw, 420px"
+                                        sizes="100vw"
                                     />
                                 )}
-
-                                {/* Arrow Icon in top-right */}
-                                <div className="absolute top-4 right-4 w-10 h-10 rounded-full border-2 border-black/20 bg-white/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                    <svg
-                                        width="16"
-                                        height="16"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path
-                                            d="M7 17L17 7M17 7H7M17 7V17"
-                                            stroke="#000"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                    </svg>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                                <div className="absolute inset-0 p-6 flex flex-col justify-end">
+                                    <div className="flex flex-wrap gap-2 mb-3">
+                                        {project.tags.map((tag) => (
+                                            <span
+                                                key={tag}
+                                                className="px-2.5 py-1 text-xs text-white/80 border border-white/20 rounded-full"
+                                                style={{ fontFamily: "Roboto, sans-serif" }}
+                                            >
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
+                                    <div className="flex items-end justify-between gap-3">
+                                        <div>
+                                            <span className="text-white/20 text-sm font-mono mb-1 block">
+                                                {String(index + 1).padStart(2, "0")}
+                                            </span>
+                                            <h3
+                                                className="text-3xl font-bold text-white mb-1"
+                                                style={{ fontFamily: "Roboto, sans-serif" }}
+                                            >
+                                                {project.title}
+                                            </h3>
+                                            <p
+                                                className="text-sm text-white/50"
+                                                style={{ fontFamily: "Norwige, sans-serif", fontStyle: "italic" }}
+                                            >
+                                                {project.category}
+                                            </p>
+                                        </div>
+                                        <div className="flex-shrink-0 w-10 h-10 rounded-full border border-white/30 flex items-center justify-center">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="stroke-white">
+                                                <path d="M7 17L17 7M17 7H7M17 7V17" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                            </svg>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-
-                            {/* Project Info */}
-                            <div className="text-left">
-                                <h3
-                                    className="text-2xl md:text-3xl font-bold text-white mb-2"
-                                    style={{
-                                        fontFamily: "Roboto, sans-serif",
-                                    }}
-                                >
-                                    {project.title}
-                                </h3>
-                                <p
-                                    className="text-base md:text-lg text-white/70"
-                                    style={{
-                                        fontFamily: "Norwige, sans-serif",
-                                        fontStyle: "italic",
-                                    }}
-                                >
-                                    {project.description}
-                                </p>
-                            </div>
-                        </div>
-                    );
-
-                    // Wrap with Link if project has a link
-                    return project.link ? (
-                        <Link key={project.id} href={project.link}>
-                            {CardContent}
                         </Link>
-                    ) : (
-                        CardContent
-                    );
-                })}
-            </div>
+                    ))}
+                </div>
+            </section>
+        );
+    }
 
-            {/* Scroll Indicator (optional) */}
-            <div className="flex justify-center mt-8 gap-2">
-                {projects.map((_, index) => (
-                    <div
-                        key={index}
-                        className="w-2 h-2 rounded-full bg-white/30"
-                    />
-                ))}
-            </div>
+    return (
+        <section id="featured-works" className="relative bg-black">
+            <div className="relative h-screen">
+                {/* Header */}
+                <div className="absolute top-0 left-0 right-0 z-20 px-8 lg:px-12 pt-8 pb-8 flex items-end justify-between">
+                    <div>
+                        <p
+                            className="text-sm uppercase tracking-[0.2em] text-white/40 mb-2"
+                            style={{ fontFamily: "Roboto, sans-serif" }}
+                        >
+                            Selected Works
+                        </p>
+                        <h2
+                            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white"
+                            style={{ fontFamily: "Norwige, sans-serif", fontStyle: "italic" }}
+                        >
+                            Our Recent Projects
+                        </h2>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        {/* Navigation Arrows */}
+                        <button
+                            onClick={scrollPrev}
+                            disabled={!canScrollPrev}
+                            className="w-11 h-11 md:w-12 md:h-12 rounded-full border-2 border-white bg-white/10 flex items-center justify-center transition-all duration-300 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed"
+                            aria-label="Previous project"
+                        >
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="stroke-white">
+                                <path d="M19 12H5M5 12L12 19M5 12L12 5" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </button>
+                        <button
+                            onClick={scrollNext}
+                            disabled={!canScrollNext}
+                            className="w-11 h-11 md:w-12 md:h-12 rounded-full border-2 border-white bg-white/10 flex items-center justify-center transition-all duration-300 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed"
+                            aria-label="Next project"
+                        >
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="stroke-white">
+                                <path d="M5 12H19M19 12L12 5M19 12L12 19" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </button>
 
-            {/* Custom CSS for hiding scrollbar */}
-            <style jsx>{`
-                .scrollbar-hide::-webkit-scrollbar {
-                    display: none;
-                }
-            `}</style>
+                        {/* Counter */}
+                        <span
+                            className="text-4xl md:text-5xl font-bold text-white transition-all duration-300"
+                            style={{ fontFamily: "Roboto, sans-serif" }}
+                        >
+                            {String(activeIndex + 1).padStart(2, "0")}
+                        </span>
+                        <span className="block h-[2px] w-8 bg-white/40" />
+                        <span
+                            className="text-lg text-white/40"
+                            style={{ fontFamily: "Roboto, sans-serif" }}
+                        >
+                            {String(projects.length).padStart(2, "0")}
+                        </span>
+                    </div>
+                </div>
+
+                {/* Embla Carousel */}
+                <div
+                    className="absolute inset-0 top-32 lg:top-36 bottom-6 left-6 right-6 lg:left-10 lg:right-10 overflow-hidden"
+                    ref={emblaRef}
+                >
+                    <div className="flex h-full gap-6">
+                        {projects.map((project) => (
+                            <div
+                                key={project.id}
+                                className="relative flex-[0_0_100%] min-w-0 h-full"
+                            >
+                                <Link href={project.link} className="group block h-full">
+                                    <div className="relative h-full w-full rounded-2xl md:rounded-3xl overflow-hidden">
+                                        {/* Background Media */}
+                                        {project.mediaType === "video" ? (
+                                            <video
+                                                src={project.media}
+                                                autoPlay
+                                                muted
+                                                loop
+                                                playsInline
+                                                preload="metadata"
+                                                poster={project.poster}
+                                                aria-label={`${project.title} - ${project.category} showcase`}
+                                                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                            />
+                                        ) : (
+                                            <Image
+                                                src={project.media}
+                                                alt={`${project.title} - ${project.category}`}
+                                                fill
+                                                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                                sizes="100vw"
+                                            />
+                                        )}
+
+                                        {/* Gradient Overlay */}
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-black/10" />
+
+                                        {/* Card Content */}
+                                        <div className="absolute inset-x-0 bottom-0 p-8 md:p-10 lg:p-12">
+                                            {/* Tags */}
+                                            <div className="flex flex-wrap gap-2 mb-4">
+                                                {project.tags.map((tag) => (
+                                                    <span
+                                                        key={tag}
+                                                        className="px-3 py-1 text-xs md:text-sm text-white/80 border border-white/20 rounded-full backdrop-blur-sm"
+                                                        style={{ fontFamily: "Roboto, sans-serif" }}
+                                                    >
+                                                        {tag}
+                                                    </span>
+                                                ))}
+                                                <span
+                                                    className="px-3 py-1 text-xs md:text-sm text-black bg-white rounded-full"
+                                                    style={{ fontFamily: "Roboto, sans-serif" }}
+                                                >
+                                                    {project.year}
+                                                </span>
+                                            </div>
+
+                                            {/* Title & Arrow Row */}
+                                            <div className="flex items-end justify-between gap-4">
+                                                <div>
+                                                    <h3
+                                                        className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-2"
+                                                        style={{ fontFamily: "Roboto, sans-serif" }}
+                                                    >
+                                                        {project.title}
+                                                    </h3>
+                                                    <p
+                                                        className="text-base md:text-lg lg:text-xl text-white/60"
+                                                        style={{ fontFamily: "Norwige, sans-serif", fontStyle: "italic" }}
+                                                    >
+                                                        {project.category}
+                                                    </p>
+                                                </div>
+
+                                                {/* Arrow CTA */}
+                                                <div className="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-full border border-white/30 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:border-white">
+                                                    <svg
+                                                        width="20"
+                                                        height="20"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        className="transition-colors duration-300 group-hover:stroke-black stroke-white"
+                                                    >
+                                                        <path
+                                                            d="M7 17L17 7M17 7H7M17 7V17"
+                                                            strokeWidth="2"
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                        />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Link>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
         </section>
     );
 }
