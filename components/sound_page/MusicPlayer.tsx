@@ -47,7 +47,7 @@ const songData = [
         album: "Single",
         beforeSrc: "/audio/beforemp3/ykwiwbefore.mp3",
         afterSrc: "/audio/aftermp3/ykwiwafter.mp3",
-        cover: "/audio/covers/ykwiwcover.png",
+        cover: "/audio/covers/ykwiwcover.webp",
         spotifyUrl: "https://open.spotify.com/track/5lsskTv7eUZYIbLTEtq1cz?si=4b9532cacbf24733"
     },
     {
@@ -279,7 +279,7 @@ export default function MusicPlayer() {
                     <div
                         className="absolute inset-0 bg-cover bg-center blur-sm scale-110" // Added blur-sm and scale-110 to avoid blurred edges
                         style={{
-                            backgroundImage: "url('/soundpage/pedromvimg.png')",
+                            backgroundImage: "url('/soundpage/pedromvimg.webp')",
                         }}
                     />
                     {/* Calm dark overlay, not blurred */}
@@ -412,7 +412,7 @@ export default function MusicPlayer() {
                                         className="flex items-center gap-4 group/info cursor-pointer w-full"
                                     >
                                         <div className="w-14 h-14 rounded-xl overflow-hidden shadow-lg relative flex-shrink-0 group-hover/info:shadow-[#EA9A61]/20 transition-all border border-white/5">
-                                            <Image src={songData[currentIndex].cover} fill className="object-cover" alt="art" sizes="56px" priority />
+                                            <Image src={songData[currentIndex].cover} fill className="object-cover" alt={`${songData[currentIndex].title} by ${songData[currentIndex].artist}`} sizes="56px" priority />
                                         </div>
                                         <div className="flex flex-col min-w-0 justify-center">
                                             <h3 className="text-white text-base font-bold tracking-wide truncate group-hover/info:text-[#EA9A61] transition-colors">

@@ -14,6 +14,7 @@ interface SubCategory {
     heading: string;
     copy: string;
     videos: string[];
+    poster?: string;
 }
 
 interface Category {
@@ -38,6 +39,7 @@ const categories: Category[] = [
                     "/videoprod/singlefamhomes/Housereveal.mp4",
                     "/videoprod/singlefamhomes/Housetop2.mp4",
                 ],
+                poster: "/thumbnails/sfm1.webp",
             },
             {
                 id: "commercial",
@@ -51,6 +53,7 @@ const categories: Category[] = [
                     "/videoprod/commercialbuildings/Poolroof1.mp4",
                     "/videoprod/commercialbuildings/Poolroof2.mp4",
                 ],
+                poster: "/thumbnails/commercial1.webp",
             },
             {
                 id: "neighborhood",
@@ -64,6 +67,7 @@ const categories: Category[] = [
                     "/videoprod/amentity_neighborhood/Picleball.mp4",
                     "/videoprod/amentity_neighborhood/Tenniscourt.mp4",
                 ],
+                poster: "/thumbnails/neighborhood1.webp",
             },
         ],
     },
@@ -81,6 +85,7 @@ const categories: Category[] = [
                     "/videoprod/eventsweb/Goatturnikna.mp4",
                     "/videoprod/eventsweb/Iknacrazyshot.mp4",
                 ],
+                poster: "/thumbnails/fashion1.webp",
             },
             {
                 id: "sports",
@@ -93,6 +98,7 @@ const categories: Category[] = [
                     "/videoprod/eventsweb/Boxing2.mp4",
                     "/videoprod/eventsweb/Boxing3.mp4",
                 ],
+                poster: "/thumbnails/boxing1.webp",
             },
             {
                 id: "outdoor",
@@ -104,6 +110,7 @@ const categories: Category[] = [
                     "/videoprod/eventsweb/Parkevent.mp4",
                     "/videoprod/eventsweb/Poncerooftop.mp4",
                 ],
+                poster: "/thumbnails/event1.webp",
             },
         ],
     },
@@ -253,7 +260,10 @@ export default function VideoPortfolioSection() {
                         muted
                         playsInline
                         preload="auto"
+                        poster={currentSub.poster}
                         onEnded={handleVideoEnded}
+                        aria-label={`${currentSub.heading} - ${currentSub.label} video by ROV Studios`}
+                        title={`${currentSub.label} - ROV Studios`}
                         className={`w-full h-full object-contain transition-opacity duration-300 ${videoReady ? "opacity-100" : "opacity-0"}`}
                     />
 

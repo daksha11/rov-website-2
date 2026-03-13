@@ -279,7 +279,7 @@ const caseStudies = [
     id: 'ikna',
     title: 'Aysegul Ikna',
     description: 'Luxury that justifies the price tag—we built a sophisticated digital home for a sustainable fashion brand at Ponce City Market, driving 30% sales growth through elevated design and seamless e-commerce.',
-    image: '/casestudy/iknacasestudy.png',
+    image: '/casestudy/iknacasestudy.webp',
     href: '/casestudy/ikna'
   },
   {

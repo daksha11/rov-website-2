@@ -15,7 +15,9 @@ const SoundHero: React.FC = () => {
                     loop
                     playsInline
                     preload="metadata"
-                    poster="/heroassets/samxbasuvid.png"
+                    poster="/thumbnails/soundhero.webp"
+                    aria-label="Stars Collide music video by ROV Studios"
+                    title="Stars Collide - ROV Studios Sound Engineering"
                 >
                     <source src="/soundpage/starscollidemv.mp4" type="video/mp4" />
                 </video>
@@ -27,7 +29,7 @@ const SoundHero: React.FC = () => {
                 <div className="relative z-20 px-8 md:px-16 w-full">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-start gap-12 md:gap-6 pb-12 pt-2 md:pt-4">
                         {/* Left side - Tagline */}
-                        <div className="flex flex-col">
+                        <h1 className="flex flex-col">
                             <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
                                 <span className="text-[#FFF4E3] text-3xl md:text-5xl lg:text-6xl tracking-wide leading-none" style={{ fontFamily: 'NorwigeHeroItalic, sans-serif', fontWeight: 'normal' }}>
                                     RAW.
@@ -52,7 +54,7 @@ const SoundHero: React.FC = () => {
                             <span className="text-[#FFF4E3] text-3xl md:text-5xl lg:text-6xl tracking-wide mt-2" style={{ fontFamily: 'NorwigeHeroItalic, sans-serif', fontWeight: 'normal' }}>
                                 RELEASED.
                             </span>
-                        </div>
+                        </h1>
 
                         {/* Right side - Description */}
                         <div className="max-w-sm pt-2">

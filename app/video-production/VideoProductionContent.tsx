@@ -84,6 +84,9 @@ export default function VideoProductionContent() {
                     loop
                     muted
                     playsInline
+                    poster="/thumbnails/videohero1.webp"
+                    aria-label="ROV Studios cinematic video production showreel"
+                    title="Video Production Showreel - ROV Studios"
                     className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${showSlotA ? "opacity-100 z-[1]" : "opacity-0 z-0"}`}
                 />
                 <video
@@ -91,6 +94,9 @@ export default function VideoProductionContent() {
                     loop
                     muted
                     playsInline
+                    poster="/thumbnails/videohero2.webp"
+                    aria-label="ROV Studios cinematic video production showreel"
+                    title="Video Production Showreel - ROV Studios"
                     className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${!showSlotA ? "opacity-100 z-[1]" : "opacity-0 z-0"}`}
                 />
 

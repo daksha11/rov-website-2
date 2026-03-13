@@ -7,9 +7,11 @@ const HeroVideo: React.FC = () => {
         <section className="w-full h-[90vh] relative bg-black flex items-center justify-center p-6 md:p-12">
             {/* Background Image Container */}
             <div
+                role="img"
+                aria-label="ROV Studios sound engineering hero"
                 className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl"
                 style={{
-                    backgroundImage: `url('/heroassets/samxbasuvid.png')`,
+                    backgroundImage: `url('/heroassets/samxbasuvid.webp')`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat"

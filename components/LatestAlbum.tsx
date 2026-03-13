@@ -68,7 +68,7 @@ export default function LatestAlbum() {
         <motion.div className="flex-1" variants={sectionVariants}>
           <Image
             src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?ixlib=rb-4.0.3"
-            alt="Album Cover"
+            alt="Echoes of Tomorrow album cover by ROV Studios"
             width={500}
             height={500}
             className="w-full"

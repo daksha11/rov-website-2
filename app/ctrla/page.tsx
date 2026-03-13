@@ -12,6 +12,12 @@ export const metadata: Metadata = {
         url: "https://rovstudios.com/ctrla",
         images: [{ url: "/og/og-ctrla.jpg", width: 1200, height: 630, alt: "CTRL A by Range of View Studios" }],
     },
+    twitter: {
+        card: "summary_large_image",
+        title: "CTRL A - Coming Soon | Range of View Studios",
+        description: "A creative toolkit for music, web development, and design. Coming soon.",
+        images: ["/og/og-ctrla.jpg"],
+    },
 };
 
 export default function CtrlAPage() {

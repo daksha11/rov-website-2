@@ -121,6 +121,7 @@ export default function HomeContent() {
     <>
       <GlobalStyle />
       <main className="min-h-screen bg-black text-white overflow-x-hidden">
+        <h1 className="sr-only">Range of View Studios — Creative Production Agency in Atlanta</h1>
 
         <section id="hero-with-animation" style={{ margin: 0, padding: 0 }}>
           <HeroWithAnimation />

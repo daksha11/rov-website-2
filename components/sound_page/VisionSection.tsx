@@ -5,6 +5,8 @@ import { TypeAnimation } from "react-type-animation";
 export default function VisionSection() {
   return (
     <div
+      role="img"
+      aria-label="ROV Studios vision for sound engineering"
       className="relative w-full bg-cover  bg-center pb-10 pt-6 rounded-t-[30px] md:rounded-t-[50px] -mt-[20px] md:-mt-[27px]"
       style={{
         backgroundImage: "url('/assets/background/2.jpg')",
@@ -54,7 +56,7 @@ export default function VisionSection() {
           {/* Arrow Image */}
           <img
             src="/assets/images/aboutdownarrow.png"
-            alt="arrow"
+            alt=""
             className="w-20 sm:w-28 md:w-40 lg:w-58  transform rotate-290 animate-[float-x_3s_ease-in-out_infinite] md:block hidden"
           />
 
@@ -63,7 +65,7 @@ export default function VisionSection() {
             <img
               src="/assets/images/commentbg.webp"
               className="w-[260px] sm:w-[320px] md:w-[380px] lg:w-[400px] h-auto object-contain"
-              alt="speech bubble"
+              alt="Sound engineering customer testimonial"
             />
             <p
               style={{ fontFamily: "pagaki" }}
@@ -77,7 +79,7 @@ export default function VisionSection() {
           <div className=" justify-end w-full md:flex hidden">
             <img
               src="/assets/images/abouthand.png"
-              alt="hand"
+              alt=""
               className="w-28 sm:w-36 md:w-48  lg:w-96 mt-4 md:mt-6 -mr-8 animate-[float-x_3s_ease-in-out_infinite]"
             />
           </div>

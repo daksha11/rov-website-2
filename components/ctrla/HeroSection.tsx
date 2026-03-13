@@ -17,8 +17,9 @@ export default function HeroSecton() {
           <div className="relative w-[180px] h-[160px] lg:w-[560px] lg:h-[500px] md:mb-16 mb-8 ">
             <Image
               src="/assets/images/ctrla.webp"
-              alt="Large"
+              alt="CTRL A creative toolkit branding"
               fill
+              priority
               className="object-cover h-full w-full transform rotate-10"
             />
           </div>
@@ -27,8 +28,9 @@ export default function HeroSecton() {
           <div className="relative md:w-18 md:h-48 h-28 w-20 md:mr-13 transform rotate-5 md:mt-24 mb-2">
             <Image
               src="/assets/images/ctrlamark.png"
-              alt="Small"
+              alt="CTRL A logo mark"
               fill
+              priority
               className="md:object-cover object-contain rounded-lg shadow-xl"
             />
           </div>

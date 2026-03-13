@@ -14,6 +14,8 @@ const WhoWeFlyWith = () => {
             loop
             muted
             playsInline
+            aria-label="Aerial drone footage showcasing real estate and event videography"
+            title="ROV Studios Drone Videography"
           >
             <source src="/video/2.mp4" type="video/mp4" />
             Your browser does not support the video tag.

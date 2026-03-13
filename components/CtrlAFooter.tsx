@@ -99,6 +99,7 @@ const CtrlAFooter = () => {
                                     href="https://discord.gg/GfzXdmu"
                                     target="_blank"
                                     rel="noopener noreferrer"
+                                    aria-label="Join ROV Studios on Discord"
                                     className="w-10 h-10 rounded-full bg-[#4A4A4A] flex items-center justify-center hover:bg-[#5A5A5A] transition-colors"
                                 >
                                     <svg
@@ -114,6 +115,7 @@ const CtrlAFooter = () => {
                                     href="https://www.instagram.com/rangeofviewstudios/"
                                     target="_blank"
                                     rel="noopener noreferrer"
+                                    aria-label="Follow ROV Studios on Instagram"
                                     className="w-10 h-10 rounded-full bg-[#4A4A4A] flex items-center justify-center hover:bg-[#5A5A5A] transition-colors"
                                 >
                                     <Instagram size={20} />
@@ -122,6 +124,7 @@ const CtrlAFooter = () => {
                                     href="https://www.reddit.com/user/rangeofviewstudios/"
                                     target="_blank"
                                     rel="noopener noreferrer"
+                                    aria-label="Follow ROV Studios on Reddit"
                                     className="w-10 h-10 rounded-full bg-[#4A4A4A] flex items-center justify-center hover:bg-[#5A5A5A] transition-colors"
                                 >
                                     <svg

@@ -85,12 +85,15 @@ const ShowcaseSection = () => {
                 autoPlay
                 muted
                 loop
+                playsInline
+                aria-label={`${p.title} - ${p.category} showcase video`}
+                title={`${p.title} - ROV Studios`}
                 className="absolute inset-0 h-full w-full object-cover"
               />
             ) : (
               <img
                 src={p.img}
-                alt="bg-img"
+                alt={`${p.title} - ${p.category}`}
                 className="absolute inset-0 h-full w-full object-cover"
               />
             )}

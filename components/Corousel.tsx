@@ -29,7 +29,7 @@ const CarouselItem: React.FC<CarouselItemProps> = ({ imageUrl }) => {
     >
       <img
         src={imageUrl}
-        alt="Carousel item"
+        alt="ROV Studios album artwork"
         style={{
           maxWidth: "100%",
           maxHeight: "100%",

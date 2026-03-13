@@ -4,7 +4,11 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  images: { unoptimized: true },
+  images: {
+    formats: ["image/avif", "image/webp"],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+  },
   compiler: {
     styledComponents: true,
   },
@@ -28,6 +32,11 @@ const nextConfig = {
       {
         source: '/services/ai-automation',
         destination: '/ai-automation',
+        permanent: true,
+      },
+      {
+        source: '/casestudy/aysegul-ikna',
+        destination: '/casestudy/ikna',
         permanent: true,
       },
     ];

@@ -21,7 +21,7 @@ export default function HustleSection() {
             >
               <Image
                 src="/assets/images/hand.png"
-                alt="Hand"
+                alt="Creative hand illustration for web development"
                 fill
                 className="object-cover h-full w-full"
                 priority
@@ -32,7 +32,7 @@ export default function HustleSection() {
           <div className=" relative w-48 lg:w-[300px] h-32 md:h-[255px] ml-0 md:ml-10 lg:ml-62 animate-[float_3s_ease-in-out_infinite]">
             <Image
               src={"/assets/images/micnew.webp"}
-              alt="Mic"
+              alt="Microphone illustration representing creative production"
               fill
               className="object-contain h-[120px] w-[200px] "
               priority

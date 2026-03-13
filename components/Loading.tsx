@@ -70,6 +70,8 @@ export default function Loading({ onLoadingComplete }: LoadingProps) {
         playsInline
         onEnded={handleVideoEnd}
         onError={handleVideoError}
+        aria-label="Range of View Studios loading animation"
+        title="ROV Studios"
       >
         <source src="/loading.mp4" type="video/mp4" />
       </video>
