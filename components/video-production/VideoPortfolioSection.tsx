@@ -5,6 +5,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 const FONT = "Norwige, sans-serif";
 const ACCENT = "#8B6F47";
 const ACCENT_GRADIENT = "linear-gradient(135deg, #8B6F47 0%, #6B5437 100%)";
+const BROWN_GRADIENT = "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)";
 const INACTIVE_BG = "rgba(59, 33, 20, 0.30)";
 
 interface SubCategory {
@@ -174,10 +175,10 @@ export default function VideoPortfolioSection() {
     }, [currentVideo]);
 
     return (
-        <section className="relative bg-black text-white py-24 px-6 md:px-12 lg:px-16">
+        <section className="relative bg-black text-[#FFF4E3] py-24 px-6 md:px-12 lg:px-16">
             {/* Section Label */}
             <p
-                className="text-xs uppercase tracking-[0.3em] text-white/40 mb-6"
+                className="text-xs uppercase tracking-[0.3em] text-[#FFF4E3]/40 mb-6"
                 style={{ fontFamily: FONT }}
             >
                 Our Portfolio
@@ -192,7 +193,7 @@ export default function VideoPortfolioSection() {
                         onClick={() => handleCatChange(cat.id)}
                         className={`flex-1 relative overflow-hidden rounded-[2.5rem] p-6 md:p-10 lg:p-14 text-left transition-all duration-700 isolate group ${activeCat === cat.id
                             ? "ring-1 ring-[#8B6F47]/50 shadow-[0_0_50px_rgba(139,111,71,0.15)] bg-black"
-                            : "bg-white/[0.02] hover:bg-white/[0.04]"
+                            : "bg-[#FFF4E3]/[0.02] hover:bg-[#FFF4E3]/[0.04]"
                             }`}
                     >
                         {/* Active background glow */}
@@ -206,7 +207,7 @@ export default function VideoPortfolioSection() {
                                 style={{
                                     fontFamily: FONT,
                                     fontStyle: 'italic',
-                                    color: activeCat === cat.id ? "#fff" : "rgba(255,255,255,0.4)"
+                                    color: activeCat === cat.id ? "#FFF4E3" : "rgba(255,244,227,0.4)"
                                 }}
                             >
                                 {cat.label}
@@ -214,7 +215,7 @@ export default function VideoPortfolioSection() {
 
                             <div className="flex items-end justify-between">
                                 <p
-                                    className={`text-sm md:text-lg max-w-[280px] leading-relaxed transition-all duration-500 ${activeCat === cat.id ? "text-white/70 opacity-100 translate-y-0" : "text-white/0 opacity-0 translate-y-4"
+                                    className={`text-sm md:text-lg max-w-[280px] leading-relaxed transition-all duration-500 ${activeCat === cat.id ? "text-[#FFF4E3]/70 opacity-100 translate-y-0" : "text-[#FFF4E3]/0 opacity-0 translate-y-4"
                                         }`}
                                     style={{ fontFamily: FONT }}
                                 >
@@ -225,9 +226,13 @@ export default function VideoPortfolioSection() {
 
                                 {/* Arrow icon indicator */}
                                 <div className={`w-12 h-12 rounded-full border flex items-center justify-center transition-all duration-500 ${activeCat === cat.id
-                                    ? "border-[#8B6F47] bg-[#8B6F47] text-white rotate-0"
-                                    : "border-white/10 text-white/30 -rotate-45 group-hover:border-white/30"
-                                    }`}>
+                                    ? "border-[#EA9A61] text-[#FFF4E3] rotate-0"
+                                    : "border-[#FFF4E3]/10 text-[#FFF4E3]/30 -rotate-45 group-hover:border-[#FFF4E3]/30"
+                                    }`}
+                                    style={{
+                                        background: activeCat === cat.id ? BROWN_GRADIENT : "transparent",
+                                    }}
+                                >
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                         <path d="M5 12h14"></path>
                                         <path d="m12 5 7 7-7 7"></path>
@@ -242,7 +247,7 @@ export default function VideoPortfolioSection() {
             {/* Main Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-10 lg:gap-16 items-start">
                 {/* Left — Video Player */}
-                <div className="relative rounded-3xl overflow-hidden bg-black/40 border border-white/10 aspect-video group">
+                <div className="relative rounded-3xl overflow-hidden bg-black/40 border border-[#FFF4E3]/10 aspect-video group">
                     <video
                         ref={videoRef}
                         muted
@@ -257,7 +262,8 @@ export default function VideoPortfolioSection() {
                         <div className="absolute inset-0 flex items-center justify-between p-4 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                             <button
                                 onClick={handlePrevVideo}
-                                className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white hover:bg-[#8B6F47] transition-all duration-300 border border-white/10"
+                                className="w-10 h-10 rounded-full flex items-center justify-center text-[#FFF4E3] transition-all duration-300"
+                                style={{ background: BROWN_GRADIENT }}
                                 aria-label="Previous video"
                             >
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -266,7 +272,8 @@ export default function VideoPortfolioSection() {
                             </button>
                             <button
                                 onClick={handleNextVideo}
-                                className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white hover:bg-[#8B6F47] transition-all duration-300 border border-white/10"
+                                className="w-10 h-10 rounded-full flex items-center justify-center text-[#FFF4E3] transition-all duration-300"
+                                style={{ background: BROWN_GRADIENT }}
                                 aria-label="Next video"
                             >
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -278,7 +285,7 @@ export default function VideoPortfolioSection() {
 
                     {/* Category badge */}
                     <div
-                        className="absolute top-4 left-4 px-3 py-1 text-[11px] uppercase tracking-widest rounded-full border border-white/20 backdrop-blur-sm bg-black/40 text-white/70"
+                        className="absolute top-4 left-4 px-3 py-1 text-[11px] uppercase tracking-widest rounded-full border border-[#FFF4E3]/20 backdrop-blur-sm bg-black/40 text-[#FFF4E3]/70"
                         style={{ fontFamily: FONT }}
                     >
                         {activeCat === "real-estate" ? "Real Estate" : "Events"}
@@ -293,8 +300,8 @@ export default function VideoPortfolioSection() {
                                     aria-label={`Go to clip ${i + 1}`}
                                     aria-current={i === videoIndex % currentSub.videos.length ? "true" : undefined}
                                     className={`w-2 h-2 rounded-full transition-all duration-300 ${i === videoIndex % currentSub.videos.length
-                                        ? "bg-white scale-125"
-                                        : "bg-white/30"
+                                        ? "bg-[#FFF4E3] scale-125"
+                                        : "bg-[#FFF4E3]/30"
                                         }`}
                                 />
                             ))}
@@ -315,11 +322,11 @@ export default function VideoPortfolioSection() {
                                     fontFamily: FONT,
                                     borderRadius: "40px",
                                     background:
-                                        activeSubCat === sub.id ? ACCENT : INACTIVE_BG,
+                                        activeSubCat === sub.id ? BROWN_GRADIENT : INACTIVE_BG,
                                     color:
                                         activeSubCat === sub.id
-                                            ? "#fff"
-                                            : "rgba(255,255,255,0.55)",
+                                            ? "#FFF4E3"
+                                            : "rgba(255,244,227,0.55)",
                                 }}
                             >
                                 {sub.label}
@@ -337,7 +344,7 @@ export default function VideoPortfolioSection() {
 
                     {/* Copy */}
                     <p
-                        className="text-white/60 text-base md:text-lg leading-relaxed max-w-lg"
+                        className="text-[#FFF4E3]/60 text-base md:text-lg leading-relaxed max-w-lg"
                         style={{ fontFamily: FONT, fontStyle: "italic" }}
                     >
                         {currentSub.copy}

@@ -353,7 +353,7 @@ export default function OurApproachSection() {
                 backgroundColor: activeCardIndex === index ? "#1E1A17" : "#111111",
                 border: activeCardIndex === index
                   ? "1px solid rgba(234, 154, 97, 0.3)"
-                  : "1px solid rgba(255, 255, 255, 0.08)",
+                  : "1px solid rgba(255, 244, 227, 0.08)",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
@@ -402,7 +402,10 @@ export default function OurApproachSection() {
                   <div className="absolute inset-0 bg-[#EA9A61] opacity-40 blur-xl rounded-full animate-pulse" />
 
                   {/* Main button */}
-                  <div className="relative flex items-center space-x-2 sm:space-x-3 md:space-x-4 px-4 py-3 sm:px-6 sm:py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 rounded-full border-2 border-[#EA9A61] bg-black/80 backdrop-blur-md hover:bg-[#EA9A61]/20 transition-all duration-300 overflow-hidden shadow-[0_0_30px_rgba(234,154,97,0.3)]">
+                  <div
+                    className="relative flex items-center space-x-2 sm:space-x-3 md:space-x-4 px-4 py-3 sm:px-6 sm:py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 rounded-full border-2 border-[#EA9A61]/40 backdrop-blur-md hover:border-[#EA9A61] transition-all duration-300 overflow-hidden shadow-[0_0_30px_rgba(234,154,97,0.3)]"
+                    style={{ background: "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)" }}
+                  >
                     {/* Shine animation overlay */}
                     <div className="absolute inset-0 w-full h-full">
                       <div className="absolute inset-0 -translate-x-full animate-shine bg-gradient-to-r from-transparent via-white/30 to-transparent" />
@@ -410,7 +413,7 @@ export default function OurApproachSection() {
 
                     {/* Icon */}
                     <svg
-                      className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-[#EA9A61] group-hover:scale-110 transition-transform"
+                      className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-[#FFF4E3] group-hover:scale-110 transition-transform"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -420,14 +423,14 @@ export default function OurApproachSection() {
                     </svg>
 
                     {/* Text */}
-                    <span className="relative text-[#EA9A61] font-mono text-xs sm:text-sm md:text-base tracking-[0.15em] sm:tracking-[0.2em] uppercase font-bold group-hover:text-[#FFF4E3] transition-colors whitespace-nowrap">
+                    <span className="relative text-[#FFF4E3] font-mono text-xs sm:text-sm md:text-base tracking-[0.15em] sm:tracking-[0.2em] uppercase font-bold transition-colors whitespace-nowrap">
                       <span className="hidden sm:inline">CLICK TO EXPLORE</span>
                       <span className="sm:hidden">EXPLORE</span>
                     </span>
 
                     {/* Arrow */}
                     <svg
-                      className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-[#EA9A61] group-hover:translate-x-2 transition-transform"
+                      className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-[#FFF4E3] group-hover:translate-x-2 transition-transform"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"

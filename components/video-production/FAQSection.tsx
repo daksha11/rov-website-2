@@ -178,7 +178,7 @@ export default function FAQSection() {
                                     className="border overflow-hidden transition-all duration-300"
                                     style={{
                                         borderRadius: "20px",
-                                        borderColor: "rgba(255, 255, 255, 0.15)",
+                                        borderColor: "rgba(255, 244, 227, 0.15)",
                                         background: "rgba(59, 33, 20, 0.35)",
                                     }}
                                 >
