@@ -144,18 +144,21 @@ const CtrlAFooter = () => {
                     <div className="relative mt-16 md:mt-24">
                         {/* Main ROV Text */}
                         <div className="relative w-full flex items-center justify-center py-8">
-                            <h1
-                                className="text-white text-center w-full"
+                            <Link
+                                href="/ctrla/pitchdeck"
+                                className="text-white text-center w-full hover:text-[#EA9A61] transition-colors duration-300"
                                 style={{
                                     fontFamily: 'Sarina, cursive',
                                     fontSize: '20vw',
                                     letterSpacing: '0.05em',
                                     margin: 0,
                                     lineHeight: 0.8,
+                                    textDecoration: 'none',
+                                    display: 'block',
                                 }}
                             >
                                 R.O.V.
-                            </h1>
+                            </Link>
                         </div>
                     </div>
                 </div>
