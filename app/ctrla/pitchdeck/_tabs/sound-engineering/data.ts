@@ -25,20 +25,20 @@ export const MARKET_STATS = [
 
 /* ─── 2. Studio Competitors ─── */
 export const STUDIO_COMPETITORS = [
-    { name: "LANDR / eMastered (AI)", price: "$6\u2013$49/mo", turnaround: "Minutes", rush: "None", creative: "None" },
-    { name: "Fiverr mid-range", price: "$30\u2013$100", turnaround: "3\u20135 days", rush: "+$20\u201360", creative: "None" },
-    { name: "RexTrax Studios (ATL)", price: "$45/hr", turnaround: "Custom", rush: "\u2014", creative: "None" },
-    { name: "aBs Studios (ATL)", price: "$35\u2013$60/hr", turnaround: "Custom", rush: "\u2014", creative: "None" },
-    { name: "WAMM Studios (ATL)", price: "$99\u2013$175", turnaround: "5\u20137 days", rush: "+$50 for 48hr", creative: "None" },
+    { name: "LANDR / eMastered (AI)", url: "https://www.landr.com/", price: "$6\u2013$49/mo", turnaround: "Minutes", rush: "None", creative: "None" },
+    { name: "Fiverr mid-range", url: "https://www.fiverr.com/", price: "$30\u2013$100", turnaround: "3\u20135 days", rush: "+$20\u201360", creative: "None" },
+    { name: "RexTrax Studios (ATL)", url: "https://www.rextrax.com/", price: "$45/hr", turnaround: "Custom", rush: "\u2014", creative: "None" },
+    { name: "aBs Studios (ATL)", url: "https://atlantasbestsoundstudio.com/", price: "$35\u2013$60/hr", turnaround: "Custom", rush: "\u2014", creative: "None" },
+    { name: "WAMM Studios (ATL)", url: "https://atlantarecording.studio/", price: "$99\u2013$175", turnaround: "5\u20137 days", rush: "+$50 for 48hr", creative: "None" },
     { name: "Major Mixing (online)", price: "$99+", turnaround: "3 days", rush: "+fee", creative: "None" },
     { name: "Mike\u2019s Mix & Master", price: "$126\u2013$175", turnaround: "4\u20135 days", rush: "+$50", creative: "None" },
     { name: "Mixing Monster", price: "$249\u2013$369", turnaround: "3\u20135 days", rush: "+fee", creative: "None" },
     { name: "R.O.V. (Independent)", price: "$100\u2013$125", turnaround: "1\u20132 days", rush: "Included", creative: "Full stack", isROV: true as const },
-    { name: "SoundBetter mid-range", price: "$200\u2013$600", turnaround: "5\u201310 days", rush: "+fee", creative: "None" },
+    { name: "SoundBetter mid-range", url: "https://www.soundbetter.com/", price: "$200\u2013$600", turnaround: "5\u201310 days", rush: "+fee", creative: "None" },
     { name: "The Closet Studios (ATL)", price: "$70/hr", turnaround: "Custom", rush: "\u2014", creative: "None" },
-    { name: "Parhelion ATL (premium)", price: "$750\u2013$2,000", turnaround: "Custom", rush: "\u2014", creative: "None" },
-    { name: "Tree Sound Studios (ATL)", price: "$85\u2013$225/hr", turnaround: "Custom", rush: "\u2014", creative: "None" },
-    { name: "Patchwerk (ATL premium)", price: "By inquiry", turnaround: "Custom", rush: "\u2014", creative: "Music assets only" },
+    { name: "Parhelion ATL (premium)", url: "https://www.parhelionrecordingstudios.com/", price: "$750\u2013$2,000", turnaround: "Custom", rush: "\u2014", creative: "None" },
+    { name: "Tree Sound Studios (ATL)", url: "https://treesoundstudios.com/", price: "$85\u2013$225/hr", turnaround: "Custom", rush: "\u2014", creative: "None" },
+    { name: "Patchwerk (ATL premium)", url: "https://patchwerk.com/", price: "By inquiry", turnaround: "Custom", rush: "\u2014", creative: "Music assets only" },
 ];
 
 export const STUDIO_TIERS = [

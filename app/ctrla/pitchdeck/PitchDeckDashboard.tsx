@@ -19,14 +19,12 @@ import MediaProductionTab from "./_tabs/media-production";
 import AIWorkflowsTab from "./_tabs/ai-workflows";
 import DesignTab from "./_tabs/design";
 import VCInvestorsTab from "./_tabs/vc-investors";
-import TeamOnboardingTab from "./_tabs/team-onboarding";
 import { NAV_SECTIONS as soundNavSections } from "./_tabs/sound-engineering";
 import { NAV_SECTIONS as webNavSections } from "./_tabs/web-development";
 import { NAV_SECTIONS as mediaNavSections } from "./_tabs/media-production";
 import { NAV_SECTIONS as aiNavSections } from "./_tabs/ai-workflows";
 import { NAV_SECTIONS as designNavSections } from "./_tabs/design";
 import { NAV_SECTIONS as vcNavSections } from "./_tabs/vc-investors";
-import { NAV_SECTIONS as teamNavSections } from "./_tabs/team-onboarding";
 
 /* ═══════════════════════════════════════════════════════
    TAB REGISTRY — add new tabs here
@@ -39,7 +37,6 @@ const TABS: TabConfig[] = [
     { id: "ai", label: "AI & Automations", component: AIWorkflowsTab, navSections: aiNavSections },
     { id: "design", label: "Design", component: DesignTab, navSections: designNavSections },
     { id: "vc", label: "VC & Investors", component: VCInvestorsTab, navSections: vcNavSections },
-    { id: "team", label: "Team Onboarding", component: TeamOnboardingTab, navSections: teamNavSections },
 ];
 
 /* ═══════════════════════════════════════════════════════

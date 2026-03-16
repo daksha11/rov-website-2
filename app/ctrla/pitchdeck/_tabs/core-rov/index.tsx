@@ -58,7 +58,7 @@ export default function CoreROVTab({ chartReady }: { chartReady: boolean }) {
                         <thead>
                             <tr style={{ borderBottom: `1px solid ${CARD_BORDER}` }}>
                                 <th style={{ textAlign: "left", padding: "16px 20px", color: TEXT_40, fontWeight: 600, fontSize: 11, letterSpacing: "0.08em", fontFamily: FONT_HEADING, fontStyle: "italic" }}>AGENCY</th>
-                                {["Brand/Design", "Web Dev", "AI Automation", "Sound", "Stage Visuals"].map(h => (
+                                {["Brand/Design", "Web Dev", "AI Automation", "Sound", "Media Production"].map(h => (
                                     <th key={h} style={{ padding: "16px 12px", color: TEXT_40, fontWeight: 600, fontSize: 10, letterSpacing: "0.06em", textAlign: "center", fontFamily: FONT_HEADING, fontStyle: "italic" }}>{h.toUpperCase()}</th>
                                 ))}
                             </tr>
@@ -68,8 +68,15 @@ export default function CoreROVTab({ chartReady }: { chartReady: boolean }) {
                                 const isROV = c.name === "R.O.V. Studios";
                                 return (
                                     <tr key={i} style={{ borderBottom: "1px solid rgba(234,154,97,0.05)", background: isROV ? "rgba(234,154,97,0.06)" : "transparent" }}>
-                                        <td style={{ padding: "14px 20px", fontWeight: isROV ? 700 : 400, color: isROV ? ACCENT : TEXT_90, fontFamily: FONT_HEADING, fontStyle: "italic" }}>{c.name}</td>
-                                        {[c.brand, c.web, c.ai, c.sound, c.stage].map((v, j) => (
+                                        <td style={{ padding: "14px 20px", fontWeight: isROV ? 700 : 400, fontFamily: FONT_HEADING, fontStyle: "italic" }}>
+                                            {c.url ? (
+                                                <a href={c.url} target="_blank" rel="noopener noreferrer" style={{ color: TEXT_90, textDecoration: "none", borderBottom: "1px dashed rgba(255,244,227,0.2)", transition: "color 0.2s, border-color 0.2s" }} onMouseEnter={e => { e.currentTarget.style.color = ACCENT; e.currentTarget.style.borderColor = ACCENT; }} onMouseLeave={e => { e.currentTarget.style.color = TEXT_90; e.currentTarget.style.borderColor = "rgba(255,244,227,0.2)"; }}>
+                                                    {c.name}                                                </a>
+                                            ) : (
+                                                <span style={{ color: isROV ? ACCENT : TEXT_90 }}>{c.name}</span>
+                                            )}
+                                        </td>
+                                        {[c.brand, c.web, c.ai, c.sound, c.media].map((v, j) => (
                                             <td key={j} style={{ padding: "14px 12px", textAlign: "center" }}><StatusDot status={v} /></td>
                                         ))}
                                     </tr>

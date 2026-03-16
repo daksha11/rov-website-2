@@ -106,11 +106,11 @@ export const TARGET_SEGMENTS: Record<SegmentKey, {
 };
 
 export const COMPETITORS_WEB = [
-    { name: "Trajectory Web Design", tag: "Direct competitor", tagColor: "#E84B8A", desc: "Atlanta\u2019s no-nonsense web company. Strong reputation, clean builds. No AI integration, no brand identity, no sound/visuals. Pure web play." },
-    { name: "Newman Web Solutions", tag: "Direct competitor", tagColor: "#E84B8A", desc: "Well-reviewed, conversion-first design. Strong local SEO. Template-adjacent feel, no custom animation, no AI workflows." },
-    { name: "Cardinal Digital / Captivate", tag: "Upper tier", tagColor: "#E84B8A", desc: "Larger agencies, $10K\u2013$50K+. Slower, corporate feel. Win on reputation not craft. Slow timelines, bureaucratic process." },
-    { name: "Junction Creative Solutions", tag: "Mid-large", tagColor: "rgba(255,244,227,0.3)", desc: "400+ brands, Fortune 1000 + SMB. Strong results (+414% online sales for one client). At scale \u2014 less personal, less nimble." },
-    { name: "Creative Juice", tag: "Brand-first", tagColor: "rgba(255,244,227,0.3)", desc: "Multicultural branding agency. Fortune 500 clients. Limited on custom web dev and AI. Cultural alignment but different lane." },
+    { name: "Trajectory Web Design", url: "https://www.trajectorywebdesign.com", tag: "Direct competitor", tagColor: "#E84B8A", desc: "Atlanta\u2019s no-nonsense web company. Strong reputation, clean builds. No AI integration, no brand identity, no sound/visuals. Pure web play." },
+    { name: "Newman Web Solutions", url: "https://www.newmanwebsolutions.com/", tag: "Direct competitor", tagColor: "#E84B8A", desc: "Well-reviewed, conversion-first design. Strong local SEO. Template-adjacent feel, no custom animation, no AI workflows." },
+    { name: "Cardinal Digital / Captivate", url: "https://www.cardinaldigitalmarketing.com/", tag: "Upper tier", tagColor: "#E84B8A", desc: "Larger agencies, $10K\u2013$50K+. Slower, corporate feel. Win on reputation not craft. Slow timelines, bureaucratic process." },
+    { name: "Junction Creative Solutions", url: "https://junctioncreative.com/", tag: "Mid-large", tagColor: "rgba(255,244,227,0.3)", desc: "400+ brands, Fortune 1000 + SMB. Strong results (+414% online sales for one client). At scale \u2014 less personal, less nimble." },
+    { name: "Creative Juice", url: "https://itscreativejuice.com/", tag: "Brand-first", tagColor: "rgba(255,244,227,0.3)", desc: "Multicultural branding agency. Fortune 500 clients. Limited on custom web dev and AI. Cultural alignment but different lane." },
     { name: "R.O.V. Studios", tag: "Full stack", tagColor: "#EA9A61", desc: "Design-first + custom code + AI + brand identity + sound + stage visuals. Only ATL studio with all five. 2\u20134 week delivery.", isROV: true as const },
 ];
 

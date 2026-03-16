@@ -27,13 +27,13 @@ export const MARKET_STATS: MarketStat[] = [
 ];
 
 export const COMPETITORS: Competitor[] = [
-    { name: "Matchstic", brand: "yes", web: "no", ai: "no", sound: "no", stage: "no" },
-    { name: "American Design Hub", brand: "yes", web: "yes", ai: "yes", sound: "no", stage: "no" },
-    { name: "Wavy Entertainment", brand: "partial", web: "no", ai: "no", sound: "yes", stage: "no" },
-    { name: "Patchwerk", brand: "no", web: "no", ai: "no", sound: "yes", stage: "no" },
-    { name: "NueWay Studios", brand: "yes", web: "yes", ai: "no", sound: "no", stage: "no" },
-    { name: "FlyerHaus", brand: "partial", web: "no", ai: "no", sound: "no", stage: "no" },
-    { name: "R.O.V. Studios", brand: "yes", web: "yes", ai: "yes", sound: "yes", stage: "yes" },
+    { name: "Matchstic", url: "https://matchstic.com/", brand: "yes", web: "no", ai: "no", sound: "no", media: "no" },
+    { name: "American Design Hub", url: "https://www.americandesignhub.com/", brand: "yes", web: "yes", ai: "yes", sound: "no", media: "no" },
+    { name: "Wavy Entertainment", url: "https://www.wavyent.net/", brand: "partial", web: "no", ai: "no", sound: "yes", media: "partial" },
+    { name: "Patchwerk", url: "https://patchwerk.com/", brand: "no", web: "no", ai: "no", sound: "yes", media: "no" },
+    { name: "NueWay Studios", url: "https://www.nuewaystudios.com/", brand: "yes", web: "yes", ai: "no", sound: "no", media: "no" },
+    { name: "FlyerHaus", url: "https://www.flyerhaus.com/", brand: "partial", web: "no", ai: "no", sound: "no", media: "no" },
+    { name: "R.O.V. Studios", brand: "yes", web: "yes", ai: "yes", sound: "yes", media: "yes" },
 ];
 
 export const AGENCY_PRICING: AgencyPricing[] = [

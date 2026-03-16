@@ -225,7 +225,14 @@ export default function WebDevelopmentTab({ chartReady }: { chartReady: boolean 
                     {COMPETITORS_WEB.map((c, i) => (
                         <Card key={i} style={{ borderColor: "isROV" in c && c.isROV ? `${ACCENT}40` : CARD_BORDER, borderWidth: "isROV" in c && c.isROV ? 2 : 1 }}>
                             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
-                                <h4 style={{ fontFamily: FONT_HEADING, fontStyle: "italic", fontSize: 17, fontWeight: 700, color: "isROV" in c && c.isROV ? ACCENT : WHITE, margin: 0 }}>{c.name}</h4>
+                                <h4 style={{ fontFamily: FONT_HEADING, fontStyle: "italic", fontSize: 17, fontWeight: 700, margin: 0 }}>
+                                    {"url" in c && c.url ? (
+                                        <a href={c.url as string} target="_blank" rel="noopener noreferrer" style={{ color: WHITE, textDecoration: "none", borderBottom: "1px dashed rgba(255,244,227,0.2)", transition: "color 0.2s" }} onMouseEnter={e => { e.currentTarget.style.color = ACCENT; }} onMouseLeave={e => { e.currentTarget.style.color = WHITE; }}>
+                                            {c.name}                                        </a>
+                                    ) : (
+                                        <span style={{ color: "isROV" in c && c.isROV ? ACCENT : WHITE }}>{c.name}</span>
+                                    )}
+                                </h4>
                                 <span style={{ fontFamily: FONT_HEADING, fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", padding: "3px 8px", borderRadius: 4, background: `${c.tagColor}20`, color: c.tagColor }}>{c.tag.toUpperCase()}</span>
                             </div>
                             <p style={{ fontFamily: FONT_BODY, fontSize: 13, color: TEXT_60, lineHeight: 1.6 }}>{c.desc}</p>

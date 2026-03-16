@@ -26,11 +26,12 @@ export interface MarketStat {
 
 export interface Competitor {
     name: string;
+    url?: string;
     brand: "yes" | "no" | "partial";
     web: "yes" | "no" | "partial";
     ai: "yes" | "no" | "partial";
     sound: "yes" | "no" | "partial";
-    stage: "yes" | "no" | "partial";
+    media: "yes" | "no" | "partial";
 }
 
 export interface SoundPricing {

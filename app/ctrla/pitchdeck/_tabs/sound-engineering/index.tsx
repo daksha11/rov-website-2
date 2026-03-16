@@ -99,7 +99,14 @@ export default function SoundEngineeringTab({ chartReady }: { chartReady: boolea
                                 const r = "isROV" in c;
                                 return (
                                     <tr key={i} style={{ borderBottom: "1px solid rgba(234,154,97,0.05)", background: r ? "rgba(234,154,97,0.06)" : "transparent" }}>
-                                        <td style={{ padding: "12px 16px", fontWeight: r ? 700 : 400, color: r ? ACCENT : TEXT_90, fontFamily: FONT_HEADING, fontStyle: "italic" }}>{c.name}</td>
+                                        <td style={{ padding: "12px 16px", fontWeight: r ? 700 : 400, fontFamily: FONT_HEADING, fontStyle: "italic" }}>
+                                            {"url" in c && c.url ? (
+                                                <a href={c.url as string} target="_blank" rel="noopener noreferrer" style={{ color: TEXT_90, textDecoration: "none", borderBottom: "1px dashed rgba(255,244,227,0.2)", transition: "color 0.2s, border-color 0.2s" }} onMouseEnter={e => { e.currentTarget.style.color = ACCENT; e.currentTarget.style.borderColor = ACCENT; }} onMouseLeave={e => { e.currentTarget.style.color = TEXT_90; e.currentTarget.style.borderColor = "rgba(255,244,227,0.2)"; }}>
+                                                    {c.name}                                                </a>
+                                            ) : (
+                                                <span style={{ color: r ? ACCENT : TEXT_90 }}>{c.name}</span>
+                                            )}
+                                        </td>
                                         <td style={{ padding: "12px 16px", color: TEXT_60 }}>{c.price}</td>
                                         <td style={{ padding: "12px 16px", color: r ? "#1D9E75" : TEXT_60, fontWeight: r ? 600 : 400 }}>{c.turnaround}</td>
                                         <td style={{ padding: "12px 16px", color: r ? "#1D9E75" : (c.rush.startsWith("+") ? "#E84B8A" : TEXT_40) }}>{c.rush}</td>

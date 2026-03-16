@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import TiltedCard from "@/components/TiltedCard";
 import CtrlAFooter from "@/components/CtrlAFooter";
 import { NavigationDock } from "@/components/NavDoc";
@@ -274,6 +274,286 @@ function ComingSoonHero() {
         </div>
       </div>
     </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   GLOBAL TEAM MAP — interactive dot-map with team locations
+   ═══════════════════════════════════════════════════════ */
+
+const TEAM_LOCATIONS = [
+  { city: "Atlanta", country: "USA", label: "HQ", x: 22, y: 40, isPrimary: true },
+  { city: "Savannah", country: "USA", label: "GA", x: 23.5, y: 43, isPrimary: false },
+  { city: "Toronto", country: "Canada", label: "CAN", x: 23, y: 33, isPrimary: false },
+  { city: "Lagos", country: "Nigeria", label: "NGA", x: 48, y: 56, isPrimary: false },
+  { city: "London", country: "UK", label: "UK", x: 43, y: 18, isPrimary: false },
+  { city: "Hyderabad", country: "India", label: "IND", x: 68, y: 44, isPrimary: false },
+  { city: "Bangalore", country: "India", label: "IND", x: 67, y: 48, isPrimary: false },
+];
+
+const StyledMapPulse = styled.div`
+  @keyframes mapPulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(2.2); opacity: 0; }
+    100% { transform: scale(1); opacity: 0; }
+  }
+  @keyframes mapGlow {
+    0%, 100% { box-shadow: 0 0 8px rgba(234,154,97,0.4); }
+    50% { box-shadow: 0 0 20px rgba(234,154,97,0.7); }
+  }
+`;
+
+function GlobalTeamMap() {
+  const [hoveredCity, setHoveredCity] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
+  return (
+    <StyledMapPulse>
+      <section
+        style={{
+          backgroundColor: '#000000',
+          padding: 'clamp(60px, 10vw, 120px) clamp(20px, 5vw, 60px)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        {/* Header */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 12 }}>
+          <div style={{ width: 'clamp(24px, 4vw, 48px)', height: '1px', backgroundColor: 'rgba(234,154,97,0.5)' }} />
+          <span style={{ fontFamily: 'Norwige, sans-serif', fontStyle: 'italic', color: '#EA9A61', fontSize: 'clamp(11px, 1.5vw, 14px)', letterSpacing: '5px' }}>
+            WORLDWIDE
+          </span>
+          <div style={{ width: 'clamp(24px, 4vw, 48px)', height: '1px', backgroundColor: 'rgba(234,154,97,0.5)' }} />
+        </div>
+
+        <h2
+          style={{
+            fontSize: 'clamp(2rem, 6vw, 3.5rem)',
+            fontWeight: '900',
+            color: '#FFFFFF',
+            textAlign: 'center',
+            fontFamily: 'Norwige, sans-serif',
+            fontStyle: 'italic',
+            marginBottom: 16,
+            letterSpacing: '-0.5px',
+          }}
+        >
+          One Vision,{' '}
+          <span style={{
+            background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          }}>
+            Global Reach
+          </span>
+        </h2>
+        <p style={{ fontFamily: 'Norwige, sans-serif', fontStyle: 'italic', fontSize: 'clamp(13px, 1.8vw, 16px)', color: 'rgba(255,244,227,0.5)', textAlign: 'center', maxWidth: 500, marginBottom: 'clamp(40px, 6vw, 72px)' }}>
+          Our team spans 4 continents — Atlanta roots, international perspective.
+        </p>
+
+        {/* Map container */}
+        <div style={{ position: 'relative', width: '100%', maxWidth: 1100, aspectRatio: '2 / 1' }}>
+          {/* SVG world map — continent shapes filled with dot pattern */}
+          <svg viewBox="0 0 1000 500" style={{ width: '100%', height: '100%' }} xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              {/* Dot pattern that fills continent shapes */}
+              <pattern id="landDots" width="8" height="8" patternUnits="userSpaceOnUse">
+                <circle cx="4" cy="4" r="1.6" fill="rgba(234,154,97,0.22)" />
+              </pattern>
+              {/* Subtle background grid */}
+              <pattern id="bgDots" width="12" height="12" patternUnits="userSpaceOnUse">
+                <circle cx="6" cy="6" r="0.6" fill="rgba(234,154,97,0.04)" />
+              </pattern>
+            </defs>
+            <rect width="1000" height="500" fill="url(#bgDots)" />
+
+            {/* North America */}
+            <path d="M120,50 L140,45 L165,42 L190,40 L210,42 L230,48 L245,55 L255,65 L260,78 L258,92 L250,105 L248,120 L252,135 L258,148 L262,160 L268,170 L275,178 L280,190 L278,200 L270,208 L260,215 L248,218 L238,215 L228,210 L218,215 L208,225 L200,235 L195,245 L192,255 L188,248 L180,240 L170,235 L158,232 L148,228 L140,222 L132,215 L125,205 L120,195 L115,185 L112,175 L110,165 L108,155 L106,145 L105,135 L104,125 L103,115 L102,105 L103,95 L106,85 L110,75 L114,65 L118,55 Z" fill="url(#landDots)" stroke="rgba(234,154,97,0.08)" strokeWidth="0.5" />
+            {/* Greenland */}
+            <path d="M280,30 L300,28 L320,30 L335,38 L340,50 L335,62 L325,70 L310,72 L295,68 L285,58 L280,45 Z" fill="url(#landDots)" stroke="rgba(234,154,97,0.08)" strokeWidth="0.5" />
+            {/* Central America + Caribbean */}
+            <path d="M192,255 L198,260 L205,268 L210,275 L215,280 L218,288 L216,295 L210,298 L205,295 L200,288 L195,280 L190,272 L188,264 Z" fill="url(#landDots)" stroke="rgba(234,154,97,0.08)" strokeWidth="0.5" />
+
+            {/* South America */}
+            <path d="M218,298 L228,295 L240,298 L252,305 L262,315 L270,328 L275,342 L278,358 L276,375 L270,390 L262,402 L252,412 L242,420 L232,425 L225,430 L222,440 L225,448 L228,455 L225,460 L218,458 L212,450 L208,440 L205,428 L202,415 L200,400 L198,385 L198,370 L200,355 L202,340 L205,325 L210,312 Z" fill="url(#landDots)" stroke="rgba(234,154,97,0.08)" strokeWidth="0.5" />
+
+            {/* Europe */}
+            <path d="M440,75 L450,70 L462,68 L475,70 L488,72 L498,75 L508,80 L518,78 L528,82 L535,88 L540,98 L538,108 L532,118 L525,125 L518,130 L510,135 L502,138 L495,142 L488,145 L480,148 L472,145 L465,140 L458,135 L452,128 L448,120 L445,112 L442,105 L440,95 L439,85 Z" fill="url(#landDots)" stroke="rgba(234,154,97,0.08)" strokeWidth="0.5" />
+            {/* British Isles */}
+            <path d="M425,82 L432,78 L438,82 L436,92 L430,98 L424,95 L422,88 Z" fill="url(#landDots)" stroke="rgba(234,154,97,0.08)" strokeWidth="0.5" />
+            {/* Scandinavia */}
+            <path d="M475,35 L482,32 L490,35 L495,45 L498,58 L495,68 L488,72 L480,68 L475,58 L472,48 Z" fill="url(#landDots)" stroke="rgba(234,154,97,0.08)" strokeWidth="0.5" />
+
+            {/* Africa */}
+            <path d="M445,175 L458,172 L472,170 L488,172 L502,178 L515,185 L525,195 L532,208 L536,222 L538,238 L536,255 L532,272 L525,288 L518,302 L510,315 L502,325 L495,332 L488,338 L482,342 L478,345 L475,348 L478,355 L480,365 L478,372 L472,375 L465,370 L460,362 L455,352 L450,340 L448,328 L446,315 L445,302 L444,288 L443,275 L442,262 L441,248 L440,235 L440,222 L441,208 L442,195 L443,185 Z" fill="url(#landDots)" stroke="rgba(234,154,97,0.08)" strokeWidth="0.5" />
+
+            {/* Asia (Russia + Central + South) */}
+            <path d="M540,40 L560,35 L585,32 L610,30 L635,32 L660,35 L685,38 L710,42 L735,48 L755,55 L770,62 L780,70 L788,80 L790,90 L785,100 L778,108 L770,115 L760,120 L748,122 L738,118 L728,115 L718,112 L708,110 L698,112 L688,118 L680,125 L672,132 L665,140 L658,148 L652,158 L648,168 L645,178 L640,188 L632,195 L622,198 L612,195 L605,188 L600,180 L595,172 L590,165 L585,158 L580,152 L575,148 L568,145 L560,142 L552,140 L545,135 L540,128 L538,118 L540,108 L542,98 L540,88 L538,78 L536,68 L535,58 L536,48 Z" fill="url(#landDots)" stroke="rgba(234,154,97,0.08)" strokeWidth="0.5" />
+
+            {/* India */}
+            <path d="M648,168 L658,165 L668,168 L678,175 L688,185 L695,198 L698,212 L696,228 L690,242 L682,252 L672,258 L662,255 L655,245 L650,232 L646,218 L644,205 L643,192 L644,180 Z" fill="url(#landDots)" stroke="rgba(234,154,97,0.08)" strokeWidth="0.5" />
+
+            {/* Southeast Asia / Indonesia */}
+            <path d="M720,190 L735,185 L750,188 L762,195 L770,205 L772,218 L768,228 L758,232 L748,228 L738,222 L728,215 L722,205 L720,198 Z" fill="url(#landDots)" stroke="rgba(234,154,97,0.08)" strokeWidth="0.5" />
+            {/* Japan / Korea */}
+            <path d="M795,90 L802,85 L810,88 L815,98 L812,110 L805,118 L798,115 L792,108 L790,100 Z" fill="url(#landDots)" stroke="rgba(234,154,97,0.08)" strokeWidth="0.5" />
+
+            {/* Australia */}
+            <path d="M748,340 L768,335 L790,338 L808,345 L822,355 L830,368 L832,382 L828,395 L818,405 L805,410 L790,412 L775,408 L762,400 L752,390 L746,378 L742,365 L744,352 Z" fill="url(#landDots)" stroke="rgba(234,154,97,0.08)" strokeWidth="0.5" />
+
+            {/* Connection lines from Atlanta to each location */}
+            {mounted && TEAM_LOCATIONS.slice(1).map((loc, i) => {
+              const hq = TEAM_LOCATIONS[0];
+              return (
+                <line
+                  key={`line-${i}`}
+                  x1={hq.x * 10} y1={hq.y * 5 + 50}
+                  x2={loc.x * 10} y2={loc.y * 5 + 50}
+                  stroke="rgba(234,154,97,0.1)"
+                  strokeWidth="0.8"
+                  strokeDasharray="4 4"
+                />
+              );
+            })}
+          </svg>
+
+          {/* Location markers as HTML overlays */}
+          {TEAM_LOCATIONS.map((loc) => {
+            const isHovered = hoveredCity === loc.city;
+            const isHQ = loc.isPrimary;
+            return (
+              <div
+                key={loc.city}
+                onMouseEnter={() => setHoveredCity(loc.city)}
+                onMouseLeave={() => setHoveredCity(null)}
+                style={{
+                  position: 'absolute',
+                  left: `${loc.x}%`,
+                  top: `${loc.y}%`,
+                  transform: 'translate(-50%, -50%)',
+                  cursor: 'pointer',
+                  zIndex: isHovered ? 20 : 10,
+                }}
+              >
+                {/* Pulse ring */}
+                <div style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: isHQ ? 32 : 24,
+                  height: isHQ ? 32 : 24,
+                  borderRadius: '50%',
+                  border: `1.5px solid ${isHQ ? '#EA9A61' : 'rgba(234,154,97,0.4)'}`,
+                  animation: 'mapPulse 3s ease-out infinite',
+                  animationDelay: `${Math.random() * 2}s`,
+                }} />
+
+                {/* Dot */}
+                <div style={{
+                  width: isHQ ? 14 : 10,
+                  height: isHQ ? 14 : 10,
+                  borderRadius: '50%',
+                  background: isHQ
+                    ? 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)'
+                    : '#EA9A61',
+                  border: `2px solid ${isHQ ? '#FFF4E3' : 'rgba(255,244,227,0.6)'}`,
+                  transition: 'transform 0.3s, box-shadow 0.3s',
+                  transform: isHovered ? 'scale(1.5)' : 'scale(1)',
+                  animation: isHQ ? 'mapGlow 2s ease-in-out infinite' : undefined,
+                  boxShadow: isHovered ? '0 0 20px rgba(234,154,97,0.6)' : '0 0 8px rgba(234,154,97,0.3)',
+                }} />
+
+                {/* Tooltip */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: 'calc(100% + 10px)',
+                  left: '50%',
+                  transform: `translateX(-50%) ${isHovered ? 'translateY(0)' : 'translateY(4px)'}`,
+                  opacity: isHovered ? 1 : 0,
+                  pointerEvents: 'none',
+                  transition: 'opacity 0.3s, transform 0.3s',
+                  whiteSpace: 'nowrap',
+                  background: 'rgba(30,26,23,0.95)',
+                  backdropFilter: 'blur(12px)',
+                  border: '1px solid rgba(234,154,97,0.25)',
+                  borderRadius: 10,
+                  padding: '8px 14px',
+                  textAlign: 'center',
+                }}>
+                  <p style={{ fontFamily: 'Norwige, sans-serif', fontStyle: 'italic', fontSize: 14, fontWeight: 700, color: '#FFF4E3', margin: 0 }}>
+                    {loc.city}
+                  </p>
+                  <p style={{ fontFamily: 'Norwige, sans-serif', fontStyle: 'italic', fontSize: 11, color: '#EA9A61', margin: '2px 0 0' }}>
+                    {loc.country}{isHQ ? ' — Headquarters' : ''}
+                  </p>
+                  {/* Arrow */}
+                  <div style={{
+                    position: 'absolute',
+                    bottom: -5,
+                    left: '50%',
+                    transform: 'translateX(-50%) rotate(45deg)',
+                    width: 10,
+                    height: 10,
+                    background: 'rgba(30,26,23,0.95)',
+                    borderRight: '1px solid rgba(234,154,97,0.25)',
+                    borderBottom: '1px solid rgba(234,154,97,0.25)',
+                  }} />
+                </div>
+
+                {/* Always-visible city label for HQ */}
+                {isHQ && !isHovered && (
+                  <div style={{
+                    position: 'absolute',
+                    top: 'calc(100% + 6px)',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    whiteSpace: 'nowrap',
+                    fontFamily: 'Norwige, sans-serif',
+                    fontStyle: 'italic',
+                    fontSize: 11,
+                    color: '#EA9A61',
+                    letterSpacing: '0.1em',
+                    fontWeight: 700,
+                  }}>
+                    ATLANTA
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Location tags row */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center', marginTop: 'clamp(24px, 4vw, 48px)' }}>
+          {TEAM_LOCATIONS.map(loc => (
+            <span
+              key={loc.city}
+              onMouseEnter={() => setHoveredCity(loc.city)}
+              onMouseLeave={() => setHoveredCity(null)}
+              style={{
+                fontFamily: 'Norwige, sans-serif',
+                fontStyle: 'italic',
+                fontSize: 'clamp(11px, 1.4vw, 13px)',
+                padding: '6px 16px',
+                borderRadius: 999,
+                border: `1px solid ${hoveredCity === loc.city ? '#EA9A61' : 'rgba(234,154,97,0.15)'}`,
+                background: hoveredCity === loc.city ? 'rgba(234,154,97,0.1)' : 'transparent',
+                color: hoveredCity === loc.city || loc.isPrimary ? '#EA9A61' : 'rgba(255,244,227,0.4)',
+                cursor: 'pointer',
+                transition: 'all 0.3s',
+                letterSpacing: '0.06em',
+              }}
+            >
+              {loc.city}{loc.isPrimary ? ' (HQ)' : ''}
+            </span>
+          ))}
+        </div>
+      </section>
+    </StyledMapPulse>
   );
 }
 
@@ -741,6 +1021,9 @@ export default function CtrlAContent() {
           </a>
         </div>
       </section>
+
+      {/* Global Team Map */}
+      <GlobalTeamMap />
 
       {/* Footer */}
       <CtrlAFooter />

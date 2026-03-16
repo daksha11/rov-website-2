@@ -153,7 +153,7 @@ export function CompetitorRadarChart() {
         if (!Chart) return;
         if (chartRef.current) chartRef.current.destroy();
 
-        const services = ["Brand / Design", "Web Development", "AI Automation", "Sound Studio", "Stage Visuals"];
+        const services = ["Brand / Design", "Web Development", "AI Automation", "Sound Studio", "Media Production"];
 
         chartRef.current = new Chart(canvasRef.current, {
             type: "radar",
