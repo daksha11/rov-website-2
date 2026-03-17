@@ -35,7 +35,7 @@ export default function CoreROVTab({ chartReady }: { chartReady: boolean }) {
     return (
         <>
             {/* 1. MARKET SIZE */}
-            <section id="market" style={{ paddingTop: 80 }}>
+            <section id="market" style={{ paddingTop: 40 }}>
                 <SectionTitle sub="Atlanta creative economy and adjacent markets">Market Size</SectionTitle>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 16 }}>
                     {MARKET_STATS.map((s, i) => (

@@ -57,7 +57,7 @@ export default function VCInvestorsTab({ chartReady }: { chartReady: boolean }) 
     return (
         <>
             {/* ═══ 1. TAM/SAM/SOM ═══ */}
-            <section id="vc-tam" style={{ paddingTop: 80 }}>
+            <section id="vc-tam" style={{ paddingTop: 40 }}>
                 <SectionTitle sub="Bottom-up market sizing across all five service pillars">TAM / SAM / SOM</SectionTitle>
 
                 <p style={{ fontFamily: FONT_HEADING, fontStyle: "italic", fontSize: 15, fontWeight: 700, color: WHITE, marginBottom: 12 }}>Bottom-Up TAM (Atlanta Metro / Georgia)</p>

@@ -108,6 +108,66 @@ export function StatusDot({ status }: { status: string }) {
     );
 }
 
+/* ─── Tab Hero ─── */
+export function TabHero({ tag, title, accentWord, subtitle, accentColor }: {
+    tag: string; title: string; accentWord: string; subtitle: string; accentColor?: string;
+}) {
+    const accent = accentColor ?? ACCENT;
+    return (
+        <div style={{ padding: "60px 0 40px", position: "relative", overflow: "hidden" }}>
+            {/* Decorative glow */}
+            <div style={{
+                position: "absolute", top: -80, right: -80, width: 320, height: 320,
+                background: `radial-gradient(circle, ${accent}08 0%, transparent 70%)`,
+                borderRadius: "50%", pointerEvents: "none",
+            }} />
+            <div style={{
+                position: "absolute", bottom: -40, left: -40, width: 200, height: 200,
+                background: `radial-gradient(circle, ${accent}05 0%, transparent 70%)`,
+                borderRadius: "50%", pointerEvents: "none",
+            }} />
+
+            {/* Tag pill */}
+            <div style={{
+                display: "inline-flex", alignItems: "center", gap: 10,
+                padding: "6px 18px", borderRadius: 999,
+                border: `1px dashed ${accent}55`, marginBottom: 20,
+            }}>
+                <span style={{ width: 24, height: 1, background: `${accent}80` }} />
+                <span style={{ fontSize: 11, color: accent, fontFamily: FONT_HEADING, fontStyle: "italic", letterSpacing: "5px" }}>{tag}</span>
+                <span style={{ width: 24, height: 1, background: `${accent}80` }} />
+            </div>
+
+            {/* Title */}
+            <h2 style={{
+                fontFamily: FONT_HEADING, fontStyle: "italic",
+                fontSize: "clamp(36px, 5vw, 58px)", fontWeight: 900,
+                color: WHITE, margin: "0 0 12px", lineHeight: 1.15,
+            }}>
+                {title}{" "}
+                <span style={{
+                    background: BROWN_GRADIENT,
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                }}>{accentWord}</span>
+            </h2>
+
+            {/* Subtitle */}
+            <p style={{
+                fontFamily: FONT_BODY, fontStyle: "italic", fontSize: 16,
+                color: "rgba(255,244,227,0.5)", maxWidth: 600, margin: 0, lineHeight: 1.6,
+            }}>{subtitle}</p>
+
+            {/* Bottom divider */}
+            <div style={{
+                marginTop: 32, height: 1, width: "100%",
+                background: `linear-gradient(90deg, ${accent}30, transparent 80%)`,
+            }} />
+        </div>
+    );
+}
+
 /* ─── Coming Soon Placeholder ─── */
 export function ComingSoonPlaceholder({ title }: { title: string }) {
     return (

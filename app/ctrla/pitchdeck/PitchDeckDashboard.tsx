@@ -29,6 +29,17 @@ import { NAV_SECTIONS as vcNavSections } from "./_tabs/vc-investors";
 /* ═══════════════════════════════════════════════════════
    TAB REGISTRY — add new tabs here
    ═══════════════════════════════════════════════════════ */
+/* ─── Per-tab hero copy ─── */
+const TAB_HEROES: Record<string, { tag: string; line1: string; accent: string; subtitle: string }> = {
+    "core-rov": { tag: "CORE INTELLIGENCE", line1: "R.O.V. Market", accent: "Intelligence", subtitle: "The competitive landscape, market sizing, client personas, and investor data powering R.O.V.\u2019s growth strategy." },
+    "sound": { tag: "SOUND ENGINEERING", line1: "Atlanta Sound", accent: "Market", subtitle: "713 studios, $12.4B music economy, and the world\u2019s hip-hop capital. Pricing, positioning, and pipeline strategy." },
+    "web-dev": { tag: "WEB DEVELOPMENT", line1: "The Digital", accent: "Storefront", subtitle: "$40.8B market. 89% of users go to a competitor after a bad experience. The playbook for closing $7K\u2013$15K web deals." },
+    "media": { tag: "MEDIA PRODUCTION", line1: "Cinematic", accent: "Storytelling", subtitle: "91% of businesses use video. A young team on Reels and TikTok, with premium cameras, drone, and LOG footage." },
+    "ai": { tag: "AI SOLUTIONS", line1: "Intelligent", accent: "Automation", subtitle: "$19.6B global market at 31.4% CAGR. Only 4.5% of Georgia businesses use AI \u2014 1.3 million in the addressable gap." },
+    "design": { tag: "DESIGN SERVICES", line1: "Visual", accent: "Identity", subtitle: "0.1 seconds to make a first impression. 85% of purchase decisions driven by color. The widest funnel in the stack." },
+    "vc": { tag: "INVESTOR GRADE", line1: "Growth", accent: "Thesis", subtitle: "TAM/SAM/SOM, unit economics, gross margins, switching costs, funded comparables, and Atlanta-specific tailwinds." },
+};
+
 const TABS: TabConfig[] = [
     { id: "core-rov", label: "Core ROV", component: CoreROVTab, navSections: coreNavSections },
     { id: "sound", label: "Sound", component: SoundEngineeringTab, navSections: soundNavSections },
@@ -145,28 +156,32 @@ export default function PitchDeckDashboard() {
 
                 <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px" }}>
 
-                    {/* ── Hero ── */}
-                    <header style={{ padding: "80px 0 60px", textAlign: "center", position: "relative", overflow: "hidden" }}>
-                        <div style={{ position: "absolute", top: "-20%", left: "-15%", width: "60%", height: "60%", borderRadius: "50%", background: "radial-gradient(circle, rgba(234,154,97,0.08) 0%, transparent 70%)", pointerEvents: "none" }} />
-                        <div style={{ position: "absolute", bottom: "-20%", right: "-15%", width: "50%", height: "50%", borderRadius: "50%", background: "radial-gradient(circle, rgba(177,105,55,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
-                        <div style={{ position: "relative", zIndex: 1 }}>
-                            <div style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "6px 18px", borderRadius: 999, border: "1px dashed rgba(234,154,97,0.35)", marginBottom: 28 }}>
-                                <span style={{ width: 24, height: 1, background: "rgba(234,154,97,0.5)" }} />
-                                <span style={{ fontSize: 11, color: ACCENT, fontFamily: FONT_HEADING, fontStyle: "italic", letterSpacing: "5px" }}>CONFIDENTIAL</span>
-                                <span style={{ width: 24, height: 1, background: "rgba(234,154,97,0.5)" }} />
-                            </div>
-                            <h1 style={{ fontFamily: FONT_HEADING, fontStyle: "italic", fontSize: "clamp(40px, 8vw, 80px)", fontWeight: 900, letterSpacing: "-1px", margin: 0, lineHeight: 0.95, color: WHITE }}>
-                                Market<br />
-                                <span style={{ background: BROWN_GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                                    Intelligence
-                                </span>
-                            </h1>
-                            <p style={{ fontFamily: FONT_BODY, fontStyle: "italic", fontSize: 16, color: TEXT_60, marginTop: 20, maxWidth: 480, marginLeft: "auto", marginRight: "auto" }}>
-                                R.O.V. Studios — Atlanta-based creative hybrid agency.
-                                Brand, Web, AI, Sound, Stage Visuals.
-                            </p>
-                        </div>
-                    </header>
+                    {/* ── Hero (dynamic per tab) ── */}
+                    {(() => {
+                        const h = TAB_HEROES[activeTab] ?? TAB_HEROES["core-rov"];
+                        return (
+                            <header key={activeTab} style={{ padding: "80px 0 60px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+                                <div style={{ position: "absolute", top: "-20%", left: "-15%", width: "60%", height: "60%", borderRadius: "50%", background: "radial-gradient(circle, rgba(234,154,97,0.08) 0%, transparent 70%)", pointerEvents: "none" }} />
+                                <div style={{ position: "absolute", bottom: "-20%", right: "-15%", width: "50%", height: "50%", borderRadius: "50%", background: "radial-gradient(circle, rgba(177,105,55,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
+                                <div style={{ position: "relative", zIndex: 1 }}>
+                                    <div style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "6px 18px", borderRadius: 999, border: "1px dashed rgba(234,154,97,0.35)", marginBottom: 28 }}>
+                                        <span style={{ width: 24, height: 1, background: "rgba(234,154,97,0.5)" }} />
+                                        <span style={{ fontSize: 11, color: ACCENT, fontFamily: FONT_HEADING, fontStyle: "italic", letterSpacing: "5px" }}>{h.tag}</span>
+                                        <span style={{ width: 24, height: 1, background: "rgba(234,154,97,0.5)" }} />
+                                    </div>
+                                    <h1 style={{ fontFamily: FONT_HEADING, fontStyle: "italic", fontSize: "clamp(40px, 8vw, 80px)", fontWeight: 900, letterSpacing: "-1px", margin: 0, lineHeight: 0.95, color: WHITE }}>
+                                        {h.line1}<br />
+                                        <span style={{ background: BROWN_GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+                                            {h.accent}
+                                        </span>
+                                    </h1>
+                                    <p style={{ fontFamily: FONT_BODY, fontStyle: "italic", fontSize: 16, color: TEXT_60, marginTop: 20, maxWidth: 520, marginLeft: "auto", marginRight: "auto" }}>
+                                        {h.subtitle}
+                                    </p>
+                                </div>
+                            </header>
+                        );
+                    })()}
 
                     {/* ── Active Tab Content ── */}
                     <ActiveComponent chartReady={chartReady} />

@@ -85,7 +85,7 @@ export default function DesignTab({ chartReady }: { chartReady: boolean }) {
     return (
         <>
             {/* ═══ 1. MARKET OVERVIEW ═══ */}
-            <section id="ds-overview" style={{ paddingTop: 80 }}>
+            <section id="ds-overview" style={{ paddingTop: 40 }}>
                 <SectionTitle sub="Why design is the highest-leverage investment a business can make">Design Market</SectionTitle>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 16 }}>
                     {MARKET_STATS.map((s, i) => (

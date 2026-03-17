@@ -79,7 +79,7 @@ export default function MediaProductionTab({ chartReady }: { chartReady: boolean
     return (
         <>
             {/* ═══ 1. MARKET OVERVIEW ═══ */}
-            <section id="mp-overview" style={{ paddingTop: 80 }}>
+            <section id="mp-overview" style={{ paddingTop: 40 }}>
                 <SectionTitle sub="Why video is now the single most important marketing tool for every Atlanta business">Media Production Market</SectionTitle>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 16 }}>
                     {MARKET_STATS.map((s, i) => (

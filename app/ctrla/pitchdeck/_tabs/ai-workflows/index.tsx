@@ -37,7 +37,7 @@ export default function AIWorkflowsTab({ chartReady }: { chartReady: boolean }) 
     return (
         <>
             {/* ═══ 1. MARKET OVERVIEW ═══ */}
-            <section id="ai-overview" style={{ paddingTop: 80 }}>
+            <section id="ai-overview" style={{ paddingTop: 40 }}>
                 <SectionTitle sub="The highest-margin, most scalable revenue opportunity">AI Automation Market</SectionTitle>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 16 }}>
                     {HEADLINE_STATS.map((s, i) => (

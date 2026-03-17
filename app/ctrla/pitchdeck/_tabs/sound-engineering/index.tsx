@@ -47,7 +47,7 @@ export default function SoundEngineeringTab({ chartReady }: { chartReady: boolea
     return (
         <>
             {/* ═══ 1. MARKET OVERVIEW ═══ */}
-            <section id="snd-overview" style={{ paddingTop: 80 }}>
+            <section id="snd-overview" style={{ paddingTop: 40 }}>
                 <SectionTitle sub="The numbers behind the world's hip-hop capital">Atlanta Sound Market</SectionTitle>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 16 }}>
                     {MARKET_STATS.map((s, i) => (
