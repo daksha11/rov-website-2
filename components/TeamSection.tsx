@@ -7,7 +7,7 @@ import Image from "next/image";
 import GradientBlob from "./GradientBlob";
 
 type Category = "All" | "Creative" | "Tech" | "Systems";
-type CreativeSubcategory = "UI/UX" | "Motion" | "Illustrative";
+type CreativeSubcategory = "UI/UX" | "Motion" | "Illustrative" | "Sound";
 
 interface TeamMember {
     id: number;
@@ -29,6 +29,31 @@ const teamMembers: TeamMember[] = [
         id: 1,
         image: "/teammembers/basutm2.webp",
         category: "Creative",
+        creativeSubcategory: "UI/UX",
+        name: "Ayush",
+        role: "FOUNDER & CREATIVE DIRECTOR",
+        skills: ["Creative Direction", "Brand Strategy", "Web Development", "Design Systems", "Client Relations"],
+        location: "Atlanta",
+        specialties: "I lead creative direction across all client projects and internal initiatives while overseeing company operations. I contribute hands-on to design, development, and client communications—making sure R.O.V.'s vision stays consistent from pitch to delivery.",
+        shadowColor: "101, 67, 33"
+    },
+    {
+        id: 18,
+        image: "/teammembers/basutm2.webp",
+        category: "Creative",
+        creativeSubcategory: "Motion",
+        name: "Ayush",
+        role: "FOUNDER & CREATIVE DIRECTOR",
+        skills: ["Creative Direction", "Brand Strategy", "Web Development", "Design Systems", "Client Relations"],
+        location: "Atlanta",
+        specialties: "I lead creative direction across all client projects and internal initiatives while overseeing company operations. I contribute hands-on to design, development, and client communications—making sure R.O.V.'s vision stays consistent from pitch to delivery.",
+        shadowColor: "101, 67, 33"
+    },
+    {
+        id: 19,
+        image: "/teammembers/basutm2.webp",
+        category: "Creative",
+        creativeSubcategory: "Sound",
         name: "Ayush",
         role: "FOUNDER & CREATIVE DIRECTOR",
         skills: ["Creative Direction", "Brand Strategy", "Web Development", "Design Systems", "Client Relations"],
@@ -185,8 +210,9 @@ const teamMembers: TeamMember[] = [
     },
     {
         id: 15,
-        image: "/teammembers/samtm.webp",
+        image: "/teammembers/samsuentm.webp",
         category: "Creative",
+        creativeSubcategory: "Sound",
         name: "Sam Suen",
         role: "HEAD OF ARTIST DEVELOPMENT",
         skills: ["Artist Development", "Creative Strategy", "Talent Management", "Music Industry Relations", "Brand Building"],
@@ -196,20 +222,32 @@ const teamMembers: TeamMember[] = [
     },
     {
         id: 16,
-        image: "/teammembers/anishtm2.png",
+        image: "/teammembers/anishtm2.webp",
         category: "Creative",
         creativeSubcategory: "UI/UX",
         name: "Anish Goel",
         role: "WEB & GRAPHIC DESIGNER",
         skills: ["Web Design", "Graphic Design", "Visual Communication", "Brand Collateral Design", "Design Strategy"],
         location: "Savannah, Georgia",
-        specialties: "Bridges creativity and clarity through thoughtful web and graphic design. Translates R.O.V.'s ideas into compelling visual communication, ensuring concepts are expressed with precision, polish, and purpose across digital and branded touchpoints.",
+        specialties: "I bridge creativity and clarity through thoughtful web and graphic design. I translate R.O.V.'s ideas into compelling visual communication, ensuring concepts are expressed with precision, polish, and purpose across digital and branded touchpoints.",
         shadowColor: "150, 120, 90"
+    },
+    {
+        id: 17,
+        image: "/teammembers/eshaaltm.webp",
+        category: "Creative",
+        creativeSubcategory: "Illustrative",
+        name: "Esha",
+        role: "CUSTOM ILLUSTRATOR",
+        skills: ["Custom Illustration", "Hand-Drawn Art", "Character Design", "Creative Concepting", "Visual Storytelling"],
+        location: "Birmingham, UK",
+        specialties: "I draw custom, fun illustrations from scratch for R.O.V.'s projects. I bring a playful, hand-crafted touch to every piece—turning ideas into one-of-a-kind visuals that give each project its own personality and charm.",
+        shadowColor: "160, 110, 130"
     },
 ];
 
 const categories: Category[] = ["Creative", "Tech", "Systems"];
-const creativeSubcategories: CreativeSubcategory[] = ["UI/UX", "Motion", "Illustrative"];
+const creativeSubcategories: CreativeSubcategory[] = ["UI/UX", "Motion", "Illustrative", "Sound"];
 
 const TeamSection: React.FC = () => {
     const [activeCategory, setActiveCategory] = useState<Category>("All");
@@ -386,13 +424,11 @@ const TeamSection: React.FC = () => {
 
     const CreativeSection = ({ members }: { members: TeamMember[] }) => {
         const expandedMember = members.find(m => m.id === expandedMemberId);
-        // Leadership members (no subcategory — Ayush, Sam)
-        const leadershipMembers = members.filter(m => !m.creativeSubcategory && m.id !== expandedMemberId);
 
         // Get members for the active sub-filter
         const getSubMembers = () => {
             if (activeCreativeSub === "All") {
-                return members.filter(m => m.creativeSubcategory && m.id !== expandedMemberId);
+                return members.filter(m => m.id !== expandedMemberId);
             }
             return members.filter(m => m.creativeSubcategory === activeCreativeSub && m.id !== expandedMemberId);
         };
@@ -435,16 +471,6 @@ const TeamSection: React.FC = () => {
                 <AnimatePresence mode="wait">
                     {expandedMember && <ExpandedMemberView expandedMember={expandedMember} />}
                 </AnimatePresence>
-
-                {/* Leadership row — always visible */}
-                {leadershipMembers.length > 0 && (
-                    <div className="mb-10">
-                        <h3 className="text-xs tracking-[0.3em] uppercase text-white/30 mb-4 pl-1" style={{ fontFamily: 'Roboto, sans-serif' }}>
-                            Creative Direction
-                        </h3>
-                        <MemberGrid members={leadershipMembers} />
-                    </div>
-                )}
 
                 {/* Grouped view when "All" sub is active */}
                 {activeCreativeSub === "All" ? (

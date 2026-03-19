@@ -1,33 +1,59 @@
 "use client";
 
-import { Component as InteractiveGlobe } from "@/components/ui/interactive-globe";
+import { Component as InteractiveGlobe, type GlobeLocation } from "@/components/ui/interactive-globe";
 
-const TEAM_LOCATIONS = [
-  { lat: 33.749, lng: -84.388, label: "Atlanta", isHQ: true },
-  { lat: 32.081, lng: -81.091, label: "Savannah", isHQ: false },
-  { lat: 43.651, lng: -79.383, label: "Toronto", isHQ: false },
-  { lat: 6.524, lng: 3.379, label: "Lagos", isHQ: false },
-  { lat: 51.507, lng: -0.128, label: "London", isHQ: false },
-  { lat: 17.385, lng: 78.487, label: "Hyderabad", isHQ: false },
-  { lat: 12.972, lng: 77.594, label: "Bangalore", isHQ: false },
+const LOCATIONS: GlobeLocation[] = [
+  // HQ
+  {
+    lat: 33.749, lng: -84.388, city: "Atlanta", country: "US", type: "hq",
+    members: [
+      { name: "Ayush", role: "Creative Director" },
+      { name: "Kavya", role: "Director of Design" },
+      { name: "Vaishnavi", role: "Video Strategist" },
+      { name: "Jasnoor", role: "Frontend Dev" },
+      { name: "Suchet", role: "Systems Architect" },
+      { name: "Sam Suen", role: "Artist Dev" },
+    ],
+  },
+  // Team locations
+  {
+    lat: 32.081, lng: -81.091, city: "Savannah", country: "US", type: "team",
+    members: [
+      { name: "Jiwon", role: "UI/UX Designer" },
+      { name: "Anish", role: "Web Designer" },
+    ],
+  },
+  {
+    lat: 17.385, lng: 78.487, city: "Hyderabad", country: "IN", type: "team",
+    members: [
+      { name: "Tanvi", role: "Design Strategist" },
+      { name: "Daksha", role: "Head of Dev" },
+    ],
+  },
+  {
+    lat: 12.972, lng: 77.594, city: "Bangalore", country: "IN", type: "team",
+    members: [
+      { name: "Jahnavi", role: "Design Assistant" },
+      { name: "Chaman", role: "Motion Designer" },
+    ],
+  },
+  {
+    lat: 52.483, lng: -1.894, city: "Birmingham", country: "UK", type: "team",
+    members: [
+      { name: "Esha", role: "Illustrator" },
+    ],
+  },
+  // Business reach
+  { lat: 43.651, lng: -79.383, city: "Toronto", country: "CA", type: "business" },
+  { lat: 6.524, lng: 3.379, city: "Lagos", country: "NG", type: "business" },
+  { lat: 51.507, lng: -0.128, city: "London", country: "UK", type: "business" },
 ];
 
-const locationTags = TEAM_LOCATIONS.map((loc) => ({
-  city: loc.label,
-  isHQ: loc.isHQ,
-}));
-
-const hq = TEAM_LOCATIONS[0];
-const connections = TEAM_LOCATIONS.filter((m) => !m.isHQ).map((m) => ({
-  from: [hq.lat, hq.lng] as [number, number],
-  to: [m.lat, m.lng] as [number, number],
-}));
-
-const globeMarkers = TEAM_LOCATIONS.map((loc) => ({
-  lat: loc.lat,
-  lng: loc.lng,
-  label: loc.isHQ ? `${loc.label} (HQ)` : loc.label,
-}));
+const tagColors: Record<GlobeLocation["type"], { color: string; border: string }> = {
+  hq: { color: "#EA9A61", border: "rgba(234,154,97,0.3)" },
+  team: { color: "rgba(247,242,228,0.7)", border: "rgba(247,242,228,0.15)" },
+  business: { color: "rgba(177,105,55,0.6)", border: "rgba(177,105,55,0.15)" },
+};
 
 export function GlobalTeamGlobe() {
   return (
@@ -130,11 +156,7 @@ export function GlobalTeamGlobe() {
         }}
       >
         <InteractiveGlobe
-          markers={globeMarkers}
-          connections={connections}
-          dotColor="rgba(78, 205, 196, ALPHA)"
-          arcColor="rgba(45, 212, 191, 0.5)"
-          markerColor="rgba(78, 205, 196, 1)"
+          locations={LOCATIONS}
           autoRotateSpeed={0.002}
         />
       </div>
@@ -149,7 +171,7 @@ export function GlobalTeamGlobe() {
           marginTop: "clamp(24px, 4vw, 48px)",
         }}
       >
-        {locationTags.map((loc) => (
+        {LOCATIONS.map((loc) => (
           <span
             key={loc.city}
             style={{
@@ -158,14 +180,14 @@ export function GlobalTeamGlobe() {
               fontSize: "clamp(11px, 1.4vw, 13px)",
               padding: "6px 16px",
               borderRadius: 999,
-              border: "1px solid rgba(234,154,97,0.15)",
+              border: `1px solid ${tagColors[loc.type].border}`,
               background: "transparent",
-              color: loc.isHQ ? "#EA9A61" : "rgba(255,244,227,0.4)",
+              color: tagColors[loc.type].color,
               letterSpacing: "0.06em",
             }}
           >
             {loc.city}
-            {loc.isHQ ? " (HQ)" : ""}
+            {loc.type === "hq" ? " (HQ)" : ""}
           </span>
         ))}
       </div>

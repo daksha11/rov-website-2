@@ -1,50 +1,64 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useRef, useEffect, useCallback, useState } from "react";
+import { useRef, useEffect, useCallback } from "react";
+import { coastlinePolygons, isPointOnLand } from "@/data/continent-coastlines";
+
+// --- Public types ---
+
+export interface GlobeTeamMember {
+  name: string;
+  role: string;
+}
+
+export interface GlobeLocation {
+  lat: number;
+  lng: number;
+  city: string;
+  country: string;
+  type: "hq" | "team" | "business";
+  members?: GlobeTeamMember[];
+}
 
 interface GlobeProps {
   className?: string;
-  size?: number;
+  autoRotateSpeed?: number;
+  locations?: GlobeLocation[];
+  // Legacy props (used if locations is not provided)
   dotColor?: string;
   arcColor?: string;
   markerColor?: string;
-  autoRotateSpeed?: number;
   connections?: { from: [number, number]; to: [number, number] }[];
   markers?: { lat: number; lng: number; label?: string }[];
 }
 
-const DEFAULT_MARKERS = [
-  { lat: 37.78, lng: -122.42, label: "San Francisco" },
-  { lat: 51.51, lng: -0.13, label: "London" },
-  { lat: 35.68, lng: 139.69, label: "Tokyo" },
-  { lat: -33.87, lng: 151.21, label: "Sydney" },
-  { lat: 1.35, lng: 103.82, label: "Singapore" },
-  { lat: 55.76, lng: 37.62, label: "Moscow" },
-  { lat: -23.55, lng: -46.63, label: "São Paulo" },
-  { lat: 19.43, lng: -99.13, label: "Mexico City" },
-  { lat: 28.61, lng: 77.21, label: "Delhi" },
-  { lat: 36.19, lng: 44.01, label: "Erbil" },
-];
+// --- Colors ---
 
-const DEFAULT_CONNECTIONS: { from: [number, number]; to: [number, number] }[] =
-  [
-    { from: [37.78, -122.42], to: [51.51, -0.13] },
-    { from: [51.51, -0.13], to: [35.68, 139.69] },
-    { from: [35.68, 139.69], to: [-33.87, 151.21] },
-    { from: [37.78, -122.42], to: [1.35, 103.82] },
-    { from: [51.51, -0.13], to: [28.61, 77.21] },
-    { from: [37.78, -122.42], to: [-23.55, -46.63] },
-    { from: [1.35, 103.82], to: [-33.87, 151.21] },
-    { from: [28.61, 77.21], to: [36.19, 44.01] },
-    { from: [51.51, -0.13], to: [36.19, 44.01] },
-  ];
+const COLORS = {
+  hqMarker: "#EA9A61",
+  hqGlow: "rgba(234, 154, 97, 0.25)",
+  teamMarker: "#F7F2E4",
+  teamGlow: "rgba(247, 242, 228, 0.2)",
+  businessMarker: "rgba(177, 105, 55, 0.8)",
+  businessGlow: "rgba(177, 105, 55, 0.15)",
+  landDot: "rgba(234, 154, 97, ALPHA)",
+  oceanDot: "rgba(177, 105, 55, ALPHA)",
+  coastline: "rgba(234, 154, 97, 0.12)",
+  arcWarm: "#EA9A61",
+  arcTeal: "rgba(177, 105, 55, 0.35)",
+  particleWarm: "#EA9A61",
+  particleTeal: "rgba(234, 154, 97, 1)",
+  globeOutline: "rgba(177, 105, 55, 0.08)",
+  outerGlow: "rgba(234, 154, 97, 0.03)",
+  tooltipBg: "rgba(0, 0, 0, 0.88)",
+  tooltipText: "#F7F2E4",
+  tooltipSubtext: "rgba(247, 242, 228, 0.6)",
+  tooltipAccent: "#EA9A61",
+};
 
-function latLngToXYZ(
-  lat: number,
-  lng: number,
-  radius: number
-): [number, number, number] {
+// --- Math helpers ---
+
+function latLngToXYZ(lat: number, lng: number, radius: number): [number, number, number] {
   const phi = ((90 - lat) * Math.PI) / 180;
   const theta = ((lng + 180) * Math.PI) / 180;
   return [
@@ -54,49 +68,57 @@ function latLngToXYZ(
   ];
 }
 
-function rotateY(
-  x: number,
-  y: number,
-  z: number,
-  angle: number
-): [number, number, number] {
+function rotateY(x: number, y: number, z: number, angle: number): [number, number, number] {
   const cos = Math.cos(angle);
   const sin = Math.sin(angle);
   return [x * cos + z * sin, y, -x * sin + z * cos];
 }
 
-function rotateX(
-  x: number,
-  y: number,
-  z: number,
-  angle: number
-): [number, number, number] {
+function rotateX(x: number, y: number, z: number, angle: number): [number, number, number] {
   const cos = Math.cos(angle);
   const sin = Math.sin(angle);
   return [x, y * cos - z * sin, y * sin + z * cos];
 }
 
-function project(
-  x: number,
-  y: number,
-  z: number,
-  cx: number,
-  cy: number,
-  fov: number
-): [number, number, number] {
+function project(x: number, y: number, z: number, cx: number, cy: number, fov: number): [number, number, number] {
   const scale = fov / (fov + z);
   return [x * scale + cx, y * scale + cy, z];
 }
 
+// Convert unit Fibonacci sphere point back to lat/lng
+function xyzToLatLng(x: number, y: number, z: number): [number, number] {
+  const lat = 90 - (Math.acos(y) * 180) / Math.PI;
+  const lng = ((Math.atan2(z, -x) * 180) / Math.PI) - 180;
+  return [lat, lng > 180 ? lng - 360 : lng < -180 ? lng + 360 : lng];
+}
+
+// Generate Fibonacci sphere points
+function generateFibonacciSphere(count: number): [number, number, number][] {
+  const points: [number, number, number][] = [];
+  const goldenRatio = (1 + Math.sqrt(5)) / 2;
+  for (let i = 0; i < count; i++) {
+    const theta = (2 * Math.PI * i) / goldenRatio;
+    const phi = Math.acos(1 - (2 * (i + 0.5)) / count);
+    points.push([
+      Math.cos(theta) * Math.sin(phi),
+      Math.cos(phi),
+      Math.sin(theta) * Math.sin(phi),
+    ]);
+  }
+  return points;
+}
+
+// --- Component ---
+
 export function Component({
   className,
-  size = 600,
-  dotColor = "rgba(100, 180, 255, ALPHA)",
-  arcColor = "rgba(100, 180, 255, 0.5)",
-  markerColor = "rgba(100, 220, 255, 1)",
   autoRotateSpeed = 0.002,
-  connections = DEFAULT_CONNECTIONS,
-  markers = DEFAULT_MARKERS,
+  locations,
+  dotColor = "rgba(78, 205, 196, ALPHA)",
+  arcColor = "rgba(45, 212, 191, 0.5)",
+  markerColor = "rgba(78, 205, 196, 1)",
+  connections: legacyConnections,
+  markers: legacyMarkers,
 }: GlobeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rotYRef = useRef(0.4);
@@ -110,25 +132,40 @@ export function Component({
   }>({ active: false, startX: 0, startY: 0, startRotY: 0, startRotX: 0 });
   const animRef = useRef<number>(0);
   const timeRef = useRef(0);
+  const mouseRef = useRef<{ x: number; y: number }>({ x: -9999, y: -9999 });
+  const hoveredRef = useRef<GlobeLocation | null>(null);
+  const pointerOverRef = useRef(false);
 
-  // Generate globe dots (land approximation via density sampling)
-  const dotsRef = useRef<[number, number, number][]>([]);
+  // Pre-computed dot arrays
+  const oceanDotsRef = useRef<[number, number, number][]>([]);
+  const landDotsRef = useRef<[number, number, number][]>([]);
 
   useEffect(() => {
-    const dots: [number, number, number][] = [];
-    const numDots = 1200;
-    // Fibonacci sphere
-    const goldenRatio = (1 + Math.sqrt(5)) / 2;
-    for (let i = 0; i < numDots; i++) {
-      const theta = (2 * Math.PI * i) / goldenRatio;
-      const phi = Math.acos(1 - (2 * (i + 0.5)) / numDots);
-      const x = Math.cos(theta) * Math.sin(phi);
-      const y = Math.cos(phi);
-      const z = Math.sin(theta) * Math.sin(phi);
-      dots.push([x, y, z]);
+    // Ocean grid — all Fibonacci points, rendered dim
+    oceanDotsRef.current = generateFibonacciSphere(1200);
+
+    // Land dots — denser sampling, filtered to land only
+    const candidates = generateFibonacciSphere(3500);
+    const land: [number, number, number][] = [];
+    for (const pt of candidates) {
+      const [lat, lng] = xyzToLatLng(pt[0], pt[1], pt[2]);
+      if (isPointOnLand(lat, lng)) {
+        land.push(pt);
+      }
     }
-    dotsRef.current = dots;
+    landDotsRef.current = land;
   }, []);
+
+  // Derive connections from locations
+  const derivedConnections = useRef<{ from: GlobeLocation; to: GlobeLocation; isTeam: boolean }[]>([]);
+  useEffect(() => {
+    if (!locations) return;
+    const hq = locations.find((l) => l.type === "hq");
+    if (!hq) return;
+    derivedConnections.current = locations
+      .filter((l) => l.type !== "hq")
+      .map((l) => ({ from: hq, to: l, isTeam: l.type === "team" }));
+  }, [locations]);
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -139,6 +176,13 @@ export function Component({
     const dpr = window.devicePixelRatio || 1;
     const w = canvas.clientWidth;
     const h = canvas.clientHeight;
+
+    // Guard: skip frame if canvas has no dimensions (not yet laid out)
+    if (w === 0 || h === 0) {
+      animRef.current = requestAnimationFrame(draw);
+      return;
+    }
+
     canvas.width = w * dpr;
     canvas.height = h * dpr;
     ctx.scale(dpr, dpr);
@@ -148,8 +192,8 @@ export function Component({
     const radius = Math.min(w, h) * 0.38;
     const fov = 600;
 
-    // Auto rotate
-    if (!dragRef.current.active) {
+    // Auto rotate (pause on hover and drag)
+    if (!dragRef.current.active && !pointerOverRef.current) {
       rotYRef.current += autoRotateSpeed;
     }
 
@@ -158,66 +202,116 @@ export function Component({
 
     ctx.clearRect(0, 0, w, h);
 
-    // Outer glow
-    const glowGrad = ctx.createRadialGradient(cx, cy, radius * 0.8, cx, cy, radius * 1.5);
-    glowGrad.addColorStop(0, "rgba(60, 140, 255, 0.03)");
-    glowGrad.addColorStop(1, "rgba(60, 140, 255, 0)");
-    ctx.fillStyle = glowGrad;
-    ctx.fillRect(0, 0, w, h);
-
-    // Globe outline
-    ctx.beginPath();
-    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-    ctx.strokeStyle = "rgba(100, 180, 255, 0.06)";
-    ctx.lineWidth = 1;
-    ctx.stroke();
-
     const ry = rotYRef.current;
     const rx = rotXRef.current;
 
-    // Draw dots
-    const dots = dotsRef.current;
-    for (let i = 0; i < dots.length; i++) {
-      let [x, y, z] = dots[i];
-      x *= radius;
-      y *= radius;
-      z *= radius;
+    // --- Outer glow (warm terracotta tint) ---
+    const glowGrad = ctx.createRadialGradient(cx, cy, radius * 0.8, cx, cy, radius * 1.5);
+    glowGrad.addColorStop(0, COLORS.outerGlow);
+    glowGrad.addColorStop(1, "rgba(234, 154, 97, 0)");
+    ctx.fillStyle = glowGrad;
+    ctx.fillRect(0, 0, w, h);
 
+    // --- Globe outline ---
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.strokeStyle = COLORS.globeOutline;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // --- Ocean dots (very dim) ---
+    const oceanDots = oceanDotsRef.current;
+    for (let i = 0; i < oceanDots.length; i++) {
+      let [x, y, z] = oceanDots[i];
+      x *= radius; y *= radius; z *= radius;
       [x, y, z] = rotateX(x, y, z, rx);
       [x, y, z] = rotateY(x, y, z, ry);
-
-      if (z > 0) continue; // back-face cull
-
+      if (z > 0) continue;
       const [sx, sy] = project(x, y, z, cx, cy, fov);
-      const depthAlpha = Math.max(0.1, 1 - (z + radius) / (2 * radius));
-      const dotSize = 1 + depthAlpha * 0.8;
-
+      const depthAlpha = Math.max(0.02, (1 - (z + radius) / (2 * radius)) * 0.08);
       ctx.beginPath();
-      ctx.arc(sx, sy, dotSize, 0, Math.PI * 2);
-      ctx.fillStyle = dotColor.replace("ALPHA", depthAlpha.toFixed(2));
+      ctx.arc(sx, sy, 0.8, 0, Math.PI * 2);
+      ctx.fillStyle = COLORS.oceanDot.replace("ALPHA", depthAlpha.toFixed(3));
       ctx.fill();
     }
 
-    // Draw connections as arcs
-    for (const conn of connections) {
-      const [lat1, lng1] = conn.from;
-      const [lat2, lng2] = conn.to;
+    // --- Land dots (bright, continent-shaped) ---
+    const landDots = landDotsRef.current;
+    for (let i = 0; i < landDots.length; i++) {
+      let [x, y, z] = landDots[i];
+      x *= radius; y *= radius; z *= radius;
+      [x, y, z] = rotateX(x, y, z, rx);
+      [x, y, z] = rotateY(x, y, z, ry);
+      if (z > 0) continue;
+      const [sx, sy] = project(x, y, z, cx, cy, fov);
+      const depthAlpha = Math.max(0.1, 1 - (z + radius) / (2 * radius));
+      const alpha = depthAlpha * 0.45;
+      const dotSize = 1 + depthAlpha * 0.6;
+      ctx.beginPath();
+      ctx.arc(sx, sy, dotSize, 0, Math.PI * 2);
+      ctx.fillStyle = COLORS.landDot.replace("ALPHA", alpha.toFixed(3));
+      ctx.fill();
+    }
 
-      let [x1, y1, z1] = latLngToXYZ(lat1, lng1, radius);
-      let [x2, y2, z2] = latLngToXYZ(lat2, lng2, radius);
+    // --- Coastline polylines ---
+    ctx.strokeStyle = COLORS.coastline;
+    ctx.lineWidth = 0.6;
+    for (const polygon of coastlinePolygons) {
+      ctx.beginPath();
+      let started = false;
+      let prevVisible = false;
+      for (let i = 0; i < polygon.length; i++) {
+        let [x, y, z] = latLngToXYZ(polygon[i][0], polygon[i][1], radius);
+        [x, y, z] = rotateX(x, y, z, rx);
+        [x, y, z] = rotateY(x, y, z, ry);
+        const visible = z <= 0;
+        const [sx, sy] = project(x, y, z, cx, cy, fov);
+        if (visible) {
+          if (!started || !prevVisible) {
+            ctx.moveTo(sx, sy);
+            started = true;
+          } else {
+            ctx.lineTo(sx, sy);
+          }
+        }
+        prevVisible = visible;
+      }
+      ctx.stroke();
+    }
 
+    // --- Use new locations system or legacy ---
+    if (locations) {
+      drawLocationsSystem(ctx, locations, derivedConnections.current, cx, cy, radius, fov, rx, ry, time);
+    } else {
+      drawLegacySystem(ctx, legacyMarkers || [], legacyConnections || [], cx, cy, radius, fov, rx, ry, time, dotColor, arcColor, markerColor);
+    }
+
+    animRef.current = requestAnimationFrame(draw);
+  }, [autoRotateSpeed, locations, legacyMarkers, legacyConnections, dotColor, arcColor, markerColor]);
+
+  // --- New locations drawing system ---
+  function drawLocationsSystem(
+    ctx: CanvasRenderingContext2D,
+    locs: GlobeLocation[],
+    conns: { from: GlobeLocation; to: GlobeLocation; isTeam: boolean }[],
+    cx: number, cy: number, radius: number, fov: number,
+    rx: number, ry: number, time: number,
+  ) {
+    // Draw arcs
+    for (const conn of conns) {
+      let [x1, y1, z1] = latLngToXYZ(conn.from.lat, conn.from.lng, radius);
+      let [x2, y2, z2] = latLngToXYZ(conn.to.lat, conn.to.lng, radius);
       [x1, y1, z1] = rotateX(x1, y1, z1, rx);
       [x1, y1, z1] = rotateY(x1, y1, z1, ry);
       [x2, y2, z2] = rotateX(x2, y2, z2, rx);
       [x2, y2, z2] = rotateY(x2, y2, z2, ry);
 
-      // Only draw if both points face camera
       if (z1 > radius * 0.3 && z2 > radius * 0.3) continue;
 
       const [sx1, sy1] = project(x1, y1, z1, cx, cy, fov);
       const [sx2, sy2] = project(x2, y2, z2, cx, cy, fov);
 
-      // Elevated midpoint for arc
+      // Elevated midpoint
       const midX = (x1 + x2) / 2;
       const midY = (y1 + y2) / 2;
       const midZ = (z1 + z2) / 2;
@@ -228,105 +322,353 @@ export function Component({
       const elevZ = (midZ / midLen) * arcHeight;
       const [scx, scy] = project(elevX, elevY, elevZ, cx, cy, fov);
 
+      // Arc stroke — warm for team, teal for business
       ctx.beginPath();
       ctx.moveTo(sx1, sy1);
       ctx.quadraticCurveTo(scx, scy, sx2, sy2);
-      ctx.strokeStyle = arcColor;
-      ctx.lineWidth = 1.2;
+      if (conn.isTeam) {
+        ctx.strokeStyle = "rgba(234, 154, 97, 0.35)";
+        ctx.lineWidth = 1.3;
+      } else {
+        ctx.strokeStyle = COLORS.arcTeal;
+        ctx.lineWidth = 1;
+      }
       ctx.stroke();
 
-      // Traveling dot along arc
-      const t = (Math.sin(time * 1.2 + lat1 * 0.1) + 1) / 2;
-      const tx = (1 - t) * (1 - t) * sx1 + 2 * (1 - t) * t * scx + t * t * sx2;
-      const ty = (1 - t) * (1 - t) * sy1 + 2 * (1 - t) * t * scy + t * t * sy2;
-
-      ctx.beginPath();
-      ctx.arc(tx, ty, 2, 0, Math.PI * 2);
-      ctx.fillStyle = markerColor;
-      ctx.fill();
+      // Multiple traveling particles
+      const particleColor = conn.isTeam ? COLORS.particleWarm : COLORS.particleTeal;
+      const phaseOffset = conn.from.lat * 0.1;
+      for (let p = 0; p < 3; p++) {
+        const t = ((time * 0.8 + phaseOffset + p * 2.1) % 6.28) / 6.28;
+        const px = (1 - t) * (1 - t) * sx1 + 2 * (1 - t) * t * scx + t * t * sx2;
+        const py = (1 - t) * (1 - t) * sy1 + 2 * (1 - t) * t * scy + t * t * sy2;
+        const particleSize = 1.5 + Math.sin(t * Math.PI) * 1;
+        const particleAlpha = 0.3 + Math.sin(t * Math.PI) * 0.7;
+        ctx.beginPath();
+        ctx.arc(px, py, particleSize, 0, Math.PI * 2);
+        ctx.fillStyle = particleColor.replace("1)", `${particleAlpha.toFixed(2)})`).replace("0.35)", `${(particleAlpha * 0.8).toFixed(2)})`);
+        ctx.fill();
+      }
     }
 
-    // Draw markers
+    // Draw markers with hover detection
+    let newHovered: GlobeLocation | null = null;
+    const mx = mouseRef.current.x;
+    const my = mouseRef.current.y;
+
+    // Collect visible markers for drawing order (business first, then team, then HQ on top)
+    const sortedLocs = [...locs].sort((a, b) => {
+      const order = { business: 0, team: 1, hq: 2 };
+      return order[a.type] - order[b.type];
+    });
+
+    const markerPositions: { loc: GlobeLocation; sx: number; sy: number }[] = [];
+
+    for (const loc of sortedLocs) {
+      let [x, y, z] = latLngToXYZ(loc.lat, loc.lng, radius);
+      [x, y, z] = rotateX(x, y, z, rx);
+      [x, y, z] = rotateY(x, y, z, ry);
+      if (z > radius * 0.1) continue;
+
+      const [sx, sy] = project(x, y, z, cx, cy, fov);
+      markerPositions.push({ loc, sx, sy });
+
+      // Hover detection
+      const dist = Math.sqrt((mx - sx) ** 2 + (my - sy) ** 2);
+      if (dist < 25) newHovered = loc;
+
+      const pulse = Math.sin(time * 2 + loc.lat) * 0.5 + 0.5;
+
+      if (loc.type === "hq") {
+        // HQ: large terracotta marker with double pulse + radial glow
+        const glowGrad = ctx.createRadialGradient(sx, sy, 0, sx, sy, 18 + pulse * 8);
+        glowGrad.addColorStop(0, "rgba(234, 154, 97, 0.25)");
+        glowGrad.addColorStop(1, "rgba(234, 154, 97, 0)");
+        ctx.fillStyle = glowGrad;
+        ctx.fillRect(sx - 30, sy - 30, 60, 60);
+
+        // Outer pulse ring
+        ctx.beginPath();
+        ctx.arc(sx, sy, 8 + pulse * 6, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(234, 154, 97, ${(0.15 + pulse * 0.15).toFixed(2)})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Inner pulse ring
+        ctx.beginPath();
+        ctx.arc(sx, sy, 5 + pulse * 3, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(234, 154, 97, ${(0.25 + pulse * 0.2).toFixed(2)})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Core dot
+        ctx.beginPath();
+        ctx.arc(sx, sy, 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = COLORS.hqMarker;
+        ctx.fill();
+
+        // Label
+        ctx.font = "bold 10px 'Roboto', system-ui, sans-serif";
+        ctx.fillStyle = COLORS.hqMarker;
+        ctx.fillText(`${loc.city} (HQ)`, sx + 10, sy + 3);
+
+      } else if (loc.type === "team") {
+        // Team: cream marker with single pulse ring
+        ctx.beginPath();
+        ctx.arc(sx, sy, 5 + pulse * 4, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(247, 242, 228, ${(0.15 + pulse * 0.15).toFixed(2)})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Core dot
+        ctx.beginPath();
+        ctx.arc(sx, sy, 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = COLORS.teamMarker;
+        ctx.fill();
+
+        // Label
+        ctx.font = "10px 'Roboto', system-ui, sans-serif";
+        ctx.fillStyle = "rgba(247, 242, 228, 0.7)";
+        ctx.fillText(loc.city, sx + 8, sy + 3);
+
+      } else {
+        // Business: small brown dot with subtle glow
+        ctx.beginPath();
+        ctx.arc(sx, sy, 4 + pulse * 2, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(177, 105, 55, ${(0.1 + pulse * 0.1).toFixed(2)})`;
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(sx, sy, 2, 0, Math.PI * 2);
+        ctx.fillStyle = COLORS.businessMarker;
+        ctx.fill();
+
+        // Label
+        ctx.font = "9px 'Roboto', system-ui, sans-serif";
+        ctx.fillStyle = "rgba(177, 105, 55, 0.5)";
+        ctx.fillText(loc.city, sx + 7, sy + 3);
+      }
+    }
+
+    hoveredRef.current = newHovered;
+
+    // --- Tooltip ---
+    if (newHovered) {
+      const mp = markerPositions.find((m) => m.loc === newHovered);
+      if (mp) {
+        drawTooltip(ctx, mp.sx, mp.sy, newHovered, cx * 2, cy * 2);
+      }
+    }
+  }
+
+  function drawTooltip(
+    ctx: CanvasRenderingContext2D,
+    sx: number, sy: number,
+    loc: GlobeLocation,
+    canvasW: number, canvasH: number,
+  ) {
+    const padding = 12;
+    const lineHeight = 16;
+    const headerHeight = 22;
+
+    const members = loc.members || [];
+    const hasMembers = members.length > 0;
+    const subtitleText = loc.type === "business" ? "Business Operations" : `${members.length} team member${members.length !== 1 ? "s" : ""}`;
+
+    // Measure text widths
+    ctx.font = "bold 12px 'Roboto', system-ui, sans-serif";
+    const titleWidth = ctx.measureText(loc.city).width;
+    ctx.font = "10px 'Roboto', system-ui, sans-serif";
+    const subtitleWidth = ctx.measureText(subtitleText).width;
+
+    let maxMemberWidth = 0;
+    if (hasMembers) {
+      ctx.font = "10px 'Roboto', system-ui, sans-serif";
+      for (const m of members) {
+        const w = ctx.measureText(`${m.name} — ${m.role}`).width;
+        if (w > maxMemberWidth) maxMemberWidth = w;
+      }
+    }
+
+    const contentWidth = Math.max(titleWidth, subtitleWidth, maxMemberWidth) + padding * 2;
+    const contentHeight = headerHeight + (hasMembers ? 4 + members.length * lineHeight : 0) + padding * 2;
+
+    // Position tooltip — flip if near edge
+    let tx = sx + 16;
+    let ty = sy - contentHeight / 2;
+    if (tx + contentWidth > canvasW - 10) tx = sx - contentWidth - 16;
+    if (ty < 10) ty = 10;
+    if (ty + contentHeight > canvasH - 10) ty = canvasH - contentHeight - 10;
+
+    // Background
+    ctx.fillStyle = COLORS.tooltipBg;
+    ctx.beginPath();
+    const r = 8;
+    ctx.moveTo(tx + r, ty);
+    ctx.lineTo(tx + contentWidth - r, ty);
+    ctx.quadraticCurveTo(tx + contentWidth, ty, tx + contentWidth, ty + r);
+    ctx.lineTo(tx + contentWidth, ty + contentHeight - r);
+    ctx.quadraticCurveTo(tx + contentWidth, ty + contentHeight, tx + contentWidth - r, ty + contentHeight);
+    ctx.lineTo(tx + r, ty + contentHeight);
+    ctx.quadraticCurveTo(tx, ty + contentHeight, tx, ty + contentHeight - r);
+    ctx.lineTo(tx, ty + r);
+    ctx.quadraticCurveTo(tx, ty, tx + r, ty);
+    ctx.closePath();
+    ctx.fill();
+
+    // Border
+    ctx.strokeStyle = loc.type === "hq" ? "rgba(234, 154, 97, 0.3)" : loc.type === "team" ? "rgba(247, 242, 228, 0.15)" : "rgba(177, 105, 55, 0.2)";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // City name
+    ctx.font = "bold 12px 'Roboto', system-ui, sans-serif";
+    ctx.fillStyle = loc.type === "hq" ? COLORS.tooltipAccent : COLORS.tooltipText;
+    ctx.fillText(loc.city, tx + padding, ty + padding + 12);
+
+    // Subtitle
+    ctx.font = "10px 'Roboto', system-ui, sans-serif";
+    ctx.fillStyle = COLORS.tooltipSubtext;
+    ctx.fillText(subtitleText, tx + padding, ty + padding + headerHeight + 2);
+
+    // Members list
+    if (hasMembers) {
+      const startY = ty + padding + headerHeight + 8;
+      for (let i = 0; i < members.length; i++) {
+        const m = members[i];
+        ctx.font = "10px 'Roboto', system-ui, sans-serif";
+        // Name
+        ctx.fillStyle = COLORS.tooltipText;
+        const nameW = ctx.measureText(m.name).width;
+        ctx.fillText(m.name, tx + padding, startY + i * lineHeight + 10);
+        // Role
+        ctx.fillStyle = COLORS.tooltipSubtext;
+        ctx.fillText(` — ${m.role}`, tx + padding + nameW, startY + i * lineHeight + 10);
+      }
+    }
+  }
+
+  // --- Legacy drawing system (backward compat) ---
+  function drawLegacySystem(
+    ctx: CanvasRenderingContext2D,
+    markers: { lat: number; lng: number; label?: string }[],
+    connections: { from: [number, number]; to: [number, number] }[],
+    cx: number, cy: number, radius: number, fov: number,
+    rx: number, ry: number, time: number,
+    dotCol: string, arcCol: string, markCol: string,
+  ) {
+    for (const conn of connections) {
+      let [x1, y1, z1] = latLngToXYZ(conn.from[0], conn.from[1], radius);
+      let [x2, y2, z2] = latLngToXYZ(conn.to[0], conn.to[1], radius);
+      [x1, y1, z1] = rotateX(x1, y1, z1, rx);
+      [x1, y1, z1] = rotateY(x1, y1, z1, ry);
+      [x2, y2, z2] = rotateX(x2, y2, z2, rx);
+      [x2, y2, z2] = rotateY(x2, y2, z2, ry);
+      if (z1 > radius * 0.3 && z2 > radius * 0.3) continue;
+      const [sx1, sy1] = project(x1, y1, z1, cx, cy, fov);
+      const [sx2, sy2] = project(x2, y2, z2, cx, cy, fov);
+      const midX = (x1 + x2) / 2, midY = (y1 + y2) / 2, midZ = (z1 + z2) / 2;
+      const midLen = Math.sqrt(midX * midX + midY * midY + midZ * midZ);
+      const arcH = radius * 1.25;
+      const [scx, scy] = project((midX / midLen) * arcH, (midY / midLen) * arcH, (midZ / midLen) * arcH, cx, cy, fov);
+      ctx.beginPath();
+      ctx.moveTo(sx1, sy1);
+      ctx.quadraticCurveTo(scx, scy, sx2, sy2);
+      ctx.strokeStyle = arcCol;
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      const t = (Math.sin(time * 1.2 + conn.from[0] * 0.1) + 1) / 2;
+      const tx = (1 - t) ** 2 * sx1 + 2 * (1 - t) * t * scx + t * t * sx2;
+      const ty = (1 - t) ** 2 * sy1 + 2 * (1 - t) * t * scy + t * t * sy2;
+      ctx.beginPath();
+      ctx.arc(tx, ty, 2, 0, Math.PI * 2);
+      ctx.fillStyle = markCol;
+      ctx.fill();
+    }
     for (const marker of markers) {
       let [x, y, z] = latLngToXYZ(marker.lat, marker.lng, radius);
       [x, y, z] = rotateX(x, y, z, rx);
       [x, y, z] = rotateY(x, y, z, ry);
-
       if (z > radius * 0.1) continue;
-
       const [sx, sy] = project(x, y, z, cx, cy, fov);
-
-      // Pulse ring
       const pulse = Math.sin(time * 2 + marker.lat) * 0.5 + 0.5;
       ctx.beginPath();
       ctx.arc(sx, sy, 4 + pulse * 4, 0, Math.PI * 2);
-      ctx.strokeStyle = markerColor.replace("1)", `${0.2 + pulse * 0.15})`);
+      ctx.strokeStyle = markCol.replace("1)", `${0.2 + pulse * 0.15})`);
       ctx.lineWidth = 1;
       ctx.stroke();
-
-      // Core dot
       ctx.beginPath();
       ctx.arc(sx, sy, 2.5, 0, Math.PI * 2);
-      ctx.fillStyle = markerColor;
+      ctx.fillStyle = markCol;
       ctx.fill();
-
-      // Label
       if (marker.label) {
         ctx.font = "10px system-ui, sans-serif";
-        ctx.fillStyle = markerColor.replace("1)", "0.6)");
+        ctx.fillStyle = markCol.replace("1)", "0.6)");
         ctx.fillText(marker.label, sx + 8, sy + 3);
       }
     }
-
-    animRef.current = requestAnimationFrame(draw);
-  }, [dotColor, arcColor, markerColor, autoRotateSpeed, connections, markers]);
+  }
 
   useEffect(() => {
     animRef.current = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(animRef.current);
   }, [draw]);
 
-  // Mouse drag handlers
-  const onPointerDown = useCallback(
-    (e: React.PointerEvent) => {
-      dragRef.current = {
-        active: true,
-        startX: e.clientX,
-        startY: e.clientY,
-        startRotY: rotYRef.current,
-        startRotX: rotXRef.current,
-      };
-      (e.target as HTMLElement).setPointerCapture(e.pointerId);
-    },
-    []
-  );
+  // --- Pointer handlers ---
+  const onPointerDown = useCallback((e: React.PointerEvent) => {
+    dragRef.current = {
+      active: true,
+      startX: e.clientX,
+      startY: e.clientY,
+      startRotY: rotYRef.current,
+      startRotX: rotXRef.current,
+    };
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  }, []);
 
-  const onPointerMove = useCallback(
-    (e: React.PointerEvent) => {
-      if (!dragRef.current.active) return;
-      const dx = e.clientX - dragRef.current.startX;
-      const dy = e.clientY - dragRef.current.startY;
-      rotYRef.current = dragRef.current.startRotY + dx * 0.005;
-      rotXRef.current = Math.max(
-        -1,
-        Math.min(1, dragRef.current.startRotX + dy * 0.005)
-      );
-    },
-    []
-  );
+  const onPointerMove = useCallback((e: React.PointerEvent) => {
+    // Track mouse for hover tooltips
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const rect = canvas.getBoundingClientRect();
+      mouseRef.current = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      };
+    }
+
+    if (!dragRef.current.active) return;
+    const dx = e.clientX - dragRef.current.startX;
+    const dy = e.clientY - dragRef.current.startY;
+    rotYRef.current = dragRef.current.startRotY + dx * 0.005;
+    rotXRef.current = Math.max(-1, Math.min(1, dragRef.current.startRotX + dy * 0.005));
+  }, []);
 
   const onPointerUp = useCallback(() => {
     dragRef.current.active = false;
   }, []);
 
+  const onPointerEnter = useCallback(() => {
+    pointerOverRef.current = true;
+  }, []);
+
+  const onPointerLeave = useCallback(() => {
+    pointerOverRef.current = false;
+    mouseRef.current = { x: -9999, y: -9999 };
+    hoveredRef.current = null;
+  }, []);
+
   return (
     <canvas
       ref={canvasRef}
-      className={cn("w-full h-full cursor-grab active:cursor-grabbing", className)}
-      style={{ width: size, height: size }}
+      className={cn("cursor-grab active:cursor-grabbing", className)}
+      style={{ width: "100%", height: "100%" }}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
     />
   );
 }
