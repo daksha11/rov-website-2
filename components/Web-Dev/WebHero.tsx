@@ -37,6 +37,7 @@ function MockupFrame({ src, alt, className = "", style, priority = false }: Mock
                     src={src}
                     alt={alt}
                     fill
+                    unoptimized
                     className="object-cover object-top"
                     priority={priority}
                     sizes="(max-width: 768px) 85vw, (max-width: 1024px) 340px, 420px"

@@ -141,6 +141,7 @@ const InteractiveFolderIcon: React.FC<{ folderImages?: string[] }> = ({ folderIm
               src="/folderback.svg"
               alt="Folder Back"
               fill
+              unoptimized
               className="object-contain"
               style={{ pointerEvents: 'none' }}
             />
@@ -178,7 +179,9 @@ const InteractiveFolderIcon: React.FC<{ folderImages?: string[] }> = ({ folderIm
                   src={src}
                   alt={`Item ${i + 1}`}
                   fill
+                  unoptimized
                   className="object-cover"
+                  sizes="60px"
                 />
               </div>
             );
@@ -219,6 +222,7 @@ const InteractiveFolderIcon: React.FC<{ folderImages?: string[] }> = ({ folderIm
               src="/folderfront.svg"
               alt="Folder Front"
               fill
+              unoptimized
               className="object-contain"
               style={{ pointerEvents: 'none' }}
             />
