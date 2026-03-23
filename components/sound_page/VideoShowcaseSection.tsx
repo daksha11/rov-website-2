@@ -62,7 +62,7 @@ function VideoItem({
       viewport={{ once: true, margin: "-80px" }}
       transition={{ ...spring, delay: index * 0.1 }}
       className={`cursor-pointer ${fillHeight ? "h-full" : ""}`}
-      onClick={() => onActivate(index)}
+      onMouseEnter={() => onActivate(index)}
     >
       {/* Video */}
       <div
@@ -150,15 +150,6 @@ export default function VideoShowcaseSection() {
           >
             Music Videos
           </motion.h2>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={headerInView ? { opacity: 1 } : {}}
-            transition={{ ...spring, delay: 0.15 }}
-            className="text-white/25 text-sm tracking-widest mt-4 md:mt-0 md:mb-3"
-            style={{ fontFamily: BODY_FONT }}
-          >
-            {String(activeIndex + 1).padStart(2, "0")} / {String(videos.length).padStart(2, "0")}
-          </motion.p>
         </div>
 
         {/* Featured + Thumbnails layout — matched heights */}
