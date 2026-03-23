@@ -40,7 +40,7 @@ const LOCATIONS: GlobeLocation[] = [
   {
     lat: 52.483, lng: -1.894, city: "Birmingham", country: "UK", type: "team",
     members: [
-      { name: "Esha", role: "Illustrator" },
+      { name: "Eshaal", role: "Illustrator" },
     ],
   },
   // Business reach

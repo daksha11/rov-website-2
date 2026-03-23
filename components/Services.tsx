@@ -292,7 +292,7 @@ export default function Services() {
       title: "Sound Engineering",
       link: "/sound",
       previewImages: [
-        '/heroassets/flimage1.png',
+        '/thumbnails/studiothumbnail.webp',
         '/heroassets/flimage2.jpg',
         '/heroassets/event_3.webp'
       ],

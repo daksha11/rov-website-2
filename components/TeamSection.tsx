@@ -237,7 +237,7 @@ const teamMembers: TeamMember[] = [
         image: "/teammembers/eshaaltm.webp",
         category: "Creative",
         creativeSubcategory: "Illustrative",
-        name: "Esha",
+        name: "Eshaal",
         role: "CUSTOM ILLUSTRATOR",
         skills: ["Custom Illustration", "Hand-Drawn Art", "Character Design", "Creative Concepting", "Visual Storytelling"],
         location: "Birmingham, UK",

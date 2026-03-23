@@ -55,6 +55,15 @@ const VideoShowcaseSection = dynamic(() => import("@/components/sound_page/Video
     ssr: false
 });
 
+const StudioSection = dynamic(() => import("@/components/sound_page/StudioSection"), {
+    loading: () => (
+        <div className="bg-black min-h-[60vh] flex items-center justify-center">
+            <div className="text-white/60 text-sm">Loading...</div>
+        </div>
+    ),
+    ssr: false
+});
+
 export default function Page() {
     return (
         <>
@@ -110,6 +119,9 @@ export default function Page() {
 
             {/* Video Showcase Section */}
             <VideoShowcaseSection />
+
+            {/* Studio Recording Section */}
+            <StudioSection />
 
             {/* Promotional CTA Strip */}
             <section className="relative bg-black px-6 md:px-12 py-8">
