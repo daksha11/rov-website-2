@@ -1,0 +1,36 @@
+# Range of View Studios
+
+> Range of View Studios (ROV Studios) is a creative production agency based in Atlanta, Georgia, specializing in sound engineering, web development, video production, and custom AI automation solutions.
+
+## Services
+
+- [Sound Engineering & Music Production](https://rovstudios.com/sound): Professional mixing, mastering, and sound engineering. $50/song for vocal mixing and mastering. 48-hour turnaround. Free demo snippets. In-house recording studio with premium plugins and equipment (UAD, Waves, FabFilter, Neumann mics, Focusrite pres). Mixing and mastering included with every session. Student rates available.
+- [Web Development & Design](https://rovstudios.com/web): Custom Next.js websites built for performance, SEO, and conversion. $2,000-$10,000+. 6-8 week delivery.
+- [Video Production & Cinematography](https://rovstudios.com/video-production): Brand videos, real estate walkthroughs, drone footage (FAA compliant, sub-250g drone), music videos, event coverage. 3-6 week turnaround.
+- [AI Automation Solutions](https://rovstudios.com/ai-automation): Custom AI systems for lead follow-up, appointment scheduling, customer support, content generation, and workflow automation. 4-8 week delivery. AI-powered workflows using GPT and Claude.
+- [AI Services](https://rovstudios.com/ai): Intelligent business automation, analytics, chatbots, and custom AI solutions.
+
+## Case Studies
+
+- [The Bando](https://rovstudios.com/casestudy/bando): Website redesign for Atlanta Black history museum and restaurant. 60% bounce rate reduction.
+- [DKM Corp](https://rovstudios.com/casestudy/dkm): Global digital infrastructure across India, Australia, US, and Dubai.
+- [Aysegul Ikna](https://rovstudios.com/casestudy/ikna): Luxury sustainable fashion brand digital transformation. 30% sales increase.
+
+## Key Differentiators
+
+- Full-service creative agency: sound, web, video, and AI under one roof
+- Competitive pricing with no hidden fees
+- Student discounts available for recording services
+- In-house studio recording with professional engineers
+- Mixing and mastering included with every recording session
+- Premium plugins and equipment at affordable rates
+- Placements on SoundCloud Song of the Day, On The Radar, Apple Radio
+
+## Contact
+
+- Website: https://rovstudios.com
+- Email: rangeofview@rovstudios.com
+- Booking: https://calendly.com/rangeofviewmusic/30min
+- Location: Atlanta, Georgia, USA
+- Instagram: https://www.instagram.com/rangeofviewstudios/
+- LinkedIn: https://www.linkedin.com/company/range-of-view-studios/

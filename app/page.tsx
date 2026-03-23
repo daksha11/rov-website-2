@@ -23,5 +23,29 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return <HomeContent />;
+  return (
+    <>
+      {/* Server-rendered content for crawlers and AI engines */}
+      <section className="sr-only" aria-label="About Range of View Studios">
+        <h1>Range of View Studios - Creative Production Agency in Atlanta</h1>
+        <p>
+          Range of View Studios is a full-service creative production agency in Atlanta, Georgia.
+          We specialize in professional sound engineering and music production, custom web development,
+          cinematic video production, and AI automation solutions. Our team has delivered measurable
+          results for clients including The Bando (60% bounce rate reduction), DKM Corp (global
+          digital infrastructure), and Aysegul Ikna (30% sales increase through digital transformation).
+        </p>
+        <p>
+          Our sound engineering services include mixing and mastering at $50 per song with a 48-hour
+          turnaround. We offer in-house recording with premium equipment from UAD, Waves, FabFilter,
+          Neumann, and Focusrite. Student rates are available. Web development projects range from
+          $2,000 to $10,000+ with 6-8 week delivery using Next.js. Video production covers brand
+          videos, real estate walkthroughs, drone cinematography, and music videos. Our AI automation
+          solutions handle lead follow-up, appointment scheduling, customer support, and content
+          generation with 4-8 week delivery.
+        </p>
+      </section>
+      <HomeContent />
+    </>
+  );
 }
