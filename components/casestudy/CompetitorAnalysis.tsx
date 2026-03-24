@@ -20,6 +20,7 @@ interface CompetitorAnalysisProps {
     insight: string;
     titleColor?: string;
     titleFont?: string;
+    titleItalic?: boolean;
     highlightBorderColor?: string;
     highlightRowBgColor?: string;
     insightBadgeColor?: string;
@@ -37,7 +38,8 @@ export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
     comparisonData,
     insight,
     titleColor = '#C90000',
-    titleFont = 'Hornset',
+    titleFont = 'Norwige, sans-serif',
+    titleItalic = false,
     highlightBorderColor = '#C90000',
     highlightRowBgColor = '#2A0A0A',
     insightBadgeColor = '#953200',
@@ -45,14 +47,14 @@ export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
     checkColor = '#C90000',
     textColor = '#d1d5db',
     insightBoxBgColor = 'rgba(0, 0, 0, 0.40)',
-    bodyFont = 'HellasFun'
+    bodyFont = "'Roboto', sans-serif"
 }) => {
     return (
         <div>
             {/* Title */}
             <h3
-                className="text-5xl md:text-6xl font-black mb-6 uppercase tracking-tight"
-                style={{ color: titleColor, fontFamily: titleFont, letterSpacing: '0.1em' }}
+                className="text-5xl md:text-6xl font-bold mb-6 uppercase tracking-tight"
+                style={{ color: titleColor, fontFamily: titleFont, letterSpacing: '0.1em', fontStyle: titleItalic ? 'italic' : undefined }}
             >
                 {title}
             </h3>
@@ -176,7 +178,7 @@ export const CompetitorAnalysis: React.FC<CompetitorAnalysisProps> = ({
                         style={{
                             borderRadius: '26.5px',
                             background: insightBadgeColor,
-                            fontFamily: 'LostInSouth',
+                            fontFamily: 'Norwige, sans-serif',
                             letterSpacing: '0.05em'
                         }}
                     >

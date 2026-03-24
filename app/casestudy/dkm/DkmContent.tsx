@@ -1,18 +1,6 @@
 "use client";
 
 import { NavigationDock } from "@/components/NavDoc";
-import { Inter } from "next/font/google";
-import localFont from "next/font/local";
-
-const cormorant = localFont({
-    src: "../../../public/font/Cormorant_Garamond/CormorantGaramond-VariableFont_wght.ttf",
-    display: "swap",
-});
-
-const inter = Inter({
-    weight: ['300', '400', '500', '700'],
-    subsets: ['latin'],
-});
 import Footer from "@/components/Footer";
 import { CaseStudyHero } from "@/components/casestudy/CaseStudyHero";
 import { CaseStudySidebar } from "@/components/casestudy/CaseStudySidebar";
@@ -28,7 +16,8 @@ export default function DkmContent() {
     const mainColorHex = "#F5F0EB";
     const accentColor = "rgb(201, 169, 110)";
     const accentColorHex = "#C9A96E";
-    const bodyFontStack = "Inter, system-ui, sans-serif";
+    const headingFont = "Norwige, sans-serif";
+    const bodyFontStack = "'Roboto', sans-serif";
 
     const sidebarItems = [
         { id: "overview", label: "Overview" },
@@ -49,7 +38,7 @@ export default function DkmContent() {
         },
         {
             name: "DKM CORP",
-            logoStyle: { color: accentColor, fontWeight: 'bold', fontSize: '1.25rem', fontFamily: cormorant.style.fontFamily, letterSpacing: '0.1em' }
+            logoStyle: { color: accentColor, fontWeight: 'bold', fontSize: '1.25rem', fontFamily: headingFont, letterSpacing: '0.1em' }
         },
     ];
 
@@ -62,14 +51,14 @@ export default function DkmContent() {
     ];
 
     return (
-        <main className={`relative min-h-screen bg-black ${inter.className}`}>
+        <main className="relative min-h-screen bg-black">
             <style jsx global>{`
                 #dkm-content h1,
                 #dkm-content h2,
                 #dkm-content h3,
                 #dkm-content h4,
                 #dkm-content .font-heading {
-                    font-family: ${cormorant.style.fontFamily} !important;
+                    font-family: ${headingFont} !important;
                 }
                 #dkm-content p,
                 #dkm-content li {
@@ -92,7 +81,7 @@ export default function DkmContent() {
                 {/* Case Study Section */}
                 <section className="relative bg-black py-16 px-6 md:px-12 lg:px-16" style={{ backgroundColor: '#000000', color: mainColor }}>
                     <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8">
-                        <CaseStudySidebar items={sidebarItems} activeColor={accentColorHex} />
+                        <CaseStudySidebar items={sidebarItems} activeColor="#8B6914" />
 
                         {/* Main Content */}
                         <div className="flex-1 space-y-12">
@@ -100,12 +89,17 @@ export default function DkmContent() {
                                 <OverviewSection
                                     title="Overview"
                                     content="A comprehensive brand identity and digital infrastructure project for DKM Corp, a private growth and operations partner spanning India, Australia, the US, and Dubai. We translated their high-level execution strategy into a professional, global-facing digital hub."
+                                    titleColor={accentColor}
+                                    titleFont={headingFont}
+                                    bodyFont={bodyFontStack}
+                                    textColor={mainColor}
                                 />
                             </div>
 
                             <div id="research">
                                 <ChallengeSection
                                     title="The Challenge"
+                                    titleItalic={true}
                                     content="DKM Corp operates at the intersection of high-stakes strategy and boots-on-the-ground execution. Their previous presence didn't fully communicate the scale of their international reach or the 'execution-first' nature of their four-pillar model."
                                 />
 
@@ -117,7 +111,7 @@ export default function DkmContent() {
                                         comparisonData={comparisonData}
                                         insight="Strategy is cheap; execution is the differentiator. The brand needed to feel like a high-performance engine—structured, efficient, and ready to scale."
                                         titleColor={accentColor}
-                                        titleFont={cormorant.style.fontFamily}
+                                        titleFont={headingFont}
                                         highlightBorderColor={accentColor}
                                         highlightRowBgColor={`rgba(${accentColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/)?.slice(1).join(', ')}, 0.10)`}
                                         insightBadgeColor={accentColor}
@@ -133,6 +127,7 @@ export default function DkmContent() {
                             <div id="design-system">
                                 <DesignSystem
                                     title="DESIGN SYSTEM"
+                                    titleItalic={true}
                                     description="A palette and type scale built for authority, clarity, and international appeal."
                                     colors={[
                                         { name: "True Black", hex: "#000000", color: "#000000" },
@@ -145,7 +140,7 @@ export default function DkmContent() {
                                             label: "Main Typography - Cormorant Garamond",
                                             font: "Cormorant Garamond",
                                             text: "CLEAN, MODERN, AND BUILT FOR PROFESSIONAL CLARITY.",
-                                            style: { fontFamily: cormorant.style.fontFamily, fontWeight: 'bold', fontSize: '2rem' }
+                                            style: { fontFamily: headingFont, fontWeight: 'bold', fontSize: '2rem' }
                                         },
                                         {
                                             label: "Body Typography - Inter",
@@ -161,7 +156,7 @@ export default function DkmContent() {
                                         }
                                     ]}
                                     titleColor={accentColor}
-                                    titleFont={cormorant.style.fontFamily}
+                                    titleFont={headingFont}
                                     textColor={mainColor}
                                     bodyFont={bodyFontStack}
                                     labelColor={mainColor}
@@ -174,7 +169,7 @@ export default function DkmContent() {
                                 <Approach
                                     title="APPROACH"
                                     titleColor={accentColor}
-                                    titleFont={cormorant.style.fontFamily}
+                                    titleFont={headingFont}
                                     borderColor="#1C1D21"
                                     hoverBorderColor={accentColor}
                                     hoverBgColor={`rgba(${accentColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/)?.slice(1).join(', ')}, 0.10)`}
@@ -224,7 +219,8 @@ export default function DkmContent() {
                                     ctaText="Explore Our Services"
                                     ctaLink="/#services"
                                     titleColor={accentColor}
-                                    titleFont={cormorant.style.fontFamily}
+                                    titleFont={headingFont}
+                                    statisticGradient={`linear-gradient(91deg, ${accentColorHex} 0.74%, #8B7340 100%)`}
                                     ctaBorderColor={accentColor}
                                     ctaHoverBgColor={accentColor}
                                     textColor={mainColor}

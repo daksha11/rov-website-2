@@ -12,6 +12,7 @@ interface ApproachProps {
     items?: ApproachItem[];
     titleColor?: string;
     titleFont?: string;
+    titleItalic?: boolean;
     borderColor?: string;
     hoverBorderColor?: string;
     hoverBgColor?: string;
@@ -54,21 +55,22 @@ export const Approach: React.FC<ApproachProps> = ({
         }
     ],
     titleColor = '#C90000',
-    titleFont = 'Hornset',
+    titleFont = 'Norwige, sans-serif',
+    titleItalic = false,
     borderColor = '#371606',
     hoverBorderColor = '#953200',
     hoverBgColor = 'rgba(149, 50, 0, 0.10)',
     bgColor = '#0E0A08',
     textColor = '#d1d5db',
-    bodyFont = 'HellasFun',
+    bodyFont = "'Roboto', sans-serif",
     labelColor = 'white'
 }) => {
     return (
         <div>
             {/* Title */}
             <h3
-                className="text-5xl md:text-6xl font-black mb-12 uppercase tracking-tight"
-                style={{ color: titleColor, fontFamily: titleFont, letterSpacing: '0.1em' }}
+                className="text-5xl md:text-6xl font-bold mb-12 uppercase tracking-tight"
+                style={{ color: titleColor, fontFamily: titleFont, letterSpacing: '0.1em', fontStyle: titleItalic ? 'italic' : undefined }}
             >
                 {title}
             </h3>

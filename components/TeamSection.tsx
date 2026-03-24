@@ -313,7 +313,9 @@ const TeamSection: React.FC = () => {
         );
     }, []);
 
-    const filteredMembers = activeCategory === "All" ? teamMembers : teamMembers.filter(m => m.category === activeCategory);
+    const filteredMembers = activeCategory === "All"
+        ? teamMembers.filter((m, i, arr) => arr.findIndex(t => t.name === m.name) === i)
+        : teamMembers.filter(m => m.category === activeCategory);
 
     const ExpandedMemberView = ({ expandedMember }: { expandedMember: TeamMember }) => (
         <motion.div
@@ -532,7 +534,28 @@ const TeamSection: React.FC = () => {
             </div>
 
             <div className="w-full flex-1 flex items-center justify-center">
-                {activeCategory === "All" && !expandedMemberId ? (
+                {activeCategory === "All" && expandedMemberId ? (
+                    <motion.div
+                        key="all-expanded"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="w-full max-w-7xl mx-auto px-4"
+                    >
+                        {(() => {
+                            const member = teamMembers.find(m => m.id === expandedMemberId);
+                            if (!member) return null;
+                            return (
+                                <>
+                                    <AnimatePresence mode="wait">
+                                        <ExpandedMemberView expandedMember={member} />
+                                    </AnimatePresence>
+                                    <MemberGrid members={filteredMembers.filter(m => m.id !== expandedMemberId)} />
+                                </>
+                            );
+                        })()}
+                    </motion.div>
+                ) : activeCategory === "All" ? (
                     <motion.div key="marquee" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full">
                         <div className="marquee-row">
                             <div className="marquee-track scroll-left">

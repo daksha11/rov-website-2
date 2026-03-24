@@ -15,7 +15,7 @@ const ProjectStrip: React.FC = () => {
         style={{
           padding: 'clamp(2.5rem, 4vw, 3.5rem) clamp(2rem, 4vw, 3.75rem)',
           gap: 'clamp(1.5rem, 3vw, 2.5rem)',
-          background: 'linear-gradient(111deg, #EA9A61 -1.34%, #B16937 25.87%, #A64D2B 59.87%, #42201C 93.39%)',
+          background: 'linear-gradient(111deg, #42201C -1.34%, #A64D2B 25.87%, #B16937 59.87%, #EA9A61 93.39%)',
           boxShadow: '0 4px 4px 0 rgba(0, 0, 0, 0.25)',
         }}
       >
@@ -35,10 +35,10 @@ const ProjectStrip: React.FC = () => {
           </div>
           <div className="flex flex-col gap-1.5 max-[968px]:items-center">
             <h2
-              className="font-semibold leading-tight text-white m-0"
+              className="font-bold leading-tight text-white m-0"
               style={{
-                fontSize: 'clamp(1.5rem, 3vw, 2rem)',
-                fontFamily: "'Inter', sans-serif",
+                fontSize: 'clamp(1.75rem, 3.5vw, 2.75rem)',
+                fontFamily: "Norwige, sans-serif",
               }}
             >
               Got a project in mind?
@@ -46,8 +46,8 @@ const ProjectStrip: React.FC = () => {
             <p
               className="leading-relaxed text-white/90 m-0 font-light"
               style={{
-                fontSize: 'clamp(0.8125rem, 1.2vw, 0.9375rem)',
-                fontFamily: "'Inter', sans-serif",
+                fontSize: 'clamp(0.9375rem, 1.4vw, 1.125rem)',
+                fontFamily: "'Roboto', sans-serif",
               }}
             >
               From web and video to sound and AI,<br />
@@ -101,7 +101,7 @@ const ProjectStrip: React.FC = () => {
             rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="inline-block no-underline border-none rounded-full bg-[#0E0A08] text-white font-semibold cursor-pointer transition-all duration-300 whitespace-nowrap relative z-1 hover:shadow-[0_6px_20px_rgba(0,0,0,0.4)]"
+            className="cta-shine inline-block no-underline border-none rounded-full bg-[#0E0A08] text-white font-semibold cursor-pointer transition-all duration-300 whitespace-nowrap relative z-1 hover:shadow-[0_6px_20px_rgba(0,0,0,0.4)]"
             style={{
               padding: 'clamp(0.75rem, 1.2vw, 0.9375rem) clamp(1.5rem, 2.5vw, 2rem)',
               fontSize: 'clamp(0.75rem, 1vw, 0.875rem)',

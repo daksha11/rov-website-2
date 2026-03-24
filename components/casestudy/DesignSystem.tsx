@@ -22,6 +22,7 @@ interface DesignSystemProps {
     typography?: TypographyItem[];
     titleColor?: string;
     titleFont?: string;
+    titleItalic?: boolean;
     textColor?: string;
     bodyFont?: string;
     labelColor?: string;
@@ -60,9 +61,10 @@ export const DesignSystem: React.FC<DesignSystemProps> = ({
         },
     ],
     titleColor = '#C90000',
-    titleFont = 'Hornset',
+    titleFont = 'Norwige, sans-serif',
+    titleItalic = false,
     textColor = '#d1d5db',
-    bodyFont = 'HellasFun',
+    bodyFont = "'Roboto', sans-serif",
     labelColor = 'white',
     secondaryColor = '#9ca3af'
 }) => {
@@ -70,8 +72,8 @@ export const DesignSystem: React.FC<DesignSystemProps> = ({
         <div>
             {/* Title */}
             <h3
-                className="text-5xl md:text-6xl font-black mb-4 uppercase tracking-tight"
-                style={{ color: titleColor, fontFamily: titleFont, letterSpacing: '0.1em' }}
+                className="text-5xl md:text-6xl font-bold mb-4 uppercase tracking-tight"
+                style={{ color: titleColor, fontFamily: titleFont, letterSpacing: '0.1em', fontStyle: titleItalic ? 'italic' : undefined }}
             >
                 {title}
             </h3>

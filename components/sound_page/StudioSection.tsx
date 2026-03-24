@@ -9,19 +9,19 @@ const BODY_FONT = "'Roboto', sans-serif";
 
 const valueProps = [
   {
-    label: "Mixing & Mastering Included",
-    detail: "Every session comes with full mixing and mastering. No upsells, no surprise invoices. You walk out with a release-ready record.",
+    label: "Professional Mixing & Mastering in Atlanta",
+    detail: "Every recording session at our Atlanta studio includes professional mixing and mastering — no upsells, no hidden fees. Your vocals are balanced, cleaned, and enhanced with creative effects, then mastered to hit streaming-ready loudness for Spotify, Apple Music, and every major platform. You walk out with a release-ready record.",
     tag: "All-in-one",
   },
   {
-    label: "Premium Plugins & Equipment",
-    detail: "Industry-standard tools — UAD, Waves, FabFilter, Neumann mics, Focusrite pres. The same gear used on records you already listen to.",
+    label: "Industry-Standard Recording Equipment",
+    detail: "Our Atlanta recording studio is equipped with the same tools used on records you already listen to — UAD, Waves, FabFilter, Neumann microphones, and Focusrite preamps. Whether you're tracking vocals, mixing a full trackout, or mastering for distribution, every session is powered by professional-grade plugins and hardware.",
     tag: "Pro gear",
   },
   {
-    label: "Cheaper Rates, Better Output",
-    detail: "Our hourly rates undercut most studios in the area — without cutting corners on quality. More music, less overhead.",
-    tag: "Value",
+    label: "Atlanta's Most Affordable Recording Studio",
+    detail: "High-quality mixing and mastering shouldn't break the bank. Our hourly rates are lower than most recording studios in Atlanta — without cutting corners on sound quality. More studio time, more music, less overhead. From independent artists to full project runs, we deliver radio-ready results at prices that make sense.",
+    tag: "Best value",
   },
 ];
 
@@ -191,16 +191,20 @@ function ValueAccordion() {
 
                   <AnimatePresence initial={false}>
                     {isActive && (
-                      <motion.p
+                      <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-                        className="text-white/45 text-sm md:text-base leading-relaxed max-w-2xl overflow-hidden"
-                        style={{ fontFamily: BODY_FONT, marginTop: 12 }}
+                        className="overflow-hidden"
                       >
-                        {prop.detail}
-                      </motion.p>
+                        <p
+                          className="text-white/60 text-sm md:text-base leading-relaxed max-w-2xl pt-3"
+                          style={{ fontFamily: BODY_FONT }}
+                        >
+                          {prop.detail}
+                        </p>
+                      </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
@@ -292,8 +296,8 @@ export default function StudioSection() {
               className="text-white/50 text-base md:text-lg leading-relaxed mb-6"
               style={{ fontFamily: BODY_FONT }}
             >
-              We don&apos;t just mix files from a laptop. Artists come in, stand behind real mics,
-              and walk out with records that hit different — mixed, mastered, and ready for every platform.
+              We don&apos;t just mix files from a laptop. Artists record in our Atlanta studio, stand behind real mics,
+              and walk out with professionally mixed and mastered records — ready for Spotify, Apple Music, and every streaming platform.
             </p>
             <a
               href="https://calendly.com/rangeofviewmusic/30min"
@@ -361,8 +365,8 @@ export default function StudioSection() {
               className="text-white/60 text-sm md:text-base leading-relaxed"
               style={{ fontFamily: BODY_FONT }}
             >
-              Talent shouldn&apos;t be gated by budget. Show your student ID and get discounted
-              hourly rates — same studio, same gear, same quality. No compromises.
+              Talent shouldn&apos;t be gated by budget. Show your student ID at our Atlanta recording studio
+              and get discounted hourly rates — same professional mixing and mastering, same gear, same quality. No compromises.
             </p>
           </div>
           <a
@@ -376,70 +380,6 @@ export default function StudioSection() {
           </a>
         </div>
       </motion.div>
-
-      {/* ── Bottom CTA ── */}
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={spring}
-          className="relative rounded-2xl overflow-hidden border border-white/[0.06]"
-          style={{
-            background:
-              "linear-gradient(135deg, rgba(234,154,97,0.08) 0%, rgba(177,105,55,0.04) 50%, transparent 100%)",
-          }}
-        >
-          <div className="p-8 md:p-12 lg:p-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-            <div>
-              <h3
-                className="text-white text-3xl md:text-4xl lg:text-5xl leading-tight mb-3 font-bold italic"
-                style={{ fontFamily: HEADING_FONT }}
-              >
-                Ready to record?
-              </h3>
-              <p
-                className="text-white/40 text-sm md:text-base max-w-md"
-                style={{ fontFamily: BODY_FONT }}
-              >
-                Book a free 30-minute consultation. We&apos;ll talk through your project,
-                timeline, and get you on the calendar.
-              </p>
-            </div>
-
-            <a
-              href="https://calendly.com/rangeofviewmusic/30min"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <button
-                className="relative overflow-hidden flex items-center justify-center cursor-pointer text-white py-6 px-10 md:py-8 md:px-12 text-xl md:text-3xl font-semibold tracking-widest group"
-                style={{
-                  fontFamily: BODY_FONT,
-                  borderRadius: "41.444px",
-                  background: "linear-gradient(112deg, #EA9A61 6.46%, #B16937 34.96%, #A64D2B 63.88%, #42201C 97.63%)",
-                  boxShadow: "3px 4px 4px 0 rgba(255, 244, 227, 0.15) inset, 0 4.385px 4.385px 0 rgba(0, 0, 0, 0.25)",
-                }}
-              >
-                <span className="absolute inset-0 bg-white/10 origin-bottom scale-y-0 md:group-hover:scale-y-100 transition-transform duration-700 ease-in-out" style={{ borderRadius: "41.444px" }} />
-                <span className="relative overflow-hidden flex items-center leading-none h-[1.2em]">
-                  <span className="block md:group-hover:-translate-y-full transition-transform duration-700 ease-in-out">
-                    Book a call
-                  </span>
-                  <span className="absolute left-0 top-full block md:group-hover:top-0 transition-all duration-700 ease-in-out">
-                    Book a call
-                  </span>
-                </span>
-                <span className="relative ml-2">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M7 17L17 7M17 7H7M17 7v10" />
-                  </svg>
-                </span>
-              </button>
-            </a>
-          </div>
-        </motion.div>
-      </div>
     </section>
   );
 }
