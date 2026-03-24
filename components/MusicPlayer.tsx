@@ -21,7 +21,7 @@ const beforeTracks: Track[] = [
     title: "Martyr",
     artist: "DDK",
     duration: "2:39",
-    cover: "cover7.webp",
+    cover: "/cover7.webp",
     url: "/tracks/before/MARTYR BEFORE.mp3"
   },
   {
@@ -29,7 +29,7 @@ const beforeTracks: Track[] = [
     title: "Be My Tine",
     artist: "Sam Suen",
     duration: "2:40",
-    cover: "cover9.webp",
+    cover: "/cover10.webp",
     url: "/tracks/before/BE MY TINE BEFORE.mp3"
   },
   {
@@ -37,7 +37,7 @@ const beforeTracks: Track[] = [
     title: "you could be my woman",
     artist: "Basu",
     duration: "2:46",
-    cover: "cover1.webp",
+    cover: "/cover1.webp",
     url: "/tracks/before/TOU COULD BE MY WOMAN BEFORE.mp3"
   },
   {
@@ -45,7 +45,7 @@ const beforeTracks: Track[] = [
     title: "Talk my shit",
     artist: "DDK",
     duration: "1:48",
-    cover: "cover11.webp",
+    cover: "/cover11.webp",
     url: "/tracks/before/talk my shit before.mp3"
   },
   {
@@ -53,24 +53,24 @@ const beforeTracks: Track[] = [
     title: "maryland marauders",
     artist: "DDK",
     duration: "2:16",
-    cover: "cover11.webp",
-    url: "tracks/before/MARYLAND MARAUDERS BEFORE.mp3"
+    cover: "/cover11.webp",
+    url: "/tracks/before/MARYLAND MARAUDERS BEFORE.mp3"
   },
   {
     id: 6,
     title: "WANNA KNOW",
     artist: "Adil Hasan",
     duration: "2:51",
-    cover: "cover4.webp",
-    url: "tracks/before/WANNA KNOW BEFORE.mp3"
+    cover: "/cover4.webp",
+    url: "/tracks/before/WANNA KNOW BEFORE.mp3"
   },
   {
     id: 7,
     title: "Kiss of Death",
     artist: "Sniper J",
     duration: "2:36",
-    cover: "cover8.webp",
-    url: "tracks/before/KOD BEFORE.mp3"
+    cover: "/cover8.webp",
+    url: "/tracks/before/KOD BEFORE.mp3"
   },
 ];
 
@@ -81,7 +81,7 @@ const afterTracks: Track[] = [
     title: "Martyr",
     artist: "DDK",
     duration: "2:39",
-    cover: "cover7.webp",
+    cover: "/cover7.webp",
     url: "/tracks/after/MARTYR AFTER.mp3"
   },
   {
@@ -89,7 +89,7 @@ const afterTracks: Track[] = [
     title: "Be My Tine",
     artist: "Sam Suen",
     duration: "2:40",
-    cover: "cover9.webp",
+    cover: "/cover10.webp",
     url: "/tracks/after/BE MY TINE AFTER.mp3"
   },
   {
@@ -97,7 +97,7 @@ const afterTracks: Track[] = [
     title: "you could be my woman",
     artist: "Basu",
     duration: "2:46",
-    cover: "cover1.webp",
+    cover: "/cover1.webp",
     url: "/tracks/after/YOU COULD BE MY WOMAN AFTER.mp3"
   },
   {
@@ -105,7 +105,7 @@ const afterTracks: Track[] = [
     title: "Talk my shit",
     artist: "DDK",
     duration: "1:48",
-    cover: "cover11.webp",
+    cover: "/cover11.webp",
     url: "/tracks/after/TALK MY SHIT AFTER.mp3"
   },
   {
@@ -113,24 +113,24 @@ const afterTracks: Track[] = [
     title: "maryland marauders",
     artist: "DDK",
     duration: "2:16",
-    cover: "cover11.webp",
-    url: "tracks/after/MARYLAND MARAUDERS AFTER.mp3"
+    cover: "/cover11.webp",
+    url: "/tracks/after/MARYLAND MARAUDERS AFTER.mp3"
   },
   {
     id: 6,
     title: "WANNA KNOW",
     artist: "Adil Hasan",
     duration: "2:51",
-    cover: "cover4.webp",
-    url: "tracks/after/WANNA KNOW AFTER.mp3"
+    cover: "/cover4.webp",
+    url: "/tracks/after/WANNA KNOW AFTER.mp3"
   },
   {
     id: 7,
     title: "Kiss of Death",
     artist: "Sniper J",
     duration: "2:36",
-    cover: "cover8.webp",
-    url: "tracks/after/KOD AFTER.mp3"
+    cover: "/cover8.webp",
+    url: "/tracks/after/KOD AFTER.mp3"
   },
 ];
 
