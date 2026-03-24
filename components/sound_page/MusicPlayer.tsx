@@ -56,7 +56,7 @@ const songData = [
         album: "Single",
         beforeSrc: "/audio/beforemp3/guapbefore.mp3",
         afterSrc: "/audio/aftermp3/guapafter.mp3",
-        cover: "/audio/covers/guapcover.jpg",
+        cover: "/audio/covers/guapcover.webp",
         spotifyUrl: "https://open.spotify.com/track/0xVvZTr5prKOC6Fv9aIfwU?si=59e9ab9eaba94806"
     },
     {
@@ -65,7 +65,7 @@ const songData = [
         album: "Single",
         beforeSrc: "/audio/beforemp3/backintimebefore.mp3",
         afterSrc: "/audio/aftermp3/backintimeafter.mp3",
-        cover: "/audio/covers/backintimecover.jpg",
+        cover: "/audio/covers/backintimecover.webp",
         spotifyUrl: "https://open.spotify.com/track/7MC8JAS25hJWvFXClSzFND?si=17a6d47209d14fd6"
     }
 ];

@@ -56,7 +56,7 @@ export default function ArtistBreakthrough() {
           <div
             className="w-full md:ml-0 ml-1 rounded-lg flex items-center justify-center bg-cover bg-center"
             style={{
-              backgroundImage: "url('/assets/background/6.png')",
+              backgroundImage: "url('/assets/background/6.webp')",
             }}
           >
             <img

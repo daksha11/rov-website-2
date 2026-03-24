@@ -35,7 +35,7 @@ export default function Story() {
   role="img"
   aria-label="ROV Studios atmospheric studio environment"
   className="relative py-16 md:py-20 overflow-hidden -mt-[20px] md:-mt-[27px] rounded-t-[30px] md:rounded-t-[50px] bg-cover bg-center"
-  style={{ backgroundImage: "url('/assets/background/5.jpg')" }}
+  style={{ backgroundImage: "url('/assets/background/5.webp')" }}
 >
 
   <div className="relative mx-auto">

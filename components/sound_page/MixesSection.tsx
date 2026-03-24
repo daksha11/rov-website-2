@@ -8,7 +8,7 @@ export default function MixesSection() {
   return (
     <div
       className="relative h-auto w-full bg-cover bg-center px-8 md:px-26 py-20 rounded-t-[47px] -mt-[30px]"
-      style={{ backgroundImage: "url('/assets/background/3.jpg')" }}
+      style={{ backgroundImage: "url('/assets/background/3.webp')" }}
     >
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
         {/* Left side - Image Grid */}

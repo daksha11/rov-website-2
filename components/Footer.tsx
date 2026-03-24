@@ -68,7 +68,7 @@ const Footer = () => {
             className="cursor-pointer"
           >
             <Image
-              src="/assets/images/logokalam.png"
+              src="/assets/images/logokalam.webp"
               alt="ROV Studios Logo"
               width={120}
               height={60}
@@ -230,7 +230,7 @@ const Footer = () => {
           className={`absolute inset-0 transition-opacity duration-700 ease-in-out will-change-opacity transform-gpu ${isIndia ? 'opacity-100' : 'opacity-0'}`}
         >
           <Image
-            src="/hydskyline.PNG"
+            src="/hydskyline.webp"
             alt="Hyderabad Skyline"
             fill
             loading="lazy"

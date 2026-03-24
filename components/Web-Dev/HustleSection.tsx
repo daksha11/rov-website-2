@@ -20,7 +20,7 @@ export default function HustleSection() {
               className="relative w-full h-full"
             >
               <Image
-                src="/assets/images/hand.png"
+                src="/assets/images/hand.webp"
                 alt="Creative hand illustration for web development"
                 fill
                 className="object-cover h-full w-full"

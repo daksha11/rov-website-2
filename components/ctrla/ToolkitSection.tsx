@@ -4,7 +4,7 @@ export default function ToolkitSection() {
   return (
     <section
       className="relative pb-24 pt-16 bg-[#604f45] min-h-screen flex flex-col justify-center items-center  text-white font-['Poppins'] bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: "url('/assets/background/new6.jpg')",}} 
+      style={{ backgroundImage: "url('/assets/background/new6.webp')",}} 
     >
       
 

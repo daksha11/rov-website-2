@@ -379,7 +379,7 @@ const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
           <div
             className="md:h-[530px] h-[470px] mx-auto -mt-[13px] rounded-4xl relative overflow-hidden lg:w-[430px] w-full flex flex-col items-center"
             style={{
-              backgroundImage: "url('/assets/images/musicbg.png')",
+              backgroundImage: "url('/assets/images/musicbg.webp')",
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}

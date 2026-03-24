@@ -4,7 +4,7 @@ export default function Gallery() {
   return (
     <section
       className="relative bg-cover pb-12 pt-8 md:pb-20 md:pt-10 bg-center bg-no-repeat"
-      style={{ backgroundImage: "url('/assets/background/12.jpg')" }}
+      style={{ backgroundImage: "url('/assets/background/12.webp')" }}
     >
       <div className="mx-auto px-4 sm:px-6 md:px-12 lg:px-20">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-stretch">

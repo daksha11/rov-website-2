@@ -9,7 +9,7 @@ export default function VisionSection() {
       aria-label="ROV Studios vision for sound engineering"
       className="relative w-full bg-cover  bg-center pb-10 pt-6 rounded-t-[30px] md:rounded-t-[50px] -mt-[20px] md:-mt-[27px]"
       style={{
-        backgroundImage: "url('/assets/background/2.jpg')",
+        backgroundImage: "url('/assets/background/2.webp')",
       }}
     >
       <div style={{fontFamily:"anton"}} className="relative  mx-auto grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-center ">
@@ -55,7 +55,7 @@ export default function VisionSection() {
         <div className="relative h-full w-full text-white md:col-span-5 flex flex-col items-center md:items-start">
           {/* Arrow Image */}
           <img
-            src="/assets/images/aboutdownarrow.png"
+            src="/assets/images/aboutdownarrow.webp"
             alt=""
             className="w-20 sm:w-28 md:w-40 lg:w-58  transform rotate-290 animate-[float-x_3s_ease-in-out_infinite] md:block hidden"
           />
@@ -78,7 +78,7 @@ export default function VisionSection() {
           {/* Hand Image */}
           <div className=" justify-end w-full md:flex hidden">
             <img
-              src="/assets/images/abouthand.png"
+              src="/assets/images/abouthand.webp"
               alt=""
               className="w-28 sm:w-36 md:w-48  lg:w-96 mt-4 md:mt-6 -mr-8 animate-[float-x_3s_ease-in-out_infinite]"
             />

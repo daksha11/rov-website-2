@@ -282,7 +282,7 @@ export default function Services() {
       title: "Web Optimization",
       link: "/web",
       previewImages: [
-        '/heroassets/webfolder1.png',
+        '/heroassets/webfolder1.webp',
         '/heroassets/webfolder2.webp',
         '/heroassets/webfolder3.webp'
       ],
@@ -293,7 +293,7 @@ export default function Services() {
       link: "/sound",
       previewImages: [
         '/thumbnails/studiothumbnail.webp',
-        '/heroassets/flimage2.jpg',
+        '/heroassets/flimage2.webp',
         '/heroassets/event_3.webp'
       ],
     },
@@ -303,7 +303,7 @@ export default function Services() {
       link: "/video-production",
       previewImages: [
         '/heroassets/hydvideoframe.webp',
-        '/heroassets/ponceshowframe.png',
+        '/heroassets/ponceshowframe.webp',
         '/heroassets/samxbasuvid.webp'
       ],
     },
@@ -312,9 +312,9 @@ export default function Services() {
       title: "AI Solutions",
       link: "/ai-automation",
       previewImages: [
-        '/heroassets/codingframe.png',
-        '/heroassets/excelframe.jpeg',
-        '/heroassets/n8nframe.jpeg'
+        '/heroassets/codingframe.webp',
+        '/heroassets/excelframe.webp',
+        '/heroassets/n8nframe.webp'
       ],
     },
   ];

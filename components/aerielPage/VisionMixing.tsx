@@ -35,7 +35,7 @@ export default function MixingSection() {
   return (
     <section
       className="relative md:rounded-t-[50px] md:-mt-[28px] w-full xl:h-screen lg:h-[70vh] md:h-[75vh] h-[45vh] bg-cover bg-center overflow-hidden"
-      style={{ backgroundImage: "url('/assets/background/visionmixbg.jpg')" }}
+      style={{ backgroundImage: "url('/assets/background/visionmixbg.webp')" }}
     >
       {/* Left small text */}
       <div
@@ -98,7 +98,7 @@ export default function MixingSection() {
         }}
       >
         <Image
-          src="/assets/images/Adf.png"
+          src="/assets/images/Adf.webp"
           alt="Hand pointing"
           width={520}
           height={300}

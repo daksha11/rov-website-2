@@ -35,7 +35,7 @@ export default function FAQSection() {
   return (
     <section
       style={{
-        backgroundImage: "url('/assets/background/faqbg.jpeg')",
+        backgroundImage: "url('/assets/background/faqbg.webp')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

@@ -62,7 +62,7 @@ const FlightProcess = () => {
     <section
       className="relative md:rounded-t-[50px] md:-mt-[28px] w-full md:pt-16 md:pb-20 py-5 bg-[#ccc4bd] bg-cover bg-center text-[rgb(56, 42, 33)]"
       style={{
-        backgroundImage: "url('/assets/background/new3.jpg')",
+        backgroundImage: "url('/assets/background/new3.webp')",
         color: "rgb(56, 42, 33)",
       }}
     >

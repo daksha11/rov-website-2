@@ -254,7 +254,7 @@ export default function WebHero() {
                         transition={{ duration: 1.0, delay: 0.6, ease: "easeOut" }}
                     >
                         <MockupFrame
-                            src="/heroassets/webfolder1.png"
+                            src="/heroassets/webfolder1.webp"
                             alt="Portfolio website designed by ROV Studios"
                         />
                     </motion.div>

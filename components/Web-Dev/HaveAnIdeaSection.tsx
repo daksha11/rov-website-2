@@ -4,8 +4,8 @@ import Image from "next/image";
 
 export default function HaveAnIdeaSection() {
     const companyLogos = [
-        { src: "/webdev/bandologo.png", alt: "The Bando" },
-        { src: "/webdev/iknalogo white.png", alt: "Ikna" },
+        { src: "/webdev/bandologo.webp", alt: "The Bando" },
+        { src: "/webdev/iknalogo white.webp", alt: "Ikna" },
     ];
 
     return (

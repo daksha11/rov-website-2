@@ -45,7 +45,7 @@ const ShowcaseSection = () => {
       className="relative grid h-auto grid-cols-12 px-10 bg-black text-white rounded-t-[50px] -mt-[27px]"
       style={{
         minHeight: `${projects.length * 70}vh`,
-        backgroundImage: "url('/assets/background/12.jpg')",
+        backgroundImage: "url('/assets/background/12.webp')",
         backgroundAttachment: "fixed",
         backgroundSize: "cover",
         backgroundPosition: "center",

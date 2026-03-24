@@ -57,7 +57,7 @@ const VisionImpact = () => {
             {/* Camera Image */}
             <div className="absolute -bottom-4 -right-7 z-10">
               <Image
-                src="/assets/images/camera.png"
+                src="/assets/images/camera.webp"
                 alt=""
                 width={160}
                 height={70}

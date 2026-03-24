@@ -82,7 +82,7 @@ export default function DkmContent() {
                 <CaseStudyHero
                     title={["Scaling", "Global", "Operations"]}
                     titleColors={[mainColor, accentColor, mainColor]}
-                    backgroundImage="/casestudy/dubaiskyline.jpg"
+                    backgroundImage="/casestudy/dubaiskyline.webp"
                     titleFont={cormorant.style.fontFamily}
                     buttonAccentColor={accentColorHex}
                     buttonFont={bodyFontStack}
