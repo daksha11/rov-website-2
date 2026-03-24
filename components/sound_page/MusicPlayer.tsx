@@ -56,7 +56,7 @@ const songData = [
         album: "Single",
         beforeSrc: "/audio/beforemp3/guapbefore.mp3",
         afterSrc: "/audio/aftermp3/guapafter.mp3",
-        cover: "/audio/covers/guapcover.jpg",
+        cover: "/audio/covers/guapcover.webp",
         spotifyUrl: "https://open.spotify.com/track/0xVvZTr5prKOC6Fv9aIfwU?si=59e9ab9eaba94806"
     },
     {
@@ -65,7 +65,7 @@ const songData = [
         album: "Single",
         beforeSrc: "/audio/beforemp3/backintimebefore.mp3",
         afterSrc: "/audio/aftermp3/backintimeafter.mp3",
-        cover: "/audio/covers/backintimecover.jpg",
+        cover: "/audio/covers/backintimecover.webp",
         spotifyUrl: "https://open.spotify.com/track/7MC8JAS25hJWvFXClSzFND?si=17a6d47209d14fd6"
     }
 ];
@@ -268,7 +268,7 @@ export default function MusicPlayer() {
         <div className="w-full flex flex-col items-center bg-black">
             <div className="w-full max-w-[95%] md:max-w-7xl px-6 md:px-12 text-left py-12 md:py-16">
                 <h2 className="text-[#FFF4E3] text-3xl md:text-4xl lg:text-5xl leading-tight" style={{ fontFamily: 'NorwigeHeroItalic, sans-serif', fontWeight: 'normal' }}>
-                    Don't Believe Us.<br />
+                    Don&apos;t Believe Us.<br />
                     Hear the Difference.
                 </h2>
             </div>

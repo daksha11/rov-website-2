@@ -80,7 +80,7 @@ const HeroSection: React.FC = () => {
       {/* Custom Arrow Images */}
       <div className="custom-prev md:block hidden absolute top-1/2 -translate-y-1/2 left-4 z-10 cursor-pointer mt-8">
         <Image
-          src="/assets/images/swiperarrowleft.png"
+          src="/assets/images/swiperarrowleft.webp"
           alt="Previous slide"
           width={80}
           height={56}

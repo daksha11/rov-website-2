@@ -4,74 +4,28 @@
 @import "tw-animate-css";
 
 /* --- FONT DECLARATIONS --- */
-/* @font-face {
-  font-family: 'palmore';
-  src: url('/font/palmore_light.ttf');
-  font-weight: normal;
-  font-style: normal;
-} */
-
 @font-face {
   font-family: 'anton';
   src: url('/font/Anton-Regular.ttf');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
-
-/* @font-face {
-  font-family: 'impact';
-  src: url('/font/impact.ttf');
-  font-weight: normal;
-  font-style: normal;
-} */
 
 @font-face {
   font-family: 'futura';
   src: url('/font/Futura Regular.ttf');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
-
-/* @font-face {
-  font-family: 'apricots';
-  src: url('/font/Apricot-BF650c4a6357ce1.otf');
-  font-weight: normal;
-  font-style: normal;
-} */
-
-/* @font-face {
-  font-family: 'pagaki';
-  src: url('/font/pagkaki-regular.ttf');
-  font-weight: normal;
-  font-style: normal;
-} */
-
-/* @font-face {
-  font-family: 'sink';
-  src: url('/font/Sink.ttf');
-  font-weight: normal;
-  font-style: normal;
-} */
-
-/* @font-face {
-  font-family: 'pluma';
-  src: url('/font/Pluma.otf');
-  font-weight: normal;
-  font-style: normal;
-} */
-
-/* @font-face {
-  font-family: 'Big Shoulders Display';
-  src: url('/font/BigShoulders-VariableFont_opsz\,wght.ttf');
-  font-weight: normal;
-  font-style: normal;
-} */
 
 @font-face {
   font-family: 'Boke Rough';
   src: url('/font/ZRTW-BokeRoughPersonalUse.otf');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -79,6 +33,7 @@
   src: url('/font/norwige-font-family-1750004186-0/Norwige-LightItalic-BF68175f322ddb6.otf');
   font-weight: 300;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -86,6 +41,7 @@
   src: url('/font/norwige-font-family-1750004186-0/Norwige-MediumItalic-BF68175f325d0c2.otf');
   font-weight: 500;
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
@@ -93,6 +49,7 @@
   src: url('/font/norwige-font-family-1750004186-0/Norwige-SemiBoldItalic-BF68175f326e730.otf');
   font-weight: 600;
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
@@ -124,6 +81,7 @@
   src: url('/font/Sedgwick_Ave_Display/SedgwickAveDisplay-Regular.ttf');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -131,6 +89,7 @@
   src: url('/font/pearl-jean.ttf');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -138,6 +97,7 @@
   src: url('/font/HellasFun Bold.ttf');
   font-weight: bold;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -145,6 +105,7 @@
   src: url('/font/Hornset.ttf');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -152,6 +113,7 @@
   src: url('/font/lost_in_south/Lost in South.ttf');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 

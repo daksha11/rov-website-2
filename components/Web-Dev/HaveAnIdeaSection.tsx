@@ -3,6 +3,11 @@
 import Image from "next/image";
 
 export default function HaveAnIdeaSection() {
+    const companyLogos = [
+        { src: "/webdev/bandologo.webp", alt: "The Bando" },
+        { src: "/webdev/iknalogo white.webp", alt: "Ikna" },
+    ];
+
     return (
         <section className="relative py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-black">
             <div className="max-w-7xl mx-auto">

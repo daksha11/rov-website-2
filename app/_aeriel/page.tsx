@@ -1,7 +1,6 @@
+import dynamic from "next/dynamic";
 import BookCall from "@/components/aerielPage/BookCall";
 import FlightProcess from "@/components/aerielPage/FlightProcess";
-import HeroSection from "@/components/aerielPage/HeroSection";
-import TakeWork from "@/components/aerielPage/TakeWork";
 import FAQSection from "@/components/aerielPage/VisionFaq";
 import VisionImpact from "@/components/aerielPage/VisionImpact";
 import MissingSection from "@/components/aerielPage/VisionMixing";
@@ -9,6 +8,9 @@ import WhoWeFlyWith from "@/components/aerielPage/WhoWeFlyWith";
 import Footer from "@/components/Footer";
 import OverlapSection from "@/components/OverlapSection";
 import { NavigationDock } from "@/components/NavDoc";
+
+const HeroSection = dynamic(() => import("@/components/aerielPage/HeroSection"), { ssr: false });
+const TakeWork = dynamic(() => import("@/components/aerielPage/TakeWork"), { ssr: false });
 export default function Page() {
   return (
     <>

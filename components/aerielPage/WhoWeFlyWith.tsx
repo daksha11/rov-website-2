@@ -52,7 +52,7 @@ const WhoWeFlyWith = () => {
             {/* Camera Image */}
             <div className="absolute md:block hidden  md:bottom-[-45px]   md:-right-18">
               <Image
-                src="/assets/images/camera.png"
+                src="/assets/images/camera.webp"
                 alt="Camera Icon"
                 width={224}
                 height={224}

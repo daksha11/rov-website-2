@@ -1,5 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
 "use client"
+import Image from "next/image";
 import { motion,Variants } from "framer-motion";
 export default function Story() {
   const text: string[] = ["BUT HERE'S THE THING..."];
@@ -35,7 +35,7 @@ export default function Story() {
   role="img"
   aria-label="ROV Studios atmospheric studio environment"
   className="relative py-16 md:py-20 overflow-hidden -mt-[20px] md:-mt-[27px] rounded-t-[30px] md:rounded-t-[50px] bg-cover bg-center"
-  style={{ backgroundImage: "url('/assets/background/5.jpg')" }}
+  style={{ backgroundImage: "url('/assets/background/5.webp')" }}
 >
 
   <div className="relative mx-auto">
@@ -71,10 +71,12 @@ export default function Story() {
           repeat: Infinity,
         }}
       >
-        <img
+        <Image
           src="/assets/images/mictwo.webp"
           alt="Professional studio microphone at ROV Studios"
-          className="w-28 h-28 md:w-64 md:h-56  object-cover "
+          width={256}
+          height={224}
+          className="w-28 h-28 md:w-64 md:h-56 object-cover"
         />
       </motion.div>
     </div>
@@ -93,7 +95,7 @@ export default function Story() {
             repeat: Infinity,
           }}
         >
-          <img src="/assets/images/arrowright2.webp" className="transform rotate-6"  alt="" />
+          <Image src="/assets/images/arrowright2.webp" width={384} height={320} className="transform rotate-6" alt="" />
         </motion.div>
       </div>
 

@@ -5,14 +5,14 @@ export default function CreativeFriction() {
         <section
             className="relative py-16 px-4 md:px-16 "
             style={{
-                backgroundImage: "url('/assets/background/new1.jpg')",
+                backgroundImage: "url('/assets/background/new1.webp')",
                 backgroundSize: "cover",
                 backgroundPosition: "right",
             }}>
             <h1 className="text-[#d8d5d4]  text-2xl">Range Of View Studios</h1>
             <div
                 className=" rounded-md mt-8 max-w-3xl md:ml-10 bg-cover bg-center bg-no-repeat p-3"
-                style={{ backgroundImage: "url('/assets/images/musicbg.png')" }}
+                style={{ backgroundImage: "url('/assets/images/musicbg.webp')" }}
             >
                 <div className="flex justify-between items-center ">
                     <div className="flex justify-center gap-3 items-center">
@@ -31,7 +31,7 @@ export default function CreativeFriction() {
                 </div>
                 <div
                     className="relative rounded-md text-[#d8d5d4] bg-cover bg-center bg-no-repeat overflow-hidden"
-                    style={{ backgroundImage: "url('/assets/background/carpetbg.png')" }}
+                    style={{ backgroundImage: "url('/assets/background/carpetbg.webp')" }}
                 >
                     {/* Dark overlay */}
                     <div className="absolute inset-0 bg-black/50"></div>

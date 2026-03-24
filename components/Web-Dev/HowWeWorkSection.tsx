@@ -5,15 +5,11 @@ import { motion } from "framer-motion";
 export default function HowWeWorkSection() {
   return (
     <section className="relative w-full rounded-t-[50px] -mt-[32px] md:h-screen h-auto md:py-0 py-16 flex items-center justify-center bg-black overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0 rounded-t-[50px]">
-        <Image
-          src="/assets/images/Untitled-3.gif"
-          alt="Background"
-          fill
-          className="object-cover"
-          priority
-        />
+      {/* Background Video */}
+      <div className="absolute inset-0 rounded-t-[50px] overflow-hidden">
+        <video autoPlay muted loop playsInline className="w-full h-full object-cover">
+          <source src="/assets/images/Untitled-3.mp4" type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-black/40" />
       </div>
 
@@ -84,7 +80,7 @@ export default function HowWeWorkSection() {
         }}
       >
         <Image
-          src="/assets/images/mic.png"
+          src="/assets/images/mic.webp"
           alt="Microphone illustration representing ROV Studios creative process"
           fill
           className="object-cover object-top"
@@ -104,7 +100,7 @@ export default function HowWeWorkSection() {
         }}
       >
         <Image
-          src="/assets/images/arrow.png"
+          src="/assets/images/arrow.webp"
           alt=""
           fill
           className="object-cover"

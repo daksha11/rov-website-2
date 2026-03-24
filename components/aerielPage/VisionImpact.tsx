@@ -27,12 +27,6 @@ const VisionImpact = () => {
         {slides.map((slide, index) => (
           <div
             key={index}
-            style={{
-              backgroundImage: "url('/assets/background/visionimpactbg.png')",
-              backgroundSize: "contain",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "bottom",
-            }}
             className="relative bg-[#DCD9D5]  text-[#1e0202] rounded-lg w-full sm:w-[300px] md:w-[350px] md:h-[530px] h-[400px] flex flex-col items-center shadow-md"
           >
             {/* Header */}
@@ -57,7 +51,7 @@ const VisionImpact = () => {
             {/* Camera Image */}
             <div className="absolute -bottom-4 -right-7 z-10">
               <Image
-                src="/assets/images/camera.png"
+                src="/assets/images/camera.webp"
                 alt=""
                 width={160}
                 height={70}
