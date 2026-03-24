@@ -72,7 +72,7 @@ export default function DkmContent() {
                     title={["Scaling", "Global", "Operations"]}
                     titleColors={[mainColor, accentColor, mainColor]}
                     backgroundImage="/casestudy/dubaiskyline.webp"
-                    titleFont={cormorant.style.fontFamily}
+                    titleFont={headingFont}
                     buttonAccentColor={accentColorHex}
                     buttonFont={bodyFontStack}
                     liveLink="https://www.dkmcorp.in/"
