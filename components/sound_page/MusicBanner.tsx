@@ -18,165 +18,76 @@ export default function AboutBanner() {
     {
       title: "MARTYR",
       artist: "DDK",
-      src: "/audio/before/09.wav",
+      src: "/audio/beforemp3/martyrbefore.mp3",
       coverl_img: "/assets/songCovers/01.webp"
     },
     {
-      title: "BE MY TINE",
+      title: "BACK IN TIME",
       artist: "Sam Suen",
-      src: "/audio/before/01.wav",
+      src: "/audio/beforemp3/backintimebefore.mp3",
       coverl_img: "/assets/songCovers/02.webp"
     },
     {
-      title: "YOU COULD BE MY WOMEN",
+      title: "YKWIW",
       artist: "Basu",
-      src: "/audio/before/14.wav",
+      src: "/audio/beforemp3/ykwiwbefore.mp3",
       coverl_img: "/assets/songCovers/03.webp"
     },
-    // {
-    //   title: "TALK MY SHIFT",
-    //   artist: "DDK",
-    //   src: "/audio/before/11.wav",
-    // },
-    // {
-    //   title: "MARLAND MARAUDERS",
-    //   artist: "DDK",
-    //   src: "/audio/before/10.wav",
-    // },
-    // {
-    //   title: "WANNA KNOW",
-    //   artist: "Adil Hasan",
-    //   src: "/audio/before/13.wav",
-    // },
-
     {
-      title: "Kiss of Death",
+      title: "GUAP",
       artist: "Sniper J",
-      src: "/audio/before/07.wav",
+      src: "/audio/beforemp3/guapbefore.mp3",
       coverl_img: "/assets/songCovers/07.webp"
     },
-
-    // {
-    //   title: "COME  THRU",
-    //   artist: "Basu",
-    //   src: "/audio/before/02.wav",
-    // },
-    // {
-    //   title: "DO THE MOST",
-    //   artist: "Basu",
-    //   src: "/audio/before/03.wav",
-    // },
-    // {
-    //   title: "ELON MUSK",
-    //   artist: "Basu",
-    //   src: "/audio/before/04.wav",
-    // },
-    // {
-    //   title: "FEEL THAT WAY",
-    //   artist: "Basu",
-    //   src: "/audio/before/05.wav",
-    // },
-    // {
-    //   title: "HOLY",
-    //   artist: "Basu",
-    //   src: "/audio/before/06.wav",
-    // },
-
     {
-      title: "ONE AT A TIME",
+      title: "GIMME YOUR LOVE",
       artist: "Basu",
-      src: "/audio/before/08.wav",
+      src: "/audio/beforemp3/gimmeyourlovebefore.mp3",
       coverl_img: "/assets/songCovers/13.webp"
     },
-
-
     {
-      title: "UP LATE UP EARLY",
-      artist: "Basu",
-      src: "/audio/before/12.wav",
+      title: "TALK MY SHIT",
+      artist: "DDK",
+      src: "/audio/beforemp3/talkmyshitbefore.mp3",
       coverl_img: "/assets/songCovers/14.webp"
     },
-
   ];
 
   const afterSong = [
     {
       title: "MARTYR",
       artist: "DDK",
-      src: "/audio/after/09.wav",
+      src: "/audio/aftermp3/martyrafter.mp3",
       coverl_img: "/assets/songCovers/01.webp"
     },
     {
-      title: "BE MY TINE",
+      title: "BACK IN TIME",
       artist: "Sam Suen",
-      src: "/audio/after/01.wav",
+      src: "/audio/aftermp3/backintimeafter.mp3",
       coverl_img: "/assets/songCovers/02.webp"
     },
     {
-      title: "YOU COULD BE MY WOMEN",
+      title: "YKWIW",
       artist: "Basu",
-      src: "/audio/after/14.wav",
+      src: "/audio/aftermp3/ykwiwafter.mp3",
       coverl_img: "/assets/songCovers/03.webp"
     },
-    // {
-    //   title: "TALK MY SHIFT",
-    //   artist: "DDK",
-    //   src: "/audio/after/11.wav",
-    // },
-    // {
-    //   title: "MARLAND MARAUDERS",
-    //   artist: "DDK",
-    //   src: "/audio/after/10.wav",
-    // },
-    // {
-    //   title: "WANNA KNOW",
-    //   artist: "Adil Hasan",
-    //   src: "/audio/after/13.wav",
-    // },
-
     {
-      title: "Kiss of Death",
+      title: "GUAP",
       artist: "Sniper J",
-      src: "/audio/after/07.wav",
+      src: "/audio/aftermp3/guapafter.mp3",
       coverl_img: "/assets/songCovers/07.webp"
     },
-
-    // {
-    //   title: "COME  THRU",
-    //   artist: "Basu",
-    //   src: "/audio/after/02.wav",
-    // },
-    // {
-    //   title: "DO THE MOST",
-    //   artist: "Basu",
-    //   src: "/audio/after/03.wav",
-    // },
-    // {
-    //   title: "ELON MUSK",
-    //   artist: "Basu",
-    //   src: "/audio/after/04.wav",
-    // },
-    // {
-    //   title: "FEEL THAT WAY",
-    //   artist: "Basu",
-    //   src: "/audio/after/05.wav",
-    // },
-    // {
-    //   title: "HOLY",
-    //   artist: "Basu",
-    //   src: "/audio/after/06.wav",
-    // },
-
     {
-      title: "ONE AT A TIME",
+      title: "GIMME YOUR LOVE",
       artist: "Basu",
-      src: "/audio/after/08.wav",
+      src: "/audio/aftermp3/gimmeyourloveafter.mp3",
       coverl_img: "/assets/songCovers/13.webp"
     },
     {
-      title: "UP LATE UP EARLY",
-      artist: "Basu",
-      src: "/audio/after/12.wav",
+      title: "TALK MY SHIT",
+      artist: "DDK",
+      src: "/audio/aftermp3/talkmyshitafter.mp3",
       coverl_img: "/assets/songCovers/14.webp"
     },
   ];
