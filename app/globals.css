@@ -16,6 +16,7 @@
   src: url('/font/Anton-Regular.ttf');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 /* @font-face {
@@ -30,6 +31,7 @@
   src: url('/font/Futura Regular.ttf');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 /* @font-face {
@@ -72,6 +74,7 @@
   src: url('/font/ZRTW-BokeRoughPersonalUse.otf');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -79,6 +82,7 @@
   src: url('/font/norwige-font-family-1750004186-0/Norwige-LightItalic-BF68175f322ddb6.otf');
   font-weight: 300;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -86,6 +90,7 @@
   src: url('/font/norwige-font-family-1750004186-0/Norwige-MediumItalic-BF68175f325d0c2.otf');
   font-weight: 500;
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
@@ -93,6 +98,7 @@
   src: url('/font/norwige-font-family-1750004186-0/Norwige-SemiBoldItalic-BF68175f326e730.otf');
   font-weight: 600;
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
@@ -124,6 +130,7 @@
   src: url('/font/Sedgwick_Ave_Display/SedgwickAveDisplay-Regular.ttf');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -131,6 +138,7 @@
   src: url('/font/pearl-jean.ttf');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -138,6 +146,7 @@
   src: url('/font/HellasFun Bold.ttf');
   font-weight: bold;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -145,6 +154,7 @@
   src: url('/font/Hornset.ttf');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -152,6 +162,7 @@
   src: url('/font/lost_in_south/Lost in South.ttf');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 
