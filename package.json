@@ -39,18 +39,11 @@
     "@radix-ui/react-toggle-group": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.2",
     "@react-spring/web": "^9.7.5",
-    "@types/gsap": "^1.20.2",
-    "@types/node": "20.6.2",
-    "@types/react": "18.2.22",
-    "@types/react-dom": "18.2.7",
-    "autoprefixer": "10.4.15",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
-    "eslint": "8.49.0",
-    "eslint-config-next": "13.5.1",
     "framer-motion": "^11.18.2",
     "gsap": "^3.14.2",
     "input-otp": "^1.2.4",
@@ -59,7 +52,6 @@
     "next": "13.5.1",
     "next-themes": "^0.3.0",
     "ogl": "^1.0.11",
-    "postcss": "8.4.30",
     "react": "18.2.0",
     "react-day-picker": "^8.10.1",
     "react-dom": "18.2.0",
@@ -77,10 +69,18 @@
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.7",
     "tw-animate-css": "^1.4.0",
-    "typescript": "5.2.2",
     "vaul": "^0.9.9"
   },
   "devDependencies": {
-    "rimraf": "^6.1.3"
+    "@types/gsap": "^1.20.2",
+    "@types/node": "20.6.2",
+    "@types/react": "18.2.22",
+    "@types/react-dom": "18.2.7",
+    "autoprefixer": "10.4.15",
+    "eslint": "8.49.0",
+    "eslint-config-next": "13.5.1",
+    "postcss": "8.4.30",
+    "rimraf": "^6.1.3",
+    "typescript": "5.2.2"
   }
 }
