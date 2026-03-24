@@ -5,11 +5,11 @@ import { TypeAnimation } from "react-type-animation";
 export default function ArtistBreakthrough() {
   return (
     <section
-      className="relative py-20 bg-cover bg-center text-white rounded-t-[50px] -mt-[34px] "
-      style={{
-        backgroundImage: "url('/assets/images/Untitled-3.gif')",
-      }}
+      className="relative py-20 text-white rounded-t-[50px] -mt-[34px] overflow-hidden"
     >
+      <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover -z-10 rounded-t-[50px]">
+        <source src="/assets/images/Untitled-3.mp4" type="video/mp4" />
+      </video>
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/50 rounded-t-[50px]"></div>
 

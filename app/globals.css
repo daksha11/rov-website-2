@@ -4,13 +4,6 @@
 @import "tw-animate-css";
 
 /* --- FONT DECLARATIONS --- */
-/* @font-face {
-  font-family: 'palmore';
-  src: url('/font/palmore_light.ttf');
-  font-weight: normal;
-  font-style: normal;
-} */
-
 @font-face {
   font-family: 'anton';
   src: url('/font/Anton-Regular.ttf');
@@ -19,13 +12,6 @@
   font-display: swap;
 }
 
-/* @font-face {
-  font-family: 'impact';
-  src: url('/font/impact.ttf');
-  font-weight: normal;
-  font-style: normal;
-} */
-
 @font-face {
   font-family: 'futura';
   src: url('/font/Futura Regular.ttf');
@@ -33,41 +19,6 @@
   font-style: normal;
   font-display: swap;
 }
-
-/* @font-face {
-  font-family: 'apricots';
-  src: url('/font/Apricot-BF650c4a6357ce1.otf');
-  font-weight: normal;
-  font-style: normal;
-} */
-
-/* @font-face {
-  font-family: 'pagaki';
-  src: url('/font/pagkaki-regular.ttf');
-  font-weight: normal;
-  font-style: normal;
-} */
-
-/* @font-face {
-  font-family: 'sink';
-  src: url('/font/Sink.ttf');
-  font-weight: normal;
-  font-style: normal;
-} */
-
-/* @font-face {
-  font-family: 'pluma';
-  src: url('/font/Pluma.otf');
-  font-weight: normal;
-  font-style: normal;
-} */
-
-/* @font-face {
-  font-family: 'Big Shoulders Display';
-  src: url('/font/BigShoulders-VariableFont_opsz\,wght.ttf');
-  font-weight: normal;
-  font-style: normal;
-} */
 
 @font-face {
   font-family: 'Boke Rough';
