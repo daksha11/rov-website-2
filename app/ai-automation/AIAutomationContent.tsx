@@ -278,7 +278,7 @@ export default function AIAutomationContent() {
                         lineHeight: 1.7,
                     }}
                 >
-                    Our clients see tangible returns within the first 90 days. Here's what AI implementation delivers.
+                    Our clients see tangible returns within the first 90 days. Here&apos;s what AI implementation delivers.
                 </motion.p>
 
                 {/* Stats Grid */}

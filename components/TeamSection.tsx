@@ -249,6 +249,55 @@ const teamMembers: TeamMember[] = [
 const categories: Category[] = ["Creative", "Tech", "Systems"];
 const creativeSubcategories: CreativeSubcategory[] = ["UI/UX", "Motion", "Illustrative", "Sound"];
 
+const ImageCardInner = ({ src, alt, onClick, name, role, rotation = 0 }: { src: string; alt: string, onClick?: () => void, name?: string, role?: string, rotation?: number }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    return (
+        <motion.div
+            className="image-card md:w-[450px] md:h-[253px] w-[240px] h-[135px] rounded-[10px] overflow-hidden shrink-0 relative cursor-pointer"
+            onClick={onClick}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
+            <Image
+                src={src}
+                alt={alt}
+                fill
+                sizes="(max-width: 768px) 240px, 450px"
+                loading="lazy"
+                className="object-cover object-center"
+                style={{
+                    transform: rotation !== 0 ? `rotate(${rotation}deg)` : undefined
+                }}
+            />
+            <AnimatePresence>
+                {name && isHovered && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{
+                            position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+                            background: 'linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%)',
+                            backdropFilter: 'blur(4px)', display: 'flex', flexDirection: 'column',
+                            alignItems: 'center', justifyContent: 'center', gap: '10px', zIndex: 10
+                        }}
+                    >
+                        <h3 className="text-[clamp(2.5rem,5vw,3.5rem)] font-black text-white uppercase tracking-widest m-0" style={{ fontFamily: 'Norwige, sans-serif' }}>
+                            {name}
+                        </h3>
+                        {role && (
+                            <p className="text-[clamp(0.8rem,1.5vw,1rem)] font-normal text-white/90 uppercase tracking-widest m-0" style={{ fontFamily: 'Roboto, sans-serif' }}>
+                                {role}
+                            </p>
+                        )}
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </motion.div>
+    );
+};
+
 const TeamSection: React.FC = () => {
     const [activeCategory, setActiveCategory] = useState<Category>("All");
     const [activeCreativeSub, setActiveCreativeSub] = useState<CreativeSubcategory | "All">("All");
@@ -259,51 +308,8 @@ const TeamSection: React.FC = () => {
     };
 
     const ImageCard = useCallback(({ src, alt, onClick, name, role, rotation = 0 }: { src: string; alt: string, onClick?: () => void, name?: string, role?: string, rotation?: number }) => {
-        const [isHovered, setIsHovered] = useState(false);
-
         return (
-            <motion.div
-                className="image-card md:w-[450px] md:h-[253px] w-[240px] h-[135px] rounded-[10px] overflow-hidden shrink-0 relative cursor-pointer"
-                onClick={onClick}
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-            >
-                <Image
-                    src={src}
-                    alt={alt}
-                    fill
-                    sizes="(max-width: 768px) 240px, 450px"
-                    loading="lazy"
-                    className="object-cover object-center"
-                    style={{
-                        transform: rotation !== 0 ? `rotate(${rotation}deg)` : undefined
-                    }}
-                />
-                <AnimatePresence>
-                    {name && isHovered && (
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            style={{
-                                position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-                                background: 'linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%)',
-                                backdropFilter: 'blur(4px)', display: 'flex', flexDirection: 'column',
-                                alignItems: 'center', justifyContent: 'center', gap: '10px', zIndex: 10
-                            }}
-                        >
-                            <h3 className="text-[clamp(2.5rem,5vw,3.5rem)] font-black text-white uppercase tracking-widest m-0" style={{ fontFamily: 'Norwige, sans-serif' }}>
-                                {name}
-                            </h3>
-                            {role && (
-                                <p className="text-[clamp(0.8rem,1.5vw,1rem)] font-normal text-white/90 uppercase tracking-widest m-0" style={{ fontFamily: 'Roboto, sans-serif' }}>
-                                    {role}
-                                </p>
-                            )}
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </motion.div>
+            <ImageCardInner src={src} alt={alt} onClick={onClick} name={name} role={role} rotation={rotation} />
         );
     }, []);
 

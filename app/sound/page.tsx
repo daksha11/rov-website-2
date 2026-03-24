@@ -188,7 +188,7 @@ export default function Page() {
                                 className="px-6 py-3 bg-black text-white rounded-full hover:bg-gray-900 transition-colors uppercase tracking-wide text-sm md:text-base font-bold flex items-center justify-center"
                                 style={{ fontFamily: 'Norwige, sans-serif' }}
                             >
-                                LET'S CREATE!
+                                LET&apos;S CREATE!
                             </a>
                         </div>
                     </div>
