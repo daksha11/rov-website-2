@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Image from "next/image";
 
 interface ArtistCardProps {
   imageUrl: string;
@@ -81,7 +82,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({
       className="artist-card"
     >
       <div style={imageContainerStyle}>
-        <img src={imageUrl} alt={name} style={imageStyle} />
+        <Image src={imageUrl} alt={name} width={600} height={600} style={imageStyle} />
       </div>
       <div style={infoStyle}>
         <h3 style={infoHeadingStyle}>{name}</h3>

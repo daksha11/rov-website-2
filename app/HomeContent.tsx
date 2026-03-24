@@ -136,8 +136,6 @@ export default function HomeContent() {
           <Gallery />
         </section> */}
 
-        {/* <img src="/backgroundimage.webp" alt="Page Tear Image" /> */}
-
         <section id="services" style={{ margin: 0, padding: 0 }}>
           <Services />
         </section>

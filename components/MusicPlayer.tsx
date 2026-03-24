@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Repeat, Shuffle, Mail, Instagram, Linkedin } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import styled from 'styled-components';
@@ -388,10 +389,12 @@ export default function MusicPlayer() {
         {/* Now Playing */}
         <div className="flex items-center justify-between space-x-6">
           <div className="flex items-center space-x-6">
-            <img 
-              src={currentTrack.cover} 
+            <Image
+              src={currentTrack.cover}
               alt={currentTrack.title}
-              className="w-20 h-20 md:w-32 md:h-32 rounded-lg shadow-lg"
+              width={128}
+              height={128}
+              className="w-20 h-20 md:w-32 md:h-32 rounded-lg shadow-lg object-cover"
             />
             <div>
               <h2 className="text-lg md:text-2xl font-bold" style={{ fontFamily: 'Flight Maybe Maj, sans-serif' }}>
@@ -496,10 +499,12 @@ export default function MusicPlayer() {
                   currentTrack.id === track.id && "bg-zinc-700/50"
                 )}
               >
-                <img 
-                  src={track.cover} 
+                <Image
+                  src={track.cover}
                   alt={track.title}
-                  className="w-12 h-12 rounded"
+                  width={48}
+                  height={48}
+                  className="w-12 h-12 rounded object-cover"
                 />
                 <div className="ml-4">
                   <p className="font-medium" style={{ fontFamily: 'Flight Maybe Maj, sans-serif' }}>
