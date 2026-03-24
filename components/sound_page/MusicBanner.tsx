@@ -273,7 +273,7 @@ const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
       role="img"
       aria-label="ROV Studios music production environment"
       className="relative h-auto py-24 w-full bg-cover bg-center flex flex-col md:flex-row items-center justify-between"
-      style={{ backgroundImage: "url('/assets/background/1.png')" }}
+      style={{ backgroundImage: "url('/assets/background/1.webp')" }}
     >
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black/50"></div>
