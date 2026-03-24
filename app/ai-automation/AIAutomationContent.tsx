@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { NavigationDock } from '@/components/NavDoc';
@@ -10,8 +11,9 @@ import FAQBottomSection from '@/components/ai-automation/FAQBottomSection';
 import AIWorkflowsSection from '@/components/ai-automation/AIWorkflowsSection';
 import ProjectStrip from '@/components/ProjectStrip';
 import LogoLoop from '@/components/LogoLoop';
-import FaultyTerminal from '@/components/FaultyTerminal';
 import { SiNotion, SiGooglecloud, SiGmail, SiOpenai, SiN8N } from 'react-icons/si';
+
+const FaultyTerminal = dynamic(() => import('@/components/FaultyTerminal'), { ssr: false });
 
 export default function AIAutomationContent() {
     return (
