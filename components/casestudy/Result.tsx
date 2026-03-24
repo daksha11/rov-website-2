@@ -10,6 +10,7 @@ interface ResultProps {
     ctaLink?: string;
     titleColor?: string;
     titleFont?: string;
+    titleItalic?: boolean;
     statisticGradient?: string;
     ctaBorderColor?: string;
     ctaHoverBgColor?: string;
@@ -24,12 +25,13 @@ export const Result: React.FC<ResultProps> = ({
     ctaText = "Explore Our Services",
     ctaLink = "/#services",
     titleColor = '#C90000',
-    titleFont = 'Hornset',
+    titleFont = 'Norwige, sans-serif',
+    titleItalic = false,
     statisticGradient = 'linear-gradient(91deg, #D76C00 0.74%, #953200 100%)',
     ctaBorderColor = '#C90000',
     ctaHoverBgColor = '#C90000',
     textColor = '#d1d5db',
-    bodyFont = 'HellasFun'
+    bodyFont = "'Roboto', sans-serif"
 }) => {
     return (
         <div>
@@ -40,8 +42,8 @@ export const Result: React.FC<ResultProps> = ({
             `}</style>
             {/* Title */}
             <h3
-                className="text-5xl md:text-6xl font-black mb-16 uppercase tracking-tight"
-                style={{ color: titleColor, fontFamily: titleFont, letterSpacing: '0.1em' }}
+                className="text-5xl md:text-6xl font-bold mb-16 uppercase tracking-tight"
+                style={{ color: titleColor, fontFamily: titleFont, letterSpacing: '0.1em', fontStyle: titleItalic ? 'italic' : undefined }}
             >
                 {title}
             </h3>
@@ -51,7 +53,7 @@ export const Result: React.FC<ResultProps> = ({
                 {/* Large Statistic */}
                 <div className="flex-shrink-0">
                     <p
-                        className="font-black leading-none"
+                        className="font-bold leading-none"
                         style={{
                             fontFamily: titleFont,
                             letterSpacing: '0.1em',

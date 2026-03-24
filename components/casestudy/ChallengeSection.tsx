@@ -11,6 +11,7 @@ interface ChallengeSectionProps {
     titleColor?: string;
     textColor?: string;
     bodyFont?: string;
+    titleItalic?: boolean;
 }
 
 export const ChallengeSection: React.FC<ChallengeSectionProps> = ({
@@ -18,10 +19,11 @@ export const ChallengeSection: React.FC<ChallengeSectionProps> = ({
     content,
     gradient = 'linear-gradient(91deg, #D76C00 0.74%, #953200 100%)',
     backgroundColor = 'rgba(0, 0, 0, 0.60)',
-    titleFont = 'Hornset',
+    titleFont = 'Norwige, sans-serif',
     titleColor = 'white',
     textColor = 'white',
-    bodyFont = 'HellasFun'
+    bodyFont = "'Roboto', sans-serif",
+    titleItalic = false
 }) => {
     return (
         <div
@@ -49,7 +51,8 @@ export const ChallengeSection: React.FC<ChallengeSectionProps> = ({
                     style={{
                         fontFamily: titleFont,
                         letterSpacing: '0.1em',
-                        color: titleColor
+                        color: titleColor,
+                        fontStyle: titleItalic ? 'italic' : undefined
                     }}
                 >
                     {title}

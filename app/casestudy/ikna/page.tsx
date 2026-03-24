@@ -141,17 +141,18 @@ export default function IknaCaseStudyPage() {
             {/* Hero Section */}
             <CaseStudyHero
                 title={["ELEVATING", "IKNA'S", "DIGITAL PRESENCE"]}
-                titleColors={["#ffffff", "#1A4D2E", "#ffffff"]}
+                titleColors={["#ffffff", "#4CAF7D", "#ffffff"]}
                 backgroundImage="/casestudy/iknacasestudy.webp"
-                titleFont="Hornset"
+                titleFont="Norwige, sans-serif"
                 enableBlur={true}
                 liveLink="https://www.aysegulikna.com/"
+                buttonAccentColor="#4CAF7D"
             />
 
             {/* Case Study Section */}
             <section className="relative bg-black text-white py-16 px-6 md:px-12 lg:px-16">
                 <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8">
-                    <CaseStudySidebar items={sidebarItems} activeColor="#1A4D2E" />
+                    <CaseStudySidebar items={sidebarItems} activeColor="#4CAF7D" />
 
                     {/* Main Content */}
                     <div className="flex-1 space-y-12">
@@ -159,7 +160,7 @@ export default function IknaCaseStudyPage() {
                             <OverviewSection
                                 title="Overview"
                                 content="A luxury digital transformation for Aysegul Ikna, a high-fashion sustainable brand at Citizen Supply in Ponce City Market. We created an elevated online presence that justifies premium pricing through sophisticated design and seamless e-commerce integration."
-                                titleColor="#1A4D2E"
+                                titleColor="#4CAF7D"
                             />
                         </div>
 
@@ -167,7 +168,8 @@ export default function IknaCaseStudyPage() {
                             <ChallengeSection
                                 title="The Challenge"
                                 content="Aysegul Ikna's handcrafted, sustainable pieces commanded luxury prices, but her digital presence didn't reflect that value. Without a cohesive online brand experience, potential customers couldn't understand or justify the investment in her high-end garments."
-                                gradient="linear-gradient(91deg, #1A4D2E 0.74%, #2E5C42 100%)"
+                                gradient="linear-gradient(91deg, #4CAF7D 0.74%, #6BC49A 100%)"
+                                titleItalic={true}
                             />
 
                             <div className="mt-12">
@@ -177,12 +179,12 @@ export default function IknaCaseStudyPage() {
                                     competitors={competitors}
                                     comparisonData={comparisonData}
                                     insight="Sustainability credentials alone don't justify premium pricing. Luxury perception requires visual sophistication, seamless experience, and brand cohesion across every touchpoint."
-                                    titleColor="#1A4D2E"
-                                    highlightBorderColor="#1A4D2E"
+                                    titleColor="#4CAF7D"
+                                    highlightBorderColor="#4CAF7D"
                                     highlightRowBgColor="rgba(26, 77, 46, 0.10)"
-                                    insightBadgeColor="#1A4D2E"
-                                    insightBorderColor="#1A4D2E"
-                                    checkColor="#1A4D2E"
+                                    insightBadgeColor="#4CAF7D"
+                                    insightBorderColor="#4CAF7D"
+                                    checkColor="#4CAF7D"
                                 />
                             </div>
                         </div>
@@ -193,7 +195,7 @@ export default function IknaCaseStudyPage() {
                                 description="Visual identity refined to communicate luxury and intentionality at every interaction."
                                 colors={designSystemColors}
                                 typography={designSystemTypography}
-                                titleColor="#1A4D2E"
+                                titleColor="#4CAF7D"
                             />
                         </div>
 
@@ -201,9 +203,9 @@ export default function IknaCaseStudyPage() {
                             <Approach
                                 title="Approach"
                                 items={approachItems}
-                                titleColor="#1A4D2E"
+                                titleColor="#4CAF7D"
                                 borderColor="#262626"
-                                hoverBorderColor="#1A4D2E"
+                                hoverBorderColor="#4CAF7D"
                                 hoverBgColor="rgba(26, 77, 46, 0.10)"
                                 bgColor="#0E0A08"
                             />
@@ -212,12 +214,13 @@ export default function IknaCaseStudyPage() {
                         <div id="result">
                             <Result
                                 title="Result"
+                                titleItalic={true}
                                 statistic="30%"
                                 description="Within months of launch, Aysegul Ikna saw a 30% increase in monthly sales with significantly improved digital brand recognition. The online experience now commands the same respect and price point as her physical boutique presence at Ponce City Market."
-                                titleColor="#1A4D2E"
-                                statisticGradient="linear-gradient(91deg, #1A4D2E 0.74%, #2E5C42 100%)"
-                                ctaBorderColor="#1A4D2E"
-                                ctaHoverBgColor="#1A4D2E"
+                                titleColor="#4CAF7D"
+                                statisticGradient="linear-gradient(91deg, #4CAF7D 0.74%, #6BC49A 100%)"
+                                ctaBorderColor="#4CAF7D"
+                                ctaHoverBgColor="#4CAF7D"
                             />
                         </div>
                     </div>

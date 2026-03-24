@@ -6,18 +6,22 @@ interface OverviewSectionProps {
     title: string;
     content: string;
     titleColor?: string;
+    titleGradient?: string;
     titleFont?: string;
     textColor?: string;
     bodyFont?: string;
+    titleItalic?: boolean;
 }
 
 export const OverviewSection: React.FC<OverviewSectionProps> = ({
     title,
     content,
     titleColor = '#C90000',
-    titleFont = 'Hornset',
+    titleGradient,
+    titleFont = 'Norwige, sans-serif',
     textColor = 'white',
-    bodyFont = 'HellasFun'
+    bodyFont = "'Roboto', sans-serif",
+    titleItalic = false
 }) => {
     return (
         <div>
@@ -25,8 +29,12 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
                 className="text-4xl md:text-5xl font-bold mb-6"
                 style={{
                     fontFamily: titleFont,
-                    color: titleColor,
-                    letterSpacing: '0.1em'
+                    letterSpacing: '0.1em',
+                    fontStyle: titleItalic ? 'italic' : undefined,
+                    ...(titleGradient
+                        ? { backgroundImage: titleGradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }
+                        : { color: titleColor }
+                    ),
                 }}
             >
                 {title}

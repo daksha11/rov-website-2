@@ -131,7 +131,7 @@ export default function Page() {
                         style={{
                             borderRadius: '15px',
                             border: '1px solid #999288',
-                            background: 'linear-gradient(111deg, #EA9A61 -1.34%, #B16937 25.87%, #A64D2B 59.87%, #42201C 93.39%)',
+                            background: 'linear-gradient(111deg, #42201C -1.34%, #A64D2B 25.87%, #B16937 59.87%, #EA9A61 93.39%)',
                             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
                         }}
                     >
@@ -148,47 +148,55 @@ export default function Page() {
 
                             {/* Text Content */}
                             <div>
-                                <h3 className="text-white text-2xl md:text-3xl lg:text-4xl font-bold mb-2" style={{ fontFamily: 'Norwige, sans-serif' }}>
-                                    First Time Working With Us?
+                                <h3 className="text-white text-3xl md:text-4xl lg:text-5xl font-bold mb-2" style={{ fontFamily: 'Norwige, sans-serif' }}>
+                                    Ready to Record?
                                 </h3>
-                                <p className="text-white text-sm md:text-base opacity-90" style={{ fontFamily: 'Norwige, sans-serif' }}>
-                                    Demo snippets are free. No Strings. No Proof.
+                                <p className="text-white text-base md:text-lg opacity-90" style={{ fontFamily: 'Roboto, sans-serif' }}>
+                                    Book a free 30-minute consultation. We&apos;ll talk through your project, timeline, and get you on the calendar.
                                 </p>
                             </div>
                         </div>
 
                         {/* Right side - Buttons */}
-                        <div className="flex items-center gap-4 flex-shrink-0">
-                            {/* Arrow Button */}
-                            <a
-                                href="https://calendly.com/rangeofviewmusic/30min"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors"
-                            >
-                                <svg
-                                    width="20"
-                                    height="20"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
+                        <div className="flex items-center flex-shrink-0" style={{ gap: 'clamp(0.75rem, 1.5vw, 1rem)' }}>
+                            {/* Circle group */}
+                            <div className="flex items-center relative gap-0">
+                                <div
+                                    className="rounded-full border border-white/50 bg-transparent shrink-0"
+                                    style={{ width: 'clamp(3rem, 5vw, 3.75rem)', height: 'clamp(3rem, 5vw, 3.75rem)' }}
+                                />
+                                <a
+                                    href="https://calendly.com/rangeofviewmusic/30min"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="rounded-full bg-[#F7F2E4] flex items-center justify-center cursor-pointer transition-all duration-300 relative z-[2] shrink-0 -mx-2.5 hover:shadow-lg hover:scale-110"
+                                    style={{ width: 'clamp(3rem, 5vw, 3.75rem)', height: 'clamp(3rem, 5vw, 3.75rem)' }}
                                 >
-                                    <path d="M5 12h14M12 5l7 7-7 7" />
-                                </svg>
-                            </a>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2" className="w-[35%] h-[35%]">
+                                        <path d="M5 12h14M12 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                                <div
+                                    className="rounded-full border border-white/50 bg-transparent shrink-0"
+                                    style={{ width: 'clamp(3rem, 5vw, 3.75rem)', height: 'clamp(3rem, 5vw, 3.75rem)' }}
+                                />
+                            </div>
 
                             {/* LET'S CREATE Button */}
                             <a
                                 href="https://calendly.com/rangeofviewmusic/30min"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="px-6 py-3 bg-black text-white rounded-full hover:bg-gray-900 transition-colors uppercase tracking-wide text-sm md:text-base font-bold flex items-center justify-center"
-                                style={{ fontFamily: 'Norwige, sans-serif' }}
+                                className="cta-shine inline-block rounded-full bg-[#0E0A08] text-white font-semibold cursor-pointer transition-all duration-300 whitespace-nowrap hover:shadow-[0_6px_20px_rgba(0,0,0,0.4)] hover:scale-105 uppercase"
+                                style={{
+                                    padding: 'clamp(0.75rem, 1.2vw, 0.9375rem) clamp(1.5rem, 2.5vw, 2rem)',
+                                    fontSize: 'clamp(0.75rem, 1vw, 0.875rem)',
+                                    letterSpacing: '0.05em',
+                                    fontFamily: 'Norwige, sans-serif',
+                                    boxShadow: '0 4px 4px 0 rgba(0, 0, 0, 0.25)',
+                                }}
                             >
-                                LET'S CREATE!
+                                LET&apos;S CREATE!
                             </a>
                         </div>
                     </div>
