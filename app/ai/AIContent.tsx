@@ -1,12 +1,14 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { NavigationDock } from "@/components/NavDoc";
 import Footer from "@/components/Footer";
 import OurApproachSection from "@/components/ai-automation/OurApproachSection";
 import FAQBottomSection from "@/components/ai-automation/FAQBottomSection";
 import ProjectStrip from "@/components/ProjectStrip";
-import FaultyTerminal from "@/components/FaultyTerminal";
 import { useState } from "react";
+
+const FaultyTerminal = dynamic(() => import("@/components/FaultyTerminal"), { ssr: false });
 
 export default function AIContent() {
     const [activeCategory, setActiveCategory] = useState<string>("automation");

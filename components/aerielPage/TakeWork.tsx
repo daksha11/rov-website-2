@@ -6,13 +6,13 @@ export default function TakeWork() {
     <section
       className="relative md:rounded-t-[50px] md:-mt-[28px]  bg-cover lg:bg-center bg-start bg-no-repeat md:pt-10 pt-4 overflow-hidden"
       style={{
-        backgroundImage: "url('/assets/background/new2.jpg')",
+        backgroundImage: "url('/assets/background/new2.webp')",
       }}
     >
       {/* Top Right Decorative Image */}
       <div className="absolute top-0 right-4  md:right-8 xl:block hidden md:w-28 lg:w-72 z-10">
         <Image
-          src="/assets/images/arrowvision.png"
+          src="/assets/images/arrowvision.webp"
           alt=""
           width={250}
           height={250}
@@ -43,7 +43,7 @@ export default function TakeWork() {
       <div className="w-full flex justify-end mt-6 md:mt-0">
        <div
       className=" w-full max-w-7xl bg-cover  xl:h-[560px] lg:h-[520px] md:h-[400px] h-[240px] bg-center bg-no-repeat"
-      style={{ backgroundImage: `url(/assets/images/takeworkhand.png)` }}
+      style={{ backgroundImage: `url(/assets/images/takeworkhand.webp)` }}
     >
  <TestimonialsSection/>
     </div>

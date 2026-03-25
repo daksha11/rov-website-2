@@ -34,13 +34,11 @@ const BookACall = () => {
 
   return (
     <section
-      className="relative text-center py-16 md:py-24  px-4 md:px-6 rounded-t-[50px] "
-      style={{
-        backgroundImage: "url('/assets/images/Untitled-6.gif')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
+      className="relative text-center py-16 md:py-24 px-4 md:px-6 rounded-t-[50px] overflow-hidden"
     >
+      <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover -z-10 rounded-t-[50px]">
+        <source src="/assets/images/Untitled-6.mp4" type="video/mp4" />
+      </video>
       {/* Top small text */}
       <motion.p
         initial={{ opacity: 0, y: -30 }}

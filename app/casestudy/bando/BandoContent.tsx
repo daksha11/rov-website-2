@@ -66,7 +66,7 @@ export default function BandoContent() {
             <CaseStudyHero
                 title={["Crafting The", "Bando's", "Online Experience"]}
                 titleColors={["#C90000", "#FFD600", "#C90000"]}
-                backgroundImage="/casestudy/Evertriedcrack.jpeg"
+                backgroundImage="/casestudy/Evertriedcrack.webp"
                 titleFont="'Pearl Jean', sans-serif"
             />
 

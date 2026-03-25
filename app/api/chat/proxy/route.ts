@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
         // Get shared secret (optional if n8n webhook doesn't require auth)
         const sharedSecret = process.env.N8N_SHARED_SECRET || "";
         if (!sharedSecret) {
-            console.log("⚠️ N8N_SHARED_SECRET not set - webhook must not require authentication");
+            // N8N_SHARED_SECRET not set - webhook must not require authentication
         }
 
         // Build the payload
@@ -44,21 +44,12 @@ export async function POST(req: NextRequest) {
             payload.sessionId = body.sessionId;
         }
 
-        console.log("📤 Proxying to N8N:", {
-            url: n8nUrl,
-            chatInput: payload.chatInput.substring(0, 100),
-            sessionId: payload.sessionId,
-            timestamp: new Date().toISOString()
-        });
-
         // Attempt to fetch with timeout and retry logic
         let lastError: any = null;
         const maxRetries = 2;
 
         for (let attempt = 1; attempt <= maxRetries; attempt++) {
             try {
-                console.log(`🔄 Attempt ${attempt}/${maxRetries}`);
-
                 const n8nRes = await fetchWithTimeout(
                     n8nUrl,
                     {
@@ -90,7 +81,6 @@ export async function POST(req: NextRequest) {
 
                     // Retry on 5xx errors if we have attempts left
                     if (attempt < maxRetries) {
-                        console.log(`⏳ Retrying in 1 second...`);
                         await new Promise(resolve => setTimeout(resolve, 1000));
                         continue;
                     }
@@ -99,12 +89,6 @@ export async function POST(req: NextRequest) {
                 }
 
                 const data = await n8nRes.json();
-                console.log("✅ N8N Success:", {
-                    hasOutput: !!data.output,
-                    outputLength: data.output?.length || 0,
-                    timestamp: new Date().toISOString()
-                });
-
                 return NextResponse.json(data);
 
             } catch (fetchError: any) {
@@ -113,7 +97,6 @@ export async function POST(req: NextRequest) {
 
                 // If it's a timeout and we have retries left, try again
                 if (fetchError.message.includes('timeout') && attempt < maxRetries) {
-                    console.log(`⏳ Retrying after timeout...`);
                     await new Promise(resolve => setTimeout(resolve, 1000));
                     continue;
                 }

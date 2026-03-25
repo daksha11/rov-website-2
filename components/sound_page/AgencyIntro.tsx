@@ -9,7 +9,7 @@ export default function AgencyIntro() {
     <section
       className="relative w-full h-auto flex items-center justify-center text-white -mt-[20px] md:-mt-[30px] rounded-t-[30px] md:rounded-t-[50px]"
       style={{
-        backgroundImage: "url('/assets/background/12.jpg')",
+        backgroundImage: "url('/assets/background/12.webp')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
@@ -35,7 +35,7 @@ export default function AgencyIntro() {
               <span className="flex justify-center items-center gap-3 sm:gap-4">
                 <span className="block">An Agency</span>
                 <img
-                  src="/assets/images/quote.png"
+                  src="/assets/images/quote.webp"
                   alt="Agency Logo"
                   className="w-8 h-16 sm:w-10 sm:h-20 md:w-14 md:h-36 transform rotate-20 animate-bounce mt-2 sm:mt-5"
                 />

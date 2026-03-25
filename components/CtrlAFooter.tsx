@@ -25,7 +25,7 @@ const CtrlAFooter = () => {
                                     className="text-sm md:text-base px-4 py-2 rounded-full border-2 border-white uppercase tracking-wide"
                                     style={{ fontFamily: 'Norwige, sans-serif' }}
                                 >
-                                    Let's make it happen
+                                    Let&apos;s make it happen
                                 </span>
                             </div>
                             <h3
@@ -90,7 +90,7 @@ const CtrlAFooter = () => {
                                 className="text-xs md:text-sm text-gray-300"
                                 style={{ fontFamily: 'Roboto, sans-serif' }}
                             >
-                                *we're millennials and gen-z please do not call us.
+                                *we&apos;re millennials and gen-z please do not call us.
                             </p>
 
                             {/* Social Icons */}

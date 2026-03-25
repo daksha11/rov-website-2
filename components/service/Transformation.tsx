@@ -5,7 +5,7 @@ export default function Transformation() {
   return (
     <section
       className="relative min-h-screen flex flex-col justify-center items-center px-6 md:px-14 text-[#ffffff] overflow-hidden font-['Poppins'] bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: "url('/assets/background/servicebg.png')" }} 
+      style={{ backgroundImage: "url('/assets/background/servicebg.webp')" }} 
     >
       {/* Overlay (optional) */}
       <div className="absolute inset-0 bg-black/40"></div>

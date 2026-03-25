@@ -113,7 +113,7 @@ export default function LandingPage() {
                     // Dispatch custom event when landing animation completes
                     const event = new CustomEvent("landingComplete");
                     window.dispatchEvent(event);
-                    console.log("Landing animation complete - event dispatched");
+
                 },
             },
             0.9 // Start fade at 90% of timeline

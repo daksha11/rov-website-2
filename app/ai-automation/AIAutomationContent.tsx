@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { NavigationDock } from '@/components/NavDoc';
@@ -10,9 +11,10 @@ import FAQBottomSection from '@/components/ai-automation/FAQBottomSection';
 import AIWorkflowsSection from '@/components/ai-automation/AIWorkflowsSection';
 import ProjectStrip from '@/components/ProjectStrip';
 import LogoLoop from '@/components/LogoLoop';
-import FaultyTerminal from '@/components/FaultyTerminal';
 import { N8nWorkflowBlock } from '@/components/ui/n8n-workflow-block';
 import { SiNotion, SiGooglecloud, SiGmail, SiOpenai, SiN8N } from 'react-icons/si';
+
+const FaultyTerminal = dynamic(() => import('@/components/FaultyTerminal'), { ssr: false });
 
 export default function AIAutomationContent() {
     return (
@@ -277,7 +279,7 @@ export default function AIAutomationContent() {
                         lineHeight: 1.7,
                     }}
                 >
-                    Our clients see tangible returns within the first 90 days. Here's what AI implementation delivers.
+                    Our clients see tangible returns within the first 90 days. Here&apos;s what AI implementation delivers.
                 </motion.p>
 
                 {/* Stats Grid */}

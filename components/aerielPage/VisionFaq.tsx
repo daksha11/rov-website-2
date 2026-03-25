@@ -45,11 +45,10 @@ export default function FAQSection() {
   };
 
   return (
-    <section  style={{ 
-   backgroundImage: "url('/assets/images/5th.gif')",
-    backgroundSize: "cover",
-    backgroundPosition: "bottom",
-  }} className="relative w-full min-h-screen py-20 px-6 flex flex-col items-center">
+    <section className="relative w-full min-h-screen py-20 px-6 flex flex-col items-center overflow-hidden">
+      <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover object-bottom -z-10">
+        <source src="/assets/images/5th.mp4" type="video/mp4" />
+      </video>
      
       <div className="max-w-6xl w-full space-y-20">
         {steps.map((step, stepIndex) => (

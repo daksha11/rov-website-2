@@ -6,7 +6,7 @@ export default function Culture() {
   return (
     <section
       className="relative bg-[#604f45]  text-white font-['Poppins'] bg-cover bg-center bg-no-repeat"
-      style={{backgroundImage: "url('/assets/background/new7.jpg')", }}
+      style={{backgroundImage: "url('/assets/background/new7.webp')", }}
     >
       
 

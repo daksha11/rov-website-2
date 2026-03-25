@@ -9,7 +9,7 @@ const workflows = [
         title: "RAG Chatbot",
         category: "AI Assistant",
         description: "A 24/7 AI sales agent trained on your brand. Answers questions, handles objections, and converts visitors into customers while you sleep.",
-        imageUrl: "/aipage/aiwf1.png",
+        imageUrl: "/aipage/aiwf1.webp",
         downloadUrl: "/aipage/rag_chatbot.json",
         tools: [
             { label: "GPT-4", color: "#10A37F" },
@@ -30,7 +30,7 @@ const workflows = [
         title: "AI Appointment Booking Agent",
         category: "Scheduling & Booking",
         description: "Never miss a booking again. This agent handles scheduling automatically, checks availability, confirms slots, and locks in meetings without any back-and-forth.",
-        imageUrl: "/aipage/aiwf2.png",
+        imageUrl: "/aipage/aiwf2.webp",
         downloadUrl: "/aipage/appointment_booking.json",
         tools: [
             { label: "Claude", color: "#D4A27F" },
@@ -50,7 +50,7 @@ const workflows = [
         title: "Website Inbound Lead Collection & CRM Sync",
         category: "CRM & Lead Generation",
         description: "Captures inbound website leads, enriches contact data, sends automated follow-ups, and syncs qualified prospects directly into HubSpot CRM.",
-        imageUrl: "/aipage/aiwf3.png",
+        imageUrl: "/aipage/aiwf3.webp",
         downloadUrl: "/aipage/website_inbound_crm.json",
         tools: [
             { label: "OpenAI", color: "#10A37F" },

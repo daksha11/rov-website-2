@@ -35,7 +35,7 @@ const projects = [
         category: "Global Digital Infrastructure & Brand Identity",
         tags: ["Design", "Development", "Branding"],
         year: "2025",
-        media: "/casestudy/dubaiskyline.jpg",
+        media: "/casestudy/dubaiskyline.webp",
         mediaType: "image" as const,
         link: "/casestudy/dkm",
     },
