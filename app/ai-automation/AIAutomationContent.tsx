@@ -11,6 +11,7 @@ import AIWorkflowsSection from '@/components/ai-automation/AIWorkflowsSection';
 import ProjectStrip from '@/components/ProjectStrip';
 import LogoLoop from '@/components/LogoLoop';
 import FaultyTerminal from '@/components/FaultyTerminal';
+import { N8nWorkflowBlock } from '@/components/ui/n8n-workflow-block';
 import { SiNotion, SiGooglecloud, SiGmail, SiOpenai, SiN8N } from 'react-icons/si';
 
 export default function AIAutomationContent() {
@@ -646,6 +647,34 @@ export default function AIAutomationContent() {
                         fadeOutColor="#000000"
                         ariaLabel="AI Technology partners and integrations"
                     />
+                </div>
+            </section>
+
+            {/* Workflow Playground */}
+            <section className="relative bg-black" style={{ padding: "clamp(60px, 10vw, 100px) clamp(16px, 5vw, 60px)" }}>
+                <div className="max-w-6xl mx-auto">
+                    <div className="mb-8 md:mb-12">
+                        <span
+                            className="block text-xs uppercase tracking-[0.3em] text-[#EA9A61] mb-4"
+                            style={{ fontFamily: "'Roboto', sans-serif" }}
+                        >
+                            Interactive Playground
+                        </span>
+                        <h2
+                            className="text-white text-3xl md:text-4xl lg:text-5xl font-bold italic leading-tight mb-3"
+                            style={{ fontFamily: "Norwige, sans-serif" }}
+                        >
+                            See How Workflows Work
+                        </h2>
+                        <p
+                            className="text-white/40 text-sm md:text-base max-w-xl"
+                            style={{ fontFamily: "'Roboto', sans-serif" }}
+                        >
+                            Drag nodes around, add new ones, and see how automation pipelines connect.
+                            This is a simplified version of what we build for your business.
+                        </p>
+                    </div>
+                    <N8nWorkflowBlock />
                 </div>
             </section>
 

@@ -747,6 +747,100 @@ export default function CtrlAContent() {
       {/* Global Team Map */}
       <GlobalTeamGlobe />
 
+      {/* Tape 3 Coming Soon */}
+      <section className="relative bg-black overflow-hidden" style={{ padding: "clamp(60px, 10vw, 100px) clamp(16px, 5vw, 60px)" }}>
+        {/* Subtle glow */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
+          style={{ background: "radial-gradient(circle, rgba(234,154,97,0.05) 0%, transparent 60%)" }}
+        />
+
+        <div className="relative z-10 max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-16">
+          {/* Mini spinning vinyl */}
+          <div className="relative w-36 h-36 md:w-48 md:h-48 shrink-0">
+            <div
+              className="absolute inset-0 rounded-full"
+              style={{
+                animation: "spin 6s linear infinite",
+                background: `conic-gradient(
+                  from 0deg,
+                  #1a1210 0deg, #2a1e18 30deg, #1a1210 60deg, #2a1e18 90deg,
+                  #1a1210 120deg, #2a1e18 150deg, #1a1210 180deg, #2a1e18 210deg,
+                  #1a1210 240deg, #2a1e18 270deg, #1a1210 300deg, #2a1e18 330deg, #1a1210 360deg
+                )`,
+                boxShadow: "0 0 40px rgba(234,154,97,0.1), inset 0 0 20px rgba(0,0,0,0.5)",
+              }}
+            >
+              {[25, 40, 55, 70, 85].map((pct) => (
+                <div
+                  key={pct}
+                  className="absolute rounded-full border border-white/[0.04]"
+                  style={{ inset: `${(100 - pct) / 2}%` }}
+                />
+              ))}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div
+                  className="w-[28%] h-[28%] rounded-full flex items-center justify-center"
+                  style={{
+                    background: "linear-gradient(135deg, #EA9A61 0%, #B16937 40%, #42201C 100%)",
+                    boxShadow: "inset 0 1px 4px rgba(0,0,0,0.3)",
+                  }}
+                >
+                  <div className="w-[18%] h-[18%] rounded-full bg-black/60" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Text */}
+          <div className="text-center md:text-left flex-1">
+            <span
+              className="block text-xs uppercase tracking-[0.3em] text-[#EA9A61]/50 mb-3"
+              style={{ fontFamily: "'Roboto', sans-serif" }}
+            >
+              Coming Soon
+            </span>
+            <h2
+              className="text-white text-4xl md:text-5xl lg:text-6xl font-bold italic leading-[0.95] mb-4"
+              style={{ fontFamily: "Norwige, sans-serif" }}
+            >
+              The ROV{" "}
+              <span
+                className="bg-clip-text text-transparent"
+                style={{ backgroundImage: "linear-gradient(112deg, #42201C 6.46%, #A64D2B 34.96%, #B16937 63.88%, #EA9A61 97.63%)" }}
+              >
+                Tape 3
+              </span>
+            </h2>
+            <p
+              className="text-white/40 text-sm md:text-base leading-relaxed max-w-lg mb-6"
+              style={{ fontFamily: "'Roboto', sans-serif" }}
+            >
+              A curated multi-artist tape. Afrobeats, RnB, soul, Atlanta energy.
+              Cross-genre, culture-forward, and unapologetically ROV.
+            </p>
+            <a
+              href="/ctrla/tape3"
+              className="cta-shine inline-flex items-center gap-2 text-white font-semibold transition-all duration-300 hover:scale-105"
+              style={{
+                fontFamily: "Norwige, sans-serif",
+                borderRadius: "41.444px",
+                background: "linear-gradient(112deg, #42201C 6.46%, #A64D2B 34.96%, #B16937 63.88%, #EA9A61 97.63%)",
+                boxShadow: "3px 4px 4px 0 rgba(255, 244, 227, 0.15) inset, 0 4.385px 4.385px 0 rgba(0, 0, 0, 0.25)",
+                padding: "0.75rem 1.75rem",
+                fontSize: "0.875rem",
+                letterSpacing: "0.05em",
+              }}
+            >
+              View Creative Brief
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <CtrlAFooter />
     </div>

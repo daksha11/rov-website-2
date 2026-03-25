@@ -377,6 +377,12 @@ body {
 }
 
 
+/* Vinyl spin */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 /* CTA shine sweep */
 @keyframes cta-shine {
   0%, 100% { transform: translateX(-100%); }
