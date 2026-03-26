@@ -12,6 +12,8 @@ import AIWorkflowsSection from '@/components/ai-automation/AIWorkflowsSection';
 import ProjectStrip from '@/components/ProjectStrip';
 import LogoLoop from '@/components/LogoLoop';
 import { N8nWorkflowBlock } from '@/components/ui/n8n-workflow-block';
+import TestimonialsSection from '@/components/common/TestimonialsSection';
+import { aiTestimonials } from '@/data/testimonials';
 import { SiNotion, SiGooglecloud, SiGmail, SiOpenai, SiN8N } from 'react-icons/si';
 
 const FaultyTerminal = dynamic(() => import('@/components/FaultyTerminal'), { ssr: false });
@@ -679,6 +681,9 @@ export default function AIAutomationContent() {
                     <N8nWorkflowBlock />
                 </div>
             </section>
+
+            {/* Client Testimonials */}
+            <TestimonialsSection testimonials={aiTestimonials} variant="ai" />
 
             {/* Our Approach Section */}
             <OurApproachSection />

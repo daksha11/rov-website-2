@@ -216,6 +216,7 @@ const Footer = () => {
             alt="Atlanta Skyline"
             fill
             priority
+            sizes="100vw"
             className="object-contain"
             style={{
               objectPosition: 'bottom right',
@@ -233,7 +234,8 @@ const Footer = () => {
             src="/hydskyline.webp"
             alt="Hyderabad Skyline"
             fill
-            loading="lazy"
+            priority
+            sizes="100vw"
             className="object-contain"
             style={{
               objectPosition: 'bottom right',

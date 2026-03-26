@@ -4,6 +4,8 @@ import Footer from "@/components/Footer";
 import { NavigationDock } from "@/components/NavDoc";
 import SoundHero from "@/components/sound_page/SoundHero";
 import Gallery from "@/components/Gallery";
+import TestimonialsSection from "@/components/common/TestimonialsSection";
+import { soundTestimonials } from "@/data/testimonials";
 import { VideoSchema } from "@/components/VideoSchema";
 import { ServiceSchema } from "@/components/ServiceSchema";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
@@ -122,6 +124,9 @@ export default function Page() {
 
             {/* Studio Recording Section */}
             <StudioSection />
+
+            {/* Client Testimonials */}
+            <TestimonialsSection testimonials={soundTestimonials} variant="sound" />
 
             {/* Promotional CTA Strip */}
             <section className="relative bg-black px-6 md:px-12 py-8">

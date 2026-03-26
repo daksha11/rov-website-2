@@ -7,7 +7,8 @@ import FAQBottomSection from "@/components/Web-Dev/FAQBottomSection";
 import FeaturedWorksSection from "@/components/Web-Dev/FeaturedWorksSection";
 import HaveAnIdeaSection from "@/components/Web-Dev/HaveAnIdeaSection";
 import WebHero from "@/components/Web-Dev/WebHero";
-import TestimonialsSection from "@/components/Web-Dev/TestimonialsSection";
+import TestimonialsSection from "@/components/common/TestimonialsSection";
+import { webTestimonials } from "@/data/testimonials";
 
 export default function WebContent() {
     return (
@@ -22,7 +23,7 @@ export default function WebContent() {
             <HaveAnIdeaSection />
 
             {/* Client Testimonials */}
-            <TestimonialsSection />
+            <TestimonialsSection testimonials={webTestimonials} variant="web" />
 
             {/* Our Approach Section */}
             <OurApproachSection />
