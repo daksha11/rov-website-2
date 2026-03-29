@@ -1,64 +1,116 @@
 "use client";
 
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 export default function HaveAnIdeaSection() {
-    const companyLogos = [
-        { src: "/webdev/bandologo.webp", alt: "The Bando" },
-        { src: "/webdev/iknalogo white.webp", alt: "Ikna" },
-    ];
-
     return (
-        <section className="relative py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-black">
+        <section className="relative bg-black px-6 md:px-12 py-8">
             <div className="max-w-7xl mx-auto">
                 <div
-                    className="relative p-8 md:p-12 lg:p-16 overflow-hidden"
+                    className="relative flex flex-col md:flex-row items-center justify-between overflow-hidden max-[968px]:text-center"
                     style={{
-                        borderRadius: "15px",
-                        background: "linear-gradient(132deg, #42201C 4.77%, #A64D2B 27.26%, #B16937 50.09%, #EA9A61 76.74%)",
+                        borderRadius: '15px',
+                        border: '1px solid #999288',
+                        padding: 'clamp(2.5rem, 4vw, 3.5rem) clamp(2rem, 4vw, 3.75rem)',
+                        gap: 'clamp(1.5rem, 3vw, 2.5rem)',
+                        background: 'linear-gradient(111deg, #42201C -1.34%, #A64D2B 25.87%, #B16937 59.87%, #EA9A61 93.39%)',
+                        boxShadow: '0 4px 4px 0 rgba(0, 0, 0, 0.25)',
                     }}
                 >
-                    <div className="flex flex-col md:flex-row items-center gap-6 md:gap-12">
-                        {/* Logo */}
-                        <div className="flex-shrink-0">
-                            <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-black flex items-center justify-center p-4 relative overflow-hidden">
-                                <Image
-                                    src="/rov-logo.webp"
-                                    alt="ROV Logo"
-                                    fill
-                                    className="object-contain p-4"
-                                />
-                            </div>
+                    {/* Left Section */}
+                    <div
+                        className="flex items-center flex-1 max-[968px]:flex-col"
+                        style={{ gap: 'clamp(1.25rem, 2.5vw, 2rem)' }}
+                    >
+                        <div
+                            className="bg-black rounded-full flex items-center justify-center shrink-0"
+                            style={{
+                                width: 'clamp(4.5rem, 7vw, 6rem)',
+                                height: 'clamp(4.5rem, 7vw, 6rem)',
+                            }}
+                        >
+                            <Image src="/rov-logo.webp" alt="ROV Logo" width={60} height={60} className="w-[60%] h-auto" />
                         </div>
-
-                        {/* Content */}
-                        <div className="flex-1 space-y-4 text-center md:text-left">
+                        <div className="flex flex-col gap-1.5 max-[968px]:items-center">
                             <h2
-                                className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight"
-                                style={{ fontFamily: "Norwige, sans-serif" }}
+                                className="font-bold leading-tight text-white m-0"
+                                style={{
+                                    fontSize: 'clamp(1.75rem, 3.5vw, 2.75rem)',
+                                    fontFamily: "Norwige, sans-serif",
+                                }}
                             >
                                 Have an Idea?
                             </h2>
                             <p
-                                className="text-base md:text-lg text-white/90 leading-relaxed max-w-2xl"
-                                style={{ fontFamily: "Roboto, sans-serif" }}
+                                className="leading-relaxed text-white/90 m-0 font-light"
+                                style={{
+                                    fontSize: 'clamp(0.9375rem, 1.4vw, 1.125rem)',
+                                    fontFamily: "'Roboto', sans-serif",
+                                }}
                             >
-                                Book a call to discover how we can strengthen your digital platform and bring your vision to life.
+                                Book a call to discover how we can strengthen your<br className="hidden md:block" />
+                                digital platform and bring your vision to life.
                             </p>
                         </div>
+                    </div>
 
-                        {/* CTA Button */}
-                        <div className="flex-shrink-0">
-                            <a
+                    {/* Right Section */}
+                    <div
+                        className="flex items-center shrink-0 max-[968px]:justify-center max-[480px]:flex-col max-[480px]:gap-4"
+                        style={{ gap: 'clamp(0.75rem, 1.5vw, 1rem)' }}
+                    >
+                        {/* Circle group */}
+                        <div className="flex items-center relative gap-0">
+                            <div
+                                className="rounded-full border border-white/50 bg-transparent shrink-0 max-[768px]:w-[clamp(2.75rem,8vw,3.25rem)] max-[768px]:h-[clamp(2.75rem,8vw,3.25rem)]"
+                                style={{
+                                    width: 'clamp(3rem, 5vw, 3.75rem)',
+                                    height: 'clamp(3rem, 5vw, 3.75rem)',
+                                }}
+                            />
+                            <motion.a
                                 href="https://calendly.com/rangeofviewmusic/30min"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="cta-shine px-8 py-4 bg-white text-black text-base md:text-lg rounded-full font-medium hover:bg-white/90 transition-colors inline-block whitespace-nowrap"
-                                style={{ fontFamily: "Roboto, sans-serif" }}
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="rounded-full bg-[#F7F2E4] border-none flex items-center justify-center cursor-pointer transition-all duration-300 relative z-2 shrink-0 -mx-2.5 hover:shadow-lg hover:z-10"
+                                style={{
+                                    width: 'clamp(3rem, 5vw, 3.75rem)',
+                                    height: 'clamp(3rem, 5vw, 3.75rem)',
+                                }}
                             >
-                                Schedule a Call
-                            </a>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2" className="w-[35%] h-[35%]">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                            </motion.a>
+                            <div
+                                className="rounded-full border border-white/50 bg-transparent shrink-0 max-[768px]:w-[clamp(2.75rem,8vw,3.25rem)] max-[768px]:h-[clamp(2.75rem,8vw,3.25rem)]"
+                                style={{
+                                    width: 'clamp(3rem, 5vw, 3.75rem)',
+                                    height: 'clamp(3rem, 5vw, 3.75rem)',
+                                }}
+                            />
                         </div>
+
+                        <motion.a
+                            href="https://calendly.com/rangeofviewmusic/30min"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="cta-shine inline-block no-underline border-none rounded-full bg-[#0E0A08] text-white font-semibold cursor-pointer transition-all duration-300 whitespace-nowrap relative z-1 hover:shadow-[0_6px_20px_rgba(0,0,0,0.4)]"
+                            style={{
+                                padding: 'clamp(0.75rem, 1.2vw, 0.9375rem) clamp(1.5rem, 2.5vw, 2rem)',
+                                fontSize: 'clamp(0.75rem, 1vw, 0.875rem)',
+                                letterSpacing: '0.05em',
+                                fontFamily: "Norwige, sans-serif",
+                                boxShadow: '0 4px 4px 0 rgba(0, 0, 0, 0.25)',
+                            }}
+                        >
+                            SCHEDULE A CALL
+                        </motion.a>
                     </div>
                 </div>
             </div>

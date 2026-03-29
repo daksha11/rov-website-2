@@ -1,11 +1,16 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+const HEADING = "Norwige, sans-serif";
+const BODY = "Roboto, sans-serif";
+
+// ── MockupFrame ────────────────────────────────────────
 
 interface MockupFrameProps {
     src: string;
@@ -20,18 +25,16 @@ function MockupFrame({ src, alt, className = "", style, priority = false }: Mock
         <div
             className={`rounded-2xl overflow-hidden ${className}`}
             style={{
-                border: "1px solid rgba(255,255,255,0.08)",
-                boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
+                border: "1px solid rgba(255,244,227,0.06)",
+                boxShadow: "0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,244,227,0.04)",
                 ...style,
             }}
         >
-            {/* Browser Chrome Top Bar */}
             <div className="h-7 md:h-8 bg-[#1a1a1a] flex items-center gap-1.5 px-3">
                 <span className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-[#ff5f56]" />
                 <span className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-[#ffbd2e]" />
                 <span className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-[#27ca40]" />
             </div>
-            {/* Screenshot */}
             <div className="relative aspect-[16/10] w-full">
                 <Image
                     src={src}
@@ -40,230 +43,264 @@ function MockupFrame({ src, alt, className = "", style, priority = false }: Mock
                     unoptimized
                     className="object-cover object-top"
                     priority={priority}
-                    sizes="(max-width: 768px) 85vw, (max-width: 1024px) 340px, 420px"
+                    sizes="(max-width: 768px) 85vw, (max-width: 1024px) 340px, 520px"
                 />
             </div>
         </div>
     );
 }
 
+// ── Main Hero ──────────────────────────────────────────
+
 export default function WebHero() {
     const heroRef = useRef<HTMLElement>(null);
-    const leftMockupRef = useRef<HTMLDivElement>(null);
-    const centerMockupRef = useRef<HTMLDivElement>(null);
-    const rightMockupRef = useRef<HTMLDivElement>(null);
+    const heroMockupRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState(false);
+    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
+    // Mobile detection
     useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth < 768);
-        checkMobile();
-        window.addEventListener("resize", checkMobile);
-        return () => window.removeEventListener("resize", checkMobile);
+        const check = () => setIsMobile(window.innerWidth < 768);
+        check();
+        window.addEventListener("resize", check);
+        return () => window.removeEventListener("resize", check);
     }, []);
 
+    // GSAP parallax
     useEffect(() => {
         if (isMobile) return;
-
         gsap.registerPlugin(ScrollTrigger);
 
         const ctx = gsap.context(() => {
-            const trigger = {
+            const base = {
                 trigger: heroRef.current,
                 start: "top top",
                 end: "bottom top",
-                scrub: 0.5,
+                scrub: 0.6,
             };
 
-            if (leftMockupRef.current) {
-                gsap.to(leftMockupRef.current, { y: -80, ease: "none", scrollTrigger: trigger });
-            }
-            if (centerMockupRef.current) {
-                gsap.to(centerMockupRef.current, { y: -140, ease: "none", scrollTrigger: { ...trigger } });
-            }
-            if (rightMockupRef.current) {
-                gsap.to(rightMockupRef.current, { y: -60, ease: "none", scrollTrigger: { ...trigger } });
-            }
+            if (heroMockupRef.current)
+                gsap.to(heroMockupRef.current, { y: -100, ease: "none", scrollTrigger: base });
         }, heroRef);
 
         return () => ctx.revert();
     }, [isMobile]);
 
+    // Cursor glow
+    const handleMouseMove = useCallback((e: React.MouseEvent) => {
+        if (isMobile) return;
+        const rect = heroRef.current?.getBoundingClientRect();
+        if (rect) {
+            setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+        }
+    }, [isMobile]);
+
     return (
-        <section ref={heroRef} className="relative min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 pt-32 md:pt-40 lg:pt-48 pb-20 overflow-hidden">
-            {/* Background: Dot Grid Texture */}
+        <section
+            ref={heroRef}
+            onMouseMove={handleMouseMove}
+            className="relative bg-black overflow-hidden"
+        >
+            {/* ── Background Layers ── */}
+
+            {/* Warm ambient glow — bottom left */}
             <div
-                className="absolute inset-0 pointer-events-none z-0"
+                className="absolute bottom-0 left-0 w-[600px] h-[600px] md:w-[900px] md:h-[900px] rounded-full pointer-events-none"
                 style={{
-                    backgroundImage: "radial-gradient(rgba(255, 244, 227, 0.04) 1px, transparent 1px)",
-                    backgroundSize: "24px 24px",
+                    background: "rgba(139, 99, 55, 0.12)",
+                    filter: "blur(160px)",
+                    transform: "translate(-30%, 30%)",
                 }}
             />
 
-            {/* Background: Bottom-left gradient blob */}
+            {/* Cursor-following glow (desktop only) */}
+            {!isMobile && (
+                <div
+                    className="absolute w-[600px] h-[600px] rounded-full pointer-events-none z-[1]"
+                    style={{
+                        background: "radial-gradient(circle, rgba(234,154,97,0.04) 0%, transparent 70%)",
+                        left: mousePos.x,
+                        top: mousePos.y,
+                        transform: "translate(-50%, -50%)",
+                        transition: "left 0.3s ease-out, top 0.3s ease-out",
+                    }}
+                />
+            )}
+
+            {/* ════════════════════════════════════════════
+                ACT 1 — EDITORIAL HEADLINE
+            ════════════════════════════════════════════ */}
             <div
-                className="absolute bottom-0 left-0 w-[400px] h-[400px] md:w-[600px] md:h-[600px] lg:w-[800px] lg:h-[800px] rounded-full pointer-events-none z-0"
-                style={{
-                    background: "rgba(96, 62, 37, 0.60)",
-                    filter: "blur(200px)",
-                    transform: "translate(-20%, 20%)",
-                }}
-            />
-
-            {/* Background: Top-right ambient glow */}
-            <div
-                className="absolute top-0 right-0 w-[400px] h-[400px] md:w-[600px] md:h-[600px] rounded-full pointer-events-none z-0"
-                style={{
-                    background: "rgba(139, 115, 85, 0.15)",
-                    filter: "blur(180px)",
-                    transform: "translate(30%, -30%)",
-                }}
-            />
-
-            {/* Content Layer */}
-            <div className="relative z-10 max-w-7xl w-full text-center">
-                {/* Headline */}
-                <h1 className="mb-4 md:mb-6">
-                    <motion.span
-                        className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white/80 mb-1 font-bold"
-                        style={{ fontFamily: "Norwige, sans-serif", fontStyle: "italic" }}
-                        initial={{ opacity: 0, y: 40 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
-                    >
-                        Your Website
-                    </motion.span>
-                    <motion.span
-                        className="block text-6xl sm:text-7xl md:text-8xl lg:text-[7rem] font-bold"
-                        style={{
-                            fontFamily: "Norwige, sans-serif",
-                            fontStyle: "italic",
-                            letterSpacing: "-0.02em",
-                            background: "linear-gradient(135deg, #EA9A61 0%, #B16937 50%, #A64D2B 100%)",
-                            WebkitBackgroundClip: "text",
-                            WebkitTextFillColor: "transparent",
-                        }}
-                        initial={{ opacity: 0, y: 50 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.9, delay: 0.15, ease: "easeOut" }}
-                    >
-                        Reimagined
-                    </motion.span>
-                </h1>
-
-                {/* Subtitle */}
-                <motion.p
-                    className="text-lg md:text-xl text-white/60 max-w-xl mx-auto mb-10"
-                    style={{ fontFamily: "Norwige, sans-serif", fontStyle: "italic" }}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.35, ease: "easeOut" }}
-                >
-                    Websites designed with intention, built for impact, crafted to convert.
-                </motion.p>
-
-                {/* CTA Buttons */}
-                <motion.div
-                    className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 md:mb-24"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-                >
-                    <Link href="https://calendly.com/rangeofviewmusic/30min" target="_blank">
-                        <motion.button
-                            className="px-8 py-3.5 md:px-10 md:py-4 text-white rounded-full font-medium transition-all uppercase tracking-wide text-sm md:text-base"
-                            style={{
-                                background: "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)",
-                                fontFamily: "Roboto, sans-serif",
-                                boxShadow: "0 4px 24px rgba(160, 90, 40, 0.4)",
-                            }}
-                            whileHover={{ scale: 1.04, boxShadow: "0 6px 32px rgba(160, 90, 40, 0.6)" }}
-                            whileTap={{ scale: 0.97 }}
-                        >
-                            LET&apos;S CREATE <span className="ml-2">&rarr;</span>
-                        </motion.button>
-                    </Link>
-                    <Link href="#featured-works">
-                        <motion.button
-                            className="px-8 py-3.5 md:px-10 md:py-4 text-white rounded-full font-medium transition-all uppercase tracking-wide text-sm md:text-base border border-white/20"
-                            style={{ fontFamily: "Roboto, sans-serif" }}
-                            whileHover={{ scale: 1.04, backgroundColor: "rgba(255,255,255,0.06)" }}
-                            whileTap={{ scale: 0.97 }}
-                        >
-                            VIEW OUR WORK
-                        </motion.button>
-                    </Link>
-                </motion.div>
-            </div>
-
-            {/* Floating Mockups Layer */}
-            <div
-                className="relative z-[5] w-full max-w-6xl mx-auto"
-                style={{ perspective: "1200px" }}
+                className="relative z-10 max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-8 md:gap-0"
+                style={{ padding: "clamp(120px, 18vh, 200px) clamp(24px, 5vw, 60px) clamp(60px, 10vh, 120px)" }}
             >
-                <div className="relative h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px]">
-                    {/* Left Mockup */}
-                    <motion.div
-                        ref={leftMockupRef}
-                        className="hidden md:block absolute left-[2%] lg:left-[5%] top-[10%] w-[240px] lg:w-[340px] z-[1] will-change-transform"
-                        style={{
-                            transformStyle: "preserve-3d",
-                            animation: "mockup-float 6s ease-in-out infinite",
-                            animationDelay: "0s",
-                        }}
-                        initial={{ opacity: 0, x: -80, rotateY: 20 }}
-                        animate={{ opacity: 1, x: 0, rotateY: 8, rotateX: -3 }}
-                        transition={{ duration: 1.0, delay: 0.3, ease: "easeOut" }}
+                {/* Left — Typography Stack */}
+                <div className="text-center md:text-left">
+                    {/* Overline */}
+                    <motion.span
+                        className="block text-white/40 mb-8 md:mb-10 uppercase"
+                        style={{ fontFamily: BODY, fontSize: "12px", letterSpacing: "0.2em" }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
                     >
-                        <MockupFrame
-                            src="/heroassets/webfolder3.webp"
-                            alt="The Bando - Website designed by ROV Studios"
-                        />
+                        Web Development
+                    </motion.span>
+
+                    {/* Headline */}
+                    <h1>
+                        <motion.span
+                            className="block font-bold italic leading-[0.9]"
+                            style={{
+                                fontFamily: HEADING,
+                                fontSize: "clamp(3.5rem, 8vw, 8rem)",
+                                color: "#FFF4E3",
+                                letterSpacing: "-0.03em",
+                            }}
+                            initial={{ opacity: 0, y: 40 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+                        >
+                            Purpose
+                        </motion.span>
+
+                        <motion.span
+                            className="block font-bold italic leading-[0.9]"
+                            style={{
+                                fontFamily: HEADING,
+                                fontSize: "clamp(3.5rem, 8vw, 8rem)",
+                                color: "#FFF4E3",
+                                letterSpacing: "-0.03em",
+                                marginLeft: "clamp(0rem, 4vw, 5rem)",
+                            }}
+                            initial={{ opacity: 0, y: 40 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.35, ease: "easeOut" }}
+                        >
+                            in Every
+                        </motion.span>
+
+                        <motion.span
+                            className="block font-bold italic leading-[0.9]"
+                            style={{
+                                fontFamily: HEADING,
+                                fontSize: "clamp(3.5rem, 8vw, 8rem)",
+                                letterSpacing: "-0.03em",
+                                background: "linear-gradient(135deg, #EA9A61 0%, #B16937 40%, #A64D2B 100%)",
+                                WebkitBackgroundClip: "text",
+                                WebkitTextFillColor: "transparent",
+                            }}
+                            initial={{ opacity: 0, y: 40 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+                        >
+                            Pixel.
+                        </motion.span>
+                    </h1>
+
+                    {/* Subtitle */}
+                    <motion.p
+                        className="text-white/50 max-w-[380px] mx-auto md:mx-0 mt-10 md:mt-12"
+                        style={{
+                            fontFamily: HEADING,
+                            fontStyle: "italic",
+                            fontSize: "clamp(1rem, 1.4vw, 1.25rem)",
+                            lineHeight: 1.6,
+                        }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, delay: 0.7, ease: "easeOut" }}
+                    >
+                        Websites designed with intention, built for impact, crafted to convert.
+                    </motion.p>
+
+                    {/* CTA Buttons */}
+                    <motion.div
+                        className="flex flex-col sm:flex-row items-center md:items-start gap-4 mt-8 md:mt-10"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, delay: 0.85, ease: "easeOut" }}
+                    >
+                        <Link href="https://calendly.com/rangeofviewmusic/30min" target="_blank">
+                            <motion.button
+                                className="cta-shine px-8 py-3.5 md:px-10 md:py-4 text-white rounded-full font-medium uppercase tracking-wide text-sm"
+                                style={{
+                                    fontFamily: BODY,
+                                    background: "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)",
+                                    boxShadow: "0 4px 24px rgba(160, 90, 40, 0.35)",
+                                }}
+                                whileHover={{ scale: 1.03, boxShadow: "0 6px 32px rgba(160, 90, 40, 0.55)" }}
+                                whileTap={{ scale: 0.97 }}
+                            >
+                                LET&apos;S CREATE <span className="ml-2">&rarr;</span>
+                            </motion.button>
+                        </Link>
+                        <Link href="#featured-works">
+                            <motion.button
+                                className="px-8 py-3.5 md:px-10 md:py-4 text-white rounded-full font-medium uppercase tracking-wide text-sm border border-white/15"
+                                style={{ fontFamily: BODY }}
+                                whileHover={{ scale: 1.03, backgroundColor: "rgba(255,255,255,0.04)" }}
+                                whileTap={{ scale: 0.97 }}
+                            >
+                                VIEW OUR WORK
+                            </motion.button>
+                        </Link>
                     </motion.div>
 
-                    {/* Center Mockup */}
+                    {/* Mobile mockup (shown below CTAs on small screens) */}
                     <motion.div
-                        ref={centerMockupRef}
-                        className="absolute top-0 left-0 right-0 mx-auto w-[85vw] md:w-[340px] lg:w-[420px] z-[3] will-change-transform"
-                        style={{
-                            transformStyle: "preserve-3d",
-                            animation: "mockup-float 6s ease-in-out infinite",
-                            animationDelay: "-2s",
-                        }}
-                        initial={{ opacity: 0, y: 60, scale: 0.92 }}
-                        animate={{ opacity: 1, y: 0, scale: 1, rotateX: 2 }}
-                        transition={{ duration: 1.0, delay: 0.45, ease: "easeOut" }}
+                        className="md:hidden mt-12 w-[85vw] mx-auto"
+                        initial={{ opacity: 0, y: 40 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.9, delay: 0.6, ease: "easeOut" }}
                     >
                         <MockupFrame
                             src="/heroassets/webfolder2.webp"
-                            alt="Aysegul Ikna - Website designed by ROV Studios"
+                            alt="Aysegul Ikna website by ROV Studios"
                             priority
                         />
                     </motion.div>
+                </div>
 
-                    {/* Right Mockup */}
-                    <motion.div
-                        ref={rightMockupRef}
-                        className="hidden md:block absolute right-[2%] lg:right-[5%] top-[15%] w-[220px] lg:w-[320px] z-[2] will-change-transform"
+                {/* Right — Hero Mockup (desktop only) */}
+                <motion.div
+                    ref={heroMockupRef}
+                    className="hidden md:flex items-end justify-end will-change-transform"
+                    style={{ perspective: "1200px" }}
+                    initial={{ opacity: 0, x: 60, scale: 0.95 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    transition={{ duration: 1.0, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                >
+                    <div
                         style={{
+                            width: "clamp(380px, 32vw, 520px)",
+                            transform: "rotateY(-4deg) rotateX(2deg)",
                             transformStyle: "preserve-3d",
-                            animation: "mockup-float 6s ease-in-out infinite",
-                            animationDelay: "-4s",
                         }}
-                        initial={{ opacity: 0, x: 80, rotateY: -20 }}
-                        animate={{ opacity: 1, x: 0, rotateY: -8, rotateX: -2 }}
-                        transition={{ duration: 1.0, delay: 0.6, ease: "easeOut" }}
                     >
                         <MockupFrame
-                            src="/heroassets/webfolder1.webp"
-                            alt="Portfolio website designed by ROV Studios"
+                            src="/heroassets/webfolder2.webp"
+                            alt="Aysegul Ikna website by ROV Studios"
+                            priority
                         />
-                    </motion.div>
-                </div>
+                    </div>
+                </motion.div>
             </div>
 
-            {/* Bottom Section - "Uncover the true potential" */}
-            <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start max-w-6xl mx-auto mt-24 md:mt-32 lg:mt-40 px-4">
-                {/* Left - Potential Text */}
+            {/* Accent divider line */}
+            <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+                <div className="h-px w-full" style={{ background: "rgba(255,244,227,0.06)" }} />
+            </div>
+
+
+            {/* ════════════════════════════════════════════
+                ACT 3 — CLOSING STATEMENT
+            ════════════════════════════════════════════ */}
+            <div
+                className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start max-w-[1200px] mx-auto px-6 md:px-12"
+                style={{ paddingBottom: "clamp(60px, 10vw, 120px)", paddingTop: "clamp(40px, 6vw, 80px)" }}
+            >
+                {/* Left — "Uncover the true potential" */}
                 <motion.div
                     className="text-left"
                     initial={{ opacity: 0, y: 30 }}
@@ -273,32 +310,19 @@ export default function WebHero() {
                 >
                     <h3
                         className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight"
-                        style={{ fontFamily: "Roboto, sans-serif" }}
+                        style={{ fontFamily: BODY }}
                     >
                         Uncover the true{" "}
                         <span className="inline-flex items-center gap-2">
                             <span
-                                className="inline-flex items-center px-4 py-1 md:px-6 md:py-2 rounded-full text-white font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl"
-                                style={{
-                                    background: "#957E5E",
-                                    fontStyle: "italic",
-                                }}
+                                className="inline-flex items-center px-4 py-1 md:px-6 md:py-2 rounded-full text-white font-bold italic text-lg sm:text-xl md:text-2xl lg:text-3xl"
+                                style={{ background: "#957E5E" }}
                             >
                                 potential
                             </span>
-                            {/* Decorative Circles */}
                             <span className="inline-flex items-center -ml-3">
-                                <span
-                                    className="w-8 h-8 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full"
-                                    style={{ background: "#957E5E" }}
-                                />
-                                <span
-                                    className="w-8 h-8 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full -ml-4 md:-ml-6"
-                                    style={{
-                                        border: "3px solid white",
-                                        background: "transparent",
-                                    }}
-                                />
+                                <span className="w-8 h-8 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full" style={{ background: "#957E5E" }} />
+                                <span className="w-8 h-8 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full -ml-4 md:-ml-6" style={{ border: "3px solid white", background: "transparent" }} />
                             </span>
                         </span>
                         <br />
@@ -306,7 +330,7 @@ export default function WebHero() {
                     </h3>
                 </motion.div>
 
-                {/* Right - Description Text */}
+                {/* Right — Description */}
                 <motion.div
                     className="text-left md:text-right"
                     initial={{ opacity: 0, y: 30 }}
@@ -315,11 +339,8 @@ export default function WebHero() {
                     transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
                 >
                     <p
-                        className="text-base sm:text-lg md:text-xl leading-relaxed"
-                        style={{
-                            fontFamily: "Norwige, sans-serif",
-                            fontStyle: "italic",
-                        }}
+                        className="text-base sm:text-lg md:text-xl leading-relaxed max-w-[420px] md:ml-auto"
+                        style={{ fontFamily: HEADING, fontStyle: "italic" }}
                     >
                         Designed with intention. Built for impact. We craft websites that clearly communicate your brand and work harder for your business.
                     </p>
