@@ -345,7 +345,7 @@ export default function CtrlAContent() {
           {/* MUSIC Card */}
           <div style={{ transform: 'rotate(-8deg)', transformOrigin: 'center' }}>
             <a
-              href="https://www.notion.so/Music-2f4055fcd3f88089b425e57ad165b3a9?source=copy_link"
+              href="/ctrla/magazine#music"
               target="_blank"
               rel="noopener noreferrer"
               style={{ display: 'block' }}
@@ -406,7 +406,7 @@ export default function CtrlAContent() {
           {/* WEB DEVELOPMENT Card */}
           <div style={{ transform: 'rotate(2deg)', transformOrigin: 'center' }}>
             <a
-              href="https://www.notion.so/Dev-2f4055fcd3f880fcbefac116b9373821?source=copy_link"
+              href="/ctrla/magazine#web-dev"
               target="_blank"
               rel="noopener noreferrer"
               style={{ display: 'block' }}
@@ -487,7 +487,7 @@ export default function CtrlAContent() {
           {/* DESIGN Card */}
           <div style={{ transform: 'rotate(-5deg)', transformOrigin: 'center' }}>
             <a
-              href="https://www.notion.so/Design-2f4055fcd3f880e8b6cdefdc57baa6b9?source=copy_link"
+              href="/ctrla/magazine#design"
               target="_blank"
               rel="noopener noreferrer"
               style={{ display: 'block' }}
@@ -746,6 +746,51 @@ export default function CtrlAContent() {
 
       {/* Global Team Map */}
       <GlobalTeamGlobe />
+
+      {/* Magazine CTA Strip */}
+      <section className="relative bg-black px-6 md:px-12 py-8">
+        <div className="max-w-7xl mx-auto">
+          <div
+            className="relative rounded-2xl p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6"
+            style={{
+              borderRadius: '15px',
+              border: '1px solid #999288',
+              background: 'linear-gradient(111deg, #42201C -1.34%, #A64D2B 25.87%, #B16937 59.87%, #EA9A61 93.39%)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+            }}
+          >
+            <div className="flex items-center gap-6">
+              <div className="w-20 h-20 md:w-24 md:h-24 bg-black rounded-full flex items-center justify-center flex-shrink-0">
+                <img src="/rov-logo.webp" alt="ROV Logo" className="w-12 h-12 md:w-14 md:h-14 object-contain" />
+              </div>
+              <div>
+                <h3 className="text-white text-2xl md:text-3xl lg:text-4xl font-bold italic mb-2" style={{ fontFamily: 'Norwige, sans-serif' }}>
+                  The CTRL A Magazine
+                </h3>
+                <p className="text-white text-sm md:text-base opacity-80" style={{ fontFamily: "'Roboto', sans-serif" }}>
+                  Community-curated toolkits for creatives. No fluff, just signal.
+                </p>
+              </div>
+            </div>
+
+            <a
+              href="/ctrla/magazine"
+              className="cta-shine flex-shrink-0 inline-flex items-center gap-3 text-white font-semibold cursor-pointer transition-all duration-300 hover:scale-105"
+              style={{
+                fontFamily: 'Norwige, sans-serif',
+                borderRadius: '41.444px',
+                background: '#0E0A08',
+                boxShadow: '0 4px 4px 0 rgba(0, 0, 0, 0.25)',
+                padding: 'clamp(0.75rem, 1.2vw, 0.9375rem) clamp(1.5rem, 2.5vw, 2rem)',
+                fontSize: 'clamp(0.75rem, 1vw, 0.875rem)',
+                letterSpacing: '0.05em',
+              }}
+            >
+              READ NOW
+            </a>
+          </div>
+        </div>
+      </section>
 
       {/* Tape 3 Coming Soon */}
       <section className="relative bg-black overflow-hidden" style={{ padding: "clamp(60px, 10vw, 100px) clamp(16px, 5vw, 60px)" }}>
