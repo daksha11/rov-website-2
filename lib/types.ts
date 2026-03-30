@@ -17,3 +17,20 @@ export interface ChatbotRequest {
   timestamp?: string;
   source?: string;
 }
+
+export interface BlogPost {
+  slug: string;
+  title: string;
+  description: string;
+  author: string;
+  date: string;
+  dateModified: string;
+  category: string;
+  tags: string[];
+  featured: boolean;
+  readingTime: number;
+  atlantaAngle: string;
+  published: boolean;
+  content: string;
+  htmlContent?: string;
+}
