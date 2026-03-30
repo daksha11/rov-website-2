@@ -1,7 +1,15 @@
 import { MetadataRoute } from 'next';
+import { getAllPosts } from '@/lib/blog';
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = 'https://rovstudios.com';
+
+    const blogPosts = getAllPosts().map((post) => ({
+        url: `${baseUrl}/blog/${post.slug}`,
+        lastModified: post.dateModified,
+        changeFrequency: 'monthly' as const,
+        priority: 0.7,
+    }));
 
     return [
         {
@@ -70,5 +78,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'monthly',
             priority: 0.7,
         },
+        {
+            url: `${baseUrl}/blog`,
+            lastModified: '2026-03-30',
+            changeFrequency: 'weekly',
+            priority: 0.8,
+        },
+        ...blogPosts,
     ];
 }

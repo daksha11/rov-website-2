@@ -119,6 +119,9 @@ const Footer = () => {
             <li>
               <a href="/ai-automation" className="hover:text-gray-400 transition-colors duration-300">AI Solutions</a>
             </li>
+            <li>
+              <a href="/blog" className="hover:text-gray-400 transition-colors duration-300">Blog</a>
+            </li>
           </ul>
         </div>
 
