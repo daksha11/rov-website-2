@@ -1,27 +1,101 @@
-import Link from "next/link";
+"use client";
+import { motion, Variants } from "framer-motion";
+import { MoveUpRight } from "lucide-react";
+
+const container: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.06,
+      ease: "easeInOut",
+      duration: 0.6,
+    },
+  },
+};
+
+const letter: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: [0.25, 0.1, 0.25, 1],
+    },
+  },
+};
 
 export function BlogPostCTA() {
+  const text: string[] = ["Let's make it", "happen"];
+
   return (
-    <section className="mx-auto max-w-[720px] border-t border-white/10 px-5 py-16 text-center">
-      <h2
-        className="text-2xl text-white sm:text-3xl"
-        style={{ fontFamily: "Norwige, sans-serif" }}
+    <section className="relative text-center py-16 md:py-24 px-4 md:px-6 rounded-t-[50px] overflow-hidden">
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover -z-10 rounded-t-[50px]"
       >
-        Need a website that drives results?
-      </h2>
+        <source src="/assets/images/Untitled-6.mp4" type="video/mp4" />
+      </video>
 
-      <p className="mx-auto mt-4 max-w-md text-base text-gray-400">
-        Book a free strategy call and see how ROV Studios can elevate your brand.
-      </p>
-
-      <Link
-        href="https://calendly.com/rangeofviewmusic/30min"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-8 inline-block rounded-full border border-white/20 bg-white px-8 py-3 text-sm font-medium text-black transition-colors duration-200 hover:bg-gray-200"
+      <motion.p
+        initial={{ opacity: 0, y: -30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        viewport={{ once: true }}
+        style={{ fontFamily: "serif" }}
+        className="italic font-semibold tracking-wider text-xl md:text-3xl text-[#2c2420] mb-4"
       >
-        Let&apos;s Talk
-      </Link>
+        ( NEED AN UNFAIR ADVANTAGE? )
+      </motion.p>
+
+      <motion.h2
+        style={{ fontFamily: "sink" }}
+        className="text-4xl md:text-[120px] tracking-wider text-[#2c2420] mb-12 leading-none text-center"
+        variants={container}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+      >
+        {text.map((line, lineIndex) => (
+          <div key={lineIndex} className="flex justify-center flex-wrap">
+            {line.split("").map((char, i) => (
+              <motion.span key={i} variants={letter}>
+                {char === " " ? "\u00A0" : char}
+              </motion.span>
+            ))}
+          </div>
+        ))}
+      </motion.h2>
+
+      <div className="flex justify-center">
+        <a
+          href="https://calendly.com/rangeofviewmusic/30min"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <button
+            style={{ fontFamily: "futura" }}
+            className="relative overflow-hidden bg-[#393632] flex items-center justify-center cursor-pointer text-white rounded-full py-8 px-12 text-3xl font-semibold tracking-widest group"
+          >
+            <span className="absolute inset-0 bg-[#bdbdb0]/30 origin-bottom scale-y-0 md:group-hover:scale-y-100 transition-transform duration-700 ease-in-out" />
+            <span className="relative overflow-hidden flex items-center leading-none h-[1.2em]">
+              <span className="block md:group-hover:-translate-y-full transition-transform duration-700 ease-in-out">
+                Book a call
+              </span>
+              <span className="absolute left-0 top-full block md:group-hover:top-0 transition-all duration-700 ease-in-out">
+                Book a call
+              </span>
+            </span>
+            <span className="relative ml-2">
+              <MoveUpRight size={25} />
+            </span>
+          </button>
+        </a>
+      </div>
     </section>
   );
 }
