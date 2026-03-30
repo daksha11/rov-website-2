@@ -5,6 +5,28 @@ import type { BlogPost } from "@/lib/types";
 
 const BLOG_DIR = path.join(process.cwd(), "content/blog");
 
+function parseFaqs(markdown: string): { question: string; answer: string }[] {
+  const faqSection = markdown.split(/^## Frequently Asked Questions/m)[1];
+  if (!faqSection) return [];
+
+  const faqs: { question: string; answer: string }[] = [];
+  const blocks = faqSection.split(/^### /m).filter((b) => b.trim());
+
+  for (const block of blocks) {
+    const lines = block.trim().split("\n");
+    const question = lines[0].trim();
+    const answer = lines
+      .slice(1)
+      .join("\n")
+      .trim();
+    if (question && answer) {
+      faqs.push({ question, answer });
+    }
+  }
+
+  return faqs;
+}
+
 function ensureBlogDir(): boolean {
   return fs.existsSync(BLOG_DIR);
 }
@@ -56,10 +78,17 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   const raw = fs.readFileSync(filePath, "utf-8");
   const post = parseFrontmatter(slug, raw);
 
+  // Extract FAQs from markdown before rendering
+  post.faqs = parseFaqs(post.content);
+
+  // Split content: everything before "## Frequently Asked Questions" becomes the body
+  const faqSplit = post.content.split(/^## Frequently Asked Questions/m);
+  const bodyMarkdown = faqSplit[0].trim();
+
   const { remark } = await import("remark");
   const remarkHtml = (await import("remark-html")).default;
 
-  const result = await remark().use(remarkHtml).process(post.content);
+  const result = await remark().use(remarkHtml).process(bodyMarkdown);
   post.htmlContent = result.toString();
 
   return post;

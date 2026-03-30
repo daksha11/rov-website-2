@@ -33,4 +33,5 @@ export interface BlogPost {
   published: boolean;
   content: string;
   htmlContent?: string;
+  faqs?: { question: string; answer: string }[];
 }

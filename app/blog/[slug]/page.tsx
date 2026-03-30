@@ -8,6 +8,8 @@ import { BlogPostCTA } from "@/components/blog/BlogPostCTA";
 import { RelatedPosts } from "@/components/blog/RelatedPosts";
 import { BlogPostingSchema } from "@/components/blog/BlogPostingSchema";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import { FAQPageSchema } from "@/components/FAQPageSchema";
+import { BlogFAQ } from "@/components/blog/BlogFAQ";
 
 const NavigationDock = dynamic(
   () =>
@@ -84,9 +86,14 @@ export default async function BlogPostPage({
         ]}
       />
 
+      {post.faqs && post.faqs.length > 0 && (
+        <FAQPageSchema faqs={post.faqs} />
+      )}
+
       <article className="min-h-screen bg-black">
         <BlogPostHeader post={post} />
         <BlogPostBody htmlContent={post.htmlContent ?? ""} />
+        {post.faqs && post.faqs.length > 0 && <BlogFAQ faqs={post.faqs} />}
         <BlogPostCTA />
         <RelatedPosts posts={related} />
       </article>
