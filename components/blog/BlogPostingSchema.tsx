@@ -15,20 +15,20 @@ export function BlogPostingSchema({ post }: { post: BlogPost }) {
     author: {
       "@type": "Organization",
       name: "ROV Studios",
-      url: "https://rovstudios.com",
+      url: "https://www.rovstudios.com",
     },
     publisher: {
       "@type": "Organization",
       name: "ROV Studios",
-      url: "https://rovstudios.com",
+      url: "https://www.rovstudios.com",
       logo: {
         "@type": "ImageObject",
-        url: "https://rovstudios.com/rov-logo.webp",
+        url: "https://www.rovstudios.com/rov-logo.webp",
       },
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://rovstudios.com/blog/${post.slug}`,
+      "@id": `https://www.rovstudios.com/blog/${post.slug}`,
     },
   };
 

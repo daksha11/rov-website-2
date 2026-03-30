@@ -38,12 +38,12 @@ export async function generateMetadata({
     title: post.title,
     description: post.description,
     alternates: {
-      canonical: `https://rovstudios.com/blog/${post.slug}`,
+      canonical: `https://www.rovstudios.com/blog/${post.slug}`,
     },
     openGraph: {
       title: `${post.title} | Range of View Studios`,
       description: post.description,
-      url: `https://rovstudios.com/blog/${post.slug}`,
+      url: `https://www.rovstudios.com/blog/${post.slug}`,
       type: "article",
       publishedTime: post.date,
       modifiedTime: post.dateModified,

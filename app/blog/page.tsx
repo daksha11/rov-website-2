@@ -18,12 +18,12 @@ export const metadata: Metadata = {
   title: "Blog",
   description:
     "Web design insights, case studies, and digital strategy from ROV Studios in Atlanta, Georgia.",
-  alternates: { canonical: "https://rovstudios.com/blog" },
+  alternates: { canonical: "https://www.rovstudios.com/blog" },
   openGraph: {
     title: "Blog | Range of View Studios",
     description:
       "Web design insights, case studies, and digital strategy from ROV Studios in Atlanta.",
-    url: "https://rovstudios.com/blog",
+    url: "https://www.rovstudios.com/blog",
     images: [
       {
         url: "/og/og-default.jpg",

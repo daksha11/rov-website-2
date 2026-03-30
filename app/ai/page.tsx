@@ -8,11 +8,11 @@ export const metadata: Metadata = {
     title: "AI Services & Intelligent Business Automation",
     description:
         "Transform your business with intelligent automation by Range of View Studios. Custom AI solutions for content, customer interactions, and operations.",
-    alternates: { canonical: "https://rovstudios.com/ai" },
+    alternates: { canonical: "https://www.rovstudios.com/ai" },
     openGraph: {
         title: "AI Services & Intelligent Business Automation | Range of View Studios",
         description: "Transform your business with intelligent automation. Custom AI solutions for content, customer interactions, and operations.",
-        url: "https://rovstudios.com/ai",
+        url: "https://www.rovstudios.com/ai",
         images: [{ url: "/og/og-ai.jpg", width: 1200, height: 630, alt: "ROV Studios AI services" }],
     },
     twitter: {

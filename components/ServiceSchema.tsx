@@ -21,15 +21,15 @@ export function ServiceSchema({
     provider: {
       "@type": "Organization",
       name: "Range of View Studios",
-      url: "https://rovstudios.com",
+      url: "https://www.rovstudios.com",
     },
     serviceType,
     areaServed: {
       "@type": "Place",
       name: "Atlanta, Georgia",
     },
-    url: `https://rovstudios.com${url}`,
-    image: `https://rovstudios.com${image}`,
+    url: `https://www.rovstudios.com${url}`,
+    image: `https://www.rovstudios.com${image}`,
   };
 
   if (offerDescription) {

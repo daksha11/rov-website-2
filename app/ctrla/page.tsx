@@ -5,11 +5,11 @@ export const metadata: Metadata = {
     title: "CTRL A - Coming Soon",
     description:
         "CTRL A by Range of View Studios — a creative toolkit for music, web development, and design. Coming soon.",
-    alternates: { canonical: "https://rovstudios.com/ctrla" },
+    alternates: { canonical: "https://www.rovstudios.com/ctrla" },
     openGraph: {
         title: "CTRL A - Coming Soon | Range of View Studios",
         description: "A creative toolkit for music, web development, and design. Coming soon.",
-        url: "https://rovstudios.com/ctrla",
+        url: "https://www.rovstudios.com/ctrla",
         images: [{ url: "/og/og-ctrla.jpg", width: 1200, height: 630, alt: "CTRL A by Range of View Studios" }],
     },
     twitter: {

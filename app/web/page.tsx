@@ -8,11 +8,11 @@ export const metadata: Metadata = {
     title: "Custom Web Development & Design Services",
     description:
         "Custom web development and design services by Range of View Studios. Websites designed with intention, built for impact.",
-    alternates: { canonical: "https://rovstudios.com/web" },
+    alternates: { canonical: "https://www.rovstudios.com/web" },
     openGraph: {
         title: "Custom Web Development & Design Services | Range of View Studios",
         description: "Websites designed with intention, built for impact. Uncover the true potential of your website.",
-        url: "https://rovstudios.com/web",
+        url: "https://www.rovstudios.com/web",
         images: [{ url: "/og/og-web.jpg", width: 1200, height: 630, alt: "ROV Studios web development showcase" }],
     },
     twitter: {

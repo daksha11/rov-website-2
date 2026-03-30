@@ -2,10 +2,10 @@ export async function GET() {
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
-    <loc>https://rovstudios.com/sitemap.xml</loc>
+    <loc>https://www.rovstudios.com/sitemap.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://rovstudios.com/video-sitemap.xml</loc>
+    <loc>https://www.rovstudios.com/video-sitemap.xml</loc>
   </sitemap>
 </sitemapindex>`;
 

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
         description: 'How we transformed The Bando\'s digital presence to match their bold, unapologetically Atlanta energy — cutting bounce rate by 60%.',
         images: [{ url: '/og/og-bando.jpg', width: 1200, height: 630, alt: 'The Bando Case Study' }],
         type: 'article',
-        url: 'https://rovstudios.com/casestudy/bando',
+        url: 'https://www.rovstudios.com/casestudy/bando',
     },
     twitter: {
         card: 'summary_large_image',

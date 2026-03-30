@@ -16,14 +16,14 @@ export const metadata: Metadata = {
     title: 'Aysegul Ikna - Case Study',
     description: 'How Range of View Studios built a sophisticated digital home for Aysegul Ikna, a sustainable fashion brand at Ponce City Market. 30% sales growth achieved.',
     alternates: {
-        canonical: 'https://rovstudios.com/casestudy/ikna',
+        canonical: 'https://www.rovstudios.com/casestudy/ikna',
     },
     openGraph: {
         title: 'Aysegul Ikna Case Study | Range of View Studios',
         description: 'Luxury sustainable fashion meets digital — 30% increase in monthly sales.',
         images: [{ url: '/og/og-ikna.jpg', width: 1200, height: 630, alt: 'Aysegul Ikna website by ROV Studios' }],
         type: 'article',
-        url: 'https://rovstudios.com/casestudy/ikna',
+        url: 'https://www.rovstudios.com/casestudy/ikna',
     },
     twitter: {
         card: 'summary_large_image',

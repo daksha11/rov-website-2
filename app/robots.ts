@@ -27,9 +27,9 @@ export default function robots(): MetadataRoute.Robots {
             },
         ],
         sitemap: [
-            'https://rovstudios.com/sitemap.xml',
-            'https://rovstudios.com/video-sitemap.xml',
+            'https://www.rovstudios.com/sitemap.xml',
+            'https://www.rovstudios.com/video-sitemap.xml',
         ],
-        host: 'https://rovstudios.com',
+        host: 'https://www.rovstudios.com',
     };
 }

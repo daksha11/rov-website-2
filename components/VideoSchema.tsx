@@ -20,11 +20,11 @@ export function VideoSchema({
     "@type": "VideoObject",
     name,
     description,
-    thumbnailUrl: `https://rovstudios.com${thumbnailUrl}`,
+    thumbnailUrl: `https://www.rovstudios.com${thumbnailUrl}`,
     uploadDate,
-    ...(contentUrl && { contentUrl: `https://rovstudios.com${contentUrl}` }),
+    ...(contentUrl && { contentUrl: `https://www.rovstudios.com${contentUrl}` }),
     ...(duration && { duration }),
-    ...(pageUrl && { url: `https://rovstudios.com${pageUrl}` }),
+    ...(pageUrl && { url: `https://www.rovstudios.com${pageUrl}` }),
     isFamilyFriendly: true,
     inLanguage: "en",
     publisher: {
@@ -32,7 +32,7 @@ export function VideoSchema({
       name: "Range of View Studios",
       logo: {
         "@type": "ImageObject",
-        url: "https://rovstudios.com/rov-logo.webp",
+        url: "https://www.rovstudios.com/rov-logo.webp",
       },
     },
   };

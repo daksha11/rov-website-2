@@ -10,7 +10,7 @@ export function BreadcrumbSchema({
       "@type": "ListItem",
       position: index + 1,
       name: item.name,
-      item: `https://rovstudios.com${item.url}`,
+      item: `https://www.rovstudios.com${item.url}`,
     })),
   };
 

@@ -15,11 +15,11 @@ export const metadata: Metadata = {
     title: "Sound Engineering & Music Production",
     description:
         "Professional sound engineering, mixing, and mastering services by Range of View Studios. From demo to master — we bring your sound to life.",
-    alternates: { canonical: "https://rovstudios.com/sound" },
+    alternates: { canonical: "https://www.rovstudios.com/sound" },
     openGraph: {
         title: "Sound Engineering & Music Production | Range of View Studios",
         description: "Professional mixing, mastering, and sound engineering services. Demo snippets are free.",
-        url: "https://rovstudios.com/sound",
+        url: "https://www.rovstudios.com/sound",
         images: [{ url: "/og/og-sound.jpg", width: 1200, height: 630, alt: "ROV Studios sound engineering setup" }],
     },
     twitter: {

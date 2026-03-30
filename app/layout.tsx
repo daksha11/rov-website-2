@@ -15,7 +15,7 @@ const ChatWidget = dynamic(() => import("@/components/ChatWidget"), {
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://rovstudios.com"),
+  metadataBase: new URL("https://www.rovstudios.com"),
   title: {
     default: "Range of View Studios | Creative Production Agency",
     template: "%s | Range of View Studios",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://rovstudios.com",
+    url: "https://www.rovstudios.com",
     siteName: "Range of View Studios",
     title: "Range of View Studios | Creative Production Agency",
     description:
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://rovstudios.com",
+    canonical: "https://www.rovstudios.com",
   },
   icons: {
     icon: [

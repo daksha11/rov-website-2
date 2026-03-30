@@ -8,7 +8,7 @@ export const metadata: Metadata = {
         description: 'How we built a global-facing digital hub for DKM Corp — achieving 100% execution across four primary markets.',
         images: [{ url: '/og/og-dkm.jpg', width: 1200, height: 630, alt: 'DKM Corp Case Study' }],
         type: 'article',
-        url: 'https://rovstudios.com/casestudy/dkm',
+        url: 'https://www.rovstudios.com/casestudy/dkm',
     },
     twitter: {
         card: 'summary_large_image',
