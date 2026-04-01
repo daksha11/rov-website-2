@@ -443,21 +443,6 @@ export default function OurApproachSection() {
                 </div>
               </div>
 
-              {/* Shine animation keyframes */}
-              <style jsx>{`
-                @keyframes shine {
-                  0% {
-                    transform: translateX(-100%);
-                  }
-                  100% {
-                    transform: translateX(100%);
-                  }
-                }
-
-                .animate-shine {
-                  animation: shine 3s ease-in-out infinite;
-                }
-              `}</style>
             </div>
           ))}
         </div>
