@@ -17,7 +17,7 @@ const AIWorkflowsSection = dynamic(() => import('@/components/ai-automation/AIWo
 const AIPricingTiers = dynamic(() => import('@/components/ai-automation/AIPricingTiers'), {
     loading: () => <div className="bg-black min-h-[40vh]" />,
 });
-const OurApproachSection = dynamic(() => import('@/components/ai-automation/OurApproachSection'), {
+const OurApproachSection = dynamic(() => import('@/components/common/OurApproachSection'), {
     loading: () => <div className="bg-black min-h-[40vh]" />,
 });
 const FAQSection = dynamic(() => import('@/components/common/FAQSection'), {
@@ -26,6 +26,7 @@ const FAQSection = dynamic(() => import('@/components/common/FAQSection'), {
 import TestimonialsSection from '@/components/common/TestimonialsSection';
 import { aiTestimonials } from '@/data/testimonials';
 import { aiAutomationFaqItems } from '@/data/faq';
+import { aiAutomationSteps } from '@/data/approach-steps';
 // Inline SVG components to avoid react-icons barrel import (saves ~200-500KB)
 const SiN8N = ({ className }: { className?: string }) => (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-.6 7.2h1.2v4.2h4.2v1.2h-4.2v4.2h-1.2v-4.2H7.2v-1.2h4.2V7.2z"/></svg>
@@ -721,7 +722,7 @@ export default function AIAutomationContent() {
             {showROI && <AIROICalculator />}
 
             {/* Our Approach Section */}
-            <OurApproachSection />
+            <OurApproachSection steps={aiAutomationSteps} />
 
             {/* FAQ Section */}
             <FAQSection items={aiAutomationFaqItems} />

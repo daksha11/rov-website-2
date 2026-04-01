@@ -6,9 +6,10 @@ import Footer from "@/components/Footer";
 import ProjectStrip from "@/components/ProjectStrip";
 import { useState } from "react";
 import { aiAutomationFaqItems } from "@/data/faq";
+import { aiAutomationSteps } from "@/data/approach-steps";
 
 const FaultyTerminal = dynamic(() => import("@/components/FaultyTerminal"), { ssr: false });
-const OurApproachSection = dynamic(() => import("@/components/ai-automation/OurApproachSection"), {
+const OurApproachSection = dynamic(() => import("@/components/common/OurApproachSection"), {
     loading: () => <div className="bg-black min-h-[40vh]" />,
 });
 const FAQSection = dynamic(() => import("@/components/common/FAQSection"), {
@@ -215,7 +216,7 @@ export default function AIContent() {
             <ProjectStrip />
 
             {/* Our Approach Section */}
-            <OurApproachSection />
+            <OurApproachSection steps={aiAutomationSteps} />
 
             {/* FAQ Section */}
             <FAQSection items={aiAutomationFaqItems} />
