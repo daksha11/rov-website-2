@@ -452,6 +452,15 @@ input[type="range"]::-webkit-slider-thumb {
   background: #302218;
 }
 
+/* Shine animation — used by OurApproachSection cards */
+@keyframes shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.animate-shine {
+  animation: shine 3s ease-in-out infinite;
+}
+
 /* Navigation Dock font override */
 .nav-dock-font,
 .nav-dock-font *,

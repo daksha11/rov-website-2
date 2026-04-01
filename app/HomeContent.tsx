@@ -128,14 +128,6 @@ export default function HomeContent() {
         </section>
 
 
-        {/*<section id="latest-album">
-          <MusicPlayer />
-        </section>*/}
-
-        {/* <section id="gallery">
-          <Gallery />
-        </section> */}
-
         <section id="services" style={{ margin: 0, padding: 0 }}>
           <Services />
         </section>
@@ -147,8 +139,6 @@ export default function HomeContent() {
         <ElevateSection />
 
         <TeamSection />
-
-        {/* <Card /> */}
 
         <div className="py-20">
           <AlbumCoverLoop
@@ -163,13 +153,6 @@ export default function HomeContent() {
         <Footer />
 
         <NavigationDock />
-
-
-        {/*
-        <TestHero />
-
-        <MusicPlayer />
-        */}
       </main>
     </>
   );
