@@ -8,8 +8,11 @@ import ProjectStrip from "@/components/ProjectStrip";
 import { useCallback, useEffect, useRef, useState } from "react";
 import VideoPortfolioSection from "@/components/video-production/VideoPortfolioSection";
 import PostProductionSection from "@/components/video-production/PostProductionSection";
+import VideoPricingTiers from "@/components/video-production/VideoPricingTiers";
+import SpecialtyPackages from "@/components/video-production/SpecialtyPackages";
 import TestimonialsSection from "@/components/common/TestimonialsSection";
 import { videoTestimonials } from "@/data/testimonials";
+
 
 const videos = [
     "/videoprod/Atlskylineweb.mp4",
@@ -163,6 +166,12 @@ export default function VideoProductionContent() {
 
             {/* Client Testimonials */}
             <TestimonialsSection testimonials={videoTestimonials} variant="video" />
+
+            {/* Pricing Tiers */}
+            <VideoPricingTiers />
+
+            {/* Specialty Packages */}
+            <SpecialtyPackages />
 
             {/* Project Strip CTA */}
             <ProjectStrip />

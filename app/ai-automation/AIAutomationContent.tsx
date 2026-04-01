@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -9,6 +9,7 @@ import Footer from '@/components/Footer';
 import OurApproachSection from '@/components/ai-automation/OurApproachSection';
 import FAQBottomSection from '@/components/ai-automation/FAQBottomSection';
 import AIWorkflowsSection from '@/components/ai-automation/AIWorkflowsSection';
+import AIPricingTiers from '@/components/ai-automation/AIPricingTiers';
 import ProjectStrip from '@/components/ProjectStrip';
 import LogoLoop from '@/components/LogoLoop';
 import { N8nWorkflowBlock } from '@/components/ui/n8n-workflow-block';
@@ -17,8 +18,11 @@ import { aiTestimonials } from '@/data/testimonials';
 import { SiNotion, SiGooglecloud, SiGmail, SiOpenai, SiN8N } from 'react-icons/si';
 
 const FaultyTerminal = dynamic(() => import('@/components/FaultyTerminal'), { ssr: false });
+const AIROICalculator = dynamic(() => import('@/components/ai-automation/AIROICalculator'), { ssr: false });
 
 export default function AIAutomationContent() {
+    const [showROI, setShowROI] = useState(false);
+
     return (
         <div style={{
             minHeight: '100vh',
@@ -684,6 +688,12 @@ export default function AIAutomationContent() {
 
             {/* Client Testimonials */}
             <TestimonialsSection testimonials={aiTestimonials} variant="ai" />
+
+            {/* Pricing Tiers */}
+            <AIPricingTiers onUnlock={() => setShowROI(prev => !prev)} />
+
+            {/* ROI Calculator — revealed by secret triple-click on pricing market bar */}
+            {showROI && <AIROICalculator />}
 
             {/* Our Approach Section */}
             <OurApproachSection />
