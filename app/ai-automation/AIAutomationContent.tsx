@@ -6,16 +6,41 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { NavigationDock } from '@/components/NavDoc';
 import Footer from '@/components/Footer';
-import OurApproachSection from '@/components/ai-automation/OurApproachSection';
-import FAQBottomSection from '@/components/ai-automation/FAQBottomSection';
-import AIWorkflowsSection from '@/components/ai-automation/AIWorkflowsSection';
-import AIPricingTiers from '@/components/ai-automation/AIPricingTiers';
 import ProjectStrip from '@/components/ProjectStrip';
 import LogoLoop from '@/components/LogoLoop';
 import { N8nWorkflowBlock } from '@/components/ui/n8n-workflow-block';
+
+// Dynamic imports for below-fold heavy components
+const AIWorkflowsSection = dynamic(() => import('@/components/ai-automation/AIWorkflowsSection'), {
+    loading: () => <div className="bg-black min-h-[40vh]" />,
+});
+const AIPricingTiers = dynamic(() => import('@/components/ai-automation/AIPricingTiers'), {
+    loading: () => <div className="bg-black min-h-[40vh]" />,
+});
+const OurApproachSection = dynamic(() => import('@/components/ai-automation/OurApproachSection'), {
+    loading: () => <div className="bg-black min-h-[40vh]" />,
+});
+const FAQBottomSection = dynamic(() => import('@/components/ai-automation/FAQBottomSection'), {
+    loading: () => <div className="bg-black min-h-[40vh]" />,
+});
 import TestimonialsSection from '@/components/common/TestimonialsSection';
 import { aiTestimonials } from '@/data/testimonials';
-import { SiNotion, SiGooglecloud, SiGmail, SiOpenai, SiN8N } from 'react-icons/si';
+// Inline SVG components to avoid react-icons barrel import (saves ~200-500KB)
+const SiN8N = ({ className }: { className?: string }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-.6 7.2h1.2v4.2h4.2v1.2h-4.2v4.2h-1.2v-4.2H7.2v-1.2h4.2V7.2z"/></svg>
+);
+const SiOpenai = ({ className }: { className?: string }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855l-5.833-3.387L15.119 7.2a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z"/></svg>
+);
+const SiNotion = ({ className }: { className?: string }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L18.29 2.29c-.42-.326-.98-.7-2.055-.607L3.01 2.87c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.166V6.354c0-.606-.233-.933-.748-.886l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952l1.448.327s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.14c-.093-.514.28-.886.747-.933zM1.936 1.035l13.872-1.026c1.68-.14 2.1.093 2.8.606l3.876 2.726c.466.326.606.466.606.886v17.31c0 1.026-.373 1.632-1.68 1.726l-15.457.933c-.98.047-1.448-.093-1.962-.747l-3.13-4.064c-.56-.746-.793-1.306-.793-1.96V2.667c0-.84.374-1.54 1.868-1.632z"/></svg>
+);
+const SiGooglecloud = ({ className }: { className?: string }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><path d="M12.19 2.38a9.344 9.344 0 0 0-9.234 6.893c.053-.02-.055.013 0 0-3.875 2.551-3.922 8.11-.247 10.941l.006-.007-.007.003a6.542 6.542 0 0 0 3.624 1.109h12.476a5.276 5.276 0 0 0 5.192-5.143 5.207 5.207 0 0 0-2.226-4.272c.268-1.333.03-2.74-.756-3.97a5.26 5.26 0 0 0-3.612-2.27A9.39 9.39 0 0 0 12.19 2.38zm-.358 2.453a7.03 7.03 0 0 1 4.907 2.27l-1.675 1.675a4.577 4.577 0 0 0-3.232-1.492 4.757 4.757 0 0 0-4.737 4.453h.007c-.009.167-.017.333-.017.503a4.52 4.52 0 0 0 .473 2.003L6.2 15.587a7.084 7.084 0 0 1-.883-3.346c0-.1.007-.197.009-.297l.003-.025A7.093 7.093 0 0 1 11.832 4.833z"/></svg>
+);
+const SiGmail = ({ className }: { className?: string }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
+);
 
 const FaultyTerminal = dynamic(() => import('@/components/FaultyTerminal'), { ssr: false });
 const AIROICalculator = dynamic(() => import('@/components/ai-automation/AIROICalculator'), { ssr: false });
@@ -105,7 +130,6 @@ export default function AIAutomationContent() {
                         borderRadius: '9999px',
                         padding: '8px 20px',
                         marginBottom: '40px',
-                        backdropFilter: 'blur(8px)',
                     }}
                 >
                     <span style={{ color: '#E8914A', fontSize: '0.85rem' }}>✦</span>

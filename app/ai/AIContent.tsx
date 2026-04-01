@@ -3,22 +3,19 @@
 import dynamic from "next/dynamic";
 import { NavigationDock } from "@/components/NavDoc";
 import Footer from "@/components/Footer";
-import OurApproachSection from "@/components/ai-automation/OurApproachSection";
-import FAQBottomSection from "@/components/ai-automation/FAQBottomSection";
 import ProjectStrip from "@/components/ProjectStrip";
 import { useState } from "react";
 
 const FaultyTerminal = dynamic(() => import("@/components/FaultyTerminal"), { ssr: false });
+const OurApproachSection = dynamic(() => import("@/components/ai-automation/OurApproachSection"), {
+    loading: () => <div className="bg-black min-h-[40vh]" />,
+});
+const FAQBottomSection = dynamic(() => import("@/components/ai-automation/FAQBottomSection"), {
+    loading: () => <div className="bg-black min-h-[40vh]" />,
+});
 
 export default function AIContent() {
     const [activeCategory, setActiveCategory] = useState<string>("automation");
-
-    const categories = [
-        { id: "automation", label: "AUTOMATION" },
-        { id: "analytics", label: "ANALYTICS" },
-        { id: "chatbots", label: "CHATBOTS & ASSISTANTS" },
-        { id: "custom", label: "CUSTOM SOLUTIONS", loading: true },
-    ];
 
     return (
         <main className="relative min-h-screen bg-black text-white">
