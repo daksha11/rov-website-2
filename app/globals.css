@@ -430,6 +430,13 @@ body {
 .rov-range::-moz-range-track {
   height: 6px;
   border-radius: 3px;
+  background: rgba(255,255,255,0.08);
+}
+
+.rov-range::-moz-range-progress {
+  height: 6px;
+  border-radius: 3px;
+  background: #EA9A61;
 }
 
 .rov-range::-moz-range-thumb {

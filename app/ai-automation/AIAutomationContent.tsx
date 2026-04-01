@@ -421,7 +421,7 @@ export default function AIAutomationContent() {
                             {/* Sub */}
                             <p style={{
                                 fontFamily: 'Roboto, sans-serif',
-                                fontSize: '0.75rem',
+                                fontSize: 'clamp(0.75rem, 1vw, 0.8rem)',
                                 color: 'rgba(255,255,255,0.35)',
                                 margin: 0,
                                 textAlign: 'center',

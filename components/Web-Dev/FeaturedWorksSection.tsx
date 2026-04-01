@@ -114,7 +114,7 @@ function ProjectSlide({
 
   return (
     <div className="relative w-full min-h-[80vh] md:min-h-[88vh] flex flex-col overflow-hidden">
-      {/* Blurred video background */}
+      {/* Background — tinted overlay instead of triple-filter blur video (GPU perf) */}
       <div className="absolute inset-0 z-0">
         <video
           ref={bgVideoRef}
@@ -124,10 +124,9 @@ function ProjectSlide({
           loop
           muted
           playsInline
-          className="w-full h-full object-cover scale-110"
-          style={{ filter: "blur(40px) brightness(0.3) saturate(0.6)" }}
+          className="w-full h-full object-cover scale-110 opacity-30"
         />
-        <div className="absolute inset-0" style={{ background: `${project.bgTint}cc`, mixBlendMode: "multiply" }} />
+        <div className="absolute inset-0" style={{ background: `${project.bgTint}cc` }} />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/50" />
       </div>
 
