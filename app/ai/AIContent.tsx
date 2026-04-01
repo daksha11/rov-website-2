@@ -5,12 +5,13 @@ import { NavigationDock } from "@/components/NavDoc";
 import Footer from "@/components/Footer";
 import ProjectStrip from "@/components/ProjectStrip";
 import { useState } from "react";
+import { aiAutomationFaqItems } from "@/data/faq";
 
 const FaultyTerminal = dynamic(() => import("@/components/FaultyTerminal"), { ssr: false });
 const OurApproachSection = dynamic(() => import("@/components/ai-automation/OurApproachSection"), {
     loading: () => <div className="bg-black min-h-[40vh]" />,
 });
-const FAQBottomSection = dynamic(() => import("@/components/ai-automation/FAQBottomSection"), {
+const FAQSection = dynamic(() => import("@/components/common/FAQSection"), {
     loading: () => <div className="bg-black min-h-[40vh]" />,
 });
 
@@ -217,7 +218,7 @@ export default function AIContent() {
             <OurApproachSection />
 
             {/* FAQ Section */}
-            <FAQBottomSection />
+            <FAQSection items={aiAutomationFaqItems} />
 
             <Footer />
         </main>

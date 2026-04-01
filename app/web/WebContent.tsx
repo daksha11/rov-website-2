@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import WebHero from "@/components/Web-Dev/WebHero";
 import TestimonialsSection from "@/components/common/TestimonialsSection";
 import { webTestimonials } from "@/data/testimonials";
+import { webFaqItems } from "@/data/faq";
 
 // Dynamic imports for below-fold heavy components
 const FeaturedWorksSection = dynamic(() => import("@/components/Web-Dev/FeaturedWorksSection"), {
@@ -32,7 +33,7 @@ const OurApproachSection = dynamic(() => import("@/components/Web-Dev/OurApproac
     ),
 });
 
-const FAQBottomSection = dynamic(() => import("@/components/Web-Dev/FAQBottomSection"), {
+const FAQSection = dynamic(() => import("@/components/common/FAQSection"), {
     loading: () => (
         <div className="bg-black min-h-[40vh] flex items-center justify-center">
             <div className="text-white/60 text-sm">Loading...</div>
@@ -62,7 +63,7 @@ export default function WebContent() {
             <OurApproachSection />
 
             {/* FAQ Section */}
-            <FAQBottomSection />
+            <FAQSection items={webFaqItems} />
 
             {/* Navigation Dock */}
             <NavigationDock />

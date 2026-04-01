@@ -3,39 +3,16 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
-type FaqItem = {
+export type FaqItem = {
     question: string;
     answer: string;
 };
 
-const faqItems: FaqItem[] = [
-    {
-        question: "How much does a website cost?",
-        answer: "Our website projects typically range from $2,000 to $10,000+ depending on the scope and features you need. A simple 5-page business website with custom design starts around $2,000, while more complex sites with e-commerce, custom functionality, or extensive content can go higher. Every project is different, so we provide a detailed proposal after understanding your specific goals, timeline, and requirements. We're transparent about pricing from the start and work with you to find the right balance between your vision and budget."
-    },
-    {
-        question: "How long does it take to build a website?",
-        answer: "Most websites take 6 to 8 weeks from kickoff to launch. This includes discovery and strategy, design mockups, development, content integration, testing, and launch support. Simpler sites can be completed in 4 to 5 weeks, while more complex projects with e-commerce or custom features may take 10 to 12 weeks. The timeline also depends on how quickly you can provide feedback and content during the process. We'll give you a clear timeline during our initial consultation so you know exactly what to expect."
-    },
-    {
-        question: "Will my website be mobile-friendly?",
-        answer: "Absolutely. Every website we build is fully responsive, meaning it automatically adapts to look great and function perfectly on phones, tablets, and desktops. With over 60% of web traffic coming from mobile devices, we actually design for mobile first and then scale up to larger screens. Your site will load quickly, be easy to navigate, and provide a seamless experience no matter what device your visitors are using."
-    },
-    {
-        question: "What platforms do you build websites on?",
-        answer: "We primarily build custom websites using Next.js and modern web technologies, which gives you maximum flexibility, fast performance, and complete control over your site's design and functionality. For clients who need robust e-commerce capabilities, we can integrate platforms like Shopify or set up custom shopping solutions depending on your product catalog size and business needs. We choose the right technology based on your specific goals, whether that's a portfolio site, business site, or full online store. The advantage of our approach is that you're not locked into a template or limited by platform constraints."
-    },
-    {
-        question: "Will I be able to update my website myself?",
-        answer: "Yes, we build sites with user-friendly content management systems that let you make basic updates like changing text, adding images, or posting blog content without needing technical skills. During the handoff process, we provide training and documentation so you feel confident making these changes. For more complex updates like design changes, new features, or technical modifications, we're always available to help. The goal is to give you control over day-to-day content while having expert support when you need it."
-    },
-    {
-        question: "Do you handle ongoing website updates and maintenance?",
-        answer: "Yes, we offer flexible maintenance packages for clients who want ongoing support after launch. This can include regular content updates, security monitoring, performance optimization, plugin updates, and technical troubleshooting. Some clients prefer to handle simple updates themselves and call us for bigger changes, while others want us to manage everything. We'll work with you to create a maintenance plan that fits your needs and budget, whether that's a monthly retainer or on-demand support as issues come up."
-    }
-];
+interface FAQSectionProps {
+    items: FaqItem[];
+}
 
-export default function FAQBottomSection() {
+export default function FAQSection({ items }: FAQSectionProps) {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
 
     const toggleFaq = (index: number) => {
@@ -58,7 +35,6 @@ export default function FAQBottomSection() {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
                     {/* Left Side - FAQ Title and CTA Card */}
                     <div className="lg:col-span-5 space-y-8 lg:sticky lg:top-8">
-                        {/* FAQ Title */}
                         <h2
                             className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold"
                             style={{
@@ -74,9 +50,7 @@ export default function FAQBottomSection() {
                         {/* Still Have Questions Card */}
                         <div
                             className="rounded-3xl p-6 md:p-8 space-y-6"
-                            style={{
-                                background: "#7F5230",
-                            }}
+                            style={{ background: "#7F5230" }}
                         >
                             <div>
                                 <h3
@@ -94,9 +68,7 @@ export default function FAQBottomSection() {
                             </div>
 
                             <div className="flex items-center gap-4">
-                                {/* Three Overlapping Circles with Arrow */}
                                 <div className="flex items-center flex-shrink-0 -space-x-4">
-                                    {/* Left Outlined Circle */}
                                     <div
                                         className="w-12 h-12 md:w-14 md:h-14 rounded-full"
                                         style={{
@@ -104,8 +76,6 @@ export default function FAQBottomSection() {
                                             background: "transparent"
                                         }}
                                     />
-
-                                    {/* Center Filled Circle with Arrow */}
                                     <a
                                         href="https://calendly.com/rangeofviewmusic/30min"
                                         target="_blank"
@@ -130,8 +100,6 @@ export default function FAQBottomSection() {
                                             />
                                         </svg>
                                     </a>
-
-                                    {/* Right Outlined Circle */}
                                     <div
                                         className="w-12 h-12 md:w-14 md:h-14 rounded-full"
                                         style={{
@@ -141,7 +109,6 @@ export default function FAQBottomSection() {
                                     />
                                 </div>
 
-                                {/* Let's Create Button */}
                                 <a
                                     href="https://calendly.com/rangeofviewmusic/30min"
                                     target="_blank"
@@ -161,7 +128,7 @@ export default function FAQBottomSection() {
 
                     {/* Right Side - FAQ Items */}
                     <div className="lg:col-span-7 space-y-4">
-                        {faqItems.map((item, index) => {
+                        {items.map((item, index) => {
                             const isOpen = openIndex === index;
 
                             return (
@@ -174,7 +141,6 @@ export default function FAQBottomSection() {
                                         background: "rgba(59, 33, 20, 0.35)",
                                     }}
                                 >
-                                    {/* Question Button */}
                                     <button
                                         onClick={() => toggleFaq(index)}
                                         className="w-full flex justify-between items-center text-left px-6 md:px-8 py-5 md:py-6 cursor-pointer group"
@@ -197,21 +163,14 @@ export default function FAQBottomSection() {
                                         </motion.div>
                                     </button>
 
-                                    {/* Answer - Optimized for performance */}
                                     <AnimatePresence initial={false}>
                                         {isOpen && (
                                             <motion.div
                                                 initial={{ opacity: 0, scaleY: 0 }}
                                                 animate={{ opacity: 1, scaleY: 1 }}
                                                 exit={{ opacity: 0, scaleY: 0 }}
-                                                transition={{
-                                                    duration: 0.2,
-                                                    ease: "easeOut"
-                                                }}
-                                                style={{
-                                                    transformOrigin: "top",
-                                                    willChange: "transform, opacity"
-                                                }}
+                                                transition={{ duration: 0.2, ease: "easeOut" }}
+                                                style={{ transformOrigin: "top", willChange: "transform, opacity" }}
                                                 className="overflow-hidden"
                                             >
                                                 <div className="px-6 md:px-8 pb-5 md:pb-6 pt-2">

@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import ProjectStrip from "@/components/ProjectStrip";
 import TestimonialsSection from "@/components/common/TestimonialsSection";
 import { videoTestimonials } from "@/data/testimonials";
+import { videoFaqItems } from "@/data/faq";
 import VideoHero from "./VideoHero";
 
 // Dynamic imports for below-fold heavy components
@@ -41,7 +42,7 @@ const OurApproachSection = dynamic(() => import("@/components/video-production/O
     ),
 });
 
-const FAQSection = dynamic(() => import("@/components/video-production/FAQSection"), {
+const FAQSection = dynamic(() => import("@/components/common/FAQSection"), {
     loading: () => (
         <div className="bg-black min-h-[40vh] flex items-center justify-center">
             <div className="text-white/60 text-sm">Loading...</div>
@@ -79,7 +80,7 @@ export default function VideoProductionContent() {
             <OurApproachSection />
 
             {/* FAQ Section */}
-            <FAQSection />
+            <FAQSection items={videoFaqItems} />
 
             <Footer />
         </main>
