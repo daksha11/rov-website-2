@@ -77,45 +77,6 @@ export function NavigationDock({ className }: NavigationDockProps) {
           </div>
         </nav>
 
-        {/* Custom CSS for shimmer effect */}
-        <style jsx>{`
-          @keyframes shimmer {
-            0% {
-              transform: translateX(-150%) rotate(15deg);
-            }
-            100% {
-              transform: translateX(250%) rotate(15deg);
-            }
-          }
-
-          .shimmer-effect {
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 60%;
-            height: 200%;
-            background: linear-gradient(
-              90deg,
-              rgba(255, 255, 255, 0) 0%,
-              rgba(255, 255, 255, 0.25) 50%,
-              rgba(255, 255, 255, 0) 100%
-            );
-            filter: blur(10px);
-            animation: shimmer 2.5s ease-in-out infinite;
-          }
-
-          @media (max-width: 768px) {
-            .shimmer-effect {
-              animation: shimmer 3.5s ease-in-out infinite;
-              background: linear-gradient(
-                90deg,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.15) 50%,
-                rgba(255, 255, 255, 0) 100%
-              );
-            }
-          }
-        `}</style>
       </div>
 
       {/* Expanded Menu Glass Pane */}

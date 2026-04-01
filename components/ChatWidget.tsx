@@ -424,41 +424,6 @@ export default function ChatWidget() {
         </div>
       )}
 
-      {/* Shimmer effect styles */}
-      <style jsx>{`
-        @keyframes shimmer {
-          0% {
-            transform: translateX(-150%) rotate(15deg);
-          }
-          100% {
-            transform: translateX(250%) rotate(15deg);
-          }
-        }
-
-        .shimmer-effect {
-          position: absolute;
-          top: -50%;
-          left: -50%;
-          width: 60%;
-          height: 200%;
-          background: linear-gradient(
-            90deg,
-            rgba(255, 255, 255, 0) 0%,
-            rgba(255, 255, 255, 0.25) 50%,
-            rgba(255, 255, 255, 0) 100%
-          );
-          filter: blur(10px);
-          animation: shimmer 2.5s ease-in-out infinite;
-        }
-
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
     </>
   );
 }
