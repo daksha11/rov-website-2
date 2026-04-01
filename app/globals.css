@@ -402,6 +402,45 @@ body {
   transform: scale(1.1);
 }
 
+/* ROV Range Slider */
+.rov-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.rov-range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+}
+
+.rov-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #302218;
+  border: 2px solid #EA9A61;
+  margin-top: -9px;
+  box-shadow: 0 0 8px rgba(234, 154, 97, 0.3);
+}
+
+.rov-range::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+}
+
+.rov-range::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #302218;
+  border: 2px solid #EA9A61;
+  box-shadow: 0 0 8px rgba(234, 154, 97, 0.3);
+}
+
 input[type="range"]::-webkit-slider-thumb {
   background: #302218;
 }

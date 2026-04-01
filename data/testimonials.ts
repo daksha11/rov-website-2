@@ -4,6 +4,7 @@ export interface Testimonial {
   role: string;
   impactStat: string;
   socialUrl?: string;
+  image?: string;
 }
 
 export type ServiceVariant = "web" | "sound" | "video" | "ai";
@@ -49,6 +50,7 @@ export const soundTestimonials: Testimonial[] = [
     name: "DDK",
     role: "Recording Artist",
     impactStat: "Fastest Engineer",
+    image: "/soundpage/ddk.jpg",
   },
   {
     quote:
@@ -63,6 +65,7 @@ export const soundTestimonials: Testimonial[] = [
     name: "Sophie Said",
     role: "Recording Artist",
     impactStat: "24hr Turnaround",
+    image: "/soundpage/sophie.webp",
   },
 ];
 

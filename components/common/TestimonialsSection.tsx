@@ -213,10 +213,23 @@ export default function TestimonialsSection({ testimonials, variant }: Props) {
 
                 {/* Author + stat + social */}
                 <div className="flex items-center gap-5">
-                  <div
-                    className="w-10 h-px flex-shrink-0"
-                    style={{ backgroundColor: "#EA9A61" }}
-                  />
+                  {/* Avatar or accent line */}
+                  {current.image ? (
+                    <div
+                      className="w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#EA9A61]/30"
+                    >
+                      <img
+                        src={current.image}
+                        alt={current.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div
+                      className="w-10 h-px flex-shrink-0"
+                      style={{ backgroundColor: "#EA9A61" }}
+                    />
+                  )}
                   <div className="flex flex-col gap-1.5">
                     <div className="flex items-center gap-3">
                       <p

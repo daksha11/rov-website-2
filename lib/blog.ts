@@ -47,6 +47,7 @@ function parseFrontmatter(slug: string, fileContent: string): BlogPost {
     readingTime: data.readingTime ?? 0,
     atlantaAngle: data.atlantaAngle ?? "",
     published: data.published ?? true,
+    coverImage: data.coverImage ?? undefined,
     content,
   };
 }

@@ -7,6 +7,7 @@ const categoryColors: Record<string, string> = {
   "Sound Engineering": "bg-purple-500/15 text-purple-400",
   "Video Production": "bg-rose-500/15 text-rose-400",
   "Branding": "bg-cyan-500/15 text-cyan-400",
+  "Branding & Web Design": "bg-[#EA9A61]/15 text-[#EA9A61]",
   "Marketing": "bg-orange-500/15 text-orange-400",
 };
 
@@ -27,7 +28,7 @@ export function BlogPostHeader({ post }: { post: BlogPost }) {
   return (
     <header className="mx-auto max-w-[720px] px-5 pb-10 pt-24 sm:pt-32">
       <span
-        className={`inline-block rounded-full px-3 py-1 text-[0.6875rem] font-medium uppercase tracking-wider ${getCategoryStyle(post.category)}`}
+        className={`inline-block text-[0.6875rem] font-semibold uppercase tracking-wider ${getCategoryStyle(post.category).split(' ').filter(c => c.startsWith('text-')).join(' ')}`}
       >
         {post.category}
       </span>

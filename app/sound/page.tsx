@@ -14,39 +14,46 @@ import { FAQPageSchema } from "@/components/FAQPageSchema";
 export const metadata: Metadata = {
     title: "Sound Engineering & Music Production",
     description:
-        "Professional sound engineering, mixing, and mastering services by Range of View Studios. From demo to master — we bring your sound to life.",
+        "Professional sound engineering, mixing, and mastering services by Range of View Studios. Mix and master starting at $50/song. 48-hour turnaround.",
     alternates: { canonical: "https://www.rovstudios.com/sound" },
     openGraph: {
         title: "Sound Engineering & Music Production | Range of View Studios",
-        description: "Professional mixing, mastering, and sound engineering services. Demo snippets are free.",
+        description: "Professional mixing, mastering, and sound engineering services. Start at $50/song.",
         url: "https://www.rovstudios.com/sound",
         images: [{ url: "/og/og-sound.jpg", width: 1200, height: 630, alt: "ROV Studios sound engineering setup" }],
     },
     twitter: {
         card: "summary_large_image",
         title: "Sound Engineering & Music Production | Range of View Studios",
-        description: "Professional mixing, mastering, and sound engineering services.",
+        description: "Professional mixing, mastering, and sound engineering services. Start at $50/song.",
         images: ["/og/og-sound.jpg"],
     },
 };
 
-// Dynamic imports for heavy components to improve initial load
+// Dynamic imports for heavy components
 const MusicPlayer = dynamic(() => import("@/components/sound_page/MusicPlayer"), {
     loading: () => (
         <div className="bg-black min-h-[70vh] flex items-center justify-center">
             <div className="text-white/60 text-sm">Loading player...</div>
         </div>
     ),
-    ssr: false // Client-side only for interactive features
+    ssr: false,
 });
 
-const FAQBottomSection = dynamic(() => import("@/components/sound_page/FAQBottomSection"), {
+const IntroOffer = dynamic(() => import("@/components/sound_page/IntroOffer"));
+
+const StudioSection = dynamic(() => import("@/components/sound_page/StudioSection"), {
     loading: () => (
         <div className="bg-black min-h-[40vh] flex items-center justify-center">
             <div className="text-white/60 text-sm">Loading...</div>
         </div>
-    )
+    ),
 });
+
+const SavingsCalculator = dynamic(() => import("@/components/sound_page/SavingsCalculator"), { ssr: false });
+const PricingTiers = dynamic(() => import("@/components/sound_page/PricingTiers"));
+const CreativeAddOns = dynamic(() => import("@/components/sound_page/CreativeAddOns"));
+const StudioSetupSection = dynamic(() => import("@/components/sound_page/StudioSetup"));
 
 const VideoShowcaseSection = dynamic(() => import("@/components/sound_page/VideoShowcaseSection"), {
     loading: () => (
@@ -54,16 +61,15 @@ const VideoShowcaseSection = dynamic(() => import("@/components/sound_page/Video
             <div className="text-white/60 text-sm">Loading...</div>
         </div>
     ),
-    ssr: false
+    ssr: false,
 });
 
-const StudioSection = dynamic(() => import("@/components/sound_page/StudioSection"), {
+const FAQBottomSection = dynamic(() => import("@/components/sound_page/FAQBottomSection"), {
     loading: () => (
-        <div className="bg-black min-h-[60vh] flex items-center justify-center">
+        <div className="bg-black min-h-[40vh] flex items-center justify-center">
             <div className="text-white/60 text-sm">Loading...</div>
         </div>
     ),
-    ssr: false
 });
 
 export default function Page() {
@@ -71,23 +77,24 @@ export default function Page() {
         <>
             <ServiceSchema
                 name="Sound Engineering & Music Production"
-                description="Professional sound engineering, mixing, and mastering services. From demo to final master in 48 hours."
+                description="Professional sound engineering, mixing, and mastering services. Mix and master starting at $50/song with 48-hour turnaround."
                 serviceType="Sound Engineering"
                 url="/sound"
                 image="/og/og-sound.jpg"
-                offerDescription="Free demo snippets with no strings attached"
+                offerDescription="First 3 songs at $50/song, mix and master included"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "" },
                 { name: "Sound Engineering", url: "/sound" },
             ]} />
             <FAQPageSchema faqs={[
-                { question: "How much do you charge for mixing and mastering?", answer: "We charge $50 per song for vocal mixing and mastering. That includes balancing your vocals, cleaning up the sound, adding creative effects where needed, and making sure it hits the right loudness for streaming. If you need a full trackout mixed (beat stems, instruments, vocals, everything), pricing is higher depending on the complexity and number of stems. Reach out with your project details and we'll give you a custom quote." },
-                { question: "How long does it take to get my song mixed and mastered?", answer: "Turnaround is 2 days from the time we receive your properly labeled stems and any notes. If you're recording with us in-house, your song is also mixed and mastered within 2 days after the session. If you're on a tight schedule for a rollout, let us know and we'll plan the timeline with you." },
-                { question: "What do you need from me to mix my track properly?", answer: "We need all your stems exported and labeled clearly before you send them over. That means things like \"Lead Vocals,\" \"Adlibs,\" \"Kick,\" \"808,\" \"Guitar,\" and so on, not \"Audio_01.\" Make sure everything is the same tempo and starts from the same bar so it lines up. You'll email the stems along with a rough mix or reference track and any notes about the vibe you're going for." },
-                { question: "Do you offer discounts for multiple songs or full projects?", answer: "Yes. If you're bringing a full project, EP, or a batch of singles, we offer discounted rates on mixing and mastering. The more songs we're working on together, the better we can lock in a package price. Tell us how many tracks you have, your timeline, and what extra services you might need, and we'll build a custom quote." },
-                { question: "What makes your mixes stand out on streaming platforms?", answer: "We mix competitively for streaming loudness, so your records hit hard without sounding crushed. Our work has landed on placements like SoundCloud Song of the Day, On The Radar, Apple Radio, and more, so we know what translates well on real playlists and radios. The goal is a mix that feels big in the car, on headphones, and on all major platforms." },
-                { question: "Can you help with cover art, rollouts, and visuals for my release?", answer: "Yes, this is where we really go full service. Beyond mixing and mastering, we can create cover art, website pages or microsites, merch designs, tracklists, and full rollout assets. If you need music videos or visual content to support the release, we can handle that too. We're set up to take you from recording to release, so you don't have to piece together a different person for every part of your rollout." },
+                { question: "How much does mixing and mastering cost?", answer: "Start at $50/song for your first 3 songs, mix and master included. After that, subscriptions start at $145/mo for 5 songs (under $30/song) up to $400/mo for 12 songs with 24-hour priority turnaround. Need just one song? One-off pricing is $120/song. The subscription discount exists because consistency goes both ways. You commit to dropping, we commit to the rate." },
+                { question: "How long does it take to get my song mixed and mastered?", answer: "48 hours for all subscription tiers. 24 hours for Pro. 72 hours for one-off work. Clock starts when stems pass the quality check, Monday through Friday." },
+                { question: "What do you need from me to mix my track?", answer: "Stems exported from your DAW: dry vocals (no reverb, no compression), beat stems or a stereo beat file, and any reference tracks. Email to stems@rovstudios.com. We run a quality check before mixing. If something is off, we tell you before we start." },
+                { question: "What counts as a revision?", answer: "One round of feedback notes (louder vocals, more low end, soften the hi-hats). We rework the track. 1 revision included per song on all tiers and one-offs. Additional revisions are $65 each. Re-recording or rearranging the song counts as a new submission." },
+                { question: "Can I cancel my subscription?", answer: "Yes, anytime. Cancellation is effective at the end of your current billing cycle. No refunds for partial months. If you reactivate within 90 days, your original rate is guaranteed." },
+                { question: "Do you do one-off work without a subscription?", answer: "$120 for a single mix and master, 72-hour turnaround, 1 revision included. Cover art, visualizers, and merch design are also available without a subscription." },
+                { question: "Can you help with cover art and visuals?", answer: "Yes. Cover art is $50 for subscribers ($75 one-off). Lyric visualizers are $40 for subscribers ($60 one-off). Merch design is $65 for subscribers ($95 one-off). Or bundle all three in the Creative Pack for $125/mo and save $120." },
             ]} />
             <VideoSchema
                 name="Stars Collide Music Video"
@@ -107,109 +114,90 @@ export default function Page() {
                 duration="PT3M"
                 pageUrl="/sound"
             />
+
+            {/* 01 — Hero */}
             <SoundHero />
 
-            {/* Music Player Section */}
+            {/* 02 — Music Player */}
             <div className="bg-black">
                 <MusicPlayer />
             </div>
 
-            {/* Gallery Section */}
+            {/* 03 — $50 Intro Offer */}
+            <IntroOffer />
+
+            {/* 04 — Studio Recording + Calculator */}
+            <StudioSection />
+
+            {/* 05 — Subscription Tiers */}
+            <PricingTiers />
+
+            {/* 06 — Creative Add-Ons */}
+            <CreativeAddOns />
+
+            {/* 07 — Savings Calculator */}
+            <SavingsCalculator />
+
+            {/* 08 — Studio Setup */}
+            <StudioSetupSection />
+
+            {/* 08 — Artwork Gallery */}
             <div className="bg-black">
                 <Gallery />
             </div>
 
-            {/* Video Showcase Section */}
+            {/* 09 — Video Showcase */}
             <VideoShowcaseSection />
 
-            {/* Studio Recording Section */}
-            <StudioSection />
-
-            {/* Client Testimonials */}
+            {/* 10 — Testimonials */}
             <TestimonialsSection testimonials={soundTestimonials} variant="sound" />
 
-            {/* Promotional CTA Strip */}
-            <section className="relative bg-black px-6 md:px-12 py-8">
-                <div className="max-w-7xl mx-auto">
-                    <div
-                        className="relative rounded-2xl p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6"
-                        style={{
-                            borderRadius: '15px',
-                            border: '1px solid #999288',
-                            background: 'linear-gradient(111deg, #42201C -1.34%, #A64D2B 25.87%, #B16937 59.87%, #EA9A61 93.39%)',
-                            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
-                        }}
+            {/* 11 — FAQ */}
+            <FAQBottomSection />
+
+            {/* 13 — Final CTA */}
+            <section className="relative bg-black text-center" style={{ padding: "clamp(60px, 10vw, 120px) clamp(16px, 5vw, 60px)" }}>
+                <div className="max-w-2xl mx-auto">
+                    <h2
+                        className="text-3xl md:text-4xl lg:text-5xl font-bold italic text-white mb-4"
+                        style={{ fontFamily: "Norwige, sans-serif" }}
                     >
-                        {/* Left side - Logo and Text */}
-                        <div className="flex items-center gap-6">
-                            {/* Logo Circle */}
-                            <div className="w-20 h-20 md:w-24 md:h-24 bg-black rounded-full flex items-center justify-center flex-shrink-0">
-                                <img
-                                    src="/rov-logo.webp"
-                                    alt="ROV Logo"
-                                    className="w-12 h-12 md:w-14 md:h-14 object-contain"
-                                />
-                            </div>
-
-                            {/* Text Content */}
-                            <div>
-                                <h3 className="text-white text-3xl md:text-4xl lg:text-5xl font-bold mb-2" style={{ fontFamily: 'Norwige, sans-serif' }}>
-                                    Ready to Record?
-                                </h3>
-                                <p className="text-white text-base md:text-lg opacity-90" style={{ fontFamily: 'Roboto, sans-serif' }}>
-                                    Book a free 30-minute consultation. We&apos;ll talk through your project, timeline, and get you on the calendar.
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* Right side - Buttons */}
-                        <div className="flex items-center flex-shrink-0" style={{ gap: 'clamp(0.75rem, 1.5vw, 1rem)' }}>
-                            {/* Circle group */}
-                            <div className="flex items-center relative gap-0">
-                                <div
-                                    className="rounded-full border border-white/50 bg-transparent shrink-0"
-                                    style={{ width: 'clamp(3rem, 5vw, 3.75rem)', height: 'clamp(3rem, 5vw, 3.75rem)' }}
-                                />
-                                <a
-                                    href="https://calendly.com/rangeofviewmusic/30min"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="rounded-full bg-[#F7F2E4] flex items-center justify-center cursor-pointer transition-all duration-300 relative z-[2] shrink-0 -mx-2.5 hover:shadow-lg hover:scale-110"
-                                    style={{ width: 'clamp(3rem, 5vw, 3.75rem)', height: 'clamp(3rem, 5vw, 3.75rem)' }}
-                                >
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2" className="w-[35%] h-[35%]">
-                                        <path d="M5 12h14M12 5l7 7-7 7" />
-                                    </svg>
-                                </a>
-                                <div
-                                    className="rounded-full border border-white/50 bg-transparent shrink-0"
-                                    style={{ width: 'clamp(3rem, 5vw, 3.75rem)', height: 'clamp(3rem, 5vw, 3.75rem)' }}
-                                />
-                            </div>
-
-                            {/* LET'S CREATE Button */}
-                            <a
-                                href="https://calendly.com/rangeofviewmusic/30min"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="cta-shine inline-block rounded-full bg-[#0E0A08] text-white font-semibold cursor-pointer transition-all duration-300 whitespace-nowrap hover:shadow-[0_6px_20px_rgba(0,0,0,0.4)] hover:scale-105 uppercase"
-                                style={{
-                                    padding: 'clamp(0.75rem, 1.2vw, 0.9375rem) clamp(1.5rem, 2.5vw, 2rem)',
-                                    fontSize: 'clamp(0.75rem, 1vw, 0.875rem)',
-                                    letterSpacing: '0.05em',
-                                    fontFamily: 'Norwige, sans-serif',
-                                    boxShadow: '0 4px 4px 0 rgba(0, 0, 0, 0.25)',
-                                }}
-                            >
-                                LET&apos;S CREATE!
-                            </a>
-                        </div>
+                        3 songs. $50 each. You&apos;ll be convinced.
+                    </h2>
+                    <p
+                        className="text-white/40 text-sm md:text-base mb-8 leading-relaxed"
+                        style={{ fontFamily: "'Roboto', sans-serif" }}
+                    >
+                        Send us your stems and hear what R.O.V sounds like. No consultation needed.
+                    </p>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <a
+                            href="mailto:stems@rovstudios.com"
+                            className="cta-shine inline-flex items-center gap-2 text-white font-semibold transition-all duration-300 hover:scale-105"
+                            style={{
+                                fontFamily: "Norwige, sans-serif",
+                                borderRadius: "41.444px",
+                                background: "linear-gradient(112deg, #42201C 6.46%, #A64D2B 34.96%, #B16937 63.88%, #EA9A61 97.63%)",
+                                boxShadow: "3px 4px 4px 0 rgba(255, 244, 227, 0.15) inset, 0 4.385px 4.385px 0 rgba(0, 0, 0, 0.25)",
+                                padding: "clamp(1rem, 1.5vw, 1.25rem) clamp(2rem, 3vw, 2.5rem)",
+                                fontSize: "clamp(0.875rem, 1.2vw, 1rem)",
+                                letterSpacing: "0.05em",
+                            }}
+                        >
+                            stems@rovstudios.com &rarr;
+                        </a>
+                        <a
+                            href="https://www.instagram.com/rangeofviewstudios/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-white/40 text-sm hover:text-[#EA9A61] transition-colors duration-300"
+                            style={{ fontFamily: "'Roboto', sans-serif" }}
+                        >
+                            Or DM us on Instagram
+                        </a>
                     </div>
                 </div>
             </section>
-
-            {/* FAQ Section */}
-            <FAQBottomSection />
 
             {/* Footer */}
             <Footer />

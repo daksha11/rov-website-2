@@ -31,6 +31,7 @@ export interface BlogPost {
   readingTime: number;
   atlantaAngle: string;
   published: boolean;
+  coverImage?: string;
   content: string;
   htmlContent?: string;
   faqs?: { question: string; answer: string }[];

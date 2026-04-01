@@ -15,29 +15,29 @@ const NavigationDock = dynamic(
 const Footer = dynamic(() => import("@/components/Footer"), { ssr: false });
 
 export const metadata: Metadata = {
-  title: "Blog",
+  title: "Web Design Blog & Creative Agency Insights",
   description:
-    "Web design insights, case studies, and digital strategy from ROV Studios in Atlanta, Georgia.",
+    "Real results from real projects. Web design case studies, brand strategy, and digital growth insights from ROV Studios — a creative production agency in Atlanta.",
   alternates: { canonical: "https://www.rovstudios.com/blog" },
   openGraph: {
-    title: "Blog | Range of View Studios",
+    title: "Web Design Blog & Creative Agency Insights | Range of View Studios",
     description:
-      "Web design insights, case studies, and digital strategy from ROV Studios in Atlanta.",
+      "Real results from real projects. Web design case studies, brand strategy, and digital growth insights from ROV Studios in Atlanta.",
     url: "https://www.rovstudios.com/blog",
     images: [
       {
         url: "/og/og-default.jpg",
         width: 1200,
         height: 630,
-        alt: "ROV Studios Blog",
+        alt: "ROV Studios Blog — Web Design Case Studies and Insights",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Blog | Range of View Studios",
+    title: "Web Design Blog & Creative Agency Insights | Range of View Studios",
     description:
-      "Web design insights, case studies, and digital strategy from ROV Studios in Atlanta.",
+      "Real results from real projects. Web design case studies, brand strategy, and digital growth insights from ROV Studios in Atlanta.",
     images: ["/og/og-default.jpg"],
   },
 };
@@ -64,10 +64,10 @@ export default function BlogPage() {
               lineHeight: 1.1,
             }}
           >
-            THE BLOG
+            Real Work. Real Results.
           </h1>
-          <p className="mt-4 max-w-lg text-base text-gray-400 sm:text-lg">
-            Case studies, insights, and web design strategy from Atlanta.
+          <p className="mt-4 max-w-lg text-base text-gray-400 sm:text-lg" style={{ fontFamily: "'Roboto', sans-serif" }}>
+            Case studies and strategy from the projects we ship — not theory, not templates, just what actually worked.
           </p>
         </div>
       </section>

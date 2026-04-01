@@ -50,7 +50,7 @@ export async function generateMetadata({
       authors: [post.author],
       images: [
         {
-          url: "/og/og-default.jpg",
+          url: post.coverImage || "/og/og-default.jpg",
           width: 1200,
           height: 630,
           alt: post.title,
@@ -58,9 +58,10 @@ export async function generateMetadata({
       ],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       title: `${post.title} | Range of View Studios`,
       description: post.description,
+      images: [post.coverImage || "/og/og-default.jpg"],
     },
   };
 }

@@ -1,100 +1,39 @@
 "use client";
-import { motion, Variants } from "framer-motion";
-import { MoveUpRight } from "lucide-react";
 
-const container: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.06,
-      ease: "easeInOut",
-      duration: 0.6,
-    },
-  },
-};
-
-const letter: Variants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: [0.25, 0.1, 0.25, 1],
-    },
-  },
-};
+import { motion } from "framer-motion";
 
 export function BlogPostCTA() {
-  const text: string[] = ["Let's make it", "happen"];
-
   return (
-    <section className="relative text-center py-16 md:py-24 px-4 md:px-6 rounded-t-[50px] overflow-hidden">
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover -z-10 rounded-t-[50px]"
-      >
-        <source src="/assets/images/Untitled-6.mp4" type="video/mp4" />
-      </video>
-
-      <motion.p
-        initial={{ opacity: 0, y: -30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        viewport={{ once: true }}
-        style={{ fontFamily: "serif" }}
-        className="italic font-semibold tracking-wider text-xl md:text-3xl text-[#2c2420] mb-4"
-      >
-        ( NEED AN UNFAIR ADVANTAGE? )
-      </motion.p>
-
-      <motion.h2
-        style={{ fontFamily: "sink" }}
-        className="text-4xl md:text-[120px] tracking-wider text-[#2c2420] mb-12 leading-none text-center"
-        variants={container}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-      >
-        {text.map((line, lineIndex) => (
-          <div key={lineIndex} className="flex justify-center flex-wrap">
-            {line.split("").map((char, i) => (
-              <motion.span key={i} variants={letter}>
-                {char === " " ? "\u00A0" : char}
-              </motion.span>
-            ))}
-          </div>
-        ))}
-      </motion.h2>
-
-      <div className="flex justify-center">
-        <a
+    <section className="py-16 md:py-24 px-4 bg-black">
+      <div className="flex flex-col items-center gap-4">
+        <p
+          className="text-white/40 text-sm uppercase tracking-[0.2em]"
+          style={{ fontFamily: "'Roboto', sans-serif" }}
+        >
+          Have questions?
+        </p>
+        <motion.a
           href="https://calendly.com/rangeofviewmusic/30min"
           target="_blank"
           rel="noopener noreferrer"
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.97 }}
+          className="cta-shine inline-flex items-center gap-3 text-white font-semibold cursor-pointer uppercase tracking-wide"
+          style={{
+            fontFamily: "Norwige, sans-serif",
+            borderRadius: "41.444px",
+            background: "linear-gradient(112deg, #42201C 6.46%, #A64D2B 34.96%, #B16937 63.88%, #EA9A61 97.63%)",
+            boxShadow: "3px 4px 4px 0 rgba(255, 244, 227, 0.15) inset, 0 4.385px 4.385px 0 rgba(0, 0, 0, 0.25)",
+            padding: "clamp(1rem, 1.5vw, 1.25rem) clamp(2rem, 3vw, 3rem)",
+            fontSize: "clamp(0.875rem, 1.2vw, 1rem)",
+            letterSpacing: "0.08em",
+          }}
         >
-          <button
-            style={{ fontFamily: "futura" }}
-            className="relative overflow-hidden bg-[#393632] flex items-center justify-center cursor-pointer text-white rounded-full py-8 px-12 text-3xl font-semibold tracking-widest group"
-          >
-            <span className="absolute inset-0 bg-[#bdbdb0]/30 origin-bottom scale-y-0 md:group-hover:scale-y-100 transition-transform duration-700 ease-in-out" />
-            <span className="relative overflow-hidden flex items-center leading-none h-[1.2em]">
-              <span className="block md:group-hover:-translate-y-full transition-transform duration-700 ease-in-out">
-                Book a call
-              </span>
-              <span className="absolute left-0 top-full block md:group-hover:top-0 transition-all duration-700 ease-in-out">
-                Book a call
-              </span>
-            </span>
-            <span className="relative ml-2">
-              <MoveUpRight size={25} />
-            </span>
-          </button>
-        </a>
+          Book a Call
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M7 17L17 7M17 7H7M17 7v10" />
+          </svg>
+        </motion.a>
       </div>
     </section>
   );

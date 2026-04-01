@@ -1,342 +1,299 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
-const projects = [
-    {
-        id: 1,
-        title: "THE BANDO",
-        category: "Website Redesign & Immersive Branding",
-        tags: ["Design", "Development", "Branding", "UI/UX"],
-        year: "2025",
-        media: "/video/bando video website.mp4",
-        mediaType: "video" as const,
-        poster: "/casestudyheroimg.webp",
-        link: "/casestudy",
-    },
-    {
-        id: 2,
-        title: "AYSEGUL IKNA",
-        category: "Website Design & Development",
-        tags: ["Design", "UX", "Development"],
-        year: "2025",
-        media: "/video/Aysegul Ikna website.mp4",
-        mediaType: "video" as const,
-        poster: "/webdev/ayseiknawebhome.webp",
-        link: "/casestudy/aysegul-ikna",
-    },
-    {
-        id: 3,
-        title: "DKM CORP",
-        category: "Global Digital Infrastructure & Brand Identity",
-        tags: ["Design", "Development", "Branding"],
-        year: "2025",
-        media: "/casestudy/dubaiskyline.webp",
-        mediaType: "image" as const,
-        link: "/casestudy/dkm",
-    },
+const HEADING = "Norwige, sans-serif";
+const BODY = "'Roboto', sans-serif";
+
+interface Project {
+  id: number;
+  title: string;
+  category: string;
+  tags: string[];
+  description: string;
+  media: string;
+  link?: string;
+  bgTint: string;
+  beforeAfter?: { before: string; after: string };
+}
+
+const projects: Project[] = [
+  {
+    id: 1,
+    title: "The Bando",
+    category: "Restaurant Website",
+    tags: ["Next.js", "Wix", "UX Design"],
+    description: "A full website redesign for Atlanta's Black history museum and fried chicken restaurant. Online ordering page views jumped 689x after launch.",
+    media: "/webdev/bando.mp4",
+    link: "/casestudy/bando",
+    bgTint: "#3a2218",
+  },
+  {
+    id: 2,
+    title: "Aysegul Ikna",
+    category: "E-Commerce & Branding",
+    tags: ["Shopify", "Brand Identity", "Photography"],
+    description: "Built a sustainable fashion brand's entire digital presence from scratch. E-commerce, brand identity, and social media drove a 20% sales increase.",
+    media: "/webdev/ikna.mp4",
+    link: "/casestudy/ikna",
+    bgTint: "#2a2520",
+  },
+  {
+    id: 3,
+    title: "DKM Corp",
+    category: "Brand Identity & Website",
+    tags: ["Next.js", "Brand System", "Responsive"],
+    description: "Ground-up website rebuild and brand identity system for a professional services company operating across India, Australia, the US, and Dubai.",
+    media: "/webdev/dkm.mp4",
+    link: "/casestudy/dkm",
+    bgTint: "#1e2a2a",
+  },
+  {
+    id: 4,
+    title: "Pursue Networking",
+    category: "Platform Design",
+    tags: ["Next.js", "Supabase", "Full-Stack"],
+    description: "Community networking platform built from the ground up. The site launched and the community started growing right away.",
+    media: "/webdev/pursueafter.mp4",
+    bgTint: "#1a1e2a",
+    beforeAfter: { before: "/webdev/pursuebefore.mp4", after: "/webdev/pursueafter.mp4" },
+  },
+  {
+    id: 5,
+    title: "Sam Suen",
+    category: "Portfolio Website",
+    tags: ["Next.js", "Framer Motion", "GSAP"],
+    description: "A personal portfolio for artist and creative Sam Suen, designed to showcase music, visuals, and creative work in one cohesive experience.",
+    media: "/webdev/sam.mp4",
+    bgTint: "#2a1e28",
+  },
 ];
 
-export default function FeaturedWorksSection() {
-    const [activeIndex, setActiveIndex] = useState(0);
-    const [canScrollPrev, setCanScrollPrev] = useState(false);
-    const [canScrollNext, setCanScrollNext] = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
+function ProjectSlide({
+  project,
+  index,
+  total,
+}: {
+  project: Project;
+  index: number;
+  total: number;
+}) {
+  const [showBefore, setShowBefore] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const bgVideoRef = useRef<HTMLVideoElement>(null);
 
-    const autoplayPlugin = useRef(
-        Autoplay({ delay: 4000, stopOnInteraction: false, stopOnMouseEnter: true })
-    );
+  const currentMedia = project.beforeAfter && showBefore
+    ? project.beforeAfter.before
+    : project.media;
 
-    const [emblaRef, emblaApi] = useEmblaCarousel(
-        {
-            loop: true,
-            duration: 40,
-            align: "start",
-        },
-        [autoplayPlugin.current]
-    );
+  // Reset before state when project changes
+  useEffect(() => {
+    setShowBefore(false);
+  }, [project.id]);
 
-    useEffect(() => {
-        const check = () => setIsMobile(window.innerWidth < 768);
-        check();
-        window.addEventListener("resize", check);
-        return () => window.removeEventListener("resize", check);
-    }, []);
+  useEffect(() => {
+    videoRef.current?.play().catch(() => {});
+    bgVideoRef.current?.play().catch(() => {});
+  }, [currentMedia]);
 
-    const onSelect = useCallback(() => {
-        if (!emblaApi) return;
-        setActiveIndex(emblaApi.selectedScrollSnap());
-        setCanScrollPrev(emblaApi.canScrollPrev());
-        setCanScrollNext(emblaApi.canScrollNext());
-    }, [emblaApi]);
+  return (
+    <div className="relative w-full min-h-[80vh] md:min-h-[88vh] flex flex-col overflow-hidden">
+      {/* Blurred video background */}
+      <div className="absolute inset-0 z-0">
+        <video
+          ref={bgVideoRef}
+          key={`bg-${currentMedia}`}
+          src={currentMedia}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover scale-110"
+          style={{ filter: "blur(40px) brightness(0.3) saturate(0.6)" }}
+        />
+        <div className="absolute inset-0" style={{ background: `${project.bgTint}cc`, mixBlendMode: "multiply" }} />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/50" />
+      </div>
 
-    useEffect(() => {
-        if (!emblaApi) return;
-        onSelect();
-        emblaApi.on("select", onSelect);
-        emblaApi.on("reInit", onSelect);
-        return () => {
-            emblaApi.off("select", onSelect);
-            emblaApi.off("reInit", onSelect);
-        };
-    }, [emblaApi, onSelect]);
-
-    const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
-    const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
-
-    // Mobile: vertical stack fallback
-    if (isMobile) {
-        return (
-            <section id="featured-works" className="relative bg-black py-16 px-4">
-                <div className="mb-10">
-                    <p
-                        className="text-sm uppercase tracking-[0.2em] text-white/40 mb-3"
-                        style={{ fontFamily: "Roboto, sans-serif" }}
-                    >
-                        Selected Works
-                    </p>
-                    <h2
-                        className="text-4xl font-bold text-white"
-                        style={{ fontFamily: "Norwige, sans-serif", fontStyle: "italic" }}
-                    >
-                        Our Recent Projects
-                    </h2>
-                </div>
-                <div className="flex flex-col gap-6">
-                    {projects.map((project, index) => (
-                        <Link key={project.id} href={project.link}>
-                            <div className="group relative w-full h-[50vh] rounded-2xl overflow-hidden">
-                                {project.mediaType === "video" ? (
-                                    <video
-                                        src={project.media}
-                                        autoPlay
-                                        muted
-                                        loop
-                                        playsInline
-                                        poster={project.poster}
-                                        className="absolute inset-0 w-full h-full object-cover"
-                                    />
-                                ) : (
-                                    <Image
-                                        src={project.media}
-                                        alt={`${project.title} - ${project.category}`}
-                                        fill
-                                        className="object-cover"
-                                        sizes="100vw"
-                                    />
-                                )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                                <div className="absolute inset-0 p-6 flex flex-col justify-end">
-                                    <div className="flex flex-wrap gap-2 mb-3">
-                                        {project.tags.map((tag) => (
-                                            <span
-                                                key={tag}
-                                                className="px-2.5 py-1 text-xs text-white/80 border border-white/20 rounded-full"
-                                                style={{ fontFamily: "Roboto, sans-serif" }}
-                                            >
-                                                {tag}
-                                            </span>
-                                        ))}
-                                    </div>
-                                    <div className="flex items-end justify-between gap-3">
-                                        <div>
-                                            <span className="text-white/20 text-sm font-mono mb-1 block">
-                                                {String(index + 1).padStart(2, "0")}
-                                            </span>
-                                            <h3
-                                                className="text-3xl font-bold text-white mb-1"
-                                                style={{ fontFamily: "Roboto, sans-serif" }}
-                                            >
-                                                {project.title}
-                                            </h3>
-                                            <p
-                                                className="text-sm text-white/50"
-                                                style={{ fontFamily: "Norwige, sans-serif", fontStyle: "italic" }}
-                                            >
-                                                {project.category}
-                                            </p>
-                                        </div>
-                                        <div className="flex-shrink-0 w-10 h-10 rounded-full border border-white/30 flex items-center justify-center">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="stroke-white">
-                                                <path d="M7 17L17 7M17 7H7M17 7V17" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
-            </section>
-        );
-    }
-
-    return (
-        <section id="featured-works" className="relative bg-black">
-            <div className="relative h-screen">
-                {/* Header */}
-                <div className="absolute top-0 left-0 right-0 z-20 px-8 lg:px-12 pt-8 pb-8 flex items-end justify-between">
-                    <div>
-                        <p
-                            className="text-sm uppercase tracking-[0.2em] text-white/40 mb-2"
-                            style={{ fontFamily: "Roboto, sans-serif" }}
-                        >
-                            Selected Works
-                        </p>
-                        <h2
-                            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white"
-                            style={{ fontFamily: "Norwige, sans-serif", fontStyle: "italic" }}
-                        >
-                            Our Recent Projects
-                        </h2>
-                    </div>
-                    <div className="flex items-center gap-4">
-                        {/* Navigation Arrows */}
-                        <button
-                            onClick={scrollPrev}
-                            disabled={!canScrollPrev}
-                            className="w-11 h-11 md:w-12 md:h-12 rounded-full border-2 border-white bg-white/10 flex items-center justify-center transition-all duration-300 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed"
-                            aria-label="Previous project"
-                        >
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="stroke-white">
-                                <path d="M19 12H5M5 12L12 19M5 12L12 5" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                        </button>
-                        <button
-                            onClick={scrollNext}
-                            disabled={!canScrollNext}
-                            className="w-11 h-11 md:w-12 md:h-12 rounded-full border-2 border-white bg-white/10 flex items-center justify-center transition-all duration-300 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed"
-                            aria-label="Next project"
-                        >
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="stroke-white">
-                                <path d="M5 12H19M19 12L12 5M19 12L12 19" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                        </button>
-
-                        {/* Counter */}
-                        <span
-                            className="text-4xl md:text-5xl font-bold text-white transition-all duration-300"
-                            style={{ fontFamily: "Roboto, sans-serif" }}
-                        >
-                            {String(activeIndex + 1).padStart(2, "0")}
-                        </span>
-                        <span className="block h-[2px] w-8 bg-white/40" />
-                        <span
-                            className="text-lg text-white/40"
-                            style={{ fontFamily: "Roboto, sans-serif" }}
-                        >
-                            {String(projects.length).padStart(2, "0")}
-                        </span>
-                    </div>
-                </div>
-
-                {/* Embla Carousel */}
-                <div
-                    className="absolute inset-0 top-32 lg:top-36 bottom-6 left-6 right-6 lg:left-10 lg:right-10 overflow-hidden"
-                    ref={emblaRef}
-                >
-                    <div className="flex h-full gap-6">
-                        {projects.map((project) => (
-                            <div
-                                key={project.id}
-                                className="relative flex-[0_0_100%] min-w-0 h-full"
-                            >
-                                <Link href={project.link} className="group block h-full">
-                                    <div className="relative h-full w-full rounded-2xl md:rounded-3xl overflow-hidden">
-                                        {/* Background Media */}
-                                        {project.mediaType === "video" ? (
-                                            <video
-                                                src={project.media}
-                                                autoPlay
-                                                muted
-                                                loop
-                                                playsInline
-                                                preload="metadata"
-                                                poster={project.poster}
-                                                aria-label={`${project.title} - ${project.category} showcase`}
-                                                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                            />
-                                        ) : (
-                                            <Image
-                                                src={project.media}
-                                                alt={`${project.title} - ${project.category}`}
-                                                fill
-                                                className="object-cover transition-transform duration-700 group-hover:scale-105"
-                                                sizes="100vw"
-                                            />
-                                        )}
-
-                                        {/* Gradient Overlay */}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-black/10" />
-
-                                        {/* Card Content */}
-                                        <div className="absolute inset-x-0 bottom-0 p-8 md:p-10 lg:p-12">
-                                            {/* Tags */}
-                                            <div className="flex flex-wrap gap-2 mb-4">
-                                                {project.tags.map((tag) => (
-                                                    <span
-                                                        key={tag}
-                                                        className="px-3 py-1 text-xs md:text-sm text-white/80 border border-white/20 rounded-full backdrop-blur-sm"
-                                                        style={{ fontFamily: "Roboto, sans-serif" }}
-                                                    >
-                                                        {tag}
-                                                    </span>
-                                                ))}
-                                                <span
-                                                    className="px-3 py-1 text-xs md:text-sm text-black bg-white rounded-full"
-                                                    style={{ fontFamily: "Roboto, sans-serif" }}
-                                                >
-                                                    {project.year}
-                                                </span>
-                                            </div>
-
-                                            {/* Title & Arrow Row */}
-                                            <div className="flex items-end justify-between gap-4">
-                                                <div>
-                                                    <h3
-                                                        className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-2"
-                                                        style={{ fontFamily: "Roboto, sans-serif" }}
-                                                    >
-                                                        {project.title}
-                                                    </h3>
-                                                    <p
-                                                        className="text-base md:text-lg lg:text-xl text-white/60"
-                                                        style={{ fontFamily: "Norwige, sans-serif", fontStyle: "italic" }}
-                                                    >
-                                                        {project.category}
-                                                    </p>
-                                                </div>
-
-                                                {/* Arrow CTA */}
-                                                <div className="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-full border border-white/30 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:border-white">
-                                                    <svg
-                                                        width="20"
-                                                        height="20"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                        className="transition-colors duration-300 group-hover:stroke-black stroke-white"
-                                                    >
-                                                        <path
-                                                            d="M7 17L17 7M17 7H7M17 7V17"
-                                                            strokeWidth="2"
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                        />
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+      {/* Content */}
+      <div className="relative z-10 flex-1 flex flex-col justify-between p-6 pb-16 md:p-10 md:pb-20 lg:p-14 lg:pb-24 max-w-[1400px] mx-auto w-full">
+        {/* Top row */}
+        <div className="flex items-start justify-between">
+          {/* Project counter */}
+          <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border border-white/25 flex flex-col items-center justify-center shrink-0">
+            <span className="text-[9px] uppercase tracking-[0.2em] text-white/40" style={{ fontFamily: BODY }}>
+              Project
+            </span>
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-white text-lg md:text-xl font-bold" style={{ fontFamily: HEADING }}>
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span className="text-white/30 text-sm">|</span>
+              <span className="text-white/30 text-sm" style={{ fontFamily: BODY }}>
+                {String(total).padStart(2, "0")}
+              </span>
             </div>
-        </section>
-    );
+          </div>
+
+          {/* Category + tags (desktop) */}
+          <div className="text-right hidden md:block">
+            <span className="block text-xs uppercase tracking-[0.2em] text-white/60 mb-3" style={{ fontFamily: BODY }}>
+              {project.category}
+            </span>
+            <div className="h-px w-full bg-white/10 mb-3" />
+            <div className="flex items-center justify-end gap-3">
+              {project.tags.map((tag, i) => (
+                <span key={tag} className="flex items-center gap-3">
+                  <span className="text-xs uppercase tracking-[0.15em] text-white/50" style={{ fontFamily: BODY }}>
+                    {tag}
+                  </span>
+                  {i < project.tags.length - 1 && (
+                    <span className="w-1 h-1 rounded-full bg-white/25" />
+                  )}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom area */}
+        <div className="flex flex-col lg:flex-row items-end gap-8 lg:gap-12 mt-auto">
+          {/* Left: title + description */}
+          <div className="flex-1 lg:max-w-[50%]">
+            <span className="md:hidden block text-[10px] uppercase tracking-[0.2em] text-white/50 mb-3" style={{ fontFamily: BODY }}>
+              {project.category}
+            </span>
+
+            <h3
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold italic leading-[0.9] text-white mb-4 md:mb-6"
+              style={{ fontFamily: HEADING }}
+            >
+              {project.title}
+            </h3>
+
+            <p className="text-white/50 text-sm md:text-base leading-relaxed max-w-md mb-6" style={{ fontFamily: BODY }}>
+              {project.description}
+            </p>
+
+            <div className="flex flex-wrap items-center gap-3">
+              {project.link && (
+                <a
+                  href={project.link}
+                  className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-white/60 hover:text-[#EA9A61] transition-colors duration-300 border border-white/15 hover:border-[#EA9A61]/30 rounded-full px-5 py-2.5"
+                  style={{ fontFamily: BODY }}
+                >
+                  View Case Study
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M7 17L17 7M17 7H7M17 7v10" />
+                  </svg>
+                </a>
+              )}
+
+              {project.beforeAfter && (
+                <button
+                  onClick={() => setShowBefore((p) => !p)}
+                  className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] rounded-full px-5 py-2.5 transition-all duration-300 cursor-pointer border"
+                  style={{
+                    fontFamily: BODY,
+                    color: showBefore ? "#EA9A61" : "rgba(255,255,255,0.6)",
+                    borderColor: showBefore ? "rgba(234,154,97,0.4)" : "rgba(255,255,255,0.15)",
+                    background: showBefore ? "rgba(234,154,97,0.1)" : "transparent",
+                  }}
+                >
+                  {showBefore ? "Showing Before" : "Show Before"}
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Right: video mockup (centered, square, glass border) */}
+          <div className="w-full lg:w-[45%] flex justify-center">
+            <div
+              className="relative w-[280px] h-[280px] md:w-[340px] md:h-[340px] lg:w-[380px] lg:h-[380px] rounded-2xl overflow-hidden"
+              style={{
+                border: "1px solid rgba(255,255,255,0.12)",
+                background: "rgba(255,255,255,0.04)",
+                backdropFilter: "blur(12px)",
+                boxShadow: "0 30px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08)",
+              }}
+            >
+              <video
+                ref={videoRef}
+                key={currentMedia}
+                src={currentMedia}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function FeaturedWorksSection() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const startTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % projects.length);
+    }, 8000);
+  }, []);
+
+  useEffect(() => {
+    startTimer();
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [startTimer]);
+
+  const goTo = (index: number) => {
+    setActiveIndex(index);
+    startTimer();
+  };
+
+  return (
+    <section id="featured-works" className="relative bg-black">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeIndex}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+        >
+          <ProjectSlide
+            project={projects[activeIndex]}
+            index={activeIndex}
+            total={projects.length}
+          />
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Bottom navigation — line indicators */}
+      <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+        {projects.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goTo(i)}
+            className="group relative h-8 flex items-center cursor-pointer"
+            aria-label={`Go to project ${i + 1}`}
+          >
+            <span
+              className="block h-[2px] rounded-full transition-all duration-500 ease-out"
+              style={{
+                width: i === activeIndex ? "2.5rem" : "1rem",
+                backgroundColor: i === activeIndex ? "#EA9A61" : "rgba(255,255,255,0.2)",
+              }}
+            />
+          </button>
+        ))}
+      </div>
+    </section>
+  );
 }
