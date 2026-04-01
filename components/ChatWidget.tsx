@@ -218,6 +218,15 @@ export default function ChatWidget() {
   }, [pathname]);
 
   useEffect(() => {
+    if (!open) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [open]);
+
+  useEffect(() => {
     if (open) {
       listRef.current?.scrollTo({
         top: listRef.current.scrollHeight,

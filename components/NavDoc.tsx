@@ -18,6 +18,18 @@ export function NavigationDock({ className }: NavigationDockProps) {
     { title: "contact us", to: "https://calendly.com/rangeofviewmusic/30min", isLink: true, external: true },
   ];
 
+  useEffect(() => {
+    if (!menuOpen && !modalOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        setModalOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [menuOpen, modalOpen]);
+
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
     if (section) {
