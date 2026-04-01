@@ -168,9 +168,11 @@ const Footer = () => {
 
         {/* Right Column - Local Time and Ring */}
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-          <div
-            className="flex flex-col gap-2 cursor-pointer select-none"
+          <button
+            type="button"
+            className="flex flex-col gap-2 cursor-pointer select-none text-left"
             onClick={handleToggle}
+            aria-label={isIndia ? "Showing Hyderabad time, click for Atlanta" : "Showing Atlanta time, click for Hyderabad"}
           >
             <h3
               className="text-2xl md:text-4xl uppercase tracking-wider mb-2 font-bold"
@@ -193,7 +195,7 @@ const Footer = () => {
                 </motion.p>
               </AnimatePresence>
             </div>
-          </div>
+          </button>
 
           {/* Ring Video */}
           <video
