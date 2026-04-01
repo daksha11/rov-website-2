@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "tw-animate-css";
 
 /* --- FONT DECLARATIONS --- */
 @font-face {
@@ -249,9 +248,7 @@ html {
 
 body {
   background-color: #110808;
-  /* This overrides the @apply bg-background */
   overflow-x: hidden;
-  scroll-behavior: smooth;
 }
 
 /* --- KEYFRAMES & ANIMATIONS --- */

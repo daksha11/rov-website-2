@@ -218,7 +218,6 @@ const Footer = () => {
             src="/atlskylinefooter.webp"
             alt="Atlanta Skyline"
             fill
-            priority
             sizes="100vw"
             className="object-contain"
             style={{
@@ -237,7 +236,6 @@ const Footer = () => {
             src="/hydskyline.webp"
             alt="Hyderabad Skyline"
             fill
-            priority
             sizes="100vw"
             className="object-contain"
             style={{

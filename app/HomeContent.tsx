@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createGlobalStyle } from "styled-components";
 import dynamic from "next/dynamic";
 import Loading from "@/components/Loading";
 import HeroWithAnimation from "@/components/HeroWithAnimation";
@@ -33,18 +32,6 @@ const albumCovers = [
   { src: "/cover2.webp", alt: "Cover 2" },
   { src: "/cover3.webp", alt: "Cover 3" },
 ];
-
-// Global Styles for Custom Font
-const GlobalStyle = createGlobalStyle`
-  body {
-    margin: 0;
-    padding: 0;
-    background-color: black;
-    color: white;
-    overflow-x: hidden;
-    min-height: 100vh;
-  }
-`;
 
 export default function HomeContent() {
   const [isLoading, setIsLoading] = useState(true);
@@ -81,19 +68,17 @@ export default function HomeContent() {
       }, 100);
     }
 
-    // Improved loading mechanism
     const handleLoad = () => {
       setIsLoading(false);
     };
 
-    // Check if document is already loaded
     if (document.readyState === "complete") {
-      setTimeout(() => setIsLoading(false), 3000); // Minimum loading time for UX
+      // Page already loaded — show content after brief transition
+      setTimeout(() => setIsLoading(false), 500);
     } else {
       window.addEventListener("load", handleLoad);
     }
 
-    // Cleanup
     return () => {
       window.removeEventListener("load", handleLoad);
       document.body.style.overflow = '';
@@ -107,20 +92,12 @@ export default function HomeContent() {
     }
   }, [isLoading]);
 
-  // Loading state with better transition
   if (isLoading) {
-    return (
-      <>
-        <GlobalStyle />
-        <Loading />
-      </>
-    );
+    return <Loading />;
   }
 
   return (
-    <>
-      <GlobalStyle />
-      <main className="min-h-screen bg-black text-white overflow-x-hidden">
+    <main className="min-h-screen bg-black text-white overflow-x-hidden">
         <h2 className="sr-only">Range of View Studios — Creative Production Agency in Atlanta</h2>
 
         <section id="hero-with-animation" style={{ margin: 0, padding: 0 }}>
@@ -154,6 +131,5 @@ export default function HomeContent() {
 
         <NavigationDock />
       </main>
-    </>
   );
 }
