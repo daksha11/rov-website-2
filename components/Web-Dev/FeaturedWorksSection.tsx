@@ -140,10 +140,10 @@ function ProjectSlide({
             {/* Prev arrow */}
             <button
               onClick={onPrev}
-              className="w-8 h-8 md:w-9 md:h-9 rounded-full border border-white/20 hover:border-white/40 flex items-center justify-center transition-all duration-300 hover:bg-white/[0.04] cursor-pointer"
+              className="w-11 h-11 md:w-11 md:h-11 rounded-full border border-white/20 hover:border-white/40 flex items-center justify-center transition-all duration-300 hover:bg-white/[0.04] cursor-pointer"
               aria-label="Previous project"
             >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50">
                 <path d="M15 18l-6-6 6-6" />
               </svg>
             </button>
@@ -167,10 +167,10 @@ function ProjectSlide({
             {/* Next arrow */}
             <button
               onClick={onNext}
-              className="w-8 h-8 md:w-9 md:h-9 rounded-full border border-white/20 hover:border-white/40 flex items-center justify-center transition-all duration-300 hover:bg-white/[0.04] cursor-pointer"
+              className="w-11 h-11 md:w-11 md:h-11 rounded-full border border-white/20 hover:border-white/40 flex items-center justify-center transition-all duration-300 hover:bg-white/[0.04] cursor-pointer"
               aria-label="Next project"
             >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50">
                 <path d="M9 18l6-6-6-6" />
               </svg>
             </button>
@@ -291,6 +291,7 @@ function ProjectSlide({
 export default function FeaturedWorksSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
 
   const startTimer = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
@@ -312,8 +313,29 @@ export default function FeaturedWorksSection() {
   const goPrev = () => goTo((activeIndex - 1 + projects.length) % projects.length);
   const goNext = () => goTo((activeIndex + 1) % projects.length);
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStartRef.current) return;
+    const dx = e.changedTouches[0].clientX - touchStartRef.current.x;
+    const dy = e.changedTouches[0].clientY - touchStartRef.current.y;
+    // Only trigger if horizontal swipe > 50px and more horizontal than vertical
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) goNext();
+      else goPrev();
+    }
+    touchStartRef.current = null;
+  };
+
   return (
-    <section id="featured-works" className="relative bg-black">
+    <section
+      id="featured-works"
+      className="relative bg-black"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
       <AnimatePresence mode="wait">
         <motion.div
           key={activeIndex}

@@ -248,8 +248,8 @@ const PixelSpotlightCanvas = ({ canvasHandle }: { canvasHandle: React.MutableRef
 export default function WebHero() {
     const heroRef = useRef<HTMLElement>(null);
     const canvasHandle = useRef<PixelCanvasHandle | null>(null);
+    const gradientRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState(false);
-    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
         const check = () => setIsMobile(window.innerWidth < 768);
@@ -265,7 +265,10 @@ export default function WebHero() {
             if (rect) {
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
-                setMousePos({ x, y });
+                // Update gradient div directly via ref — no state re-render
+                if (gradientRef.current) {
+                    gradientRef.current.style.transform = `translate(calc(${x}px - 50%), calc(${y}px - 50%))`;
+                }
                 canvasHandle.current?.feedMouse(x, y);
             }
         },
@@ -295,14 +298,13 @@ export default function WebHero() {
 
             {!isMobile && (
                 <div
-                    className="absolute w-[600px] h-[600px] rounded-full pointer-events-none z-[1]"
+                    ref={gradientRef}
+                    className="absolute w-[600px] h-[600px] rounded-full pointer-events-none z-[1] will-change-transform"
                     style={{
                         background:
                             "radial-gradient(circle, rgba(234,154,97,0.04) 0%, transparent 70%)",
-                        left: mousePos.x,
-                        top: mousePos.y,
                         transform: "translate(-50%, -50%)",
-                        transition: "left 0.3s ease-out, top 0.3s ease-out",
+                        transition: "transform 0.3s ease-out",
                     }}
                 />
             )}
