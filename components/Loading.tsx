@@ -185,20 +185,6 @@ export default function Loading({ onLoadingComplete }: LoadingProps) {
         </noscript>
       </div>
 
-      <style jsx>{`
-        @keyframes shimmer {
-          0% {
-            background-position: -200% 0;
-          }
-          100% {
-            background-position: 200% 0;
-          }
-        }
-        
-        .animate-shimmer {
-          animation: shimmer 2s infinite;
-        }
-      `}</style>
     </div>
   );
 }

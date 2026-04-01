@@ -1,16 +1,46 @@
-"use client";
-
+import dynamic from "next/dynamic";
 import { NavigationDock } from "@/components/NavDoc";
 import Footer from "@/components/Footer";
-import OurApproachSection from "@/components/Web-Dev/OurApproachSection";
-import FAQBottomSection from "@/components/Web-Dev/FAQBottomSection";
-import FeaturedWorksSection from "@/components/Web-Dev/FeaturedWorksSection";
-import HaveAnIdeaSection from "@/components/Web-Dev/HaveAnIdeaSection";
 import WebHero from "@/components/Web-Dev/WebHero";
-import WebPricingTiers from "@/components/Web-Dev/WebPricingTiers";
 import TestimonialsSection from "@/components/common/TestimonialsSection";
 import { webTestimonials } from "@/data/testimonials";
+import { webFaqItems } from "@/data/faq";
+import { webDevSteps } from "@/data/approach-steps";
 
+// Dynamic imports for below-fold heavy components
+const FeaturedWorksSection = dynamic(() => import("@/components/Web-Dev/FeaturedWorksSection"), {
+    loading: () => (
+        <div className="bg-black min-h-[80vh] flex items-center justify-center">
+            <div className="text-white/60 text-sm">Loading...</div>
+        </div>
+    ),
+});
+
+const HaveAnIdeaSection = dynamic(() => import("@/components/Web-Dev/HaveAnIdeaSection"));
+
+const WebPricingTiers = dynamic(() => import("@/components/Web-Dev/WebPricingTiers"), {
+    loading: () => (
+        <div className="bg-black min-h-[40vh] flex items-center justify-center">
+            <div className="text-white/60 text-sm">Loading...</div>
+        </div>
+    ),
+});
+
+const OurApproachSection = dynamic(() => import("@/components/common/OurApproachSection"), {
+    loading: () => (
+        <div className="bg-black min-h-[40vh] flex items-center justify-center">
+            <div className="text-white/60 text-sm">Loading...</div>
+        </div>
+    ),
+});
+
+const FAQSection = dynamic(() => import("@/components/common/FAQSection"), {
+    loading: () => (
+        <div className="bg-black min-h-[40vh] flex items-center justify-center">
+            <div className="text-white/60 text-sm">Loading...</div>
+        </div>
+    ),
+});
 
 export default function WebContent() {
     return (
@@ -31,10 +61,10 @@ export default function WebContent() {
             <WebPricingTiers />
 
             {/* Our Approach Section */}
-            <OurApproachSection />
+            <OurApproachSection steps={webDevSteps} />
 
             {/* FAQ Section */}
-            <FAQBottomSection />
+            <FAQSection items={webFaqItems} />
 
             {/* Navigation Dock */}
             <NavigationDock />

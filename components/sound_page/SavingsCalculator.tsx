@@ -67,7 +67,7 @@ export default function SavingsCalculator() {
         {/* Header row */}
         <div className="flex items-baseline justify-between mb-6">
           <div>
-            <span className="text-[10px] uppercase tracking-[0.25em] text-[#EA9A61]" style={{ fontFamily: BODY }}>
+            <span className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.25em] text-[#EA9A61]" style={{ fontFamily: BODY }}>
               Savings Calculator
             </span>
             <h3 className="text-xl md:text-2xl font-bold italic text-white mt-1" style={{ fontFamily: HEADING }}>
@@ -141,13 +141,13 @@ export default function SavingsCalculator() {
 
         <div className="grid grid-cols-2 gap-4 mb-5">
           <div>
-            <span className="text-[9px] uppercase tracking-[0.2em] text-white/25 block mb-1" style={{ fontFamily: BODY }}>You currently pay</span>
+            <span className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-white/25 block mb-1" style={{ fontFamily: BODY }}>You currently pay</span>
             <span className="text-white/40 text-xl md:text-2xl font-bold tabular-nums" style={{ fontFamily: HEADING }}>
               {fmt(Math.round(calc.currentTotal / 12))}<span className="text-white/20 text-xs font-normal">/mo</span>
             </span>
           </div>
           <div>
-            <span className="text-[9px] uppercase tracking-[0.2em] text-[#EA9A61] block mb-1" style={{ fontFamily: BODY }}>With R.O.V</span>
+            <span className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-[#EA9A61] block mb-1" style={{ fontFamily: BODY }}>With R.O.V</span>
             <span className="text-white text-xl md:text-2xl font-bold tabular-nums" style={{ fontFamily: HEADING }}>
               {fmt(Math.round(calc.rovTotal / 12))}<span className="text-white/40 text-xs font-normal">/mo</span>
             </span>
@@ -169,7 +169,7 @@ export default function SavingsCalculator() {
                 >
                   {fmt(calc.annualSavings)}/yr
                 </motion.span>
-                <span className="rounded-full border border-[#EA9A61]/30 bg-[#EA9A61]/10 px-2.5 py-0.5 text-[10px] uppercase tracking-[0.12em] text-[#EA9A61]" style={{ fontFamily: BODY }}>
+                <span className="rounded-full border border-[#EA9A61]/30 bg-[#EA9A61]/10 px-2.5 py-0.5 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.12em] text-[#EA9A61]" style={{ fontFamily: BODY }}>
                   {calc.savingsPercent}% less
                 </span>
                 <span className="text-white/30 text-xs" style={{ fontFamily: BODY }}>

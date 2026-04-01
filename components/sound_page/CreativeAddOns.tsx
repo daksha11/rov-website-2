@@ -45,7 +45,7 @@ export default function CreativeAddOns() {
         </motion.h3>
 
         {/* Add-on cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           {addons.map((a, i) => (
             <motion.div
               key={a.name}
@@ -54,7 +54,7 @@ export default function CreativeAddOns() {
               transition={{ ...spring, delay: 0.15 + i * 0.08 }}
               className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-5"
             >
-              <span className="text-white/40 text-[10px] uppercase tracking-[0.2em] block mb-2" style={{ fontFamily: BODY }}>
+              <span className="text-white/40 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] block mb-2" style={{ fontFamily: BODY }}>
                 {a.name}
               </span>
               <div className="flex items-baseline gap-1.5 mb-1">
@@ -66,7 +66,7 @@ export default function CreativeAddOns() {
               <span className="text-white/20 text-xs block mb-3" style={{ fontFamily: BODY }}>
                 {a.oneOff} one-off
               </span>
-              <span className="text-[#EA9A61]/60 text-[10px] uppercase tracking-[0.15em]" style={{ fontFamily: BODY }}>
+              <span className="text-[#EA9A61]/60 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.15em]" style={{ fontFamily: BODY }}>
                 {a.turnaround}
               </span>
             </motion.div>
@@ -87,7 +87,7 @@ export default function CreativeAddOns() {
                 Creative Pack
               </span>
               <span
-                className="rounded-full border border-[#EA9A61]/30 bg-[#EA9A61]/10 px-2.5 py-0.5 text-[9px] uppercase tracking-[0.15em] text-[#EA9A61]"
+                className="rounded-full border border-[#EA9A61]/30 bg-[#EA9A61]/10 px-2.5 py-0.5 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.15em] text-[#EA9A61]"
                 style={{ fontFamily: BODY }}
               >
                 Save $120/mo

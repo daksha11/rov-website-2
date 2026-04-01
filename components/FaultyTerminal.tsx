@@ -349,6 +349,8 @@ export default function FaultyTerminal({
 
         function resize() {
             if (!ctn || !renderer) return;
+            // Guard against 0-dimension containers per CLAUDE.md canvas rules
+            if (ctn.offsetWidth === 0 || ctn.offsetHeight === 0) return;
             renderer.setSize(ctn.offsetWidth, ctn.offsetHeight);
             program.uniforms.iResolution.value = new Color(
                 gl.canvas.width,
@@ -363,6 +365,9 @@ export default function FaultyTerminal({
 
         const update = (t: number) => {
             rafRef.current = requestAnimationFrame(update);
+
+            // Guard against 0-dimension containers per CLAUDE.md canvas rules
+            if (!ctn || ctn.offsetWidth === 0 || ctn.offsetHeight === 0) return;
 
             if (pageLoadAnimation && loadAnimationStartRef.current === 0) {
                 loadAnimationStartRef.current = t;
