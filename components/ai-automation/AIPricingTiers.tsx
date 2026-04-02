@@ -72,7 +72,7 @@ export default function AIPricingTiers({ onUnlock }: { onUnlock?: () => void }) 
             className="relative rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 md:p-8 flex flex-col"
           >
             <span
-              className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-4"
+              className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-white/40 mb-4"
               style={{ fontFamily: BODY }}
             >
               Your 24/7 front desk
@@ -115,7 +115,7 @@ export default function AIPricingTiers({ onUnlock }: { onUnlock?: () => void }) 
               + $200/mo management
             </span>
             <span
-              className="text-[#EA9A61]/60 text-[11px] mb-6"
+              className="text-[#EA9A61]/60 text-[clamp(0.7rem,1.5vw,0.75rem)] mb-6"
               style={{ fontFamily: BODY }}
             >
               We monitor, optimize, and report monthly
@@ -179,14 +179,14 @@ export default function AIPricingTiers({ onUnlock }: { onUnlock?: () => void }) 
             className="relative rounded-2xl border border-[#EA9A61]/30 bg-[#EA9A61]/[0.04] md:scale-[1.02] p-6 md:p-8 flex flex-col"
           >
             <span
-              className="absolute -top-3 left-6 rounded-full border border-[#EA9A61]/40 bg-[#EA9A61]/15 px-3 py-0.5 text-[10px] uppercase tracking-[0.2em] text-[#EA9A61]"
+              className="absolute -top-3 left-6 rounded-full border border-[#EA9A61]/40 bg-[#EA9A61]/15 px-3 py-0.5 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-[#EA9A61]"
               style={{ fontFamily: BODY }}
             >
               Recommended
             </span>
 
             <span
-              className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-4"
+              className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-white/40 mb-4"
               style={{ fontFamily: BODY }}
             >
               Your business runs itself
@@ -221,7 +221,7 @@ export default function AIPricingTiers({ onUnlock }: { onUnlock?: () => void }) 
               + monthly management priced on value delivered
             </span>
             <span
-              className="text-[#EA9A61]/60 text-[11px] mb-6"
+              className="text-[#EA9A61]/60 text-[clamp(0.7rem,1.5vw,0.75rem)] mb-6"
               style={{ fontFamily: BODY }}
             >
               First month free &middot; retainer based on system complexity
@@ -298,7 +298,7 @@ export default function AIPricingTiers({ onUnlock }: { onUnlock?: () => void }) 
           className="flex flex-col items-center gap-3 rounded-xl border border-white/[0.06] px-6 py-5"
           style={{ background: "rgba(255,255,255,0.02)", fontFamily: BODY }}
         >
-          <span className="text-white/30 text-[11px] uppercase tracking-[0.15em] font-semibold">
+          <span className="text-white/30 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.15em] font-semibold">
             What you&apos;d pay without us
           </span>
           <div

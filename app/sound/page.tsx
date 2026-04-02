@@ -6,6 +6,7 @@ import SoundHero from "@/components/sound_page/SoundHero";
 import Gallery from "@/components/Gallery";
 import TestimonialsSection from "@/components/common/TestimonialsSection";
 import { soundTestimonials } from "@/data/testimonials";
+import { soundFaqItems } from "@/data/faq";
 import { VideoSchema } from "@/components/VideoSchema";
 import { ServiceSchema } from "@/components/ServiceSchema";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
@@ -64,7 +65,7 @@ const VideoShowcaseSection = dynamic(() => import("@/components/sound_page/Video
     ssr: false,
 });
 
-const FAQBottomSection = dynamic(() => import("@/components/sound_page/FAQBottomSection"), {
+const FAQSection = dynamic(() => import("@/components/common/FAQSection"), {
     loading: () => (
         <div className="bg-black min-h-[40vh] flex items-center justify-center">
             <div className="text-white/60 text-sm">Loading...</div>
@@ -153,7 +154,7 @@ export default function Page() {
             <TestimonialsSection testimonials={soundTestimonials} variant="sound" />
 
             {/* 11 — FAQ */}
-            <FAQBottomSection />
+            <FAQSection items={soundFaqItems} />
 
             {/* Footer */}
             <Footer />

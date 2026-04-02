@@ -1,10 +1,18 @@
 // app/api/chat/proxy/route.ts
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 export const runtime = "nodejs";
-export const maxDuration = 30; // Max 30 seconds for this route
+export const maxDuration = 30;
 
-// Helper function to create fetch with timeout
+const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL;
+
+const chatRequestSchema = z.object({
+    message: z.string().max(2000).optional(),
+    chatInput: z.string().max(2000).optional(),
+    sessionId: z.string().uuid().optional(),
+});
+
 async function fetchWithTimeout(url: string, options: RequestInit, timeout = 25000) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
@@ -16,9 +24,9 @@ async function fetchWithTimeout(url: string, options: RequestInit, timeout = 250
         });
         clearTimeout(timeoutId);
         return response;
-    } catch (error: any) {
+    } catch (error: unknown) {
         clearTimeout(timeoutId);
-        if (error.name === 'AbortError') {
+        if (error instanceof Error && error.name === 'AbortError') {
             throw new Error('Request timeout - n8n took too long to respond');
         }
         throw error;
@@ -26,32 +34,42 @@ async function fetchWithTimeout(url: string, options: RequestInit, timeout = 250
 }
 
 export async function POST(req: NextRequest) {
-    try {
-        const body = await req.json();
-        const n8nUrl = "https://rangeofviewstudios.app.n8n.cloud/webhook/16706b5d-2ad3-4c5e-bb89-6a573883b89f/chat";
+    if (!N8N_WEBHOOK_URL) {
+        console.error("N8N_WEBHOOK_URL environment variable is not set");
+        return NextResponse.json(
+            { error: "Chatbot service is not configured" },
+            { status: 503 }
+        );
+    }
 
-        // Get shared secret (optional if n8n webhook doesn't require auth)
-        const sharedSecret = process.env.N8N_SHARED_SECRET || "";
-        if (!sharedSecret) {
-            // N8N_SHARED_SECRET not set - webhook must not require authentication
+    try {
+        const rawBody = await req.json();
+        const parsed = chatRequestSchema.safeParse(rawBody);
+
+        if (!parsed.success) {
+            return NextResponse.json(
+                { error: "Invalid request format" },
+                { status: 400 }
+            );
         }
 
-        // Build the payload
-        const payload: any = {
+        const body = parsed.data;
+        const sharedSecret = process.env.N8N_SHARED_SECRET || "";
+
+        const payload: Record<string, string> = {
             chatInput: body.message || body.chatInput || "",
         };
         if (body.sessionId) {
             payload.sessionId = body.sessionId;
         }
 
-        // Attempt to fetch with timeout and retry logic
-        let lastError: any = null;
+        let lastError: Error | null = null;
         const maxRetries = 2;
 
         for (let attempt = 1; attempt <= maxRetries; attempt++) {
             try {
                 const n8nRes = await fetchWithTimeout(
-                    n8nUrl,
+                    N8N_WEBHOOK_URL,
                     {
                         method: "POST",
                         headers: {
@@ -61,14 +79,13 @@ export async function POST(req: NextRequest) {
                         body: JSON.stringify(payload),
                         cache: "no-store",
                     },
-                    25000 // 25 second timeout
+                    25000
                 );
 
                 if (!n8nRes.ok) {
                     const text = await n8nRes.text();
-                    console.error(`❌ N8N Error Status ${n8nRes.status}:`, text);
+                    console.error(`N8N Error Status ${n8nRes.status}:`, text);
 
-                    // Don't retry on 4xx errors (client errors)
                     if (n8nRes.status >= 400 && n8nRes.status < 500) {
                         return NextResponse.json(
                             { error: `Request error: ${text}` },
@@ -76,10 +93,8 @@ export async function POST(req: NextRequest) {
                         );
                     }
 
-                    // Store error for potential retry
                     lastError = new Error(`N8N returned status ${n8nRes.status}: ${text}`);
 
-                    // Retry on 5xx errors if we have attempts left
                     if (attempt < maxRetries) {
                         await new Promise(resolve => setTimeout(resolve, 1000));
                         continue;
@@ -91,43 +106,43 @@ export async function POST(req: NextRequest) {
                 const data = await n8nRes.json();
                 return NextResponse.json(data);
 
-            } catch (fetchError: any) {
-                lastError = fetchError;
-                console.error(`❌ Attempt ${attempt} failed:`, fetchError.message);
+            } catch (fetchError: unknown) {
+                const errorMessage = fetchError instanceof Error ? fetchError.message : 'Unknown error';
+                lastError = fetchError instanceof Error ? fetchError : new Error(errorMessage);
+                console.error(`Attempt ${attempt} failed:`, errorMessage);
 
-                // If it's a timeout and we have retries left, try again
-                if (fetchError.message.includes('timeout') && attempt < maxRetries) {
+                if (errorMessage.includes('timeout') && attempt < maxRetries) {
                     await new Promise(resolve => setTimeout(resolve, 1000));
                     continue;
                 }
 
-                // If this was the last attempt, throw the error
                 if (attempt === maxRetries) {
                     throw lastError;
                 }
             }
         }
 
-        // If we get here, all retries failed
         throw lastError || new Error('All retry attempts failed');
 
-    } catch (err: any) {
-        console.error("💥 Chat Proxy Exception:", {
-            message: err.message,
-            stack: err.stack,
+    } catch (err: unknown) {
+        const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+        const errorStack = err instanceof Error ? err.stack : undefined;
+
+        console.error("Chat Proxy Exception:", {
+            message: errorMessage,
+            stack: errorStack,
             timestamp: new Date().toISOString()
         });
 
-        // Provide user-friendly error messages
-        let errorMessage = "Unable to reach chatbot service";
-        if (err.message.includes('timeout')) {
-            errorMessage = "The chatbot is taking too long to respond. Please try again.";
-        } else if (err.message.includes('network')) {
-            errorMessage = "Network error - please check your connection and try again.";
+        let userMessage = "Unable to reach chatbot service";
+        if (errorMessage.includes('timeout')) {
+            userMessage = "The chatbot is taking too long to respond. Please try again.";
+        } else if (errorMessage.includes('network')) {
+            userMessage = "Network error - please check your connection and try again.";
         }
 
         return NextResponse.json(
-            { error: errorMessage },
+            { error: userMessage },
             { status: 500 }
         );
     }

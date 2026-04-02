@@ -3,23 +3,22 @@
 import dynamic from "next/dynamic";
 import { NavigationDock } from "@/components/NavDoc";
 import Footer from "@/components/Footer";
-import OurApproachSection from "@/components/ai-automation/OurApproachSection";
-import FAQBottomSection from "@/components/ai-automation/FAQBottomSection";
 import ProjectStrip from "@/components/ProjectStrip";
 import CrossSellNudges from "@/components/common/CrossSellNudges";
 import { useState } from "react";
+import { aiAutomationFaqItems } from "@/data/faq";
+import { aiAutomationSteps } from "@/data/approach-steps";
 
 const FaultyTerminal = dynamic(() => import("@/components/FaultyTerminal"), { ssr: false });
+const OurApproachSection = dynamic(() => import("@/components/common/OurApproachSection"), {
+    loading: () => <div className="bg-black min-h-[40vh]" />,
+});
+const FAQSection = dynamic(() => import("@/components/common/FAQSection"), {
+    loading: () => <div className="bg-black min-h-[40vh]" />,
+});
 
 export default function AIContent() {
     const [activeCategory, setActiveCategory] = useState<string>("automation");
-
-    const categories = [
-        { id: "automation", label: "AUTOMATION" },
-        { id: "analytics", label: "ANALYTICS" },
-        { id: "chatbots", label: "CHATBOTS & ASSISTANTS" },
-        { id: "custom", label: "CUSTOM SOLUTIONS", loading: true },
-    ];
 
     return (
         <main className="relative min-h-screen bg-black text-white">
@@ -221,10 +220,10 @@ export default function AIContent() {
             <CrossSellNudges currentService="ai" />
 
             {/* Our Approach Section */}
-            <OurApproachSection />
+            <OurApproachSection steps={aiAutomationSteps} />
 
             {/* FAQ Section */}
-            <FAQBottomSection />
+            <FAQSection items={aiAutomationFaqItems} />
 
             <Footer />
         </main>

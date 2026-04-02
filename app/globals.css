@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "tw-animate-css";
 
 /* --- FONT DECLARATIONS --- */
 @font-face {
@@ -249,9 +248,7 @@ html {
 
 body {
   background-color: #110808;
-  /* This overrides the @apply bg-background */
   overflow-x: hidden;
-  scroll-behavior: smooth;
 }
 
 /* --- KEYFRAMES & ANIMATIONS --- */
@@ -430,6 +427,13 @@ body {
 .rov-range::-moz-range-track {
   height: 6px;
   border-radius: 3px;
+  background: rgba(255,255,255,0.08);
+}
+
+.rov-range::-moz-range-progress {
+  height: 6px;
+  border-radius: 3px;
+  background: #EA9A61;
 }
 
 .rov-range::-moz-range-thumb {
@@ -444,6 +448,43 @@ body {
 input[type="range"]::-webkit-slider-thumb {
   background: #302218;
 }
+
+/* Shine animation — used by OurApproachSection cards */
+@keyframes shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.animate-shine {
+  animation: shine 3s ease-in-out infinite;
+}
+
+/* Diagonal shimmer sweep — used by NavDoc CTA and ChatWidget button */
+@keyframes shimmer-sweep {
+  0% { transform: translateX(-150%) rotate(15deg); }
+  100% { transform: translateX(250%) rotate(15deg); }
+}
+
+.shimmer-effect {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 60%;
+  height: 200%;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0) 100%);
+  filter: blur(10px);
+  animation: shimmer-sweep 2.5s ease-in-out infinite;
+}
+
+@media (max-width: 768px) {
+  .shimmer-effect {
+    animation: shimmer-sweep 3.5s ease-in-out infinite;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%);
+  }
+}
+
+/* Scrollbar hide utility — used by ChatWidget */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
 /* Navigation Dock font override */
 .nav-dock-font,

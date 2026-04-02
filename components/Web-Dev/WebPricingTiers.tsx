@@ -112,7 +112,7 @@ export default function WebPricingTiers() {
               {/* Recommended badge */}
               {tier.featured && (
                 <span
-                  className="absolute -top-3 left-6 rounded-full border border-[#EA9A61]/40 bg-[#EA9A61]/15 px-3 py-0.5 text-[10px] uppercase tracking-[0.2em] text-[#EA9A61]"
+                  className="absolute -top-3 left-6 rounded-full border border-[#EA9A61]/40 bg-[#EA9A61]/15 px-3 py-0.5 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-[#EA9A61]"
                   style={{ fontFamily: BODY }}
                 >
                   Recommended
@@ -121,7 +121,7 @@ export default function WebPricingTiers() {
 
               {/* Tier name */}
               <span
-                className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-4"
+                className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-white/40 mb-4"
                 style={{ fontFamily: BODY }}
               >
                 {tier.name}
@@ -179,7 +179,7 @@ export default function WebPricingTiers() {
 
               {/* Support */}
               <div
-                className="text-white/25 text-[11px] mb-6"
+                className="text-white/25 text-[clamp(0.7rem,1.5vw,0.75rem)] mb-6"
                 style={{ fontFamily: BODY }}
               >
                 <p>{tier.support}</p>

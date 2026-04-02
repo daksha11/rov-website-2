@@ -95,7 +95,7 @@ export default function PricingTiers() {
               {/* Featured badge */}
               {tier.featured && (
                 <span
-                  className="absolute -top-3 left-6 rounded-full border border-[#EA9A61]/40 bg-[#EA9A61]/15 px-3 py-0.5 text-[10px] uppercase tracking-[0.2em] text-[#EA9A61]"
+                  className="absolute -top-3 left-6 rounded-full border border-[#EA9A61]/40 bg-[#EA9A61]/15 px-3 py-0.5 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-[#EA9A61]"
                   style={{ fontFamily: BODY }}
                 >
                   Most Popular
@@ -104,7 +104,7 @@ export default function PricingTiers() {
 
               {/* Tier name */}
               <span
-                className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-4"
+                className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-white/40 mb-4"
                 style={{ fontFamily: BODY }}
               >
                 {tier.name}
@@ -169,7 +169,7 @@ export default function PricingTiers() {
         </div>
 
         {/* Fine print */}
-        <div className="text-white/20 text-[11px] leading-relaxed space-y-1" style={{ fontFamily: BODY }}>
+        <div className="text-white/20 text-[clamp(0.7rem,1.5vw,0.75rem)] leading-relaxed space-y-1" style={{ fontFamily: BODY }}>
           <p>Overages beyond your tier cap: $65/song. Unused songs don&apos;t roll over.</p>
           <p>Cancel anytime, effective end of billing cycle. Same rate guaranteed if you reactivate within 90 days.</p>
           <p>Payments via Stripe.</p>

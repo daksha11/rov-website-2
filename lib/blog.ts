@@ -88,8 +88,18 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 
   const { remark } = await import("remark");
   const remarkHtml = (await import("remark-html")).default;
+  const rehypeSanitize = (await import("rehype-sanitize")).default;
+  const { unified } = await import("unified");
+  const remarkParse = (await import("remark-parse")).default;
+  const remarkRehype = (await import("remark-rehype")).default;
+  const rehypeStringify = (await import("rehype-stringify")).default;
 
-  const result = await remark().use(remarkHtml).process(bodyMarkdown);
+  const result = await unified()
+    .use(remarkParse)
+    .use(remarkRehype, { allowDangerousHtml: false })
+    .use(rehypeSanitize)
+    .use(rehypeStringify)
+    .process(bodyMarkdown);
   post.htmlContent = result.toString();
 
   return post;
