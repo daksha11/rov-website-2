@@ -9,59 +9,53 @@ const spring = { type: "spring" as const, stiffness: 100, damping: 20 };
 
 const tiers = [
   {
-    name: "Digital Storefront",
+    name: "Launchpad",
+    tier: "The site",
     price: 2000,
-    pages: "3-page website",
     featured: false,
-    tagline: "Your professional foundation — live in weeks, not months.",
-    bestFor: "Businesses that need a professional online presence now",
+    bestFor: "You still close the deals. The site makes sure they find you.",
     support: "30-day post-launch support",
-    revisions: "1 revision round",
     features: [
-      "Custom 3-page website",
-      "Mobile-responsive design",
-      "Basic SEO setup",
-      "Contact form + Calendly integration",
-      "Google Analytics",
-      "Sub-3-second load speed",
+      "Site architecture + user flow mapping",
+      "Contact form + scheduling integration",
+      "Technical SEO setup \u2014 meta tags, schema, sitemap",
+      "Google Analytics + goal tracking",
+      "SSL, security headers, performance audit",
     ],
   },
   {
     name: "Conversion Engine",
+    tier: "The site + lead systems",
     price: 5000,
-    pages: "10-page website",
     featured: true,
-    tagline: "Designed to capture leads and close deals while you sleep.",
-    bestFor: "Growth-stage businesses that need their site to generate leads",
+    bestFor: "The site does the selling. You just show up to close.",
     support: "60-day post-launch support",
-    revisions: "2 revision rounds",
+    includesPrefix: "Everything in Launchpad",
     features: [
-      "Custom 10-page website",
-      "Scroll-triggered animations (GSAP)",
-      "Lead capture system",
-      "Blog / CMS integration",
-      "Core Web Vitals optimized",
-      "CRM integration",
-      "Conversion tracking",
+      "Lead capture \u2014 forms, popups, or lead magnets",
+      "CRM integration \u2014 leads pipe straight into your pipeline",
+      "Blog / CMS \u2014 client-editable, feeds Google rankings",
+      "Conversion tracking \u2014 see which pages make money",
+      "Core Web Vitals optimized for search ranking",
     ],
   },
   {
     name: "Revenue Platform",
+    tier: "The site + revenue infrastructure",
     price: 10000,
-    pages: "Full platform",
     featured: false,
-    tagline: "Your website becomes a revenue machine with real analytics.",
-    bestFor: "Businesses ready to turn their website into a revenue machine",
-    support: "90-day support + monthly reports",
-    revisions: "Unlimited revisions",
+    bestFor: "The site closes the deals. You focus on running the business.",
+    support: "90-day support + monthly performance reports",
+    includesPrefix: "Everything in Conversion Engine",
     features: [
-      "Everything in Conversion Engine",
-      "E-commerce or booking system",
-      "Custom 3D / motion / parallax effects",
-      "Advanced analytics dashboard",
-      "A/B testing framework",
-      "API integrations",
-      "SEO strategy (5 target keywords)",
+      "E-commerce or booking system \u2014 customers pay on-site",
+      "AI-powered chatbot \u2014 answers questions, captures leads 24/7",
+      "Custom 3D / motion / parallax interactions",
+      "Analytics dashboard \u2014 real-time performance visibility",
+      "A/B testing framework \u2014 the site optimizes itself",
+      "API integrations \u2014 payment, scheduling, CRM sync",
+      "SEO strategy \u2014 5 target keywords, on-page optimization",
+      "GEO optimization \u2014 structured for AI search visibility",
     ],
   },
 ];
@@ -98,7 +92,7 @@ export default function WebPricingTiers() {
           className="text-white text-3xl md:text-4xl lg:text-5xl font-bold italic mb-12"
           style={{ fontFamily: HEADING }}
         >
-          Built to Convert
+          Your website should be closing deals while you sleep
         </motion.h2>
 
         {/* Tier cards */}
@@ -149,13 +143,23 @@ export default function WebPricingTiers() {
                 one-time project fee
               </span>
 
-              {/* Page count accent */}
+              {/* Tier descriptor */}
               <span
                 className="text-[#EA9A61] text-xs uppercase tracking-[0.15em] mb-6"
                 style={{ fontFamily: BODY }}
               >
-                {tier.pages}
+                {tier.tier}
               </span>
+
+              {/* Includes prefix */}
+              {tier.includesPrefix && (
+                <p
+                  className="text-sm text-white/50 mb-4"
+                  style={{ fontFamily: BODY }}
+                >
+                  <span className="text-[#EA9A61] font-semibold">{tier.includesPrefix}</span>, plus:
+                </p>
+              )}
 
               {/* Features */}
               <ul className="flex-1 space-y-2 mb-6">
@@ -173,12 +177,11 @@ export default function WebPricingTiers() {
                 ))}
               </ul>
 
-              {/* Support & revisions */}
+              {/* Support */}
               <div
-                className="text-white/25 text-[11px] space-y-1 mb-6"
+                className="text-white/25 text-[11px] mb-6"
                 style={{ fontFamily: BODY }}
               >
-                <p>{tier.revisions}</p>
                 <p>{tier.support}</p>
               </div>
 

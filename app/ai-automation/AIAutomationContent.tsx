@@ -15,6 +15,7 @@ import LogoLoop from '@/components/LogoLoop';
 import { N8nWorkflowBlock } from '@/components/ui/n8n-workflow-block';
 import TestimonialsSection from '@/components/common/TestimonialsSection';
 import { aiTestimonials } from '@/data/testimonials';
+import CrossSellNudges from "@/components/common/CrossSellNudges";
 import { SiNotion, SiGooglecloud, SiGmail, SiOpenai, SiN8N } from 'react-icons/si';
 
 const FaultyTerminal = dynamic(() => import('@/components/FaultyTerminal'), { ssr: false });
@@ -694,6 +695,9 @@ export default function AIAutomationContent() {
 
             {/* ROI Calculator — revealed by secret triple-click on pricing market bar */}
             {showROI && <AIROICalculator />}
+
+            {/* Cross-Sell Nudges */}
+            <CrossSellNudges currentService="ai-automation" />
 
             {/* Our Approach Section */}
             <OurApproachSection />

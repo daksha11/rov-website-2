@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import OurApproachSection from "@/components/ai-automation/OurApproachSection";
 import FAQBottomSection from "@/components/ai-automation/FAQBottomSection";
 import ProjectStrip from "@/components/ProjectStrip";
+import CrossSellNudges from "@/components/common/CrossSellNudges";
 import { useState } from "react";
 
 const FaultyTerminal = dynamic(() => import("@/components/FaultyTerminal"), { ssr: false });
@@ -215,6 +216,9 @@ export default function AIContent() {
 
             {/* Project Strip CTA */}
             <ProjectStrip />
+
+            {/* Cross-Sell Nudges */}
+            <CrossSellNudges currentService="ai" />
 
             {/* Our Approach Section */}
             <OurApproachSection />

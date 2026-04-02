@@ -12,6 +12,7 @@ import VideoPricingTiers from "@/components/video-production/VideoPricingTiers";
 import SpecialtyPackages from "@/components/video-production/SpecialtyPackages";
 import TestimonialsSection from "@/components/common/TestimonialsSection";
 import { videoTestimonials } from "@/data/testimonials";
+import CrossSellNudges from "@/components/common/CrossSellNudges";
 
 
 const videos = [
@@ -167,14 +168,17 @@ export default function VideoProductionContent() {
             {/* Client Testimonials */}
             <TestimonialsSection testimonials={videoTestimonials} variant="video" />
 
-            {/* Pricing Tiers */}
-            <VideoPricingTiers />
-
             {/* Specialty Packages */}
             <SpecialtyPackages />
 
+            {/* Pricing Tiers */}
+            <VideoPricingTiers />
+
             {/* Project Strip CTA */}
             <ProjectStrip />
+
+            {/* Cross-Sell Nudges */}
+            <CrossSellNudges currentService="video-production" />
 
             {/* Our Approach Section */}
             <OurApproachSection />
