@@ -26,14 +26,6 @@ const PostProductionSection = dynamic(() => import("@/components/video-productio
     ),
 });
 
-const VideoPricingTiers = dynamic(() => import("@/components/video-production/VideoPricingTiers"), {
-    loading: () => (
-        <div className="bg-black min-h-[40vh] flex items-center justify-center">
-            <div className="text-white/60 text-sm">Loading...</div>
-        </div>
-    ),
-});
-
 const SpecialtyPackages = dynamic(() => import("@/components/video-production/SpecialtyPackages"));
 
 const OurApproachSection = dynamic(() => import("@/components/common/OurApproachSection"), {
@@ -71,9 +63,6 @@ export default function VideoProductionContent() {
 
             {/* Specialty Packages */}
             <SpecialtyPackages />
-
-            {/* Pricing Tiers */}
-            <VideoPricingTiers />
 
             {/* Project Strip CTA */}
             <ProjectStrip />

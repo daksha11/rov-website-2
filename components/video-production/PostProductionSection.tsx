@@ -28,10 +28,9 @@ const pairs: VideoPair[] = [
     },
     {
         id: "pair-2",
-        title: "Property Walkthrough",
-        colorGraded: "/videoprod/Gladshotweb.mp4",
-        logFootage: "/videoprod/Redstairs.mp4", // placeholder for raw log
-        poster: "/thumbnails/commercial1.webp",
+        title: "Color Grade — Before & After",
+        colorGraded: "/videoprod/postprod/colorgradeafter.mp4",
+        logFootage: "/videoprod/postprod/colorgradebefore.mp4",
     },
 ];
 

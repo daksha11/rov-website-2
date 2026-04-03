@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useCallback, useRef } from "react";
+import MarketRateTooltip from "@/components/common/MarketRateTooltip";
 
 const HEADING = "Norwige, sans-serif";
 const BODY = "'Roboto', sans-serif";
@@ -124,12 +125,12 @@ export default function AIPricingTiers({ onUnlock }: { onUnlock?: () => void }) 
             {/* Features */}
             <ul className="flex-1 space-y-2 mb-6">
               {[
-                "Trained on your brand and voice",
-                "Qualifies leads before they reach you",
-                "Books calls to your calendar automatically",
-                "Every conversation logged to your CRM",
-                "Escalates to a human when it matters",
+                "Handles every inquiry with your brand\u2019s voice",
+                "Answers the questions your customers always ask",
                 "Available 24/7, no days off",
+                "Actively sells and qualifies leads for you",
+                "Books calls to your calendar automatically",
+                "Escalates to a human when it matters",
               ].map((item) => (
                 <li
                   key={item}
@@ -196,7 +197,7 @@ export default function AIPricingTiers({ onUnlock }: { onUnlock?: () => void }) 
               className="text-white text-lg font-bold italic mb-4"
               style={{ fontFamily: HEADING }}
             >
-              Revenue Operating System
+              Revenue Leak Fix
             </span>
 
             {/* Price range */}
@@ -204,7 +205,7 @@ export default function AIPricingTiers({ onUnlock }: { onUnlock?: () => void }) 
               className="text-white text-4xl md:text-5xl font-bold italic mb-1"
               style={{ fontFamily: HEADING }}
             >
-              $500 &ndash; $5,000
+              Starting from $500
             </span>
             <span
               className="text-white/30 text-xs mb-3"
@@ -227,24 +228,15 @@ export default function AIPricingTiers({ onUnlock }: { onUnlock?: () => void }) 
               First month free &middot; retainer based on system complexity
             </span>
 
-            {/* Includes prefix */}
-            <p
-              className="text-sm text-white/50 mb-4"
-              style={{ fontFamily: BODY }}
-            >
-              <span className="text-[#EA9A61] font-semibold">AI Chatbot included</span>, plus:
-            </p>
-
             {/* Features */}
             <ul className="flex-1 space-y-2 mb-6">
               {[
-                "Audit every workflow that\u2019s costing you money",
+                "Find every place your business is bleeding time or money",
                 "Automate the repetitive tasks your team hates doing",
                 "Recover revenue that was falling through the cracks",
                 "Lead gen, outreach, and follow-up on autopilot",
                 "All your tools connected into one system",
-                "No lead goes cold at day 3, 7, 14, or 30",
-                "60-day onboarding and team training included",
+                "Your ops run whether you\u2019re in the room or not",
               ].map((item) => (
                 <li
                   key={item}
@@ -264,8 +256,7 @@ export default function AIPricingTiers({ onUnlock }: { onUnlock?: () => void }) 
               className="text-white/30 text-xs italic mb-6"
               style={{ fontFamily: BODY }}
             >
-              <span className="text-white/50 font-semibold">A VA costs $4K/mo and quits.</span>{" "}
-              This doesn&apos;t.
+              Systems that scale with you.
             </p>
 
             {/* CTA */}
@@ -305,20 +296,65 @@ export default function AIPricingTiers({ onUnlock }: { onUnlock?: () => void }) 
             className="flex items-center justify-center gap-6 md:gap-10 flex-wrap cursor-default select-none"
             onClick={handleSecretClick}
           >
-            <span className="text-white/30 text-xs uppercase tracking-[0.15em]">
-              Receptionist:{" "}
-              <span className="text-white/50 font-medium">$35K+/year</span>
-            </span>
+            <MarketRateTooltip
+              sources={[
+                {
+                  name: "Bureau of Labor Statistics — Receptionists",
+                  url: "https://www.bls.gov/ooh/office-and-administrative-support/receptionists.htm",
+                  detail: "BLS reports median annual wage for receptionists at ~$36,000; varies by metro area.",
+                },
+                {
+                  name: "Indeed — Receptionist Salary Data",
+                  url: "https://www.indeed.com/career/receptionist/salaries",
+                  detail: "Aggregated salary data from thousands of reported positions across the U.S.",
+                },
+              ]}
+            >
+              <span className="text-white/30 text-xs uppercase tracking-[0.15em]">
+                Receptionist:{" "}
+                <span className="text-white/50 font-medium">$35K+/year</span>
+              </span>
+            </MarketRateTooltip>
             <span className="hidden md:block w-px h-4 bg-white/10" />
-            <span className="text-white/30 text-xs uppercase tracking-[0.15em]">
-              VA:{" "}
-              <span className="text-white/50 font-medium">$36K–$48K/year</span>
-            </span>
+            <MarketRateTooltip
+              sources={[
+                {
+                  name: "Bureau of Labor Statistics — Secretaries & Admin Assistants",
+                  url: "https://www.bls.gov/ooh/office-and-administrative-support/secretaries-and-administrative-assistants.htm",
+                  detail: "BLS data on administrative assistant wages, comparable to virtual assistant roles.",
+                },
+                {
+                  name: "Glassdoor — Virtual Assistant Salaries",
+                  url: "https://www.glassdoor.com/Salaries/virtual-assistant-salary-SRCH_KO0,17.htm",
+                  detail: "Self-reported salary data from virtual assistants across industries.",
+                },
+              ]}
+            >
+              <span className="text-white/30 text-xs uppercase tracking-[0.15em]">
+                VA:{" "}
+                <span className="text-white/50 font-medium">$36K–$48K/year</span>
+              </span>
+            </MarketRateTooltip>
             <span className="hidden md:block w-px h-4 bg-white/10" />
-            <span className="text-white/30 text-xs uppercase tracking-[0.15em]">
-              Marketing agency:{" "}
-              <span className="text-white/50 font-medium">$60K+/year</span>
-            </span>
+            <MarketRateTooltip
+              sources={[
+                {
+                  name: "HubSpot — Marketing Agency Pricing Report",
+                  url: "https://blog.hubspot.com/marketing/marketing-agency-pricing",
+                  detail: "Survey-based guide covering retainer, project, and hourly pricing across agency tiers.",
+                },
+                {
+                  name: "Clutch.co — Digital Marketing Agency Costs",
+                  url: "https://clutch.co/agencies/digital-marketing/resources/cost-digital-marketing",
+                  detail: "Annual survey of businesses reporting $2,500–$12,000/mo for mid-tier agency retainers.",
+                },
+              ]}
+            >
+              <span className="text-white/30 text-xs uppercase tracking-[0.15em]">
+                Marketing agency:{" "}
+                <span className="text-white/50 font-medium">$60K+/year</span>
+              </span>
+            </MarketRateTooltip>
           </div>
           <span className="text-[#EA9A61] text-sm font-semibold mt-1">
             ROV Revenue OS: $5,000 build + $12,000/year = $17,000 total

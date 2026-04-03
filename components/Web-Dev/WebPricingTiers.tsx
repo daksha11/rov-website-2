@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import MarketRateTooltip from "@/components/common/MarketRateTooltip";
 
 const HEADING = "Norwige, sans-serif";
 const BODY = "'Roboto', sans-serif";
@@ -16,11 +17,12 @@ const tiers = [
     bestFor: "You still close the deals. The site makes sure they find you.",
     support: "30-day post-launch support",
     features: [
-      "Site architecture + user flow mapping",
-      "Contact form + scheduling integration",
-      "Technical SEO setup \u2014 meta tags, schema, sitemap",
-      "Google Analytics + goal tracking",
-      "SSL, security headers, performance audit",
+      "Site architecture and user journey mapping",
+      "Custom visual design, UI/UX, layout, spacing, typography, and color built on your brand system",
+      "Mobile-first, responsive across all devices",
+      "Technical SEO setup (meta tags, schema, sitemap)",
+      "Google Analytics and goal tracking",
+      "SSL, security headers, and performance optimization",
     ],
   },
   {
@@ -32,10 +34,11 @@ const tiers = [
     support: "60-day post-launch support",
     includesPrefix: "Everything in Launchpad",
     features: [
-      "Lead capture \u2014 forms, popups, or lead magnets",
-      "CRM integration \u2014 leads pipe straight into your pipeline",
-      "Blog / CMS \u2014 client-editable, feeds Google rankings",
-      "Conversion tracking \u2014 see which pages make money",
+      "Lead capture with forms, popups, and lead magnets",
+      "E-commerce or booking system so customers pay on-site",
+      "CRM integration that pipes leads straight into your pipeline",
+      "Blog with built-in CMS (client-editable, feeds Google rankings)",
+      "Conversion tracking to see which pages make money",
       "Core Web Vitals optimized for search ranking",
     ],
   },
@@ -43,19 +46,19 @@ const tiers = [
     name: "Revenue Platform",
     tier: "The site + revenue infrastructure",
     price: 10000,
+    startingFrom: true,
     featured: false,
     bestFor: "The site closes the deals. You focus on running the business.",
     support: "90-day support + monthly performance reports",
     includesPrefix: "Everything in Conversion Engine",
     features: [
-      "E-commerce or booking system \u2014 customers pay on-site",
-      "AI-powered chatbot \u2014 answers questions, captures leads 24/7",
-      "Custom 3D / motion / parallax interactions",
-      "Analytics dashboard \u2014 real-time performance visibility",
-      "A/B testing framework \u2014 the site optimizes itself",
-      "API integrations \u2014 payment, scheduling, CRM sync",
-      "SEO strategy \u2014 5 target keywords, on-page optimization",
-      "GEO optimization \u2014 structured for AI search visibility",
+      "Backend integrations and custom logic",
+      "AI-powered chatbot that answers questions and captures leads 24/7",
+      "Custom design with scroll triggers, motion, and parallax",
+      "Analytics dashboard with real-time performance visibility",
+      "Complex API integrations (payment, scheduling, CRM sync)",
+      "SEO built to rank (5 target keywords, on-page optimization)",
+      "GEO optimization (structured so AI search engines find and cite you)",
     ],
   },
 ];
@@ -128,6 +131,14 @@ export default function WebPricingTiers() {
               </span>
 
               {/* Price */}
+              {"startingFrom" in tier && tier.startingFrom && (
+                <span
+                  className="text-white/40 text-xs mb-1 block"
+                  style={{ fontFamily: BODY }}
+                >
+                  Starting from
+                </span>
+              )}
               <div className="flex items-baseline gap-1 mb-1">
                 <span
                   className="text-white text-4xl md:text-5xl font-bold italic"
@@ -232,10 +243,30 @@ export default function WebPricingTiers() {
           className="flex items-center justify-center gap-6 md:gap-10 flex-wrap rounded-xl border border-white/[0.06] px-6 py-4"
           style={{ background: "rgba(255,255,255,0.02)", fontFamily: BODY }}
         >
-          <span className="text-white/30 text-xs uppercase tracking-[0.15em]">
-            Market rate:{" "}
-            <span className="text-white/50 font-medium">$3,000 – $20,000</span>
-          </span>
+          <MarketRateTooltip
+            sources={[
+              {
+                name: "Clutch.co — Web Development Cost Survey",
+                url: "https://clutch.co/web-developers/resources/cost-build-website",
+                detail: "Annual survey of 500+ businesses finds average custom website costs between $5,000–$25,000.",
+              },
+              {
+                name: "GoodFirms — Website Development Research",
+                url: "https://www.goodfirms.co/resources/website-development-cost",
+                detail: "Research report covering cost ranges by website type, complexity, and agency tier.",
+              },
+              {
+                name: "WebFX — Web Design Pricing Guide",
+                url: "https://www.webfx.com/web-design/pricing/",
+                detail: "Transparent breakdown of agency pricing for small-to-mid-market business websites.",
+              },
+            ]}
+          >
+            <span className="text-white/30 text-xs uppercase tracking-[0.15em]">
+              Market rate:{" "}
+              <span className="text-white/50 font-medium">$3,000 – $20,000</span>
+            </span>
+          </MarketRateTooltip>
           <span className="hidden md:block w-px h-4 bg-white/10" />
           <span className="text-white/30 text-xs uppercase tracking-[0.15em]">
             ROV:{" "}

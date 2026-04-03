@@ -31,93 +31,47 @@ function StudioVisuals() {
 
   return (
     <div ref={ref} className="max-w-7xl mx-auto mb-16 md:mb-24">
-      {/* Hero video — full-width cinematic */}
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={spring}
-        className="relative w-full aspect-[21/9] rounded-2xl overflow-hidden mb-3 md:mb-4"
-      >
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          poster="/thumbnails/studiothumbnail.webp"
-          className="w-full h-full object-cover"
-        >
-          <source src="/soundpage/studio1.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10 pointer-events-none" />
-
-        {/* Floating label */}
-        <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8">
-          <span
-            className="text-white/40 text-[10px] uppercase tracking-[0.25em] block mb-1"
-            style={{ fontFamily: BODY_FONT }}
+      {/* Three equal video cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+        {[
+          { src: "/soundpage/studio1.mp4", label: "Studio Session", subtitle: "Where records are made" },
+          { src: "/soundpage/stu2.mp4", label: "The Booth", subtitle: "Step inside" },
+          { src: "/soundpage/stu3.mp4", label: "Behind the Mix", subtitle: "Craft in action" },
+        ].map((clip, i) => (
+          <motion.div
+            key={clip.src}
+            initial={{ opacity: 0, y: 30 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ ...spring, delay: i * 0.1 }}
+            className="relative aspect-[4/5] rounded-2xl overflow-hidden group"
           >
-            Studio Session
-          </span>
-          <span
-            className="text-white text-lg md:text-2xl font-bold italic"
-            style={{ fontFamily: HEADING_FONT }}
-          >
-            Where records are made
-          </span>
-        </div>
-      </motion.div>
-
-      {/* Two side-by-side clips */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ ...spring, delay: 0.12 }}
-          className="relative aspect-[16/9] rounded-2xl overflow-hidden group"
-        >
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            poster="/thumbnails/studiothumbnail.webp"
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-          >
-            <source src="/soundpage/stu2.mp4" type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-          <span
-            className="absolute bottom-4 left-5 text-white/50 text-xs uppercase tracking-[0.2em]"
-            style={{ fontFamily: BODY_FONT }}
-          >
-            The Booth
-          </span>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ ...spring, delay: 0.22 }}
-          className="relative aspect-[16/9] rounded-2xl overflow-hidden group"
-        >
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            poster="/thumbnails/studiothumbnail.webp"
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-          >
-            <source src="/soundpage/stu3.mp4" type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-          <span
-            className="absolute bottom-4 left-5 text-white/50 text-xs uppercase tracking-[0.2em]"
-            style={{ fontFamily: BODY_FONT }}
-          >
-            Behind the Mix
-          </span>
-        </motion.div>
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              poster="/thumbnails/studiothumbnail.webp"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+            >
+              <source src={clip.src} type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute bottom-5 left-5">
+              <span
+                className="text-white/40 text-[10px] uppercase tracking-[0.25em] block mb-1"
+                style={{ fontFamily: BODY_FONT }}
+              >
+                {clip.label}
+              </span>
+              <span
+                className="text-white text-lg md:text-xl font-bold italic"
+                style={{ fontFamily: HEADING_FONT }}
+              >
+                {clip.subtitle}
+              </span>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </div>
   );

@@ -3,12 +3,12 @@
 import { useCallback, useEffect, useRef, useState, type TouchEvent as ReactTouchEvent } from "react";
 
 const videos = [
-    "/videoprod/Atlskylineweb.mp4",
-    "/videoprod/Gladshotweb.mp4",
     "/videoprod/Laketipweb.mp4",
     "/videoprod/Mountainweb.mp4",
     "/videoprod/Redstairs.mp4",
-    "/videoprod/Signiabenzweb.mp4"
+    "/videoprod/Gladshotweb.mp4",
+    "/videoprod/Atlskylineweb.mp4",
+    "/videoprod/Signiabenzweb.mp4",
 ];
 
 export default function VideoHero() {
@@ -56,7 +56,25 @@ export default function VideoHero() {
         touchStartRef.current = null;
     };
 
+    // Load first video into slotA on mount
+    const mountedRef = useRef(false);
     useEffect(() => {
+        if (!mountedRef.current) {
+            mountedRef.current = true;
+            if (videoA.current) {
+                videoA.current.src = videos[0];
+                videoA.current.load();
+                videoA.current.play().catch(() => {});
+            }
+        }
+    }, []);
+
+    // Crossfade on index change (skip index 0 on mount since we handle it above)
+    const prevIndexRef = useRef(0);
+    useEffect(() => {
+        if (!mountedRef.current) return;
+        if (currentVideoIndex === 0 && prevIndexRef.current === 0) return; // skip initial
+
         const isSlotA = slotARef.current;
         const incoming = isSlotA ? videoB.current : videoA.current;
         const outgoing = isSlotA ? videoA.current : videoB.current;
@@ -65,7 +83,7 @@ export default function VideoHero() {
             incoming.src = videos[currentVideoIndex];
             incoming.load();
             incoming.currentTime = 0;
-            incoming.play().catch(() => { });
+            incoming.play().catch(() => {});
         }
 
         slotARef.current = !isSlotA;
@@ -78,6 +96,8 @@ export default function VideoHero() {
                 outgoing.load();
             }
         }, 1100);
+
+        prevIndexRef.current = currentVideoIndex;
         return () => clearTimeout(cleanup);
     }, [currentVideoIndex]);
 
