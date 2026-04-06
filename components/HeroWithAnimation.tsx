@@ -263,6 +263,12 @@ function imageSequence(config: {
     const containerWidth = config.container ? config.container.clientWidth : window.innerWidth;
     const containerHeight = config.container ? config.container.clientHeight : window.innerHeight;
 
+    // Guard against 0-dimension canvas/container: retry next frame (CLAUDE.md rule)
+    if (containerWidth === 0 || containerHeight === 0 || canvas.clientWidth === 0 || canvas.clientHeight === 0) {
+      requestAnimationFrame(updateImage);
+      return;
+    }
+
     // Calculate aspect ratios
     const containerAspect = containerWidth / containerHeight;
     const imageAspect = img.width > 0 ? img.width / img.height : 16 / 9;
@@ -387,7 +393,8 @@ const HeroWithAnimation: React.FC = () => {
     const section = sectionRef.current;
     if (!section || !canvasRef.current || !stickyRef.current) return;
 
-    // Setup Canvas
+    // Setup Canvas — guard against 0 dimensions (CLAUDE.md rule)
+    if (dimensions.width === 0 || dimensions.height === 0) return;
     canvasRef.current.width = dimensions.width;
     canvasRef.current.height = dimensions.height;
 
