@@ -98,7 +98,6 @@ function ProjectSlide({
   const [showBefore, setShowBefore] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const bgVideoRef = useRef<HTMLVideoElement>(null);
 
   const currentMedia = project.beforeAfter && showBefore
     ? project.beforeAfter.before
@@ -112,24 +111,13 @@ function ProjectSlide({
   useEffect(() => {
     setVideoLoaded(false);
     videoRef.current?.play().catch(() => {});
-    bgVideoRef.current?.play().catch(() => {});
   }, [currentMedia]);
 
   return (
     <div className="relative w-full min-h-[80vh] md:min-h-[88vh] flex flex-col overflow-hidden">
-      {/* Background — tinted overlay instead of triple-filter blur video (GPU perf) */}
+      {/* Background — static tint + gradient (single video decoder only) */}
       <div className="absolute inset-0 z-0">
-        <video
-          ref={bgVideoRef}
-          key={`bg-${currentMedia}`}
-          src={currentMedia}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover scale-110 opacity-30"
-        />
-        <div className="absolute inset-0" style={{ background: `${project.bgTint}cc` }} />
+        <div className="absolute inset-0" style={{ background: project.bgTint }} />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/50" />
       </div>
 
