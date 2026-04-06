@@ -4,15 +4,13 @@ import { getAllPosts } from "@/lib/blog";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 
-const NavigationDock = dynamic(
-  () =>
-    import("@/components/NavDoc").then((mod) => ({
-      default: mod.NavigationDock,
-    })),
-  { ssr: false }
+const NavigationDock = dynamic(() =>
+  import("@/components/NavDoc").then((mod) => ({
+    default: mod.NavigationDock,
+  }))
 );
 
-const Footer = dynamic(() => import("@/components/Footer"), { ssr: false });
+const Footer = dynamic(() => import("@/components/Footer"));
 
 export const metadata: Metadata = {
   title: "Web Design Blog & Creative Agency Insights",

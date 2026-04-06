@@ -62,7 +62,6 @@ const VideoShowcaseSection = dynamic(() => import("@/components/sound_page/Video
             <div className="text-white/60 text-sm">Loading...</div>
         </div>
     ),
-    ssr: false,
 });
 
 const FAQSection = dynamic(() => import("@/components/common/FAQSection"), {
