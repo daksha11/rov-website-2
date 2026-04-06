@@ -52,7 +52,7 @@ The social media accounts grew from inactive to engaged, driving consistent traf
 
 For a business that started at zero digital revenue, a 20% bump in total sales from a brand-new channel is significant. It means the online presence is not just supplemental. It is becoming a core part of the business.
 
-![Models presenting Aysegul Ikna's sustainable fashion collection at the Ponce City Market store](/casestudy/ikna/modelpics.jpg)
+![Models presenting Aysegul Ikna's sustainable fashion collection at the Ponce City Market store](/casestudy/ikna/modelpics.webp)
 
 Read the full [Aysegul Ikna e-commerce website design case study](/casestudy/ikna) or learn more about our [Atlanta web design and e-commerce development services](/web).
 

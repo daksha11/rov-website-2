@@ -10,7 +10,7 @@ tags: ["restaurant website redesign", "restaurant website design", "Atlanta rest
 featured: true
 readingTime: 6
 atlantaAngle: "Atlanta food scene, Westside Atlanta local restaurant culture"
-coverImage: "/casestudy/bando/bandocrackpic.png"
+coverImage: "/casestudy/bando/bandocrackpic.webp"
 published: true
 ---
 
@@ -66,7 +66,7 @@ Read the full [TheBando restaurant website redesign case study](/casestudy/bando
 - **Menu pages are not filler. They are sales tools.** Dedicated menu pages generated nearly **140,000 views**. People browse before they buy. Give them something worth browsing. The best restaurant websites treat their menu pages as conversion pages, not afterthoughts.
 - **Design for the phone in your customer's hand.** Atlanta is a mobile-first city. People are searching for food on their phones while stuck on 285 or walking through the Westside. If your restaurant site does not work perfectly on **mobile ordering**, you are losing orders every single day.
 
-![TheBando signature crack chicken dish on a vintage scale, Ever Tried Crack?](/casestudy/bando/bandocrackpic.png)
+![TheBando signature crack chicken dish on a vintage scale, Ever Tried Crack?](/casestudy/bando/bandocrackpic.webp)
 
 ## Frequently Asked Questions
 
