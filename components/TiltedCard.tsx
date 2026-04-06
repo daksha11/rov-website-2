@@ -163,7 +163,7 @@ export default function TiltedCard({
             loop
             muted
             playsInline
-            className="absolute top-0 left-0 object-cover rounded-[15px] will-change-transform [transform:translateZ(0)] w-full h-full"
+            className="absolute top-0 left-0 object-cover rounded-[15px] [transform:translateZ(0)] w-full h-full"
           >
             <source src={imageSrc} type="video/mp4" />
           </motion.video>
@@ -171,7 +171,7 @@ export default function TiltedCard({
           <motion.img
             src={imageSrc}
             alt={altText}
-            className="absolute top-0 left-0 object-cover rounded-[15px] will-change-transform [transform:translateZ(0)] w-full h-full"
+            className="absolute top-0 left-0 object-cover rounded-[15px] [transform:translateZ(0)] w-full h-full"
           />
         )}
 
@@ -179,7 +179,7 @@ export default function TiltedCard({
 
         {displayOverlayContent && overlayContent && (
           <motion.div
-            className="absolute bottom-0 left-0 z-[2] w-full will-change-transform [transform:translateZ(30px)]"
+            className="absolute bottom-0 left-0 z-[2] w-full [transform:translateZ(30px)]"
           >
             {overlayContent}
           </motion.div>

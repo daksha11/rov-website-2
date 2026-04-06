@@ -214,7 +214,7 @@ const Footer = () => {
       <div className="absolute -bottom-10 md:-bottom-12 right-0 w-full h-[120px] md:h-[350px] pointer-events-none" style={{ filter: 'drop-shadow(0 -10px 50px rgba(255, 255, 255, 0.3))' }}>
         {/* Atlanta Skyline */}
         <div
-          className={`absolute inset-0 transition-opacity duration-700 ease-in-out will-change-opacity transform-gpu ${isIndia ? 'opacity-0' : 'opacity-100'}`}
+          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${isIndia ? 'opacity-0' : 'opacity-100'}`}
         >
           <Image
             src="/atlskylinefooter.webp"
@@ -232,7 +232,7 @@ const Footer = () => {
 
         {/* Hyderabad Skyline - Enhanced visibility */}
         <div
-          className={`absolute inset-0 transition-opacity duration-700 ease-in-out will-change-opacity transform-gpu ${isIndia ? 'opacity-100' : 'opacity-0'}`}
+          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${isIndia ? 'opacity-100' : 'opacity-0'}`}
         >
           <Image
             src="/hydskyline.webp"
