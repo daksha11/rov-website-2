@@ -70,6 +70,7 @@ function VideoTogglePair({ pair }: { pair: VideoPair }) {
                     loop
                     muted
                     playsInline
+                    preload="none"
                     poster={pair.poster}
                     aria-label={`${pair.title} - color graded version by ROV Studios`}
                     title={`${pair.title} - Color Graded`}
@@ -82,6 +83,7 @@ function VideoTogglePair({ pair }: { pair: VideoPair }) {
                     loop
                     muted
                     playsInline
+                    preload="none"
                     poster={pair.poster}
                     aria-label={`${pair.title} - raw log footage by ROV Studios`}
                     title={`${pair.title} - Raw Log`}

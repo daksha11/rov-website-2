@@ -112,6 +112,7 @@ export default function VideoHero() {
                 loop
                 muted
                 playsInline
+                preload="none"
                 poster="/thumbnails/videohero1.webp"
                 aria-label="ROV Studios cinematic video production showreel"
                 title="Video Production Showreel - ROV Studios"
@@ -122,6 +123,7 @@ export default function VideoHero() {
                 loop
                 muted
                 playsInline
+                preload="none"
                 poster="/thumbnails/videohero2.webp"
                 aria-label="ROV Studios cinematic video production showreel"
                 title="Video Production Showreel - ROV Studios"

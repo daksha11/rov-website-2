@@ -50,6 +50,7 @@ function StudioVisuals() {
               loop
               muted
               playsInline
+              preload="metadata"
               poster="/thumbnails/studiothumbnail.webp"
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
             >

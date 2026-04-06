@@ -259,7 +259,7 @@ export default function VideoPortfolioSection() {
                         ref={videoRef}
                         muted
                         playsInline
-                        preload="auto"
+                        preload="metadata"
                         poster={currentSub.poster}
                         onEnded={handleVideoEnded}
                         aria-label={`${currentSub.heading} - ${currentSub.label} video by ROV Studios`}
