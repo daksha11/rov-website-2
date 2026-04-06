@@ -13,13 +13,13 @@ export const metadata: Metadata = {
         title: "Custom Web Development & Design Services | Range of View Studios",
         description: "Websites designed with intention, built for impact. Uncover the true potential of your website.",
         url: "https://www.rovstudios.com/web",
-        images: [{ url: "/og/og-web.jpg", width: 1200, height: 630, alt: "ROV Studios web development showcase" }],
+        images: [{ url: "/og/og-web.webp", width: 1200, height: 630, alt: "ROV Studios web development showcase" }],
     },
     twitter: {
         card: "summary_large_image",
         title: "Custom Web Development & Design Services | Range of View Studios",
         description: "Websites designed with intention, built for impact.",
-        images: ["/og/og-web.jpg"],
+        images: ["/og/og-web.webp"],
     },
 };
 
@@ -31,7 +31,7 @@ export default function WebDevPage() {
                 description="Custom web development and design services. Websites designed with intention, built for impact."
                 serviceType="Web Development"
                 url="/web"
-                image="/og/og-web.jpg"
+                image="/og/og-web.webp"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "" },

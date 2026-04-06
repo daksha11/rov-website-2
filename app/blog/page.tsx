@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     url: "https://www.rovstudios.com/blog",
     images: [
       {
-        url: "/og/og-default.jpg",
+        url: "/og/og-default.webp",
         width: 1200,
         height: 630,
         alt: "ROV Studios Blog — Web Design Case Studies and Insights",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     title: "Web Design Blog & Creative Agency Insights | Range of View Studios",
     description:
       "Real results from real projects. Web design case studies, brand strategy, and digital growth insights from ROV Studios in Atlanta.",
-    images: ["/og/og-default.jpg"],
+    images: ["/og/og-default.webp"],
   },
 };
 

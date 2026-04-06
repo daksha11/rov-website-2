@@ -46,7 +46,7 @@ export const metadata: Metadata = {
       "Creative production agency specializing in sound engineering, web development, video production, and AI automation.",
     images: [
       {
-        url: "/og/og-default.jpg",
+        url: "/og/og-default.webp",
         width: 1200,
         height: 630,
         alt: "Range of View Studios",
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     title: "Range of View Studios | Creative Production Agency",
     description:
       "Creative production agency specializing in sound engineering, web development, video production, and AI automation.",
-    images: ["/og/og-default.jpg"],
+    images: ["/og/og-default.webp"],
   },
   robots: {
     index: true,

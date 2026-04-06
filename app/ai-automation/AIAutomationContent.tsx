@@ -46,7 +46,10 @@ const SiGmail = ({ className }: { className?: string }) => (
 );
 
 const FaultyTerminal = dynamic(() => import('@/components/FaultyTerminal'), { ssr: false });
-const AIROICalculator = dynamic(() => import('@/components/ai-automation/AIROICalculator'), { ssr: false });
+const AIROICalculator = dynamic(() => import('@/components/ai-automation/AIROICalculator'), {
+    loading: () => <div className="bg-black min-h-[40vh]" />,
+    ssr: false,
+});
 
 export default function AIAutomationContent() {
     const [showROI, setShowROI] = useState(false);

@@ -32,8 +32,10 @@ export default function MarketRateTooltip({
     timeoutRef.current = setTimeout(() => setOpen(false), 200);
   };
 
-  useEffect(() => () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
   }, []);
 
   return (
