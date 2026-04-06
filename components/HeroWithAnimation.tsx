@@ -370,17 +370,41 @@ const HeroWithAnimation: React.FC = () => {
     if (!isMobile) {
       const frameCount = 651;
       const totalFrames = frameCount + 1;
+      const firstBatchSize = 60; // load first ~9% eagerly, rest streams after
       let loadedCount = 0;
-      for (let i = 0; i <= frameCount; i++) {
-        const numStr = String(i).padStart(5, '0');
+      let firstBatchLoaded = 0;
+      let secondBatchStarted = false;
+
+      const frameUrl = (i: number) =>
+        `/videoFrames/SpiralShotHorizontal60fpsV2_${String(i).padStart(5, '0')}.webp`;
+
+      const onFrameLoad = () => {
+        loadedCount++;
+        if (loadedCount % 10 === 0 || loadedCount === totalFrames) {
+          setLoadProgress(Math.round((loadedCount / totalFrames) * 100));
+        }
+        if (loadedCount > totalFrames * 0.15) setIsLoading(false);
+      };
+
+      const loadRemaining = () => {
+        if (secondBatchStarted) return;
+        secondBatchStarted = true;
+        for (let i = firstBatchSize; i <= frameCount; i++) {
+          const img = new Image();
+          img.src = frameUrl(i);
+          img.onload = onFrameLoad;
+        }
+      };
+
+      for (let i = 0; i < firstBatchSize; i++) {
         const img = new Image();
-        img.src = `/videoFrames/SpiralShotHorizontal60fpsV2_${numStr}.webp`;
+        img.src = frameUrl(i);
         img.onload = () => {
-          loadedCount++;
-          if (loadedCount % 10 === 0 || loadedCount === totalFrames) {
-            setLoadProgress(Math.round((loadedCount / totalFrames) * 100));
+          firstBatchLoaded++;
+          onFrameLoad();
+          if (firstBatchLoaded === firstBatchSize) {
+            document.fonts.ready.finally(loadRemaining);
           }
-          if (loadedCount > totalFrames * 0.15) setIsLoading(false);
         };
       }
     } else {
