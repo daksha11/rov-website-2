@@ -21,13 +21,13 @@ export const metadata: Metadata = {
         title: "Sound Engineering & Music Production | Range of View Studios",
         description: "Professional mixing, mastering, and sound engineering services. Start at $50/song.",
         url: "https://www.rovstudios.com/sound",
-        images: [{ url: "/og/og-sound.jpg", width: 1200, height: 630, alt: "ROV Studios sound engineering setup" }],
+        images: [{ url: "/og/og-sound.webp", width: 1200, height: 630, alt: "ROV Studios sound engineering setup" }],
     },
     twitter: {
         card: "summary_large_image",
         title: "Sound Engineering & Music Production | Range of View Studios",
         description: "Professional mixing, mastering, and sound engineering services. Start at $50/song.",
-        images: ["/og/og-sound.jpg"],
+        images: ["/og/og-sound.webp"],
     },
 };
 
@@ -51,7 +51,14 @@ const StudioSection = dynamic(() => import("@/components/sound_page/StudioSectio
     ),
 });
 
-const SavingsCalculator = dynamic(() => import("@/components/sound_page/SavingsCalculator"), { ssr: false });
+const SavingsCalculator = dynamic(() => import("@/components/sound_page/SavingsCalculator"), {
+    loading: () => (
+        <div className="bg-black min-h-[40vh] flex items-center justify-center">
+            <div className="text-white/60 text-sm">Loading...</div>
+        </div>
+    ),
+    ssr: false,
+});
 const PricingTiers = dynamic(() => import("@/components/sound_page/PricingTiers"));
 const CreativeAddOns = dynamic(() => import("@/components/sound_page/CreativeAddOns"));
 const StudioSetupSection = dynamic(() => import("@/components/sound_page/StudioSetup"));
@@ -62,7 +69,6 @@ const VideoShowcaseSection = dynamic(() => import("@/components/sound_page/Video
             <div className="text-white/60 text-sm">Loading...</div>
         </div>
     ),
-    ssr: false,
 });
 
 const FAQSection = dynamic(() => import("@/components/common/FAQSection"), {
@@ -81,7 +87,7 @@ export default function Page() {
                 description="Professional sound engineering, mixing, and mastering services. Mix and master starting at $50/song with 48-hour turnaround."
                 serviceType="Sound Engineering"
                 url="/sound"
-                image="/og/og-sound.jpg"
+                image="/og/og-sound.webp"
                 offerDescription="First 3 songs at $50/song, mix and master included"
             />
             <BreadcrumbSchema items={[

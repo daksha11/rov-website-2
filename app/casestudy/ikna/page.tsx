@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Aysegul Ikna Case Study | Range of View Studios',
         description: 'Luxury sustainable fashion meets digital — 30% increase in monthly sales.',
-        images: [{ url: '/og/og-ikna.jpg', width: 1200, height: 630, alt: 'Aysegul Ikna website by ROV Studios' }],
+        images: [{ url: '/og/og-ikna.webp', width: 1200, height: 630, alt: 'Aysegul Ikna website by ROV Studios' }],
         type: 'article',
         url: 'https://www.rovstudios.com/casestudy/ikna',
     },
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Aysegul Ikna Case Study | Range of View Studios',
         description: 'Luxury sustainable fashion meets digital — 30% increase in monthly sales.',
-        images: ['/og/og-ikna.jpg'],
+        images: ['/og/og-ikna.webp'],
     },
 };
 
@@ -127,7 +127,7 @@ export default function IknaCaseStudyPage() {
             description="Luxury digital transformation for Aysegul Ikna, a sustainable fashion brand at Ponce City Market. 30% increase in monthly sales achieved."
             dateCreated="2025-01-15"
             url="/casestudy/ikna"
-            image="/og/og-ikna.jpg"
+            image="/og/og-ikna.webp"
             aboutName="Aysegul Ikna"
         />
         <BreadcrumbSchema items={[

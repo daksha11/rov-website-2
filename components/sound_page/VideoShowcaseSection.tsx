@@ -103,7 +103,7 @@ function VideoCard({
         <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5 flex items-end justify-between">
           <div>
             <span
-              className="text-white/40 text-[10px] uppercase tracking-[0.25em] block mb-1"
+              className="text-white/40 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.25em] block mb-1"
               style={{ fontFamily: BODY_FONT }}
             >
               {video.credit}

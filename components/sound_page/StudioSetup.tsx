@@ -50,7 +50,7 @@ export default function StudioSetup() {
             initial={{ opacity: 0, y: 15 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ ...spring, delay: 0.05 }}
-            className="inline-block rounded-full border border-[#EA9A61]/30 bg-[#EA9A61]/10 px-4 py-1.5 text-[11px] uppercase tracking-[0.2em] text-[#EA9A61] mb-6"
+            className="inline-block rounded-full border border-[#EA9A61]/30 bg-[#EA9A61]/10 px-4 py-1.5 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-[#EA9A61] mb-6"
             style={{ fontFamily: BODY }}
           >
             For Managers &amp; Labels
@@ -95,7 +95,7 @@ export default function StudioSetup() {
             {highlights.map((h) => (
               <span
                 key={h}
-                className="text-[11px] uppercase tracking-[0.12em] text-white/50 border border-white/[0.08] rounded-full px-4 py-2"
+                className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.12em] text-white/50 border border-white/[0.08] rounded-full px-4 py-2"
                 style={{ fontFamily: BODY }}
               >
                 {h}
@@ -192,7 +192,7 @@ export default function StudioSetup() {
 
               <div className="h-px w-full bg-white/[0.06] mb-6" />
 
-              <div className="text-white/25 text-[11px] space-y-1 mb-6" style={{ fontFamily: BODY }}>
+              <div className="text-white/25 text-[clamp(0.7rem,1.5vw,0.75rem)] space-y-1 mb-6" style={{ fontFamily: BODY }}>
                 <p>Payment: 50% deposit before equipment procurement, 50% due on install day.</p>
                 <p>Currently available: Atlanta metro area only (ITP + 30-mile radius).</p>
               </div>

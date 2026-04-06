@@ -26,7 +26,7 @@ export const webTestimonials: Testimonial[] = [
     role: "Founder & Owner, The Bando",
     impactStat: "#1 Google Ranking",
     socialUrl: "https://www.instagram.com/thebandoatl/",
-    image: "/clients/terry.png",
+    image: "/clients/terry.webp",
   },
   {
     quote:
@@ -52,7 +52,7 @@ export const soundTestimonials: Testimonial[] = [
     name: "DDK",
     role: "Recording Artist",
     impactStat: "Fastest Engineer",
-    image: "/clients/ddk.jpg",
+    image: "/clients/ddk.webp",
   },
   {
     quote:
@@ -75,7 +75,7 @@ export const soundTestimonials: Testimonial[] = [
     name: "Pedro",
     role: "Recording Artist",
     impactStat: "Overnight Delivery",
-    image: "/clients/pedro.png",
+    image: "/clients/pedro.webp",
   },
 ];
 

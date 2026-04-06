@@ -29,7 +29,7 @@ export default function IntroOffer() {
           initial={{ opacity: 0, y: 15 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ ...spring, delay: 0.05 }}
-          className="inline-block rounded-full border border-[#EA9A61]/30 bg-[#EA9A61]/10 px-4 py-1.5 text-[11px] uppercase tracking-[0.2em] text-[#EA9A61] mb-6"
+          className="inline-block rounded-full border border-[#EA9A61]/30 bg-[#EA9A61]/10 px-4 py-1.5 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-[#EA9A61] mb-6"
           style={{ fontFamily: BODY }}
         >
           Intro offer
@@ -111,7 +111,7 @@ export default function IntroOffer() {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ ...spring, delay: 0.55 }}
-          className="text-white/25 text-[11px] md:text-xs max-w-md mx-auto mt-6 leading-relaxed"
+          className="text-white/25 text-[clamp(0.7rem,1.5vw,0.75rem)] md:text-xs max-w-md mx-auto mt-6 leading-relaxed"
           style={{ fontFamily: BODY }}
         >
           First 3 songs only, per artist. Same 48hr turnaround and 1 revision as all paid work. Full mix &amp; master, not just mastering.

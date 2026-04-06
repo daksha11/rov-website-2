@@ -32,8 +32,10 @@ export default function MarketRateTooltip({
     timeoutRef.current = setTimeout(() => setOpen(false), 200);
   };
 
-  useEffect(() => () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
   }, []);
 
   return (
@@ -75,7 +77,7 @@ export default function MarketRateTooltip({
           {/* Arrow */}
           <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 bg-[#141414] border-r border-b border-white/10" />
 
-          <span className="block text-white/60 text-[11px] uppercase tracking-[0.15em] font-semibold mb-3">
+          <span className="block text-white/60 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.15em] font-semibold mb-3">
             Sources
           </span>
 
@@ -90,7 +92,7 @@ export default function MarketRateTooltip({
                 >
                   {s.name} ↗
                 </a>
-                <span className="block text-[11px] leading-snug mt-0.5" style={{ color: "rgba(255,255,255,0.45)" }}>
+                <span className="block text-[clamp(0.7rem,1.5vw,0.75rem)] leading-snug mt-0.5" style={{ color: "rgba(255,255,255,0.45)" }}>
                   {s.detail}
                 </span>
               </span>

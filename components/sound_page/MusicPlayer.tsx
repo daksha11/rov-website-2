@@ -341,7 +341,7 @@ export default function MusicPlayer() {
                             >
                                 <div className="flex flex-col items-center">
                                     <h3 className="text-white text-sm font-bold tracking-wide leading-tight group-hover:text-[#1DB954] transition-colors">{songData[currentIndex].title}</h3>
-                                    <p className="text-[#9CA3AF] text-[11px] font-medium leading-tight mt-0.5">{songData[currentIndex].artist}</p>
+                                    <p className="text-[#9CA3AF] text-[clamp(0.7rem,1.5vw,0.75rem)] font-medium leading-tight mt-0.5">{songData[currentIndex].artist}</p>
                                 </div>
                             </a>
                         </div>

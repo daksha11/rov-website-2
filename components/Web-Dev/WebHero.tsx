@@ -299,7 +299,7 @@ export default function WebHero() {
             {!isMobile && (
                 <div
                     ref={gradientRef}
-                    className="absolute w-[600px] h-[600px] rounded-full pointer-events-none z-[1] will-change-transform"
+                    className="absolute w-[600px] h-[600px] rounded-full pointer-events-none z-[1]"
                     style={{
                         background:
                             "radial-gradient(circle, rgba(234,154,97,0.04) 0%, transparent 70%)",

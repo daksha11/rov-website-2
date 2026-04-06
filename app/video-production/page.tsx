@@ -14,13 +14,13 @@ export const metadata: Metadata = {
         title: "Video Production & Cinematography | Range of View Studios",
         description: "Cinematic video production that elevates your brand and tells compelling stories.",
         url: "https://www.rovstudios.com/video-production",
-        images: [{ url: "/og/og-video.jpg", width: 1200, height: 630, alt: "ROV Studios video production reel" }],
+        images: [{ url: "/og/og-video.webp", width: 1200, height: 630, alt: "ROV Studios video production reel" }],
     },
     twitter: {
         card: "summary_large_image",
         title: "Video Production & Cinematography | Range of View Studios",
         description: "Cinematic video production that elevates your brand.",
-        images: ["/og/og-video.jpg"],
+        images: ["/og/og-video.webp"],
     },
 };
 
@@ -32,7 +32,7 @@ export default function VideoProductionPage() {
                 description="Cinematic video production services. Breathtaking visuals that elevate your brand and tell compelling stories."
                 serviceType="Video Production"
                 url="/video-production"
-                image="/og/og-video.jpg"
+                image="/og/og-video.webp"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "" },

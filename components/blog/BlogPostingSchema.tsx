@@ -14,7 +14,7 @@ export function BlogPostingSchema({ post }: { post: BlogPost }) {
     articleSection: post.category,
     image: post.coverImage
       ? `https://www.rovstudios.com${post.coverImage}`
-      : "https://www.rovstudios.com/og/og-default.jpg",
+      : "https://www.rovstudios.com/og/og-default.webp",
     author: {
       "@type": "Organization",
       name: "ROV Studios",

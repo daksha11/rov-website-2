@@ -98,7 +98,6 @@ function ProjectSlide({
   const [showBefore, setShowBefore] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const bgVideoRef = useRef<HTMLVideoElement>(null);
 
   const currentMedia = project.beforeAfter && showBefore
     ? project.beforeAfter.before
@@ -112,24 +111,13 @@ function ProjectSlide({
   useEffect(() => {
     setVideoLoaded(false);
     videoRef.current?.play().catch(() => {});
-    bgVideoRef.current?.play().catch(() => {});
   }, [currentMedia]);
 
   return (
     <div className="relative w-full min-h-[80vh] md:min-h-[88vh] flex flex-col overflow-hidden">
-      {/* Background — tinted overlay instead of triple-filter blur video (GPU perf) */}
+      {/* Background — static tint + gradient (single video decoder only) */}
       <div className="absolute inset-0 z-0">
-        <video
-          ref={bgVideoRef}
-          key={`bg-${currentMedia}`}
-          src={currentMedia}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover scale-110 opacity-30"
-        />
-        <div className="absolute inset-0" style={{ background: `${project.bgTint}cc` }} />
+        <div className="absolute inset-0" style={{ background: project.bgTint }} />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/50" />
       </div>
 
@@ -152,7 +140,7 @@ function ProjectSlide({
 
             {/* Circle counter */}
             <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border border-white/25 flex flex-col items-center justify-center shrink-0">
-              <span className="text-[9px] uppercase tracking-[0.2em] text-white/40" style={{ fontFamily: BODY }}>
+              <span className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-white/40" style={{ fontFamily: BODY }}>
                 Project
               </span>
               <div className="flex items-baseline gap-1.5">
@@ -203,7 +191,7 @@ function ProjectSlide({
         <div className="flex flex-col lg:flex-row items-end gap-8 mt-auto">
           {/* Left: title + description */}
           <div className="flex-1 min-w-0">
-            <span className="md:hidden block text-[10px] uppercase tracking-[0.2em] text-white/50 mb-3" style={{ fontFamily: BODY }}>
+            <span className="md:hidden block text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-white/50 mb-3" style={{ fontFamily: BODY }}>
               {project.category}
             </span>
 
@@ -222,7 +210,7 @@ function ProjectSlide({
               {project.link && (
                 <a
                   href={project.link}
-                  className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-white/60 hover:text-[#EA9A61] transition-colors duration-300 border border-white/15 hover:border-[#EA9A61]/30 rounded-full px-5 py-2.5"
+                  className="inline-flex items-center gap-2 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-white/60 hover:text-[#EA9A61] transition-colors duration-300 border border-white/15 hover:border-[#EA9A61]/30 rounded-full px-5 py-2.5"
                   style={{ fontFamily: BODY }}
                 >
                   View Case Study
@@ -235,7 +223,7 @@ function ProjectSlide({
               {project.beforeAfter && (
                 <button
                   onClick={() => setShowBefore((p) => !p)}
-                  className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] rounded-full px-5 py-2.5 transition-all duration-300 cursor-pointer border"
+                  className="inline-flex items-center gap-2 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] rounded-full px-5 py-2.5 transition-all duration-300 cursor-pointer border"
                   style={{
                     fontFamily: BODY,
                     color: showBefore ? "#EA9A61" : "rgba(255,255,255,0.6)",
@@ -287,7 +275,7 @@ function ProjectSlide({
               {/* Hover overlay */}
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
                 <span
-                  className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-[10px] uppercase tracking-[0.2em] text-white/80 bg-black/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-white/80 bg-black/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10"
                   style={{ fontFamily: BODY }}
                 >
                   Visit Live Site &rarr;

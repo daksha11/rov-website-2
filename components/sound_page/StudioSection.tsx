@@ -1,8 +1,68 @@
 "use client";
 import { AnimatePresence, motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const spring = { type: "spring" as const, stiffness: 100, damping: 20 };
+
+function StudioClip({ src, label, subtitle, delay, parentInView }: {
+  src: string;
+  label: string;
+  subtitle: string;
+  delay: number;
+  parentInView: boolean;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(wrapperRef, { margin: "-80px" });
+
+  // Pause video when offscreen to free the decoder on mobile
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (inView) {
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  }, [inView]);
+
+  return (
+    <motion.div
+      ref={wrapperRef}
+      initial={{ opacity: 0, y: 30 }}
+      animate={parentInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ ...spring, delay }}
+      className="relative aspect-[4/5] rounded-2xl overflow-hidden group"
+    >
+      <video
+        ref={videoRef}
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        poster="/thumbnails/studiothumbnail.webp"
+        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+      >
+        <source src={src} type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+      <div className="absolute bottom-5 left-5">
+        <span
+          className="text-white/40 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.25em] block mb-1"
+          style={{ fontFamily: BODY_FONT }}
+        >
+          {label}
+        </span>
+        <span
+          className="text-white text-lg md:text-xl font-bold italic"
+          style={{ fontFamily: HEADING_FONT }}
+        >
+          {subtitle}
+        </span>
+      </div>
+    </motion.div>
+  );
+}
 
 const HEADING_FONT = "Norwige, sans-serif";
 const BODY_FONT = "'Roboto', sans-serif";
@@ -38,39 +98,14 @@ function StudioVisuals() {
           { src: "/soundpage/stu2.mp4", label: "The Booth", subtitle: "Step inside" },
           { src: "/soundpage/stu3.mp4", label: "Behind the Mix", subtitle: "Craft in action" },
         ].map((clip, i) => (
-          <motion.div
+          <StudioClip
             key={clip.src}
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ ...spring, delay: i * 0.1 }}
-            className="relative aspect-[4/5] rounded-2xl overflow-hidden group"
-          >
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              poster="/thumbnails/studiothumbnail.webp"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-            >
-              <source src={clip.src} type="video/mp4" />
-            </video>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-            <div className="absolute bottom-5 left-5">
-              <span
-                className="text-white/40 text-[10px] uppercase tracking-[0.25em] block mb-1"
-                style={{ fontFamily: BODY_FONT }}
-              >
-                {clip.label}
-              </span>
-              <span
-                className="text-white text-lg md:text-xl font-bold italic"
-                style={{ fontFamily: HEADING_FONT }}
-              >
-                {clip.subtitle}
-              </span>
-            </div>
-          </motion.div>
+            src={clip.src}
+            label={clip.label}
+            subtitle={clip.subtitle}
+            delay={i * 0.1}
+            parentInView={inView}
+          />
         ))}
       </div>
     </div>
@@ -136,7 +171,7 @@ function ValueAccordion() {
                     <motion.span
                       animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.8 }}
                       transition={{ duration: 0.3 }}
-                      className="text-[10px] md:text-xs uppercase tracking-[0.2em] px-3 py-1 rounded-full border border-[#EA9A61]/30 text-[#EA9A61] shrink-0"
+                      className="text-[clamp(0.7rem,1.5vw,0.75rem)] md:text-xs uppercase tracking-[0.2em] px-3 py-1 rounded-full border border-[#EA9A61]/30 text-[#EA9A61] shrink-0"
                       style={{ fontFamily: BODY_FONT }}
                     >
                       {prop.tag}

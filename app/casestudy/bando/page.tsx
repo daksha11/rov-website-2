@@ -12,13 +12,13 @@ export const metadata: Metadata = {
         title: "The Bando Case Study | Range of View Studios",
         description: "Bold, unapologetically Atlanta — we cut bounce rate by 60% with a culturally-driven redesign.",
         url: "https://www.rovstudios.com/casestudy/bando",
-        images: [{ url: "/og/og-bando.jpg", width: 1200, height: 630, alt: "The Bando website redesign by ROV Studios" }],
+        images: [{ url: "/og/og-bando.webp", width: 1200, height: 630, alt: "The Bando website redesign by ROV Studios" }],
     },
     twitter: {
         card: "summary_large_image",
         title: "The Bando Case Study | Range of View Studios",
         description: "Bold, unapologetically Atlanta — we cut bounce rate by 60% with a culturally-driven redesign.",
-        images: ["/og/og-bando.jpg"],
+        images: ["/og/og-bando.webp"],
     },
 };
 
@@ -30,7 +30,7 @@ export default function BandoCaseStudyPage() {
                 description="Website redesign for The Bando, a Black history museum and fried chicken restaurant in Atlanta. Achieved 60% bounce rate reduction."
                 dateCreated="2025-01-01"
                 url="/casestudy/bando"
-                image="/og/og-bando.jpg"
+                image="/og/og-bando.webp"
                 aboutName="The Bando"
             />
             <BreadcrumbSchema items={[

@@ -11,14 +11,14 @@ export const metadata: Metadata = {
     description:
       "Sound engineering, web development, video production, and AI automation under one roof.",
     url: "https://www.rovstudios.com",
-    images: [{ url: "/og/og-home.jpg", width: 1200, height: 630, alt: "Range of View Studios homepage" }],
+    images: [{ url: "/og/og-home.webp", width: 1200, height: 630, alt: "Range of View Studios homepage" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Range of View Studios | Creative Production Agency in Atlanta",
     description:
       "Sound engineering, web development, video production, and AI automation under one roof.",
-    images: ["/og/og-home.jpg"],
+    images: ["/og/og-home.webp"],
   },
 };
 

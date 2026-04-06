@@ -147,7 +147,7 @@ export default function SavingsCalculator() {
                 }}
               />
               <div
-                className="flex justify-between text-[10px] text-white/20 mt-1.5 px-0.5"
+                className="flex justify-between text-[clamp(0.7rem,1.5vw,0.75rem)] text-white/20 mt-1.5 px-0.5"
                 style={{ fontFamily: BODY }}
               >
                 <span>1</span>
@@ -186,7 +186,7 @@ export default function SavingsCalculator() {
                 }}
               />
               <div
-                className="flex justify-between text-[10px] text-white/20 mt-1.5 px-0.5"
+                className="flex justify-between text-[clamp(0.7rem,1.5vw,0.75rem)] text-white/20 mt-1.5 px-0.5"
                 style={{ fontFamily: BODY }}
               >
                 <span>$50</span>
@@ -199,7 +199,7 @@ export default function SavingsCalculator() {
           {/* Add-ons toggle */}
           <button
             onClick={() => setShowAddOns((p) => !p)}
-            className="flex items-center gap-2 text-[11px] uppercase tracking-[0.15em] text-white/30 hover:text-white/50 transition-colors mt-6 cursor-pointer"
+            className="flex items-center gap-2 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.15em] text-white/30 hover:text-white/50 transition-colors mt-6 cursor-pointer"
             style={{ fontFamily: BODY }}
           >
             <svg
@@ -305,7 +305,7 @@ export default function SavingsCalculator() {
             style={{ background: "rgba(255,255,255,0.02)" }}
           >
             <span
-              className="text-[10px] uppercase tracking-[0.25em] text-white/30 block mb-4"
+              className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.25em] text-white/30 block mb-4"
               style={{ fontFamily: BODY }}
             >
               What you pay now
@@ -337,7 +337,7 @@ export default function SavingsCalculator() {
             }}
           >
             <span
-              className="text-[10px] uppercase tracking-[0.25em] text-[#EA9A61] block mb-4"
+              className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.25em] text-[#EA9A61] block mb-4"
               style={{ fontFamily: BODY }}
             >
               With R.O.V
@@ -379,7 +379,7 @@ export default function SavingsCalculator() {
             {hasSavings ? (
               <>
                 <span
-                  className="text-[10px] uppercase tracking-[0.25em] text-[#EA9A61] block mb-2"
+                  className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.25em] text-[#EA9A61] block mb-2"
                   style={{ fontFamily: BODY }}
                 >
                   You save

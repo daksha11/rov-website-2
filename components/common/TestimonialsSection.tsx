@@ -287,7 +287,7 @@ export default function TestimonialsSection({ testimonials, variant }: Props) {
 
                       {/* Impact stat badge */}
                       <span
-                        className="text-[10px] md:text-xs uppercase tracking-[0.15em] px-2.5 py-0.5 rounded-full border border-[#EA9A61]/30 text-[#EA9A61] bg-[#EA9A61]/5"
+                        className="text-[clamp(0.7rem,1.5vw,0.75rem)] md:text-xs uppercase tracking-[0.15em] px-2.5 py-0.5 rounded-full border border-[#EA9A61]/30 text-[#EA9A61] bg-[#EA9A61]/5"
                         style={{ fontFamily: BODY }}
                       >
                         {current.impactStat}
