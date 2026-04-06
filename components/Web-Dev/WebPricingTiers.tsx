@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import MarketRateTooltip from "@/components/common/MarketRateTooltip";
 
 const HEADING = "Norwige, sans-serif";
 const BODY = "'Roboto', sans-serif";
@@ -9,59 +10,55 @@ const spring = { type: "spring" as const, stiffness: 100, damping: 20 };
 
 const tiers = [
   {
-    name: "Digital Storefront",
+    name: "Launchpad",
+    tier: "The site",
     price: 2000,
-    pages: "3-page website",
     featured: false,
-    tagline: "Your professional foundation — live in weeks, not months.",
-    bestFor: "Businesses that need a professional online presence now",
+    bestFor: "You still close the deals. The site makes sure they find you.",
     support: "30-day post-launch support",
-    revisions: "1 revision round",
     features: [
-      "Custom 3-page website",
-      "Mobile-responsive design",
-      "Basic SEO setup",
-      "Contact form + Calendly integration",
-      "Google Analytics",
-      "Sub-3-second load speed",
+      "Site architecture and user journey mapping",
+      "Custom visual design, UI/UX, layout, spacing, typography, and color built on your brand system",
+      "Mobile-first, responsive across all devices",
+      "Technical SEO setup (meta tags, schema, sitemap)",
+      "Google Analytics and goal tracking",
+      "SSL, security headers, and performance optimization",
     ],
   },
   {
     name: "Conversion Engine",
+    tier: "The site + lead systems",
     price: 5000,
-    pages: "10-page website",
     featured: true,
-    tagline: "Designed to capture leads and close deals while you sleep.",
-    bestFor: "Growth-stage businesses that need their site to generate leads",
+    bestFor: "The site does the selling. You just show up to close.",
     support: "60-day post-launch support",
-    revisions: "2 revision rounds",
+    includesPrefix: "Everything in Launchpad",
     features: [
-      "Custom 10-page website",
-      "Scroll-triggered animations (GSAP)",
-      "Lead capture system",
-      "Blog / CMS integration",
-      "Core Web Vitals optimized",
-      "CRM integration",
-      "Conversion tracking",
+      "Lead capture with forms, popups, and lead magnets",
+      "E-commerce or booking system so customers pay on-site",
+      "CRM integration that pipes leads straight into your pipeline",
+      "Blog with built-in CMS (client-editable, feeds Google rankings)",
+      "Conversion tracking to see which pages make money",
+      "Core Web Vitals optimized for search ranking",
     ],
   },
   {
     name: "Revenue Platform",
+    tier: "The site + revenue infrastructure",
     price: 10000,
-    pages: "Full platform",
+    startingFrom: true,
     featured: false,
-    tagline: "Your website becomes a revenue machine with real analytics.",
-    bestFor: "Businesses ready to turn their website into a revenue machine",
-    support: "90-day support + monthly reports",
-    revisions: "Unlimited revisions",
+    bestFor: "The site closes the deals. You focus on running the business.",
+    support: "90-day support + monthly performance reports",
+    includesPrefix: "Everything in Conversion Engine",
     features: [
-      "Everything in Conversion Engine",
-      "E-commerce or booking system",
-      "Custom 3D / motion / parallax effects",
-      "Advanced analytics dashboard",
-      "A/B testing framework",
-      "API integrations",
-      "SEO strategy (5 target keywords)",
+      "Backend integrations and custom logic",
+      "AI-powered chatbot that answers questions and captures leads 24/7",
+      "Custom design with scroll triggers, motion, and parallax",
+      "Analytics dashboard with real-time performance visibility",
+      "Complex API integrations (payment, scheduling, CRM sync)",
+      "SEO built to rank (5 target keywords, on-page optimization)",
+      "GEO optimization (structured so AI search engines find and cite you)",
     ],
   },
 ];
@@ -98,7 +95,7 @@ export default function WebPricingTiers() {
           className="text-white text-3xl md:text-4xl lg:text-5xl font-bold italic mb-12"
           style={{ fontFamily: HEADING }}
         >
-          Built to Convert
+          Your website should be closing deals while you sleep
         </motion.h2>
 
         {/* Tier cards */}
@@ -134,6 +131,14 @@ export default function WebPricingTiers() {
               </span>
 
               {/* Price */}
+              {"startingFrom" in tier && tier.startingFrom && (
+                <span
+                  className="text-white/40 text-xs mb-1 block"
+                  style={{ fontFamily: BODY }}
+                >
+                  Starting from
+                </span>
+              )}
               <div className="flex items-baseline gap-1 mb-1">
                 <span
                   className="text-white text-4xl md:text-5xl font-bold italic"
@@ -149,13 +154,23 @@ export default function WebPricingTiers() {
                 one-time project fee
               </span>
 
-              {/* Page count accent */}
+              {/* Tier descriptor */}
               <span
                 className="text-[#EA9A61] text-xs uppercase tracking-[0.15em] mb-6"
                 style={{ fontFamily: BODY }}
               >
-                {tier.pages}
+                {tier.tier}
               </span>
+
+              {/* Includes prefix */}
+              {tier.includesPrefix && (
+                <p
+                  className="text-sm text-white/50 mb-4"
+                  style={{ fontFamily: BODY }}
+                >
+                  <span className="text-[#EA9A61] font-semibold">{tier.includesPrefix}</span>, plus:
+                </p>
+              )}
 
               {/* Features */}
               <ul className="flex-1 space-y-2 mb-6">
@@ -173,12 +188,11 @@ export default function WebPricingTiers() {
                 ))}
               </ul>
 
-              {/* Support & revisions */}
+              {/* Support */}
               <div
-                className="text-white/25 text-[clamp(0.7rem,1.5vw,0.75rem)] space-y-1 mb-6"
+                className="text-white/25 text-[clamp(0.7rem,1.5vw,0.75rem)] mb-6"
                 style={{ fontFamily: BODY }}
               >
-                <p>{tier.revisions}</p>
                 <p>{tier.support}</p>
               </div>
 
@@ -229,10 +243,30 @@ export default function WebPricingTiers() {
           className="flex items-center justify-center gap-6 md:gap-10 flex-wrap rounded-xl border border-white/[0.06] px-6 py-4"
           style={{ background: "rgba(255,255,255,0.02)", fontFamily: BODY }}
         >
-          <span className="text-white/30 text-xs uppercase tracking-[0.15em]">
-            Market rate:{" "}
-            <span className="text-white/50 font-medium">$3,000 – $20,000</span>
-          </span>
+          <MarketRateTooltip
+            sources={[
+              {
+                name: "Clutch.co — Web Development Cost Survey",
+                url: "https://clutch.co/web-developers/resources/cost-build-website",
+                detail: "Annual survey of 500+ businesses finds average custom website costs between $5,000–$25,000.",
+              },
+              {
+                name: "GoodFirms — Website Development Research",
+                url: "https://www.goodfirms.co/resources/website-development-cost",
+                detail: "Research report covering cost ranges by website type, complexity, and agency tier.",
+              },
+              {
+                name: "WebFX — Web Design Pricing Guide",
+                url: "https://www.webfx.com/web-design/pricing/",
+                detail: "Transparent breakdown of agency pricing for small-to-mid-market business websites.",
+              },
+            ]}
+          >
+            <span className="text-white/30 text-xs uppercase tracking-[0.15em]">
+              Market rate:{" "}
+              <span className="text-white/50 font-medium">$3,000 – $20,000</span>
+            </span>
+          </MarketRateTooltip>
           <span className="hidden md:block w-px h-4 bg-white/10" />
           <span className="text-white/30 text-xs uppercase tracking-[0.15em]">
             ROV:{" "}

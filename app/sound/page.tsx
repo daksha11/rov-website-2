@@ -156,50 +156,6 @@ export default function Page() {
             {/* 11 — FAQ */}
             <FAQSection items={soundFaqItems} />
 
-            {/* 13 — Final CTA */}
-            <section className="relative bg-black text-center" style={{ padding: "clamp(60px, 10vw, 120px) clamp(16px, 5vw, 60px)" }}>
-                <div className="max-w-2xl mx-auto">
-                    <h2
-                        className="text-3xl md:text-4xl lg:text-5xl font-bold italic text-white mb-4"
-                        style={{ fontFamily: "Norwige, sans-serif" }}
-                    >
-                        3 songs. $50 each. You&apos;ll be convinced.
-                    </h2>
-                    <p
-                        className="text-white/40 text-sm md:text-base mb-8 leading-relaxed"
-                        style={{ fontFamily: "'Roboto', sans-serif" }}
-                    >
-                        Send us your stems and hear what R.O.V sounds like. No consultation needed.
-                    </p>
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <a
-                            href="mailto:stems@rovstudios.com"
-                            className="cta-shine inline-flex items-center gap-2 text-white font-semibold transition-all duration-300 hover:scale-105"
-                            style={{
-                                fontFamily: "Norwige, sans-serif",
-                                borderRadius: "41.444px",
-                                background: "linear-gradient(112deg, #42201C 6.46%, #A64D2B 34.96%, #B16937 63.88%, #EA9A61 97.63%)",
-                                boxShadow: "3px 4px 4px 0 rgba(255, 244, 227, 0.15) inset, 0 4.385px 4.385px 0 rgba(0, 0, 0, 0.25)",
-                                padding: "clamp(1rem, 1.5vw, 1.25rem) clamp(2rem, 3vw, 2.5rem)",
-                                fontSize: "clamp(0.875rem, 1.2vw, 1rem)",
-                                letterSpacing: "0.05em",
-                            }}
-                        >
-                            stems@rovstudios.com &rarr;
-                        </a>
-                        <a
-                            href="https://www.instagram.com/rangeofviewstudios/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-white/40 text-sm hover:text-[#EA9A61] transition-colors duration-300"
-                            style={{ fontFamily: "'Roboto', sans-serif" }}
-                        >
-                            Or DM us on Instagram
-                        </a>
-                    </div>
-                </div>
-            </section>
-
             {/* Footer */}
             <Footer />
 

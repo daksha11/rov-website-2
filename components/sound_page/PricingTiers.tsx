@@ -20,27 +20,27 @@ const tiers = [
   {
     name: "Standard",
     price: 300,
-    songs: 8,
-    effective: 37.5,
+    songs: 12,
+    effective: 25,
     turnaround: "48hr",
-    tagline: "The consistent dropper. Two a week.",
+    tagline: "The consistent dropper. Three a week.",
     featured: true,
   },
   {
     name: "Pro",
-    price: 400,
-    songs: 12,
-    effective: 33.33,
+    price: 500,
+    songs: 18,
+    effective: 27.78,
     turnaround: "24hr priority",
-    tagline: "Album mode. 12 songs. 24 hours, not 48.",
+    tagline: "Album mode. 18 songs. 24 hours, not 48.",
     featured: false,
   },
 ];
 
 const inclusions = [
   "Professional mix + master (both)",
-  "1 revision per song",
-  "Stem quality check",
+  "2 revisions per song",
+  "Social media optimized versions",
 ];
 
 function fmt(n: number): string {

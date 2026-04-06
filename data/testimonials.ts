@@ -17,14 +17,16 @@ export const webTestimonials: Testimonial[] = [
     role: "Founder, Aysegul Ikna",
     impactStat: "+30% Sales",
     socialUrl: "https://www.instagram.com/aysegulikna/",
+    image: "/clients/ikna2.webp",
   },
   {
     quote:
       "Our website didn't match the energy of our Instagram or what people experience in-store. ROV brought our brand to life online. Now the site finally feels like us.",
-    name: "The Bando",
-    role: "Atlanta Restaurant & Museum",
+    name: "Terry",
+    role: "Founder & Owner, The Bando",
     impactStat: "#1 Google Ranking",
     socialUrl: "https://www.instagram.com/thebandoatl/",
+    image: "/clients/terry.png",
   },
   {
     quote:
@@ -50,7 +52,7 @@ export const soundTestimonials: Testimonial[] = [
     name: "DDK",
     role: "Recording Artist",
     impactStat: "Fastest Engineer",
-    image: "/soundpage/ddk.jpg",
+    image: "/clients/ddk.jpg",
   },
   {
     quote:
@@ -65,7 +67,15 @@ export const soundTestimonials: Testimonial[] = [
     name: "Sophie Said",
     role: "Recording Artist",
     impactStat: "24hr Turnaround",
-    image: "/soundpage/sophie.webp",
+    image: "/clients/sophie.webp",
+  },
+  {
+    quote:
+      "I sent Basu my track at night and woke up to a finished mix. Fastest turnaround I've ever had from any engineer, and the quality didn't suffer at all. He just locks in and delivers.",
+    name: "Pedro",
+    role: "Recording Artist",
+    impactStat: "Overnight Delivery",
+    image: "/clients/pedro.png",
   },
 ];
 
@@ -77,6 +87,7 @@ export const videoTestimonials: Testimonial[] = [
     role: "Founder, Aysegul Ikna",
     impactStat: "Most Viewed Video",
     socialUrl: "https://www.instagram.com/aysegulikna/",
+    image: "/clients/ikna2.webp",
   },
   {
     quote:

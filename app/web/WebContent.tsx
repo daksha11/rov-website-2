@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import WebHero from "@/components/Web-Dev/WebHero";
 import TestimonialsSection from "@/components/common/TestimonialsSection";
 import { webTestimonials } from "@/data/testimonials";
+import CrossSellNudges from "@/components/common/CrossSellNudges";
 import { webFaqItems } from "@/data/faq";
 import { webDevSteps } from "@/data/approach-steps";
 
@@ -59,6 +60,9 @@ export default function WebContent() {
 
             {/* Pricing Tiers */}
             <WebPricingTiers />
+
+            {/* Cross-Sell Nudges */}
+            <CrossSellNudges currentService="web" />
 
             {/* Our Approach Section */}
             <OurApproachSection steps={webDevSteps} />

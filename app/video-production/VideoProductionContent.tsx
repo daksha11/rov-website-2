@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import ProjectStrip from "@/components/ProjectStrip";
 import TestimonialsSection from "@/components/common/TestimonialsSection";
 import { videoTestimonials } from "@/data/testimonials";
+import CrossSellNudges from "@/components/common/CrossSellNudges";
 import { videoFaqItems } from "@/data/faq";
 import { videoProductionSteps } from "@/data/approach-steps";
 import VideoHero from "./VideoHero";
@@ -18,14 +19,6 @@ const VideoPortfolioSection = dynamic(() => import("@/components/video-productio
 });
 
 const PostProductionSection = dynamic(() => import("@/components/video-production/PostProductionSection"), {
-    loading: () => (
-        <div className="bg-black min-h-[40vh] flex items-center justify-center">
-            <div className="text-white/60 text-sm">Loading...</div>
-        </div>
-    ),
-});
-
-const VideoPricingTiers = dynamic(() => import("@/components/video-production/VideoPricingTiers"), {
     loading: () => (
         <div className="bg-black min-h-[40vh] flex items-center justify-center">
             <div className="text-white/60 text-sm">Loading...</div>
@@ -68,14 +61,14 @@ export default function VideoProductionContent() {
             {/* Client Testimonials */}
             <TestimonialsSection testimonials={videoTestimonials} variant="video" />
 
-            {/* Pricing Tiers */}
-            <VideoPricingTiers />
-
             {/* Specialty Packages */}
             <SpecialtyPackages />
 
             {/* Project Strip CTA */}
             <ProjectStrip />
+
+            {/* Cross-Sell Nudges */}
+            <CrossSellNudges currentService="video-production" />
 
             {/* Our Approach Section */}
             <OurApproachSection steps={videoProductionSteps} buttonVariant="gradient" />

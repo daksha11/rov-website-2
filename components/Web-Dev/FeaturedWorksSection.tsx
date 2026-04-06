@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 
 const HEADING = "Norwige, sans-serif";
 const BODY = "'Roboto', sans-serif";
@@ -96,6 +96,7 @@ function ProjectSlide({
   onNext: () => void;
 }) {
   const [showBefore, setShowBefore] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const bgVideoRef = useRef<HTMLVideoElement>(null);
 
@@ -105,9 +106,11 @@ function ProjectSlide({
 
   useEffect(() => {
     setShowBefore(false);
+    setVideoLoaded(false);
   }, [project.id]);
 
   useEffect(() => {
+    setVideoLoaded(false);
     videoRef.current?.play().catch(() => {});
     bgVideoRef.current?.play().catch(() => {});
   }, [currentMedia]);
@@ -260,6 +263,15 @@ function ProjectSlide({
                 boxShadow: `0 0 60px rgba(${project.glowColor},0.25), 0 0 120px rgba(${project.glowColor},0.1), 0 30px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08)`,
               }}
             >
+              {/* Loading placeholder */}
+              {!videoLoaded && (
+                <div
+                  className="absolute inset-0 z-[1] flex items-center justify-center"
+                  style={{ background: project.bgTint }}
+                >
+                  <div className="w-8 h-8 rounded-full border-2 border-white/10 border-t-[#EA9A61]/60 animate-spin" />
+                </div>
+              )}
               <video
                 ref={videoRef}
                 key={currentMedia}
@@ -268,7 +280,9 @@ function ProjectSlide({
                 loop
                 muted
                 playsInline
-                className="w-full h-full object-cover"
+                preload="metadata"
+                onCanPlay={() => setVideoLoaded(true)}
+                className={`w-full h-full object-cover transition-opacity duration-500 ${videoLoaded ? "opacity-100" : "opacity-0"}`}
               />
               {/* Hover overlay */}
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
@@ -291,6 +305,9 @@ export default function FeaturedWorksSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { margin: "-100px", once: false });
+  const wasInViewRef = useRef(false);
 
   const startTimer = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
@@ -299,10 +316,20 @@ export default function FeaturedWorksSection() {
     }, 8000);
   }, []);
 
+  // Start auto-scroll only when section enters viewport, reset to first slide
   useEffect(() => {
-    startTimer();
+    if (isInView && !wasInViewRef.current) {
+      // Just entered viewport — reset to first slide and start timer
+      wasInViewRef.current = true;
+      setActiveIndex(0);
+      startTimer();
+    } else if (!isInView && wasInViewRef.current) {
+      // Left viewport — stop timer
+      wasInViewRef.current = false;
+      if (timerRef.current) clearInterval(timerRef.current);
+    }
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, [startTimer]);
+  }, [isInView, startTimer]);
 
   const goTo = (index: number) => {
     setActiveIndex(index);
@@ -330,6 +357,7 @@ export default function FeaturedWorksSection() {
 
   return (
     <section
+      ref={sectionRef}
       id="featured-works"
       className="relative bg-black"
       onTouchStart={handleTouchStart}

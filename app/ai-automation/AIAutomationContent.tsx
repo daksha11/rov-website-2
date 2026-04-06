@@ -25,6 +25,7 @@ const FAQSection = dynamic(() => import('@/components/common/FAQSection'), {
 });
 import TestimonialsSection from '@/components/common/TestimonialsSection';
 import { aiTestimonials } from '@/data/testimonials';
+import CrossSellNudges from "@/components/common/CrossSellNudges";
 import { aiAutomationFaqItems } from '@/data/faq';
 import { aiAutomationSteps } from '@/data/approach-steps';
 // Inline SVG components to avoid react-icons barrel import (saves ~200-500KB)
@@ -720,6 +721,9 @@ export default function AIAutomationContent() {
 
             {/* ROI Calculator — revealed by secret triple-click on pricing market bar */}
             {showROI && <AIROICalculator />}
+
+            {/* Cross-Sell Nudges */}
+            <CrossSellNudges currentService="ai-automation" />
 
             {/* Our Approach Section */}
             <OurApproachSection steps={aiAutomationSteps} />
