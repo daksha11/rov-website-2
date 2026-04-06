@@ -295,7 +295,7 @@ export default function VideoPortfolioSection() {
 
                     {/* Category badge */}
                     <div
-                        className="absolute top-4 left-4 px-3 py-1 text-[11px] uppercase tracking-widest rounded-full border border-[#FFF4E3]/20 backdrop-blur-sm bg-black/40 text-[#FFF4E3]/70"
+                        className="absolute top-4 left-4 px-3 py-1 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-widest rounded-full border border-[#FFF4E3]/20 backdrop-blur-sm bg-black/40 text-[#FFF4E3]/70"
                         style={{ fontFamily: FONT }}
                     >
                         {activeCat === "real-estate" ? "Real Estate" : "Events"}

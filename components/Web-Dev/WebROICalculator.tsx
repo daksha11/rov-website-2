@@ -73,7 +73,7 @@ export default function WebROICalculator() {
         <div className="flex items-baseline justify-between mb-6">
           <div>
             <span
-              className="text-[10px] uppercase tracking-[0.25em] text-[#EA9A61]"
+              className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.25em] text-[#EA9A61]"
               style={{ fontFamily: BODY }}
             >
               ROI Calculator
@@ -100,7 +100,7 @@ export default function WebROICalculator() {
                 {calc.paybackMonths} mo
               </span>
               <span
-                className="text-white/30 text-[10px] uppercase tracking-[0.15em]"
+                className="text-white/30 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.15em]"
                 style={{ fontFamily: BODY }}
               >
                 payback period
@@ -194,7 +194,7 @@ export default function WebROICalculator() {
         <div className="grid grid-cols-2 gap-4 mb-5">
           <div>
             <span
-              className="text-[9px] uppercase tracking-[0.2em] text-white/25 block mb-1"
+              className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-white/25 block mb-1"
               style={{ fontFamily: BODY }}
             >
               Current annual revenue
@@ -209,7 +209,7 @@ export default function WebROICalculator() {
           </div>
           <div>
             <span
-              className="text-[9px] uppercase tracking-[0.2em] text-[#EA9A61] block mb-1"
+              className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-[#EA9A61] block mb-1"
               style={{ fontFamily: BODY }}
             >
               Projected with ROV site
@@ -240,7 +240,7 @@ export default function WebROICalculator() {
                   {calc.paybackMonths} mo
                 </motion.span>
                 <span
-                  className="rounded-full border border-[#EA9A61]/30 bg-[#EA9A61]/10 px-2.5 py-0.5 text-[10px] uppercase tracking-[0.12em] text-[#EA9A61]"
+                  className="rounded-full border border-[#EA9A61]/30 bg-[#EA9A61]/10 px-2.5 py-0.5 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.12em] text-[#EA9A61]"
                   style={{ fontFamily: BODY }}
                 >
                   +{fmt(calc.additionalRevenue)}/yr

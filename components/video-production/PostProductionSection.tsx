@@ -92,7 +92,7 @@ function VideoTogglePair({ pair }: { pair: VideoPair }) {
                 {/* Live badge */}
                 <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
                     <span
-                        className="px-3 py-1 text-[11px] uppercase tracking-widest rounded-full backdrop-blur-sm border border-[#FFF4E3]/20 font-medium"
+                        className="px-3 py-1 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-widest rounded-full backdrop-blur-sm border border-[#FFF4E3]/20 font-medium"
                         style={{
                             fontFamily: FONT,
                             background: mode === "color" ? ACCENT : "rgba(0,0,0,0.55)",

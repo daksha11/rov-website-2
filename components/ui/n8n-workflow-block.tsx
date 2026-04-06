@@ -216,7 +216,7 @@ const WorkflowNodeCard = React.memo(function WorkflowNodeCard({
           className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2.5 w-48 rounded-lg border border-[#EA9A61]/20 bg-[#151110] px-3 py-2 pointer-events-none z-[60]"
           style={{ fontFamily: BODY, boxShadow: "0 8px 24px rgba(0,0,0,0.5)" }}
         >
-          <p className="text-[11px] leading-[1.5] text-white/80">{node.brief}</p>
+          <p className="text-[clamp(0.7rem,1.5vw,0.75rem)] leading-[1.5] text-white/80">{node.brief}</p>
           <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[5px] border-t-[#151110]" />
         </div>
       )}
@@ -246,7 +246,7 @@ const WorkflowNodeCard = React.memo(function WorkflowNodeCard({
             <div className="min-w-0 flex-1">
               <Badge
                 variant="outline"
-                className="mb-0.5 rounded-full border-white/10 bg-white/[0.04] px-1.5 py-0 text-[9px] uppercase tracking-[0.15em] text-white/40"
+                className="mb-0.5 rounded-full border-white/10 bg-white/[0.04] px-1.5 py-0 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.15em] text-white/40"
               >
                 {node.type}
               </Badge>
@@ -255,10 +255,10 @@ const WorkflowNodeCard = React.memo(function WorkflowNodeCard({
               </h3>
             </div>
           </div>
-          <p className="line-clamp-2 text-[10px] leading-relaxed text-white/50" style={{ fontFamily: BODY }}>
+          <p className="line-clamp-2 text-[clamp(0.7rem,1.5vw,0.75rem)] leading-relaxed text-white/50" style={{ fontFamily: BODY }}>
             {node.description}
           </p>
-          <div className="flex items-center gap-1.5 text-[10px] text-white/30">
+          <div className="flex items-center gap-1.5 text-[clamp(0.7rem,1.5vw,0.75rem)] text-white/30">
             <ArrowRight className="h-2.5 w-2.5" />
             <span className="uppercase tracking-[0.1em]">Connected</span>
           </div>
@@ -481,7 +481,7 @@ export function N8nWorkflowBlock() {
             <span className="uppercase tracking-[0.15em]">{connections.length} {connections.length === 1 ? "Connection" : "Connections"}</span>
           </div>
         </div>
-        <p className="text-[10px] uppercase tracking-[0.2em] text-white/25" style={{ fontFamily: BODY }}>
+        <p className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-white/25" style={{ fontFamily: BODY }}>
           Hover to learn · Drag to move
         </p>
       </div>

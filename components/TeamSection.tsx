@@ -377,7 +377,7 @@ const TeamSection: React.FC = () => {
                                     <h4 className="text-lg font-black uppercase text-[#F7F2E4] mb-4" style={{ fontFamily: 'Norwige, sans-serif' }}>Skills</h4>
                                     <div className="flex flex-wrap gap-2">
                                         {expandedMember.skills.map((s, i) => (
-                                            <span key={i} className="px-3 py-1 bg-white/10 border border-white/10 rounded-full text-[10px] text-white uppercase tracking-widest">{s}</span>
+                                            <span key={i} className="px-3 py-1 bg-white/10 border border-white/10 rounded-full text-[clamp(0.7rem,1.5vw,0.75rem)] text-white uppercase tracking-widest">{s}</span>
                                         ))}
                                     </div>
                                 </div>
@@ -404,7 +404,7 @@ const TeamSection: React.FC = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                     <div className="absolute bottom-6 left-6 right-6">
                         <h4 className="text-2xl font-black text-white uppercase" style={{ fontFamily: 'Norwige, sans-serif' }}>{member.name}</h4>
-                        <p className="text-[10px] tracking-[0.2em] text-[#DAA520] uppercase" style={{ fontFamily: 'Roboto, sans-serif' }}>{member.role}</p>
+                        <p className="text-[clamp(0.7rem,1.5vw,0.75rem)] tracking-[0.2em] text-[#DAA520] uppercase" style={{ fontFamily: 'Roboto, sans-serif' }}>{member.role}</p>
                     </div>
                 </motion.div>
             ))}

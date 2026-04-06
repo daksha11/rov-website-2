@@ -134,7 +134,7 @@ function Card({ card }: { card: CardData }) {
           <div className="flex items-center gap-3 mb-5">
             {card.icon}
             <p
-              className="text-[10px] font-medium tracking-[0.25em] uppercase"
+              className="text-[clamp(0.7rem,1.5vw,0.75rem)] font-medium tracking-[0.25em] uppercase"
               style={{
                 fontFamily: "Norwige, sans-serif",
                 background:

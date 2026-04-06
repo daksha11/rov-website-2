@@ -58,7 +58,7 @@ function StudioVisuals() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
             <div className="absolute bottom-5 left-5">
               <span
-                className="text-white/40 text-[10px] uppercase tracking-[0.25em] block mb-1"
+                className="text-white/40 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.25em] block mb-1"
                 style={{ fontFamily: BODY_FONT }}
               >
                 {clip.label}
@@ -136,7 +136,7 @@ function ValueAccordion() {
                     <motion.span
                       animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.8 }}
                       transition={{ duration: 0.3 }}
-                      className="text-[10px] md:text-xs uppercase tracking-[0.2em] px-3 py-1 rounded-full border border-[#EA9A61]/30 text-[#EA9A61] shrink-0"
+                      className="text-[clamp(0.7rem,1.5vw,0.75rem)] md:text-xs uppercase tracking-[0.2em] px-3 py-1 rounded-full border border-[#EA9A61]/30 text-[#EA9A61] shrink-0"
                       style={{ fontFamily: BODY_FONT }}
                     >
                       {prop.tag}
