@@ -67,11 +67,11 @@ export default function VideoProductionContent() {
             {/* Project Strip CTA */}
             <ProjectStrip />
 
-            {/* Cross-Sell Nudges */}
-            <CrossSellNudges currentService="video-production" />
-
             {/* Our Approach Section */}
             <OurApproachSection steps={videoProductionSteps} buttonVariant="gradient" />
+
+            {/* Cross-Sell Nudges */}
+            <CrossSellNudges currentService="video-production" />
 
             {/* FAQ Section */}
             <FAQSection items={videoFaqItems} />

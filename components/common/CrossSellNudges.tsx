@@ -6,84 +6,177 @@ interface CardData {
   id: ServiceId;
   href: string;
   label: string;
-  headline: string;
-  subtext: string;
-  ctaText: string;
-  icon: React.ReactNode;
+  tagline: string;
+  illustration: React.ReactNode;
 }
 
-const ICON_CLASS = "w-5 h-5 text-[#EA9A61] shrink-0";
+const ILLO_STROKE = "#EA9A61";
+
+// Video: clapperboard with slate lines
+const VideoIllo = (
+  <svg
+    viewBox="0 0 96 96"
+    fill="none"
+    stroke={ILLO_STROKE}
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="w-full h-full"
+  >
+    <rect x="12" y="36" width="72" height="48" rx="3" />
+    <path d="M12 36 L18 18 L28 16 L32 32 Z" fill={ILLO_STROKE} fillOpacity="0.08" />
+    <path d="M12 36 L18 18 L28 16 L32 32" />
+    <path d="M32 32 L38 14 L48 12 L52 30" />
+    <path d="M52 30 L58 12 L68 10 L72 28" />
+    <path d="M72 28 L78 10 L84 9 L84 32" />
+    <path d="M38 56 L48 66 L38 76" fill="none" />
+    <circle cx="58" cy="66" r="2" fill={ILLO_STROKE} />
+    <circle cx="66" cy="66" r="2" fill={ILLO_STROKE} />
+    <circle cx="74" cy="66" r="2" fill={ILLO_STROKE} />
+  </svg>
+);
+
+// Web: browser window with code brackets
+const WebIllo = (
+  <svg
+    viewBox="0 0 96 96"
+    fill="none"
+    stroke={ILLO_STROKE}
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="w-full h-full"
+  >
+    <rect x="10" y="18" width="76" height="60" rx="3" />
+    <line x1="10" y1="32" x2="86" y2="32" />
+    <circle cx="18" cy="25" r="1.8" fill={ILLO_STROKE} />
+    <circle cx="26" cy="25" r="1.8" fill={ILLO_STROKE} />
+    <circle cx="34" cy="25" r="1.8" fill={ILLO_STROKE} />
+    <path d="M30 46 L22 56 L30 66" strokeWidth="2" />
+    <path d="M66 46 L74 56 L66 66" strokeWidth="2" />
+    <line x1="42" y1="68" x2="54" y2="44" strokeWidth="2" />
+  </svg>
+);
+
+// AI Systems: neural network nodes
+const AiIllo = (
+  <svg
+    viewBox="0 0 96 96"
+    fill="none"
+    stroke={ILLO_STROKE}
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="w-full h-full"
+  >
+    <line x1="18" y1="22" x2="44" y2="44" />
+    <line x1="18" y1="48" x2="44" y2="48" />
+    <line x1="18" y1="74" x2="44" y2="52" />
+    <line x1="52" y1="44" x2="78" y2="22" />
+    <line x1="52" y1="48" x2="78" y2="48" />
+    <line x1="52" y1="52" x2="78" y2="74" />
+    <circle cx="16" cy="22" r="5" fill="#0F0C0A" />
+    <circle cx="16" cy="48" r="5" fill="#0F0C0A" />
+    <circle cx="16" cy="74" r="5" fill="#0F0C0A" />
+    <circle cx="48" cy="48" r="7" fill="#0F0C0A" />
+    <circle cx="80" cy="22" r="5" fill="#0F0C0A" />
+    <circle cx="80" cy="48" r="5" fill="#0F0C0A" />
+    <circle cx="80" cy="74" r="5" fill="#0F0C0A" />
+    <circle cx="48" cy="48" r="2.5" fill={ILLO_STROKE} />
+  </svg>
+);
+
+// AI Automation: interlocking gears
+const AutomationIllo = (
+  <svg
+    viewBox="0 0 96 96"
+    fill="none"
+    stroke={ILLO_STROKE}
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="w-full h-full"
+  >
+    {/* Big gear */}
+    <circle cx="36" cy="38" r="14" />
+    <circle cx="36" cy="38" r="5" />
+    <line x1="36" y1="18" x2="36" y2="22" strokeWidth="2" />
+    <line x1="36" y1="54" x2="36" y2="58" strokeWidth="2" />
+    <line x1="16" y1="38" x2="20" y2="38" strokeWidth="2" />
+    <line x1="52" y1="38" x2="56" y2="38" strokeWidth="2" />
+    <line x1="22" y1="24" x2="25" y2="27" strokeWidth="2" />
+    <line x1="47" y1="49" x2="50" y2="52" strokeWidth="2" />
+    <line x1="22" y1="52" x2="25" y2="49" strokeWidth="2" />
+    <line x1="47" y1="27" x2="50" y2="24" strokeWidth="2" />
+    {/* Small gear */}
+    <circle cx="66" cy="66" r="10" />
+    <circle cx="66" cy="66" r="3.5" />
+    <line x1="66" y1="52" x2="66" y2="55" strokeWidth="2" />
+    <line x1="66" y1="77" x2="66" y2="80" strokeWidth="2" />
+    <line x1="52" y1="66" x2="55" y2="66" strokeWidth="2" />
+    <line x1="77" y1="66" x2="80" y2="66" strokeWidth="2" />
+  </svg>
+);
+
+// Sound: waveform bars
+const SoundIllo = (
+  <svg
+    viewBox="0 0 96 96"
+    fill="none"
+    stroke={ILLO_STROKE}
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="w-full h-full"
+  >
+    <line x1="10" y1="44" x2="10" y2="52" />
+    <line x1="18" y1="36" x2="18" y2="60" />
+    <line x1="26" y1="28" x2="26" y2="68" />
+    <line x1="34" y1="20" x2="34" y2="76" />
+    <line x1="42" y1="32" x2="42" y2="64" />
+    <line x1="50" y1="12" x2="50" y2="84" />
+    <line x1="58" y1="24" x2="58" y2="72" />
+    <line x1="66" y1="36" x2="66" y2="60" />
+    <line x1="74" y1="28" x2="74" y2="68" />
+    <line x1="82" y1="40" x2="82" y2="56" />
+  </svg>
+);
 
 const CARDS: Record<ServiceId, CardData> = {
   "video-production": {
     id: "video-production",
     href: "/video-production",
     label: "Video Production",
-    headline: "Need content that actually stops the scroll?",
-    subtext:
-      "From concept reels to full productions \u2014 we shoot what your brand needs to say.",
-    ctaText: "See our video work",
-    icon: (
-      <svg className={ICON_CLASS} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
-      </svg>
-    ),
+    tagline: "Content that stops the scroll.",
+    illustration: VideoIllo,
   },
   web: {
     id: "web",
     href: "/web",
     label: "Web Development",
-    headline: "Losing RSVPs to a website that doesn\u2019t convert?",
-    subtext:
-      "Your content looks great on camera. Make sure it looks just as good where people actually book.",
-    ctaText: "See our web solutions",
-    icon: (
-      <svg className={ICON_CLASS} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5a17.92 17.92 0 0 1-8.716-2.247m0 0A8.966 8.966 0 0 1 3 12c0-1.264.26-2.467.73-3.418" />
-      </svg>
-    ),
+    tagline: "Sites built to convert.",
+    illustration: WebIllo,
   },
   ai: {
     id: "ai",
     href: "/ai-automation",
     label: "AI Systems",
-    headline: "Ready to put AI behind the wheel?",
-    subtext:
-      "From content generation to intelligent assistants \u2014 we build AI systems tailored to your workflow.",
-    ctaText: "Explore AI systems",
-    icon: (
-      <svg className={ICON_CLASS} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 0 0 2.25-2.25V6.75a2.25 2.25 0 0 0-2.25-2.25H6.75A2.25 2.25 0 0 0 4.5 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25Zm.75-12h9v9h-9v-9Z" />
-      </svg>
-    ),
+    tagline: "Intelligent tools that work for you.",
+    illustration: AiIllo,
   },
   "ai-automation": {
     id: "ai-automation",
     href: "/ai-automation",
     label: "AI Automation",
-    headline: "Still chasing clients through DMs and spreadsheets?",
-    subtext:
-      "Automate follow-ups, booking confirmations, and lead capture. So you can focus on creating.",
-    ctaText: "Explore AI workflows",
-    icon: (
-      <svg className={ICON_CLASS} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
-      </svg>
-    ),
+    tagline: "Workflows on autopilot.",
+    illustration: AutomationIllo,
   },
   sound: {
     id: "sound",
     href: "/sound",
     label: "Sound Engineering",
-    headline: "Your visuals are sharp \u2014 does your audio match?",
-    subtext:
-      "Professional mixing, mastering, and sound design that makes every project hit harder.",
-    ctaText: "Hear our work",
-    icon: (
-      <svg className={ICON_CLASS} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a2.25 2.25 0 0 0 1.632-2.163Zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 0 1-.99-3.467l2.31-.66A2.25 2.25 0 0 0 9 15.553Z" />
-      </svg>
-    ),
+    tagline: "Audio that hits harder.",
+    illustration: SoundIllo,
   },
 };
 
@@ -99,7 +192,7 @@ function Card({ card }: { card: CardData }) {
   return (
     <a
       href={card.href}
-      className="group relative rounded-[20px] overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(234,154,97,0.08)]"
+      className="group relative rounded-[20px] overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(234,154,97,0.12)]"
       style={{
         padding: 1,
         background:
@@ -113,80 +206,79 @@ function Card({ card }: { card: CardData }) {
             "linear-gradient(160deg, rgba(30,26,23,1) 0%, rgba(15,12,10,1) 100%)",
         }}
       >
-        {/* Top gradient accent line */}
-        <div
-          className="absolute top-0 left-0 right-0 h-[2px]"
-          style={{
-            background:
-              "linear-gradient(90deg, #EA9A61 0%, #B16937 50%, transparent 100%)",
-          }}
-        />
         {/* Background glow */}
         <div
-          className="absolute -top-20 -right-20 w-48 h-48 rounded-full opacity-20 pointer-events-none"
+          className="absolute -top-20 -right-20 w-56 h-56 rounded-full opacity-20 pointer-events-none group-hover:opacity-40 transition-opacity duration-500"
           style={{
             background:
-              "radial-gradient(circle, rgba(234,154,97,0.3) 0%, transparent 70%)",
+              "radial-gradient(circle, rgba(234,154,97,0.35) 0%, transparent 70%)",
           }}
         />
 
-        <div className="relative z-10 p-8 md:p-10 flex flex-col min-h-[200px]">
-          <div className="flex items-center gap-3 mb-5">
-            {card.icon}
+        {/* Background illustration — large, ghostly, bottom-right */}
+        <div
+          className="absolute -right-4 -bottom-6 w-[140px] h-[140px] md:w-[170px] md:h-[170px] pointer-events-none opacity-[0.13] group-hover:opacity-25 transition-opacity duration-500"
+          aria-hidden="true"
+        >
+          {card.illustration}
+        </div>
+
+        <div className="relative z-10 p-8 md:p-10 flex items-center gap-6 min-h-[180px]">
+          {/* Left: small illustration chip */}
+          <div
+            className="shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-xl flex items-center justify-center transition-all duration-500 group-hover:scale-105"
+            style={{
+              border: "1px solid rgba(234,154,97,0.2)",
+              background:
+                "linear-gradient(160deg, rgba(234,154,97,0.08) 0%, rgba(234,154,97,0.02) 100%)",
+            }}
+          >
+            <div className="w-8 h-8 md:w-9 md:h-9">{card.illustration}</div>
+          </div>
+
+          {/* Middle: label + service name + tagline */}
+          <div className="flex-1 min-w-0">
             <p
-              className="text-[clamp(0.7rem,1.5vw,0.75rem)] font-medium tracking-[0.25em] uppercase"
-              style={{
-                fontFamily: "Norwige, sans-serif",
-                background:
-                  "linear-gradient(132deg, #EA9A61 4.77%, #B16937 50%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
+              className="text-[10px] md:text-[11px] font-medium tracking-[0.3em] uppercase mb-3"
+              style={{ color: "rgba(234,154,97,0.7)" }}
+              style={{ fontFamily: "Norwige, sans-serif" }}
+            >
+              Next &middot; Service
+            </p>
+            <h3
+              className="text-[#FFF4E3] text-2xl md:text-3xl lg:text-4xl font-bold leading-[1.05] mb-2 tracking-tight"
+              style={{ fontFamily: "Norwige, sans-serif", fontStyle: "italic" }}
             >
               {card.label}
+            </h3>
+            <p
+              className="text-sm leading-snug"
+              style={{ color: "rgba(255,244,227,0.45)" }}
+              style={{ fontFamily: "Norwige, sans-serif", fontStyle: "italic" }}
+            >
+              {card.tagline}
             </p>
           </div>
-          <p
-            className="text-[#FFF4E3] text-xl md:text-2xl font-semibold leading-snug mb-3"
-            style={{ fontFamily: "Norwige, sans-serif", fontStyle: "italic" }}
-          >
-            {card.headline}
-          </p>
-          <p
-            className="text-[#FFF4E3]/60 text-sm leading-relaxed max-w-xs mb-auto"
-            style={{ fontFamily: "Norwige, sans-serif", fontStyle: "italic" }}
-          >
-            {card.subtext}
-          </p>
+
+          {/* Right: big external-link arrow */}
           <div
-            className="flex items-center gap-3 mt-6 pt-5"
-            style={{ borderTop: "1px solid rgba(234,154,97,0.08)" }}
+            className="shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center transition-all duration-500 group-hover:scale-110"
+            style={{
+              border: "1px solid rgba(234,154,97,0.3)",
+              background: "rgba(234,154,97,0.05)",
+            }}
           >
-            <span
-              className="text-xs font-medium tracking-[0.15em] uppercase group-hover:tracking-[0.25em] transition-all duration-300"
-              style={{
-                fontFamily: "Norwige, sans-serif",
-                background:
-                  "linear-gradient(132deg, #EA9A61 0%, #B16937 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              {card.ctaText}
-            </span>
             <svg
-              className="w-4 h-4 text-[#EA9A61] group-hover:translate-x-2 transition-transform duration-400"
+              className="w-5 h-5 md:w-6 md:h-6 text-[#EA9A61] transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth={2}
+              strokeWidth={1.75}
             >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
+                d="M7 17L17 7M17 7H8M17 7v9"
               />
             </svg>
           </div>
@@ -206,10 +298,19 @@ export default function CrossSellNudges({
 
   return (
     <section className="relative bg-black py-20 md:py-28 px-6 md:px-12 lg:px-16 overflow-hidden">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
-        {cards.map((card) => (
-          <Card key={card.id} card={card} />
-        ))}
+      <div className="max-w-6xl mx-auto">
+        <p
+          className="text-xs uppercase tracking-[0.3em] text-center mb-10 md:mb-14"
+          style={{ color: "rgba(255,244,227,0.3)" }}
+          style={{ fontFamily: "Norwige, sans-serif" }}
+        >
+          Explore other services
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+          {cards.map((card) => (
+            <Card key={card.id} card={card} />
+          ))}
+        </div>
       </div>
     </section>
   );

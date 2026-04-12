@@ -63,221 +63,291 @@ export default function AIPricingTiers({ onUnlock }: { onUnlock?: () => void }) 
           systems that fix them permanently.
         </motion.p>
 
-        {/* Tier cards — 2 column */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 mb-10">
-          {/* Card 1: AI Chatbot */}
+        {/* Tier cards — stacked vertically, custom build first */}
+        <div className="flex flex-col gap-5 mb-10 max-w-4xl mx-auto">
+
+          {/* Card 1: Revenue Leak Fix — CUSTOM BUILD (hero) */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ ...spring, delay: 0.2 }}
-            className="relative rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 md:p-8 flex flex-col"
+            className="relative rounded-2xl overflow-hidden"
+            style={{
+              padding: 1,
+              background:
+                "linear-gradient(135deg, rgba(234,154,97,0.55) 0%, rgba(234,154,97,0.12) 45%, rgba(234,154,97,0.02) 100%)",
+            }}
           >
-            <span
-              className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-white/40 mb-4"
-              style={{ fontFamily: BODY }}
-            >
-              Your 24/7 front desk
-            </span>
-
-            <span
-              className="text-white text-lg font-bold italic mb-4"
-              style={{ fontFamily: HEADING }}
-            >
-              AI Chatbot
-            </span>
-
-            {/* Price with strikethrough */}
-            <div className="flex items-baseline gap-4 mb-1">
-              <span
-                className="text-white text-4xl md:text-5xl font-bold italic"
-                style={{ fontFamily: HEADING }}
-              >
-                $500
-              </span>
-              <span
-                className="text-white/30 text-sm line-through"
-                style={{ fontFamily: BODY }}
-              >
-                $2,000
-              </span>
-            </div>
-            <span
-              className="text-white/30 text-xs mb-3"
-              style={{ fontFamily: BODY }}
-            >
-              One-time setup fee
-            </span>
-
-            {/* Retainer pill */}
-            <span
-              className="inline-flex items-center self-start gap-1.5 rounded-full border border-[#EA9A61]/20 bg-[#EA9A61]/[0.06] px-3 py-1 text-xs text-[#EA9A61] font-semibold mb-1.5"
-              style={{ fontFamily: BODY }}
-            >
-              + $200/mo management
-            </span>
-            <span
-              className="text-[#EA9A61]/60 text-[clamp(0.7rem,1.5vw,0.75rem)] mb-6"
-              style={{ fontFamily: BODY }}
-            >
-              We monitor, optimize, and report monthly
-            </span>
-
-            {/* Features */}
-            <ul className="flex-1 space-y-2 mb-6">
-              {[
-                "Handles every inquiry with your brand\u2019s voice",
-                "Answers the questions your customers always ask",
-                "Available 24/7, no days off",
-                "Actively sells and qualifies leads for you",
-                "Books calls to your calendar automatically",
-                "Escalates to a human when it matters",
-              ].map((item) => (
-                <li
-                  key={item}
-                  className="flex items-start gap-2 text-white/50 text-sm"
-                  style={{ fontFamily: BODY }}
-                >
-                  <span className="text-[#EA9A61] mt-0.5 shrink-0">
-                    &#10003;
-                  </span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-
-            {/* Best for */}
-            <p
-              className="text-white/30 text-xs italic mb-6"
-              style={{ fontFamily: BODY }}
-            >
-              <span className="text-white/50 font-semibold">$35K/year for a receptionist.</span>{" "}
-              $2,900/year for this. It never sleeps.
-            </p>
-
-            {/* CTA */}
-            <a
-              href="https://calendly.com/rangeofviewmusic/30min"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="cta-shine block text-center text-white font-semibold rounded-full border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-[1.03]"
+            <div
+              className="relative rounded-[15px] p-6 md:p-9 flex flex-col"
               style={{
-                fontFamily: HEADING,
-                padding: "14px",
-                fontSize: "13px",
-                letterSpacing: "0.05em",
-                background: "rgba(255,255,255,0.03)",
+                background:
+                  "linear-gradient(160deg, rgba(30,26,23,1) 0%, rgba(12,10,9,1) 100%)",
               }}
             >
-              Book a call &rarr;
-            </a>
+              <div
+                className="absolute -top-24 -right-24 w-80 h-80 rounded-full opacity-25 pointer-events-none"
+                style={{
+                  background:
+                    "radial-gradient(circle, rgba(234,154,97,0.45) 0%, transparent 65%)",
+                }}
+              />
+
+              <div className="relative z-10 flex flex-col">
+                <div className="flex items-center gap-2 mb-5 flex-wrap">
+                  <span
+                    className="inline-flex items-center gap-1.5 rounded-full border border-[#EA9A61]/40 bg-[#EA9A61]/10 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-[#EA9A61] font-semibold"
+                    style={{ fontFamily: BODY }}
+                  >
+                    <span className="w-1 h-1 rounded-full bg-[#EA9A61]" />
+                    Custom build
+                  </span>
+                  <span
+                    className="text-white/30 text-[10px] uppercase tracking-[0.2em]"
+                    style={{ fontFamily: BODY }}
+                  >
+                    Scoped to your business
+                  </span>
+                </div>
+
+                <span
+                  className="text-white text-2xl md:text-3xl lg:text-[2.25rem] font-bold italic leading-[1.05] mb-2"
+                  style={{ fontFamily: HEADING }}
+                >
+                  Revenue Leak Fix
+                </span>
+                <p
+                  className="text-sm md:text-base italic leading-snug mb-6 max-w-lg"
+                  style={{ fontFamily: HEADING, color: "rgba(255,255,255,0.6)" }}
+                >
+                  We audit your workflows, find the leaks, and build AI systems
+                  to fix them — tailored to exactly what your business needs.
+                </p>
+
+                <span
+                  className="text-white/40 text-[10px] uppercase tracking-[0.2em] mb-3"
+                  style={{ fontFamily: BODY }}
+                >
+                  Examples of what we build
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mb-6">
+                  {[
+                    { icon: "⚡", label: "Lead routing & instant response" },
+                    { icon: "📧", label: "Email & follow-up sequences" },
+                    { icon: "🔗", label: "CRM sync & data pipelines" },
+                    { icon: "🧠", label: "Internal AI assistants" },
+                    { icon: "📊", label: "Dashboards & reporting" },
+                    { icon: "⚙️", label: "Custom workflow engines" },
+                  ].map((cap) => (
+                    <div
+                      key={cap.label}
+                      className="flex items-center gap-2.5 rounded-lg border border-white/[0.06] bg-white/[0.015] px-3 py-2"
+                    >
+                      <span className="text-sm">{cap.icon}</span>
+                      <span
+                        className="text-white/70 text-[13px]"
+                        style={{ fontFamily: BODY }}
+                      >
+                        {cap.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <p
+                  className="text-white/40 text-xs italic mb-6"
+                  style={{ fontFamily: BODY }}
+                >
+                  Or something completely different — tell us the pain, we&apos;ll
+                  design the system.
+                </p>
+
+                <div className="h-px w-full bg-[#EA9A61]/10 mb-5" />
+
+                <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-5">
+                  <div>
+                    <span
+                      className="text-white/40 text-[10px] uppercase tracking-[0.2em] block mb-1"
+                      style={{ fontFamily: BODY }}
+                    >
+                      Investment
+                    </span>
+                    <span
+                      className="text-white text-3xl md:text-4xl font-bold italic leading-none block"
+                      style={{ fontFamily: HEADING }}
+                    >
+                      From $500
+                    </span>
+                    <span
+                      className="text-xs block mt-1"
+                      style={{ fontFamily: BODY, color: "rgba(255,255,255,0.4)" }}
+                    >
+                      Build fee &middot; scoped per project &middot; + value-based retainer
+                    </span>
+                  </div>
+
+                  <span
+                    className="inline-flex items-center self-start sm:self-auto gap-1.5 rounded-full border border-[#EA9A61]/30 bg-[#EA9A61]/10 px-3 py-1.5 text-[11px] text-[#EA9A61] font-semibold"
+                    style={{ fontFamily: BODY }}
+                  >
+                    First month free
+                  </span>
+                </div>
+
+                <a
+                  href="https://calendly.com/rangeofviewmusic/30min"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cta-shine inline-flex items-center justify-center gap-2 text-white font-semibold rounded-full transition-all duration-300 hover:scale-[1.02] w-full"
+                  style={{
+                    fontFamily: HEADING,
+                    padding: "15px",
+                    fontSize: "13px",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    background:
+                      "linear-gradient(112deg, #42201C 6.46%, #A64D2B 34.96%, #B16937 63.88%, #EA9A61 97.63%)",
+                    boxShadow:
+                      "3px 4px 4px 0 rgba(255, 244, 227, 0.15) inset, 0 4.385px 4.385px 0 rgba(0, 0, 0, 0.25)",
+                  }}
+                >
+                  Book a free discovery call
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </a>
+              </div>
+            </div>
           </motion.div>
 
-          {/* Card 2: Revenue Operating System */}
+          {/* Card 2: AI Chatbot — PACKAGED PRODUCT */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ ...spring, delay: 0.3 }}
-            className="relative rounded-2xl border border-[#EA9A61]/30 bg-[#EA9A61]/[0.04] md:scale-[1.02] p-6 md:p-8 flex flex-col"
+            className="relative rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6 md:p-8 flex flex-col"
           >
             <span
-              className="absolute -top-3 left-6 rounded-full border border-[#EA9A61]/40 bg-[#EA9A61]/15 px-3 py-0.5 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-[#EA9A61]"
+              className="inline-flex items-center gap-1.5 self-start rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-white/50 mb-4"
               style={{ fontFamily: BODY }}
             >
-              Recommended
+              <span className="w-1 h-1 rounded-full bg-white/50" />
+              Off-the-shelf product
             </span>
 
-            <span
-              className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-white/40 mb-4"
-              style={{ fontFamily: BODY }}
-            >
-              Your business runs itself
-            </span>
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+              {/* Left: name + price */}
+              <div className="flex-1">
+                <span
+                  className="text-white text-2xl md:text-3xl font-bold italic leading-[1.05] block"
+                  style={{ fontFamily: HEADING }}
+                >
+                  AI Chatbot
+                </span>
+                <span
+                  className="text-sm italic block mb-4"
+                  style={{ fontFamily: HEADING, color: "rgba(255,255,255,0.5)" }}
+                >
+                  Your 24/7 front desk.
+                </span>
 
-            <span
-              className="text-white text-lg font-bold italic mb-4"
-              style={{ fontFamily: HEADING }}
-            >
-              Revenue Leak Fix
-            </span>
-
-            {/* Price range */}
-            <span
-              className="text-white text-4xl md:text-5xl font-bold italic mb-1"
-              style={{ fontFamily: HEADING }}
-            >
-              Starting from $500
-            </span>
-            <span
-              className="text-white/30 text-xs mb-3"
-              style={{ fontFamily: BODY }}
-            >
-              Build fee &mdash; scoped to your workflows and impact
-            </span>
-
-            {/* Retainer pill */}
-            <span
-              className="inline-flex items-center self-start gap-1.5 rounded-full border border-[#EA9A61]/20 bg-[#EA9A61]/[0.06] px-3 py-1 text-xs text-[#EA9A61] font-semibold mb-1.5"
-              style={{ fontFamily: BODY }}
-            >
-              + monthly management priced on value delivered
-            </span>
-            <span
-              className="text-[#EA9A61]/60 text-[clamp(0.7rem,1.5vw,0.75rem)] mb-6"
-              style={{ fontFamily: BODY }}
-            >
-              First month free &middot; retainer based on system complexity
-            </span>
-
-            {/* Features */}
-            <ul className="flex-1 space-y-2 mb-6">
-              {[
-                "Find every place your business is bleeding time or money",
-                "Automate the repetitive tasks your team hates doing",
-                "Recover revenue that was falling through the cracks",
-                "Lead gen, outreach, and follow-up on autopilot",
-                "All your tools connected into one system",
-                "Your ops run whether you\u2019re in the room or not",
-              ].map((item) => (
-                <li
-                  key={item}
-                  className="flex items-start gap-2 text-white/50 text-sm"
+                <div className="flex items-baseline gap-3 mb-1">
+                  <span
+                    className="text-white text-4xl md:text-[2.75rem] font-bold italic leading-none"
+                    style={{ fontFamily: HEADING }}
+                  >
+                    $500
+                  </span>
+                  <span
+                    className="text-sm line-through"
+                    style={{ fontFamily: BODY, color: "rgba(255,255,255,0.3)" }}
+                  >
+                    $2,000
+                  </span>
+                </div>
+                <span
+                  className="text-white/40 text-xs block mb-3"
                   style={{ fontFamily: BODY }}
                 >
-                  <span className="text-[#EA9A61] mt-0.5 shrink-0">
-                    &#10003;
+                  Fixed setup fee &middot; deploy in days
+                </span>
+                <div className="flex items-center flex-wrap gap-2">
+                  <span
+                    className="inline-flex items-center gap-1.5 rounded-full border border-[#EA9A61]/25 bg-[#EA9A61]/[0.06] px-3 py-1 text-xs text-[#EA9A61] font-semibold"
+                    style={{ fontFamily: BODY }}
+                  >
+                    + $200/mo
                   </span>
-                  {item}
-                </li>
-              ))}
-            </ul>
+                  <span
+                    className="text-[11px]"
+                    style={{ fontFamily: BODY, color: "rgba(255,255,255,0.4)" }}
+                  >
+                    Monitoring &amp; optimization
+                  </span>
+                </div>
+              </div>
 
-            {/* Best for */}
-            <p
-              className="text-white/30 text-xs italic mb-6"
-              style={{ fontFamily: BODY }}
-            >
-              Systems that scale with you.
-            </p>
+              {/* Right: features */}
+              <div className="flex-1">
+                <span
+                  className="text-[10px] uppercase tracking-[0.2em] block mb-3"
+                  style={{ fontFamily: BODY, color: "rgba(255,255,255,0.4)" }}
+                >
+                  What&rsquo;s included
+                </span>
+                <ul className="space-y-2">
+                  {[
+                    "Handles every inquiry with your brand\u2019s voice",
+                    "Answers the questions your customers always ask",
+                    "Available 24/7, no days off",
+                    "Qualifies leads and books calls to your calendar",
+                    "Escalates to a human when it matters",
+                  ].map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-start gap-2 text-sm leading-snug"
+                      style={{ fontFamily: BODY, color: "rgba(255,255,255,0.6)" }}
+                    >
+                      <span className="text-[#EA9A61] mt-0.5 shrink-0">
+                        &#10003;
+                      </span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
 
-            {/* CTA */}
-            <a
-              href="https://calendly.com/rangeofviewmusic/30min"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="cta-shine block text-center text-white font-semibold rounded-full transition-all duration-300 hover:scale-[1.03]"
-              style={{
-                fontFamily: HEADING,
-                padding: "14px",
-                fontSize: "13px",
-                letterSpacing: "0.05em",
-                background:
-                  "linear-gradient(112deg, #42201C 6.46%, #A64D2B 34.96%, #B16937 63.88%, #EA9A61 97.63%)",
-                boxShadow:
-                  "3px 4px 4px 0 rgba(255, 244, 227, 0.15) inset, 0 4.385px 4.385px 0 rgba(0, 0, 0, 0.25)",
-              }}
-            >
-              Book a call &rarr;
-            </a>
+            {/* Bottom row */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-6 pt-5" style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+              <p
+                className="text-[11px] italic"
+                style={{ fontFamily: BODY, color: "rgba(255,255,255,0.4)" }}
+              >
+                <span
+                  className="font-semibold not-italic"
+                  style={{ color: "rgba(255,255,255,0.6)" }}
+                >
+                  vs. $35K/yr for a receptionist.
+                </span>{" "}
+                $2,900/yr for a bot that never sleeps.
+              </p>
+              <a
+                href="https://calendly.com/rangeofviewmusic/30min"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shrink-0 block text-center text-white font-semibold rounded-full border border-white/15 hover:border-white/30 hover:bg-white/[0.04] transition-all duration-300"
+                style={{
+                  fontFamily: HEADING,
+                  padding: "12px 28px",
+                  fontSize: "13px",
+                  letterSpacing: "0.05em",
+                  background: "rgba(255,255,255,0.02)",
+                }}
+              >
+                Deploy my chatbot &rarr;
+              </a>
+            </div>
           </motion.div>
         </div>
 

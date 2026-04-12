@@ -3,7 +3,6 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 
 const FONT = "Norwige, sans-serif";
-const ACCENT = "#8B6F47";
 const ACCENT_GRADIENT = "linear-gradient(135deg, #8B6F47 0%, #6B5437 100%)";
 const BROWN_GRADIENT = "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)";
 const INACTIVE_BG = "rgba(59, 33, 20, 0.30)";
@@ -183,72 +182,50 @@ export default function VideoPortfolioSection() {
 
     return (
         <section className="relative bg-black text-[#FFF4E3] py-24 px-6 md:px-12 lg:px-16">
-            {/* Section Label */}
-            <p
-                className="text-xs uppercase tracking-[0.3em] text-[#FFF4E3]/40 mb-6"
-                style={{ fontFamily: FONT }}
-            >
-                Our Portfolio
-            </p>
+            {/* Section Label + Minimal Category Tabs */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10 md:mb-12 pb-5 border-b border-[#FFF4E3]/[0.08]">
+                <p
+                    className="text-xs uppercase tracking-[0.3em] text-[#FFF4E3]/40"
+                    style={{ fontFamily: FONT }}
+                >
+                    Our Portfolio
+                </p>
 
-            {/* Huge Top-Level Category Selectors */}
-            <div className="flex flex-col md:flex-row gap-6 mb-20">
-                {categories.map((cat) => (
-                    <button
-                        key={cat.id}
-                        onMouseEnter={() => handleCatChange(cat.id)}
-                        onClick={() => handleCatChange(cat.id)}
-                        className={`flex-1 relative overflow-hidden rounded-[2.5rem] p-6 md:p-10 lg:p-14 text-left transition-all duration-700 isolate group ${activeCat === cat.id
-                            ? "ring-1 ring-[#8B6F47]/50 shadow-[0_0_50px_rgba(139,111,71,0.15)] bg-black"
-                            : "bg-[#FFF4E3]/[0.02] hover:bg-[#FFF4E3]/[0.04]"
-                            }`}
-                    >
-                        {/* Active background glow */}
-                        {activeCat === cat.id && (
-                            <div className="absolute inset-0 bg-gradient-to-br from-[#8B6F47]/20 via-transparent to-transparent opacity-50 z-[-1]" />
-                        )}
-
-                        <div className="relative z-10 flex flex-col h-full justify-between gap-6 md:gap-12">
-                            <h3
-                                className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-light tracking-tight"
+                <div
+                    className="inline-flex items-center gap-1 p-1 rounded-full border border-[#FFF4E3]/[0.1] bg-black/40 self-start sm:self-auto"
+                    role="tablist"
+                    aria-label="Portfolio category"
+                >
+                    {categories.map((cat) => {
+                        const isActive = activeCat === cat.id;
+                        return (
+                            <button
+                                key={cat.id}
+                                role="tab"
+                                aria-selected={isActive}
+                                onClick={() => handleCatChange(cat.id)}
+                                className="relative px-5 md:px-6 py-2.5 text-xs md:text-sm uppercase tracking-[0.2em] rounded-full transition-all duration-300"
                                 style={{
                                     fontFamily: FONT,
-                                    fontStyle: 'italic',
-                                    color: activeCat === cat.id ? "#FFF4E3" : "rgba(255,244,227,0.4)"
+                                    color: isActive ? "#FFF4E3" : "rgba(255,244,227,0.5)",
+                                    background: isActive ? BROWN_GRADIENT : "transparent",
+                                    boxShadow: isActive
+                                        ? "0 0 20px rgba(234,154,97,0.35), inset 0 1px 0 rgba(255,244,227,0.15)"
+                                        : "none",
+                                    fontWeight: isActive ? 600 : 400,
                                 }}
                             >
+                                {isActive && (
+                                    <span
+                                        className="inline-block w-1.5 h-1.5 rounded-full mr-2 align-middle"
+                                        style={{ background: "#FFF4E3" }}
+                                    />
+                                )}
                                 {cat.label}
-                            </h3>
-
-                            <div className="flex items-end justify-between">
-                                <p
-                                    className={`text-sm md:text-lg max-w-[280px] leading-relaxed transition-all duration-500 ${activeCat === cat.id ? "text-[#FFF4E3]/70 opacity-100 translate-y-0" : "text-[#FFF4E3]/0 opacity-0 translate-y-4"
-                                        }`}
-                                    style={{ fontFamily: FONT }}
-                                >
-                                    {cat.id === "real-estate"
-                                        ? "Premium visuals for properties, neighborhoods, and commercial spaces."
-                                        : "Capturing the raw energy of sports, fashion, and live events."}
-                                </p>
-
-                                {/* Arrow icon indicator */}
-                                <div className={`w-12 h-12 rounded-full border flex items-center justify-center transition-all duration-500 ${activeCat === cat.id
-                                    ? "border-[#EA9A61] text-[#FFF4E3] rotate-0"
-                                    : "border-[#FFF4E3]/10 text-[#FFF4E3]/30 -rotate-45 group-hover:border-[#FFF4E3]/30"
-                                    }`}
-                                    style={{
-                                        background: activeCat === cat.id ? BROWN_GRADIENT : "transparent",
-                                    }}
-                                >
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M5 12h14"></path>
-                                        <path d="m12 5 7 7-7 7"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </button>
-                ))}
+                            </button>
+                        );
+                    })}
+                </div>
             </div>
 
             {/* Main Grid */}

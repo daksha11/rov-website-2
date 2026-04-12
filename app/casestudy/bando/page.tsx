@@ -6,18 +6,18 @@ import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 export const metadata: Metadata = {
     title: "The Bando - Case Study",
     description:
-        "How Range of View Studios transformed The Bando's digital presence — a Black history museum and fried chicken restaurant in Atlanta. Bounce rate cut by 60%.",
+        "How Range of View Studios transformed The Bando's digital presence, a Black history museum and fried chicken restaurant in Atlanta. Bounce rate cut by 60%.",
     alternates: { canonical: "https://www.rovstudios.com/casestudy/bando" },
     openGraph: {
         title: "The Bando Case Study | Range of View Studios",
-        description: "Bold, unapologetically Atlanta — we cut bounce rate by 60% with a culturally-driven redesign.",
+        description: "Bold, unapologetically Atlanta. We cut bounce rate by 60% with a culturally-driven redesign.",
         url: "https://www.rovstudios.com/casestudy/bando",
         images: [{ url: "/og/og-bando.webp", width: 1200, height: 630, alt: "The Bando website redesign by ROV Studios" }],
     },
     twitter: {
         card: "summary_large_image",
         title: "The Bando Case Study | Range of View Studios",
-        description: "Bold, unapologetically Atlanta — we cut bounce rate by 60% with a culturally-driven redesign.",
+        description: "Bold, unapologetically Atlanta. We cut bounce rate by 60% with a culturally-driven redesign.",
         images: ["/og/og-bando.webp"],
     },
 };

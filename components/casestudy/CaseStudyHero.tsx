@@ -13,6 +13,7 @@ interface CaseStudyHeroProps {
     liveLink?: string;
     buttonAccentColor?: string;
     buttonFont?: string;
+    objectPosition?: string;
 }
 
 const spring = { type: "spring" as const, stiffness: 80, damping: 20 };
@@ -25,6 +26,7 @@ export const CaseStudyHero: React.FC<CaseStudyHeroProps> = ({
     enableBlur = false,
     liveLink = "https://www.thebandoatl.com/",
     buttonAccentColor = "#C90000",
+    objectPosition = "center center",
 }) => {
     return (
         <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
@@ -42,7 +44,7 @@ export const CaseStudyHero: React.FC<CaseStudyHeroProps> = ({
                     fill
                     priority
                     sizes="100vw"
-                    style={{ objectFit: 'cover' }}
+                    style={{ objectFit: 'cover', objectPosition }}
                 />
             </div>
 

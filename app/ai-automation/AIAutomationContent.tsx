@@ -725,11 +725,11 @@ export default function AIAutomationContent() {
             {/* ROI Calculator — revealed by secret triple-click on pricing market bar */}
             {showROI && <AIROICalculator />}
 
-            {/* Cross-Sell Nudges */}
-            <CrossSellNudges currentService="ai-automation" />
-
             {/* Our Approach Section */}
             <OurApproachSection steps={aiAutomationSteps} />
+
+            {/* Cross-Sell Nudges */}
+            <CrossSellNudges currentService="ai-automation" />
 
             {/* FAQ Section */}
             <FAQSection items={aiAutomationFaqItems} />

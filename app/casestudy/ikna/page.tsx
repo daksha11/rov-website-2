@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     },
     openGraph: {
         title: 'Aysegul Ikna Case Study | Range of View Studios',
-        description: 'Luxury sustainable fashion meets digital — 30% increase in monthly sales.',
+        description: 'Luxury sustainable fashion meets digital. 30% increase in monthly sales.',
         images: [{ url: '/og/og-ikna.webp', width: 1200, height: 630, alt: 'Aysegul Ikna website by ROV Studios' }],
         type: 'article',
         url: 'https://www.rovstudios.com/casestudy/ikna',
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     twitter: {
         card: 'summary_large_image',
         title: 'Aysegul Ikna Case Study | Range of View Studios',
-        description: 'Luxury sustainable fashion meets digital — 30% increase in monthly sales.',
+        description: 'Luxury sustainable fashion meets digital. 30% increase in monthly sales.',
         images: ['/og/og-ikna.webp'],
     },
 };
@@ -115,7 +115,7 @@ export default function IknaCaseStudyPage() {
         {
             title: "Experience Philosophy",
             descriptions: [
-                "Every digital touchpoint designed to reflect the craftsmanship and attention to detail present in the physical garments—justifying premium pricing through premium experience."
+                "Every digital touchpoint designed to reflect the craftsmanship and attention to detail present in the physical garments, justifying premium pricing through premium experience."
             ]
         }
     ];

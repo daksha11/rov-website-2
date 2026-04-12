@@ -1,15 +1,33 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import { useRef, useState } from "react";
 import MarketRateTooltip from "@/components/common/MarketRateTooltip";
 
 const HEADING = "Norwige, sans-serif";
 const BODY = "'Roboto', sans-serif";
+const BROWN_GRADIENT =
+  "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)";
 const spring = { type: "spring" as const, stiffness: 100, damping: 20 };
 
-const packages = [
+type PackageCategory = "real-estate" | "events";
+
+interface Package {
+  id: PackageCategory;
+  categoryLabel: string;
+  name: string;
+  price: string;
+  priceSub: string;
+  tagline: string;
+  bestFor: string;
+  recommended?: boolean;
+  features: string[];
+}
+
+const packages: Package[] = [
   {
+    id: "real-estate",
+    categoryLabel: "Real Estate",
     name: "Property Showcase",
     price: "Starting from $500",
     priceSub: "Based on sq ft",
@@ -25,6 +43,8 @@ const packages = [
     ],
   },
   {
+    id: "events",
+    categoryLabel: "Events",
     name: "Event Coverage",
     price: "Let\u2019s scope it.",
     priceSub: "Custom quote",
@@ -46,6 +66,9 @@ const packages = [
 export default function SpecialtyPackages() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
+  const [activeCategory, setActiveCategory] =
+    useState<PackageCategory>("real-estate");
+  const activePkg = packages.find((p) => p.id === activeCategory)!;
 
   return (
     <div
@@ -85,35 +108,68 @@ export default function SpecialtyPackages() {
           to ignore.
         </motion.p>
 
-        {/* Package cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 mb-10">
-          {packages.map((pkg, i) => (
-            <motion.div
-              key={pkg.name}
-              initial={{ opacity: 0, y: 25 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ ...spring, delay: 0.2 + i * 0.1 }}
-              className={`relative rounded-2xl border p-6 md:p-8 flex flex-col ${
-                pkg.recommended
-                  ? "border-[#EA9A61]/30 bg-[#EA9A61]/[0.04]"
-                  : "border-white/[0.06] bg-white/[0.02]"
-              }`}
-            >
-              {pkg.recommended && (
-                <span
-                  className="absolute -top-3 left-6 rounded-full border border-[#EA9A61]/40 bg-[#EA9A61]/15 px-3 py-0.5 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-[#EA9A61]"
-                  style={{ fontFamily: BODY }}
+        {/* Category toggle */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ ...spring, delay: 0.18 }}
+          className="flex justify-center mb-8"
+        >
+          <div
+            className="inline-flex items-center gap-1 p-1 rounded-full border border-white/[0.1] bg-black/40"
+            role="tablist"
+            aria-label="Package category"
+          >
+            {packages.map((pkg) => {
+              const isActive = activeCategory === pkg.id;
+              return (
+                <button
+                  key={pkg.id}
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => setActiveCategory(pkg.id)}
+                  className="relative px-5 md:px-6 py-2.5 text-xs md:text-sm uppercase tracking-[0.2em] rounded-full transition-all duration-300"
+                  style={{
+                    fontFamily: BODY,
+                    color: isActive ? "#FFF4E3" : "rgba(255,244,227,0.5)",
+                    background: isActive ? BROWN_GRADIENT : "transparent",
+                    boxShadow: isActive
+                      ? "0 0 20px rgba(234,154,97,0.35), inset 0 1px 0 rgba(255,244,227,0.15)"
+                      : "none",
+                    fontWeight: isActive ? 600 : 400,
+                  }}
                 >
-                  Recommended
-                </span>
-              )}
+                  {isActive && (
+                    <span
+                      className="inline-block w-1.5 h-1.5 rounded-full mr-2 align-middle"
+                      style={{ background: "#FFF4E3" }}
+                    />
+                  )}
+                  {pkg.categoryLabel}
+                </button>
+              );
+            })}
+          </div>
+        </motion.div>
+
+        {/* Active package card */}
+        <div className="max-w-3xl mx-auto mb-10">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activePkg.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="relative rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 md:p-8 flex flex-col"
+            >
 
               {/* Name */}
               <span
                 className="text-white text-lg font-bold italic mb-3"
                 style={{ fontFamily: HEADING }}
               >
-                {pkg.name}
+                {activePkg.name}
               </span>
 
               {/* Price */}
@@ -121,13 +177,13 @@ export default function SpecialtyPackages() {
                 className="text-white text-3xl md:text-4xl font-bold italic mb-1"
                 style={{ fontFamily: HEADING }}
               >
-                {pkg.price}
+                {activePkg.price}
               </span>
               <span
                 className="text-white/30 text-xs mb-4"
                 style={{ fontFamily: BODY }}
               >
-                {pkg.priceSub}
+                {activePkg.priceSub}
               </span>
 
               {/* Tagline */}
@@ -135,14 +191,14 @@ export default function SpecialtyPackages() {
                 className="text-white/50 text-sm italic mb-5"
                 style={{ fontFamily: BODY }}
               >
-                {pkg.tagline}
+                {activePkg.tagline}
               </p>
 
               <div className="h-px w-full bg-white/[0.06] mb-5" />
 
               {/* Features in two columns */}
               <ul className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5 mb-6">
-                {pkg.features.map((item) => (
+                {activePkg.features.map((item) => (
                   <li
                     key={item}
                     className="flex items-start gap-2 text-white/50 text-sm"
@@ -165,7 +221,7 @@ export default function SpecialtyPackages() {
                 }}
               >
                 <span className="text-white/50 font-semibold">Best for:</span>{" "}
-                {pkg.bestFor}
+                {activePkg.bestFor}
               </p>
 
               {/* CTA */}
@@ -174,7 +230,7 @@ export default function SpecialtyPackages() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`cta-shine block text-center text-white font-semibold rounded-full transition-all duration-300 hover:scale-[1.03] ${
-                  pkg.recommended
+                  activePkg.recommended
                     ? ""
                     : "border border-white/10 hover:border-white/20"
                 }`}
@@ -183,7 +239,7 @@ export default function SpecialtyPackages() {
                   padding: "12px",
                   fontSize: "13px",
                   letterSpacing: "0.05em",
-                  ...(pkg.recommended
+                  ...(activePkg.recommended
                     ? {
                         background:
                           "linear-gradient(112deg, #42201C 6.46%, #A64D2B 34.96%, #B16937 63.88%, #EA9A61 97.63%)",
@@ -196,7 +252,7 @@ export default function SpecialtyPackages() {
                 Book a call &rarr;
               </a>
             </motion.div>
-          ))}
+          </AnimatePresence>
         </div>
 
         {/* Bridge text */}

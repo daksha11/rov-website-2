@@ -120,6 +120,9 @@ const Footer = () => {
               <a href="/ai-automation" className="hover:text-gray-400 transition-colors duration-300">AI Solutions</a>
             </li>
             <li>
+              <a href="/casestudy" className="hover:text-gray-400 transition-colors duration-300">Case Studies</a>
+            </li>
+            <li>
               <a href="/blog" className="hover:text-gray-400 transition-colors duration-300">Blog</a>
             </li>
           </ul>
@@ -133,6 +136,13 @@ const Footer = () => {
           >
             FOLLOW US
           </h3>
+          <a
+            href="mailto:contact@rovstudios.com"
+            className="text-base md:text-xl hover:text-gray-400 transition-colors duration-300 mb-1"
+            style={{ fontFamily: 'Roboto, sans-serif' }}
+          >
+            contact@rovstudios.com
+          </a>
           <div className="flex items-center gap-5">
             <a href="https://www.instagram.com/rangeofviewstudios/" target="_blank" rel="noopener noreferrer" aria-label="Follow ROV Studios on Instagram" className="transition hover:scale-110">
               <Instagram size={30} className="md:w-10 md:h-10" />

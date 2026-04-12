@@ -271,14 +271,14 @@ const caseStudies = [
   {
     id: 'bando',
     title: 'The Bando',
-    description: 'Bold, unapologetically Atlanta—we transformed a Black history museum and fried chicken spot\'s digital presence to match their in-person energy, cutting bounce rate by 60%.',
+    description: 'Bold, unapologetically Atlanta. We transformed a Black history museum and fried chicken spot\'s digital presence to match their in-person energy, cutting bounce rate by 60%.',
     image: '/casestudy/Evertriedcrack.webp',
     href: '/casestudy/bando'
   },
   {
     id: 'ikna',
     title: 'Aysegul Ikna',
-    description: 'Luxury that justifies the price tag—we built a sophisticated digital home for a sustainable fashion brand at Ponce City Market, driving 30% sales growth through elevated design and seamless e-commerce.',
+    description: 'Luxury that justifies the price tag. We built a sophisticated digital home for a sustainable fashion brand at Ponce City Market, driving 30% sales growth through elevated design and seamless e-commerce.',
     image: '/casestudy/iknacasestudy.webp',
     href: '/casestudy/ikna'
   },
@@ -288,6 +288,20 @@ const caseStudies = [
     description: 'Scaling Global Operations. A comprehensive brand identity and digital infrastructure project for a private growth and operations partner spanning India, Australia, the US, and Dubai.',
     image: '/casestudy/dubaiskyline.webp',
     href: '/casestudy/dkm'
+  },
+  {
+    id: 'pursue-networking',
+    title: 'Pursue Networking',
+    description: "An AI-powered LinkedIn copilot that turns B2B networking into revenue. We built the platform, the brand, and the pipeline that now drives 500+ active professionals.",
+    image: '/casestudy/Pursue/pursuecover.webp',
+    href: '/casestudy/pursue-networking'
+  },
+  {
+    id: 'atlanta-tech-meetup',
+    title: 'Atlanta Tech Meetup',
+    description: "The vibe is the product. Hand-built community site for Atlanta's monthly tech meetup. 100% hand-coded, 0% AI-generated, serving a community of 500+ builders across 50+ events.",
+    image: '/casestudy/atm/atm1.webp',
+    href: '/casestudy/atlanta-tech-meetup'
   }
 ];
 

@@ -5,6 +5,7 @@ import { NavigationDock } from "@/components/NavDoc";
 import SoundHero from "@/components/sound_page/SoundHero";
 import Gallery from "@/components/Gallery";
 import TestimonialsSection from "@/components/common/TestimonialsSection";
+import CrossSellNudges from "@/components/common/CrossSellNudges";
 import { soundTestimonials } from "@/data/testimonials";
 import { soundFaqItems } from "@/data/faq";
 import { VideoSchema } from "@/components/VideoSchema";
@@ -159,7 +160,10 @@ export default function Page() {
             {/* 10 — Testimonials */}
             <TestimonialsSection testimonials={soundTestimonials} variant="sound" />
 
-            {/* 11 — FAQ */}
+            {/* 11 — Cross-Sell Nudges */}
+            <CrossSellNudges currentService="sound" />
+
+            {/* 12 — FAQ */}
             <FAQSection items={soundFaqItems} />
 
             {/* Footer */}

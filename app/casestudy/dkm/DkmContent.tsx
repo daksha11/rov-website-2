@@ -109,7 +109,7 @@ export default function DkmContent() {
                                         description="We analyzed traditional consultancy firms and modern venture studios to find the gap. Most were either too corporate and stagnant or too 'agency-style' without operational depth."
                                         competitors={competitors}
                                         comparisonData={comparisonData}
-                                        insight="Strategy is cheap; execution is the differentiator. The brand needed to feel like a high-performance engine—structured, efficient, and ready to scale."
+                                        insight="Strategy is cheap; execution is the differentiator. The brand needed to feel like a high-performance engine: structured, efficient, and ready to scale."
                                         titleColor={accentColor}
                                         titleFont={headingFont}
                                         highlightBorderColor={accentColor}

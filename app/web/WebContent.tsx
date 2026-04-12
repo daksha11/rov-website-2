@@ -61,11 +61,11 @@ export default function WebContent() {
             {/* Pricing Tiers */}
             <WebPricingTiers />
 
-            {/* Cross-Sell Nudges */}
-            <CrossSellNudges currentService="web" />
-
             {/* Our Approach Section */}
             <OurApproachSection steps={webDevSteps} />
+
+            {/* Cross-Sell Nudges */}
+            <CrossSellNudges currentService="web" />
 
             {/* FAQ Section */}
             <FAQSection items={webFaqItems} />
