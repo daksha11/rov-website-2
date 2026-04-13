@@ -3,6 +3,7 @@
 import { Instagram, Linkedin, Mail, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import GoogleLoginButton from "@/components/GoogleLoginButton";
 
 interface NavigationDockProps {
   className?: string;
@@ -45,10 +46,10 @@ export function NavigationDock({ className }: NavigationDockProps) {
   return (
     <>
       <div
-        className={`nav-dock-font fixed bottom-6 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-md px-8 py-2.5 rounded-full border border-white/10 z-[999] max-w-[90%] md:max-w-none transition-opacity duration-500 overflow-hidden group ${className || ""}`}
+        className={`nav-dock-font fixed bottom-6 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-md px-8 py-2.5 rounded-full border border-white/10 z-[999] max-w-[90%] md:max-w-none transition-opacity duration-500 group ${className || ""}`}
       >
         {/* Shimmer effect covering entire nav container */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-300">
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-300 overflow-hidden rounded-full">
           <div className="shimmer-effect"></div>
         </div>
 
@@ -86,6 +87,12 @@ export function NavigationDock({ className }: NavigationDockProps) {
             >
               CTRL A
             </Link>
+          </div>
+
+          {/* Login */}
+          <div className="flex items-center">
+            <span className="text-white/30 text-[10px] md:text-base mx-0.5">|</span>
+            <GoogleLoginButton />
           </div>
         </nav>
 

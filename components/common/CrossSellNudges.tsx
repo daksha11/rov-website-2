@@ -240,8 +240,7 @@ function Card({ card }: { card: CardData }) {
           <div className="flex-1 min-w-0">
             <p
               className="text-[10px] md:text-[11px] font-medium tracking-[0.3em] uppercase mb-3"
-              style={{ color: "rgba(234,154,97,0.7)" }}
-              style={{ fontFamily: "Norwige, sans-serif" }}
+              style={{ color: "rgba(234,154,97,0.7)", fontFamily: "Norwige, sans-serif" }}
             >
               Next &middot; Service
             </p>
@@ -253,8 +252,7 @@ function Card({ card }: { card: CardData }) {
             </h3>
             <p
               className="text-sm leading-snug"
-              style={{ color: "rgba(255,244,227,0.45)" }}
-              style={{ fontFamily: "Norwige, sans-serif", fontStyle: "italic" }}
+              style={{ color: "rgba(255,244,227,0.45)", fontFamily: "Norwige, sans-serif", fontStyle: "italic" }}
             >
               {card.tagline}
             </p>
@@ -301,8 +299,7 @@ export default function CrossSellNudges({
       <div className="max-w-6xl mx-auto">
         <p
           className="text-xs uppercase tracking-[0.3em] text-center mb-10 md:mb-14"
-          style={{ color: "rgba(255,244,227,0.3)" }}
-          style={{ fontFamily: "Norwige, sans-serif" }}
+          style={{ color: "rgba(255,244,227,0.3)", fontFamily: "Norwige, sans-serif" }}
         >
           Explore other services
         </p>
