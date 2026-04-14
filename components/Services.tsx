@@ -24,7 +24,8 @@ const darkenColor = (hex: string, percent: number): string => {
   return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
 };
 
-const InteractiveFolderIcon: React.FC<{ folderImages?: string[] }> = ({ folderImages }) => {
+type CropAlign = 'left' | 'center' | 'right';
+const InteractiveFolderIcon: React.FC<{ folderImages?: string[]; transparent?: boolean; cropAlign?: CropAlign | CropAlign[] }> = ({ folderImages, transparent = false, cropAlign = 'center' }) => {
   const maxItems = 3;
   const [open, setOpen] = useState(false);
   const [paperOffsets, setPaperOffsets] = useState<{ x: number; y: number }[]>(
@@ -95,6 +96,12 @@ const InteractiveFolderIcon: React.FC<{ folderImages?: string[] }> = ({ folderIm
   };
 
   const getOpenTransform = (index: number) => {
+    if (transparent) {
+      if (index === 0) return 'translate(-70%, -5%) rotate(-15deg)';
+      if (index === 1) return 'translate(-30%, -10%) rotate(15deg)';
+      if (index === 2) return 'translate(-50%, -20%) rotate(5deg)';
+      return '';
+    }
     if (index === 0) return 'translate(-110%, -60%) rotate(-15deg)';
     if (index === 1) return 'translate(15%, -60%) rotate(15deg)';
     if (index === 2) return 'translate(-50%, -80%) rotate(5deg)';
@@ -150,9 +157,9 @@ const InteractiveFolderIcon: React.FC<{ folderImages?: string[] }> = ({ folderIm
           {/* Images that pop out */}
           {displayImages.map((src, i) => {
             let sizeClasses = '';
-            if (i === 0) sizeClasses = 'w-[50%] h-[45%]';
-            if (i === 1) sizeClasses = 'w-[55%] h-[48%]';
-            if (i === 2) sizeClasses = 'w-[60%] h-[50%]';
+            if (i === 0) sizeClasses = transparent ? 'w-[110%] h-[110%]' : 'w-[50%] h-[45%]';
+            if (i === 1) sizeClasses = transparent ? 'w-[120%] h-[120%]' : 'w-[55%] h-[48%]';
+            if (i === 2) sizeClasses = transparent ? 'w-[130%] h-[130%]' : 'w-[60%] h-[50%]';
 
             const closedTransform = 'translate(-50%, 0%)';
             const openTransform = open
@@ -168,10 +175,11 @@ const InteractiveFolderIcon: React.FC<{ folderImages?: string[] }> = ({ folderIm
                   } ${sizeClasses}`}
                 style={{
                   transform: `${openTransform} translate3d(0,0,0)`,
-                  borderRadius: '8px',
-                  backgroundColor: '#fff',
+                  borderRadius: transparent ? '0' : '8px',
+                  backgroundColor: transparent ? 'transparent' : '#fff',
                   zIndex: open ? 20 + i : 20 - i,
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                  boxShadow: transparent ? 'none' : '0 4px 12px rgba(0,0,0,0.3)',
+                  overflow: transparent ? 'visible' : 'hidden',
                   willChange: open ? 'transform, opacity' : 'auto'
                 }}
               >
@@ -180,7 +188,8 @@ const InteractiveFolderIcon: React.FC<{ folderImages?: string[] }> = ({ folderIm
                   alt={`Item ${i + 1}`}
                   fill
                   unoptimized
-                  className="object-cover"
+                  className={transparent ? 'object-contain' : 'object-cover'}
+                  style={{ objectPosition: Array.isArray(cropAlign) ? (cropAlign[i] ?? 'center') : cropAlign }}
                   sizes="60px"
                 />
               </div>
@@ -237,12 +246,16 @@ interface ServiceCardProps {
   title: string;
   link?: string;
   previewImages?: string[];
+  transparentImages?: boolean;
+  cropAlign?: CropAlign | CropAlign[];
 }
 
 const ServiceCard: React.FC<ServiceCardProps> = ({
   title,
   link = "#",
   previewImages,
+  transparentImages,
+  cropAlign,
 }) => {
   return (
     <Link href={link}>
@@ -258,7 +271,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
           }}
         >
           {/* Interactive Fggbolder Component */}
-          <InteractiveFolderIcon folderImages={previewImages} />
+          <InteractiveFolderIcon folderImages={previewImages} transparent={transparentImages} cropAlign={cropAlign} />
 
           {/* Service Title - Inside the card */}
           <h3
@@ -282,20 +295,22 @@ export default function Services() {
       title: "Web Optimization",
       link: "/web",
       previewImages: [
-        '/heroassets/webfolder1.webp',
-        '/heroassets/webfolder2.webp',
+        '/heroassets/webfolder1.png',
+        '/heroassets/webfolder2.png',
         '/heroassets/webfolder3.webp'
       ],
+      cropAlign: ['left', 'left', 'center'],
     },
     {
       id: "sound",
       title: "Sound Engineering",
       link: "/sound",
       previewImages: [
-        '/thumbnails/studiothumbnail.webp',
-        '/heroassets/flimage2.webp',
-        '/heroassets/event_3.webp'
+        '/heroassets/1.png',
+        '/heroassets/2.png',
+        '/heroassets/3.png'
       ],
+      transparentImages: true,
     },
     {
       id: "video",
@@ -419,6 +434,8 @@ export default function Services() {
               title={service.title}
               link={service.link}
               previewImages={service.previewImages}
+              transparentImages={(service as { transparentImages?: boolean }).transparentImages}
+              cropAlign={(service as { cropAlign?: CropAlign | CropAlign[] }).cropAlign}
             />
           ))}
         </div>
