@@ -3,7 +3,9 @@
 import { useEffect, useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/utils/supabase";
+import { createClient } from "@/utils/supabase/client";
+
+const supabase = createClient();
 
 export default function GoogleLoginButton() {
   const router = useRouter();
@@ -89,7 +91,7 @@ export default function GoogleLoginButton() {
             type="button"
             className="px-1.5 py-1.5 text-white/80 hover:text-white transition-colors cursor-pointer text-[10px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
           >
-            {user.name.split(" ")[0]}
+            {user.name.slice(0, 4)}
           </button>
 
           {menuOpen && (
