@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { navigateToPortal } from '@/utils/portalCTA';
 import { NavigationDock } from '@/components/NavDoc';
 import Footer from '@/components/Footer';
 import ProjectStrip from '@/components/ProjectStrip';
@@ -52,6 +54,7 @@ const AIROICalculator = dynamic(() => import('@/components/ai-automation/AIROICa
 });
 
 export default function AIAutomationContent() {
+    const router = useRouter();
     const [showROI, setShowROI] = useState(false);
 
     return (
@@ -218,32 +221,32 @@ export default function AIAutomationContent() {
                         alignItems: 'center',
                     }}
                 >
-                    <Link href="https://calendly.com/rangeofviewmusic/30min" target="_blank">
-                        <motion.button
-                            whileHover={{ scale: 1.04 }}
-                            whileTap={{ scale: 0.97 }}
-                            style={{
-                                fontFamily: 'Roboto, sans-serif',
-                                fontSize: '0.82rem',
-                                fontWeight: '700',
-                                color: 'white',
-                                background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
-                                border: 'none',
-                                borderRadius: '9999px',
-                                padding: '15px 32px',
-                                cursor: 'pointer',
-                                letterSpacing: '0.1em',
-                                textTransform: 'uppercase',
-                                transition: 'all 0.3s ease',
-                                boxShadow: '0 4px 24px rgba(160, 90, 40, 0.45)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '8px',
-                            }}
-                        >
-                            START YOUR AI JOURNEY <span style={{ fontSize: '1rem' }}>→</span>
-                        </motion.button>
-                    </Link>
+                    <motion.button
+                        onClick={() => navigateToPortal(router)}
+                        type="button"
+                        whileHover={{ scale: 1.04 }}
+                        whileTap={{ scale: 0.97 }}
+                        style={{
+                            fontFamily: 'Roboto, sans-serif',
+                            fontSize: '0.82rem',
+                            fontWeight: '700',
+                            color: 'white',
+                            background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
+                            border: 'none',
+                            borderRadius: '9999px',
+                            padding: '15px 32px',
+                            cursor: 'pointer',
+                            letterSpacing: '0.1em',
+                            textTransform: 'uppercase',
+                            transition: 'all 0.3s ease',
+                            boxShadow: '0 4px 24px rgba(160, 90, 40, 0.45)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                        }}
+                    >
+                        START YOUR AI JOURNEY <span style={{ fontSize: '1rem' }}>→</span>
+                    </motion.button>
 
                     <Link href="#ai-in-action">
                         <motion.button
