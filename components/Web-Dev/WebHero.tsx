@@ -3,6 +3,8 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { navigateToPortal } from "@/utils/portalCTA";
 
 const HEADING = "Norwige, sans-serif";
 const BODY = "Roboto, sans-serif";
@@ -246,6 +248,7 @@ const PixelSpotlightCanvas = ({ canvasHandle }: { canvasHandle: React.MutableRef
 // ── Main Hero ──────────────────────────────────────────
 
 export default function WebHero() {
+    const router = useRouter();
     const heroRef = useRef<HTMLElement>(null);
     const canvasHandle = useRef<PixelCanvasHandle | null>(null);
     const gradientRef = useRef<HTMLDivElement>(null);
@@ -414,24 +417,24 @@ export default function WebHero() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7, delay: 0.85, ease: "easeOut" }}
                     >
-                        <Link href="https://calendly.com/rangeofviewmusic/30min" target="_blank">
-                            <motion.button
-                                className="cta-shine px-8 py-3.5 md:px-10 md:py-4 text-white rounded-full font-medium uppercase tracking-wide text-sm"
-                                style={{
-                                    fontFamily: BODY,
-                                    background:
-                                        "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)",
-                                    boxShadow: "0 4px 24px rgba(160, 90, 40, 0.35)",
-                                }}
-                                whileHover={{
-                                    scale: 1.03,
-                                    boxShadow: "0 6px 32px rgba(160, 90, 40, 0.55)",
-                                }}
-                                whileTap={{ scale: 0.97 }}
-                            >
-                                LET&apos;S CREATE <span className="ml-2">&rarr;</span>
-                            </motion.button>
-                        </Link>
+                        <motion.button
+                            onClick={() => navigateToPortal(router)}
+                            type="button"
+                            className="cta-shine px-8 py-3.5 md:px-10 md:py-4 text-white rounded-full font-medium uppercase tracking-wide text-sm"
+                            style={{
+                                fontFamily: BODY,
+                                background:
+                                    "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)",
+                                boxShadow: "0 4px 24px rgba(160, 90, 40, 0.35)",
+                            }}
+                            whileHover={{
+                                scale: 1.03,
+                                boxShadow: "0 6px 32px rgba(160, 90, 40, 0.55)",
+                            }}
+                            whileTap={{ scale: 0.97 }}
+                        >
+                            LET&apos;S CREATE <span className="ml-2">&rarr;</span>
+                        </motion.button>
                         <Link href="#featured-works">
                             <motion.button
                                 className="px-8 py-3.5 md:px-10 md:py-4 text-white rounded-full font-medium uppercase tracking-wide text-sm border border-white/15"

@@ -78,17 +78,6 @@ export function NavigationDock({ className }: NavigationDockProps) {
             </div>
           ))}
 
-          {/* CTRL A Link */}
-          <div className="flex items-center">
-            <span className="text-white/30 text-[10px] md:text-base mx-0.5">|</span>
-            <Link
-              href="/ctrla"
-              className="px-1.5 py-1.5 text-white/80 hover:text-white transition-colors cursor-pointer text-[10px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
-            >
-              CTRL A
-            </Link>
-          </div>
-
           {/* Login */}
           <div className="flex items-center">
             <span className="text-white/30 text-[10px] md:text-base mx-0.5">|</span>
@@ -110,6 +99,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
           <button
             onClick={() => setMenuOpen(false)}
             className="absolute top-4 right-4 text-white/60 hover:text-white transition-colors"
+            aria-label="Close menu"
           >
             <X className="w-6 h-6" />
           </button>
@@ -178,6 +168,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
             <button
               className="absolute top-4 right-4 text-white/60 hover:text-white transition-colors"
               onClick={() => setModalOpen(false)}
+              aria-label="Close contact modal"
             >
               <X className="w-6 h-6" />
             </button>

@@ -3,8 +3,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { useRouter } from "next/navigation";
+import { navigateToPortal } from "@/utils/portalCTA";
 
 const ProjectStrip: React.FC = () => {
+  const router = useRouter();
   return (
     <section
       className="w-full flex items-center justify-center relative"
@@ -70,10 +73,10 @@ const ProjectStrip: React.FC = () => {
                 height: 'clamp(3rem, 5vw, 3.75rem)',
               }}
             />
-            <motion.a
-              href="https://calendly.com/rangeofviewmusic/30min"
-              target="_blank"
-              rel="noopener noreferrer"
+            <motion.button
+              onClick={() => navigateToPortal(router)}
+              type="button"
+              aria-label="Get started with your project"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               className="rounded-full bg-[#F7F2E4] border-none flex items-center justify-center cursor-pointer transition-all duration-300 relative z-2 shrink-0 -mx-2.5 hover:shadow-lg hover:z-10"
@@ -85,7 +88,7 @@ const ProjectStrip: React.FC = () => {
               <svg viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2" className="w-[35%] h-[35%]">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
-            </motion.a>
+            </motion.button>
             <div
               className="rounded-full border border-white/50 bg-transparent shrink-0 max-[768px]:w-[clamp(2.75rem,8vw,3.25rem)] max-[768px]:h-[clamp(2.75rem,8vw,3.25rem)]"
               style={{
@@ -95,10 +98,9 @@ const ProjectStrip: React.FC = () => {
             />
           </div>
 
-          <motion.a
-            href="https://calendly.com/rangeofviewmusic/30min"
-            target="_blank"
-            rel="noopener noreferrer"
+          <motion.button
+            onClick={() => navigateToPortal(router)}
+            type="button"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="cta-shine inline-block no-underline border-none rounded-full bg-[#0E0A08] text-white font-semibold cursor-pointer transition-all duration-300 whitespace-nowrap relative z-1 hover:shadow-[0_6px_20px_rgba(0,0,0,0.4)]"
@@ -111,7 +113,7 @@ const ProjectStrip: React.FC = () => {
             }}
           >
             LET&apos;S CREATE!
-          </motion.a>
+          </motion.button>
         </div>
       </div>
     </section>
