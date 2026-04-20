@@ -1,8 +1,9 @@
 'use client';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
+import JSZip from 'jszip';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
-import { Play, Pause, Trash2, FileAudio, Music2 } from 'lucide-react';
+import { Play, Pause, Trash2, FileAudio, Music2, ChevronDown, ChevronRight, User, Download, UploadCloud, X } from 'lucide-react';
 
 const supabase = createClient();
 
@@ -42,8 +43,93 @@ export default function AdminDashboard() {
   // Audio submissions state
   const [submissions, setSubmissions] = useState<AudioSubmission[]>([]);
   const [loadingTracks, setLoadingTracks] = useState(true);
+  const [expandedClients, setExpandedClients] = useState<Set<string>>(new Set());
+  const [downloadingClientId, setDownloadingClientId] = useState<string | null>(null);
   const [currentlyPlaying, setCurrentlyPlaying] = useState<string | null>(null);
   const audioRefs = useRef<{ [key: string]: HTMLAudioElement }>({});
+
+  const groupedSubmissions = useMemo(() => {
+    const groups: Record<string, {
+      uploader_name: string;
+      uploader_email: string;
+      tracks: AudioSubmission[];
+      latest_upload: string;
+    }> = {};
+
+    submissions.forEach((sub) => {
+      if (!groups[sub.client_id]) {
+        groups[sub.client_id] = {
+          uploader_name: sub.uploader_name,
+          uploader_email: sub.uploader_email,
+          tracks: [],
+          latest_upload: sub.created_at,
+        };
+      }
+      groups[sub.client_id].tracks.push(sub);
+      if (new Date(sub.created_at) > new Date(groups[sub.client_id].latest_upload)) {
+        groups[sub.client_id].latest_upload = sub.created_at;
+      }
+    });
+
+    return Object.entries(groups).sort((a, b) => 
+      new Date(b[1].latest_upload).getTime() - new Date(a[1].latest_upload).getTime()
+    );
+  }, [submissions]);
+
+  const toggleClientExpansion = (clientId: string) => {
+    setExpandedClients((prev) => {
+      const next = new Set(prev);
+      if (next.has(clientId)) next.delete(clientId);
+      else next.add(clientId);
+      return next;
+    });
+  };
+
+  const downloadAllTracks = async (clientName: string, tracks: AudioSubmission[], clientId: string) => {
+    if (downloadingClientId) return;
+    setDownloadingClientId(clientId);
+    try {
+      const zip = new JSZip();
+      
+      // Deduplicate filenames while maintaining order (newest first)
+      const seenNames: Record<string, number> = {};
+      const uniqueTracks = tracks.map((track) => {
+        const baseName = track.title.replace(/[\/\\?%*:|"<>]/g, '-');
+        const count = seenNames[baseName] || 0;
+        seenNames[baseName] = count + 1;
+        const fileName = count === 0 ? `${baseName}.mp3` : `${baseName} (${count}).mp3`;
+        return { ...track, zipFileName: fileName };
+      });
+
+      const downloadPromises = uniqueTracks.map(async (track) => {
+        try {
+          const response = await fetch(track.file_url);
+          if (!response.ok) throw new Error(`Failed to fetch ${track.title}`);
+          const blob = await response.blob();
+          zip.file(track.zipFileName, blob);
+        } catch (err) {
+          console.error(`Error downloading ${track.title}:`, err);
+        }
+      });
+
+      await Promise.all(downloadPromises);
+      
+      const content = await zip.generateAsync({ type: 'blob' });
+      const url = URL.createObjectURL(content);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${clientName.replace(/\s+/g, '_')}_Audio_Tracks.zip`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Error creating ZIP:', err);
+      alert('Failed to creates ZIP file. Check your internet connection and try again.');
+    } finally {
+      setDownloadingClientId(null);
+    }
+  };
 
   // Client management state
   const [clients, setClients] = useState<ClientProfile[]>([]);
@@ -58,6 +144,14 @@ export default function AdminDashboard() {
   const [launchDeliveryDate, setLaunchDeliveryDate] = useState('');
   const [launchDeliverables, setLaunchDeliverables] = useState<string[]>([]);
   const [launchDeliverableInput, setLaunchDeliverableInput] = useState('');
+  
+  // Mixed Audio Tracks Upload state
+  const [mixedUploadModalOpen, setMixedUploadModalOpen] = useState(false);
+  const [mixedUploadTarget, setMixedUploadTarget] = useState<ClientProfile | null>(null);
+  const [mixedUploadTitle, setMixedUploadTitle] = useState('');
+  const [mixedUploadFile, setMixedUploadFile] = useState<File | null>(null);
+  const [isUploadingMixed, setIsUploadingMixed] = useState(false);
+  const [mixedUploadProgress, setMixedUploadProgress] = useState(0);
 
   useEffect(() => {
     const checkAccess = async () => {
@@ -257,6 +351,61 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleMixedTrackUpload = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!mixedUploadFile || !mixedUploadTitle || !mixedUploadTarget) return;
+
+    setIsUploadingMixed(true);
+    setMixedUploadProgress(10);
+
+    try {
+      const timestamp = Date.now();
+      const fileName = `${timestamp}_${mixedUploadFile.name.replace(/\s+/g, '_')}`;
+      
+      // 1. Upload to storage
+      const { data: storageData, error: storageError } = await supabase.storage
+        .from('audio-tracks')
+        .upload(`mixed/${fileName}`, mixedUploadFile, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (storageError) throw storageError;
+      setMixedUploadProgress(60);
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('audio-tracks')
+        .getPublicUrl(`mixed/${fileName}`);
+
+      // 2. Insert into database
+      const { error: dbError } = await supabase
+        .from('mixed_audio_tracks')
+        .insert([{
+          client_id: mixedUploadTarget.id,
+          title: mixedUploadTitle.trim(),
+          file_path: storageData.path,
+          file_url: publicUrl
+        }]);
+
+      if (dbError) throw dbError;
+
+      setMixedUploadProgress(100);
+      setTimeout(() => {
+        setMixedUploadModalOpen(false);
+        setMixedUploadFile(null);
+        setMixedUploadTitle('');
+        setIsUploadingMixed(false);
+        setMixedUploadProgress(0);
+        alert(`Successfully uploaded mixed track for ${mixedUploadTarget.full_name}`);
+      }, 500);
+
+    } catch (err) {
+      console.error('Error uploading mixed track:', err);
+      alert('Failed to upload mixed track. Ensure you have run the SQL migration.');
+      setIsUploadingMixed(false);
+    }
+  };
+
   const cardStyle: React.CSSProperties = {
     background: 'rgba(255,255,255,0.03)',
     border: '1px solid rgba(255,244,227,0.08)',
@@ -424,7 +573,7 @@ export default function AdminDashboard() {
                 fontSize: '13px',
                 fontWeight: 600,
               }}>
-                {submissions.length} {submissions.length === 1 ? 'track' : 'tracks'}
+                {groupedSubmissions.length} {groupedSubmissions.length === 1 ? 'client' : 'clients'}
               </div>
             )}
           </div>
@@ -448,112 +597,223 @@ export default function AdminDashboard() {
               <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.2)', margin: 0 }}>Client submissions will appear here.</p>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-
-              {/* Table header */}
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 180px 1fr 100px',
-                gap: '12px',
-                padding: '0 12px 10px 12px',
-                borderBottom: '1px solid rgba(255,244,227,0.06)',
-              }}>
-                {['Track', 'Uploaded', 'Client', ''].map((h) => (
-                  <span key={h} style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.25)', fontWeight: 500 }}>
-                    {h}
-                  </span>
-                ))}
-              </div>
-
-              {/* Track rows */}
-              {submissions.map((sub) => (
-                <div key={sub.id} style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 180px 1fr 100px',
-                  gap: '12px',
-                  alignItems: 'center',
-                  padding: '12px',
-                  background: 'rgba(255,255,255,0.02)',
-                  border: '1px solid rgba(255,244,227,0.05)',
-                  borderRadius: '12px',
-                  transition: 'border-color 0.2s',
-                }}
-                  onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255,244,227,0.1)'}
-                  onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(255,244,227,0.05)'}
-                >
-                  {/* Track info */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
-                    <div style={{
-                      width: '44px', height: '44px', borderRadius: '8px',
-                      background: 'rgba(0,0,0,0.4)',
-                      border: '1px solid rgba(255,244,227,0.08)',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      flexShrink: 0,
-                    }}>
-                      <FileAudio size={20} style={{ color: 'rgba(255,244,227,0.25)' }} />
-                    </div>
-                    <span style={{ fontSize: '14px', color: '#FFF4E3', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: 500 }}>
-                      {sub.title}
-                    </span>
-                  </div>
-
-                  {/* Upload date */}
-                  <span style={{ fontSize: '13px', color: 'rgba(255,244,227,0.4)' }}>
-                    {new Date(sub.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                  </span>
-
-                  {/* Client info */}
-                  <div style={{ minWidth: 0 }}>
-                    <p style={{ margin: '0 0 2px 0', fontSize: '13px', color: '#FFF4E3', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {sub.uploader_name}
-                    </p>
-                    <p style={{ margin: 0, fontSize: '11px', color: 'rgba(255,244,227,0.35)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {sub.uploader_email}
-                    </p>
-                  </div>
-
-                  {/* Controls */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-end' }}>
-                    <audio
-                      ref={(el) => { if (el) audioRefs.current[sub.id] = el; }}
-                      src={sub.file_url}
-                      onEnded={() => setCurrentlyPlaying(null)}
-                    />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {groupedSubmissions.map(([clientId, group]) => {
+                const isExpanded = expandedClients.has(clientId);
+                return (
+                  <div key={clientId} style={{
+                    background: 'rgba(255,255,255,0.015)',
+                    border: '1px solid rgba(255,244,227,0.04)',
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                    transition: 'all 0.3s ease',
+                  }}>
+                    {/* User Group Header */}
                     <button
-                      onClick={() => togglePlay(sub.id)}
-                      title="Play / Pause"
+                      onClick={() => toggleClientExpansion(clientId)}
                       style={{
-                        width: '36px', height: '36px', borderRadius: '50%',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        width: '100%',
+                        display: 'grid',
+                        gridTemplateColumns: 'auto 1fr auto auto auto',
+                        alignItems: 'center',
+                        gap: '16px',
+                        padding: '16px 20px',
+                        background: isExpanded ? 'rgba(255,255,255,0.03)' : 'transparent',
+                        border: 'none',
+                        textAlign: 'left',
+                        cursor: 'pointer',
+                        transition: 'background 0.2s',
+                      }}
+                      onMouseEnter={(e) => { if (!isExpanded) e.currentTarget.style.background = 'rgba(255,255,255,0.01)'; }}
+                      onMouseLeave={(e) => { if (!isExpanded) e.currentTarget.style.background = 'transparent'; }}
+                    >
+                      <div style={{
+                        width: '40px', height: '40px', borderRadius: '10px',
                         background: 'rgba(234,154,97,0.1)',
-                        border: '1px solid rgba(234,154,97,0.3)',
-                        color: '#EA9A61', cursor: 'pointer', transition: 'all 0.2s',
-                      }}
-                      onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(234,154,97,0.2)'}
-                      onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(234,154,97,0.1)'}
-                    >
-                      {currentlyPlaying === sub.id
-                        ? <Pause size={16} fill="currentColor" />
-                        : <Play size={16} fill="currentColor" style={{ marginLeft: '2px' }} />
-                      }
-                    </button>
-                    <button
-                      onClick={() => handleDeleteTrack(sub)}
-                      title="Delete Track"
-                      style={{
-                        width: '36px', height: '36px', borderRadius: '50%',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        background: 'transparent', border: '1px solid rgba(255,100,100,0.15)',
-                        color: 'rgba(255,100,100,0.4)', cursor: 'pointer', transition: 'all 0.2s',
-                      }}
-                      onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,80,80,0.1)'; e.currentTarget.style.color = '#ff6b6b'; e.currentTarget.style.borderColor = 'rgba(255,80,80,0.4)'; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'rgba(255,100,100,0.4)'; e.currentTarget.style.borderColor = 'rgba(255,100,100,0.15)'; }}
-                    >
-                      <Trash2 size={16} />
+                        color: '#EA9A61'
+                      }}>
+                        <User size={20} />
+                      </div>
+                      <div style={{ minWidth: 0 }}>
+                        <h4 style={{ margin: '0 0 2px 0', fontSize: '15px', color: '#FFF4E3', fontWeight: 600 }}>
+                          {group.uploader_name}
+                        </h4>
+                        <p style={{ margin: 0, fontSize: '12px', color: 'rgba(255,244,227,0.35)' }}>
+                          {group.uploader_email}
+                        </p>
+                      </div>
+                      <div style={{
+                        padding: '4px 10px',
+                        borderRadius: '6px',
+                        background: 'rgba(255,255,255,0.05)',
+                        color: 'rgba(255,244,227,0.5)',
+                        fontSize: '12px',
+                        fontWeight: 500,
+                      }}>
+                        {group.tracks.length} {group.tracks.length === 1 ? 'track' : 'tracks'}
+                      </div>
+                      
+                      
+                      {/* Download All Button */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          downloadAllTracks(group.uploader_name, group.tracks, clientId);
+                        }}
+                        title="Download All as ZIP"
+                        disabled={downloadingClientId === clientId}
+                        style={{
+                          width: '32px', height: '32px', borderRadius: '8px',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          background: downloadingClientId === clientId ? 'rgba(234,154,97,0.2)' : 'rgba(255,255,255,0.05)',
+                          border: '1px solid rgba(255,244,227,0.08)',
+                          color: downloadingClientId === clientId ? '#EA9A61' : 'rgba(255,244,227,0.4)',
+                          cursor: downloadingClientId === clientId ? 'wait' : 'pointer',
+                          transition: 'all 0.2s',
+                        }}
+                        onMouseEnter={(e) => { if (downloadingClientId !== clientId) { e.currentTarget.style.background = 'rgba(234,154,97,0.1)'; e.currentTarget.style.color = '#EA9A61'; e.currentTarget.style.borderColor = 'rgba(234,154,97,0.3)'; } }}
+                        onMouseLeave={(e) => { if (downloadingClientId !== clientId) { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = 'rgba(255,244,227,0.4)'; e.currentTarget.style.borderColor = 'rgba(255,244,227,0.08)'; } }}
+                      >
+                        <Download size={16} className={downloadingClientId === clientId ? 'animate-pulse' : ''} />
+                      </button>
+
+                      {/* Upload Mixed Track Button */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const client = clients.find(c => c.id === clientId);
+                          if (client) {
+                            setMixedUploadTarget(client);
+                          } else {
+                            setMixedUploadTarget({ id: clientId, full_name: group.uploader_name, email: group.uploader_email, role: 'client' });
+                          }
+                          setMixedUploadTitle('');
+                          setMixedUploadFile(null);
+                          setMixedUploadProgress(0);
+                          setMixedUploadModalOpen(true);
+                        }}
+                        title="Upload Mixed Track for Client"
+                        style={{
+                          width: '32px', height: '32px', borderRadius: '8px',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,244,227,0.08)',
+                          color: 'rgba(255,244,227,0.4)', cursor: 'pointer', transition: 'all 0.2s',
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(234,154,97,0.1)'; e.currentTarget.style.color = '#EA9A61'; e.currentTarget.style.borderColor = 'rgba(234,154,97,0.3)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = 'rgba(255,244,227,0.4)'; e.currentTarget.style.borderColor = 'rgba(255,244,227,0.08)'; }}
+                      >
+                        <UploadCloud size={16} />
+                      </button>
+
+                      <div style={{ color: 'rgba(255,244,227,0.25)', transition: 'transform 0.3s ease', transform: isExpanded ? 'rotate(180deg)' : 'rotate(0)' }}>
+                        <ChevronDown size={20} />
+                      </div>
                     </button>
+
+                    {/* Expanded Tracks */}
+                    {isExpanded && (
+                      <div style={{
+                        padding: '12px 20px 20px 20px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '8px',
+                        background: 'rgba(0,0,0,0.1)',
+                        borderTop: '1px solid rgba(255,244,227,0.03)',
+                      }}>
+                        {/* Internal header */}
+                        <div style={{
+                          display: 'grid',
+                          gridTemplateColumns: '1fr 180px 100px',
+                          gap: '12px',
+                          padding: '0 12px 8px 12px',
+                          borderBottom: '1px solid rgba(255,244,227,0.04)',
+                        }}>
+                          <span style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.2)', fontWeight: 500 }}>Track</span>
+                          <span style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.2)', fontWeight: 500 }}>Uploaded</span>
+                          <span style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.2)', fontWeight: 500 }}></span>
+                        </div>
+
+                        {group.tracks.map((sub) => (
+                          <div key={sub.id} style={{
+                            display: 'grid',
+                            gridTemplateColumns: '1fr 180px 100px',
+                            gap: '12px',
+                            alignItems: 'center',
+                            padding: '10px 12px',
+                            background: 'rgba(255,255,255,0.01)',
+                            border: '1px solid rgba(255,244,227,0.04)',
+                            borderRadius: '10px',
+                            transition: 'border-color 0.2s',
+                          }}
+                            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255,244,227,0.08)'}
+                            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(255,244,227,0.04)'}
+                          >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
+                              <div style={{
+                                width: '36px', height: '36px', borderRadius: '8px',
+                                background: 'rgba(0,0,0,0.3)',
+                                border: '1px solid rgba(255,244,227,0.06)',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                flexShrink: 0,
+                              }}>
+                                <FileAudio size={18} style={{ color: 'rgba(255,244,227,0.2)' }} />
+                              </div>
+                              <span style={{ fontSize: '14px', color: '#FFF4E3', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: 500 }}>
+                                {sub.title}
+                              </span>
+                            </div>
+
+                            <span style={{ fontSize: '13px', color: 'rgba(255,244,227,0.4)' }}>
+                              {new Date(sub.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </span>
+
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-end' }}>
+                              <audio
+                                ref={(el) => { if (el) audioRefs.current[sub.id] = el; }}
+                                src={sub.file_url}
+                                onEnded={() => setCurrentlyPlaying(null)}
+                              />
+                              <button
+                                onClick={() => togglePlay(sub.id)}
+                                title="Play / Pause"
+                                style={{
+                                  width: '32px', height: '32px', borderRadius: '50%',
+                                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                  background: 'rgba(234,154,97,0.1)',
+                                  border: '1px solid rgba(234,154,97,0.2)',
+                                  color: '#EA9A61', cursor: 'pointer', transition: 'all 0.2s',
+                                }}
+                                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(234,154,97,0.2)'}
+                                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(234,154,97,0.1)'}
+                              >
+                                {currentlyPlaying === sub.id
+                                  ? <Pause size={14} fill="currentColor" />
+                                  : <Play size={14} fill="currentColor" style={{ marginLeft: '1px' }} />
+                                }
+                              </button>
+                              <button
+                                onClick={() => handleDeleteTrack(sub)}
+                                title="Delete Track"
+                                style={{
+                                  width: '32px', height: '32px', borderRadius: '50%',
+                                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                  background: 'transparent', border: '1px solid rgba(255,100,100,0.1)',
+                                  color: 'rgba(255,100,100,0.3)', cursor: 'pointer', transition: 'all 0.2s',
+                                }}
+                                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,80,80,0.08)'; e.currentTarget.style.color = '#ff6b6b'; e.currentTarget.style.borderColor = 'rgba(255,80,80,0.3)'; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'rgba(255,100,100,0.3)'; e.currentTarget.style.borderColor = 'rgba(255,100,100,0.1)'; }}
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
@@ -686,7 +946,8 @@ export default function AdminDashboard() {
                     </div>
 
                     {/* Action */}
-                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+                      
                       {proj ? (
                         <span style={{ fontSize: '12px', color: 'rgba(255,244,227,0.25)', fontStyle: 'italic' }}>Active</span>
                       ) : (
@@ -954,6 +1215,126 @@ export default function AdminDashboard() {
                 {startingProjectFor ? 'Launching...' : '✦ Launch Project'}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+      {/* ── Mixed Track Upload Modal ── */}
+      {mixedUploadModalOpen && mixedUploadTarget && (
+        <div
+          onClick={() => { if (!isUploadingMixed) setMixedUploadModalOpen(false); }}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 9999,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: 'rgba(0,0,0,0.75)',
+            backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
+            animation: 'confirmFadeIn 0.25s ease-out forwards',
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: 'rgba(14,14,14,0.98)',
+              border: '1px solid rgba(255,244,227,0.1)',
+              borderRadius: '24px',
+              padding: '40px',
+              width: '90%',
+              maxWidth: '480px',
+              animation: 'confirmCardIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
+              <div>
+                <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(255,244,227,0.35)', margin: '0 0 6px 0' }}>
+                  Mixed Audio Track
+                </p>
+                <h2 style={{ fontSize: '22px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', color: '#FFF4E3', margin: 0 }}>
+                  Upload for {mixedUploadTarget.full_name || 'User'}
+                </h2>
+              </div>
+              <button 
+                onClick={() => setMixedUploadModalOpen(false)}
+                disabled={isUploadingMixed}
+                style={{ background: 'none', border: 'none', color: 'rgba(255,244,227,0.2)', cursor: 'pointer', padding: '4px' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#FFF4E3'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,244,227,0.2)'}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <form onSubmit={handleMixedTrackUpload} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.4)', marginBottom: '8px' }}>
+                  Track Title
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Mastered Mix v1"
+                  value={mixedUploadTitle}
+                  onChange={(e) => setMixedUploadTitle(e.target.value)}
+                  style={{
+                    width: '100%', padding: '12px 14px', boxSizing: 'border-box',
+                    borderRadius: '10px', border: '1px solid rgba(255,244,227,0.1)',
+                    background: 'rgba(255,255,255,0.04)', color: '#FFF4E3',
+                    fontFamily: "'Roboto', sans-serif", fontSize: '14px', outline: 'none',
+                  }}
+                />
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.4)', marginBottom: '8px' }}>
+                  Audio File (.mp3)
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    type="file"
+                    accept="audio/mpeg,audio/mp3"
+                    required
+                    onChange={(e) => {
+                      if (e.target.files?.[0]) {
+                        setMixedUploadFile(e.target.files[0]);
+                        if (!mixedUploadTitle) setMixedUploadTitle(e.target.files[0].name.replace(/\.[^/.]+$/, ""));
+                      }
+                    }}
+                    style={{
+                      width: '100%', padding: '12px 14px', boxSizing: 'border-box',
+                      borderRadius: '10px', border: '1px dashed rgba(255,244,227,0.1)',
+                      background: 'rgba(255,255,255,0.02)', color: '#FFF4E3',
+                      fontFamily: "'Roboto', sans-serif", fontSize: '14px', cursor: 'pointer',
+                    }}
+                  />
+                </div>
+              </div>
+
+              {isUploadingMixed && (
+                <div style={{ marginTop: '10px' }}>
+                  <div style={{ width: '100%', height: '4px', background: 'rgba(255,244,227,0.05)', borderRadius: '2px', overflow: 'hidden' }}>
+                    <div style={{ width: `${mixedUploadProgress}%`, height: '100%', background: '#EA9A61', transition: 'width 0.3s ease' }} />
+                  </div>
+                  <p style={{ fontSize: '11px', color: 'rgba(255,244,227,0.4)', marginTop: '8px', textAlign: 'center' }}>
+                    Uploading securely... {mixedUploadProgress}%
+                  </p>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={isUploadingMixed || !mixedUploadFile || !mixedUploadTitle}
+                style={{
+                  marginTop: '12px', padding: '14px', borderRadius: '9999px',
+                  border: '1px solid rgba(234,154,97,0.4)',
+                  background: 'rgba(234,154,97,0.15)', color: '#EA9A61',
+                  fontSize: '14px', fontFamily: "'Roboto', sans-serif",
+                  fontWeight: 600, cursor: (isUploadingMixed || !mixedUploadFile) ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.2s', opacity: (isUploadingMixed || !mixedUploadFile) ? 0.6 : 1,
+                }}
+                onMouseEnter={(e) => { if (!isUploadingMixed && mixedUploadFile) e.currentTarget.style.background = 'rgba(234,154,97,0.25)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(234,154,97,0.15)'; }}
+              >
+                {isUploadingMixed ? 'Uploading...' : 'Confirm Upload'}
+              </button>
+            </form>
           </div>
         </div>
       )}

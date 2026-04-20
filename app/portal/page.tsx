@@ -4,7 +4,7 @@ import { createClient } from '@/utils/supabase/client';
 
 const supabase = createClient();
 import { useRouter } from 'next/navigation';
-import { Play, Pause, Trash2, UploadCloud, X, FileAudio } from 'lucide-react';
+import { Play, Pause, Trash2, UploadCloud, X, FileAudio, Music2, ChevronDown } from 'lucide-react';
 
 interface Project {
   id: string;
@@ -44,6 +44,10 @@ export default function ClientPortal() {
   const [isUploading, setIsUploading] = useState(false);
   const [trackTitle, setTrackTitle] = useState('');
   const [audioFile, setAudioFile] = useState<File | null>(null);
+  const [isConfirmingUpload, setIsConfirmingUpload] = useState(false);
+  const [mixedAudioTracks, setMixedAudioTracks] = useState<AudioTrack[]>([]);
+  const [isAudioTracksExpanded, setIsAudioTracksExpanded] = useState(true);
+  const [isMixedTracksExpanded, setIsMixedTracksExpanded] = useState(true);
 
   // Audio Player State
   const [currentlyPlaying, setCurrentlyPlaying] = useState<string | null>(null);
@@ -75,6 +79,7 @@ export default function ClientPortal() {
 
       setProject(proj);
       await fetchAudioTracks(session.user.id);
+      await fetchMixedAudioTracks(session.user.id);
       setLoading(false);
 
       // Show greeting animation on fresh login
@@ -110,6 +115,18 @@ export default function ClientPortal() {
     
     if (!error && data) {
       setAudioTracks(data);
+    }
+  };
+
+  const fetchMixedAudioTracks = async (uid: string) => {
+    const { data, error } = await supabase
+      .from('mixed_audio_tracks')
+      .select('*')
+      .eq('client_id', uid)
+      .order('created_at', { ascending: false });
+    
+    if (!error && data) {
+      setMixedAudioTracks(data);
     }
   };
 
@@ -161,11 +178,22 @@ export default function ClientPortal() {
     setTrackTitle('');
     setUploadProgress(0);
     setIsUploading(false);
+    setIsConfirmingUpload(false);
   };
 
   const handleUploadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!audioFile || !trackTitle || !userId) return;
+    
+    if (audioTracks.length >= 6) {
+      alert("Maximum limit of 6 tracks reached.");
+      return;
+    }
+
+    if (!isConfirmingUpload) {
+      setIsConfirmingUpload(true);
+      return;
+    }
 
     setIsUploading(true);
     setUploadProgress(10); // Fake initial progress
@@ -211,23 +239,14 @@ export default function ClientPortal() {
       console.error("Error uploading track:", error);
       alert("Failed to upload track. Please try again.");
       setIsUploading(false);
+      setIsConfirmingUpload(false);
     }
   };
 
   const handleDeleteTrack = async (trackId: string, filePath: string) => {
-    if (!confirm('Are you sure you want to delete this track?')) return;
-    
-    try {
-      // Delete DB record
-      await supabase.from('audio_tracks').delete().eq('id', trackId);
-      
-      // Delete from storage
-      await supabase.storage.from('audio-tracks').remove([filePath]);
-
-      setAudioTracks(prev => prev.filter(t => t.id !== trackId));
-    } catch (error) {
-       console.error("Error deleting track:", error);
-    }
+    // Clients are no longer allowed to delete tracks
+    console.warn("Manual deletion not allowed for clients.");
+    return;
   };
 
   const togglePlay = (trackId: string) => {
@@ -845,11 +864,14 @@ export default function ClientPortal() {
 
           </>
         )}
-
+        
         {/* Audio Tracks Section (Always Visible) */}
         <div style={{ ...cardStyle, animation: 'cardFadeIn 0.4s ease-out 0.25s both' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div 
+              onClick={() => setIsAudioTracksExpanded(!isAudioTracksExpanded)}
+              style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }}
+            >
               <span style={{ fontSize: '20px' }}>🎵</span>
               <h3 style={{
                 fontSize: '18px',
@@ -859,138 +881,228 @@ export default function ClientPortal() {
                 margin: 0,
                 color: '#FFF4E3',
               }}>
-                Audio Tracks
+               Audio Tracks
+               <span style={{ 
+                 fontSize: '11px', 
+                 color: audioTracks.length >= 6 ? '#EA9A61' : 'rgba(255,244,227,0.35)',
+                 marginLeft: '8px',
+                 fontWeight: 400,
+                 fontStyle: 'normal',
+                 fontFamily: "'Roboto', sans-serif"
+               }}>
+                 ({audioTracks.length}/6 used)
+               </span>
               </h3>
+              <div style={{ color: 'rgba(255,244,227,0.25)', transition: 'transform 0.3s ease', transform: isAudioTracksExpanded ? 'rotate(180deg)' : 'rotate(0)' }}>
+                <ChevronDown size={18} />
+              </div>
             </div>
             <button
                 onClick={() => setIsUploadModalOpen(true)}
+                disabled={audioTracks.length >= 6}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   gap: '8px',
                   padding: '8px 16px',
                   borderRadius: '9999px',
-                  background: 'transparent',
+                  background: audioTracks.length >= 6 ? 'rgba(255,255,255,0.02)' : 'transparent',
                   border: '1px solid rgba(255,244,227,0.15)',
-                  color: '#FFF4E3',
+                  color: audioTracks.length >= 6 ? 'rgba(255,244,227,0.2)' : '#FFF4E3',
                   fontSize: '12px',
                   fontFamily: "'Roboto', sans-serif",
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s'
+                  cursor: audioTracks.length >= 6 ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.2s',
+                  opacity: audioTracks.length >= 6 ? 0.6 : 1
                 }}
                 onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
-                    e.currentTarget.style.borderColor = 'rgba(255,244,227,0.3)';
+                    if (audioTracks.length < 6) {
+                      e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+                      e.currentTarget.style.borderColor = 'rgba(255,244,227,0.3)';
+                    }
                 }}
                 onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'transparent';
-                    e.currentTarget.style.borderColor = 'rgba(255,244,227,0.15)';
+                    if (audioTracks.length < 6) {
+                      e.currentTarget.style.background = 'transparent';
+                      e.currentTarget.style.borderColor = 'rgba(255,244,227,0.15)';
+                    }
                 }}
             >
-                <UploadCloud size={14} /> Upload
+                <UploadCloud size={14} /> {audioTracks.length >= 6 ? 'Limit Reached' : 'Upload'}
             </button>
           </div>
 
-          {audioTracks.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '30px 0', border: '1px dashed rgba(255,244,227,0.1)', borderRadius: '12px' }}>
-                <FileAudio size={32} strokeWidth={1.5} style={{ margin: '0 auto 12px auto', color: 'rgba(255,244,227,0.2)'}} />
-                <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.4)', margin: 0 }}>No tracks uploaded yet.</p>
-            </div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                {audioTracks.map((track) => (
-                  <div key={track.id} style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '16px',
-                      padding: '12px',
-                      background: 'rgba(255,255,255,0.02)',
-                      border: '1px solid rgba(255,244,227,0.05)',
-                      borderRadius: '12px',
-                      position: 'relative'
-                  }}>
-                      {/* Album art icon */}
-                      <div style={{
-                          width: '56px',
-                          height: '56px',
-                          borderRadius: '8px',
-                          background: 'rgba(0,0,0,0.4)',
-                          border: '1px solid rgba(255,244,227,0.1)',
+          {isAudioTracksExpanded && (
+            <div style={{ animation: 'confirmFadeIn 0.3s ease-out forwards' }}>
+              {audioTracks.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '30px 0', border: '1px dashed rgba(255,244,227,0.1)', borderRadius: '12px' }}>
+                    <FileAudio size={32} strokeWidth={1.5} style={{ margin: '0 auto 12px auto', color: 'rgba(255,244,227,0.2)'}} />
+                    <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.4)', margin: 0 }}>No tracks uploaded yet.</p>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    {audioTracks.map((track) => (
+                      <div key={track.id} style={{
                           display: 'flex',
                           alignItems: 'center',
-                          justifyContent: 'center',
-                          flexShrink: 0
+                          gap: '16px',
+                          padding: '12px',
+                          background: 'rgba(255,255,255,0.02)',
+                          border: '1px solid rgba(255,244,227,0.05)',
+                          borderRadius: '12px',
+                          position: 'relative'
                       }}>
-                          <FileAudio size={24} style={{ color: 'rgba(255,244,227,0.3)' }} />
+                          {/* Album art icon */}
+                          <div style={{
+                              width: '56px',
+                              height: '56px',
+                              borderRadius: '8px',
+                              background: 'rgba(0,0,0,0.4)',
+                              border: '1px solid rgba(255,244,227,0.1)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              flexShrink: 0
+                          }}>
+                              <FileAudio size={24} style={{ color: 'rgba(255,244,227,0.3)' }} />
+                          </div>
+                          
+                          {/* Info & Player */}
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <h4 style={{ margin: '0 0 4px 0', fontSize: '14px', color: '#FFF4E3', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                {track.title}
+                            </h4>
+                            <span style={{ fontSize: '11px', color: 'rgba(255,244,227,0.3)' }}>
+                                {new Date(track.created_at).toLocaleDateString()}
+                            </span>
+                             {/* Audio Element (Hidden technically, using custom controls) */}
+                             <audio 
+                                 ref={(el) => { if (el) audioRefs.current[track.id] = el; }}
+                                 src={track.file_url} 
+                                 onEnded={() => setCurrentlyPlaying(null)}
+                             />
+                           </div>
+      
+                           {/* Controls */}
+                           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', paddingRight: '4px' }}>
+                               <button 
+                                 onClick={() => togglePlay(track.id)}
+                                 style={{
+                                     width: '40px',
+                                     height: '40px',
+                                     borderRadius: '50%',
+                                     display: 'flex',
+                                     alignItems: 'center',
+                                     justifyContent: 'center',
+                                     background: 'rgba(234,154,97,0.1)',
+                                     border: '1px solid rgba(234,154,97,0.3)',
+                                     color: '#EA9A61',
+                                     cursor: 'pointer',
+                                     transition: 'all 0.2s'
+                                 }}
+                                 onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(234,154,97,0.2)'}
+                                 onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(234,154,97,0.1)'}
+                               >
+                                 {currentlyPlaying === track.id ? <Pause size={18} fill="currentColor"/> : <Play size={18} fill="currentColor" style={{ marginLeft: '2px' }}/>}
+                               </button>
+                           </div>
                       </div>
-                      
-                      {/* Info & Player */}
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <h4 style={{ margin: '0 0 4px 0', fontSize: '14px', color: '#FFF4E3', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                            {track.title}
-                        </h4>
-                        <span style={{ fontSize: '11px', color: 'rgba(255,244,227,0.3)' }}>
-                            {new Date(track.created_at).toLocaleDateString()}
-                        </span>
-                        
-                        {/* Audio Element (Hidden technically, using custom controls) */}
-                        <audio 
-                            ref={(el) => { if (el) audioRefs.current[track.id] = el; }}
-                            src={track.file_url} 
-                            onEnded={() => setCurrentlyPlaying(null)}
-                        />
-                      </div>
-
-                      {/* Controls */}
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', paddingRight: '4px' }}>
-                          <button 
-                            onClick={() => togglePlay(track.id)}
-                            style={{
-                                width: '40px',
-                                height: '40px',
-                                borderRadius: '50%',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                background: 'rgba(234,154,97,0.1)',
-                                border: '1px solid rgba(234,154,97,0.3)',
-                                color: '#EA9A61',
-                                cursor: 'pointer',
-                                transition: 'all 0.2s'
-                            }}
-                            onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(234,154,97,0.2)'}
-                            onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(234,154,97,0.1)'}
-                          >
-                            {currentlyPlaying === track.id ? <Pause size={18} fill="currentColor"/> : <Play size={18} fill="currentColor" style={{ marginLeft: '2px' }}/>}
-                          </button>
-
-                          <button 
-                            onClick={async () => {
-                                const { data } = await supabase.from('audio_tracks').select('file_path').eq('id', track.id).single();
-                                if(data) handleDeleteTrack(track.id, data.file_path);
-                            }}
-                            style={{
-                                background: 'transparent',
-                                border: 'none',
-                                color: 'rgba(255,244,227,0.3)',
-                                cursor: 'pointer',
-                                padding: '8px',
-                                transition: 'color 0.2s'
-                            }}
-                            onMouseEnter={(e) => e.currentTarget.style.color = '#ff6b6b'}
-                            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,244,227,0.3)'}
-                            title="Delete Track"
-                          >
-                            <Trash2 size={18} />
-                          </button>
-                      </div>
-                  </div>
-                ))}
+                    ))}
+                </div>
+              )}
             </div>
           )}
         </div>
+
+        {/* Mixed Audio Tracks Section (Uploaded by Admin) */}
+        {mixedAudioTracks.length > 0 && (
+          <div style={{ ...cardStyle, animation: 'cardFadeIn 0.4s ease-out 0.3s both' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
+              <div 
+                onClick={() => setIsMixedTracksExpanded(!isMixedTracksExpanded)}
+                style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }}
+              >
+                <span style={{ fontSize: '20px' }}>⭐</span>
+                <div>
+                  <h3 style={{
+                    fontSize: '18px',
+                    fontFamily: 'Norwige, sans-serif',
+                    fontWeight: 700,
+                    fontStyle: 'italic',
+                    margin: '0 0 2px 0',
+                    color: '#FFF4E3',
+                  }}>
+                    Mixed Audio Tracks
+                  </h3>
+                  <p style={{ fontSize: '11px', color: 'rgba(255,244,227,0.35)', margin: 0 }}>
+                    Mastered tracks uploaded by Admin
+                  </p>
+                </div>
+                <div style={{ color: 'rgba(255,244,227,0.25)', transition: 'transform 0.3s ease', transform: isMixedTracksExpanded ? 'rotate(180deg)' : 'rotate(0)' }}>
+                  <ChevronDown size={18} />
+                </div>
+              </div>
+            </div>
+
+            {isMixedTracksExpanded && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', animation: 'confirmFadeIn 0.3s ease-out forwards' }}>
+                {mixedAudioTracks.map((track) => (
+                  <div key={track.id} style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '16px',
+                    padding: '12px',
+                    background: 'rgba(234,154,97,0.03)',
+                    border: '1px solid rgba(234,154,97,0.1)',
+                    borderRadius: '12px',
+                  }}>
+                    <div style={{
+                      width: '56px', height: '56px', borderRadius: '8px',
+                      background: 'rgba(234,154,97,0.1)',
+                      border: '1px solid rgba(234,154,97,0.2)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      flexShrink: 0
+                    }}>
+                      <Music2 size={24} style={{ color: '#EA9A61' }} />
+                    </div>
+                    
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <h4 style={{ margin: '0 0 4px 0', fontSize: '14px', color: '#FFF4E3', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {track.title}
+                      </h4>
+                      <span style={{ fontSize: '11px', color: 'rgba(255,244,227,0.3)' }}>
+                        Available since {new Date(track.created_at).toLocaleDateString()}
+                      </span>
+                      <audio 
+                        ref={(el) => { if (el) audioRefs.current[track.id] = el; }}
+                        src={track.file_url} 
+                        onEnded={() => setCurrentlyPlaying(null)}
+                      />
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <button 
+                        onClick={() => togglePlay(track.id)}
+                        style={{
+                          width: '40px', height: '40px', borderRadius: '50%',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          background: '#EA9A61', color: '#0A0A0A',
+                          cursor: 'pointer', transition: 'all 0.2s'
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.boxShadow = '0 0 15px rgba(234,154,97,0.3)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = 'none'; }}
+                      >
+                        {currentlyPlaying === track.id ? <Pause size={18} fill="currentColor"/> : <Play size={18} fill="currentColor" style={{ marginLeft: '2px' }}/>}
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
        {/* Upload Modal */}
@@ -1054,108 +1166,163 @@ export default function ClientPortal() {
              </h2>
 
              <form onSubmit={handleUploadSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                
-                {/* Audio File Picker */}
-                <div>
-                   <label style={{ display: 'block', fontSize: '13px', color: 'rgba(255,244,227,0.6)', marginBottom: '8px' }}>Audio File (Required)</label>
-                   <div style={{ position: 'relative' }}>
-                      <input 
-                         type="file" 
-                         accept="audio/*" 
-                         onChange={handleAudioFileChange}
-                         disabled={isUploading}
-                         required
-                         style={{
-                             position: 'absolute',
-                             inset: 0,
-                             width: '100%',
-                             height: '100%',
-                             opacity: 0,
-                             cursor: isUploading ? 'not-allowed' : 'pointer',
-                             zIndex: 2
-                         }}
-                      />
-                      <div style={{
-                         padding: '24px',
-                         border: '1px dashed rgba(255,244,227,0.2)',
-                         borderRadius: '12px',
-                         background: audioFile ? 'rgba(234,154,97,0.05)' : 'rgba(0,0,0,0.3)',
-                         borderColor: audioFile ? 'rgba(234,154,97,0.3)' : 'rgba(255,244,227,0.2)',
-                         textAlign: 'center',
-                         transition: 'all 0.2s',
-                      }}>
-                          {audioFile ? (
-                             <>
-                                <FileAudio size={28} style={{ margin: '0 auto 8px auto', color: '#EA9A61' }} />
-                                <p style={{ fontSize: '14px', color: '#FFF4E3', margin: '0 0 4px 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{audioFile.name}</p>
-                                <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.4)', margin: 0 }}>Click to change file</p>
-                             </>
-                          ) : (
-                             <>
-                                <UploadCloud size={28} style={{ margin: '0 auto 8px auto', color: 'rgba(255,244,227,0.3)' }} />
-                                <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.6)', margin: '0 0 4px 0' }}>Drag & drop or browse</p>
-                                <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.3)', margin: 0 }}>MP3, WAV, FLAC</p>
-                             </>
-                          )}
+                 {isConfirmingUpload ? (
+                   <div style={{
+                      padding: '24px',
+                      background: 'rgba(234,154,97,0.05)',
+                      border: '1px solid rgba(234,154,97,0.2)',
+                      borderRadius: '16px',
+                      textAlign: 'center',
+                      animation: 'confirmCardIn 0.3s ease-out'
+                   }}>
+                      <UploadCloud size={32} style={{ color: '#EA9A61', marginBottom: '16px' }} />
+                      <h3 style={{ fontSize: '18px', color: '#FFF4E3', margin: '0 0 8px 0', fontFamily: 'Norwige, sans-serif', fontStyle: 'italic' }}>Confirm Upload</h3>
+                      <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.5)', lineHeight: 1.6, margin: '0 0 24px 0' }}>
+                         Are you sure you want to upload <strong style={{ color: '#FFF4E3' }}>{trackTitle}</strong>? 
+                         Once uploaded, audio tracks <span style={{ color: '#EA9A61' }}>cannot be deleted</span> from your portal.
+                      </p>
+                      
+                      <div style={{ display: 'flex', gap: '12px' }}>
+                         <button
+                           type="button"
+                           onClick={() => setIsConfirmingUpload(false)}
+                           style={{
+                              flex: 1,
+                              padding: '12px',
+                              borderRadius: '9999px',
+                              border: '1px solid rgba(255,244,227,0.1)',
+                              background: 'transparent',
+                              color: 'rgba(255,244,227,0.5)',
+                              fontSize: '13px',
+                              cursor: 'pointer'
+                           }}
+                         >
+                            Back
+                         </button>
+                         <button
+                           type="submit"
+                           disabled={isUploading}
+                           style={{
+                              flex: 2,
+                              padding: '12px',
+                              borderRadius: '9999px',
+                              background: '#EA9A61',
+                              color: '#0A0A0A',
+                              border: 'none',
+                              fontSize: '13px',
+                              fontWeight: 600,
+                              cursor: 'pointer'
+                           }}
+                         >
+                            {isUploading ? 'Uploading...' : 'Confirm & Upload'}
+                         </button>
                       </div>
                    </div>
-                </div>
-
-                {/* Title Input */}
-                <div>
-                   <label style={{ display: 'block', fontSize: '13px', color: 'rgba(255,244,227,0.6)', marginBottom: '8px' }}>Track Title</label>
-                   <input 
-                      type="text" 
-                      value={trackTitle}
-                      onChange={(e) => setTrackTitle(e.target.value)}
-                      placeholder="e.g. My Awesome Mix"
-                      required
-                      disabled={isUploading}
-                      style={{...inputStyle, ...((isUploading ? { opacity: 0.5, cursor: 'not-allowed' } : {}) as any)}}
-                   />
-                </div>
-
-
-                {/* Progress / Actions */}
-                <div style={{ marginTop: '12px' }}>
-                    {isUploading ? (
-                       <div>
-                           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: 'rgba(255,244,227,0.5)', marginBottom: '8px' }}>
-                              <span>Uploading...</span>
-                              <span>{uploadProgress}%</span>
-                           </div>
-                           <div style={{ height: '6px', background: 'rgba(255,244,227,0.05)', borderRadius: '999px', overflow: 'hidden' }}>
-                               <div style={{ 
-                                  height: '100%', 
-                                  background: '#EA9A61', 
-                                  width: `${uploadProgress}%`,
-                                  transition: 'width 0.3s ease'
-                               }} />
-                           </div>
-                       </div>
-                    ) : (
-                       <button
-                          type="submit"
-                          disabled={!audioFile || !trackTitle}
-                          style={{
-                             width: '100%',
-                             padding: '16px',
+                 ) : (
+                   <>
+                    {/* Audio File Picker */}
+                    <div>
+                       <label style={{ display: 'block', fontSize: '13px', color: 'rgba(255,244,227,0.6)', marginBottom: '8px' }}>Audio File (Required)</label>
+                       <div style={{ position: 'relative' }}>
+                          <input 
+                             type="file" 
+                             accept="audio/*" 
+                             onChange={handleAudioFileChange}
+                             disabled={isUploading}
+                             required
+                             style={{
+                                 position: 'absolute',
+                                 inset: 0,
+                                 width: '100%',
+                                 height: '100%',
+                                 opacity: 0,
+                                 cursor: isUploading ? 'not-allowed' : 'pointer',
+                                 zIndex: 2
+                             }}
+                          />
+                          <div style={{
+                             padding: '24px',
+                             border: '1px dashed rgba(255,244,227,0.2)',
                              borderRadius: '12px',
-                             background: (!audioFile || !trackTitle) ? 'rgba(234,154,97,0.1)' : '#EA9A61',
-                             color: (!audioFile || !trackTitle) ? 'rgba(234,154,97,0.3)' : '#0A0A0A',
-                             border: 'none',
-                             fontSize: '15px',
-                             fontFamily: "'Roboto', sans-serif",
-                             fontWeight: 600,
-                             cursor: (!audioFile || !trackTitle) ? 'not-allowed' : 'pointer',
+                             background: audioFile ? 'rgba(234,154,97,0.05)' : 'rgba(0,0,0,0.3)',
+                             borderColor: audioFile ? 'rgba(234,154,97,0.3)' : 'rgba(255,244,227,0.2)',
+                             textAlign: 'center',
                              transition: 'all 0.2s',
-                          }}
-                       >
-                          Upload Track
-                       </button>
-                    )}
-                </div>
-             </form>
+                          }}>
+                              {audioFile ? (
+                                 <>
+                                    <FileAudio size={28} style={{ margin: '0 auto 8px auto', color: '#EA9A61' }} />
+                                    <p style={{ fontSize: '14px', color: '#FFF4E3', margin: '0 0 4px 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{audioFile.name}</p>
+                                    <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.4)', margin: 0 }}>Click to change file</p>
+                                 </>
+                              ) : (
+                                 <>
+                                    <UploadCloud size={28} style={{ margin: '0 auto 8px auto', color: 'rgba(255,244,227,0.3)' }} />
+                                    <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.6)', margin: '0 0 4px 0' }}>Drag & drop or browse</p>
+                                    <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.3)', margin: 0 }}>MP3, WAV, FLAC</p>
+                                 </>
+                              )}
+                          </div>
+                       </div>
+                    </div>
+    
+                    {/* Title Input */}
+                    <div>
+                       <label style={{ display: 'block', fontSize: '13px', color: 'rgba(255,244,227,0.6)', marginBottom: '8px' }}>Track Title</label>
+                       <input 
+                          type="text" 
+                          value={trackTitle}
+                          onChange={(e) => setTrackTitle(e.target.value)}
+                          placeholder="e.g. My Awesome Mix"
+                          required
+                          disabled={isUploading}
+                          style={{...inputStyle, ...((isUploading ? { opacity: 0.5, cursor: 'not-allowed' } : {}) as any)}}
+                       />
+                    </div>
+    
+    
+                    {/* Progress / Actions */}
+                    <div style={{ marginTop: '12px' }}>
+                        {isUploading ? (
+                           <div>
+                               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: 'rgba(255,244,227,0.5)', marginBottom: '8px' }}>
+                                  <span>Uploading...</span>
+                                  <span>{uploadProgress}%</span>
+                               </div>
+                               <div style={{ height: '6px', background: 'rgba(255,244,227,0.05)', borderRadius: '999px', overflow: 'hidden' }}>
+                                   <div style={{ 
+                                      height: '100%', 
+                                      background: '#EA9A61', 
+                                      width: `${uploadProgress}%`,
+                                      transition: 'width 0.3s ease'
+                                   }} />
+                               </div>
+                           </div>
+                        ) : (
+                           <button
+                              type="submit"
+                              disabled={!audioFile || !trackTitle || audioTracks.length >= 6}
+                              style={{
+                                 width: '100%',
+                                 padding: '16px',
+                                 borderRadius: '12px',
+                                 background: (!audioFile || !trackTitle || audioTracks.length >= 6) ? 'rgba(234,154,97,0.1)' : '#EA9A61',
+                                 color: (!audioFile || !trackTitle || audioTracks.length >= 6) ? 'rgba(234,154,97,0.3)' : '#0A0A0A',
+                                 border: 'none',
+                                 fontSize: '15px',
+                                 fontFamily: "'Roboto', sans-serif",
+                                 fontWeight: 600,
+                                 cursor: (!audioFile || !trackTitle || audioTracks.length >= 6) ? 'not-allowed' : 'pointer',
+                                 transition: 'all 0.2s',
+                              }}
+                           >
+                              {audioTracks.length >= 6 ? 'Limit Reached' : 'Upload Track'}
+                           </button>
+                        )}
+                    </div>
+                   </>
+                 )}
+              </form>
            </div>
          </div>
        )}
