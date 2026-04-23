@@ -29,6 +29,10 @@ interface ClientProject {
   id: string;
   status: string;
   project_name: string;
+  delivery_date: string | null;
+  deliverables_needed: string[] | null;
+  final_project_url: string | null;
+  folder_link: string | null;
 }
 
 export default function AdminDashboard() {
@@ -153,6 +157,20 @@ export default function AdminDashboard() {
   const [isUploadingMixed, setIsUploadingMixed] = useState(false);
   const [mixedUploadProgress, setMixedUploadProgress] = useState(0);
 
+  // Project Detail Modal state
+  const [detailModalOpen, setDetailModalOpen] = useState(false);
+  const [detailTarget, setDetailTarget] = useState<ClientProfile | null>(null);
+  const [editStatus, setEditStatus] = useState('');
+  const [editProjectName, setEditProjectName] = useState('');
+  const [editDeliveryDate, setEditDeliveryDate] = useState('');
+  const [editDeliverables, setEditDeliverables] = useState<string[]>([]);
+  const [editDeliverableInput, setEditDeliverableInput] = useState('');
+  const [editFinalUrl, setEditFinalUrl] = useState('');
+  const [editFolderLink, setEditFolderLink] = useState('');
+  const [isSavingProject, setIsSavingProject] = useState(false);
+  const [isUploadingDoc, setIsUploadingDoc] = useState(false);
+  const [docUploadProgress, setDocUploadProgress] = useState(0);
+
   useEffect(() => {
     const checkAccess = async () => {
       const { data: { session } } = await supabase.auth.getSession();
@@ -234,11 +252,21 @@ export default function AdminDashboard() {
 
       const { data: projects } = await supabase
         .from('projects')
-        .select('id, client_id, project_name, status');
+        .select('id, client_id, project_name, status, delivery_date, deliverables_needed, final_project_url, folder_link');
 
       const projMap: Record<string, ClientProject> = {};
       (projects || []).forEach((p) => {
-        if (p.client_id) projMap[p.client_id] = { id: p.id, status: p.status, project_name: p.project_name };
+        if (p.client_id) {
+          projMap[p.client_id] = { 
+            id: p.id, 
+            status: p.status, 
+            project_name: p.project_name,
+            delivery_date: p.delivery_date,
+            deliverables_needed: p.deliverables_needed,
+            final_project_url: p.final_project_url,
+            folder_link: p.folder_link,
+          };
+        }
       });
 
       setClients(profiles || []);
@@ -286,13 +314,21 @@ export default function AdminDashboard() {
           delivery_date: launchDeliveryDate || null,
           deliverables_needed: launchDeliverables.length > 0 ? launchDeliverables : null,
         }])
-        .select('id, client_id, project_name, status')
+        .select('id, client_id, project_name, status, delivery_date, deliverables_needed, final_project_url, folder_link')
         .single();
 
       if (!error && proj) {
         setClientProjects((prev) => ({
           ...prev,
-          [launchTarget.id]: { id: proj.id, status: proj.status, project_name: proj.project_name },
+          [launchTarget.id]: { 
+            id: proj.id, 
+            status: proj.status, 
+            project_name: proj.project_name,
+            delivery_date: proj.delivery_date,
+            deliverables_needed: proj.deliverables_needed,
+            final_project_url: proj.final_project_url,
+            folder_link: proj.folder_link,
+          },
         }));
         setLaunchModalOpen(false);
       } else {
@@ -301,6 +337,108 @@ export default function AdminDashboard() {
       }
     } finally {
       setStartingProjectFor(null);
+    }
+  };
+
+  const openDetailModal = (client: ClientProfile) => {
+    const proj = clientProjects[client.id];
+    if (!proj) return;
+    setDetailTarget(client);
+    setEditProjectName(proj.project_name || '');
+    setEditStatus(proj.status || '');
+    setEditDeliveryDate(proj.delivery_date || '');
+    setEditDeliverables(proj.deliverables_needed || []);
+    setEditDeliverableInput('');
+    setEditFinalUrl(proj.final_project_url || '');
+    setEditFolderLink(proj.folder_link || '');
+    setDetailModalOpen(true);
+  };
+
+  const addEditDeliverable = () => {
+    const trimmed = editDeliverableInput.trim();
+    if (!trimmed) return;
+    setEditDeliverables((prev) => [...prev, trimmed]);
+    setEditDeliverableInput('');
+  };
+
+  const removeEditDeliverable = (i: number) => {
+    setEditDeliverables((prev) => prev.filter((_, idx) => idx !== i));
+  };
+
+  const handleDocUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !detailTarget) return;
+
+    setIsUploadingDoc(true);
+    setDocUploadProgress(10);
+
+    try {
+      const timestamp = Date.now();
+      const fileName = `${timestamp}_${file.name.replace(/\s+/g, '_')}`;
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('signed-documents')
+        .upload(`${fileName}`, file);
+
+      if (uploadError) {
+        console.error('Supabase Storage Error:', uploadError);
+        throw new Error(uploadError.message || 'Storage upload failed');
+      }
+      
+      setDocUploadProgress(70);
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('signed-documents')
+        .getPublicUrl(`${fileName}`);
+
+      setEditFolderLink(publicUrl);
+      setDocUploadProgress(100);
+    } catch (err: any) {
+      console.error('Error uploading document:', err);
+      alert(`Failed to upload document: ${err.message || 'Unknown error'}. Make sure the "signed-documents" bucket exists in Supabase storage.`);
+    } finally {
+      setIsUploadingDoc(false);
+      setTimeout(() => setDocUploadProgress(0), 1000);
+    }
+  };
+
+  const handleUpdateProject = async () => {
+    if (!detailTarget || !clientProjects[detailTarget.id]) return;
+    setIsSavingProject(true);
+    const projectId = clientProjects[detailTarget.id].id;
+
+    try {
+      const { error } = await supabase
+        .from('projects')
+        .update({
+          project_name: editProjectName.trim(),
+          status: editStatus,
+          delivery_date: editDeliveryDate || null,
+          deliverables_needed: editDeliverables.length > 0 ? editDeliverables : null,
+          final_project_url: editFinalUrl.trim() || null,
+          folder_link: editFolderLink || null,
+        })
+        .eq('id', projectId);
+
+      if (error) throw error;
+
+      setClientProjects((prev) => ({
+        ...prev,
+        [detailTarget.id]: {
+          ...prev[detailTarget.id],
+          project_name: editProjectName.trim(),
+          status: editStatus,
+          delivery_date: editDeliveryDate || null,
+          deliverables_needed: editDeliverables.length > 0 ? editDeliverables : null,
+          final_project_url: editFinalUrl.trim() || null,
+          folder_link: editFolderLink || null,
+        }
+      }));
+      setDetailModalOpen(false);
+    } catch (err) {
+      console.error('Error updating project:', err);
+      alert('Failed to save project changes.');
+    } finally {
+      setIsSavingProject(false);
     }
   };
 
@@ -609,7 +747,7 @@ export default function AdminDashboard() {
                     transition: 'all 0.3s ease',
                   }}>
                     {/* User Group Header */}
-                    <button
+                    <div
                       onClick={() => toggleClientExpansion(clientId)}
                       style={{
                         width: '100%',
@@ -709,7 +847,7 @@ export default function AdminDashboard() {
                       <div style={{ color: 'rgba(255,244,227,0.25)', transition: 'transform 0.3s ease', transform: isExpanded ? 'rotate(180deg)' : 'rotate(0)' }}>
                         <ChevronDown size={20} />
                       </div>
-                    </button>
+                    </div>
 
                     {/* Expanded Tracks */}
                     {isExpanded && (
@@ -949,7 +1087,20 @@ export default function AdminDashboard() {
                     <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                       
                       {proj ? (
-                        <span style={{ fontSize: '12px', color: 'rgba(255,244,227,0.25)', fontStyle: 'italic' }}>Active</span>
+                        <button
+                          onClick={() => openDetailModal(client)}
+                          type="button"
+                          style={{
+                            width: '32px', height: '32px', borderRadius: '8px',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,244,227,0.08)',
+                            color: 'rgba(255,244,227,0.4)', cursor: 'pointer', transition: 'all 0.2s',
+                          }}
+                          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(234,154,97,0.1)'; e.currentTarget.style.color = '#EA9A61'; e.currentTarget.style.borderColor = 'rgba(234,154,97,0.3)'; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = 'rgba(255,244,227,0.4)'; e.currentTarget.style.borderColor = 'rgba(255,244,227,0.08)'; }}
+                        >
+                          <ChevronRight size={18} />
+                        </button>
                       ) : (
                         <button
                           onClick={() => openLaunchModal(client)}
@@ -1335,6 +1486,257 @@ export default function AdminDashboard() {
                 {isUploadingMixed ? 'Uploading...' : 'Confirm Upload'}
               </button>
             </form>
+          </div>
+        </div>
+      )}
+      {/* ── Project Detail Modal ── */}
+      {detailModalOpen && detailTarget && (
+        <div
+          onClick={() => { if (!isSavingProject && !isUploadingDoc) setDetailModalOpen(false); }}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 9999,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: 'rgba(0,0,0,0.8)',
+            backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
+            animation: 'confirmFadeIn 0.25s ease-out forwards',
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: 'rgba(14,14,14,0.98)',
+              border: '1px solid rgba(255,244,227,0.1)',
+              borderRadius: '24px',
+              padding: 'clamp(20px, 5vw, 40px)',
+              width: '95%',
+              maxWidth: '600px',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              animation: 'confirmCardIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              scrollbarWidth: 'none',
+            }}
+          >
+            {/* Header */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
+              <div>
+                <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(255,244,227,0.35)', margin: '0 0 6px 0' }}>
+                  Project Management
+                </p>
+                <h2 style={{ fontSize: '24px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', color: '#FFF4E3', margin: 0 }}>
+                  {detailTarget.full_name || 'Client'}
+                </h2>
+                <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.25)', fontFamily: 'monospace', marginTop: '4px' }}>
+                  ID: {detailTarget.id}
+                </p>
+              </div>
+              <button 
+                onClick={() => setDetailModalOpen(false)}
+                disabled={isSavingProject || isUploadingDoc}
+                style={{ background: 'none', border: 'none', color: 'rgba(255,244,227,0.2)', cursor: 'pointer', padding: '4px' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#FFF4E3'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,244,227,0.2)'}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              
+              {/* Project Name */}
+              <div>
+                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.4)', marginBottom: '8px' }}>
+                  Project Name
+                </label>
+                <input
+                  type="text"
+                  value={editProjectName}
+                  onChange={(e) => setEditProjectName(e.target.value)}
+                  style={{
+                    width: '100%', padding: '12px 14px', boxSizing: 'border-box',
+                    borderRadius: '10px', border: '1px solid rgba(255,244,227,0.1)',
+                    background: 'rgba(255,255,255,0.04)', color: '#FFF4E3',
+                    fontFamily: "'Roboto', sans-serif", fontSize: '14px', outline: 'none',
+                  }}
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                {/* Status */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.4)', marginBottom: '8px' }}>
+                    Status
+                  </label>
+                  <select
+                    value={editStatus}
+                    onChange={(e) => setEditStatus(e.target.value)}
+                    style={{
+                      width: '100%', padding: '12px 14px', boxSizing: 'border-box',
+                      borderRadius: '10px', border: '1px solid rgba(255,244,227,0.1)',
+                      background: 'rgba(255,255,255,0.04)', color: '#FFF4E3',
+                      fontFamily: "'Roboto', sans-serif", fontSize: '14px', outline: 'none',
+                      appearance: 'none',
+                    }}
+                  >
+                    <option value="Discovery">Discovery</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Review">Review</option>
+                    <option value="Completed">Completed</option>
+                  </select>
+                </div>
+
+                {/* Delivery Date */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.4)', marginBottom: '8px' }}>
+                    Delivery Date
+                  </label>
+                  <input
+                    type="date"
+                    value={editDeliveryDate}
+                    onChange={(e) => setEditDeliveryDate(e.target.value)}
+                    style={{
+                      width: '100%', padding: '12px 14px', boxSizing: 'border-box',
+                      borderRadius: '10px', border: '1px solid rgba(255,244,227,0.1)',
+                      background: 'rgba(255,255,255,0.04)', color: '#FFF4E3',
+                      fontFamily: "'Roboto', sans-serif", fontSize: '14px', outline: 'none',
+                      colorScheme: 'dark',
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Signed Document */}
+              <div>
+                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.4)', marginBottom: '8px' }}>
+                  Signed Document
+                </label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <input
+                    type="file"
+                    id="signed-doc-upload"
+                    onChange={handleDocUpload}
+                    style={{ display: 'none' }}
+                  />
+                  <label
+                    htmlFor="signed-doc-upload"
+                    style={{
+                      padding: '10px 16px', borderRadius: '10px',
+                      border: '1px solid rgba(255,244,227,0.1)',
+                      background: 'rgba(255,255,255,0.04)', color: 'rgba(255,244,227,0.6)',
+                      fontSize: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px'
+                    }}
+                  >
+                    <UploadCloud size={16} />
+                    {isUploadingDoc ? 'Uploading...' : 'Upload Signed Doc'}
+                  </label>
+                  {editFolderLink && (
+                    <a href={editFolderLink} target="_blank" rel="noreferrer" style={{ fontSize: '12px', color: '#EA9A61', textDecoration: 'none' }}>
+                      View Current
+                    </a>
+                  )}
+                </div>
+                {isUploadingDoc && (
+                  <div style={{ width: '100%', height: '2px', background: 'rgba(255,244,227,0.05)', marginTop: '8px', borderRadius: '1px', overflow: 'hidden' }}>
+                    <div style={{ width: `${docUploadProgress}%`, height: '100%', background: '#EA9A61', transition: 'width 0.3s' }} />
+                  </div>
+                )}
+              </div>
+
+              {/* Deliverables */}
+              <div>
+                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.4)', marginBottom: '8px' }}>
+                  Deliverables Needed
+                </label>
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
+                  <input
+                    type="text"
+                    placeholder="Add a deliverable..."
+                    value={editDeliverableInput}
+                    onChange={(e) => setEditDeliverableInput(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addEditDeliverable(); } }}
+                    style={{
+                      flex: 1, padding: '10px 14px',
+                      borderRadius: '10px', border: '1px solid rgba(255,244,227,0.1)',
+                      background: 'rgba(255,255,255,0.04)', color: '#FFF4E3',
+                      fontFamily: "'Roboto', sans-serif", fontSize: '14px', outline: 'none',
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={addEditDeliverable}
+                    style={{
+                      padding: '10px 16px', borderRadius: '10px',
+                      border: '1px solid rgba(234,154,97,0.3)',
+                      background: 'rgba(234,154,97,0.1)', color: '#EA9A61',
+                      fontSize: '18px', cursor: 'pointer', lineHeight: 1,
+                    }}
+                  >+</button>
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                  {editDeliverables.map((d, i) => (
+                    <span key={i} style={{
+                      display: 'inline-flex', alignItems: 'center', gap: '6px',
+                      padding: '5px 12px', borderRadius: '9999px',
+                      background: 'rgba(234,154,97,0.1)', border: '1px solid rgba(234,154,97,0.25)',
+                      color: '#EA9A61', fontSize: '12px', fontWeight: 500,
+                    }}>
+                      {d}
+                      <button type="button" onClick={() => removeEditDeliverable(i)} style={{ background: 'none', border: 'none', color: 'rgba(234,154,97,0.5)', cursor: 'pointer', fontSize: '14px', lineHeight: 1 }}>&times;</button>
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Final URL */}
+              <div>
+                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.4)', marginBottom: '8px' }}>
+                  Final Project URL
+                </label>
+                <input
+                  type="text"
+                  placeholder="https://..."
+                  value={editFinalUrl}
+                  onChange={(e) => setEditFinalUrl(e.target.value)}
+                  style={{
+                    width: '100%', padding: '12px 14px', boxSizing: 'border-box',
+                    borderRadius: '10px', border: '1px solid rgba(255,244,227,0.1)',
+                    background: 'rgba(255,255,255,0.04)', color: '#FFF4E3',
+                    fontFamily: "'Roboto', sans-serif", fontSize: '14px', outline: 'none',
+                  }}
+                />
+              </div>
+
+            </div>
+
+            {/* Actions */}
+            <div style={{ display: 'flex', gap: '12px', marginTop: '40px' }}>
+              <button
+                type="button"
+                onClick={() => setDetailModalOpen(false)}
+                disabled={isSavingProject}
+                style={{
+                  flex: 1, padding: '14px', borderRadius: '9999px',
+                  border: '1px solid rgba(255,244,227,0.12)',
+                  background: 'rgba(255,255,255,0.04)', color: 'rgba(255,244,227,0.7)',
+                  fontSize: '14px', fontWeight: 500, cursor: 'pointer',
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleUpdateProject}
+                disabled={isSavingProject || isUploadingDoc}
+                style={{
+                  flex: 2, padding: '14px', borderRadius: '9999px',
+                  border: '1px solid rgba(234,154,97,0.4)',
+                  background: 'rgba(234,154,97,0.15)', color: '#EA9A61',
+                  fontSize: '14px', fontWeight: 600, cursor: isSavingProject ? 'not-allowed' : 'pointer',
+                  opacity: isSavingProject ? 0.6 : 1,
+                }}
+              >
+                {isSavingProject ? 'Saving Changes...' : 'Save Changes'}
+              </button>
+            </div>
           </div>
         </div>
       )}

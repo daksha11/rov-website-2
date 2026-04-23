@@ -16,6 +16,8 @@ interface Project {
   requirements_met: boolean;
   deliverables_needed: string[] | null;
   final_project_url?: string | null;
+  delivery_date?: string | null;
+  folder_link?: string | null;
 }
 
 interface AudioTrack {
@@ -703,6 +705,19 @@ export default function ClientPortal() {
                 >
                   {updating ? 'Updating...' : 'Review & Sign'}
                 </button>
+                {project.folder_link && (
+                  <div style={{ marginTop: '16px' }}>
+                    <a 
+                      href={project.folder_link} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      style={{ fontSize: '13px', color: '#EA9A61', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px' }}
+                    >
+                      <span style={{ fontSize: '16px' }}>📄</span>
+                      View Signed Agreement
+                    </a>
+                  </div>
+                )}
               </div>
             )}
 
