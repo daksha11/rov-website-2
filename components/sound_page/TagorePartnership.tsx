@@ -5,8 +5,8 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 
-const HEADING = "Norwige, sans-serif";
-const BODY = "'Roboto', sans-serif";
+const HEADING = "'Noto Sans Condensed', 'Noto Sans', sans-serif";
+const BODY = "'DM Sans', sans-serif";
 const EASE = [0.32, 0.72, 0, 1] as const;
 const EMBER_GRADIENT =
   "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)";
@@ -168,10 +168,12 @@ export default function TagorePartnership() {
                       : {}
                   }
                   transition={{ duration: 0.9, delay: 0.3, ease: EASE }}
-                  className="text-[#FFF4E3] leading-[0.95] tracking-[-0.02em]"
+                  className="text-[#FFF4E3] leading-[0.95]"
                   style={{
                     fontFamily: HEADING,
                     fontSize: "clamp(2.25rem, 5.5vw, 3.75rem)",
+                    fontWeight: 700,
+                    letterSpacing: "-0.045em",
                   }}
                 >
                   Tagore Studios
@@ -189,7 +191,7 @@ export default function TagorePartnership() {
                     letterSpacing: "0.01em",
                   }}
                 >
-                  A digital muse for artists.
+                  Create. Connect. Collaborate.
                 </motion.p>
 
                 {/* Warm accent rule */}
@@ -211,9 +213,9 @@ export default function TagorePartnership() {
                     fontSize: "clamp(0.95rem, 1.5vw, 1.02rem)",
                   }}
                 >
-                  Somewhere to land. Somewhere to connect. Somewhere to grow.
-                  Build a custom profile, meet other creatives, book services,
-                  and find your community. All in one place.
+                  The collaborative workspace where your music moves from idea
+                  to release. Manage projects, book services, and build
+                  meaningful relationships in the industry. All in one place.
                 </motion.p>
 
                 {/* CTA — button-in-button pattern */}
