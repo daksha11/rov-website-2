@@ -4,7 +4,7 @@ import { createClient } from '@/utils/supabase/client';
 
 const supabase = createClient();
 import { useRouter } from 'next/navigation';
-import { Play, Pause, Trash2, UploadCloud, X, FileAudio, Music2, ChevronDown } from 'lucide-react';
+import { Play, Pause, Trash2, UploadCloud, X, FileAudio, Music2, ChevronDown, MessageSquare } from 'lucide-react';
 
 interface Project {
   id: string;
@@ -24,6 +24,15 @@ interface AudioTrack {
   id: string;
   title: string;
   file_url: string;
+  notes: string | null;
+  created_at: string;
+}
+
+interface Revision {
+  id: string;
+  revision_number: number;
+  notes: string;
+  status: 'pending' | 'resolved';
   created_at: string;
 }
 
@@ -45,11 +54,18 @@ export default function ClientPortal() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const [trackTitle, setTrackTitle] = useState('');
+  const [trackNotes, setTrackNotes] = useState('');
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [isConfirmingUpload, setIsConfirmingUpload] = useState(false);
   const [mixedAudioTracks, setMixedAudioTracks] = useState<AudioTrack[]>([]);
   const [isAudioTracksExpanded, setIsAudioTracksExpanded] = useState(true);
   const [isMixedTracksExpanded, setIsMixedTracksExpanded] = useState(true);
+
+  // Revision States
+  const [revisions, setRevisions] = useState<Revision[]>([]);
+  const [isRevisionModalOpen, setIsRevisionModalOpen] = useState(false);
+  const [revisionNotes, setRevisionNotes] = useState('');
+  const [isSubmittingRevision, setIsSubmittingRevision] = useState(false);
 
   // Audio Player State
   const [currentlyPlaying, setCurrentlyPlaying] = useState<string | null>(null);
@@ -82,6 +98,7 @@ export default function ClientPortal() {
       setProject(proj);
       await fetchAudioTracks(session.user.id);
       await fetchMixedAudioTracks(session.user.id);
+      if (proj) await fetchRevisions(proj.id);
       setLoading(false);
 
       // Show greeting animation on fresh login
@@ -132,6 +149,18 @@ export default function ClientPortal() {
     }
   };
 
+  const fetchRevisions = async (projectId: string) => {
+    const { data, error } = await supabase
+      .from('mixed_track_revisions')
+      .select('*')
+      .eq('project_id', projectId)
+      .order('created_at', { ascending: true });
+    
+    if (!error && data) {
+      setRevisions(data);
+    }
+  };
+
   async function handleSignOut() {
     sessionStorage.removeItem('rov-portal-greeted');
     await supabase.auth.signOut();
@@ -178,6 +207,7 @@ export default function ClientPortal() {
     setIsUploadModalOpen(false);
     setAudioFile(null);
     setTrackTitle('');
+    setTrackNotes('');
     setUploadProgress(0);
     setIsUploading(false);
     setIsConfirmingUpload(false);
@@ -226,6 +256,7 @@ export default function ClientPortal() {
           {
             client_id: userId,
             title: trackTitle,
+            notes: trackNotes.trim() || null,
             file_path: audioData.path,
             file_url: audioUrl
           }
@@ -242,6 +273,41 @@ export default function ClientPortal() {
       alert("Failed to upload track. Please try again.");
       setIsUploading(false);
       setIsConfirmingUpload(false);
+    }
+  };
+
+  const handleRevisionSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!revisionNotes.trim() || !project || !userId || isSubmittingRevision) return;
+
+    if (revisions.length >= 2) {
+      alert("Maximum of 2 revisions allowed.");
+      return;
+    }
+
+    setIsSubmittingRevision(true);
+    try {
+      const { error } = await supabase
+        .from('mixed_track_revisions')
+        .insert([{
+          project_id: project.id,
+          client_id: userId,
+          notes: revisionNotes.trim(),
+          revision_number: revisions.length + 1,
+          status: 'pending'
+        }]);
+
+      if (error) throw error;
+
+      await fetchRevisions(project.id);
+      setIsRevisionModalOpen(false);
+      setRevisionNotes('');
+      alert("Revision request submitted successfully.");
+    } catch (error) {
+      console.error("Error submitting revision:", error);
+      alert("Failed to submit revision request.");
+    } finally {
+      setIsSubmittingRevision(false);
     }
   };
 
@@ -1059,6 +1125,72 @@ export default function ClientPortal() {
                   <ChevronDown size={18} />
                 </div>
               </div>
+
+              <div style={{ display: 'flex', gap: '8px' }}>
+                {revisions.some(r => r.status === 'pending') ? (
+                  <div style={{
+                    padding: '8px 16px',
+                    borderRadius: '9999px',
+                    background: 'rgba(234,154,97,0.1)',
+                    border: '1px solid rgba(234,154,97,0.2)',
+                    color: '#EA9A61',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}>
+                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#EA9A61', animation: 'subtlePulse 1.5s infinite' }} />
+                    Review Pending
+                  </div>
+                ) : revisions.length < 2 ? (
+                  <button
+                    onClick={() => setIsRevisionModalOpen(true)}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '8px 16px',
+                      borderRadius: '9999px',
+                      background: 'transparent',
+                      border: '1px solid rgba(255,244,227,0.15)',
+                      color: '#FFF4E3',
+                      fontSize: '12px',
+                      fontFamily: "'Roboto', sans-serif",
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s',
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+                        e.currentTarget.style.borderColor = 'rgba(255,244,227,0.3)';
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'transparent';
+                        e.currentTarget.style.borderColor = 'rgba(255,244,227,0.15)';
+                    }}
+                  >
+                    <MessageSquare size={14} /> Request Review ({revisions.length}/2)
+                  </button>
+                ) : (
+                  <div style={{
+                    padding: '8px 16px',
+                    borderRadius: '9999px',
+                    background: 'rgba(255,255,255,0.03)',
+                    border: '1px solid rgba(255,244,227,0.1)',
+                    color: 'rgba(255,244,227,0.4)',
+                    fontSize: '11px',
+                    fontWeight: 500,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em'
+                  }}>
+                    No Revisions Left
+                  </div>
+                )}
+              </div>
             </div>
 
             {isMixedTracksExpanded && (
@@ -1295,6 +1427,23 @@ export default function ClientPortal() {
                        />
                     </div>
     
+                    {/* Notes Input */}
+                    <div>
+                       <label style={{ display: 'block', fontSize: '13px', color: 'rgba(255,244,227,0.6)', marginBottom: '8px' }}>Notes</label>
+                       <textarea 
+                          value={trackNotes}
+                          onChange={(e) => setTrackNotes(e.target.value)}
+                          placeholder="Add some notes for the admin..."
+                          disabled={isUploading}
+                          style={{
+                             ...inputStyle, 
+                             height: '80px',
+                             resize: 'none',
+                             ...((isUploading ? { opacity: 0.5, cursor: 'not-allowed' } : {}) as any)
+                          }}
+                       />
+                    </div>
+    
     
                     {/* Progress / Actions */}
                     <div style={{ marginTop: '12px' }}>
@@ -1457,6 +1606,114 @@ export default function ClientPortal() {
                 Sign Out
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Revision Request Modal */}
+      {isRevisionModalOpen && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'rgba(0,0,0,0.85)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            animation: 'confirmFadeIn 0.25s ease-out forwards',
+          }}
+          onClick={() => !isSubmittingRevision && setIsRevisionModalOpen(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: 'rgba(15,15,15,0.95)',
+              border: '1px solid rgba(255,244,227,0.08)',
+              borderRadius: '24px',
+              padding: '40px',
+              width: '90%',
+              maxWidth: '480px',
+              animation: 'modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              position: 'relative'
+            }}
+          >
+            <button
+              onClick={() => setIsRevisionModalOpen(false)}
+              disabled={isSubmittingRevision}
+              style={{
+                position: 'absolute', top: '24px', right: '24px',
+                background: 'transparent', border: 'none', color: 'rgba(255,244,227,0.4)',
+                cursor: 'pointer', padding: '4px'
+              }}
+            >
+              <X size={20} />
+            </button>
+
+            <div style={{ marginBottom: '24px' }}>
+              <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.2em', color: 'rgba(254,154,97,0.6)', marginBottom: '8px' }}>
+                Revision {revisions.length + 1} of 2
+              </p>
+              <h2 style={{
+                fontSize: '24px',
+                fontFamily: 'Norwige, sans-serif',
+                fontWeight: 700,
+                fontStyle: 'italic',
+                color: '#FFF4E3',
+                margin: 0,
+              }}>
+                Request a Review
+              </h2>
+            </div>
+
+            <form onSubmit={handleRevisionSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '13px', color: 'rgba(255,244,227,0.6)', marginBottom: '12px' }}>
+                  What would you like us to change? Please be specific.
+                </label>
+                <textarea 
+                  value={revisionNotes}
+                  onChange={(e) => setRevisionNotes(e.target.value)}
+                  placeholder="e.g. Can we bring up the vocals in the chorus? Also, the bass feels a bit heavy in the second verse."
+                  required
+                  disabled={isSubmittingRevision}
+                  style={{
+                    ...inputStyle, 
+                    height: '160px',
+                    resize: 'none',
+                    lineHeight: '1.6',
+                    padding: '16px',
+                    ...((isSubmittingRevision ? { opacity: 0.5, cursor: 'not-allowed' } : {}) as any)
+                  }}
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={!revisionNotes.trim() || isSubmittingRevision}
+                style={{
+                  width: '100%',
+                  padding: '16px',
+                  borderRadius: '12px',
+                  background: (!revisionNotes.trim() || isSubmittingRevision) ? 'rgba(234,154,97,0.1)' : '#EA9A61',
+                  color: (!revisionNotes.trim() || isSubmittingRevision) ? 'rgba(234,154,97,0.3)' : '#0A0A0A',
+                  border: 'none',
+                  fontSize: '15px',
+                  fontFamily: "'Roboto', sans-serif",
+                  fontWeight: 600,
+                  cursor: (!revisionNotes.trim() || isSubmittingRevision) ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.2s',
+                }}
+              >
+                {isSubmittingRevision ? 'Submitting...' : 'Submit Revision Request'}
+              </button>
+              
+              <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.3)', textAlign: 'center', margin: 0 }}>
+                This will count as revision {revisions.length + 1} out of 2.
+              </p>
+            </form>
           </div>
         </div>
       )}

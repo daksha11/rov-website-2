@@ -16,6 +16,7 @@ interface AudioSubmission {
   client_id: string;
   uploader_name: string;
   uploader_email: string;
+  notes: string | null;
 }
 
 interface ClientProfile {
@@ -33,6 +34,16 @@ interface ClientProject {
   deliverables_needed: string[] | null;
   final_project_url: string | null;
   folder_link: string | null;
+}
+
+interface RevisionRequest {
+  id: string;
+  project_id: string;
+  client_id: string;
+  revision_number: number;
+  notes: string;
+  status: 'pending' | 'resolved';
+  created_at: string;
 }
 
 export default function AdminDashboard() {
@@ -139,7 +150,19 @@ export default function AdminDashboard() {
   const [clients, setClients] = useState<ClientProfile[]>([]);
   const [clientProjects, setClientProjects] = useState<Record<string, ClientProject>>({});
   const [loadingClients, setLoadingClients] = useState(true);
+  const [clientSearchQuery, setClientSearchQuery] = useState('');
   const [startingProjectFor, setStartingProjectFor] = useState<string | null>(null);
+
+  // Revision management state
+  const [allRevisions, setAllRevisions] = useState<RevisionRequest[]>([]);
+  const [isResolvingRevision, setIsResolvingRevision] = useState(false);
+
+  const filteredClients = useMemo(() => {
+    return clients.filter((client) =>
+      client.email?.toLowerCase().includes(clientSearchQuery.toLowerCase()) ||
+      client.full_name?.toLowerCase().includes(clientSearchQuery.toLowerCase())
+    );
+  }, [clients, clientSearchQuery]);
 
   // Launch project modal state
   const [launchModalOpen, setLaunchModalOpen] = useState(false);
@@ -156,6 +179,9 @@ export default function AdminDashboard() {
   const [mixedUploadFile, setMixedUploadFile] = useState<File | null>(null);
   const [isUploadingMixed, setIsUploadingMixed] = useState(false);
   const [mixedUploadProgress, setMixedUploadProgress] = useState(0);
+  const [activeRevisionId, setActiveRevisionId] = useState<string | null>(null);
+  const [allMixedTracks, setAllMixedTracks] = useState<any[]>([]);
+  const [expandedHistory, setExpandedHistory] = useState<Record<string, boolean>>({});
 
   // Project Detail Modal state
   const [detailModalOpen, setDetailModalOpen] = useState(false);
@@ -201,6 +227,8 @@ export default function AdminDashboard() {
       // Fetch all audio tracks + all profiles, merge client-side
       await fetchAllSubmissions();
       await fetchClientsAndProjects();
+      await fetchAllRevisions();
+      await fetchAllMixedTracks();
     };
     checkAccess();
   }, [router]);
@@ -275,6 +303,33 @@ export default function AdminDashboard() {
       console.error('Error fetching clients:', err);
     } finally {
       setLoadingClients(false);
+    }
+  };
+
+  const fetchAllRevisions = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('mixed_track_revisions')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setAllRevisions(data || []);
+    } catch (err) {
+      console.error('Error fetching revisions:', err);
+    }
+  };
+
+  const fetchAllMixedTracks = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('mixed_audio_tracks')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      setAllMixedTracks(data || []);
+    } catch (err) {
+      console.error('Error fetching mixed tracks:', err);
     }
   };
 
@@ -527,11 +582,42 @@ export default function AdminDashboard() {
 
       if (dbError) throw dbError;
 
+      // 3. Force-resolve the specific revision if we have an ID
+      if (activeRevisionId) {
+        console.log("Attempting to resolve revision ID:", activeRevisionId);
+        
+        const { data, error: updateError } = await supabase
+          .from('mixed_track_revisions')
+          .update({ status: 'resolved' })
+          .eq('id', activeRevisionId)
+          .select();
+        
+        if (updateError) {
+          console.error("Supabase Error during update:", updateError.message);
+        } else if (!data || data.length === 0) {
+          console.error("FAILED: The update ran but 0 rows were changed. This is usually an RLS Policy issue.");
+          alert("Security Error: The database refused to update this row. Please check your RLS policies.");
+        } else {
+          console.log("SUCCESS: Row updated in Supabase:", data[0]);
+        }
+      } else {
+        // Fallback
+        await supabase
+          .from('mixed_track_revisions')
+          .update({ status: 'resolved' })
+          .eq('client_id', mixedUploadTarget.id)
+          .eq('status', 'pending');
+      }
+
+      await fetchAllRevisions();
+      await fetchAllMixedTracks(); // Refresh history
+
       setMixedUploadProgress(100);
       setTimeout(() => {
         setMixedUploadModalOpen(false);
         setMixedUploadFile(null);
         setMixedUploadTitle('');
+        setActiveRevisionId(null);
         setIsUploadingMixed(false);
         setMixedUploadProgress(0);
         alert(`Successfully uploaded mixed track for ${mixedUploadTarget.full_name}`);
@@ -582,6 +668,7 @@ export default function AdminDashboard() {
         </div>
       )}
 
+
       <style>{`
         @keyframes portalGreetIn {
           0% { opacity: 0; transform: scale(0.92) translateY(20px); }
@@ -602,6 +689,10 @@ export default function AdminDashboard() {
         @keyframes cardFadeIn {
           0% { opacity: 0; transform: translateY(12px); }
           100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes subtlePulse {
+          0%, 100% { opacity: 0.5; }
+          50% { opacity: 1; }
         }
         @keyframes spin {
           to { transform: rotate(360deg); }
@@ -685,6 +776,92 @@ export default function AdminDashboard() {
             Here is where you manage all client submissions and projects.
           </p>
         </div>
+
+        {/* ── Mixed Audio Revisions (Pending Only) ── */}
+        {allRevisions.some(r => r.status === 'pending') && (
+          <div style={{ ...cardStyle, animation: 'cardFadeIn 0.4s ease-out both', border: '1px solid rgba(234,154,97,0.2)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
+              <span style={{ fontSize: '20px' }}>📢</span>
+              <div>
+                <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#FFF4E3' }}>
+                  Pending Revisions
+                </h3>
+                <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.35)', margin: 0 }}>
+                  Clients awaiting review updates
+                </p>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {allRevisions.filter(r => r.status === 'pending').map((rev) => {
+                const client = clients.find(c => c.id === rev.client_id);
+                const proj = clientProjects[rev.client_id];
+                return (
+                  <div key={rev.id} style={{
+                    padding: '20px',
+                    background: 'rgba(234,154,97,0.05)',
+                    border: '1px solid rgba(234,154,97,0.15)',
+                    borderRadius: '16px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '12px'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <div>
+                        <h4 style={{ margin: '0 0 2px 0', fontSize: '15px', color: '#FFF4E3', fontWeight: 600 }}>
+                          {client?.full_name || 'Loading...'}
+                        </h4>
+                        <p style={{ margin: 0, fontSize: '11px', color: '#EA9A61', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                          Revision {rev.revision_number}
+                        </p>
+                      </div>
+                      <span style={{ fontSize: '10px', color: 'rgba(255,244,227,0.3)' }}>
+                        {new Date(rev.created_at).toLocaleDateString()}
+                      </span>
+                    </div>
+
+                    <p style={{ 
+                      margin: 0, fontSize: '13px', color: 'rgba(255,244,227,0.7)', 
+                      lineHeight: 1.5, background: 'rgba(0,0,0,0.2)', 
+                      padding: '12px', borderRadius: '8px', fontStyle: 'italic'
+                    }}>
+                      "{rev.notes}"
+                    </p>
+
+                    <div style={{ display: 'flex', gap: '10px', marginTop: '4px' }}>
+                      <button
+                        onClick={() => {
+                          const client = clients.find(cl => cl.id === rev.client_id);
+                          setActiveRevisionId(rev.id); // <--- CAPTURE THE EXACT ID
+                          if (client) {
+                            setMixedUploadTarget(client);
+                          } else {
+                            setMixedUploadTarget({ id: rev.client_id, full_name: 'Client', email: '', role: 'client' });
+                          }
+                          setMixedUploadTitle(`Revision ${rev.revision_number} Response`);
+                          setMixedUploadFile(null);
+                          setMixedUploadProgress(0);
+                          setMixedUploadModalOpen(true);
+                        }}
+                        style={{
+                          flex: 1, padding: '12px', borderRadius: '9999px',
+                          background: '#EA9A61', color: '#0A0A0A',
+                          border: 'none', fontSize: '12px', fontWeight: 700,
+                          cursor: 'pointer', transition: 'all 0.2s',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.02)'; e.currentTarget.style.boxShadow = '0 0 15px rgba(234,154,97,0.3)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = 'none'; }}
+                      >
+                        <UploadCloud size={14} /> Upload Final Track
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Audio Submissions */}
         <div style={{ ...cardStyle, animation: 'cardFadeIn 0.4s ease-out 0.1s both' }}>
@@ -897,9 +1074,16 @@ export default function AdminDashboard() {
                               }}>
                                 <FileAudio size={18} style={{ color: 'rgba(255,244,227,0.2)' }} />
                               </div>
-                              <span style={{ fontSize: '14px', color: '#FFF4E3', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: 500 }}>
-                                {sub.title}
-                              </span>
+                              <div style={{ minWidth: 0, display: 'flex', flexDirection: 'column' }}>
+                                <span style={{ fontSize: '14px', color: '#FFF4E3', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: 500 }}>
+                                  {sub.title}
+                                </span>
+                                {sub.notes && (
+                                  <span style={{ fontSize: '11px', color: 'rgba(234,154,97,0.7)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginTop: '2px' }}>
+                                    Note: {sub.notes}
+                                  </span>
+                                )}
+                              </div>
                             </div>
 
                             <span style={{ fontSize: '13px', color: 'rgba(255,244,227,0.4)' }}>
@@ -975,10 +1159,35 @@ export default function AdminDashboard() {
                 background: 'rgba(234,154,97,0.1)', border: '1px solid rgba(234,154,97,0.2)',
                 color: '#EA9A61', fontSize: '13px', fontWeight: 600,
               }}>
-                {clients.length} {clients.length === 1 ? 'client' : 'clients'}
+                {filteredClients.length} {filteredClients.length === 1 ? 'client' : 'clients'}
               </div>
             )}
           </div>
+
+          {/* Search box */}
+          {!loadingClients && clients.length > 0 && (
+            <div style={{ marginBottom: '20px' }}>
+              <input
+                type="text"
+                placeholder="Search clients by email or name..."
+                value={clientSearchQuery}
+                onChange={(e) => setClientSearchQuery(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '12px 16px',
+                  borderRadius: '12px',
+                  background: 'rgba(255, 255, 255, 0.02)',
+                  border: '1px solid rgba(255, 244, 227, 0.08)',
+                  color: '#FFF4E3',
+                  fontSize: '14px',
+                  outline: 'none',
+                  transition: 'all 0.2s',
+                }}
+                onFocus={(e) => e.currentTarget.style.borderColor = 'rgba(234,154,97,0.4)'}
+                onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(255, 244, 227, 0.08)'}
+              />
+            </div>
+          )}
 
           {loadingClients ? (
             <div style={{ textAlign: 'center', padding: '48px 0' }}>
@@ -996,6 +1205,11 @@ export default function AdminDashboard() {
               <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.4)', margin: '0 0 4px 0' }}>No clients found.</p>
               <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.2)', margin: 0 }}>Users who sign up will appear here.</p>
             </div>
+          ) : filteredClients.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '48px 0', border: '1px dashed rgba(255,244,227,0.08)', borderRadius: '12px' }}>
+              <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.4)', margin: '0 0 4px 0' }}>No results matching "{clientSearchQuery}"</p>
+              <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.2)', margin: 0 }}>Try searching for a different email or name.</p>
+            </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
 
@@ -1012,7 +1226,7 @@ export default function AdminDashboard() {
                 ))}
               </div>
 
-              {clients.map((client) => {
+              {filteredClients.map((client) => {
                 const proj = clientProjects[client.id];
                 const isLaunching = startingProjectFor === client.id;
 
@@ -1129,6 +1343,128 @@ export default function AdminDashboard() {
               })}
             </div>
           )}
+        </div>
+
+        {/* ── Revision & Delivery History Archive ── */}
+        <div style={{ ...cardStyle, animation: 'cardFadeIn 0.4s ease-out 0.3s both', marginTop: '20px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px' }}>
+            <span style={{ fontSize: '20px' }}>📁</span>
+            <div>
+              <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#FFF4E3' }}>
+                Revision & Delivery History
+              </h3>
+              <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.35)', margin: 0 }}>
+                Historical archive of feedback and delivered tracks
+              </p>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {clients.filter(c => 
+              allRevisions.some(r => r.client_id === c.id && r.status === 'resolved') ||
+              allMixedTracks.some(t => t.client_id === c.id)
+            ).length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '40px', border: '1px dashed rgba(255,244,227,0.05)', borderRadius: '16px' }}>
+                <p style={{ color: 'rgba(255,244,227,0.2)', fontSize: '13px' }}>No historical data found yet.</p>
+              </div>
+            ) : (
+              clients
+                .filter(c => 
+                  allRevisions.some(r => r.client_id === c.id && r.status === 'resolved') ||
+                  allMixedTracks.some(t => t.client_id === c.id)
+                )
+                .map(client => {
+                  const clientRevs = allRevisions.filter(r => r.client_id === client.id && r.status === 'resolved');
+                  const clientTracks = allMixedTracks.filter(t => t.client_id === client.id);
+                  const isExpanded = expandedHistory[client.id];
+
+                  return (
+                    <div key={client.id} style={{
+                      background: 'rgba(255,255,255,0.015)',
+                      border: '1px solid rgba(255,244,227,0.04)',
+                      borderRadius: '16px',
+                      overflow: 'hidden'
+                    }}>
+                      <button
+                        onClick={() => setExpandedHistory(prev => ({ ...prev, [client.id]: !prev[client.id] }))}
+                        style={{
+                          width: '100%', padding: '20px 24px', background: isExpanded ? 'rgba(255,255,255,0.02)' : 'transparent',
+                          border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                          cursor: 'pointer', transition: 'background 0.2s'
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                          <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'rgba(255,244,227,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px' }}>👤</div>
+                          <div style={{ textAlign: 'left' }}>
+                            <h4 style={{ margin: 0, fontSize: '15px', color: '#FFF4E3', fontWeight: 600 }}>{client.full_name}</h4>
+                            <p style={{ margin: 0, fontSize: '11px', color: 'rgba(255,244,227,0.3)' }}>{client.email}</p>
+                          </div>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                          <div style={{ textAlign: 'right' }}>
+                            <span style={{ fontSize: '10px', color: 'rgba(255,244,227,0.25)', textTransform: 'uppercase', display: 'block' }}>Activity</span>
+                            <span style={{ fontSize: '12px', color: '#EA9A61', fontWeight: 600 }}>{clientRevs.length} Revisions • {clientTracks.length} Tracks</span>
+                          </div>
+                          <div style={{ color: 'rgba(255,244,227,0.2)', transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }}>▶</div>
+                        </div>
+                      </button>
+
+                      {isExpanded && (
+                        <div style={{ padding: '24px', borderTop: '1px solid rgba(255,244,227,0.05)', background: 'rgba(0,0,0,0.1)' }}>
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+                            {/* Left: Feedback History */}
+                            <div>
+                              <h5 style={{ fontSize: '11px', textTransform: 'uppercase', color: 'rgba(255,244,227,0.3)', marginBottom: '16px', letterSpacing: '0.1em' }}>Feedback History</h5>
+                              {clientRevs.length === 0 ? (
+                                <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.15)' }}>No feedback notes.</p>
+                              ) : (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                  {clientRevs.map(rev => (
+                                    <div key={rev.id} style={{ padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: '1px solid rgba(255,244,227,0.03)' }}>
+                                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                                        <span style={{ fontSize: '11px', fontWeight: 700, color: '#EA9A61' }}>Revision {rev.revision_number}</span>
+                                        <span style={{ fontSize: '10px', color: 'rgba(255,244,227,0.3)' }}>{new Date(rev.created_at).toLocaleDateString()}</span>
+                                      </div>
+                                      <p style={{ margin: 0, fontSize: '12px', color: 'rgba(255,244,227,0.6)', lineHeight: 1.4, fontStyle: 'italic' }}>"{rev.notes}"</p>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Right: Delivered Responses */}
+                            <div>
+                              <h5 style={{ fontSize: '11px', textTransform: 'uppercase', color: 'rgba(255,244,227,0.3)', marginBottom: '16px', letterSpacing: '0.1em' }}>Delivered Tracks</h5>
+                              {clientTracks.length === 0 ? (
+                                <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.15)' }}>No tracks delivered yet.</p>
+                              ) : (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                  {clientTracks.map(track => (
+                                    <div key={track.id} style={{ padding: '12px', background: 'rgba(80,210,130,0.05)', borderRadius: '10px', border: '1px solid rgba(80,210,130,0.1)' }}>
+                                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                                        <span style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(80,210,130,0.8)' }}>Delivered</span>
+                                        <span style={{ fontSize: '10px', color: 'rgba(255,244,227,0.3)' }}>{new Date(track.created_at).toLocaleDateString()}</span>
+                                      </div>
+                                      <p style={{ margin: '0 0 8px 0', fontSize: '13px', color: '#FFF4E3', fontWeight: 500 }}>{track.title}</p>
+                                      <button 
+                                        onClick={() => window.open(track.file_url, '_blank')}
+                                        style={{ background: 'transparent', border: 'none', color: '#EA9A61', fontSize: '11px', padding: 0, cursor: 'pointer', fontWeight: 600 }}
+                                      >
+                                        Listen to Track →
+                                      </button>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })
+            )}
+          </div>
         </div>
 
       </div>
