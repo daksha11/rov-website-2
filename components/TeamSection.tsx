@@ -46,6 +46,7 @@ const teamMembers: TeamMember[] = [
         role: "FOUNDER & CREATIVE DIRECTOR",
         skills: ["Creative Direction", "Brand Strategy", "Web Development", "Design Systems", "Client Relations"],
         location: "Atlanta",
+        portfolioLink: "https://www.ayushbasu.com/",
         specialties: "I lead creative direction across all client projects and internal initiatives while overseeing company operations. I contribute hands-on to design, development, and client communications—making sure R.O.V.'s vision stays consistent from pitch to delivery.",
         shadowColor: "101, 67, 33"
     },
@@ -58,6 +59,7 @@ const teamMembers: TeamMember[] = [
         role: "FOUNDER & CREATIVE DIRECTOR",
         skills: ["Creative Direction", "Brand Strategy", "Web Development", "Design Systems", "Client Relations"],
         location: "Atlanta",
+        portfolioLink: "https://www.ayushbasu.com/",
         specialties: "I lead creative direction across all client projects and internal initiatives while overseeing company operations. I contribute hands-on to design, development, and client communications—making sure R.O.V.'s vision stays consistent from pitch to delivery.",
         shadowColor: "101, 67, 33"
     },

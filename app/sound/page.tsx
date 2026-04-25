@@ -72,6 +72,8 @@ const VideoShowcaseSection = dynamic(() => import("@/components/sound_page/Video
     ),
 });
 
+const TagorePartnership = dynamic(() => import("@/components/sound_page/TagorePartnership"));
+
 const FAQSection = dynamic(() => import("@/components/common/FAQSection"), {
     loading: () => (
         <div className="bg-black min-h-[40vh] flex items-center justify-center">
@@ -159,6 +161,9 @@ export default function Page() {
 
             {/* 10 — Testimonials */}
             <TestimonialsSection testimonials={soundTestimonials} variant="sound" />
+
+            {/* 10.5 — Tagore Studios Partnership */}
+            <TagorePartnership />
 
             {/* 11 — Cross-Sell Nudges */}
             <CrossSellNudges currentService="sound" />

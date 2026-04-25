@@ -11,6 +11,7 @@ import { CompetitorAnalysis } from "@/components/casestudy/CompetitorAnalysis";
 import { DesignSystem } from "@/components/casestudy/DesignSystem";
 import { Approach } from "@/components/casestudy/Approach";
 import { Result } from "@/components/casestudy/Result";
+import IknaInstagramFeature from "@/components/casestudy/IknaInstagramFeature";
 
 export const metadata: Metadata = {
     title: 'Aysegul Ikna - Case Study',
@@ -210,6 +211,8 @@ export default function IknaCaseStudyPage() {
                                 bgColor="#0E0A08"
                             />
                         </div>
+
+                        <IknaInstagramFeature />
 
                         <div id="result">
                             <Result
