@@ -13,7 +13,7 @@ export default function PreviewFrame() {
   const [viewport, setViewport] = useState<"desktop" | "tablet" | "mobile">(
     "desktop"
   );
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const updatePreview = useCallback(async () => {
     setIsUpdating(true);
