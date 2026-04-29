@@ -6,6 +6,7 @@ import CtrlAFooter from "@/components/CtrlAFooter";
 import { NavigationDock } from "@/components/NavDoc";
 import styled from "styled-components";
 import { GlobalTeamGlobe } from "@/components/ctrla/GlobalTeamGlobe";
+import { BrandKitSection } from "@/components/ctrla/BrandKitSection";
 
 
 const StyledHeroBackground = styled.div`
@@ -302,6 +303,8 @@ export default function CtrlAContent() {
       <NavigationDock />
       {/* Hero Section */}
       <ComingSoonHero />
+
+      <BrandKitSection />
 
       {/* Tool Kit Section */}
       <section

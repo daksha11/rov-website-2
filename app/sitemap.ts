@@ -37,14 +37,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.9,
         },
         {
-            url: `${baseUrl}/ai`,
-            lastModified: '2025-03-23',
-            changeFrequency: 'monthly',
-            priority: 0.9,
-        },
-        {
             url: `${baseUrl}/ai-automation`,
-            lastModified: '2025-03-15',
+            lastModified: '2026-04-29',
             changeFrequency: 'monthly',
             priority: 0.9,
         },
@@ -68,6 +62,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
         },
         {
             url: `${baseUrl}/casestudy/dkm`,
+            lastModified: '2025-02-01',
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/casestudy/pursue-networking`,
+            lastModified: '2025-02-01',
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/casestudy/atlanta-tech-meetup`,
             lastModified: '2025-02-01',
             changeFrequency: 'monthly',
             priority: 0.7,

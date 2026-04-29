@@ -55,6 +55,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    site: "@rovstudios",
+    creator: "@rovstudios",
     title: "Range of View Studios | Creative Production Agency",
     description:
       "Creative production agency specializing in sound engineering, web development, video production, and AI automation.",

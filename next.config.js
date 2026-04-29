@@ -13,6 +13,19 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  async rewrites() {
+    return [
+      {
+        source: '/tools/brandkit',
+        destination: `${process.env.BRANDKIT_URL}/builder/brand-info`,
+      },
+      {
+        source: '/tools/brandkit/:path*',
+        destination: `${process.env.BRANDKIT_URL}/:path*`,
+      },
+    ];
+  },
+
   async redirects() {
     return [
       {
