@@ -26,7 +26,7 @@ export function CreativeWorkSchema({
     url: `https://www.rovstudios.com${url}`,
     image: `https://www.rovstudios.com${image}`,
     about: {
-      "@type": "WebSite",
+      "@type": "Organization",
       name: aboutName,
     },
   };

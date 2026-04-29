@@ -2,6 +2,7 @@ export function OrganizationSchema() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": "https://www.rovstudios.com/#organization",
     name: "Range of View Studios",
     alternateName: "ROV Studios",
     url: "https://www.rovstudios.com",

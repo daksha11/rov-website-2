@@ -5,7 +5,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 
-const HEADING = "'Noto Sans Condensed', 'Noto Sans', sans-serif";
+const HEADING = "'Noto Sans VF', 'Noto Sans Condensed', 'Noto Sans', sans-serif";
 const BODY = "'DM Sans', sans-serif";
 const EASE = [0.32, 0.72, 0, 1] as const;
 const EMBER_GRADIENT =
@@ -18,7 +18,7 @@ export default function TagorePartnership() {
   return (
     <section
       ref={ref}
-      aria-label="Partnership with Tagore Studios"
+      aria-label="Partnership with Tagore Studio"
       className="relative bg-[#050505] overflow-hidden"
       style={{ padding: "clamp(96px, 12vw, 160px) clamp(16px, 5vw, 48px)" }}
     >
@@ -115,7 +115,7 @@ export default function TagorePartnership() {
                   >
                     <Image
                       src="/soundpage/tagorelogo.png"
-                      alt="Tagore Studios"
+                      alt="Tagore Studio"
                       fill
                       sizes="(max-width: 768px) 180px, 210px"
                       className="object-contain p-6"
@@ -172,11 +172,13 @@ export default function TagorePartnership() {
                   style={{
                     fontFamily: HEADING,
                     fontSize: "clamp(2.25rem, 5.5vw, 3.75rem)",
-                    fontWeight: 700,
-                    letterSpacing: "-0.045em",
+                    fontWeight: 900,
+                    fontVariationSettings: "'wdth' 75, 'wght' 900",
+                    letterSpacing: "-0.02em",
+                    textTransform: "uppercase",
                   }}
                 >
-                  Tagore Studios
+                  Tagore Studio
                 </motion.h2>
 
                 {/* Orange tagline */}
@@ -242,7 +244,7 @@ export default function TagorePartnership() {
                         "cubic-bezier(0.32,0.72,0,1)",
                     }}
                   >
-                    <span className="py-1">Explore Tagore Studios</span>
+                    <span className="py-1">Explore Tagore Studio</span>
                     <span
                       className="flex h-8 w-8 items-center justify-center rounded-full bg-[#FFF4E3] text-[#3B2114] transition-all group-hover:translate-x-[3px] group-hover:-translate-y-[1px] group-hover:scale-[1.04]"
                       style={{
