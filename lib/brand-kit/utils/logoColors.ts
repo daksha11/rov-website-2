@@ -88,7 +88,7 @@ export async function extractDominantColors(
       }
     }
 
-    const ranked = [...buckets.values()]
+    const ranked = Array.from(buckets.values())
       .map((c) => ({
         r: c.r / c.n,
         g: c.g / c.n,
