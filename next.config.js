@@ -14,6 +14,7 @@ const nextConfig = {
     styledComponents: true,
   },
   async rewrites() {
+    if (!process.env.BRANDKIT_URL) return [];
     return [
       {
         source: '/tools/brandkit',
