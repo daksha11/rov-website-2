@@ -92,7 +92,7 @@ export function EventsHubSection() {
 
             <motion.h2
               custom={1} variants={fadeUp} initial="hidden" animate={inView ? 'show' : 'hidden'}
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(52px, 7.5vw, 96px)', fontWeight: 900, fontStyle: 'italic', lineHeight: 0.92, letterSpacing: '-0.02em', margin: 0 }}
+              style={{ fontFamily: "'Thistora', Georgia, serif", fontSize: 'clamp(52px, 7.5vw, 96px)', fontWeight: 900, fontStyle: 'italic', lineHeight: 0.92, letterSpacing: '-0.02em', margin: 0 }}
             >
               <span style={{ color: '#F5EDD8' }}>Show</span>
               <br />
@@ -106,7 +106,7 @@ export function EventsHubSection() {
             <motion.div custom={3} variants={fadeUp} initial="hidden" animate={inView ? 'show' : 'hidden'} style={{ display: 'flex', gap: '36px' }}>
               {[{ num: '10+', label: 'May events' }, { num: 'ATL', label: 'Base city' }, { num: '5', label: 'Free events' }].map(({ num, label }) => (
                 <div key={label} style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                  <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontStyle: 'italic', fontWeight: 700, fontSize: 'clamp(22px, 3vw, 36px)', color: '#F5EDD8', lineHeight: 1 }}>{num}</span>
+                  <span style={{ fontFamily: "'Thistora', Georgia, serif", fontStyle: 'italic', fontWeight: 700, fontSize: 'clamp(22px, 3vw, 36px)', color: '#F5EDD8', lineHeight: 1 }}>{num}</span>
                   <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', color: 'rgba(245,237,216,0.48)', letterSpacing: '0.12em', textTransform: 'uppercase' as const }}>{label}</span>
                 </div>
               ))}
@@ -139,7 +139,7 @@ export function EventsHubSection() {
                 {/* Date badge */}
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '52px', minWidth: '52px', height: '60px', borderRadius: '10px', background: 'rgba(196,98,45,0.06)', border: '1px solid rgba(196,98,45,0.14)', gap: '1px' }}>
                   <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '8px', color: 'rgba(196,98,45,0.5)', letterSpacing: '0.12em', textTransform: 'uppercase' as const }}>{evt.dayName}</span>
-                  <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontStyle: 'italic', fontWeight: 700, fontSize: '22px', color: '#C4622D', lineHeight: 1 }}>{evt.dayNum}</span>
+                  <span style={{ fontFamily: "'Thistora', Georgia, serif", fontStyle: 'italic', fontWeight: 700, fontSize: '22px', color: '#C4622D', lineHeight: 1 }}>{evt.dayNum}</span>
                   <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '8px', color: 'rgba(196,98,45,0.4)', letterSpacing: '0.1em' }}>{evt.month}</span>
                 </div>
 
@@ -148,7 +148,7 @@ export function EventsHubSection() {
                   <div style={{ marginBottom: '5px' }}>
                     <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '8px', fontWeight: 500, letterSpacing: '0.2em', color: evt.typeColor, background: evt.typeBg, border: `1px solid ${evt.typeBorder}`, borderRadius: '100px', padding: '2px 8px', textTransform: 'uppercase' as const }}>{evt.type}</span>
                   </div>
-                  <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontStyle: 'italic', fontWeight: 700, fontSize: '15px', color: 'rgba(245,237,216,0.88)', margin: '0 0 3px', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' as const }}>{evt.title}</p>
+                  <p style={{ fontFamily: 'Norwige, sans-serif', fontStyle: 'normal', fontWeight: 400, fontSize: '16px', color: 'rgba(245,237,216,0.92)', margin: '0 0 3px', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' as const }}>{evt.title}</p>
                   <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontWeight: 300, fontSize: '11px', color: 'rgba(245,237,216,0.55)', margin: 0, lineHeight: 1.45 }}>{evt.desc}</p>
                 </div>
 

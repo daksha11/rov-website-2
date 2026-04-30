@@ -115,15 +115,6 @@ function CtrlAHero() {
     >
       <HeroBackground />
 
-      {/* Stickers — desktop only */}
-      <div className="hidden md:block" style={{ position: 'absolute', top: '5%', left: '4%', width: '160px', height: '160px', backgroundImage: 'url(/ctrla/andresticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
-      <div className="hidden md:block" style={{ position: 'absolute', top: '6%', right: '5%', width: '175px', height: '175px', backgroundImage: 'url(/ctrla/benzsticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
-      <div className="hidden md:block" style={{ position: 'absolute', bottom: '8%', left: '5%', width: '185px', height: '185px', backgroundImage: 'url(/ctrla/gradysticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
-      <div className="hidden md:block" style={{ position: 'absolute', bottom: '10%', right: '5%', width: '170px', height: '170px', backgroundImage: 'url(/ctrla/tunnelsticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
-      <div className="hidden lg:block" style={{ position: 'absolute', top: '20%', left: '14%', width: '155px', height: '155px', backgroundImage: 'url(/ctrla/carsticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
-      <div className="hidden lg:block" style={{ position: 'absolute', top: '20%', right: '14%', width: '165px', height: '165px', backgroundImage: 'url(/ctrla/grillsticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
-      <div className="hidden lg:block" style={{ position: 'absolute', bottom: '20%', left: '20%', width: '155px', height: '155px', backgroundImage: 'url(/ctrla/atlsticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
-      <div className="hidden lg:block" style={{ position: 'absolute', bottom: '22%', right: '18%', width: '150px', height: '150px', backgroundImage: 'url(/ctrla/martasticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
 
       {/* Center ghost sticker */}
       <div
@@ -214,7 +205,7 @@ function CtrlAHero() {
           >
             <span
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "'Thistora', Georgia, serif",
                 fontStyle: 'italic',
                 fontWeight: 900,
                 fontSize: 'clamp(22px, 3.5vw, 48px)',
@@ -286,7 +277,7 @@ function CtrlAHero() {
           >
             <span
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "'Thistora', Georgia, serif",
                 fontStyle: 'italic',
                 fontWeight: 900,
                 fontSize: 'clamp(22px, 3.5vw, 48px)',
@@ -343,13 +334,14 @@ function CtrlAHero() {
         <p
           style={{
             fontFamily: "'DM Sans', system-ui, sans-serif",
-            fontWeight: 300,
-            color: 'rgba(245,237,216,0.72)',
-            fontSize: 'clamp(12px, 1.4vw, 15px)',
+            fontWeight: 400,
+            color: '#F5EDD8',
+            fontSize: 'clamp(13px, 1.5vw, 16px)',
             letterSpacing: '0.02em',
-            maxWidth: '360px',
+            maxWidth: '380px',
             lineHeight: 1.7,
             margin: '0 0 26px',
+            textShadow: '0 0 28px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.7)',
           }}
         >
           Music. Design. Web. Everything a creative needs, one command away.
@@ -358,21 +350,25 @@ function CtrlAHero() {
         {/* Category pills */}
         <div style={{ display: 'flex', gap: '8px', marginBottom: '32px', flexWrap: 'wrap', justifyContent: 'center' }}>
           {[
-            { label: 'MUSIC', color: '#4A7A50', bg: 'rgba(74,122,80,0.12)', border: 'rgba(74,122,80,0.25)' },
-            { label: 'DESIGN', color: '#7B4FAE', bg: 'rgba(123,79,174,0.12)', border: 'rgba(123,79,174,0.25)' },
-            { label: 'WEB DEV', color: '#4A3F8C', bg: 'rgba(74,63,140,0.12)', border: 'rgba(74,63,140,0.25)' },
+            { label: 'MUSIC', color: '#9DD6A4', bg: 'rgba(74,122,80,0.28)', border: 'rgba(74,122,80,0.65)' },
+            { label: 'DESIGN', color: '#C4A4E8', bg: 'rgba(123,79,174,0.28)', border: 'rgba(123,79,174,0.65)' },
+            { label: 'WEB DEV', color: '#A8A3D8', bg: 'rgba(74,63,140,0.28)', border: 'rgba(74,63,140,0.65)' },
           ].map(({ label, color, bg, border }) => (
             <span
               key={label}
               style={{
                 fontFamily: "'DM Mono', monospace",
-                fontSize: 'clamp(8px, 0.9vw, 10px)',
+                fontSize: 'clamp(9px, 1vw, 11px)',
                 letterSpacing: '0.2em',
                 color,
                 background: bg,
                 border: `1px solid ${border}`,
                 borderRadius: '100px',
-                padding: '5px 14px',
+                padding: '6px 16px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
               }}
             >
               {label}
@@ -435,6 +431,84 @@ const ChakraRibbon = () => (
   <div style={{ height: 4, background: 'linear-gradient(135deg,#6B2318 0%,#C4622D 18%,#E0A44A 36%,#4A7A50 54%,#3A6E8C 72%,#4A3F8C 86%,#7B4FAE 100%)', width: '100%' }} />
 );
 
+const STICKERS = [
+  { src: '/ctrla/andresticker.webp', rot: -8 },
+  { src: '/ctrla/benzsticker.webp', rot: 6 },
+  { src: '/ctrla/carsticker.webp', rot: -4 },
+  { src: '/ctrla/grillsticker.webp', rot: 7 },
+  { src: '/ctrla/gradysticker.webp', rot: -6 },
+  { src: '/ctrla/tunnelsticker.webp', rot: 4 },
+  { src: '/ctrla/atlsticker.webp', rot: -3 },
+  { src: '/ctrla/martasticker.webp', rot: 8 },
+  { src: '/ctrla/futuresticker.webp', rot: -5 },
+];
+
+function StickerBelt() {
+  const track = [...STICKERS, ...STICKERS, ...STICKERS];
+  return (
+    <div style={{ backgroundColor: '#1C1208', overflow: 'hidden', padding: '20px 0 32px', position: 'relative' }}>
+      {/* Label */}
+      <p style={{
+        textAlign: 'center',
+        fontFamily: "'DM Mono', monospace",
+        fontSize: '10px',
+        letterSpacing: '0.28em',
+        color: 'rgba(196,98,45,0.4)',
+        textTransform: 'uppercase',
+        marginBottom: '20px',
+        pointerEvents: 'none',
+      }}>
+        Custom hand-drawn illustrations
+      </p>
+      {/* Edge fades */}
+      <div aria-hidden style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '140px', background: 'linear-gradient(to right, #1C1208 30%, transparent)', zIndex: 2, pointerEvents: 'none' }} />
+      <div aria-hidden style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '140px', background: 'linear-gradient(to left, #1C1208 30%, transparent)', zIndex: 2, pointerEvents: 'none' }} />
+
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '64px',
+          width: 'max-content',
+          animation: 'stickerBelt 36s linear infinite',
+        }}
+      >
+        {track.map((s, i) => (
+          <img
+            key={i}
+            src={s.src}
+            alt=""
+            draggable={false}
+            style={{
+              flexShrink: 0,
+              width: '120px',
+              height: '120px',
+              objectFit: 'contain',
+              transform: `rotate(${s.rot}deg)`,
+              filter: 'drop-shadow(0 8px 20px rgba(0,0,0,0.6))',
+              transition: 'transform 0.35s cubic-bezier(0.32,0.72,0,1)',
+              cursor: 'default',
+              userSelect: 'none',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.transform = `rotate(0deg) scale(1.18) translateY(-6px)`; }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = `rotate(${s.rot}deg) scale(1) translateY(0)`; }}
+          />
+        ))}
+      </div>
+
+      <style>{`
+        @keyframes stickerBelt {
+          from { transform: translateX(0); }
+          to   { transform: translateX(-33.333%); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .stickerBelt { animation: none; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
 export default function CtrlAContent() {
   // Reset scroll on mount
   useEffect(() => {
@@ -458,6 +532,9 @@ export default function CtrlAContent() {
       <NavigationDock />
       {/* Hero Section */}
       <CtrlAHero />
+
+      {/* Sticker assembly line */}
+      <StickerBelt />
 
       <ChakraRibbon />
       <BrandKitSection />
@@ -487,7 +564,7 @@ export default function CtrlAContent() {
             marginBottom: '80px',
             textAlign: 'center',
             letterSpacing: '2px',
-            fontFamily: "'Playfair Display', Georgia, serif",
+            fontFamily: "'Thistora', Georgia, serif",
           }}
         >
           TOOL KIT
@@ -555,7 +632,7 @@ export default function CtrlAContent() {
                         margin: 0,
                         textTransform: 'uppercase',
                         letterSpacing: '1px',
-                        fontFamily: "'Playfair Display', Georgia, serif",
+                        fontFamily: "'Thistora', Georgia, serif",
                       }}
                     >
                       MUSIC
@@ -622,7 +699,7 @@ export default function CtrlAContent() {
                           textTransform: 'uppercase',
                           letterSpacing: '1px',
                           lineHeight: '1.2',
-                          fontFamily: "'Playfair Display', Georgia, serif",
+                          fontFamily: "'Thistora', Georgia, serif",
                         }}
                       >
                         WEB
@@ -635,7 +712,7 @@ export default function CtrlAContent() {
                           margin: 0,
                           textTransform: 'uppercase',
                           letterSpacing: '1px',
-                          fontFamily: "'Playfair Display', Georgia, serif",
+                          fontFamily: "'Thistora', Georgia, serif",
                         }}
                       >
                         DEVELOPMENT
@@ -697,7 +774,7 @@ export default function CtrlAContent() {
                         margin: 0,
                         textTransform: 'uppercase',
                         letterSpacing: '1px',
-                        fontFamily: "'Playfair Display', Georgia, serif",
+                        fontFamily: "'Thistora', Georgia, serif",
                       }}
                     >
                       DESIGN
@@ -731,7 +808,7 @@ export default function CtrlAContent() {
             marginBottom: '80px',
             textAlign: 'center',
             letterSpacing: '0.05em',
-            fontFamily: "'Playfair Display', Georgia, serif",
+            fontFamily: "'Thistora', Georgia, serif",
           }}
         >
           STAY IN TOUCH!
@@ -929,7 +1006,7 @@ export default function CtrlAContent() {
                 <img src="/rov-logo.webp" alt="ROV Logo" className="w-12 h-12 md:w-14 md:h-14 object-contain" />
               </div>
               <div>
-                <h3 className="text-white text-2xl md:text-3xl lg:text-4xl font-bold italic mb-2" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                <h3 className="text-white text-2xl md:text-3xl lg:text-4xl font-bold italic mb-2" style={{ fontFamily: "'Thistora', Georgia, serif" }}>
                   The CTRL A Magazine
                 </h3>
                 <p className="text-white text-sm md:text-base opacity-80" style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
@@ -1012,8 +1089,8 @@ export default function CtrlAContent() {
               Coming Soon
             </span>
             <h2
-              className="text-white text-4xl md:text-5xl lg:text-6xl font-bold italic leading-[0.95] mb-4"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              className="text-white text-4xl md:text-5xl lg:text-6xl font-bold italic leading-[1.15] mb-4 pb-1"
+              style={{ fontFamily: "'Thistora', Georgia, serif" }}
             >
               The ROV{" "}
               <span

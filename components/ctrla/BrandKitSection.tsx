@@ -98,12 +98,12 @@ export function BrandKitSection() {
             <motion.h2
               custom={1} variants={fadeUp} initial="hidden" animate={inView ? 'show' : 'hidden'}
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "'Thistora', Georgia, serif",
                 fontSize: 'clamp(52px, 7.5vw, 96px)',
                 fontWeight: 900,
                 fontStyle: 'italic',
                 lineHeight: 0.92,
-                letterSpacing: '-0.02em',
+                letterSpacing: '0.06em',
                 margin: 0,
               }}
             >
@@ -293,7 +293,7 @@ export function BrandKitSection() {
                 <p style={{ fontFamily: 'monospace', fontSize: '10px', color: 'rgba(196,98,45,0.45)', margin: '0 0 10px 0', letterSpacing: '0.05em' }}>
                   ## Typography
                 </p>
-                <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '24px', fontStyle: 'italic', fontWeight: 700, color: 'rgba(245,237,216,0.82)', margin: '0 0 5px', lineHeight: 1 }}>
+                <p style={{ fontFamily: "'Thistora', Georgia, serif", fontSize: '24px', fontStyle: 'italic', fontWeight: 700, color: 'rgba(245,237,216,0.82)', margin: '0 0 5px', lineHeight: 1 }}>
                   Display Heading
                 </p>
                 <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontWeight: 300, fontSize: '11px', color: 'rgba(245,237,216,0.6)', margin: '0 0 3px' }}>Body · DM Sans Light 16/1.75</p>

@@ -93,7 +93,7 @@ export function GlobalTeamGlobe() {
           fontWeight: "900",
           color: "#F5EDD8",
           textAlign: "center",
-          fontFamily: "'Playfair Display', Georgia, serif",
+          fontFamily: "'Thistora', Georgia, serif",
           fontStyle: "italic",
           marginBottom: 16,
           letterSpacing: "-0.5px",
