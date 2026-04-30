@@ -118,7 +118,7 @@ export function BrandKitSection() {
               style={{
                 fontFamily: "'Roboto', sans-serif",
                 fontSize: 'clamp(15px, 1.4vw, 17px)',
-                color: 'rgba(255,244,227,0.48)',
+                color: 'rgba(255,244,227,0.72)',
                 lineHeight: 1.78,
                 maxWidth: '500px',
                 margin: 0,
@@ -142,7 +142,7 @@ export function BrandKitSection() {
               }}
             >
               <span style={{ fontFamily: 'monospace', fontSize: '13px', color: '#EA9A61', fontWeight: 700 }}>$</span>
-              <span style={{ fontFamily: 'monospace', fontSize: '13px', color: 'rgba(255,244,227,0.38)' }}>
+              <span style={{ fontFamily: 'monospace', fontSize: '13px', color: 'rgba(255,244,227,0.72)' }}>
                 export <span style={{ color: 'rgba(234,154,97,0.75)' }}>brand-kit.md</span> and drop into any AI build
               </span>
             </motion.div>
@@ -206,7 +206,7 @@ export function BrandKitSection() {
                     <Icon size={12} color="rgba(234,154,97,0.75)" strokeWidth={1.5} />
                     <span style={{ fontFamily: "'Roboto', sans-serif", fontSize: '12px', fontWeight: 600, color: 'rgba(255,244,227,0.75)' }}>{label}</span>
                   </div>
-                  <p style={{ fontFamily: "'Roboto', sans-serif", fontSize: '11px', color: 'rgba(255,244,227,0.32)', margin: 0, lineHeight: 1.55 }}>{desc}</p>
+                  <p style={{ fontFamily: "'Roboto', sans-serif", fontSize: '11px', color: 'rgba(255,244,227,0.6)', margin: 0, lineHeight: 1.55 }}>{desc}</p>
                 </div>
               ))}
             </motion.div>
@@ -253,7 +253,7 @@ export function BrandKitSection() {
                 {['#FF5F57', '#FFBD2E', '#28CA41'].map((c) => (
                   <div key={c} style={{ width: '10px', height: '10px', borderRadius: '50%', background: c, opacity: 0.85 }} />
                 ))}
-                <span style={{ fontFamily: 'monospace', fontSize: '11px', color: 'rgba(255,244,227,0.2)', marginLeft: '10px' }}>
+                <span style={{ fontFamily: 'monospace', fontSize: '11px', color: 'rgba(255,244,227,0.5)', marginLeft: '10px' }}>
                   brand-kit.md
                 </span>
               </div>
@@ -276,7 +276,7 @@ export function BrandKitSection() {
                           boxShadow: `0 4px 12px ${color}33`,
                         }}
                       />
-                      <span style={{ fontFamily: 'monospace', fontSize: '8px', color: 'rgba(255,244,227,0.28)', letterSpacing: '0.03em' }}>{label}</span>
+                      <span style={{ fontFamily: 'monospace', fontSize: '8px', color: 'rgba(255,244,227,0.55)', letterSpacing: '0.03em' }}>{label}</span>
                     </div>
                   ))}
                 </div>
@@ -295,8 +295,8 @@ export function BrandKitSection() {
                 <p style={{ fontFamily: 'Norwige, sans-serif', fontSize: '24px', fontStyle: 'italic', color: 'rgba(255,244,227,0.82)', margin: '0 0 5px', lineHeight: 1 }}>
                   Display Heading
                 </p>
-                <p style={{ fontFamily: "'Roboto', sans-serif", fontSize: '11px', color: 'rgba(255,244,227,0.3)', margin: '0 0 3px' }}>Body · Roboto Regular 16/1.75</p>
-                <p style={{ fontFamily: 'monospace', fontSize: '10px', color: 'rgba(255,244,227,0.18)', margin: 0 }}>Caption · Mono 12/1.5</p>
+                <p style={{ fontFamily: "'Roboto', sans-serif", fontSize: '11px', color: 'rgba(255,244,227,0.6)', margin: '0 0 3px' }}>Body · Roboto Regular 16/1.75</p>
+                <p style={{ fontFamily: 'monospace', fontSize: '10px', color: 'rgba(255,244,227,0.45)', margin: 0 }}>Caption · Mono 12/1.5</p>
               </div>
 
               {/* Voice & tone block with blinking cursor */}

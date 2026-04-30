@@ -50,11 +50,6 @@ const LOCATIONS: GlobeLocation[] = [
   { lat: 51.507, lng: -0.128, city: "London", country: "UK", type: "business" },
 ];
 
-const tagColors: Record<GlobeLocation["type"], { color: string; border: string }> = {
-  hq: { color: "#EA9A61", border: "rgba(234,154,97,0.3)" },
-  team: { color: "rgba(247,242,228,0.7)", border: "rgba(247,242,228,0.15)" },
-  business: { color: "rgba(177,105,55,0.6)", border: "rgba(177,105,55,0.15)" },
-};
 
 export function GlobalTeamGlobe() {
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
@@ -163,7 +158,29 @@ export function GlobalTeamGlobe() {
         }}
       >
         {LOCATIONS.map((loc) => {
+          const isHQ = loc.type === "hq";
           const isActive = selectedCity === loc.city;
+
+          const baseStyle = isHQ
+            ? {
+                border: "1px solid transparent",
+                background: "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)",
+                color: "#FFF4E3",
+                boxShadow: isActive
+                  ? "0 12px 32px -8px rgba(177,105,55,0.7)"
+                  : "0 6px 20px -8px rgba(177,105,55,0.45)",
+                transform: isActive ? "translateY(-2px)" : "translateY(0)",
+              }
+            : {
+                border: isActive
+                  ? "1px solid rgba(234,154,97,0.35)"
+                  : "1px solid rgba(255,244,227,0.1)",
+                background: isActive ? "rgba(234,154,97,0.08)" : "transparent",
+                color: isActive ? "rgba(255,244,227,0.9)" : "rgba(255,244,227,0.45)",
+                boxShadow: "none",
+                transform: isActive ? "translateY(-1px)" : "translateY(0)",
+              };
+
           return (
             <button
               key={loc.city}
@@ -172,26 +189,16 @@ export function GlobalTeamGlobe() {
                 fontFamily: "Norwige, sans-serif",
                 fontStyle: "italic",
                 fontSize: "clamp(11px, 1.4vw, 13px)",
-                padding: "6px 16px",
+                padding: isHQ ? "7px 20px" : "6px 16px",
                 borderRadius: 999,
-                border: isActive
-                  ? "1px solid transparent"
-                  : `1px solid ${tagColors[loc.type].border}`,
-                background: isActive
-                  ? "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)"
-                  : "transparent",
-                color: isActive ? "#FFF4E3" : tagColors[loc.type].color,
                 letterSpacing: "0.06em",
                 cursor: "pointer",
-                transition: "all 300ms cubic-bezier(0.32,0.72,0,1)",
-                boxShadow: isActive
-                  ? "0 8px 24px -8px rgba(177,105,55,0.55)"
-                  : "none",
-                transform: isActive ? "translateY(-1px)" : "none",
+                transition: "all 250ms cubic-bezier(0.32,0.72,0,1)",
+                ...baseStyle,
               }}
             >
               {loc.city}
-              {loc.type === "hq" ? " (HQ)" : ""}
+              {isHQ ? " (HQ)" : ""}
             </button>
           );
         })}

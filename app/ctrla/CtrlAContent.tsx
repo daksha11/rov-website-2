@@ -7,6 +7,7 @@ import { NavigationDock } from "@/components/NavDoc";
 import styled from "styled-components";
 import { GlobalTeamGlobe } from "@/components/ctrla/GlobalTeamGlobe";
 import { BrandKitSection } from "@/components/ctrla/BrandKitSection";
+import { EventsHubSection } from "@/components/ctrla/EventsHubSection";
 
 
 const StyledHeroBackground = styled.div`
@@ -449,6 +450,8 @@ export default function CtrlAContent() {
       <CtrlAHero />
 
       <BrandKitSection />
+
+      <EventsHubSection />
 
       {/* Tool Kit Section */}
       <section
