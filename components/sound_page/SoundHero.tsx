@@ -19,7 +19,7 @@ const SoundHero: React.FC = () => {
                     aria-label="Stars Collide music video by ROV Studios"
                     title="Stars Collide - ROV Studios Sound Engineering"
                 >
-                    <source src="/soundpage/starscollidemv.mp4" type="video/mp4" />
+                    <source src="/soundpage/Scollidemv.mp4" type="video/mp4" />
                 </video>
 
                 {/* Dark & Blurred Overlay */}

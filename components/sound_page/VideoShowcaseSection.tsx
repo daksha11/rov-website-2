@@ -9,19 +9,19 @@ const BODY_FONT = "'Roboto', sans-serif";
 
 const videos = [
   {
-    src: "/soundpage/starscollidemv.mp4",
+    src: "/soundpage/Scollidemv.mp4",
     title: "Stars Collide",
     poster: "/thumbnails/soundhero.webp",
     credit: "Basu & Sam Suen",
   },
   {
-    src: "/video/starboymv.mp4",
+    src: "/soundpage/starbmvv.mp4",
     title: "Starboy",
     poster: "/thumbnails/starboythumb.webp",
     credit: "StrangeLoots",
   },
   {
-    src: "/ctrla/ykwiwvidweb.mp4",
+    src: "/soundpage/ykwiwmvv.mp4",
     title: "YKWIW",
     poster: "/thumbnails/ykwiw1.webp",
     credit: "Basu",

@@ -111,7 +111,7 @@ export default function Page() {
                 description="Stars Collide official music video, mixed and mastered by Range of View Studios sound engineering team."
                 thumbnailUrl="/thumbnails/soundhero.webp"
                 uploadDate="2025-01-10"
-                contentUrl="/soundpage/starscollidemv.mp4"
+                contentUrl="/soundpage/Scollidemv.mp4"
                 duration="PT3M30S"
                 pageUrl="/sound"
             />
@@ -120,7 +120,7 @@ export default function Page() {
                 description="Starboy music video produced and engineered by Range of View Studios."
                 thumbnailUrl="/thumbnails/starboythumb.webp"
                 uploadDate="2025-01-15"
-                contentUrl="/video/starboymv.mp4"
+                contentUrl="/soundpage/starbmvv.mp4"
                 duration="PT3M"
                 pageUrl="/sound"
             />
