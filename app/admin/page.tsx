@@ -3,7 +3,7 @@ import { useEffect, useState, useRef, useMemo } from 'react';
 import JSZip from 'jszip';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
-import { Play, Pause, Trash2, FileAudio, Music2, ChevronDown, ChevronRight, User, Download, UploadCloud, X } from 'lucide-react';
+import { Play, Pause, Trash2, FileAudio, Music2, ChevronDown, ChevronRight, User, Users, Download, UploadCloud, X, Search } from 'lucide-react';
 
 const supabase = createClient();
 
@@ -54,6 +54,7 @@ export default function AdminDashboard() {
   const [greetingFading, setGreetingFading] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'client' | 'sound' | 'user'>('client');
 
   // Audio submissions state
   const [submissions, setSubmissions] = useState<AudioSubmission[]>([]);
@@ -764,31 +765,103 @@ export default function AdminDashboard() {
         gap: '24px',
       }}>
 
-        {/* Welcome */}
-        <div style={{ ...cardStyle, animation: 'cardFadeIn 0.4s ease-out forwards' }}>
-          <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(255,244,227,0.35)', margin: '0 0 10px 0' }}>
-            Command Center
-          </p>
-          <h2 style={{ fontSize: 'clamp(22px, 4vw, 30px)', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 6px 0', color: '#FFF4E3' }}>
-            Welcome back, {fullName.split(' ')[0]}
-          </h2>
-          <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.4)', margin: 0 }}>
-            Here is where you manage all client submissions and projects.
-          </p>
+        {/* Stats Bar */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '1px',
+          background: 'rgba(255,244,227,0.06)',
+          border: '1px solid rgba(255,244,227,0.06)',
+          borderRadius: '16px',
+          overflow: 'hidden',
+          animation: 'cardFadeIn 0.4s ease-out forwards',
+        }}>
+          {(activeTab === 'client' ? [
+            { label: 'Total Clients', value: clients.length, isLoading: loadingClients, urgent: false },
+            { label: 'Pending Revisions', value: allRevisions.filter(r => r.status === 'pending').length, isLoading: loadingClients, urgent: allRevisions.filter(r => r.status === 'pending').length > 0 },
+            { label: 'Active Projects', value: Object.values(clientProjects).filter(p => p.status === 'In Progress').length, isLoading: loadingClients, urgent: false },
+          ] : activeTab === 'sound' ? [
+            { label: 'Tracks Submitted', value: submissions.length, isLoading: loadingTracks, urgent: false },
+            { label: 'Active Projects', value: Object.values(clientProjects).filter(p => p.status === 'In Progress').length, isLoading: loadingClients, urgent: false },
+            { label: 'Revisions Pending', value: allRevisions.filter(r => r.status === 'pending').length, isLoading: loadingClients, urgent: allRevisions.filter(r => r.status === 'pending').length > 0 },
+          ] : [
+            { label: 'Total Clients', value: clients.length, isLoading: loadingClients, urgent: false },
+            { label: 'Pending Revisions', value: allRevisions.filter(r => r.status === 'pending').length, isLoading: loadingClients, urgent: allRevisions.filter(r => r.status === 'pending').length > 0 },
+            { label: 'Tracks Submitted', value: submissions.length, isLoading: loadingTracks, urgent: false },
+          ]).map(({ label, value, isLoading, urgent }) => (
+            <div key={label} style={{ padding: '22px 24px', background: 'rgba(255,255,255,0.02)' }}>
+              <p style={{ margin: '0 0 5px 0', fontSize: '32px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', color: urgent ? '#EA9A61' : '#FFF4E3', lineHeight: 1 }}>
+                {isLoading ? '—' : value}
+              </p>
+              <p style={{ margin: 0, fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.18em', color: urgent ? 'rgba(234,154,97,0.6)' : 'rgba(255,244,227,0.3)', fontWeight: 500 }}>
+                {label}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* ── Tab Bar ── */}
+        <div style={{
+          display: 'flex',
+          gap: '4px',
+          padding: '6px',
+          background: 'linear-gradient(135deg, #1A0D08 0%, #2E1A0E 50%, #3D1C10 100%)',
+          border: '1px solid rgba(255,244,227,0.08)',
+          borderRadius: '16px',
+          overflow: 'hidden',
+        }}>
+          {(['client', 'sound', 'user'] as const).map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              style={{
+                flex: 1,
+                padding: '10px 16px',
+                borderRadius: '10px',
+                border: 'none',
+                background: activeTab === tab ? 'linear-gradient(135deg, #FFF4E3 0%, #EA9A61 45%, #90422C 100%)' : 'transparent',
+                color: activeTab === tab ? '#3B2114' : 'rgba(255,244,227,0.5)',
+                fontSize: '12px',
+                fontFamily: "'Roboto', sans-serif",
+                fontWeight: activeTab === tab ? 600 : 400,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                outline: 'none',
+                border: '1px solid transparent',
+                boxShadow: activeTab === tab ? '0 2px 16px rgba(234,154,97,0.35)' : 'none',
+              }}
+              onMouseEnter={(e) => { if (activeTab !== tab) { e.currentTarget.style.color = 'rgba(255,244,227,0.75)'; e.currentTarget.style.background = 'rgba(255,255,255,0.07)'; } }}
+              onMouseLeave={(e) => { if (activeTab !== tab) { e.currentTarget.style.color = 'rgba(255,244,227,0.35)'; e.currentTarget.style.background = 'transparent'; } }}
+            >
+              <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '7px' }}>
+                {tab === 'client' ? <Users size={13} /> : tab === 'sound' ? <Music2 size={13} /> : <User size={13} />}
+                {tab === 'client' ? 'Client' : tab === 'sound' ? 'Sound' : 'Users'}
+              </span>
+            </button>
+          ))}
         </div>
 
         {/* ── Mixed Audio Revisions (Pending Only) ── */}
-        {allRevisions.some(r => r.status === 'pending') && (
-          <div style={{ ...cardStyle, animation: 'cardFadeIn 0.4s ease-out both', border: '1px solid rgba(234,154,97,0.2)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
-              <span style={{ fontSize: '20px' }}>📢</span>
-              <div>
-                <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#FFF4E3' }}>
-                  Pending Revisions
-                </h3>
-                <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.35)', margin: 0 }}>
-                  Clients awaiting review updates
-                </p>
+        {activeTab === 'sound' && allRevisions.some(r => r.status === 'pending') && (
+          <div style={{ ...cardStyle, animation: 'cardFadeIn 0.4s ease-out both', border: '1px solid rgba(234,154,97,0.45)', boxShadow: '0 0 0 1px rgba(234,154,97,0.08), 0 4px 24px rgba(166,77,43,0.12)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(59,33,20,0.4)' }}>
+                  <span style={{ fontSize: '16px', lineHeight: 1 }}>📢</span>
+                </div>
+                <div>
+                  <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#FFF4E3' }}>
+                    Pending Revisions
+                  </h3>
+                  <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.35)', margin: 0 }}>
+                    Clients awaiting review updates
+                  </p>
+                </div>
+              </div>
+              <div style={{ padding: '4px 12px', borderRadius: '9999px', background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)', color: '#FFF4E3', fontSize: '13px', fontWeight: 700, boxShadow: '0 2px 10px rgba(166,77,43,0.4)' }}>
+                {allRevisions.filter(r => r.status === 'pending').length} pending
               </div>
             </div>
 
@@ -845,13 +918,15 @@ export default function AdminDashboard() {
                         }}
                         style={{
                           flex: 1, padding: '12px', borderRadius: '9999px',
-                          background: '#EA9A61', color: '#0A0A0A',
+                          background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)',
+                          color: '#FFF4E3',
                           border: 'none', fontSize: '12px', fontWeight: 700,
                           cursor: 'pointer', transition: 'all 0.2s',
-                          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
+                          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                          boxShadow: '0 2px 10px rgba(59,33,20,0.4)',
                         }}
-                        onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.02)'; e.currentTarget.style.boxShadow = '0 0 15px rgba(234,154,97,0.3)'; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = 'none'; }}
+                        onMouseEnter={(e) => { e.currentTarget.style.filter = 'brightness(1.15)'; e.currentTarget.style.boxShadow = '0 4px 18px rgba(144,66,44,0.45)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.boxShadow = '0 2px 10px rgba(59,33,20,0.4)'; e.currentTarget.style.transform = 'translateY(0)'; }}
                       >
                         <UploadCloud size={14} /> Upload Final Track
                       </button>
@@ -864,12 +939,14 @@ export default function AdminDashboard() {
         )}
 
         {/* Audio Submissions */}
-        <div style={{ ...cardStyle, animation: 'cardFadeIn 0.4s ease-out 0.1s both' }}>
+        {activeTab === 'sound' && <div style={{ ...cardStyle, animation: 'cardFadeIn 0.4s ease-out 0.1s both' }}>
 
           {/* Section header */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{ fontSize: '20px' }}>🎵</span>
+              <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,244,227,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,244,227,0.4)' }}>
+                <FileAudio size={16} />
+              </div>
               <div>
                 <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#FFF4E3' }}>
                   Audio Submissions
@@ -882,11 +959,12 @@ export default function AdminDashboard() {
               <div style={{
                 padding: '4px 14px',
                 borderRadius: '9999px',
-                background: 'rgba(234,154,97,0.1)',
-                border: '1px solid rgba(234,154,97,0.2)',
-                color: '#EA9A61',
+                background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)',
+                border: 'none',
+                color: '#FFF4E3',
                 fontSize: '13px',
                 fontWeight: 600,
+                boxShadow: '0 2px 8px rgba(59,33,20,0.35)',
               }}>
                 {groupedSubmissions.length} {groupedSubmissions.length === 1 ? 'client' : 'clients'}
               </div>
@@ -944,9 +1022,10 @@ export default function AdminDashboard() {
                     >
                       <div style={{
                         width: '40px', height: '40px', borderRadius: '10px',
-                        background: 'rgba(234,154,97,0.1)',
+                        background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        color: '#EA9A61'
+                        color: '#FFF4E3',
+                        boxShadow: '0 2px 8px rgba(59,33,20,0.4)',
                       }}>
                         <User size={20} />
                       </div>
@@ -1102,12 +1181,13 @@ export default function AdminDashboard() {
                                 style={{
                                   width: '32px', height: '32px', borderRadius: '50%',
                                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                  background: 'rgba(234,154,97,0.1)',
-                                  border: '1px solid rgba(234,154,97,0.2)',
-                                  color: '#EA9A61', cursor: 'pointer', transition: 'all 0.2s',
+                                  background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)',
+                                  border: 'none',
+                                  color: '#FFF4E3', cursor: 'pointer', transition: 'all 0.2s',
+                                  boxShadow: '0 2px 6px rgba(59,33,20,0.4)',
                                 }}
-                                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(234,154,97,0.2)'}
-                                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(234,154,97,0.1)'}
+                                onMouseEnter={(e) => { e.currentTarget.style.filter = 'brightness(1.18)'; e.currentTarget.style.boxShadow = '0 3px 12px rgba(144,66,44,0.5)'; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.boxShadow = '0 2px 6px rgba(59,33,20,0.4)'; }}
                               >
                                 {currentlyPlaying === sub.id
                                   ? <Pause size={14} fill="currentColor" />
@@ -1138,14 +1218,16 @@ export default function AdminDashboard() {
               })}
             </div>
           )}
-        </div>
+        </div>}
 
         {/* ── Client Projects ── */}
-        <div style={{ ...cardStyle, animation: 'cardFadeIn 0.4s ease-out 0.2s both' }}>
+        {activeTab === 'client' && <div style={{ ...cardStyle, animation: 'cardFadeIn 0.4s ease-out 0.2s both' }}>
 
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{ fontSize: '20px' }}>🎯</span>
+              <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,244,227,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,244,227,0.4)' }}>
+                <Users size={16} />
+              </div>
               <div>
                 <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#FFF4E3' }}>
                   Client Projects
@@ -1156,8 +1238,10 @@ export default function AdminDashboard() {
             {!loadingClients && (
               <div style={{
                 padding: '4px 14px', borderRadius: '9999px',
-                background: 'rgba(234,154,97,0.1)', border: '1px solid rgba(234,154,97,0.2)',
-                color: '#EA9A61', fontSize: '13px', fontWeight: 600,
+                background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)',
+                border: 'none',
+                color: '#FFF4E3', fontSize: '13px', fontWeight: 600,
+                boxShadow: '0 2px 8px rgba(59,33,20,0.35)',
               }}>
                 {filteredClients.length} {filteredClients.length === 1 ? 'client' : 'clients'}
               </div>
@@ -1166,15 +1250,18 @@ export default function AdminDashboard() {
 
           {/* Search box */}
           {!loadingClients && clients.length > 0 && (
-            <div style={{ marginBottom: '20px' }}>
+            <div style={{ marginBottom: '20px', position: 'relative' }}>
+              <div style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,244,227,0.25)', pointerEvents: 'none', display: 'flex' }}>
+                <Search size={15} />
+              </div>
               <input
                 type="text"
-                placeholder="Search clients by email or name..."
+                placeholder="Search clients by name or email..."
                 value={clientSearchQuery}
                 onChange={(e) => setClientSearchQuery(e.target.value)}
                 style={{
                   width: '100%',
-                  padding: '12px 16px',
+                  padding: '12px 16px 12px 40px',
                   borderRadius: '12px',
                   background: 'rgba(255, 255, 255, 0.02)',
                   border: '1px solid rgba(255, 244, 227, 0.08)',
@@ -1182,6 +1269,7 @@ export default function AdminDashboard() {
                   fontSize: '14px',
                   outline: 'none',
                   transition: 'all 0.2s',
+                  boxSizing: 'border-box',
                 }}
                 onFocus={(e) => e.currentTarget.style.borderColor = 'rgba(234,154,97,0.4)'}
                 onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(255, 244, 227, 0.08)'}
@@ -1226,15 +1314,23 @@ export default function AdminDashboard() {
                 ))}
               </div>
 
-              {filteredClients.map((client) => {
+              {[...filteredClients].sort((a, b) => {
+                const order: Record<string, number> = { 'In Progress': 0, 'Review': 1, 'Discovery': 2, 'Completed': 3 };
+                const aS = clientProjects[a.id]?.status;
+                const bS = clientProjects[b.id]?.status;
+                if (!aS && !bS) return 0;
+                if (!aS) return 1;
+                if (!bS) return -1;
+                return (order[aS] ?? 4) - (order[bS] ?? 4);
+              }).map((client) => {
                 const proj = clientProjects[client.id];
                 const isLaunching = startingProjectFor === client.id;
 
                 const statusColor: Record<string, string> = {
-                  Discovery: 'rgba(130,100,255,0.7)',
-                  'In Progress': '#EA9A61',
-                  Review: 'rgba(255,210,80,0.8)',
-                  Completed: 'rgba(80,210,130,0.8)',
+                  Discovery: 'rgba(130,100,255,0.75)',
+                  'In Progress': 'rgba(99,179,237,0.9)',
+                  Review: 'rgba(255,210,80,0.85)',
+                  Completed: 'rgba(80,210,130,0.85)',
                 };
 
                 return (
@@ -1254,13 +1350,10 @@ export default function AdminDashboard() {
                     onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255,244,227,0.1)'}
                     onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(255,244,227,0.05)'}
                   >
-                    {/* Name + ID */}
+                    {/* Name */}
                     <div style={{ minWidth: 0 }}>
-                      <p style={{ margin: '0 0 2px 0', fontSize: '14px', color: '#FFF4E3', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <p style={{ margin: 0, fontSize: '14px', color: '#FFF4E3', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {client.full_name || 'Unnamed User'}
-                      </p>
-                      <p style={{ margin: 0, fontSize: '10px', color: 'rgba(255,244,227,0.25)', fontFamily: 'monospace', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {client.id}
                       </p>
                     </div>
 
@@ -1322,17 +1415,18 @@ export default function AdminDashboard() {
                           type="button"
                           style={{
                             padding: '8px 18px', borderRadius: '9999px',
-                            border: '1px solid rgba(234,154,97,0.3)',
-                            background: 'rgba(234,154,97,0.1)',
-                            color: '#EA9A61', fontSize: '12px',
+                            border: 'none',
+                            background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
+                            color: '#FFF4E3', fontSize: '12px',
                             fontFamily: "'Roboto', sans-serif",
-                            fontWeight: 600, letterSpacing: '0.04em',
+                            fontWeight: 700, letterSpacing: '0.04em',
                             cursor: isLaunching ? 'not-allowed' : 'pointer',
                             transition: 'all 0.2s',
                             opacity: isLaunching ? 0.5 : 1,
+                            boxShadow: '0 2px 12px rgba(166,77,43,0.35)',
                           }}
-                          onMouseEnter={(e) => { if (!isLaunching) { e.currentTarget.style.background = 'rgba(234,154,97,0.2)'; e.currentTarget.style.borderColor = 'rgba(234,154,97,0.5)'; } }}
-                          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(234,154,97,0.1)'; e.currentTarget.style.borderColor = 'rgba(234,154,97,0.3)'; }}
+                          onMouseEnter={(e) => { if (!isLaunching) { e.currentTarget.style.filter = 'brightness(1.1)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(166,77,43,0.5)'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
+                          onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.boxShadow = '0 2px 12px rgba(166,77,43,0.35)'; e.currentTarget.style.transform = 'translateY(0)'; }}
                         >
                           {isLaunching ? 'Launching...' : '✦ Launch'}
                         </button>
@@ -1343,12 +1437,14 @@ export default function AdminDashboard() {
               })}
             </div>
           )}
-        </div>
+        </div>}
 
         {/* ── Revision & Delivery History Archive ── */}
-        <div style={{ ...cardStyle, animation: 'cardFadeIn 0.4s ease-out 0.3s both', marginTop: '20px' }}>
+        {activeTab === 'sound' && <div style={{ ...cardStyle, animation: 'cardFadeIn 0.4s ease-out 0.3s both' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px' }}>
-            <span style={{ fontSize: '20px' }}>📁</span>
+            <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,244,227,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,244,227,0.4)' }}>
+              <Music2 size={16} />
+            </div>
             <div>
               <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#FFF4E3' }}>
                 Revision & Delivery History
@@ -1394,7 +1490,7 @@ export default function AdminDashboard() {
                         }}
                       >
                         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                          <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'rgba(255,244,227,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px' }}>👤</div>
+                          <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFF4E3', boxShadow: '0 2px 8px rgba(59,33,20,0.4)', flexShrink: 0 }}><User size={16} /></div>
                           <div style={{ textAlign: 'left' }}>
                             <h4 style={{ margin: 0, fontSize: '15px', color: '#FFF4E3', fontWeight: 600 }}>{client.full_name}</h4>
                             <p style={{ margin: 0, fontSize: '11px', color: 'rgba(255,244,227,0.3)' }}>{client.email}</p>
@@ -1405,7 +1501,7 @@ export default function AdminDashboard() {
                             <span style={{ fontSize: '10px', color: 'rgba(255,244,227,0.25)', textTransform: 'uppercase', display: 'block' }}>Activity</span>
                             <span style={{ fontSize: '12px', color: '#EA9A61', fontWeight: 600 }}>{clientRevs.length} Revisions • {clientTracks.length} Tracks</span>
                           </div>
-                          <div style={{ color: 'rgba(255,244,227,0.2)', transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }}>▶</div>
+                          <div style={{ color: 'rgba(255,244,227,0.2)', transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.3s', display: 'flex' }}><ChevronRight size={18} /></div>
                         </div>
                       </button>
 
@@ -1465,7 +1561,30 @@ export default function AdminDashboard() {
                 })
             )}
           </div>
-        </div>
+        </div>}
+
+        {/* ── User Tab ── */}
+        {activeTab === 'user' && (
+          <div style={{ ...cardStyle, animation: 'cardFadeIn 0.4s ease-out both' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px' }}>
+              <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFF4E3', boxShadow: '0 2px 8px rgba(59,33,20,0.4)' }}>
+                <Users size={16} />
+              </div>
+              <div>
+                <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#FFF4E3' }}>
+                  Users
+                </h3>
+                <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.35)', margin: 0 }}>
+                  Manage user accounts and roles
+                </p>
+              </div>
+            </div>
+            <div style={{ textAlign: 'center', padding: '60px 0', border: '1px dashed rgba(255,244,227,0.06)', borderRadius: '12px' }}>
+              <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.25)', margin: '0 0 6px 0' }}>Coming soon</p>
+              <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.12)', margin: 0 }}>User management tools will appear here.</p>
+            </div>
+          </div>
+        )}
 
       </div>
 
@@ -1514,9 +1633,9 @@ export default function AdminDashboard() {
               <button
                 onClick={handleSignOut}
                 type="button"
-                style={{ flex: 1, padding: '12px 20px', borderRadius: '9999px', border: '1px solid rgba(234,154,97,0.3)', background: 'rgba(234,154,97,0.12)', color: '#EA9A61', fontSize: '13px', fontFamily: "'Roboto', sans-serif", fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s' }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(234,154,97,0.2)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(234,154,97,0.12)'; }}
+                style={{ flex: 1, padding: '12px 20px', borderRadius: '9999px', border: 'none', background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)', color: '#FFF4E3', fontSize: '13px', fontFamily: "'Roboto', sans-serif", fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s', boxShadow: '0 2px 10px rgba(59,33,20,0.4)' }}
+                onMouseEnter={(e) => { e.currentTarget.style.filter = 'brightness(1.12)'; e.currentTarget.style.boxShadow = '0 4px 18px rgba(144,66,44,0.4)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.boxShadow = '0 2px 10px rgba(59,33,20,0.4)'; e.currentTarget.style.transform = 'translateY(0)'; }}
               >
                 Sign Out
               </button>
@@ -1688,16 +1807,18 @@ export default function AdminDashboard() {
                 disabled={startingProjectFor === launchTarget?.id}
                 style={{
                   flex: 2, padding: '13px 20px', borderRadius: '9999px',
-                  border: '1px solid rgba(234,154,97,0.4)',
-                  background: 'rgba(234,154,97,0.15)', color: '#EA9A61',
+                  border: 'none',
+                  background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
+                  color: '#FFF4E3',
                   fontSize: '13px', fontFamily: "'Roboto', sans-serif",
-                  fontWeight: 600, letterSpacing: '0.04em',
+                  fontWeight: 700, letterSpacing: '0.04em',
                   cursor: startingProjectFor ? 'not-allowed' : 'pointer',
                   opacity: startingProjectFor ? 0.6 : 1,
                   transition: 'all 0.2s',
+                  boxShadow: '0 2px 14px rgba(166,77,43,0.4)',
                 }}
-                onMouseEnter={(e) => { if (!startingProjectFor) e.currentTarget.style.background = 'rgba(234,154,97,0.25)'; }}
-                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(234,154,97,0.15)'}
+                onMouseEnter={(e) => { if (!startingProjectFor) { e.currentTarget.style.filter = 'brightness(1.1)'; e.currentTarget.style.boxShadow = '0 6px 24px rgba(166,77,43,0.55)'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
+                onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.boxShadow = '0 2px 14px rgba(166,77,43,0.4)'; e.currentTarget.style.transform = 'translateY(0)'; }}
               >
                 {startingProjectFor ? 'Launching...' : '✦ Launch Project'}
               </button>
@@ -1810,14 +1931,16 @@ export default function AdminDashboard() {
                 disabled={isUploadingMixed || !mixedUploadFile || !mixedUploadTitle}
                 style={{
                   marginTop: '12px', padding: '14px', borderRadius: '9999px',
-                  border: '1px solid rgba(234,154,97,0.4)',
-                  background: 'rgba(234,154,97,0.15)', color: '#EA9A61',
+                  border: 'none',
+                  background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
+                  color: '#FFF4E3',
                   fontSize: '14px', fontFamily: "'Roboto', sans-serif",
-                  fontWeight: 600, cursor: (isUploadingMixed || !mixedUploadFile) ? 'not-allowed' : 'pointer',
+                  fontWeight: 700, cursor: (isUploadingMixed || !mixedUploadFile) ? 'not-allowed' : 'pointer',
                   transition: 'all 0.2s', opacity: (isUploadingMixed || !mixedUploadFile) ? 0.6 : 1,
+                  boxShadow: '0 2px 14px rgba(166,77,43,0.35)',
                 }}
-                onMouseEnter={(e) => { if (!isUploadingMixed && mixedUploadFile) e.currentTarget.style.background = 'rgba(234,154,97,0.25)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(234,154,97,0.15)'; }}
+                onMouseEnter={(e) => { if (!isUploadingMixed && mixedUploadFile) { e.currentTarget.style.filter = 'brightness(1.1)'; e.currentTarget.style.boxShadow = '0 6px 22px rgba(166,77,43,0.5)'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
+                onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.boxShadow = '0 2px 14px rgba(166,77,43,0.35)'; e.currentTarget.style.transform = 'translateY(0)'; }}
               >
                 {isUploadingMixed ? 'Uploading...' : 'Confirm Upload'}
               </button>
@@ -2064,11 +2187,16 @@ export default function AdminDashboard() {
                 disabled={isSavingProject || isUploadingDoc}
                 style={{
                   flex: 2, padding: '14px', borderRadius: '9999px',
-                  border: '1px solid rgba(234,154,97,0.4)',
-                  background: 'rgba(234,154,97,0.15)', color: '#EA9A61',
-                  fontSize: '14px', fontWeight: 600, cursor: isSavingProject ? 'not-allowed' : 'pointer',
+                  border: 'none',
+                  background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
+                  color: '#FFF4E3',
+                  fontSize: '14px', fontWeight: 700, cursor: isSavingProject ? 'not-allowed' : 'pointer',
                   opacity: isSavingProject ? 0.6 : 1,
+                  boxShadow: '0 2px 14px rgba(166,77,43,0.35)',
+                  transition: 'all 0.2s',
                 }}
+                onMouseEnter={(e) => { if (!isSavingProject && !isUploadingDoc) { e.currentTarget.style.filter = 'brightness(1.1)'; e.currentTarget.style.boxShadow = '0 6px 22px rgba(166,77,43,0.5)'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
+                onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.boxShadow = '0 2px 14px rgba(166,77,43,0.35)'; e.currentTarget.style.transform = 'translateY(0)'; }}
               >
                 {isSavingProject ? 'Saving Changes...' : 'Save Changes'}
               </button>

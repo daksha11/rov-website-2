@@ -11,6 +11,9 @@ import ExportSpecButton from "@/components/brand-kit/ExportSpecButton";
 import ExportTokensButton from "@/components/brand-kit/ExportTokensButton";
 import ExportTailwindButton from "@/components/brand-kit/ExportTailwindButton";
 import { useToast } from "@/hooks/brand-kit/useToast";
+import { usePoints } from "@/hooks/brand-kit/usePoints";
+import ContactUsModal from "@/components/brand-kit/ContactUsModal";
+import AuthModal from "@/components/brand-kit/AuthModal";
 
 export default function ExportStep() {
   const data = useBrandKitStore(useShallow((s) => s.data));
@@ -22,10 +25,32 @@ export default function ExportStep() {
   const [isExporting, setIsExporting] = useState(false);
 
   const pushToast = useToast((s) => s.push);
+  const { points, loading: loadingPoints, deductPoints, userId } = usePoints();
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   const handleExport = async () => {
+    if (!userId) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+
+    if (points !== null && points < 50) {
+      setIsContactModalOpen(true);
+      return;
+    }
+
     setIsExporting(true);
     try {
+      // 1. Deduct points first
+      const deduction = await deductPoints(50);
+      if (!deduction.success) {
+        setIsContactModalOpen(true);
+        setIsExporting(false);
+        return;
+      }
+
+      // 2. Generate and download
       const { generateBrandKit } = await import("@/lib/brand-kit/generator");
       const data = useBrandKitStore.getState().data;
       const html = generateBrandKit(data);
@@ -38,9 +63,12 @@ export default function ExportStep() {
       a.click();
       document.body.removeChild(a);
       setTimeout(() => URL.revokeObjectURL(url), 1000);
+      
       setExported(true);
       setTimeout(() => setExported(false), 3000);
-      pushToast(`${fileName}.html exported`, "success");
+      
+      // Success popup as requested
+      pushToast("50 points have been deducted", "success");
     } catch (err) {
       pushToast(
         err instanceof Error ? `Export failed: ${err.message}` : "Export failed",
@@ -77,6 +105,14 @@ export default function ExportStep() {
       </div>
 
       <div className="space-y-2">
+        <div className="flex items-center justify-between mb-1">
+          <label className="text-[10px] tracking-[0.18em] uppercase leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#FFF4E3]/60 font-medium">
+            Credits
+          </label>
+          <span className="text-[10px] font-mono tracking-wider text-[#D0BEA5]">
+            {loadingPoints ? "..." : `${points ?? 0} / 1000`}
+          </span>
+        </div>
         <Button
           onClick={handleExport}
           disabled={isExporting}
@@ -122,6 +158,16 @@ export default function ExportStep() {
           </div>
         </div>
       </div>
+
+      <ContactUsModal 
+        isOpen={isContactModalOpen} 
+        onClose={() => setIsContactModalOpen(false)} 
+      />
+
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
+      />
     </div>
   );
 }
