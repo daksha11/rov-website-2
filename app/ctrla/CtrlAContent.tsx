@@ -17,7 +17,7 @@ const StyledHeroBackground = styled.div`
   width: 100%;
   height: 100%;
   z-index: 0;
-  background-color: #000000;
+  background-color: #2B1F14;
   overflow: hidden;
 
   .glow-blob {
@@ -34,7 +34,7 @@ const StyledHeroBackground = styled.div`
     left: -10%;
     width: 60%;
     height: 60%;
-    background: radial-gradient(circle, rgba(234, 154, 97, 0.3) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(196, 98, 45, 0.28) 0%, transparent 70%);
   }
 
   .glow-2 {
@@ -42,7 +42,7 @@ const StyledHeroBackground = styled.div`
     right: -10%;
     width: 50%;
     height: 50%;
-    background: radial-gradient(circle, rgba(177, 105, 55, 0.2) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(107, 35, 24, 0.2) 0%, transparent 70%);
   }
 
   .void-pulse {
@@ -86,7 +86,7 @@ const HeroBackground = () => {
           <filter id="void-texture">
             <feTurbulence result="noise" numOctaves={4} baseFrequency="0.015" type="turbulence" />
             <feGaussianBlur result="blur" stdDeviation={0.5} in="noise" />
-            <feSpecularLighting result="specular" lightingColor="#EA9A61" specularExponent={40} specularConstant={0.5} surfaceScale={2} in="blur">
+            <feSpecularLighting result="specular" lightingColor="#C4622D" specularExponent={40} specularConstant={0.5} surfaceScale={2} in="blur">
               <feDistantLight elevation={45} azimuth={90} />
             </feSpecularLighting>
             <feComposite result="lit" operator="over" in2="SourceGraphic" in="specular" />
@@ -106,7 +106,7 @@ function CtrlAHero() {
         position: 'relative',
         width: '100%',
         height: '100vh',
-        backgroundColor: '#000000',
+        backgroundColor: '#2B1F14',
         overflow: 'hidden',
         display: 'flex',
         alignItems: 'center',
@@ -157,11 +157,11 @@ function CtrlAHero() {
       >
         {/* Eyebrow */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '32px' }}>
-          <div style={{ width: 'clamp(20px, 3vw, 36px)', height: '1px', background: 'rgba(234,154,97,0.4)' }} />
+          <div style={{ width: 'clamp(20px, 3vw, 36px)', height: '1px', background: 'rgba(196,98,45,0.4)' }} />
           <span
             style={{
               fontFamily: "'Roboto', sans-serif",
-              color: 'rgba(234,154,97,0.7)',
+              color: 'rgba(196,98,45,0.85)',
               fontSize: 'clamp(9px, 1vw, 11px)',
               letterSpacing: '0.32em',
               textTransform: 'uppercase',
@@ -169,7 +169,7 @@ function CtrlAHero() {
           >
             A ROV Creative Platform
           </span>
-          <div style={{ width: 'clamp(20px, 3vw, 36px)', height: '1px', background: 'rgba(234,154,97,0.4)' }} />
+          <div style={{ width: 'clamp(20px, 3vw, 36px)', height: '1px', background: 'rgba(196,98,45,0.4)' }} />
         </div>
 
         {/* Keyboard keys — the hero visual */}
@@ -179,7 +179,7 @@ function CtrlAHero() {
             alignItems: 'center',
             gap: 'clamp(10px, 1.5vw, 18px)',
             marginBottom: '28px',
-            filter: 'drop-shadow(0 8px 32px rgba(234,154,97,0.18))',
+            filter: 'drop-shadow(0 8px 32px rgba(196,98,45,0.22))',
           }}
         >
           {/* CTRL key */}
@@ -194,43 +194,43 @@ function CtrlAHero() {
               padding: 'clamp(8px, 1.2vw, 16px) clamp(10px, 1.4vw, 18px)',
               borderRadius: 'clamp(8px, 1vw, 14px)',
               background: 'linear-gradient(160deg, #221410 0%, #140c08 50%, #0d0806 100%)',
-              boxShadow: '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,244,227,0.09), inset 0 0 0 1px rgba(234,154,97,0.13)',
+              boxShadow: '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(245,237,216,0.09), inset 0 0 0 1px rgba(196,98,45,0.18)',
               cursor: 'default',
               transition: 'transform 80ms ease, box-shadow 80ms ease',
               userSelect: 'none',
             }}
             onMouseDown={(e) => {
               e.currentTarget.style.transform = 'translateY(5px)';
-              e.currentTarget.style.boxShadow = '0 2px 0 #060302, 0 6px 16px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,244,227,0.06), inset 0 0 0 1px rgba(234,154,97,0.13)';
+              e.currentTarget.style.boxShadow = '0 2px 0 #060302, 0 6px 16px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,244,227,0.06), inset 0 0 0 1px rgba(196,98,45,0.18)';
             }}
             onMouseUp={(e) => {
               e.currentTarget.style.transform = '';
-              e.currentTarget.style.boxShadow = '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,244,227,0.09), inset 0 0 0 1px rgba(234,154,97,0.13)';
+              e.currentTarget.style.boxShadow = '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(245,237,216,0.09), inset 0 0 0 1px rgba(196,98,45,0.18)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = '';
-              e.currentTarget.style.boxShadow = '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,244,227,0.09), inset 0 0 0 1px rgba(234,154,97,0.13)';
+              e.currentTarget.style.boxShadow = '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(245,237,216,0.09), inset 0 0 0 1px rgba(196,98,45,0.18)';
             }}
           >
             <span
               style={{
-                fontFamily: 'Norwige, sans-serif',
+                fontFamily: "'Playfair Display', Georgia, serif",
                 fontStyle: 'italic',
                 fontWeight: 900,
                 fontSize: 'clamp(22px, 3.5vw, 48px)',
-                color: '#EA9A61',
+                color: '#C4622D',
                 letterSpacing: '0.03em',
                 lineHeight: 1,
-                textShadow: '0 0 18px rgba(234,154,97,0.35)',
+                textShadow: '0 0 18px rgba(196,98,45,0.35)',
               }}
             >
               CTRL
             </span>
             <span
               style={{
-                fontFamily: "'Roboto', sans-serif",
+                fontFamily: "'DM Mono', monospace",
                 fontSize: 'clamp(7px, 0.8vw, 9px)',
-                color: 'rgba(234,154,97,0.35)',
+                color: 'rgba(196,98,45,0.5)',
                 letterSpacing: '0.15em',
                 textTransform: 'uppercase',
                 alignSelf: 'flex-end',
@@ -246,7 +246,7 @@ function CtrlAHero() {
               fontFamily: 'Norwige, sans-serif',
               fontStyle: 'italic',
               fontSize: 'clamp(16px, 2.5vw, 30px)',
-              color: 'rgba(234,154,97,0.3)',
+              color: 'rgba(196,98,45,0.35)',
               lineHeight: 1,
               userSelect: 'none',
             }}
@@ -266,43 +266,43 @@ function CtrlAHero() {
               padding: 'clamp(8px, 1.2vw, 16px) clamp(10px, 1.4vw, 18px)',
               borderRadius: 'clamp(8px, 1vw, 14px)',
               background: 'linear-gradient(160deg, #221410 0%, #140c08 50%, #0d0806 100%)',
-              boxShadow: '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,244,227,0.09), inset 0 0 0 1px rgba(234,154,97,0.13)',
+              boxShadow: '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(245,237,216,0.09), inset 0 0 0 1px rgba(196,98,45,0.18)',
               cursor: 'default',
               transition: 'transform 80ms ease, box-shadow 80ms ease',
               userSelect: 'none',
             }}
             onMouseDown={(e) => {
               e.currentTarget.style.transform = 'translateY(5px)';
-              e.currentTarget.style.boxShadow = '0 2px 0 #060302, 0 6px 16px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,244,227,0.06), inset 0 0 0 1px rgba(234,154,97,0.13)';
+              e.currentTarget.style.boxShadow = '0 2px 0 #060302, 0 6px 16px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,244,227,0.06), inset 0 0 0 1px rgba(196,98,45,0.18)';
             }}
             onMouseUp={(e) => {
               e.currentTarget.style.transform = '';
-              e.currentTarget.style.boxShadow = '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,244,227,0.09), inset 0 0 0 1px rgba(234,154,97,0.13)';
+              e.currentTarget.style.boxShadow = '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(245,237,216,0.09), inset 0 0 0 1px rgba(196,98,45,0.18)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = '';
-              e.currentTarget.style.boxShadow = '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,244,227,0.09), inset 0 0 0 1px rgba(234,154,97,0.13)';
+              e.currentTarget.style.boxShadow = '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(245,237,216,0.09), inset 0 0 0 1px rgba(196,98,45,0.18)';
             }}
           >
             <span
               style={{
-                fontFamily: 'Norwige, sans-serif',
+                fontFamily: "'Playfair Display', Georgia, serif",
                 fontStyle: 'italic',
                 fontWeight: 900,
                 fontSize: 'clamp(22px, 3.5vw, 48px)',
-                color: '#EA9A61',
+                color: '#C4622D',
                 letterSpacing: '0.03em',
                 lineHeight: 1,
-                textShadow: '0 0 18px rgba(234,154,97,0.35)',
+                textShadow: '0 0 18px rgba(196,98,45,0.35)',
               }}
             >
               A
             </span>
             <span
               style={{
-                fontFamily: "'Roboto', sans-serif",
+                fontFamily: "'DM Mono', monospace",
                 fontSize: 'clamp(7px, 0.8vw, 9px)',
-                color: 'rgba(234,154,97,0.35)',
+                color: 'rgba(196,98,45,0.5)',
                 letterSpacing: '0.15em',
                 textTransform: 'uppercase',
                 alignSelf: 'flex-end',
@@ -316,12 +316,12 @@ function CtrlAHero() {
         {/* Tagline */}
         <p
           style={{
-            fontFamily: 'Norwige, sans-serif',
-            fontStyle: 'italic',
-            fontWeight: 700,
-            fontSize: 'clamp(13px, 1.8vw, 20px)',
-            color: 'rgba(255,244,227,0.35)',
-            letterSpacing: '0.22em',
+            fontFamily: "'DM Mono', monospace",
+            fontStyle: 'normal',
+            fontWeight: 400,
+            fontSize: 'clamp(10px, 1.2vw, 12px)',
+            color: 'rgba(245,237,216,0.55)',
+            letterSpacing: '0.28em',
             textTransform: 'uppercase',
             margin: '0 0 18px',
           }}
@@ -334,7 +334,7 @@ function CtrlAHero() {
           style={{
             width: 40,
             height: 1,
-            background: 'linear-gradient(90deg, transparent 0%, rgba(234,154,97,0.6) 50%, transparent 100%)',
+            background: 'linear-gradient(90deg, transparent 0%, rgba(196,98,45,0.6) 50%, transparent 100%)',
             margin: '0 auto 18px',
           }}
         />
@@ -342,9 +342,10 @@ function CtrlAHero() {
         {/* Descriptor */}
         <p
           style={{
-            fontFamily: "'Roboto', sans-serif",
-            color: 'rgba(255,244,227,0.38)',
-            fontSize: 'clamp(12px, 1.4vw, 14px)',
+            fontFamily: "'DM Sans', system-ui, sans-serif",
+            fontWeight: 300,
+            color: 'rgba(245,237,216,0.72)',
+            fontSize: 'clamp(12px, 1.4vw, 15px)',
             letterSpacing: '0.02em',
             maxWidth: '360px',
             lineHeight: 1.7,
@@ -356,16 +357,20 @@ function CtrlAHero() {
 
         {/* Category pills */}
         <div style={{ display: 'flex', gap: '8px', marginBottom: '32px', flexWrap: 'wrap', justifyContent: 'center' }}>
-          {['MUSIC', 'DESIGN', 'WEB DEV'].map((label) => (
+          {[
+            { label: 'MUSIC', color: '#4A7A50', bg: 'rgba(74,122,80,0.12)', border: 'rgba(74,122,80,0.25)' },
+            { label: 'DESIGN', color: '#7B4FAE', bg: 'rgba(123,79,174,0.12)', border: 'rgba(123,79,174,0.25)' },
+            { label: 'WEB DEV', color: '#4A3F8C', bg: 'rgba(74,63,140,0.12)', border: 'rgba(74,63,140,0.25)' },
+          ].map(({ label, color, bg, border }) => (
             <span
               key={label}
               style={{
-                fontFamily: 'Norwige, sans-serif',
-                fontStyle: 'italic',
+                fontFamily: "'DM Mono', monospace",
                 fontSize: 'clamp(8px, 0.9vw, 10px)',
-                letterSpacing: '0.22em',
-                color: 'rgba(234,154,97,0.55)',
-                border: '1px solid rgba(234,154,97,0.15)',
+                letterSpacing: '0.2em',
+                color,
+                background: bg,
+                border: `1px solid ${border}`,
                 borderRadius: '100px',
                 padding: '5px 14px',
               }}
@@ -387,12 +392,13 @@ function CtrlAHero() {
             paddingRight: '6px',
             paddingTop: '6px',
             paddingBottom: '6px',
-            background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
-            boxShadow: '0 16px 40px -14px rgba(177,105,55,0.55), inset 0 1px 0 rgba(255,244,227,0.18), inset 0 0 0 1px rgba(255,244,227,0.08)',
-            fontFamily: "'Roboto', sans-serif",
+            background: 'linear-gradient(135deg, #6B2318 0%, #C4622D 50%, #E0A44A 100%)',
+            boxShadow: '0 16px 40px -14px rgba(196,98,45,0.5), inset 0 1px 0 rgba(245,237,216,0.18), inset 0 0 0 1px rgba(245,237,216,0.08)',
+            fontFamily: "'DM Sans', system-ui, sans-serif",
+            fontWeight: 500,
             fontSize: '0.875rem',
             letterSpacing: '0.05em',
-            color: '#FFF4E3',
+            color: '#F5EDD8',
             textDecoration: 'none',
             transition: 'transform 600ms cubic-bezier(0.32,0.72,0,1)',
           }}
@@ -408,8 +414,8 @@ function CtrlAHero() {
               width: 32,
               height: 32,
               borderRadius: '50%',
-              background: '#FFF4E3',
-              color: '#3B2114',
+              background: '#F5EDD8',
+              color: '#3E2C1A',
               flexShrink: 0,
               boxShadow: '0 4px 10px -2px rgba(0,0,0,0.25)',
             }}
@@ -425,13 +431,17 @@ function CtrlAHero() {
 }
 
 
+const ChakraRibbon = () => (
+  <div style={{ height: 4, background: 'linear-gradient(135deg,#6B2318 0%,#C4622D 18%,#E0A44A 36%,#4A7A50 54%,#3A6E8C 72%,#4A3F8C 86%,#7B4FAE 100%)', width: '100%' }} />
+);
+
 export default function CtrlAContent() {
   // Reset scroll on mount
   useEffect(() => {
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
     // Set body styles for this page
-    document.body.style.backgroundColor = '#000000';
+    document.body.style.backgroundColor = '#2B1F14';
     document.body.style.overflowX = 'hidden';
     document.body.style.height = 'auto';
 
@@ -444,19 +454,22 @@ export default function CtrlAContent() {
   }, []);
 
   return (
-    <div style={{ backgroundColor: '#000000', minHeight: '100vh', width: '100%', overflowX: 'hidden' }}>
+    <div style={{ backgroundColor: '#2B1F14', minHeight: '100vh', width: '100%', overflowX: 'hidden' }}>
       <NavigationDock />
       {/* Hero Section */}
       <CtrlAHero />
 
+      <ChakraRibbon />
       <BrandKitSection />
 
+      <ChakraRibbon />
       <EventsHubSection />
 
+      <ChakraRibbon />
       {/* Tool Kit Section */}
       <section
         style={{
-          backgroundColor: '#000000',
+          backgroundColor: '#EDE0C4',
           padding: '80px 40px',
           minHeight: '100vh',
           display: 'flex',
@@ -470,11 +483,11 @@ export default function CtrlAContent() {
           style={{
             fontSize: '64px',
             fontWeight: '700',
-            color: '#FFFFFF',
+            color: '#1C1208',
             marginBottom: '80px',
             textAlign: 'center',
             letterSpacing: '2px',
-            fontFamily: 'Norwige',
+            fontFamily: "'Playfair Display', Georgia, serif",
           }}
         >
           TOOL KIT
@@ -515,7 +528,7 @@ export default function CtrlAContent() {
                 overlayContent={
                   <div
                     style={{
-                      background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
+                      background: 'linear-gradient(135deg, #2d4a31 0%, #4A7A50 60%, #6aaa72 100%)',
                       borderRadius: '25.018px',
                       boxShadow: '0 39.091px 78.182px -18.764px rgba(0, 0, 0, 0.25)',
                       padding: '40px',
@@ -538,11 +551,11 @@ export default function CtrlAContent() {
                         left: '40px',
                         fontSize: '42px',
                         fontWeight: '900',
-                        color: '#FFFFFF',
+                        color: '#F5EDD8',
                         margin: 0,
                         textTransform: 'uppercase',
                         letterSpacing: '1px',
-                        fontFamily: 'Norwige',
+                        fontFamily: "'Playfair Display', Georgia, serif",
                       }}
                     >
                       MUSIC
@@ -576,7 +589,7 @@ export default function CtrlAContent() {
                 overlayContent={
                   <div
                     style={{
-                      background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
+                      background: 'linear-gradient(135deg, #2a2260 0%, #4A3F8C 60%, #6a60b8 100%)',
                       borderRadius: '25.018px',
                       boxShadow: '0 39.091px 78.182px -18.764px rgba(0, 0, 0, 0.25)',
                       padding: '40px',
@@ -604,12 +617,12 @@ export default function CtrlAContent() {
                         style={{
                           fontSize: '32px',
                           fontWeight: '900',
-                          color: '#FFFFFF',
+                          color: '#F5EDD8',
                           margin: 0,
                           textTransform: 'uppercase',
                           letterSpacing: '1px',
                           lineHeight: '1.2',
-                          fontFamily: 'Norwige',
+                          fontFamily: "'Playfair Display', Georgia, serif",
                         }}
                       >
                         WEB
@@ -618,11 +631,11 @@ export default function CtrlAContent() {
                         style={{
                           fontSize: '32px',
                           fontWeight: '900',
-                          color: '#FFFFFF',
+                          color: '#F5EDD8',
                           margin: 0,
                           textTransform: 'uppercase',
                           letterSpacing: '1px',
-                          fontFamily: 'Norwige',
+                          fontFamily: "'Playfair Display', Georgia, serif",
                         }}
                       >
                         DEVELOPMENT
@@ -657,7 +670,7 @@ export default function CtrlAContent() {
                 overlayContent={
                   <div
                     style={{
-                      background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
+                      background: 'linear-gradient(135deg, #4a2870 0%, #7B4FAE 60%, #a870d8 100%)',
                       borderRadius: '25.018px',
                       boxShadow: '0 39.091px 78.182px -18.764px rgba(0, 0, 0, 0.25)',
                       padding: '40px',
@@ -680,11 +693,11 @@ export default function CtrlAContent() {
                         right: '40px',
                         fontSize: '42px',
                         fontWeight: '900',
-                        color: '#FFFFFF',
+                        color: '#F5EDD8',
                         margin: 0,
                         textTransform: 'uppercase',
                         letterSpacing: '1px',
-                        fontFamily: 'Norwige',
+                        fontFamily: "'Playfair Display', Georgia, serif",
                       }}
                     >
                       DESIGN
@@ -697,10 +710,11 @@ export default function CtrlAContent() {
         </div>
       </section>
 
+      <ChakraRibbon />
       {/* Stay In Touch Section */}
       <section
         style={{
-          backgroundColor: '#000000',
+          backgroundColor: '#2B1F14',
           padding: '100px 40px',
           display: 'flex',
           flexDirection: 'column',
@@ -713,11 +727,11 @@ export default function CtrlAContent() {
           style={{
             fontSize: 'clamp(2.5rem, 8vw, 4rem)',
             fontWeight: '900',
-            color: '#FFFFFF',
+            color: '#F5EDD8',
             marginBottom: '80px',
             textAlign: 'center',
             letterSpacing: '0.05em',
-            fontFamily: 'Norwige',
+            fontFamily: "'Playfair Display', Georgia, serif",
           }}
         >
           STAY IN TOUCH!
@@ -775,11 +789,11 @@ export default function CtrlAContent() {
             </div>
             <span
               style={{
-                fontSize: '24px',
-                fontWeight: '700',
-                color: '#FFFFFF',
-                letterSpacing: '0.05em',
-                fontFamily: 'Norwige',
+                fontSize: '14px',
+                fontWeight: '400',
+                color: 'rgba(245,237,216,0.65)',
+                letterSpacing: '0.2em',
+                fontFamily: "'DM Mono', monospace",
               }}
             >
               Discord
@@ -828,11 +842,11 @@ export default function CtrlAContent() {
             </div>
             <span
               style={{
-                fontSize: '24px',
-                fontWeight: '700',
-                color: '#FFFFFF',
-                letterSpacing: '0.05em',
-                fontFamily: 'Norwige',
+                fontSize: '14px',
+                fontWeight: '400',
+                color: 'rgba(245,237,216,0.65)',
+                letterSpacing: '0.2em',
+                fontFamily: "'DM Mono', monospace",
               }}
             >
               Instagram
@@ -881,11 +895,11 @@ export default function CtrlAContent() {
             </div>
             <span
               style={{
-                fontSize: '24px',
-                fontWeight: '700',
-                color: '#FFFFFF',
-                letterSpacing: '0.05em',
-                fontFamily: 'Norwige',
+                fontSize: '14px',
+                fontWeight: '400',
+                color: 'rgba(245,237,216,0.65)',
+                letterSpacing: '0.2em',
+                fontFamily: "'DM Mono', monospace",
               }}
             >
               Reddit
@@ -897,15 +911,16 @@ export default function CtrlAContent() {
       {/* Global Team Map */}
       <GlobalTeamGlobe />
 
+      <ChakraRibbon />
       {/* Magazine CTA Strip */}
-      <section className="relative bg-black px-6 md:px-12 py-8">
+      <section className="relative px-6 md:px-12 py-8" style={{ backgroundColor: '#1C1208' }}>
         <div className="max-w-7xl mx-auto">
           <div
             className="relative rounded-2xl p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6"
             style={{
               borderRadius: '15px',
               border: '1px solid #999288',
-              background: 'linear-gradient(111deg, #42201C -1.34%, #A64D2B 25.87%, #B16937 59.87%, #EA9A61 93.39%)',
+              background: 'linear-gradient(111deg, #6B2318 -1.34%, #C4622D 40%, #E0A44A 93.39%)',
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
             }}
           >
@@ -914,10 +929,10 @@ export default function CtrlAContent() {
                 <img src="/rov-logo.webp" alt="ROV Logo" className="w-12 h-12 md:w-14 md:h-14 object-contain" />
               </div>
               <div>
-                <h3 className="text-white text-2xl md:text-3xl lg:text-4xl font-bold italic mb-2" style={{ fontFamily: 'Norwige, sans-serif' }}>
+                <h3 className="text-white text-2xl md:text-3xl lg:text-4xl font-bold italic mb-2" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
                   The CTRL A Magazine
                 </h3>
-                <p className="text-white text-sm md:text-base opacity-80" style={{ fontFamily: "'Roboto', sans-serif" }}>
+                <p className="text-white text-sm md:text-base opacity-80" style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
                   Community-curated toolkits for creatives. No fluff, just signal.
                 </p>
               </div>
@@ -942,12 +957,13 @@ export default function CtrlAContent() {
         </div>
       </section>
 
+      <ChakraRibbon />
       {/* Tape 3 Coming Soon */}
-      <section className="relative bg-black overflow-hidden" style={{ padding: "clamp(60px, 10vw, 100px) clamp(16px, 5vw, 60px)" }}>
+      <section className="relative overflow-hidden" style={{ backgroundColor: '#2B1F14', padding: "clamp(60px, 10vw, 100px) clamp(16px, 5vw, 60px)" }}>
         {/* Subtle glow */}
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
-          style={{ background: "radial-gradient(circle, rgba(234,154,97,0.05) 0%, transparent 60%)" }}
+          style={{ background: "radial-gradient(circle, rgba(196,98,45,0.07) 0%, transparent 60%)" }}
         />
 
         <div className="relative z-10 max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-16">
@@ -963,7 +979,7 @@ export default function CtrlAContent() {
                   #1a1210 120deg, #2a1e18 150deg, #1a1210 180deg, #2a1e18 210deg,
                   #1a1210 240deg, #2a1e18 270deg, #1a1210 300deg, #2a1e18 330deg, #1a1210 360deg
                 )`,
-                boxShadow: "0 0 40px rgba(234,154,97,0.1), inset 0 0 20px rgba(0,0,0,0.5)",
+                boxShadow: "0 0 40px rgba(196,98,45,0.12), inset 0 0 20px rgba(0,0,0,0.5)",
               }}
             >
               {[25, 40, 55, 70, 85].map((pct) => (
@@ -977,7 +993,7 @@ export default function CtrlAContent() {
                 <div
                   className="w-[28%] h-[28%] rounded-full flex items-center justify-center"
                   style={{
-                    background: "linear-gradient(135deg, #EA9A61 0%, #B16937 40%, #42201C 100%)",
+                    background: "linear-gradient(135deg, #E0A44A 0%, #C4622D 40%, #6B2318 100%)",
                     boxShadow: "inset 0 1px 4px rgba(0,0,0,0.3)",
                   }}
                 >
@@ -990,26 +1006,26 @@ export default function CtrlAContent() {
           {/* Text */}
           <div className="text-center md:text-left flex-1">
             <span
-              className="block text-xs uppercase tracking-[0.3em] text-[#EA9A61]/50 mb-3"
-              style={{ fontFamily: "'Roboto', sans-serif" }}
+              className="block text-xs uppercase tracking-[0.3em] mb-3"
+              style={{ fontFamily: "'DM Mono', monospace", color: 'rgba(196,98,45,0.6)' }}
             >
               Coming Soon
             </span>
             <h2
               className="text-white text-4xl md:text-5xl lg:text-6xl font-bold italic leading-[0.95] mb-4"
-              style={{ fontFamily: "Norwige, sans-serif" }}
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
             >
               The ROV{" "}
               <span
                 className="bg-clip-text text-transparent"
-                style={{ backgroundImage: "linear-gradient(112deg, #42201C 6.46%, #A64D2B 34.96%, #B16937 63.88%, #EA9A61 97.63%)" }}
+                style={{ backgroundImage: "linear-gradient(112deg, #6B2318 6.46%, #C4622D 50%, #E0A44A 97.63%)" }}
               >
                 Tape 3
               </span>
             </h2>
             <p
-              className="text-white/40 text-sm md:text-base leading-relaxed max-w-lg mb-6"
-              style={{ fontFamily: "'Roboto', sans-serif" }}
+              className="text-sm md:text-base leading-relaxed max-w-lg mb-6"
+              style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontWeight: 300, color: 'rgba(245,237,216,0.55)' }}
             >
               A curated multi-artist tape. Afrobeats, RnB, soul, Atlanta energy.
               Cross-genre, culture-forward, and unapologetically ROV.
@@ -1020,7 +1036,7 @@ export default function CtrlAContent() {
               style={{
                 fontFamily: "Norwige, sans-serif",
                 borderRadius: "41.444px",
-                background: "linear-gradient(112deg, #42201C 6.46%, #A64D2B 34.96%, #B16937 63.88%, #EA9A61 97.63%)",
+                background: "linear-gradient(112deg, #6B2318 6.46%, #C4622D 50%, #E0A44A 97.63%)",
                 boxShadow: "3px 4px 4px 0 rgba(255, 244, 227, 0.15) inset, 0 4.385px 4.385px 0 rgba(0, 0, 0, 0.25)",
                 padding: "0.75rem 1.75rem",
                 fontSize: "0.875rem",

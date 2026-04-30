@@ -12,11 +12,11 @@ const features = [
 ];
 
 const swatches = [
-  { color: '#EA9A61', label: 'Primary' },
-  { color: '#A64D2B', label: 'Accent' },
-  { color: '#42201C', label: 'Deep' },
-  { color: '#FFF4E3', label: 'Light' },
-  { color: '#1E1410', label: 'Surface' },
+  { color: '#C4622D', label: 'Sacral' },
+  { color: '#E0A44A', label: 'Solar' },
+  { color: '#6B2318', label: 'Root' },
+  { color: '#F5EDD8', label: 'Parchment' },
+  { color: '#2B1F14', label: 'Dusk' },
 ];
 
 const fadeUp = {
@@ -36,9 +36,9 @@ export function BrandKitSection() {
     <section
       ref={ref}
       style={{
-        background: '#080807',
-        borderTop: '1px solid rgba(255,244,227,0.06)',
-        borderBottom: '1px solid rgba(255,244,227,0.06)',
+        background: '#2B1F14',
+        borderTop: '1px solid rgba(196,98,45,0.12)',
+        borderBottom: '1px solid rgba(196,98,45,0.12)',
         padding: 'clamp(80px, 10vw, 140px) clamp(20px, 5vw, 72px)',
         position: 'relative',
         overflow: 'hidden',
@@ -54,7 +54,7 @@ export function BrandKitSection() {
           width: '700px',
           height: '700px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(234,154,97,0.055) 0%, transparent 65%)',
+          background: 'radial-gradient(circle, rgba(196,98,45,0.055) 0%, transparent 65%)',
           pointerEvents: 'none',
         }}
       />
@@ -83,10 +83,10 @@ export function BrandKitSection() {
             <motion.span
               custom={0} variants={fadeUp} initial="hidden" animate={inView ? 'show' : 'hidden'}
               style={{
-                fontFamily: "'Roboto', sans-serif",
+                fontFamily: "'DM Mono', monospace",
                 fontSize: '11px',
                 letterSpacing: '0.28em',
-                color: 'rgba(234,154,97,0.65)',
+                color: 'rgba(196,98,45,0.65)',
                 textTransform: 'uppercase',
                 fontWeight: 500,
               }}
@@ -98,27 +98,28 @@ export function BrandKitSection() {
             <motion.h2
               custom={1} variants={fadeUp} initial="hidden" animate={inView ? 'show' : 'hidden'}
               style={{
-                fontFamily: 'Norwige, sans-serif',
+                fontFamily: "'Playfair Display', Georgia, serif",
                 fontSize: 'clamp(52px, 7.5vw, 96px)',
-                fontWeight: 700,
+                fontWeight: 900,
                 fontStyle: 'italic',
                 lineHeight: 0.92,
                 letterSpacing: '-0.02em',
                 margin: 0,
               }}
             >
-              <span style={{ color: '#FFF4E3' }}>Brand Kit</span>
+              <span style={{ color: '#F5EDD8' }}>Brand Kit</span>
               <br />
-              <span style={{ color: '#FFF4E3' }}>Generator</span>
+              <span style={{ color: '#F5EDD8' }}>Generator</span>
             </motion.h2>
 
             {/* Body */}
             <motion.p
               custom={2} variants={fadeUp} initial="hidden" animate={inView ? 'show' : 'hidden'}
               style={{
-                fontFamily: "'Roboto', sans-serif",
+                fontFamily: "'DM Sans', system-ui, sans-serif",
+                fontWeight: 300,
                 fontSize: 'clamp(15px, 1.4vw, 17px)',
-                color: 'rgba(255,244,227,0.72)',
+                color: 'rgba(245,237,216,0.72)',
                 lineHeight: 1.78,
                 maxWidth: '500px',
                 margin: 0,
@@ -141,9 +142,9 @@ export function BrandKitSection() {
                 maxWidth: 'max-content',
               }}
             >
-              <span style={{ fontFamily: 'monospace', fontSize: '13px', color: '#EA9A61', fontWeight: 700 }}>$</span>
-              <span style={{ fontFamily: 'monospace', fontSize: '13px', color: 'rgba(255,244,227,0.72)' }}>
-                export <span style={{ color: 'rgba(234,154,97,0.75)' }}>brand-kit.md</span> and drop into any AI build
+              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '13px', color: '#C4622D', fontWeight: 700 }}>$</span>
+              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '13px', color: 'rgba(245,237,216,0.72)' }}>
+                export <span style={{ color: 'rgba(196,98,45,0.75)' }}>brand-kit.md</span> and drop into any AI build
               </span>
             </motion.div>
 
@@ -159,24 +160,24 @@ export function BrandKitSection() {
                   gap: '10px',
                   padding: '14px 30px',
                   borderRadius: '9999px',
-                  background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
-                  color: '#FFF4E3',
-                  fontFamily: 'Norwige, sans-serif',
+                  background: 'linear-gradient(132deg, #6B2318 4.77%, #C4622D 40%, #E0A44A 100%)',
+                  color: '#F5EDD8',
+                  fontFamily: "'DM Sans', system-ui, sans-serif",
                   fontSize: '14px',
-                  letterSpacing: '0.1em',
+                  letterSpacing: '0.05em',
                   textTransform: 'uppercase',
-                  fontWeight: 700,
+                  fontWeight: 500,
                   textDecoration: 'none',
-                  boxShadow: '0 0 0 1px rgba(234,154,97,0.18), 0 8px 32px rgba(42,16,12,0.55)',
+                  boxShadow: '0 0 0 1px rgba(196,98,45,0.18), 0 8px 32px rgba(42,16,12,0.55)',
                   transition: 'transform 0.22s cubic-bezier(0.16,1,0.3,1), box-shadow 0.22s ease',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 0 0 1px rgba(234,154,97,0.28), 0 16px 48px rgba(42,16,12,0.65)';
+                  e.currentTarget.style.boxShadow = '0 0 0 1px rgba(196,98,45,0.28), 0 16px 48px rgba(42,16,12,0.65)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 0 0 1px rgba(234,154,97,0.18), 0 8px 32px rgba(42,16,12,0.55)';
+                  e.currentTarget.style.boxShadow = '0 0 0 1px rgba(196,98,45,0.18), 0 8px 32px rgba(42,16,12,0.55)';
                 }}
               >
                 Try the Generator
@@ -203,10 +204,10 @@ export function BrandKitSection() {
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
-                    <Icon size={12} color="rgba(234,154,97,0.75)" strokeWidth={1.5} />
-                    <span style={{ fontFamily: "'Roboto', sans-serif", fontSize: '12px', fontWeight: 600, color: 'rgba(255,244,227,0.75)' }}>{label}</span>
+                    <Icon size={12} color="rgba(196,98,45,0.75)" strokeWidth={1.5} />
+                    <span style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '12px', fontWeight: 500, color: 'rgba(245,237,216,0.75)' }}>{label}</span>
                   </div>
-                  <p style={{ fontFamily: "'Roboto', sans-serif", fontSize: '11px', color: 'rgba(255,244,227,0.6)', margin: 0, lineHeight: 1.55 }}>{desc}</p>
+                  <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '11px', fontWeight: 300, color: 'rgba(245,237,216,0.6)', margin: 0, lineHeight: 1.55 }}>{desc}</p>
                 </div>
               ))}
             </motion.div>
@@ -223,7 +224,7 @@ export function BrandKitSection() {
               style={{
                 position: 'absolute',
                 inset: '-30px',
-                background: 'radial-gradient(ellipse at 60% 40%, rgba(234,154,97,0.09) 0%, transparent 68%)',
+                background: 'radial-gradient(ellipse at 60% 40%, rgba(196,98,45,0.09) 0%, transparent 68%)',
                 borderRadius: '28px',
                 pointerEvents: 'none',
               }}
@@ -232,8 +233,8 @@ export function BrandKitSection() {
             {/* macOS-style window card */}
             <div
               style={{
-                background: '#0D0B09',
-                border: '1px solid rgba(255,244,227,0.1)',
+                background: '#1C1208',
+                border: '1px solid rgba(245,237,216,0.1)',
                 borderRadius: '18px',
                 overflow: 'hidden',
                 boxShadow: '0 32px 80px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,244,227,0.06)',
@@ -243,7 +244,7 @@ export function BrandKitSection() {
               <div
                 style={{
                   padding: '14px 18px',
-                  borderBottom: '1px solid rgba(255,244,227,0.06)',
+                  borderBottom: '1px solid rgba(245,237,216,0.06)',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '7px',
@@ -260,7 +261,7 @@ export function BrandKitSection() {
 
               {/* Colour tokens block */}
               <div style={{ padding: '22px 22px 0' }}>
-                <p style={{ fontFamily: 'monospace', fontSize: '10px', color: 'rgba(234,154,97,0.45)', margin: '0 0 12px 0', letterSpacing: '0.05em' }}>
+                <p style={{ fontFamily: 'monospace', fontSize: '10px', color: 'rgba(196,98,45,0.45)', margin: '0 0 12px 0', letterSpacing: '0.05em' }}>
                   ## Colour Tokens
                 </p>
                 <div style={{ display: 'flex', gap: '10px', marginBottom: '22px' }}>
@@ -289,19 +290,19 @@ export function BrandKitSection() {
                   borderBottom: '1px solid rgba(255,244,227,0.05)',
                 }}
               >
-                <p style={{ fontFamily: 'monospace', fontSize: '10px', color: 'rgba(234,154,97,0.45)', margin: '0 0 10px 0', letterSpacing: '0.05em' }}>
+                <p style={{ fontFamily: 'monospace', fontSize: '10px', color: 'rgba(196,98,45,0.45)', margin: '0 0 10px 0', letterSpacing: '0.05em' }}>
                   ## Typography
                 </p>
-                <p style={{ fontFamily: 'Norwige, sans-serif', fontSize: '24px', fontStyle: 'italic', color: 'rgba(255,244,227,0.82)', margin: '0 0 5px', lineHeight: 1 }}>
+                <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '24px', fontStyle: 'italic', fontWeight: 700, color: 'rgba(245,237,216,0.82)', margin: '0 0 5px', lineHeight: 1 }}>
                   Display Heading
                 </p>
-                <p style={{ fontFamily: "'Roboto', sans-serif", fontSize: '11px', color: 'rgba(255,244,227,0.6)', margin: '0 0 3px' }}>Body · Roboto Regular 16/1.75</p>
-                <p style={{ fontFamily: 'monospace', fontSize: '10px', color: 'rgba(255,244,227,0.45)', margin: 0 }}>Caption · Mono 12/1.5</p>
+                <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontWeight: 300, fontSize: '11px', color: 'rgba(245,237,216,0.6)', margin: '0 0 3px' }}>Body · DM Sans Light 16/1.75</p>
+                <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '10px', color: 'rgba(245,237,216,0.45)', margin: 0 }}>Caption · DM Mono 12/1.5</p>
               </div>
 
               {/* Voice & tone block with blinking cursor */}
               <div style={{ padding: '18px 22px 22px', background: 'rgba(0,0,0,0.28)' }}>
-                <p style={{ fontFamily: 'monospace', fontSize: '10px', color: 'rgba(234,154,97,0.45)', margin: '0 0 10px 0', letterSpacing: '0.05em' }}>
+                <p style={{ fontFamily: 'monospace', fontSize: '10px', color: 'rgba(196,98,45,0.45)', margin: '0 0 10px 0', letterSpacing: '0.05em' }}>
                   ## Voice &amp; Tone
                 </p>
                 {['- Grounded, warm, refined', '- Substance over noise', '- Expert without being cold'].map((line, i) => (
@@ -310,7 +311,7 @@ export function BrandKitSection() {
                     style={{
                       fontFamily: 'monospace',
                       fontSize: '11px',
-                      color: 'rgba(234,154,97,0.52)',
+                      color: 'rgba(196,98,45,0.52)',
                       margin: '0 0 3px',
                     }}
                   >
@@ -323,7 +324,7 @@ export function BrandKitSection() {
                     display: 'inline-block',
                     width: '7px',
                     height: '13px',
-                    background: 'rgba(234,154,97,0.55)',
+                    background: 'rgba(196,98,45,0.55)',
                     marginTop: '7px',
                     borderRadius: '1px',
                     animation: 'bkBlink 1.1s step-end infinite',
