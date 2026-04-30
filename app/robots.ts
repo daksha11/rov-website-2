@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
             {
                 userAgent: '*',
                 allow: '/',
-                disallow: '/api/',
+                disallow: ['/api/', '/admin', '/portal', '/ctrla/brand-kit/builder'],
             },
             // Explicitly welcome AI crawlers for GEO
             {
@@ -28,7 +28,6 @@ export default function robots(): MetadataRoute.Robots {
         ],
         sitemap: [
             'https://www.rovstudios.com/sitemap.xml',
-            'https://www.rovstudios.com/video-sitemap.xml',
         ],
         host: 'https://www.rovstudios.com',
     };

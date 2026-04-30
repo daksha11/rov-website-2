@@ -6,6 +6,8 @@ import CtrlAFooter from "@/components/CtrlAFooter";
 import { NavigationDock } from "@/components/NavDoc";
 import styled from "styled-components";
 import { GlobalTeamGlobe } from "@/components/ctrla/GlobalTeamGlobe";
+import { BrandKitSection } from "@/components/ctrla/BrandKitSection";
+import { EventsHubSection } from "@/components/ctrla/EventsHubSection";
 
 
 const StyledHeroBackground = styled.div`
@@ -96,38 +98,8 @@ const HeroBackground = () => {
   );
 }
 
-const StyledCursor = styled.span`
-  display: inline-block;
-  width: 3px;
-  height: clamp(48px, 9vw, 108px);
-  background: #EA9A61;
-  margin-left: 6px;
-  vertical-align: middle;
-  border-radius: 2px;
-  animation: blink 1s step-end infinite;
 
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
-`;
-
-const StyledProgressFill = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #EA9A61, #B16937);
-  border-radius: 2px;
-  animation: fillBar 2.5s ease-out 0.5s forwards;
-
-  @keyframes fillBar {
-    to { width: 68%; }
-  }
-`;
-
-function ComingSoonHero() {
+function CtrlAHero() {
   return (
     <section
       style={{
@@ -167,7 +139,7 @@ function ComingSoonHero() {
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
           zIndex: 1,
-          opacity: 0.25,
+          opacity: 0.18,
         }}
       />
 
@@ -180,99 +152,273 @@ function ComingSoonHero() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '20px',
           padding: '0 20px',
         }}
       >
-        {/* Top label */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-          <div style={{ width: 'clamp(24px, 4vw, 48px)', height: '1px', backgroundColor: 'rgba(234,154,97,0.5)' }} />
+        {/* Eyebrow */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '32px' }}>
+          <div style={{ width: 'clamp(20px, 3vw, 36px)', height: '1px', background: 'rgba(234,154,97,0.4)' }} />
           <span
             style={{
-              fontFamily: 'Norwige, sans-serif',
-              fontStyle: 'italic',
-              color: '#EA9A61',
-              fontSize: 'clamp(11px, 1.5vw, 15px)',
-              letterSpacing: '5px',
-              opacity: 0.9,
+              fontFamily: "'Roboto', sans-serif",
+              color: 'rgba(234,154,97,0.7)',
+              fontSize: 'clamp(9px, 1vw, 11px)',
+              letterSpacing: '0.32em',
+              textTransform: 'uppercase',
             }}
           >
-            CTRL A
+            A ROV Creative Platform
           </span>
-          <div style={{ width: 'clamp(24px, 4vw, 48px)', height: '1px', backgroundColor: 'rgba(234,154,97,0.5)' }} />
+          <div style={{ width: 'clamp(20px, 3vw, 36px)', height: '1px', background: 'rgba(234,154,97,0.4)' }} />
         </div>
 
-        {/* Main heading */}
-        <div style={{ lineHeight: '0.88', position: 'relative' }}>
-          <h1
-            style={{
-              fontSize: 'clamp(64px, 13vw, 140px)',
-              fontWeight: '900',
-              fontStyle: 'italic',
-              color: '#FFFFFF',
-              margin: 0,
-              letterSpacing: '-1px',
-              fontFamily: 'Norwige, sans-serif',
-              textAlign: 'center',
-            }}
-          >
-            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              COMING
-            </span>
-            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              SOON
-              <StyledCursor />
-            </span>
-          </h1>
-        </div>
-
-        {/* Dashed badge — ctrl+a wordplay */}
+        {/* Keyboard keys — the hero visual */}
         <div
           style={{
-            border: '1px dashed rgba(234,154,97,0.35)',
-            borderRadius: '4px',
-            padding: 'clamp(6px, 1vw, 10px) clamp(16px, 3vw, 28px)',
-            marginTop: '4px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 'clamp(10px, 1.5vw, 18px)',
+            marginBottom: '28px',
+            filter: 'drop-shadow(0 8px 32px rgba(234,154,97,0.18))',
           }}
         >
+          {/* CTRL key */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+              width: 'clamp(110px, 14vw, 180px)',
+              height: 'clamp(72px, 9vw, 116px)',
+              padding: 'clamp(8px, 1.2vw, 16px) clamp(10px, 1.4vw, 18px)',
+              borderRadius: 'clamp(8px, 1vw, 14px)',
+              background: 'linear-gradient(160deg, #221410 0%, #140c08 50%, #0d0806 100%)',
+              boxShadow: '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,244,227,0.09), inset 0 0 0 1px rgba(234,154,97,0.13)',
+              cursor: 'default',
+              transition: 'transform 80ms ease, box-shadow 80ms ease',
+              userSelect: 'none',
+            }}
+            onMouseDown={(e) => {
+              e.currentTarget.style.transform = 'translateY(5px)';
+              e.currentTarget.style.boxShadow = '0 2px 0 #060302, 0 6px 16px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,244,227,0.06), inset 0 0 0 1px rgba(234,154,97,0.13)';
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.transform = '';
+              e.currentTarget.style.boxShadow = '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,244,227,0.09), inset 0 0 0 1px rgba(234,154,97,0.13)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = '';
+              e.currentTarget.style.boxShadow = '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,244,227,0.09), inset 0 0 0 1px rgba(234,154,97,0.13)';
+            }}
+          >
+            <span
+              style={{
+                fontFamily: 'Norwige, sans-serif',
+                fontStyle: 'italic',
+                fontWeight: 900,
+                fontSize: 'clamp(22px, 3.5vw, 48px)',
+                color: '#EA9A61',
+                letterSpacing: '0.03em',
+                lineHeight: 1,
+                textShadow: '0 0 18px rgba(234,154,97,0.35)',
+              }}
+            >
+              CTRL
+            </span>
+            <span
+              style={{
+                fontFamily: "'Roboto', sans-serif",
+                fontSize: 'clamp(7px, 0.8vw, 9px)',
+                color: 'rgba(234,154,97,0.35)',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                alignSelf: 'flex-end',
+              }}
+            >
+              control
+            </span>
+          </div>
+
+          {/* Plus */}
           <span
             style={{
               fontFamily: 'Norwige, sans-serif',
               fontStyle: 'italic',
-              color: 'rgba(255,244,227,0.55)',
-              fontSize: 'clamp(10px, 1.4vw, 14px)',
-              letterSpacing: '5px',
+              fontSize: 'clamp(16px, 2.5vw, 30px)',
+              color: 'rgba(234,154,97,0.3)',
+              lineHeight: 1,
+              userSelect: 'none',
             }}
           >
-            SELECT WHAT&apos;S NEXT
+            +
           </span>
-        </div>
 
-        {/* Progress bar */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', marginTop: '8px', width: 'clamp(160px, 20vw, 240px)' }}>
+          {/* A key */}
           <div
             style={{
-              width: '100%',
-              height: '2px',
-              backgroundColor: 'rgba(255,255,255,0.08)',
-              borderRadius: '2px',
-              position: 'relative',
-              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+              width: 'clamp(72px, 9vw, 116px)',
+              height: 'clamp(72px, 9vw, 116px)',
+              padding: 'clamp(8px, 1.2vw, 16px) clamp(10px, 1.4vw, 18px)',
+              borderRadius: 'clamp(8px, 1vw, 14px)',
+              background: 'linear-gradient(160deg, #221410 0%, #140c08 50%, #0d0806 100%)',
+              boxShadow: '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,244,227,0.09), inset 0 0 0 1px rgba(234,154,97,0.13)',
+              cursor: 'default',
+              transition: 'transform 80ms ease, box-shadow 80ms ease',
+              userSelect: 'none',
+            }}
+            onMouseDown={(e) => {
+              e.currentTarget.style.transform = 'translateY(5px)';
+              e.currentTarget.style.boxShadow = '0 2px 0 #060302, 0 6px 16px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,244,227,0.06), inset 0 0 0 1px rgba(234,154,97,0.13)';
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.transform = '';
+              e.currentTarget.style.boxShadow = '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,244,227,0.09), inset 0 0 0 1px rgba(234,154,97,0.13)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = '';
+              e.currentTarget.style.boxShadow = '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,244,227,0.09), inset 0 0 0 1px rgba(234,154,97,0.13)';
             }}
           >
-            <StyledProgressFill />
+            <span
+              style={{
+                fontFamily: 'Norwige, sans-serif',
+                fontStyle: 'italic',
+                fontWeight: 900,
+                fontSize: 'clamp(22px, 3.5vw, 48px)',
+                color: '#EA9A61',
+                letterSpacing: '0.03em',
+                lineHeight: 1,
+                textShadow: '0 0 18px rgba(234,154,97,0.35)',
+              }}
+            >
+              A
+            </span>
+            <span
+              style={{
+                fontFamily: "'Roboto', sans-serif",
+                fontSize: 'clamp(7px, 0.8vw, 9px)',
+                color: 'rgba(234,154,97,0.35)',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                alignSelf: 'flex-end',
+              }}
+            >
+              select all
+            </span>
           </div>
+        </div>
+
+        {/* Tagline */}
+        <p
+          style={{
+            fontFamily: 'Norwige, sans-serif',
+            fontStyle: 'italic',
+            fontWeight: 700,
+            fontSize: 'clamp(13px, 1.8vw, 20px)',
+            color: 'rgba(255,244,227,0.35)',
+            letterSpacing: '0.22em',
+            textTransform: 'uppercase',
+            margin: '0 0 18px',
+          }}
+        >
+          The Creative Command
+        </p>
+
+        {/* Amber rule */}
+        <div
+          style={{
+            width: 40,
+            height: 1,
+            background: 'linear-gradient(90deg, transparent 0%, rgba(234,154,97,0.6) 50%, transparent 100%)',
+            margin: '0 auto 18px',
+          }}
+        />
+
+        {/* Descriptor */}
+        <p
+          style={{
+            fontFamily: "'Roboto', sans-serif",
+            color: 'rgba(255,244,227,0.38)',
+            fontSize: 'clamp(12px, 1.4vw, 14px)',
+            letterSpacing: '0.02em',
+            maxWidth: '360px',
+            lineHeight: 1.7,
+            margin: '0 0 26px',
+          }}
+        >
+          Music. Design. Web. Everything a creative needs, one command away.
+        </p>
+
+        {/* Category pills */}
+        <div style={{ display: 'flex', gap: '8px', marginBottom: '32px', flexWrap: 'wrap', justifyContent: 'center' }}>
+          {['MUSIC', 'DESIGN', 'WEB DEV'].map((label) => (
+            <span
+              key={label}
+              style={{
+                fontFamily: 'Norwige, sans-serif',
+                fontStyle: 'italic',
+                fontSize: 'clamp(8px, 0.9vw, 10px)',
+                letterSpacing: '0.22em',
+                color: 'rgba(234,154,97,0.55)',
+                border: '1px solid rgba(234,154,97,0.15)',
+                borderRadius: '100px',
+                padding: '5px 14px',
+              }}
+            >
+              {label}
+            </span>
+          ))}
+        </div>
+
+        {/* CTA — button-in-button */}
+        <a
+          href="/ctrla/magazine"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '12px',
+            borderRadius: '100px',
+            paddingLeft: '24px',
+            paddingRight: '6px',
+            paddingTop: '6px',
+            paddingBottom: '6px',
+            background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
+            boxShadow: '0 16px 40px -14px rgba(177,105,55,0.55), inset 0 1px 0 rgba(255,244,227,0.18), inset 0 0 0 1px rgba(255,244,227,0.08)',
+            fontFamily: "'Roboto', sans-serif",
+            fontSize: '0.875rem',
+            letterSpacing: '0.05em',
+            color: '#FFF4E3',
+            textDecoration: 'none',
+            transition: 'transform 600ms cubic-bezier(0.32,0.72,0,1)',
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; }}
+        >
+          <span style={{ padding: '4px 0' }}>Explore Magazine</span>
           <span
             style={{
-              fontFamily: 'monospace',
-              color: 'rgba(234,154,97,0.45)',
-              fontSize: 'clamp(9px, 1.1vw, 11px)',
-              letterSpacing: '3px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 32,
+              height: 32,
+              borderRadius: '50%',
+              background: '#FFF4E3',
+              color: '#3B2114',
+              flexShrink: 0,
+              boxShadow: '0 4px 10px -2px rgba(0,0,0,0.25)',
             }}
           >
-            IN THE WORKS
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M7 17L17 7M7 7h10v10" />
+            </svg>
           </span>
-        </div>
+        </a>
       </div>
     </section>
   );
@@ -301,7 +447,11 @@ export default function CtrlAContent() {
     <div style={{ backgroundColor: '#000000', minHeight: '100vh', width: '100%', overflowX: 'hidden' }}>
       <NavigationDock />
       {/* Hero Section */}
-      <ComingSoonHero />
+      <CtrlAHero />
+
+      <BrandKitSection />
+
+      <EventsHubSection />
 
       {/* Tool Kit Section */}
       <section

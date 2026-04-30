@@ -24,6 +24,8 @@ interface GlobeProps {
   className?: string;
   autoRotateSpeed?: number;
   locations?: GlobeLocation[];
+  focusedLocation?: { lat: number; lng: number } | null;
+  onInteract?: () => void;
   // Legacy props (used if locations is not provided)
   dotColor?: string;
   arcColor?: string;
@@ -114,6 +116,8 @@ export function Component({
   className,
   autoRotateSpeed = 0.002,
   locations,
+  focusedLocation,
+  onInteract,
   dotColor = "rgba(78, 205, 196, ALPHA)",
   arcColor = "rgba(45, 212, 191, 0.5)",
   markerColor = "rgba(78, 205, 196, 1)",
@@ -135,6 +139,7 @@ export function Component({
   const mouseRef = useRef<{ x: number; y: number }>({ x: -9999, y: -9999 });
   const hoveredRef = useRef<GlobeLocation | null>(null);
   const pointerOverRef = useRef(false);
+  const targetRotYRef = useRef<number | null>(null);
 
   // Pre-computed dot arrays
   const oceanDotsRef = useRef<[number, number, number][]>([]);
@@ -167,6 +172,29 @@ export function Component({
       .map((l) => ({ from: hq, to: l, isTeam: l.type === "team" }));
   }, [locations]);
 
+  // Snap to a focused location by computing the target rotY
+  useEffect(() => {
+    if (!focusedLocation) {
+      targetRotYRef.current = null;
+      return;
+    }
+    const { lat, lng } = focusedLocation;
+    const phi = ((90 - lat) * Math.PI) / 180;
+    const theta = ((lng + 180) * Math.PI) / 180;
+    const x0 = -(Math.sin(phi) * Math.cos(theta));
+    const y0 = -Math.cos(phi);
+    const z0 = Math.sin(phi) * Math.sin(theta);
+    const rx = rotXRef.current;
+    const x1 = x0;
+    const z1 = y0 * Math.sin(rx) + z0 * Math.cos(rx);
+    let targetRy = Math.atan2(-x1, z1) + Math.PI;
+    // Normalise to nearest equivalent (shortest arc from current rotation)
+    const current = rotYRef.current;
+    while (targetRy - current > Math.PI) targetRy -= 2 * Math.PI;
+    while (targetRy - current < -Math.PI) targetRy += 2 * Math.PI;
+    targetRotYRef.current = targetRy;
+  }, [focusedLocation]);
+
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -194,7 +222,16 @@ export function Component({
 
     // Auto rotate (pause on hover and drag)
     if (!dragRef.current.active && !pointerOverRef.current) {
-      rotYRef.current += autoRotateSpeed;
+      if (targetRotYRef.current !== null) {
+        // Lerp toward focused city — shortest arc
+        let diff = targetRotYRef.current - rotYRef.current;
+        while (diff > Math.PI) diff -= 2 * Math.PI;
+        while (diff < -Math.PI) diff += 2 * Math.PI;
+        rotYRef.current += diff * 0.055;
+      } else {
+        // Correct west-to-east spin: decreasing rotY brings eastern locations into view from right
+        rotYRef.current -= autoRotateSpeed;
+      }
     }
 
     timeRef.current += 0.015;
@@ -617,6 +654,8 @@ export function Component({
 
   // --- Pointer handlers ---
   const onPointerDown = useCallback((e: React.PointerEvent) => {
+    targetRotYRef.current = null; // let drag override any focus
+    onInteract?.();
     dragRef.current = {
       active: true,
       startX: e.clientX,
@@ -625,7 +664,7 @@ export function Component({
       startRotX: rotXRef.current,
     };
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
-  }, []);
+  }, [onInteract]);
 
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     // Track mouse for hover tooltips

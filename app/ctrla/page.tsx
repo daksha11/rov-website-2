@@ -2,20 +2,20 @@ import type { Metadata } from "next";
 import CtrlAContent from "./CtrlAContent";
 
 export const metadata: Metadata = {
-    title: "CTRL A - Coming Soon",
+    title: "CTRL A — The Creative Command",
     description:
-        "CTRL A by Range of View Studios — a creative toolkit for music, web development, and design. Coming soon.",
+        "CTRL A by Range of View Studios — a creative platform for music, web development, and design. Tools, community, and resources for builders.",
     alternates: { canonical: "https://www.rovstudios.com/ctrla" },
     openGraph: {
-        title: "CTRL A - Coming Soon | Range of View Studios",
-        description: "A creative toolkit for music, web development, and design. Coming soon.",
+        title: "CTRL A — The Creative Command | Range of View Studios",
+        description: "A creative platform for music, web development, and design. Tools and resources for builders.",
         url: "https://www.rovstudios.com/ctrla",
         images: [{ url: "/og/og-ctrla.webp", width: 1200, height: 630, alt: "CTRL A by Range of View Studios" }],
     },
     twitter: {
         card: "summary_large_image",
-        title: "CTRL A - Coming Soon | Range of View Studios",
-        description: "A creative toolkit for music, web development, and design. Coming soon.",
+        title: "CTRL A — The Creative Command | Range of View Studios",
+        description: "A creative platform for music, web development, and design. Tools and resources for builders.",
         images: ["/og/og-ctrla.webp"],
     },
 };

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Component as InteractiveGlobe, type GlobeLocation } from "@/components/ui/interactive-globe";
 
 const LOCATIONS: GlobeLocation[] = [
@@ -49,13 +50,16 @@ const LOCATIONS: GlobeLocation[] = [
   { lat: 51.507, lng: -0.128, city: "London", country: "UK", type: "business" },
 ];
 
-const tagColors: Record<GlobeLocation["type"], { color: string; border: string }> = {
-  hq: { color: "#EA9A61", border: "rgba(234,154,97,0.3)" },
-  team: { color: "rgba(247,242,228,0.7)", border: "rgba(247,242,228,0.15)" },
-  business: { color: "rgba(177,105,55,0.6)", border: "rgba(177,105,55,0.15)" },
-};
 
 export function GlobalTeamGlobe() {
+  const [selectedCity, setSelectedCity] = useState<string | null>(null);
+
+  const selectedLoc = LOCATIONS.find((l) => l.city === selectedCity) ?? null;
+
+  function handleCityClick(city: string) {
+    setSelectedCity((prev) => (prev === city ? null : city));
+  }
+
   return (
     <section
       style={{
@@ -67,21 +71,8 @@ export function GlobalTeamGlobe() {
       }}
     >
       {/* Header */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 14,
-          marginBottom: 12,
-        }}
-      >
-        <div
-          style={{
-            width: "clamp(24px, 4vw, 48px)",
-            height: "1px",
-            backgroundColor: "rgba(234,154,97,0.5)",
-          }}
-        />
+      <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 12 }}>
+        <div style={{ width: "clamp(24px, 4vw, 48px)", height: "1px", backgroundColor: "rgba(234,154,97,0.5)" }} />
         <span
           style={{
             fontFamily: "Norwige, sans-serif",
@@ -93,13 +84,7 @@ export function GlobalTeamGlobe() {
         >
           WORLDWIDE
         </span>
-        <div
-          style={{
-            width: "clamp(24px, 4vw, 48px)",
-            height: "1px",
-            backgroundColor: "rgba(234,154,97,0.5)",
-          }}
-        />
+        <div style={{ width: "clamp(24px, 4vw, 48px)", height: "1px", backgroundColor: "rgba(234,154,97,0.5)" }} />
       </div>
 
       {/* Title */}
@@ -118,8 +103,7 @@ export function GlobalTeamGlobe() {
         One Vision,{" "}
         <span
           style={{
-            background:
-              "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)",
+            background: "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -158,10 +142,12 @@ export function GlobalTeamGlobe() {
         <InteractiveGlobe
           locations={LOCATIONS}
           autoRotateSpeed={0.002}
+          focusedLocation={selectedLoc ? { lat: selectedLoc.lat, lng: selectedLoc.lng } : null}
+          onInteract={() => setSelectedCity(null)}
         />
       </div>
 
-      {/* Location tags row */}
+      {/* Location tag buttons */}
       <div
         style={{
           display: "flex",
@@ -171,26 +157,68 @@ export function GlobalTeamGlobe() {
           marginTop: "clamp(24px, 4vw, 48px)",
         }}
       >
-        {LOCATIONS.map((loc) => (
-          <span
-            key={loc.city}
-            style={{
-              fontFamily: "Norwige, sans-serif",
-              fontStyle: "italic",
-              fontSize: "clamp(11px, 1.4vw, 13px)",
-              padding: "6px 16px",
-              borderRadius: 999,
-              border: `1px solid ${tagColors[loc.type].border}`,
-              background: "transparent",
-              color: tagColors[loc.type].color,
-              letterSpacing: "0.06em",
-            }}
-          >
-            {loc.city}
-            {loc.type === "hq" ? " (HQ)" : ""}
-          </span>
-        ))}
+        {LOCATIONS.map((loc) => {
+          const isHQ = loc.type === "hq";
+          const isActive = selectedCity === loc.city;
+
+          const baseStyle = isHQ
+            ? {
+                border: "1px solid transparent",
+                background: "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)",
+                color: "#FFF4E3",
+                boxShadow: isActive
+                  ? "0 12px 32px -8px rgba(177,105,55,0.7)"
+                  : "0 6px 20px -8px rgba(177,105,55,0.45)",
+                transform: isActive ? "translateY(-2px)" : "translateY(0)",
+              }
+            : {
+                border: isActive
+                  ? "1px solid rgba(234,154,97,0.35)"
+                  : "1px solid rgba(255,244,227,0.1)",
+                background: isActive ? "rgba(234,154,97,0.08)" : "transparent",
+                color: isActive ? "rgba(255,244,227,0.9)" : "rgba(255,244,227,0.45)",
+                boxShadow: "none",
+                transform: isActive ? "translateY(-1px)" : "translateY(0)",
+              };
+
+          return (
+            <button
+              key={loc.city}
+              onClick={() => handleCityClick(loc.city)}
+              style={{
+                fontFamily: "Norwige, sans-serif",
+                fontStyle: "italic",
+                fontSize: "clamp(11px, 1.4vw, 13px)",
+                padding: isHQ ? "7px 20px" : "6px 16px",
+                borderRadius: 999,
+                letterSpacing: "0.06em",
+                cursor: "pointer",
+                transition: "all 250ms cubic-bezier(0.32,0.72,0,1)",
+                ...baseStyle,
+              }}
+            >
+              {loc.city}
+              {isHQ ? " (HQ)" : ""}
+            </button>
+          );
+        })}
       </div>
+
+      {/* Selected city hint */}
+      {selectedCity && (
+        <p
+          style={{
+            marginTop: 16,
+            fontFamily: "'Roboto', sans-serif",
+            fontSize: "clamp(10px, 1.2vw, 12px)",
+            color: "rgba(234,154,97,0.5)",
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+          }}
+        >
+          Focusing globe on {selectedCity} — drag to explore freely
+        </p>
+      )}
     </section>
   );
 }
