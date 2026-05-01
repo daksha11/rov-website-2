@@ -62,7 +62,7 @@ const SavingsCalculator = dynamic(() => import("@/components/sound_page/SavingsC
 });
 const PricingTiers = dynamic(() => import("@/components/sound_page/PricingTiers"));
 const CreativeAddOns = dynamic(() => import("@/components/sound_page/CreativeAddOns"));
-const StudioSetupSection = dynamic(() => import("@/components/sound_page/StudioSetup"));
+// const StudioSetupSection = dynamic(() => import("@/components/sound_page/StudioSetup"));
 
 const VideoShowcaseSection = dynamic(() => import("@/components/sound_page/VideoShowcaseSection"), {
     loading: () => (
@@ -70,6 +70,15 @@ const VideoShowcaseSection = dynamic(() => import("@/components/sound_page/Video
             <div className="text-white/60 text-sm">Loading...</div>
         </div>
     ),
+});
+
+const DDKFeatureTestimonial = dynamic(() => import("@/components/sound_page/DDKFeatureTestimonial"), {
+    loading: () => (
+        <div className="bg-[#080807] min-h-[40vh] flex items-center justify-center">
+            <div className="text-white/30 text-sm">Loading...</div>
+        </div>
+    ),
+    ssr: false,
 });
 
 const TagorePartnership = dynamic(() => import("@/components/sound_page/TagorePartnership"));
@@ -148,8 +157,8 @@ export default function Page() {
             {/* 07 — Savings Calculator */}
             <SavingsCalculator />
 
-            {/* 08 — Studio Setup */}
-            <StudioSetupSection />
+            {/* 08 — Studio Setup (hidden) */}
+            {/* <StudioSetupSection /> */}
 
             {/* 08 — Artwork Gallery */}
             <div className="bg-black">
@@ -159,7 +168,10 @@ export default function Page() {
             {/* 09 — Video Showcase */}
             <VideoShowcaseSection />
 
-            {/* 10 — Testimonials */}
+            {/* 10 — DDK Featured Testimonial */}
+            <DDKFeatureTestimonial />
+
+            {/* 10.1 — Testimonials */}
             <TestimonialsSection testimonials={soundTestimonials} variant="sound" />
 
             {/* 10.5 — Tagore Studios Partnership */}
