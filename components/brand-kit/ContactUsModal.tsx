@@ -30,7 +30,7 @@ export default function ContactUsModal({ isOpen, onClose }: ContactUsModalProps)
               Point Limit Reached
             </DialogTitle>
             <DialogDescription className="text-[#D0BEA5]/70 text-base leading-relaxed">
-              You've used all your points. To continue generating premium brand kits, please contact our support team to refill your credits.
+              {`You've used all your points. To continue generating premium brand kits, please contact our support team to refill your credits.`}
             </DialogDescription>
           </div>
         </DialogHeader>

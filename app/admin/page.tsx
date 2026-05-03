@@ -970,7 +970,7 @@ export default function AdminDashboard() {
                       lineHeight: 1.5, background: 'rgba(0,0,0,0.2)', 
                       padding: '12px', borderRadius: '8px', fontStyle: 'italic'
                     }}>
-                      "{rev.notes}"
+                      {`"${rev.notes}"`}
                     </p>
 
                     <div style={{ display: 'flex', gap: '10px', marginTop: '4px' }}>
@@ -1367,7 +1367,7 @@ export default function AdminDashboard() {
             </div>
           ) : filteredClients.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '48px 0', border: '1px dashed rgba(255,244,227,0.08)', borderRadius: '12px' }}>
-              <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.4)', margin: '0 0 4px 0' }}>No results matching "{clientSearchQuery}"</p>
+              <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.4)', margin: '0 0 4px 0' }}>{`No results matching "${clientSearchQuery}"`}</p>
               <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.2)', margin: 0 }}>Try searching for a different email or name.</p>
             </div>
           ) : (
@@ -1593,7 +1593,7 @@ export default function AdminDashboard() {
                                         <span style={{ fontSize: '11px', fontWeight: 700, color: '#EA9A61' }}>Revision {rev.revision_number}</span>
                                         <span style={{ fontSize: '10px', color: 'rgba(255,244,227,0.3)' }}>{new Date(rev.created_at).toLocaleDateString()}</span>
                                       </div>
-                                      <p style={{ margin: 0, fontSize: '12px', color: 'rgba(255,244,227,0.6)', lineHeight: 1.4, fontStyle: 'italic' }}>"{rev.notes}"</p>
+                                      <p style={{ margin: 0, fontSize: '12px', color: 'rgba(255,244,227,0.6)', lineHeight: 1.4, fontStyle: 'italic' }}>{`"${rev.notes}"`}</p>
                                     </div>
                                   ))}
                                 </div>
