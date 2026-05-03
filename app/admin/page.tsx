@@ -889,7 +889,6 @@ export default function AdminDashboard() {
                   flex: 1,
                   padding: '10px 16px',
                   borderRadius: '10px',
-                  border: 'none',
                   background: activeTab === tab ? 'linear-gradient(135deg, #FFF4E3 0%, #EA9A61 45%, #90422C 100%)' : 'transparent',
                   color: activeTab === tab ? '#3B2114' : 'rgba(255,244,227,0.5)',
                   fontSize: '12px',
