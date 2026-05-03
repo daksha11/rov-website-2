@@ -75,7 +75,7 @@ export default function GoogleLoginButton() {
 
   function handleDashboard() {
     setMenuOpen(false);
-    if (user?.role === "admin") {
+    if (user?.role === "admin" || user?.role === "engineer") {
       router.push("/admin");
     } else {
       router.push("/portal");

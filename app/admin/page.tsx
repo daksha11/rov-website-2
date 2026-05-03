@@ -55,6 +55,7 @@ export default function AdminDashboard() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'client' | 'sound' | 'user'>('client');
+  const [userRole, setUserRole] = useState<string | null>(null);
 
   // Audio submissions state
   const [submissions, setSubmissions] = useState<AudioSubmission[]>([]);
@@ -154,6 +155,12 @@ export default function AdminDashboard() {
   const [clientSearchQuery, setClientSearchQuery] = useState('');
   const [startingProjectFor, setStartingProjectFor] = useState<string | null>(null);
 
+  // User management state
+  const [allProfiles, setAllProfiles] = useState<ClientProfile[]>([]);
+  const [loadingProfiles, setLoadingProfiles] = useState(true);
+  const [userSearchQuery, setUserSearchQuery] = useState('');
+  const [updatingRoleId, setUpdatingRoleId] = useState<string | null>(null);
+
   // Revision management state
   const [allRevisions, setAllRevisions] = useState<RevisionRequest[]>([]);
   const [isResolvingRevision, setIsResolvingRevision] = useState(false);
@@ -164,6 +171,13 @@ export default function AdminDashboard() {
       client.full_name?.toLowerCase().includes(clientSearchQuery.toLowerCase())
     );
   }, [clients, clientSearchQuery]);
+
+  const filteredUsers = useMemo(() => {
+    return allProfiles.filter((user) =>
+      user.email?.toLowerCase().includes(userSearchQuery.toLowerCase()) ||
+      user.full_name?.toLowerCase().includes(userSearchQuery.toLowerCase())
+    );
+  }, [allProfiles, userSearchQuery]);
 
   // Launch project modal state
   const [launchModalOpen, setLaunchModalOpen] = useState(false);
@@ -209,12 +223,17 @@ export default function AdminDashboard() {
         .eq('id', session.user.id)
         .single();
 
-      if (profile?.role !== 'admin') {
+      if (profile?.role !== 'admin' && profile?.role !== 'engineer') {
         router.push('/portal');
         return;
       }
 
-      setFullName(profile.full_name || session.user.user_metadata?.full_name || 'Admin');
+      setUserRole(profile.role);
+      if (profile.role === 'engineer') {
+        setActiveTab('sound');
+      }
+
+      setFullName(profile.full_name || session.user.user_metadata?.full_name || (profile.role === 'admin' ? 'Admin' : 'Engineer'));
       setLoading(false);
 
       const greeted = sessionStorage.getItem('rov-admin-greeted');
@@ -228,6 +247,7 @@ export default function AdminDashboard() {
       // Fetch all audio tracks + all profiles, merge client-side
       await fetchAllSubmissions();
       await fetchClientsAndProjects();
+      await fetchAllProfiles();
       await fetchAllRevisions();
       await fetchAllMixedTracks();
     };
@@ -304,6 +324,52 @@ export default function AdminDashboard() {
       console.error('Error fetching clients:', err);
     } finally {
       setLoadingClients(false);
+    }
+  };
+
+  const fetchAllProfiles = async () => {
+    setLoadingProfiles(true);
+    try {
+      const { data: profiles, error } = await supabase
+        .from('profiles')
+        .select('id, full_name, email, role')
+        .order('full_name', { ascending: true });
+
+      if (error) throw error;
+      setAllProfiles(profiles || []);
+    } catch (err) {
+      console.error('Error fetching all profiles:', err);
+    } finally {
+      setLoadingProfiles(false);
+    }
+  };
+
+  const handleRoleChange = async (userId: string, newRole: string) => {
+    if (updatingRoleId) return;
+    setUpdatingRoleId(userId);
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ role: newRole })
+        .eq('id', userId);
+
+      if (error) throw error;
+
+      // Update local state
+      setAllProfiles((prev) => prev.map(p => p.id === userId ? { ...p, role: newRole } : p));
+      
+      // Also update clients state if relevant
+      if (newRole === 'admin') {
+        setClients((prev) => prev.filter(p => p.id !== userId));
+      } else {
+        // If it was admin and now it's not, we might need to re-fetch or add it
+        await fetchClientsAndProjects();
+      }
+    } catch (err) {
+      console.error('Error updating role:', err);
+      alert('Failed to update user role.');
+    } finally {
+      setUpdatingRoleId(null);
     }
   };
 
@@ -776,7 +842,11 @@ export default function AdminDashboard() {
           overflow: 'hidden',
           animation: 'cardFadeIn 0.4s ease-out forwards',
         }}>
-          {(activeTab === 'client' ? [
+          {(userRole === 'engineer' ? [
+            { label: 'Tracks Submitted', value: submissions.length, isLoading: loadingTracks, urgent: false },
+            { label: 'Pending Revisions', value: allRevisions.filter(r => r.status === 'pending').length, isLoading: loadingClients, urgent: allRevisions.filter(r => r.status === 'pending').length > 0 },
+            { label: 'Active Projects', value: Object.values(clientProjects).filter(p => p.status === 'In Progress').length, isLoading: loadingClients, urgent: false },
+          ] : activeTab === 'client' ? [
             { label: 'Total Clients', value: clients.length, isLoading: loadingClients, urgent: false },
             { label: 'Pending Revisions', value: allRevisions.filter(r => r.status === 'pending').length, isLoading: loadingClients, urgent: allRevisions.filter(r => r.status === 'pending').length > 0 },
             { label: 'Active Projects', value: Object.values(clientProjects).filter(p => p.status === 'In Progress').length, isLoading: loadingClients, urgent: false },
@@ -801,47 +871,49 @@ export default function AdminDashboard() {
         </div>
 
         {/* ── Tab Bar ── */}
-        <div style={{
-          display: 'flex',
-          gap: '4px',
-          padding: '6px',
-          background: 'linear-gradient(135deg, #1A0D08 0%, #2E1A0E 50%, #3D1C10 100%)',
-          border: '1px solid rgba(255,244,227,0.08)',
-          borderRadius: '16px',
-          overflow: 'hidden',
-        }}>
-          {(['client', 'sound', 'user'] as const).map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              style={{
-                flex: 1,
-                padding: '10px 16px',
-                borderRadius: '10px',
-                border: 'none',
-                background: activeTab === tab ? 'linear-gradient(135deg, #FFF4E3 0%, #EA9A61 45%, #90422C 100%)' : 'transparent',
-                color: activeTab === tab ? '#3B2114' : 'rgba(255,244,227,0.5)',
-                fontSize: '12px',
-                fontFamily: "'Roboto', sans-serif",
-                fontWeight: activeTab === tab ? 600 : 400,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                outline: 'none',
-                border: '1px solid transparent',
-                boxShadow: activeTab === tab ? '0 2px 16px rgba(234,154,97,0.35)' : 'none',
-              }}
-              onMouseEnter={(e) => { if (activeTab !== tab) { e.currentTarget.style.color = 'rgba(255,244,227,0.75)'; e.currentTarget.style.background = 'rgba(255,255,255,0.07)'; } }}
-              onMouseLeave={(e) => { if (activeTab !== tab) { e.currentTarget.style.color = 'rgba(255,244,227,0.35)'; e.currentTarget.style.background = 'transparent'; } }}
-            >
-              <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '7px' }}>
-                {tab === 'client' ? <Users size={13} /> : tab === 'sound' ? <Music2 size={13} /> : <User size={13} />}
-                {tab === 'client' ? 'Client' : tab === 'sound' ? 'Sound' : 'Users'}
-              </span>
-            </button>
-          ))}
-        </div>
+        {userRole === 'admin' && (
+          <div style={{
+            display: 'flex',
+            gap: '4px',
+            padding: '6px',
+            background: 'linear-gradient(135deg, #1A0D08 0%, #2E1A0E 50%, #3D1C10 100%)',
+            border: '1px solid rgba(255,244,227,0.08)',
+            borderRadius: '16px',
+            overflow: 'hidden',
+          }}>
+            {(['client', 'sound', 'user'] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                style={{
+                  flex: 1,
+                  padding: '10px 16px',
+                  borderRadius: '10px',
+                  border: 'none',
+                  background: activeTab === tab ? 'linear-gradient(135deg, #FFF4E3 0%, #EA9A61 45%, #90422C 100%)' : 'transparent',
+                  color: activeTab === tab ? '#3B2114' : 'rgba(255,244,227,0.5)',
+                  fontSize: '12px',
+                  fontFamily: "'Roboto', sans-serif",
+                  fontWeight: activeTab === tab ? 600 : 400,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  outline: 'none',
+                  border: '1px solid transparent',
+                  boxShadow: activeTab === tab ? '0 2px 16px rgba(234,154,97,0.35)' : 'none',
+                }}
+                onMouseEnter={(e) => { if (activeTab !== tab) { e.currentTarget.style.color = 'rgba(255,244,227,0.75)'; e.currentTarget.style.background = 'rgba(255,255,255,0.07)'; } }}
+                onMouseLeave={(e) => { if (activeTab !== tab) { e.currentTarget.style.color = 'rgba(255,244,227,0.35)'; e.currentTarget.style.background = 'transparent'; } }}
+              >
+                <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '7px' }}>
+                  {tab === 'client' ? <Users size={13} /> : tab === 'sound' ? <Music2 size={13} /> : <User size={13} />}
+                  {tab === 'client' ? 'Client' : tab === 'sound' ? 'Sound' : 'Users'}
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* ── Mixed Audio Revisions (Pending Only) ── */}
         {activeTab === 'sound' && allRevisions.some(r => r.status === 'pending') && (
@@ -1566,23 +1638,140 @@ export default function AdminDashboard() {
         {/* ── User Tab ── */}
         {activeTab === 'user' && (
           <div style={{ ...cardStyle, animation: 'cardFadeIn 0.4s ease-out both' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px' }}>
-              <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFF4E3', boxShadow: '0 2px 8px rgba(59,33,20,0.4)' }}>
-                <Users size={16} />
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFF4E3', boxShadow: '0 2px 8px rgba(59,33,20,0.4)' }}>
+                  <Users size={16} />
+                </div>
+                <div>
+                  <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#FFF4E3' }}>
+                    User Management
+                  </h3>
+                  <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.35)', margin: 0 }}>
+                    Manage user accounts and roles
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#FFF4E3' }}>
-                  Users
-                </h3>
-                <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.35)', margin: 0 }}>
-                  Manage user accounts and roles
-                </p>
+              {!loadingProfiles && (
+                <div style={{
+                  padding: '4px 14px', borderRadius: '9999px',
+                  background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)',
+                  border: 'none',
+                  color: '#FFF4E3', fontSize: '13px', fontWeight: 600,
+                  boxShadow: '0 2px 8px rgba(59,33,20,0.35)',
+                }}>
+                  {allProfiles.length} total
+                </div>
+              )}
+            </div>
+
+            {/* Search box */}
+            {!loadingProfiles && allProfiles.length > 0 && (
+              <div style={{ marginBottom: '20px', position: 'relative' }}>
+                <div style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,244,227,0.25)', pointerEvents: 'none', display: 'flex' }}>
+                  <Search size={15} />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search users..."
+                  value={userSearchQuery}
+                  onChange={(e) => setUserSearchQuery(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '12px 16px 12px 40px',
+                    borderRadius: '12px',
+                    background: 'rgba(255, 255, 255, 0.02)',
+                    border: '1px solid rgba(255, 244, 227, 0.08)',
+                    color: '#FFF4E3',
+                    fontSize: '14px',
+                    outline: 'none',
+                    transition: 'all 0.2s',
+                    boxSizing: 'border-box',
+                  }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = 'rgba(234,154,97,0.4)'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(255, 244, 227, 0.08)'}
+                />
               </div>
-            </div>
-            <div style={{ textAlign: 'center', padding: '60px 0', border: '1px dashed rgba(255,244,227,0.06)', borderRadius: '12px' }}>
-              <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.25)', margin: '0 0 6px 0' }}>Coming soon</p>
-              <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.12)', margin: 0 }}>User management tools will appear here.</p>
-            </div>
+            )}
+
+            {loadingProfiles ? (
+              <div style={{ textAlign: 'center', padding: '48px 0' }}>
+                <div style={{
+                  width: '28px', height: '28px', borderRadius: '50%',
+                  border: '2px solid rgba(255,244,227,0.08)',
+                  borderTop: '2px solid rgba(234,154,97,0.6)',
+                  margin: '0 auto 12px auto',
+                  animation: 'spin 0.8s linear infinite',
+                }} />
+                <p style={{ fontSize: '13px', color: 'rgba(255,244,227,0.3)', margin: 0 }}>Loading users...</p>
+              </div>
+            ) : filteredUsers.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '48px 0', border: '1px dashed rgba(255,244,227,0.08)', borderRadius: '12px' }}>
+                <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.4)', margin: '0 0 4px 0' }}>No users found.</p>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {/* Table header */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1.5fr 150px',
+                  gap: '12px',
+                  padding: '0 14px 10px 14px',
+                  borderBottom: '1px solid rgba(255,244,227,0.06)',
+                }}>
+                  {['Name', 'Email', 'Role'].map((h) => (
+                    <span key={h} style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.25)', fontWeight: 500 }}>{h}</span>
+                  ))}
+                </div>
+
+                {filteredUsers.map((user) => (
+                  <div
+                    key={user.id}
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: '1fr 1.5fr 150px',
+                      gap: '12px',
+                      alignItems: 'center',
+                      padding: '14px',
+                      background: 'rgba(255,255,255,0.02)',
+                      border: '1px solid rgba(255,244,227,0.05)',
+                      borderRadius: '12px',
+                    }}
+                  >
+                    <div style={{ minWidth: 0 }}>
+                      <p style={{ margin: 0, fontSize: '14px', color: '#FFF4E3', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {user.full_name || '—'}
+                      </p>
+                    </div>
+                    <p style={{ margin: 0, fontSize: '13px', color: 'rgba(255,244,227,0.45)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {user.email || '—'}
+                    </p>
+                    <div>
+                      <select
+                        value={user.role || 'client'}
+                        onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                        disabled={updatingRoleId === user.id}
+                        style={{
+                          width: '100%',
+                          background: 'rgba(0,0,0,0.3)',
+                          border: '1px solid rgba(255,244,227,0.1)',
+                          color: '#FFF4E3',
+                          fontSize: '12px',
+                          padding: '6px 10px',
+                          borderRadius: '8px',
+                          cursor: updatingRoleId === user.id ? 'wait' : 'pointer',
+                          outline: 'none',
+                        }}
+                      >
+                        <option value="client">Client</option>
+                        <option value="engineer">Engineer</option>
+                        <option value="admin">Admin</option>
+                      </select>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
