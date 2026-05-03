@@ -48,14 +48,6 @@ export const webTestimonials: Testimonial[] = [
 export const soundTestimonials: Testimonial[] = [
   {
     quote:
-      "Basu is one of the fastest engineers ever, what he was doing with this setup back then amused me. My biggest songs are mixed by Basu.",
-    name: "DDK",
-    role: "Recording Artist",
-    impactStat: "Fastest Engineer",
-    image: "/clients/ddk.webp",
-  },
-  {
-    quote:
       "ROV always sends files, stems, and deliverables in a well organized manner, which is so rare in the music industry these days. Tired of getting back final_maybe.mp3",
     name: "Dre Howard",
     role: "Recording Artist",

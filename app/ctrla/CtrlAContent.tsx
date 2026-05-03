@@ -7,6 +7,7 @@ import { NavigationDock } from "@/components/NavDoc";
 import styled from "styled-components";
 import { GlobalTeamGlobe } from "@/components/ctrla/GlobalTeamGlobe";
 import { BrandKitSection } from "@/components/ctrla/BrandKitSection";
+import { EventsHubSection } from "@/components/ctrla/EventsHubSection";
 
 
 const StyledHeroBackground = styled.div`
@@ -16,7 +17,7 @@ const StyledHeroBackground = styled.div`
   width: 100%;
   height: 100%;
   z-index: 0;
-  background-color: #000000;
+  background-color: #2B1F14;
   overflow: hidden;
 
   .glow-blob {
@@ -33,7 +34,7 @@ const StyledHeroBackground = styled.div`
     left: -10%;
     width: 60%;
     height: 60%;
-    background: radial-gradient(circle, rgba(234, 154, 97, 0.3) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(196, 98, 45, 0.28) 0%, transparent 70%);
   }
 
   .glow-2 {
@@ -41,7 +42,7 @@ const StyledHeroBackground = styled.div`
     right: -10%;
     width: 50%;
     height: 50%;
-    background: radial-gradient(circle, rgba(177, 105, 55, 0.2) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(107, 35, 24, 0.2) 0%, transparent 70%);
   }
 
   .void-pulse {
@@ -85,7 +86,7 @@ const HeroBackground = () => {
           <filter id="void-texture">
             <feTurbulence result="noise" numOctaves={4} baseFrequency="0.015" type="turbulence" />
             <feGaussianBlur result="blur" stdDeviation={0.5} in="noise" />
-            <feSpecularLighting result="specular" lightingColor="#EA9A61" specularExponent={40} specularConstant={0.5} surfaceScale={2} in="blur">
+            <feSpecularLighting result="specular" lightingColor="#C4622D" specularExponent={40} specularConstant={0.5} surfaceScale={2} in="blur">
               <feDistantLight elevation={45} azimuth={90} />
             </feSpecularLighting>
             <feComposite result="lit" operator="over" in2="SourceGraphic" in="specular" />
@@ -97,45 +98,15 @@ const HeroBackground = () => {
   );
 }
 
-const StyledCursor = styled.span`
-  display: inline-block;
-  width: 3px;
-  height: clamp(48px, 9vw, 108px);
-  background: #EA9A61;
-  margin-left: 6px;
-  vertical-align: middle;
-  border-radius: 2px;
-  animation: blink 1s step-end infinite;
 
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
-`;
-
-const StyledProgressFill = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #EA9A61, #B16937);
-  border-radius: 2px;
-  animation: fillBar 2.5s ease-out 0.5s forwards;
-
-  @keyframes fillBar {
-    to { width: 68%; }
-  }
-`;
-
-function ComingSoonHero() {
+function CtrlAHero() {
   return (
     <section
       style={{
         position: 'relative',
         width: '100%',
         height: '100vh',
-        backgroundColor: '#000000',
+        backgroundColor: '#2B1F14',
         overflow: 'hidden',
         display: 'flex',
         alignItems: 'center',
@@ -144,15 +115,6 @@ function ComingSoonHero() {
     >
       <HeroBackground />
 
-      {/* Stickers — desktop only */}
-      <div className="hidden md:block" style={{ position: 'absolute', top: '5%', left: '4%', width: '160px', height: '160px', backgroundImage: 'url(/ctrla/andresticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
-      <div className="hidden md:block" style={{ position: 'absolute', top: '6%', right: '5%', width: '175px', height: '175px', backgroundImage: 'url(/ctrla/benzsticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
-      <div className="hidden md:block" style={{ position: 'absolute', bottom: '8%', left: '5%', width: '185px', height: '185px', backgroundImage: 'url(/ctrla/gradysticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
-      <div className="hidden md:block" style={{ position: 'absolute', bottom: '10%', right: '5%', width: '170px', height: '170px', backgroundImage: 'url(/ctrla/tunnelsticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
-      <div className="hidden lg:block" style={{ position: 'absolute', top: '20%', left: '14%', width: '155px', height: '155px', backgroundImage: 'url(/ctrla/carsticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
-      <div className="hidden lg:block" style={{ position: 'absolute', top: '20%', right: '14%', width: '165px', height: '165px', backgroundImage: 'url(/ctrla/grillsticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
-      <div className="hidden lg:block" style={{ position: 'absolute', bottom: '20%', left: '20%', width: '155px', height: '155px', backgroundImage: 'url(/ctrla/atlsticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
-      <div className="hidden lg:block" style={{ position: 'absolute', bottom: '22%', right: '18%', width: '150px', height: '150px', backgroundImage: 'url(/ctrla/martasticker.webp)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} />
 
       {/* Center ghost sticker */}
       <div
@@ -168,7 +130,7 @@ function ComingSoonHero() {
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
           zIndex: 1,
-          opacity: 0.25,
+          opacity: 0.18,
         }}
       />
 
@@ -181,104 +143,371 @@ function ComingSoonHero() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '20px',
           padding: '0 20px',
         }}
       >
-        {/* Top label */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-          <div style={{ width: 'clamp(24px, 4vw, 48px)', height: '1px', backgroundColor: 'rgba(234,154,97,0.5)' }} />
+        {/* Eyebrow */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '32px' }}>
+          <div style={{ width: 'clamp(20px, 3vw, 36px)', height: '1px', background: 'rgba(196,98,45,0.4)' }} />
           <span
             style={{
-              fontFamily: 'Norwige, sans-serif',
-              fontStyle: 'italic',
-              color: '#EA9A61',
-              fontSize: 'clamp(11px, 1.5vw, 15px)',
-              letterSpacing: '5px',
-              opacity: 0.9,
+              fontFamily: "'Roboto', sans-serif",
+              color: 'rgba(196,98,45,0.85)',
+              fontSize: 'clamp(9px, 1vw, 11px)',
+              letterSpacing: '0.32em',
+              textTransform: 'uppercase',
             }}
           >
-            CTRL A
+            A ROV Creative Platform
           </span>
-          <div style={{ width: 'clamp(24px, 4vw, 48px)', height: '1px', backgroundColor: 'rgba(234,154,97,0.5)' }} />
+          <div style={{ width: 'clamp(20px, 3vw, 36px)', height: '1px', background: 'rgba(196,98,45,0.4)' }} />
         </div>
 
-        {/* Main heading */}
-        <div style={{ lineHeight: '0.88', position: 'relative' }}>
-          <h1
-            style={{
-              fontSize: 'clamp(64px, 13vw, 140px)',
-              fontWeight: '900',
-              fontStyle: 'italic',
-              color: '#FFFFFF',
-              margin: 0,
-              letterSpacing: '-1px',
-              fontFamily: 'Norwige, sans-serif',
-              textAlign: 'center',
-            }}
-          >
-            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              COMING
-            </span>
-            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              SOON
-              <StyledCursor />
-            </span>
-          </h1>
-        </div>
-
-        {/* Dashed badge — ctrl+a wordplay */}
+        {/* Keyboard keys — the hero visual */}
         <div
           style={{
-            border: '1px dashed rgba(234,154,97,0.35)',
-            borderRadius: '4px',
-            padding: 'clamp(6px, 1vw, 10px) clamp(16px, 3vw, 28px)',
-            marginTop: '4px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 'clamp(10px, 1.5vw, 18px)',
+            marginBottom: '28px',
+            filter: 'drop-shadow(0 8px 32px rgba(196,98,45,0.22))',
           }}
         >
+          {/* CTRL key */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+              width: 'clamp(110px, 14vw, 180px)',
+              height: 'clamp(72px, 9vw, 116px)',
+              padding: 'clamp(8px, 1.2vw, 16px) clamp(10px, 1.4vw, 18px)',
+              borderRadius: 'clamp(8px, 1vw, 14px)',
+              background: 'linear-gradient(160deg, #221410 0%, #140c08 50%, #0d0806 100%)',
+              boxShadow: '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(245,237,216,0.09), inset 0 0 0 1px rgba(196,98,45,0.18)',
+              cursor: 'default',
+              transition: 'transform 80ms ease, box-shadow 80ms ease',
+              userSelect: 'none',
+            }}
+            onMouseDown={(e) => {
+              e.currentTarget.style.transform = 'translateY(5px)';
+              e.currentTarget.style.boxShadow = '0 2px 0 #060302, 0 6px 16px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,244,227,0.06), inset 0 0 0 1px rgba(196,98,45,0.18)';
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.transform = '';
+              e.currentTarget.style.boxShadow = '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(245,237,216,0.09), inset 0 0 0 1px rgba(196,98,45,0.18)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = '';
+              e.currentTarget.style.boxShadow = '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(245,237,216,0.09), inset 0 0 0 1px rgba(196,98,45,0.18)';
+            }}
+          >
+            <span
+              style={{
+                fontFamily: "'Thistora', Georgia, serif",
+                fontStyle: 'italic',
+                fontWeight: 900,
+                fontSize: 'clamp(22px, 3.5vw, 48px)',
+                color: '#C4622D',
+                letterSpacing: '0.03em',
+                lineHeight: 1,
+                textShadow: '0 0 18px rgba(196,98,45,0.35)',
+              }}
+            >
+              CTRL
+            </span>
+            <span
+              style={{
+                fontFamily: "'DM Mono', monospace",
+                fontSize: 'clamp(7px, 0.8vw, 9px)',
+                color: 'rgba(196,98,45,0.5)',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                alignSelf: 'flex-end',
+              }}
+            >
+              control
+            </span>
+          </div>
+
+          {/* Plus */}
           <span
             style={{
               fontFamily: 'Norwige, sans-serif',
               fontStyle: 'italic',
-              color: 'rgba(255,244,227,0.55)',
-              fontSize: 'clamp(10px, 1.4vw, 14px)',
-              letterSpacing: '5px',
+              fontSize: 'clamp(16px, 2.5vw, 30px)',
+              color: 'rgba(196,98,45,0.35)',
+              lineHeight: 1,
+              userSelect: 'none',
             }}
           >
-            SELECT WHAT&apos;S NEXT
+            +
           </span>
-        </div>
 
-        {/* Progress bar */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', marginTop: '8px', width: 'clamp(160px, 20vw, 240px)' }}>
+          {/* A key */}
           <div
             style={{
-              width: '100%',
-              height: '2px',
-              backgroundColor: 'rgba(255,255,255,0.08)',
-              borderRadius: '2px',
-              position: 'relative',
-              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+              width: 'clamp(72px, 9vw, 116px)',
+              height: 'clamp(72px, 9vw, 116px)',
+              padding: 'clamp(8px, 1.2vw, 16px) clamp(10px, 1.4vw, 18px)',
+              borderRadius: 'clamp(8px, 1vw, 14px)',
+              background: 'linear-gradient(160deg, #221410 0%, #140c08 50%, #0d0806 100%)',
+              boxShadow: '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(245,237,216,0.09), inset 0 0 0 1px rgba(196,98,45,0.18)',
+              cursor: 'default',
+              transition: 'transform 80ms ease, box-shadow 80ms ease',
+              userSelect: 'none',
+            }}
+            onMouseDown={(e) => {
+              e.currentTarget.style.transform = 'translateY(5px)';
+              e.currentTarget.style.boxShadow = '0 2px 0 #060302, 0 6px 16px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,244,227,0.06), inset 0 0 0 1px rgba(196,98,45,0.18)';
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.transform = '';
+              e.currentTarget.style.boxShadow = '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(245,237,216,0.09), inset 0 0 0 1px rgba(196,98,45,0.18)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = '';
+              e.currentTarget.style.boxShadow = '0 7px 0 #060302, 0 14px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(245,237,216,0.09), inset 0 0 0 1px rgba(196,98,45,0.18)';
             }}
           >
-            <StyledProgressFill />
+            <span
+              style={{
+                fontFamily: "'Thistora', Georgia, serif",
+                fontStyle: 'italic',
+                fontWeight: 900,
+                fontSize: 'clamp(22px, 3.5vw, 48px)',
+                color: '#C4622D',
+                letterSpacing: '0.03em',
+                lineHeight: 1,
+                textShadow: '0 0 18px rgba(196,98,45,0.35)',
+              }}
+            >
+              A
+            </span>
+            <span
+              style={{
+                fontFamily: "'DM Mono', monospace",
+                fontSize: 'clamp(7px, 0.8vw, 9px)',
+                color: 'rgba(196,98,45,0.5)',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                alignSelf: 'flex-end',
+              }}
+            >
+              select all
+            </span>
           </div>
+        </div>
+
+        {/* Tagline */}
+        <p
+          style={{
+            fontFamily: "'DM Mono', monospace",
+            fontStyle: 'normal',
+            fontWeight: 400,
+            fontSize: 'clamp(10px, 1.2vw, 12px)',
+            color: 'rgba(245,237,216,0.55)',
+            letterSpacing: '0.28em',
+            textTransform: 'uppercase',
+            margin: '0 0 18px',
+          }}
+        >
+          The Creative Command
+        </p>
+
+        {/* Amber rule */}
+        <div
+          style={{
+            width: 40,
+            height: 1,
+            background: 'linear-gradient(90deg, transparent 0%, rgba(196,98,45,0.6) 50%, transparent 100%)',
+            margin: '0 auto 18px',
+          }}
+        />
+
+        {/* Descriptor */}
+        <p
+          style={{
+            fontFamily: "'DM Sans', system-ui, sans-serif",
+            fontWeight: 400,
+            color: '#F5EDD8',
+            fontSize: 'clamp(13px, 1.5vw, 16px)',
+            letterSpacing: '0.02em',
+            maxWidth: '380px',
+            lineHeight: 1.7,
+            margin: '0 0 26px',
+            textShadow: '0 0 28px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.7)',
+          }}
+        >
+          Music. Design. Web. Everything a creative needs, one command away.
+        </p>
+
+        {/* Category pills */}
+        <div style={{ display: 'flex', gap: '8px', marginBottom: '32px', flexWrap: 'wrap', justifyContent: 'center' }}>
+          {[
+            { label: 'MUSIC', color: '#9DD6A4', bg: 'rgba(74,122,80,0.28)', border: 'rgba(74,122,80,0.65)' },
+            { label: 'DESIGN', color: '#C4A4E8', bg: 'rgba(123,79,174,0.28)', border: 'rgba(123,79,174,0.65)' },
+            { label: 'WEB DEV', color: '#A8A3D8', bg: 'rgba(74,63,140,0.28)', border: 'rgba(74,63,140,0.65)' },
+          ].map(({ label, color, bg, border }) => (
+            <span
+              key={label}
+              style={{
+                fontFamily: "'DM Mono', monospace",
+                fontSize: 'clamp(9px, 1vw, 11px)',
+                letterSpacing: '0.2em',
+                color,
+                background: bg,
+                border: `1px solid ${border}`,
+                borderRadius: '100px',
+                padding: '6px 16px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+              }}
+            >
+              {label}
+            </span>
+          ))}
+        </div>
+
+        {/* CTA — button-in-button */}
+        <a
+          href="/ctrla/magazine"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '12px',
+            borderRadius: '100px',
+            paddingLeft: '24px',
+            paddingRight: '6px',
+            paddingTop: '6px',
+            paddingBottom: '6px',
+            background: 'linear-gradient(135deg, #6B2318 0%, #C4622D 50%, #E0A44A 100%)',
+            boxShadow: '0 16px 40px -14px rgba(196,98,45,0.5), inset 0 1px 0 rgba(245,237,216,0.18), inset 0 0 0 1px rgba(245,237,216,0.08)',
+            fontFamily: "'DM Sans', system-ui, sans-serif",
+            fontWeight: 500,
+            fontSize: '0.875rem',
+            letterSpacing: '0.05em',
+            color: '#F5EDD8',
+            textDecoration: 'none',
+            transition: 'transform 600ms cubic-bezier(0.32,0.72,0,1)',
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; }}
+        >
+          <span style={{ padding: '4px 0' }}>Explore Magazine</span>
           <span
             style={{
-              fontFamily: 'monospace',
-              color: 'rgba(234,154,97,0.45)',
-              fontSize: 'clamp(9px, 1.1vw, 11px)',
-              letterSpacing: '3px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 32,
+              height: 32,
+              borderRadius: '50%',
+              background: '#F5EDD8',
+              color: '#3E2C1A',
+              flexShrink: 0,
+              boxShadow: '0 4px 10px -2px rgba(0,0,0,0.25)',
             }}
           >
-            IN THE WORKS
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M7 17L17 7M7 7h10v10" />
+            </svg>
           </span>
-        </div>
+        </a>
       </div>
     </section>
   );
 }
 
+
+const ChakraRibbon = () => (
+  <div style={{ height: 4, background: 'linear-gradient(135deg,#6B2318 0%,#C4622D 18%,#E0A44A 36%,#4A7A50 54%,#3A6E8C 72%,#4A3F8C 86%,#7B4FAE 100%)', width: '100%' }} />
+);
+
+const STICKERS = [
+  { src: '/ctrla/andresticker.webp', rot: -8 },
+  { src: '/ctrla/benzsticker.webp', rot: 6 },
+  { src: '/ctrla/carsticker.webp', rot: -4 },
+  { src: '/ctrla/grillsticker.webp', rot: 7 },
+  { src: '/ctrla/gradysticker.webp', rot: -6 },
+  { src: '/ctrla/tunnelsticker.webp', rot: 4 },
+  { src: '/ctrla/atlsticker.webp', rot: -3 },
+  { src: '/ctrla/martasticker.webp', rot: 8 },
+  { src: '/ctrla/futuresticker.webp', rot: -5 },
+];
+
+function StickerBelt() {
+  const track = [...STICKERS, ...STICKERS, ...STICKERS];
+  return (
+    <div style={{ backgroundColor: '#1C1208', overflow: 'hidden', padding: '20px 0 32px', position: 'relative' }}>
+      {/* Label */}
+      <p style={{
+        textAlign: 'center',
+        fontFamily: "'DM Mono', monospace",
+        fontSize: '10px',
+        letterSpacing: '0.28em',
+        color: 'rgba(196,98,45,0.4)',
+        textTransform: 'uppercase',
+        marginBottom: '20px',
+        pointerEvents: 'none',
+      }}>
+        Custom hand-drawn illustrations
+      </p>
+      {/* Edge fades */}
+      <div aria-hidden style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '140px', background: 'linear-gradient(to right, #1C1208 30%, transparent)', zIndex: 2, pointerEvents: 'none' }} />
+      <div aria-hidden style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '140px', background: 'linear-gradient(to left, #1C1208 30%, transparent)', zIndex: 2, pointerEvents: 'none' }} />
+
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '64px',
+          width: 'max-content',
+          animation: 'stickerBelt 36s linear infinite',
+        }}
+      >
+        {track.map((s, i) => (
+          <img
+            key={i}
+            src={s.src}
+            alt=""
+            draggable={false}
+            style={{
+              flexShrink: 0,
+              width: '120px',
+              height: '120px',
+              objectFit: 'contain',
+              transform: `rotate(${s.rot}deg)`,
+              filter: 'drop-shadow(0 8px 20px rgba(0,0,0,0.6))',
+              transition: 'transform 0.35s cubic-bezier(0.32,0.72,0,1)',
+              cursor: 'default',
+              userSelect: 'none',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.transform = `rotate(0deg) scale(1.18) translateY(-6px)`; }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = `rotate(${s.rot}deg) scale(1) translateY(0)`; }}
+          />
+        ))}
+      </div>
+
+      <style>{`
+        @keyframes stickerBelt {
+          from { transform: translateX(0); }
+          to   { transform: translateX(-33.333%); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .stickerBelt { animation: none; }
+        }
+      `}</style>
+    </div>
+  );
+}
 
 export default function CtrlAContent() {
   // Reset scroll on mount
@@ -286,7 +515,7 @@ export default function CtrlAContent() {
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
     // Set body styles for this page
-    document.body.style.backgroundColor = '#000000';
+    document.body.style.backgroundColor = '#2B1F14';
     document.body.style.overflowX = 'hidden';
     document.body.style.height = 'auto';
 
@@ -299,17 +528,25 @@ export default function CtrlAContent() {
   }, []);
 
   return (
-    <div style={{ backgroundColor: '#000000', minHeight: '100vh', width: '100%', overflowX: 'hidden' }}>
+    <div style={{ backgroundColor: '#2B1F14', minHeight: '100vh', width: '100%', overflowX: 'hidden' }}>
       <NavigationDock />
       {/* Hero Section */}
-      <ComingSoonHero />
+      <CtrlAHero />
 
+      {/* Sticker assembly line */}
+      <StickerBelt />
+
+      <ChakraRibbon />
       <BrandKitSection />
 
+      <ChakraRibbon />
+      <EventsHubSection />
+
+      <ChakraRibbon />
       {/* Tool Kit Section */}
       <section
         style={{
-          backgroundColor: '#000000',
+          backgroundColor: '#EDE0C4',
           padding: '80px 40px',
           minHeight: '100vh',
           display: 'flex',
@@ -323,11 +560,11 @@ export default function CtrlAContent() {
           style={{
             fontSize: '64px',
             fontWeight: '700',
-            color: '#FFFFFF',
+            color: '#1C1208',
             marginBottom: '80px',
             textAlign: 'center',
             letterSpacing: '2px',
-            fontFamily: 'Norwige',
+            fontFamily: "'Thistora', Georgia, serif",
           }}
         >
           TOOL KIT
@@ -368,7 +605,7 @@ export default function CtrlAContent() {
                 overlayContent={
                   <div
                     style={{
-                      background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
+                      background: 'linear-gradient(135deg, #2d4a31 0%, #4A7A50 60%, #6aaa72 100%)',
                       borderRadius: '25.018px',
                       boxShadow: '0 39.091px 78.182px -18.764px rgba(0, 0, 0, 0.25)',
                       padding: '40px',
@@ -391,11 +628,11 @@ export default function CtrlAContent() {
                         left: '40px',
                         fontSize: '42px',
                         fontWeight: '900',
-                        color: '#FFFFFF',
+                        color: '#F5EDD8',
                         margin: 0,
                         textTransform: 'uppercase',
                         letterSpacing: '1px',
-                        fontFamily: 'Norwige',
+                        fontFamily: "'Thistora', Georgia, serif",
                       }}
                     >
                       MUSIC
@@ -429,7 +666,7 @@ export default function CtrlAContent() {
                 overlayContent={
                   <div
                     style={{
-                      background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
+                      background: 'linear-gradient(135deg, #2a2260 0%, #4A3F8C 60%, #6a60b8 100%)',
                       borderRadius: '25.018px',
                       boxShadow: '0 39.091px 78.182px -18.764px rgba(0, 0, 0, 0.25)',
                       padding: '40px',
@@ -457,12 +694,12 @@ export default function CtrlAContent() {
                         style={{
                           fontSize: '32px',
                           fontWeight: '900',
-                          color: '#FFFFFF',
+                          color: '#F5EDD8',
                           margin: 0,
                           textTransform: 'uppercase',
                           letterSpacing: '1px',
                           lineHeight: '1.2',
-                          fontFamily: 'Norwige',
+                          fontFamily: "'Thistora', Georgia, serif",
                         }}
                       >
                         WEB
@@ -471,11 +708,11 @@ export default function CtrlAContent() {
                         style={{
                           fontSize: '32px',
                           fontWeight: '900',
-                          color: '#FFFFFF',
+                          color: '#F5EDD8',
                           margin: 0,
                           textTransform: 'uppercase',
                           letterSpacing: '1px',
-                          fontFamily: 'Norwige',
+                          fontFamily: "'Thistora', Georgia, serif",
                         }}
                       >
                         DEVELOPMENT
@@ -510,7 +747,7 @@ export default function CtrlAContent() {
                 overlayContent={
                   <div
                     style={{
-                      background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
+                      background: 'linear-gradient(135deg, #4a2870 0%, #7B4FAE 60%, #a870d8 100%)',
                       borderRadius: '25.018px',
                       boxShadow: '0 39.091px 78.182px -18.764px rgba(0, 0, 0, 0.25)',
                       padding: '40px',
@@ -533,11 +770,11 @@ export default function CtrlAContent() {
                         right: '40px',
                         fontSize: '42px',
                         fontWeight: '900',
-                        color: '#FFFFFF',
+                        color: '#F5EDD8',
                         margin: 0,
                         textTransform: 'uppercase',
                         letterSpacing: '1px',
-                        fontFamily: 'Norwige',
+                        fontFamily: "'Thistora', Georgia, serif",
                       }}
                     >
                       DESIGN
@@ -550,10 +787,11 @@ export default function CtrlAContent() {
         </div>
       </section>
 
+      <ChakraRibbon />
       {/* Stay In Touch Section */}
       <section
         style={{
-          backgroundColor: '#000000',
+          backgroundColor: '#2B1F14',
           padding: '100px 40px',
           display: 'flex',
           flexDirection: 'column',
@@ -566,11 +804,11 @@ export default function CtrlAContent() {
           style={{
             fontSize: 'clamp(2.5rem, 8vw, 4rem)',
             fontWeight: '900',
-            color: '#FFFFFF',
+            color: '#F5EDD8',
             marginBottom: '80px',
             textAlign: 'center',
             letterSpacing: '0.05em',
-            fontFamily: 'Norwige',
+            fontFamily: "'Thistora', Georgia, serif",
           }}
         >
           STAY IN TOUCH!
@@ -628,11 +866,11 @@ export default function CtrlAContent() {
             </div>
             <span
               style={{
-                fontSize: '24px',
-                fontWeight: '700',
-                color: '#FFFFFF',
-                letterSpacing: '0.05em',
-                fontFamily: 'Norwige',
+                fontSize: '14px',
+                fontWeight: '400',
+                color: 'rgba(245,237,216,0.65)',
+                letterSpacing: '0.2em',
+                fontFamily: "'DM Mono', monospace",
               }}
             >
               Discord
@@ -681,11 +919,11 @@ export default function CtrlAContent() {
             </div>
             <span
               style={{
-                fontSize: '24px',
-                fontWeight: '700',
-                color: '#FFFFFF',
-                letterSpacing: '0.05em',
-                fontFamily: 'Norwige',
+                fontSize: '14px',
+                fontWeight: '400',
+                color: 'rgba(245,237,216,0.65)',
+                letterSpacing: '0.2em',
+                fontFamily: "'DM Mono', monospace",
               }}
             >
               Instagram
@@ -734,11 +972,11 @@ export default function CtrlAContent() {
             </div>
             <span
               style={{
-                fontSize: '24px',
-                fontWeight: '700',
-                color: '#FFFFFF',
-                letterSpacing: '0.05em',
-                fontFamily: 'Norwige',
+                fontSize: '14px',
+                fontWeight: '400',
+                color: 'rgba(245,237,216,0.65)',
+                letterSpacing: '0.2em',
+                fontFamily: "'DM Mono', monospace",
               }}
             >
               Reddit
@@ -750,15 +988,16 @@ export default function CtrlAContent() {
       {/* Global Team Map */}
       <GlobalTeamGlobe />
 
+      <ChakraRibbon />
       {/* Magazine CTA Strip */}
-      <section className="relative bg-black px-6 md:px-12 py-8">
+      <section className="relative px-6 md:px-12 py-8" style={{ backgroundColor: '#1C1208' }}>
         <div className="max-w-7xl mx-auto">
           <div
             className="relative rounded-2xl p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6"
             style={{
               borderRadius: '15px',
               border: '1px solid #999288',
-              background: 'linear-gradient(111deg, #42201C -1.34%, #A64D2B 25.87%, #B16937 59.87%, #EA9A61 93.39%)',
+              background: 'linear-gradient(111deg, #6B2318 -1.34%, #C4622D 40%, #E0A44A 93.39%)',
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
             }}
           >
@@ -767,10 +1006,10 @@ export default function CtrlAContent() {
                 <img src="/rov-logo.webp" alt="ROV Logo" className="w-12 h-12 md:w-14 md:h-14 object-contain" />
               </div>
               <div>
-                <h3 className="text-white text-2xl md:text-3xl lg:text-4xl font-bold italic mb-2" style={{ fontFamily: 'Norwige, sans-serif' }}>
+                <h3 className="text-white text-2xl md:text-3xl lg:text-4xl font-bold italic mb-2" style={{ fontFamily: "'Thistora', Georgia, serif" }}>
                   The CTRL A Magazine
                 </h3>
-                <p className="text-white text-sm md:text-base opacity-80" style={{ fontFamily: "'Roboto', sans-serif" }}>
+                <p className="text-white text-sm md:text-base opacity-80" style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
                   Community-curated toolkits for creatives. No fluff, just signal.
                 </p>
               </div>
@@ -795,12 +1034,13 @@ export default function CtrlAContent() {
         </div>
       </section>
 
+      <ChakraRibbon />
       {/* Tape 3 Coming Soon */}
-      <section className="relative bg-black overflow-hidden" style={{ padding: "clamp(60px, 10vw, 100px) clamp(16px, 5vw, 60px)" }}>
+      <section className="relative overflow-hidden" style={{ backgroundColor: '#2B1F14', padding: "clamp(60px, 10vw, 100px) clamp(16px, 5vw, 60px)" }}>
         {/* Subtle glow */}
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
-          style={{ background: "radial-gradient(circle, rgba(234,154,97,0.05) 0%, transparent 60%)" }}
+          style={{ background: "radial-gradient(circle, rgba(196,98,45,0.07) 0%, transparent 60%)" }}
         />
 
         <div className="relative z-10 max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-16">
@@ -816,7 +1056,7 @@ export default function CtrlAContent() {
                   #1a1210 120deg, #2a1e18 150deg, #1a1210 180deg, #2a1e18 210deg,
                   #1a1210 240deg, #2a1e18 270deg, #1a1210 300deg, #2a1e18 330deg, #1a1210 360deg
                 )`,
-                boxShadow: "0 0 40px rgba(234,154,97,0.1), inset 0 0 20px rgba(0,0,0,0.5)",
+                boxShadow: "0 0 40px rgba(196,98,45,0.12), inset 0 0 20px rgba(0,0,0,0.5)",
               }}
             >
               {[25, 40, 55, 70, 85].map((pct) => (
@@ -830,7 +1070,7 @@ export default function CtrlAContent() {
                 <div
                   className="w-[28%] h-[28%] rounded-full flex items-center justify-center"
                   style={{
-                    background: "linear-gradient(135deg, #EA9A61 0%, #B16937 40%, #42201C 100%)",
+                    background: "linear-gradient(135deg, #E0A44A 0%, #C4622D 40%, #6B2318 100%)",
                     boxShadow: "inset 0 1px 4px rgba(0,0,0,0.3)",
                   }}
                 >
@@ -843,26 +1083,26 @@ export default function CtrlAContent() {
           {/* Text */}
           <div className="text-center md:text-left flex-1">
             <span
-              className="block text-xs uppercase tracking-[0.3em] text-[#EA9A61]/50 mb-3"
-              style={{ fontFamily: "'Roboto', sans-serif" }}
+              className="block text-xs uppercase tracking-[0.3em] mb-3"
+              style={{ fontFamily: "'DM Mono', monospace", color: 'rgba(196,98,45,0.6)' }}
             >
               Coming Soon
             </span>
             <h2
-              className="text-white text-4xl md:text-5xl lg:text-6xl font-bold italic leading-[0.95] mb-4"
-              style={{ fontFamily: "Norwige, sans-serif" }}
+              className="text-white text-4xl md:text-5xl lg:text-6xl font-bold italic leading-[1.15] mb-4 pb-1"
+              style={{ fontFamily: "'Thistora', Georgia, serif" }}
             >
               The ROV{" "}
               <span
                 className="bg-clip-text text-transparent"
-                style={{ backgroundImage: "linear-gradient(112deg, #42201C 6.46%, #A64D2B 34.96%, #B16937 63.88%, #EA9A61 97.63%)" }}
+                style={{ backgroundImage: "linear-gradient(112deg, #6B2318 6.46%, #C4622D 50%, #E0A44A 97.63%)" }}
               >
                 Tape 3
               </span>
             </h2>
             <p
-              className="text-white/40 text-sm md:text-base leading-relaxed max-w-lg mb-6"
-              style={{ fontFamily: "'Roboto', sans-serif" }}
+              className="text-sm md:text-base leading-relaxed max-w-lg mb-6"
+              style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontWeight: 300, color: 'rgba(245,237,216,0.55)' }}
             >
               A curated multi-artist tape. Afrobeats, RnB, soul, Atlanta energy.
               Cross-genre, culture-forward, and unapologetically ROV.
@@ -873,7 +1113,7 @@ export default function CtrlAContent() {
               style={{
                 fontFamily: "Norwige, sans-serif",
                 borderRadius: "41.444px",
-                background: "linear-gradient(112deg, #42201C 6.46%, #A64D2B 34.96%, #B16937 63.88%, #EA9A61 97.63%)",
+                background: "linear-gradient(112deg, #6B2318 6.46%, #C4622D 50%, #E0A44A 97.63%)",
                 boxShadow: "3px 4px 4px 0 rgba(255, 244, 227, 0.15) inset, 0 4.385px 4.385px 0 rgba(0, 0, 0, 0.25)",
                 padding: "0.75rem 1.75rem",
                 fontSize: "0.875rem",

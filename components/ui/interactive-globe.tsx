@@ -24,6 +24,8 @@ interface GlobeProps {
   className?: string;
   autoRotateSpeed?: number;
   locations?: GlobeLocation[];
+  focusedLocation?: { lat: number; lng: number } | null;
+  onInteract?: () => void;
   // Legacy props (used if locations is not provided)
   dotColor?: string;
   arcColor?: string;
@@ -35,25 +37,25 @@ interface GlobeProps {
 // --- Colors ---
 
 const COLORS = {
-  hqMarker: "#EA9A61",
-  hqGlow: "rgba(234, 154, 97, 0.25)",
-  teamMarker: "#F7F2E4",
-  teamGlow: "rgba(247, 242, 228, 0.2)",
-  businessMarker: "rgba(177, 105, 55, 0.8)",
-  businessGlow: "rgba(177, 105, 55, 0.15)",
-  landDot: "rgba(234, 154, 97, ALPHA)",
-  oceanDot: "rgba(177, 105, 55, ALPHA)",
-  coastline: "rgba(234, 154, 97, 0.12)",
-  arcWarm: "#EA9A61",
-  arcTeal: "rgba(177, 105, 55, 0.35)",
-  particleWarm: "#EA9A61",
-  particleTeal: "rgba(234, 154, 97, 1)",
-  globeOutline: "rgba(177, 105, 55, 0.08)",
-  outerGlow: "rgba(234, 154, 97, 0.03)",
-  tooltipBg: "rgba(0, 0, 0, 0.88)",
-  tooltipText: "#F7F2E4",
-  tooltipSubtext: "rgba(247, 242, 228, 0.6)",
-  tooltipAccent: "#EA9A61",
+  hqMarker: "#C4622D",
+  hqGlow: "rgba(196, 98, 45, 0.45)",
+  teamMarker: "#F5EDD8",
+  teamGlow: "rgba(245, 237, 216, 0.3)",
+  businessMarker: "rgba(224, 164, 74, 0.9)",
+  businessGlow: "rgba(224, 164, 74, 0.2)",
+  landDot: "rgba(196, 98, 45, ALPHA)",
+  oceanDot: "rgba(107, 35, 24, ALPHA)",
+  coastline: "rgba(196, 98, 45, 0.32)",
+  arcWarm: "#C4622D",
+  arcTeal: "rgba(224, 164, 74, 0.45)",
+  particleWarm: "#C4622D",
+  particleTeal: "rgba(224, 164, 74, 1)",
+  globeOutline: "rgba(196, 98, 45, 0.22)",
+  outerGlow: "rgba(196, 98, 45, 0.07)",
+  tooltipBg: "rgba(28, 18, 8, 0.95)",
+  tooltipText: "#F5EDD8",
+  tooltipSubtext: "rgba(245, 237, 216, 0.6)",
+  tooltipAccent: "#C4622D",
 };
 
 // --- Math helpers ---
@@ -114,6 +116,8 @@ export function Component({
   className,
   autoRotateSpeed = 0.002,
   locations,
+  focusedLocation,
+  onInteract,
   dotColor = "rgba(78, 205, 196, ALPHA)",
   arcColor = "rgba(45, 212, 191, 0.5)",
   markerColor = "rgba(78, 205, 196, 1)",
@@ -135,6 +139,7 @@ export function Component({
   const mouseRef = useRef<{ x: number; y: number }>({ x: -9999, y: -9999 });
   const hoveredRef = useRef<GlobeLocation | null>(null);
   const pointerOverRef = useRef(false);
+  const targetRotYRef = useRef<number | null>(null);
 
   // Pre-computed dot arrays
   const oceanDotsRef = useRef<[number, number, number][]>([]);
@@ -167,6 +172,29 @@ export function Component({
       .map((l) => ({ from: hq, to: l, isTeam: l.type === "team" }));
   }, [locations]);
 
+  // Snap to a focused location by computing the target rotY
+  useEffect(() => {
+    if (!focusedLocation) {
+      targetRotYRef.current = null;
+      return;
+    }
+    const { lat, lng } = focusedLocation;
+    const phi = ((90 - lat) * Math.PI) / 180;
+    const theta = ((lng + 180) * Math.PI) / 180;
+    const x0 = -(Math.sin(phi) * Math.cos(theta));
+    const y0 = -Math.cos(phi);
+    const z0 = Math.sin(phi) * Math.sin(theta);
+    const rx = rotXRef.current;
+    const x1 = x0;
+    const z1 = y0 * Math.sin(rx) + z0 * Math.cos(rx);
+    let targetRy = Math.atan2(-x1, z1) + Math.PI;
+    // Normalise to nearest equivalent (shortest arc from current rotation)
+    const current = rotYRef.current;
+    while (targetRy - current > Math.PI) targetRy -= 2 * Math.PI;
+    while (targetRy - current < -Math.PI) targetRy += 2 * Math.PI;
+    targetRotYRef.current = targetRy;
+  }, [focusedLocation]);
+
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -194,7 +222,16 @@ export function Component({
 
     // Auto rotate (pause on hover and drag)
     if (!dragRef.current.active && !pointerOverRef.current) {
-      rotYRef.current += autoRotateSpeed;
+      if (targetRotYRef.current !== null) {
+        // Lerp toward focused city — shortest arc
+        let diff = targetRotYRef.current - rotYRef.current;
+        while (diff > Math.PI) diff -= 2 * Math.PI;
+        while (diff < -Math.PI) diff += 2 * Math.PI;
+        rotYRef.current += diff * 0.055;
+      } else {
+        // Correct west-to-east spin: decreasing rotY brings eastern locations into view from right
+        rotYRef.current -= autoRotateSpeed;
+      }
     }
 
     timeRef.current += 0.015;
@@ -208,7 +245,7 @@ export function Component({
     // --- Outer glow (warm terracotta tint) ---
     const glowGrad = ctx.createRadialGradient(cx, cy, radius * 0.8, cx, cy, radius * 1.5);
     glowGrad.addColorStop(0, COLORS.outerGlow);
-    glowGrad.addColorStop(1, "rgba(234, 154, 97, 0)");
+    glowGrad.addColorStop(1, "rgba(196, 98, 45, 0)");
     ctx.fillStyle = glowGrad;
     ctx.fillRect(0, 0, w, h);
 
@@ -244,8 +281,8 @@ export function Component({
       [x, y, z] = rotateY(x, y, z, ry);
       if (z > 0) continue;
       const [sx, sy] = project(x, y, z, cx, cy, fov);
-      const depthAlpha = Math.max(0.1, 1 - (z + radius) / (2 * radius));
-      const alpha = depthAlpha * 0.45;
+      const depthAlpha = Math.max(0.15, 1 - (z + radius) / (2 * radius));
+      const alpha = depthAlpha * 0.72;
       const dotSize = 1 + depthAlpha * 0.6;
       ctx.beginPath();
       ctx.arc(sx, sy, dotSize, 0, Math.PI * 2);
@@ -327,8 +364,8 @@ export function Component({
       ctx.moveTo(sx1, sy1);
       ctx.quadraticCurveTo(scx, scy, sx2, sy2);
       if (conn.isTeam) {
-        ctx.strokeStyle = "rgba(234, 154, 97, 0.35)";
-        ctx.lineWidth = 1.3;
+        ctx.strokeStyle = "rgba(196, 98, 45, 0.55)";
+        ctx.lineWidth = 1.5;
       } else {
         ctx.strokeStyle = COLORS.arcTeal;
         ctx.lineWidth = 1;
@@ -381,23 +418,23 @@ export function Component({
 
       if (loc.type === "hq") {
         // HQ: large terracotta marker with double pulse + radial glow
-        const glowGrad = ctx.createRadialGradient(sx, sy, 0, sx, sy, 18 + pulse * 8);
-        glowGrad.addColorStop(0, "rgba(234, 154, 97, 0.25)");
-        glowGrad.addColorStop(1, "rgba(234, 154, 97, 0)");
+        const glowGrad = ctx.createRadialGradient(sx, sy, 0, sx, sy, 22 + pulse * 10);
+        glowGrad.addColorStop(0, "rgba(196, 98, 45, 0.45)");
+        glowGrad.addColorStop(1, "rgba(196, 98, 45, 0)");
         ctx.fillStyle = glowGrad;
         ctx.fillRect(sx - 30, sy - 30, 60, 60);
 
         // Outer pulse ring
         ctx.beginPath();
-        ctx.arc(sx, sy, 8 + pulse * 6, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(234, 154, 97, ${(0.15 + pulse * 0.15).toFixed(2)})`;
-        ctx.lineWidth = 1;
+        ctx.arc(sx, sy, 9 + pulse * 7, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(196, 98, 45, ${(0.2 + pulse * 0.2).toFixed(2)})`;
+        ctx.lineWidth = 1.2;
         ctx.stroke();
 
         // Inner pulse ring
         ctx.beginPath();
-        ctx.arc(sx, sy, 5 + pulse * 3, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(234, 154, 97, ${(0.25 + pulse * 0.2).toFixed(2)})`;
+        ctx.arc(sx, sy, 5 + pulse * 4, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(196, 98, 45, ${(0.35 + pulse * 0.25).toFixed(2)})`;
         ctx.lineWidth = 1;
         ctx.stroke();
 
@@ -408,7 +445,7 @@ export function Component({
         ctx.fill();
 
         // Label
-        ctx.font = "bold 10px 'Roboto', system-ui, sans-serif";
+        ctx.font = "bold 10px 'DM Mono', monospace";
         ctx.fillStyle = COLORS.hqMarker;
         ctx.fillText(`${loc.city} (HQ)`, sx + 10, sy + 3);
 
@@ -416,37 +453,37 @@ export function Component({
         // Team: cream marker with single pulse ring
         ctx.beginPath();
         ctx.arc(sx, sy, 5 + pulse * 4, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(247, 242, 228, ${(0.15 + pulse * 0.15).toFixed(2)})`;
+        ctx.strokeStyle = `rgba(245, 237, 216, ${(0.2 + pulse * 0.2).toFixed(2)})`;
         ctx.lineWidth = 1;
         ctx.stroke();
 
         // Core dot
         ctx.beginPath();
-        ctx.arc(sx, sy, 2.5, 0, Math.PI * 2);
+        ctx.arc(sx, sy, 2.8, 0, Math.PI * 2);
         ctx.fillStyle = COLORS.teamMarker;
         ctx.fill();
 
         // Label
-        ctx.font = "10px 'Roboto', system-ui, sans-serif";
-        ctx.fillStyle = "rgba(247, 242, 228, 0.7)";
+        ctx.font = "10px 'DM Mono', monospace";
+        ctx.fillStyle = "rgba(245, 237, 216, 0.8)";
         ctx.fillText(loc.city, sx + 8, sy + 3);
 
       } else {
         // Business: small brown dot with subtle glow
         ctx.beginPath();
-        ctx.arc(sx, sy, 4 + pulse * 2, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(177, 105, 55, ${(0.1 + pulse * 0.1).toFixed(2)})`;
+        ctx.arc(sx, sy, 4 + pulse * 3, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(224, 164, 74, ${(0.15 + pulse * 0.15).toFixed(2)})`;
         ctx.lineWidth = 0.8;
         ctx.stroke();
 
         ctx.beginPath();
-        ctx.arc(sx, sy, 2, 0, Math.PI * 2);
+        ctx.arc(sx, sy, 2.2, 0, Math.PI * 2);
         ctx.fillStyle = COLORS.businessMarker;
         ctx.fill();
 
         // Label
-        ctx.font = "9px 'Roboto', system-ui, sans-serif";
-        ctx.fillStyle = "rgba(177, 105, 55, 0.5)";
+        ctx.font = "9px 'DM Mono', monospace";
+        ctx.fillStyle = "rgba(224, 164, 74, 0.65)";
         ctx.fillText(loc.city, sx + 7, sy + 3);
       }
     }
@@ -477,14 +514,14 @@ export function Component({
     const subtitleText = loc.type === "business" ? "Business Operations" : `${members.length} team member${members.length !== 1 ? "s" : ""}`;
 
     // Measure text widths
-    ctx.font = "bold 12px 'Roboto', system-ui, sans-serif";
+    ctx.font = "bold 12px 'DM Mono', monospace";
     const titleWidth = ctx.measureText(loc.city).width;
-    ctx.font = "10px 'Roboto', system-ui, sans-serif";
+    ctx.font = "10px 'DM Mono', monospace";
     const subtitleWidth = ctx.measureText(subtitleText).width;
 
     let maxMemberWidth = 0;
     if (hasMembers) {
-      ctx.font = "10px 'Roboto', system-ui, sans-serif";
+      ctx.font = "10px 'DM Mono', monospace";
       for (const m of members) {
         const w = ctx.measureText(`${m.name} — ${m.role}`).width;
         if (w > maxMemberWidth) maxMemberWidth = w;
@@ -518,17 +555,17 @@ export function Component({
     ctx.fill();
 
     // Border
-    ctx.strokeStyle = loc.type === "hq" ? "rgba(234, 154, 97, 0.3)" : loc.type === "team" ? "rgba(247, 242, 228, 0.15)" : "rgba(177, 105, 55, 0.2)";
+    ctx.strokeStyle = loc.type === "hq" ? "rgba(196, 98, 45, 0.45)" : loc.type === "team" ? "rgba(245, 237, 216, 0.2)" : "rgba(224, 164, 74, 0.25)";
     ctx.lineWidth = 1;
     ctx.stroke();
 
     // City name
-    ctx.font = "bold 12px 'Roboto', system-ui, sans-serif";
+    ctx.font = "bold 12px 'DM Mono', monospace";
     ctx.fillStyle = loc.type === "hq" ? COLORS.tooltipAccent : COLORS.tooltipText;
     ctx.fillText(loc.city, tx + padding, ty + padding + 12);
 
     // Subtitle
-    ctx.font = "10px 'Roboto', system-ui, sans-serif";
+    ctx.font = "10px 'DM Mono', monospace";
     ctx.fillStyle = COLORS.tooltipSubtext;
     ctx.fillText(subtitleText, tx + padding, ty + padding + headerHeight + 2);
 
@@ -537,7 +574,7 @@ export function Component({
       const startY = ty + padding + headerHeight + 8;
       for (let i = 0; i < members.length; i++) {
         const m = members[i];
-        ctx.font = "10px 'Roboto', system-ui, sans-serif";
+        ctx.font = "10px 'DM Mono', monospace";
         // Name
         ctx.fillStyle = COLORS.tooltipText;
         const nameW = ctx.measureText(m.name).width;
@@ -617,6 +654,8 @@ export function Component({
 
   // --- Pointer handlers ---
   const onPointerDown = useCallback((e: React.PointerEvent) => {
+    targetRotYRef.current = null; // let drag override any focus
+    onInteract?.();
     dragRef.current = {
       active: true,
       startX: e.clientX,
@@ -625,7 +664,7 @@ export function Component({
       startRotX: rotXRef.current,
     };
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
-  }, []);
+  }, [onInteract]);
 
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     // Track mouse for hover tooltips
