@@ -68,7 +68,7 @@ const Footer = () => {
             className="cursor-pointer"
           >
             <Image
-              src="/assets/images/logokalam.webp"
+              src="/rov-logo.webp"
               alt="ROV Studios Logo"
               width={120}
               height={60}

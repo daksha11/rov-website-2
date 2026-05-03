@@ -88,7 +88,7 @@ export default function AdminDashboard() {
       }
     });
 
-    return Object.entries(groups).sort((a, b) => 
+    return Object.entries(groups).sort((a, b) =>
       new Date(b[1].latest_upload).getTime() - new Date(a[1].latest_upload).getTime()
     );
   }, [submissions]);
@@ -107,7 +107,7 @@ export default function AdminDashboard() {
     setDownloadingClientId(clientId);
     try {
       const zip = new JSZip();
-      
+
       // Deduplicate filenames while maintaining order (newest first)
       const seenNames: Record<string, number> = {};
       const uniqueTracks = tracks.map((track) => {
@@ -130,7 +130,7 @@ export default function AdminDashboard() {
       });
 
       await Promise.all(downloadPromises);
-      
+
       const content = await zip.generateAsync({ type: 'blob' });
       const url = URL.createObjectURL(content);
       const link = document.createElement('a');
@@ -186,7 +186,7 @@ export default function AdminDashboard() {
   const [launchDeliveryDate, setLaunchDeliveryDate] = useState('');
   const [launchDeliverables, setLaunchDeliverables] = useState<string[]>([]);
   const [launchDeliverableInput, setLaunchDeliverableInput] = useState('');
-  
+
   // Mixed Audio Tracks Upload state
   const [mixedUploadModalOpen, setMixedUploadModalOpen] = useState(false);
   const [mixedUploadTarget, setMixedUploadTarget] = useState<ClientProfile | null>(null);
@@ -306,9 +306,9 @@ export default function AdminDashboard() {
       const projMap: Record<string, ClientProject> = {};
       (projects || []).forEach((p) => {
         if (p.client_id) {
-          projMap[p.client_id] = { 
-            id: p.id, 
-            status: p.status, 
+          projMap[p.client_id] = {
+            id: p.id,
+            status: p.status,
             project_name: p.project_name,
             delivery_date: p.delivery_date,
             deliverables_needed: p.deliverables_needed,
@@ -357,7 +357,7 @@ export default function AdminDashboard() {
 
       // Update local state
       setAllProfiles((prev) => prev.map(p => p.id === userId ? { ...p, role: newRole } : p));
-      
+
       // Also update clients state if relevant
       if (newRole === 'admin') {
         setClients((prev) => prev.filter(p => p.id !== userId));
@@ -442,9 +442,9 @@ export default function AdminDashboard() {
       if (!error && proj) {
         setClientProjects((prev) => ({
           ...prev,
-          [launchTarget.id]: { 
-            id: proj.id, 
-            status: proj.status, 
+          [launchTarget.id]: {
+            id: proj.id,
+            status: proj.status,
             project_name: proj.project_name,
             delivery_date: proj.delivery_date,
             deliverables_needed: proj.deliverables_needed,
@@ -505,7 +505,7 @@ export default function AdminDashboard() {
         console.error('Supabase Storage Error:', uploadError);
         throw new Error(uploadError.message || 'Storage upload failed');
       }
-      
+
       setDocUploadProgress(70);
 
       const { data: { publicUrl } } = supabase.storage
@@ -621,7 +621,7 @@ export default function AdminDashboard() {
     try {
       const timestamp = Date.now();
       const fileName = `${timestamp}_${mixedUploadFile.name.replace(/\s+/g, '_')}`;
-      
+
       // 1. Upload to storage
       const { data: storageData, error: storageError } = await supabase.storage
         .from('audio-tracks')
@@ -652,13 +652,13 @@ export default function AdminDashboard() {
       // 3. Force-resolve the specific revision if we have an ID
       if (activeRevisionId) {
         console.log("Attempting to resolve revision ID:", activeRevisionId);
-        
+
         const { data, error: updateError } = await supabase
           .from('mixed_track_revisions')
           .update({ status: 'resolved' })
           .eq('id', activeRevisionId)
           .select();
-        
+
         if (updateError) {
           console.error("Supabase Error during update:", updateError.message);
         } else if (!data || data.length === 0) {
@@ -965,9 +965,9 @@ export default function AdminDashboard() {
                       </span>
                     </div>
 
-                    <p style={{ 
-                      margin: 0, fontSize: '13px', color: 'rgba(255,244,227,0.7)', 
-                      lineHeight: 1.5, background: 'rgba(0,0,0,0.2)', 
+                    <p style={{
+                      margin: 0, fontSize: '13px', color: 'rgba(255,244,227,0.7)',
+                      lineHeight: 1.5, background: 'rgba(0,0,0,0.2)',
                       padding: '12px', borderRadius: '8px', fontStyle: 'italic'
                     }}>
                       {`"${rev.notes}"`}
@@ -1119,8 +1119,8 @@ export default function AdminDashboard() {
                       }}>
                         {group.tracks.length} {group.tracks.length === 1 ? 'track' : 'tracks'}
                       </div>
-                      
-                      
+
+
                       {/* Download All Button */}
                       <button
                         onClick={(e) => {
@@ -1464,7 +1464,7 @@ export default function AdminDashboard() {
 
                     {/* Action */}
                     <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-                      
+
                       {proj ? (
                         <button
                           onClick={() => openDetailModal(client)}
@@ -1528,7 +1528,7 @@ export default function AdminDashboard() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {clients.filter(c => 
+            {clients.filter(c =>
               allRevisions.some(r => r.client_id === c.id && r.status === 'resolved') ||
               allMixedTracks.some(t => t.client_id === c.id)
             ).length === 0 ? (
@@ -1537,7 +1537,7 @@ export default function AdminDashboard() {
               </div>
             ) : (
               clients
-                .filter(c => 
+                .filter(c =>
                   allRevisions.some(r => r.client_id === c.id && r.status === 'resolved') ||
                   allMixedTracks.some(t => t.client_id === c.id)
                 )
@@ -1614,7 +1614,7 @@ export default function AdminDashboard() {
                                         <span style={{ fontSize: '10px', color: 'rgba(255,244,227,0.3)' }}>{new Date(track.created_at).toLocaleDateString()}</span>
                                       </div>
                                       <p style={{ margin: '0 0 8px 0', fontSize: '13px', color: '#FFF4E3', fontWeight: 500 }}>{track.title}</p>
-                                      <button 
+                                      <button
                                         onClick={() => window.open(track.file_url, '_blank')}
                                         style={{ background: 'transparent', border: 'none', color: '#EA9A61', fontSize: '11px', padding: 0, cursor: 'pointer', fontWeight: 600 }}
                                       >
@@ -2048,7 +2048,7 @@ export default function AdminDashboard() {
                   Upload for {mixedUploadTarget.full_name || 'User'}
                 </h2>
               </div>
-              <button 
+              <button
                 onClick={() => setMixedUploadModalOpen(false)}
                 disabled={isUploadingMixed}
                 style={{ background: 'none', border: 'none', color: 'rgba(255,244,227,0.2)', cursor: 'pointer', padding: '4px' }}
@@ -2177,7 +2177,7 @@ export default function AdminDashboard() {
                   ID: {detailTarget.id}
                 </p>
               </div>
-              <button 
+              <button
                 onClick={() => setDetailModalOpen(false)}
                 disabled={isSavingProject || isUploadingDoc}
                 style={{ background: 'none', border: 'none', color: 'rgba(255,244,227,0.2)', cursor: 'pointer', padding: '4px' }}
@@ -2189,7 +2189,7 @@ export default function AdminDashboard() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-              
+
               {/* Project Name */}
               <div>
                 <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.4)', marginBottom: '8px' }}>
