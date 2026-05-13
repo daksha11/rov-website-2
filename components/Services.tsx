@@ -1,442 +1,478 @@
 "use client";
 
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
-import StarBorder from "./StarBorder";
 import Image from "next/image";
 import GradientBlob from "./GradientBlob";
 
-const darkenColor = (hex: string, percent: number): string => {
-  let color = hex.startsWith('#') ? hex.slice(1) : hex;
-  if (color.length === 3) {
-    color = color
-      .split('')
-      .map(c => c + c)
-      .join('');
-  }
-  const num = parseInt(color, 16);
-  let r = (num >> 16) & 0xff;
-  let g = (num >> 8) & 0xff;
-  let b = num & 0xff;
-  r = Math.max(0, Math.min(255, Math.floor(r * (1 - percent))));
-  g = Math.max(0, Math.min(255, Math.floor(g * (1 - percent))));
-  b = Math.max(0, Math.min(255, Math.floor(b * (1 - percent))));
-  return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+const SERVICES = [
+  {
+    id: "web",
+    title: "Web Optimization",
+    tagline: "Turning clicks into connections with seamless, high-impact designs.",
+    link: "/web",
+    accent: "#4C2D16",
+    images: ["/heroassets/webfolder1.png", "/heroassets/webfolder2.png", "/heroassets/webfolder3.webp"],
+    transparent: false,
+    cta: "See Our Work",
+  },
+  {
+    id: "sound",
+    title: "Sound Engineering",
+    tagline: "Studio-grade mixing and mastering delivered in 48 hours.",
+    link: "/sound",
+    accent: "#7A4E28",
+    images: ["/heroassets/1.png", "/heroassets/2.png", "/heroassets/3.png"],
+    transparent: true,
+    cta: "Hear the Difference",
+  },
+  {
+    id: "video",
+    title: "Video Production",
+    tagline: "Aerial to street level — editorial-grade footage that makes your brand impossible to scroll past.",
+    link: "/video-production",
+    accent: "#6B2E1A",
+    images: ["/heroassets/hydvideoframe.webp", "/heroassets/ponceshowframe.webp", "/heroassets/samxbasuvid.webp"],
+    transparent: false,
+    cta: "Watch Our Reel",
+  },
+  {
+    id: "ai",
+    title: "AI Solutions",
+    tagline: "Automations and AI systems that cut manual work by 60%.",
+    link: "/ai-automation",
+    accent: "#2E1A08",
+    images: ["/heroassets/codingframe.webp", "/heroassets/excelframe.webp", "/heroassets/n8nframe.webp"],
+    transparent: false,
+    cta: "See It in Action",
+  },
+];
+
+// slot 0 = back (most rotated CCW), slot 2 = front (nearly flat)
+// All pivot from bottom-right anchor — creates the reference-style fan
+const FAN_ANGLES = [-20, -9, 3];
+
+//
+// Per-active grid layout configs.
+// Each service card expands in its own quadrant:
+//   web   → top-left large,    sides right,   strip bottom
+//   sound → top-right large,   sides left,    strip bottom
+//   video → bottom-left large, sides right,   strip top
+//   ai    → bottom-right large,sides left,    strip top
+//
+// Using fixed px for the strip row so CSS can transition row sizes cleanly.
+//
+const GRID_CONFIGS: Record<string, {
+  areas: string;
+  columns: string;
+  rows: string;
+  slots: Record<string, "A" | "B" | "C" | "D">;
+}> = {
+  web: {
+    areas: `"A B" "A C" "D D"`,
+    columns: "3fr 2fr",
+    rows: "1fr 1fr 80px",
+    slots: { web: "A", sound: "B", video: "C", ai: "D" },
+  },
+  sound: {
+    areas: `"B A" "C A" "D D"`,
+    columns: "2fr 3fr",
+    rows: "1fr 1fr 80px",
+    slots: { sound: "A", web: "B", video: "C", ai: "D" },
+  },
+  video: {
+    areas: `"D D" "A B" "A C"`,
+    columns: "3fr 2fr",
+    rows: "80px 1fr 1fr",
+    slots: { video: "A", sound: "B", ai: "C", web: "D" },
+  },
+  ai: {
+    areas: `"D D" "B A" "C A"`,
+    columns: "2fr 3fr",
+    rows: "80px 1fr 1fr",
+    slots: { ai: "A", web: "B", video: "C", sound: "D" },
+  },
 };
 
-type CropAlign = 'left' | 'center' | 'right';
-const InteractiveFolderIcon: React.FC<{ folderImages?: string[]; transparent?: boolean; cropAlign?: CropAlign | CropAlign[] }> = ({ folderImages, transparent = false, cropAlign = 'center' }) => {
-  const maxItems = 3;
-  const [open, setOpen] = useState(false);
-  const [paperOffsets, setPaperOffsets] = useState<{ x: number; y: number }[]>(
-    Array.from({ length: maxItems }, () => ({ x: 0, y: 0 }))
-  );
-  const rafRef = useRef<number | null>(null);
-
-  const defaultImages = ['/rov_album_1.webp', '/rov_album_2.webp', '/rov_album_3.webp'];
-  const sourceImages = folderImages || defaultImages;
-
-  // State to hold the currently displayed (shuffled) images
-  const [displayImages, setDisplayImages] = useState<string[]>(sourceImages);
-
-  // Effect to update default display if prop changes (though shuffle happens on hover)
-  React.useEffect(() => {
-    setDisplayImages(folderImages || defaultImages);
-  }, [folderImages]);
-
-  const handleMouseEnter = () => {
-    // Shuffle images on hover
-    const shuffled = [...sourceImages];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    setDisplayImages(shuffled);
-    setOpen(true);
-  };
-
-  const handleMouseLeave = () => {
-    setOpen(false);
-    setPaperOffsets(Array.from({ length: maxItems }, () => ({ x: 0, y: 0 })));
-    // Optional: Reset back to original order on leave, or keep last shuffle. 
-    // Keeping last shuffle feels smoother.
-  };
-
-  const handlePaperMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
-    if (!open) return;
-
-    // Throttle with RAF to prevent lag
-    if (rafRef.current !== null) return;
-
-    // Capture values from the event before RAF (React events are pooled)
-    const rect = e.currentTarget.getBoundingClientRect();
-    const clientX = e.clientX;
-    const clientY = e.clientY;
-
-    rafRef.current = requestAnimationFrame(() => {
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const offsetX = (clientX - centerX) * 0.15;
-      const offsetY = (clientY - centerY) * 0.15;
-      setPaperOffsets(prev => {
-        const newOffsets = [...prev];
-        newOffsets[index] = { x: offsetX, y: offsetY };
-        return newOffsets;
-      });
-      rafRef.current = null;
-    });
-  }, [open]);
-
-  const handlePaperMouseLeave = (index: number) => {
-    setPaperOffsets(prev => {
-      const newOffsets = [...prev];
-      newOffsets[index] = { x: 0, y: 0 };
-      return newOffsets;
-    });
-  };
-
-  const getOpenTransform = (index: number) => {
-    if (transparent) {
-      if (index === 0) return 'translate(-70%, -5%) rotate(-15deg)';
-      if (index === 1) return 'translate(-30%, -10%) rotate(15deg)';
-      if (index === 2) return 'translate(-50%, -20%) rotate(5deg)';
-      return '';
-    }
-    if (index === 0) return 'translate(-110%, -60%) rotate(-15deg)';
-    if (index === 1) return 'translate(15%, -60%) rotate(15deg)';
-    if (index === 2) return 'translate(-50%, -80%) rotate(5deg)';
-    return '';
-  };
-
-
-
+// order[slot] = index into images array; stable key lets CSS transition fire on each shuffle
+function FannedImages({ images, order, transparent }: { images: string[]; order: number[]; transparent?: boolean }) {
   return (
-    <div className="relative mb-8 sm:mb-12 md:mb-20">
-      <style jsx>{`
-        .folder-container {
-          transform: scale(0.85);
-          transform-origin: center;
-        }
-        @media (min-width: 640px) {
-          .folder-container {
-            transform: scale(1.5);
-          }
-        }
-        @media (min-width: 1024px) {
-          .folder-container {
-            transform: scale(2.5);
-          }
-        }
-      `}</style>
-      <div
-        className="group relative cursor-pointer folder-container"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      // Removed inline transform to let CSS handle it
-      >
-        <div className="relative w-[100px] h-[80px]">
-          {/* Folder Back - always visible (darker, behind) */}
-          <div
-            className="absolute inset-0"
-            style={{
-              zIndex: 5,
-              pointerEvents: 'none',
-              transform: 'translate3d(0,0,0)'
-            }}
-          >
-            <Image
-              src="/folderback.svg"
-              alt="Folder Back"
-              fill
-              unoptimized
-              className="object-contain"
-              style={{ pointerEvents: 'none' }}
-            />
-          </div>
-
-          {/* Images that pop out */}
-          {displayImages.map((src, i) => {
-            let sizeClasses = '';
-            if (i === 0) sizeClasses = transparent ? 'w-[110%] h-[110%]' : 'w-[50%] h-[45%]';
-            if (i === 1) sizeClasses = transparent ? 'w-[120%] h-[120%]' : 'w-[55%] h-[48%]';
-            if (i === 2) sizeClasses = transparent ? 'w-[130%] h-[130%]' : 'w-[60%] h-[50%]';
-
-            const closedTransform = 'translate(-50%, 0%)';
-            const openTransform = open
-              ? `${getOpenTransform(i)} translate(${paperOffsets[i].x}px, ${paperOffsets[i].y}px)`
-              : closedTransform;
-
-            return (
-              <div
-                key={i}
-                onMouseMove={e => handlePaperMouseMove(e, i)}
-                onMouseLeave={() => handlePaperMouseLeave(i)}
-                className={`absolute bottom-[15%] left-1/2 transition-all duration-300 ease-in-out overflow-hidden ${!open ? 'opacity-0' : 'opacity-100 hover:scale-105'
-                  } ${sizeClasses}`}
-                style={{
-                  transform: `${openTransform} translate3d(0,0,0)`,
-                  borderRadius: transparent ? '0' : '8px',
-                  backgroundColor: transparent ? 'transparent' : '#fff',
-                  zIndex: open ? 20 + i : 20 - i,
-                  boxShadow: transparent ? 'none' : '0 4px 12px rgba(0,0,0,0.3)',
-                  overflow: transparent ? 'visible' : 'hidden',
-                  willChange: open ? 'transform, opacity' : 'auto'
-                }}
-              >
-                <Image
-                  src={src}
-                  alt={`Item ${i + 1}`}
-                  fill
-                  unoptimized
-                  className={transparent ? 'object-contain' : 'object-cover'}
-                  style={{ objectPosition: Array.isArray(cropAlign) ? (cropAlign[i] ?? 'center') : cropAlign }}
-                  sizes="60px"
-                />
-              </div>
-            );
-          })}
-
-          {/* View More Button - always visible */}
-          <div
-            className="absolute left-1/2 top-[65%] -translate-x-1/2 -translate-y-1/2"
-            style={{ zIndex: 35, pointerEvents: 'none' }}
-          >
-            <button
-              className="px-2 py-0.5 text-white font-light whitespace-nowrap"
-              style={{
-                borderRadius: '30px',
-                background: 'rgba(255, 244, 227, 0.10)',
-                border: '0.5px solid rgba(255, 244, 227, 0.3)',
-                fontFamily: 'Roboto, sans-serif',
-                fontSize: '7px',
-                fontWeight: '300',
-                letterSpacing: '0.2px',
-                pointerEvents: 'auto'
-              }}
-            >
-              View More
-            </button>
-          </div>
-
-          {/* Folder Front - opens on hover */}
-          <div
-            className="absolute inset-0 z-30 origin-bottom transition-all duration-300 ease-in-out"
-            style={{
-              transform: open ? 'rotateX(65deg) translate3d(0,0,0)' : 'rotateX(0deg) translateY(8px) translate3d(0,0,0)',
-              transformStyle: 'preserve-3d',
-              willChange: 'transform'
-            }}
-          >
-            <Image
-              src="/folderfront.svg"
-              alt="Folder Front"
-              fill
-              unoptimized
-              className="object-contain"
-              style={{ pointerEvents: 'none' }}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-interface ServiceCardProps {
-  title: string;
-  link?: string;
-  previewImages?: string[];
-  transparentImages?: boolean;
-  cropAlign?: CropAlign | CropAlign[];
-}
-
-const ServiceCard: React.FC<ServiceCardProps> = ({
-  title,
-  link = "#",
-  previewImages,
-  transparentImages,
-  cropAlign,
-}) => {
-  return (
-    <Link href={link}>
-      <div className="relative group cursor-pointer">
-        {/* Main Card */}
+    // Fill the featured card so each image card can anchor to bottom-right of the card itself
+    <div className="absolute inset-0 pointer-events-none">
+      {order.map((imgIdx, slot) => (
         <div
-          className="flex flex-col items-center justify-center gap-2.5 transition-all duration-300 hover:shadow-lg p-4 md:py-[60px] md:px-[80px] min-h-[280px] md:min-h-[500px]"
+          key={imgIdx}
+          className={`absolute ${transparent ? "" : "rounded-2xl overflow-hidden"}`}
           style={{
-            borderRadius: '28px',
-            border: '1px solid #D0BEA5',
-            background: '#110C09',
-            boxShadow: '0 4px 4px 0 rgba(0, 0, 0, 0.25)',
+            width: transparent ? 560 : 300,
+            height: transparent ? 392 : 210,
+            right: transparent ? -190 : -10,
+            bottom: transparent ? -60 : -20,
+            zIndex: slot,
+            transformOrigin: "bottom right",
+            transform: `rotate(${FAN_ANGLES[slot]}deg)`,
+            transition: "transform 0.42s cubic-bezier(0.16,1,0.3,1)",
+            boxShadow: transparent ? "none" : "0 6px 22px rgba(0,0,0,0.5)",
           }}
         >
-          {/* Interactive Fggbolder Component */}
-          <InteractiveFolderIcon folderImages={previewImages} transparent={transparentImages} cropAlign={cropAlign} />
+          <Image
+            src={images[imgIdx]}
+            alt=""
+            fill
+            unoptimized
+            className={transparent ? "object-contain" : "object-cover"}
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
 
-          {/* Service Title - Inside the card */}
-          <h3
-            className="text-lg md:text-3xl text-center font-normal mt-4 md:mt-8"
-            style={{ fontFamily: 'Roboto, sans-serif', color: '#FFF4E3' }}
-          >
-            {title}
-          </h3>
+// Card content components — plain divs, no Framer Motion, no competing animations
+function FeaturedCard({
+  service,
+  onDotClick,
+}: {
+  service: (typeof SERVICES)[number];
+  onDotClick: (id: string) => void;
+}) {
+  const [order, setOrder] = useState([0, 1, 2]);
+
+  // Reset order when the active service changes
+  React.useEffect(() => { setOrder([0, 1, 2]); }, [service.id]);
+
+  // Each mouse-enter cycles the back card to the front
+  const cycleImages = () => {
+    setOrder(prev => {
+      const next = [...prev];
+      next.push(next.shift()!);
+      return next;
+    });
+  };
+
+  return (
+    // Outer: no overflow-hidden so FannedImages can bleed out of bottom-right
+    <div
+      className="relative w-full h-full"
+      style={{ minHeight: 380 }}
+      onMouseEnter={cycleImages}
+    >
+      {/* Background layer — clips independently so rounded corners stay clean */}
+      <div
+        className="absolute inset-0 overflow-hidden rounded-2xl p-8"
+        style={{ background: service.accent }}
+      >
+        {/* Subtle noise overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E")`,
+            backgroundSize: "160px 160px",
+            mixBlendMode: "overlay",
+            opacity: 0.4,
+          }}
+        />
+
+        {/* Pagination dots — top right */}
+        <div className="absolute top-8 right-8 flex items-center gap-2 z-10">
+          {SERVICES.map((s) => (
+            <button
+              key={s.id}
+              onClick={() => onDotClick(s.id)}
+              className="rounded-full"
+              style={{
+                width: s.id === service.id ? 22 : 10,
+                height: 10,
+                background:
+                  s.id === service.id
+                    ? "rgba(255,255,255,0.92)"
+                    : "rgba(255,255,255,0.28)",
+                transition: "width 0.25s ease, background 0.25s ease",
+              }}
+            />
+          ))}
         </div>
 
-
+        {/* Text block — top left */}
+        <div className="relative z-10 max-w-xs">
+          <h3
+            className="text-5xl xl:text-6xl text-white font-bold leading-tight mb-3"
+            style={{ fontFamily: "Norwige, sans-serif" }}
+          >
+            {service.title}
+          </h3>
+          <p
+            className="text-white/80 text-sm md:text-base mb-7"
+            style={{ fontFamily: "Roboto, sans-serif", fontWeight: 300, lineHeight: 1.6 }}
+          >
+            {service.tagline}
+          </p>
+          <Link href={service.link}>
+            <button
+              className="relative px-6 py-2.5 rounded-full text-sm active:scale-95 overflow-hidden"
+              style={{
+                background: "rgba(255,255,255,0.14)",
+                border: "1px solid rgba(255,255,255,0.45)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.18)",
+                color: "#fff",
+                fontFamily: "Roboto, sans-serif",
+                fontWeight: 400,
+                backdropFilter: "blur(10px)",
+                letterSpacing: "0.02em",
+                transition: "transform 0.1s ease",
+              }}
+              onMouseEnter={e => {
+                const shine = e.currentTarget.querySelector(".btn-shine") as HTMLElement;
+                if (shine) {
+                  shine.style.transform = "translateX(200%)";
+                  shine.style.opacity = "1";
+                }
+              }}
+              onMouseLeave={e => {
+                const shine = e.currentTarget.querySelector(".btn-shine") as HTMLElement;
+                if (shine) {
+                  shine.style.transform = "translateX(-100%)";
+                  shine.style.opacity = "0";
+                }
+              }}
+            >
+              <span
+                className="btn-shine pointer-events-none absolute inset-0"
+                style={{
+                  background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%)",
+                  transform: "translateX(-100%)",
+                  opacity: 0,
+                  transition: "transform 1.7s ease, opacity 0.1s ease",
+                }}
+              />
+              {service.cta}
+            </button>
+          </Link>
+        </div>
       </div>
-    </Link>
+
+      {/* FannedImages sits outside the overflow-hidden bg layer — bleeds freely */}
+      <FannedImages images={service.images} order={order} transparent={service.transparent} />
+    </div>
   );
-};
+}
+
+function StripCard({ service }: { service: typeof SERVICES[number] }) {
+  return (
+    <div
+      className="w-full h-full flex items-center justify-between px-8"
+      style={{
+        background: "#3B2114",
+        border: "1px solid rgba(208,190,165,0.10)",
+      }}
+    >
+      <span
+        className="text-white/70 text-2xl md:text-[1.7rem] leading-none"
+        style={{ fontFamily: "Norwige, sans-serif" }}
+      >
+        {service.title}
+      </span>
+      <Link href={service.link}>
+        <button
+          className="px-5 py-2 rounded-full text-xs md:text-sm"
+          style={{
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.12)",
+            color: "rgba(255,255,255,0.55)",
+            fontFamily: "Roboto, sans-serif",
+            letterSpacing: "0.03em",
+            transition: "border-color 0.2s ease, color 0.2s ease",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.3)";
+            (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.9)";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.12)";
+            (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.55)";
+          }}
+        >
+          Learn More
+        </button>
+      </Link>
+    </div>
+  );
+}
+
+function SideCard({ service }: { service: typeof SERVICES[number] }) {
+  return (
+    <div
+      className="w-full h-full flex flex-col items-center justify-center gap-3"
+      style={{
+        background: "#3B2114",
+        border: "1px solid rgba(208,190,165,0.10)",
+      }}
+    >
+      <div
+        className="w-2 h-2 rounded-full"
+        style={{ background: service.accent, opacity: 0.75 }}
+      />
+      <span
+        className="text-white/65 text-xl md:text-2xl text-center px-6 leading-tight"
+        style={{ fontFamily: "Norwige, sans-serif" }}
+      >
+        {service.title}
+      </span>
+    </div>
+  );
+}
 
 export default function Services() {
-  const services = [
-    {
-      id: "web",
-      title: "Web Optimization",
-      link: "/web",
-      previewImages: [
-        '/heroassets/webfolder1.png',
-        '/heroassets/webfolder2.png',
-        '/heroassets/webfolder3.webp'
-      ],
-      cropAlign: ['left', 'left', 'center'],
-    },
-    {
-      id: "sound",
-      title: "Sound Engineering",
-      link: "/sound",
-      previewImages: [
-        '/heroassets/1.png',
-        '/heroassets/2.png',
-        '/heroassets/3.png'
-      ],
-      transparentImages: true,
-    },
-    {
-      id: "video",
-      title: "Video Production",
-      link: "/video-production",
-      previewImages: [
-        '/heroassets/hydvideoframe.webp',
-        '/heroassets/ponceshowframe.webp',
-        '/heroassets/samxbasuvid.webp'
-      ],
-    },
-    {
-      id: "ai",
-      title: "AI Solutions",
-      link: "/ai-automation",
-      previewImages: [
-        '/heroassets/codingframe.webp',
-        '/heroassets/excelframe.webp',
-        '/heroassets/n8nframe.webp'
-      ],
-    },
-  ];
+  const [activeId, setActiveId] = useState(SERVICES[0].id);
+  // "visible" | "fading" — used to dissolve between configs without competing animations
+  const [phase, setPhase] = useState<"visible" | "fading">("visible");
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const config = GRID_CONFIGS[activeId];
+
+  const activate = (id: string) => {
+    if (id === activeId || phase === "fading") return;
+
+    // Cancel any queued transition
+    if (timerRef.current) clearTimeout(timerRef.current);
+
+    setPhase("fading");
+    timerRef.current = setTimeout(() => {
+      setActiveId(id);
+      setPhase("visible");
+      timerRef.current = null;
+    }, 180);
+  };
 
   return (
     <section className="min-h-screen bg-black py-20 w-full px-6 sm:px-12 md:px-16 relative flex flex-col justify-center overflow-hidden">
       <GradientBlob position="top-left" />
       <GradientBlob position="bottom-right" />
 
-      {/* Top Gradient Fade - Blends with previous section */}
-      <div
-        className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-5 pointer-events-none"
-      />
-
-      {/* Bottom Gradient Fade - Blends with next section */}
-      <div
-        className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent z-5 pointer-events-none"
-      />
-
-      {/* Decorative stars - REMOVED */}
+      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent pointer-events-none" />
 
       <div className="w-full relative z-10">
-        <style jsx>{`
-          @keyframes float {
-            0%,
-            100% {
-              transform: translate(-50%, 0px);
-            }
-            50% {
-              transform: translate(-50%, -20px);
-            }
-          }
-
-          .services-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.75rem;
-            min-height: auto;
-          }
-
-          @media (min-width: 768px) {
-            .services-grid {
-              grid-template-columns: repeat(2, 1fr);
-              grid-template-rows: auto;
-              height: auto;
-              gap: 2rem;
-            }
-             /* Use larger min-height on desktop via explicit style override if needed, 
-                but handling via className/style props is better. 
-                Added style block for specific desktop min-height override on cards if needed,
-                but inline styles on the card handle the base. Let's add a utility class or just rely on inline styles.
-             */
-          }
-
-          .services-grid.has-expanded {
-             /* Mobile behavior when expanded: Expanded card takes order -1 to go top, others show below or hide? 
-                Actually, simpler to just stack them on mobile and expand in place. 
-                The 'grid-column' logic below is desktop specific.
-             */
-             grid-template-columns: 1fr;
-             grid-template-rows: auto;
-          }
-
-          @media (min-width: 768px) {
-            .services-grid.has-expanded {
-              grid-template-columns: 2fr 1fr;
-              grid-template-rows: repeat(3, 1fr);
-              height: 800px;
-              max-height: 85vh;
-            }
-
-            .expanded-card {
-              grid-column: 1 / 2;
-              grid-row: 1 / 4;
-            }
-
-            .collapsed-card {
-              grid-column: 2 / 3;
-            }
-          }
-
-          .normal-card {
-            /* Default positioning in 2x2 grid */
-          }
-
-        `}</style>
-
-        <div className="mb-12">
+        {/* Heading */}
+        <div className="mb-10 md:mb-14">
           <h2
-            className="text-4xl md:text-6xl lg:text-[10rem] text-white/90 uppercase tracking-wider mb-4 text-left"
+            className="text-4xl md:text-6xl lg:text-[10rem] text-white/90 uppercase tracking-wider text-left leading-none"
             style={{ fontFamily: "Norwige, sans-serif" }}
           >
             SERVICES
           </h2>
         </div>
 
-        {/* Dynamic grid */}
-        <div className="services-grid">
-          {services.map((service) => (
-            <ServiceCard
-              key={service.id}
-              title={service.title}
-              link={service.link}
-              previewImages={service.previewImages}
-              transparentImages={(service as { transparentImages?: boolean }).transparentImages}
-              cropAlign={(service as { cropAlign?: CropAlign | CropAlign[] }).cropAlign}
-            />
+        {/* ── Desktop interactive grid ── */}
+        <div
+          className="hidden md:grid gap-3"
+          style={{
+            gridTemplateAreas: config.areas,
+            gridTemplateColumns: config.columns,
+            gridTemplateRows: config.rows,
+            minHeight: 560,
+            // Dissolve: fade grid out → swap config → fade back in
+            opacity: phase === "fading" ? 0 : 1,
+            transition: "opacity 0.18s ease",
+          }}
+        >
+          {SERVICES.map((service) => {
+            const slot = config.slots[service.id];
+            const isFeatured = slot === "A";
+            const isStrip = slot === "D";
+
+            return (
+              <div
+                key={service.id}
+                className="relative overflow-hidden rounded-2xl cursor-pointer"
+                style={{ gridArea: slot }}
+                onMouseEnter={() => activate(service.id)}
+              >
+                {isFeatured ? (
+                  <FeaturedCard service={service} onDotClick={activate} />
+                ) : isStrip ? (
+                  <StripCard service={service} />
+                ) : (
+                  <SideCard service={service} />
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* ── Mobile: stacked full-width cards ── */}
+        <div className="flex flex-col gap-4 md:hidden">
+          {SERVICES.map((service) => (
+            <Link key={service.id} href={service.link}>
+              <div
+                className="relative w-full overflow-hidden rounded-2xl p-6 flex flex-col justify-between"
+                style={{ background: service.accent, minHeight: 220 }}
+              >
+                <div className="flex items-center gap-1.5">
+                  {[0, 1, 2].map((i) => (
+                    <div
+                      key={i}
+                      className="w-2 h-2 rounded-full"
+                      style={{ background: "rgba(255,255,255,0.45)" }}
+                    />
+                  ))}
+                </div>
+                <div className="relative z-10">
+                  <h3
+                    className="text-4xl text-white font-bold mb-2 leading-tight"
+                    style={{ fontFamily: "Norwige, sans-serif" }}
+                  >
+                    {service.title}
+                  </h3>
+                  <p
+                    className="text-white/72 text-sm mb-5"
+                    style={{ fontFamily: "Roboto, sans-serif", fontWeight: 300, lineHeight: 1.55 }}
+                  >
+                    {service.tagline}
+                  </p>
+                  <span
+                    className="inline-block px-5 py-2 rounded-full text-sm text-white"
+                    style={{
+                      background: "rgba(255,255,255,0.14)",
+                      border: "1px solid rgba(255,255,255,0.38)",
+                      fontFamily: "Roboto, sans-serif",
+                    }}
+                  >
+                    Learn More
+                  </span>
+                </div>
+
+                {/* 2-card mini fan */}
+                <div
+                  className="absolute bottom-4 right-4 pointer-events-none"
+                  style={{ width: 150, height: 108 }}
+                >
+                  {service.images.slice(0, 2).map((src, i) => (
+                    <div
+                      key={i}
+                      className="absolute rounded-lg overflow-hidden"
+                      style={{
+                        width: 120,
+                        height: 86,
+                        right: 0,
+                        bottom: 0,
+                        zIndex: i,
+                        transform: `rotate(${i === 0 ? -9 : 7}deg) translate(${i === 0 ? -22 : 0}px, ${i === 0 ? 8 : 0}px)`,
+                        boxShadow: "0 4px 14px rgba(0,0,0,0.5)",
+                      }}
+                    >
+                      <Image
+                        src={src}
+                        alt=""
+                        fill
+                        unoptimized
+                        className={service.transparent ? "object-contain" : "object-cover"}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Link>
           ))}
         </div>
       </div>
