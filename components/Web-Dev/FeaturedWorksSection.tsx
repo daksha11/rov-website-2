@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence, useInView, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import Link from "next/link";
 
 const HEADING = "Norwige, sans-serif";
@@ -303,130 +303,139 @@ function ProjectSlide({
   );
 }
 
-function AllWorkCTA({ total }: { total: number }) {
-  const btnRef = useRef<HTMLAnchorElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const springX = useSpring(mouseX, { stiffness: 180, damping: 22 });
-  const springY = useSpring(mouseY, { stiffness: 180, damping: 22 });
-  const btnX = useTransform(springX, [-60, 60], [-10, 10]);
-  const btnY = useTransform(springY, [-60, 60], [-10, 10]);
+const MARQUEE_ITEMS = Array.from({ length: 8 }, (_, i) => i);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = btnRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    mouseX.set(e.clientX - rect.left - rect.width / 2);
-    mouseY.set(e.clientY - rect.top - rect.height / 2);
-  };
-
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
-
+function AllWorkCTA({ total, activeBgTint }: { total: number; activeBgTint: string }) {
   return (
-    <div
-      className="relative border-t border-white/[0.07] overflow-hidden"
+    <Link
+      href="/works"
+      className="group relative border-t border-white/[0.07] overflow-hidden block cursor-pointer"
       style={{ background: "#050505" }}
+      aria-label="View all work"
     >
-      {/* sweeping ember glow on hover — CSS only, no JS state */}
+      {/* color bridge — cross-fades as active slide changes, visually connects carousel → CTA */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeBgTint}
+          aria-hidden
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          className="pointer-events-none absolute top-0 left-0 right-0 h-24"
+          style={{
+            background: `linear-gradient(to bottom, ${activeBgTint} 0%, transparent 100%)`,
+          }}
+        />
+      </AnimatePresence>
+
+      {/* scalable metadata bar — count + disciplines */}
+      <div className="relative z-10 flex items-center gap-4 px-8 md:px-14 pt-6 pb-0">
+        <span
+          className="text-[9px] uppercase tracking-[0.28em] text-white/50"
+          style={{ fontFamily: BODY }}
+        >
+          <span className="text-[#EA9A61]/70">{String(total).padStart(2, "0")}</span>
+          {" "}Projects
+        </span>
+        <span className="text-white/10 text-[10px]">·</span>
+        {(["Web", "Brand", "AI", "Motion"] as const).map((cat, i, arr) => (
+          <span key={cat} className="flex items-center gap-4">
+            <span
+              className="text-[9px] uppercase tracking-[0.28em] text-white/25"
+              style={{ fontFamily: BODY }}
+            >
+              {cat}
+            </span>
+            {i < arr.length - 1 && <span className="text-white/10 text-[10px]">·</span>}
+          </span>
+        ))}
+      </div>
+
+      {/* ambient ember sweep on hover */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100"
+        className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
         style={{
           background:
-            "radial-gradient(ellipse 60% 80% at 80% 50%, rgba(234,154,97,0.07) 0%, transparent 70%)",
+            "radial-gradient(ellipse 70% 120% at 50% 50%, rgba(177,105,55,0.07) 0%, transparent 65%)",
         }}
       />
 
-      <div className="max-w-[1400px] mx-auto px-8 md:px-14 py-14 md:py-20 flex flex-col md:flex-row items-center md:items-end justify-between gap-10">
-        {/* left copy */}
-        <div>
-          <p
-            className="text-[10px] uppercase tracking-[0.28em] text-white/30 mb-4"
-            style={{ fontFamily: BODY }}
-          >
-            {total} featured — see the rest
-          </p>
-          <h3
-            className="text-white leading-none"
-            style={{
-              fontFamily: HEADING,
-              fontSize: "clamp(2.75rem, 6vw, 5rem)",
-              fontStyle: "italic",
-            }}
-          >
-            All our work,
-            <br />
-            one place.
-          </h3>
-        </div>
-
-        {/* right — magnetic circular button */}
-        <div
-          className="shrink-0"
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
+      {/* marquee track */}
+      <div className="relative py-10 md:py-14 overflow-hidden">
+        <motion.div
+          className="flex items-center gap-8 md:gap-14 whitespace-nowrap will-change-transform"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
         >
-          <motion.a
-            ref={btnRef}
-            href="/works"
-            whileTap={{ scale: 0.95 }}
-            className="group/btn relative flex flex-col items-center justify-center w-36 h-36 md:w-44 md:h-44 rounded-full cursor-pointer select-none"
-            aria-label="View all work"
+          {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((_, i) => (
+            <span key={i} className="flex items-center gap-8 md:gap-14 shrink-0">
+              <span
+                className="text-white/55 group-hover:text-white/85 transition-colors duration-500 shrink-0"
+                style={{
+                  fontFamily: HEADING,
+                  fontStyle: "italic",
+                  fontSize: "clamp(2.25rem, 4.5vw, 4rem)",
+                  letterSpacing: "-0.025em",
+                }}
+              >
+                View All Work
+              </span>
+              <span
+                aria-hidden
+                className="text-[#EA9A61]/40 group-hover:text-[#EA9A61]/80 transition-colors duration-500 shrink-0 leading-none"
+                style={{ fontSize: "clamp(1rem, 1.5vw, 1.25rem)" }}
+              >
+                ✦
+              </span>
+            </span>
+          ))}
+        </motion.div>
+
+        {/* hover pill — slides up from invisible */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <motion.span
+            initial={{ opacity: 0, y: 8 }}
+            className="opacity-0 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2 transition-all duration-400"
             style={{
-              x: btnX,
-              y: btnY,
               background:
-                "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #3a1a10 76.74%)",
-              boxShadow:
-                "0 20px 60px -16px rgba(177,105,55,0.5), inset 0 1px 0 rgba(255,244,227,0.18)",
+                "linear-gradient(132deg, #EA9A61 4.77%, #B16937 50%, #A64D2B 100%)",
+              boxShadow: "0 12px 40px -8px rgba(177,105,55,0.55)",
             }}
           >
-            {/* rotating ring */}
-            <motion.span
-              aria-hidden
-              className="absolute inset-0 rounded-full border border-[#EA9A61]/30"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-              style={{
-                borderStyle: "dashed",
-                borderWidth: "1px",
-              }}
-            />
-
             <span
-              className="text-[#FFF4E3] text-[11px] uppercase tracking-[0.22em] text-center leading-tight"
+              className="inline-flex items-center gap-2.5 px-7 py-3 rounded-full text-[#0d0500] text-[11px] uppercase tracking-[0.22em] font-bold"
               style={{ fontFamily: BODY }}
             >
-              View
-              <br />
-              All Work
-            </span>
-
-            {/* arrow */}
-            <motion.span
-              className="mt-3 flex items-center justify-center w-7 h-7 rounded-full bg-[#FFF4E3]/15"
-              animate={{ y: [0, -3, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#FFF4E3"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
+              {total} Projects — See All
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M7 17L17 7M17 7H7M17 7v10" />
               </svg>
-            </motion.span>
-          </motion.a>
+            </span>
+          </motion.span>
         </div>
       </div>
-    </div>
+
+      {/* meta footer bar */}
+      <div className="border-t border-white/[0.05] px-8 md:px-14 py-3.5 flex items-center justify-between">
+        <span
+          className="text-[9px] uppercase tracking-[0.3em] text-white/20"
+          style={{ fontFamily: BODY }}
+        >
+          Range Of View Studios
+        </span>
+        <span
+          className="text-[9px] uppercase tracking-[0.3em] text-white/20 group-hover:text-[#EA9A61]/50 transition-colors duration-400 flex items-center gap-1.5"
+          style={{ fontFamily: BODY }}
+        >
+          rovstudios.com/works
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M7 17L17 7M17 7H7M17 7v10" />
+          </svg>
+        </span>
+      </div>
+    </Link>
   );
 }
 
@@ -511,7 +520,7 @@ export default function FeaturedWorksSection() {
       </AnimatePresence>
 
       {/* View All Work — magnetic CTA strip */}
-      <AllWorkCTA total={projects.length} />
+      <AllWorkCTA total={projects.length} activeBgTint={projects[activeIndex].bgTint} />
     </section>
   );
 }

@@ -72,7 +72,7 @@ const songData = [
 
 export default function MusicPlayer() {
     const [isPlaying, setIsPlaying] = useState(false);
-    const [isAfter, setIsAfter] = useState(false);
+    const [isAfter, setIsAfter] = useState(true);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [progress, setProgress] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);

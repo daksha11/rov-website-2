@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import Script from "next/script";
 import StyledComponentsRegistry from "@/lib/registry";
 import { OrganizationSchema } from "@/components/OrganizationSchema";
+import ClarityProvider from "@/components/ClarityProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -97,6 +98,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <ClarityProvider />
         <OrganizationSchema />
         {/* Google Analytics */}
         {process.env.NEXT_PUBLIC_GA_ID && (
