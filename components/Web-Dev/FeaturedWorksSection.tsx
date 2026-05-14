@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import { motion, AnimatePresence, useInView, useMotionValue, useTransform, useSpring } from "framer-motion";
 import Link from "next/link";
 
 const HEADING = "Norwige, sans-serif";
@@ -303,6 +303,133 @@ function ProjectSlide({
   );
 }
 
+function AllWorkCTA({ total }: { total: number }) {
+  const btnRef = useRef<HTMLAnchorElement>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springX = useSpring(mouseX, { stiffness: 180, damping: 22 });
+  const springY = useSpring(mouseY, { stiffness: 180, damping: 22 });
+  const btnX = useTransform(springX, [-60, 60], [-10, 10]);
+  const btnY = useTransform(springY, [-60, 60], [-10, 10]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = btnRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    mouseX.set(e.clientX - rect.left - rect.width / 2);
+    mouseY.set(e.clientY - rect.top - rect.height / 2);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
+  return (
+    <div
+      className="relative border-t border-white/[0.07] overflow-hidden"
+      style={{ background: "#050505" }}
+    >
+      {/* sweeping ember glow on hover — CSS only, no JS state */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 80% at 80% 50%, rgba(234,154,97,0.07) 0%, transparent 70%)",
+        }}
+      />
+
+      <div className="max-w-[1400px] mx-auto px-8 md:px-14 py-14 md:py-20 flex flex-col md:flex-row items-center md:items-end justify-between gap-10">
+        {/* left copy */}
+        <div>
+          <p
+            className="text-[10px] uppercase tracking-[0.28em] text-white/30 mb-4"
+            style={{ fontFamily: BODY }}
+          >
+            {total} featured — see the rest
+          </p>
+          <h3
+            className="text-white leading-none"
+            style={{
+              fontFamily: HEADING,
+              fontSize: "clamp(2.75rem, 6vw, 5rem)",
+              fontStyle: "italic",
+            }}
+          >
+            All our work,
+            <br />
+            one place.
+          </h3>
+        </div>
+
+        {/* right — magnetic circular button */}
+        <div
+          className="shrink-0"
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+        >
+          <motion.a
+            ref={btnRef}
+            href="/works"
+            whileTap={{ scale: 0.95 }}
+            className="group/btn relative flex flex-col items-center justify-center w-36 h-36 md:w-44 md:h-44 rounded-full cursor-pointer select-none"
+            aria-label="View all work"
+            style={{
+              x: btnX,
+              y: btnY,
+              background:
+                "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #3a1a10 76.74%)",
+              boxShadow:
+                "0 20px 60px -16px rgba(177,105,55,0.5), inset 0 1px 0 rgba(255,244,227,0.18)",
+            }}
+          >
+            {/* rotating ring */}
+            <motion.span
+              aria-hidden
+              className="absolute inset-0 rounded-full border border-[#EA9A61]/30"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+              style={{
+                borderStyle: "dashed",
+                borderWidth: "1px",
+              }}
+            />
+
+            <span
+              className="text-[#FFF4E3] text-[11px] uppercase tracking-[0.22em] text-center leading-tight"
+              style={{ fontFamily: BODY }}
+            >
+              View
+              <br />
+              All Work
+            </span>
+
+            {/* arrow */}
+            <motion.span
+              className="mt-3 flex items-center justify-center w-7 h-7 rounded-full bg-[#FFF4E3]/15"
+              animate={{ y: [0, -3, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#FFF4E3"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M7 17L17 7M17 7H7M17 7v10" />
+              </svg>
+            </motion.span>
+          </motion.a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function FeaturedWorksSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -383,32 +510,8 @@ export default function FeaturedWorksSection() {
         </motion.div>
       </AnimatePresence>
 
-      {/* View All Work CTA */}
-      <Link
-        href="/works"
-        className="group flex items-center justify-between w-full px-8 md:px-14 py-5 border-t border-white/[0.07] hover:bg-white/[0.02] transition-colors duration-300"
-        style={{ fontFamily: BODY }}
-      >
-        <span className="text-[10px] uppercase tracking-[0.28em] text-white/30 group-hover:text-white/50 transition-colors duration-300">
-          {projects.length} featured projects shown
-        </span>
-        <span className="flex items-center gap-3 text-[11px] uppercase tracking-[0.22em] text-white/50 group-hover:text-[#EA9A61] transition-colors duration-300">
-          View all work
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="transition-transform duration-300 group-hover:translate-x-1"
-          >
-            <path d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
-        </span>
-      </Link>
+      {/* View All Work — magnetic CTA strip */}
+      <AllWorkCTA total={projects.length} />
     </section>
   );
 }
