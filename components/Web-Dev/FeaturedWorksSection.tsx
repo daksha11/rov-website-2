@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
+import Link from "next/link";
 
 const HEADING = "Norwige, sans-serif";
 const BODY = "'Roboto', sans-serif";
@@ -381,6 +382,33 @@ export default function FeaturedWorksSection() {
           />
         </motion.div>
       </AnimatePresence>
+
+      {/* View All Work CTA */}
+      <Link
+        href="/works"
+        className="group flex items-center justify-between w-full px-8 md:px-14 py-5 border-t border-white/[0.07] hover:bg-white/[0.02] transition-colors duration-300"
+        style={{ fontFamily: BODY }}
+      >
+        <span className="text-[10px] uppercase tracking-[0.28em] text-white/30 group-hover:text-white/50 transition-colors duration-300">
+          {projects.length} featured projects shown
+        </span>
+        <span className="flex items-center gap-3 text-[11px] uppercase tracking-[0.22em] text-white/50 group-hover:text-[#EA9A61] transition-colors duration-300">
+          View all work
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="transition-transform duration-300 group-hover:translate-x-1"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </span>
+      </Link>
     </section>
   );
 }
