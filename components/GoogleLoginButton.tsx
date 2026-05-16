@@ -91,7 +91,7 @@ export default function GoogleLoginButton() {
             type="button"
             className="px-1.5 py-1.5 text-white/80 hover:text-white transition-colors cursor-pointer text-[10px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
           >
-            {user.name.slice(0, 4)}
+            {user.name.trim().split(/\s+/).filter(Boolean).map((w) => w[0]).slice(0, 2).join("").toUpperCase()}
           </button>
 
           {menuOpen && (

@@ -3,6 +3,7 @@
 import React, { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { Globe, Headphones, Clapperboard, Bot, ArrowUpRight, type LucideIcon } from "lucide-react";
 import GradientBlob from "./GradientBlob";
 
 const SERVICES = [
@@ -15,6 +16,7 @@ const SERVICES = [
     images: ["/heroassets/webfolder1.png", "/heroassets/webfolder2.png", "/heroassets/webfolder3.webp"],
     transparent: false,
     cta: "See Our Work",
+    icon: Globe,
   },
   {
     id: "sound",
@@ -25,6 +27,7 @@ const SERVICES = [
     images: ["/heroassets/1.png", "/heroassets/2.png", "/heroassets/3.png"],
     transparent: true,
     cta: "Hear the Difference",
+    icon: Headphones,
   },
   {
     id: "video",
@@ -35,6 +38,7 @@ const SERVICES = [
     images: ["/heroassets/hydvideoframe.webp", "/heroassets/ponceshowframe.webp", "/heroassets/samxbasuvid.webp"],
     transparent: false,
     cta: "Watch Our Reel",
+    icon: Clapperboard,
   },
   {
     id: "ai",
@@ -45,6 +49,7 @@ const SERVICES = [
     images: ["/heroassets/codingframe.webp", "/heroassets/excelframe.webp", "/heroassets/n8nframe.webp"],
     transparent: false,
     cta: "See It in Action",
+    icon: Bot,
   },
 ];
 
@@ -300,24 +305,47 @@ function StripCard({ service }: { service: typeof SERVICES[number] }) {
 }
 
 function SideCard({ service }: { service: typeof SERVICES[number] }) {
+  const Icon = service.icon as LucideIcon;
   return (
     <div
-      className="w-full h-full flex flex-col items-center justify-center gap-3"
+      className="group w-full h-full relative overflow-hidden"
       style={{
         background: "#3B2114",
         border: "1px solid rgba(208,190,165,0.10)",
       }}
     >
+      {/* Subtle radial glow on hover */}
       <div
-        className="w-2 h-2 rounded-full"
-        style={{ background: service.accent, opacity: 0.75 }}
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        style={{
+          background: `radial-gradient(ellipse 80% 60% at 50% 40%, ${service.accent}60 0%, transparent 70%)`,
+        }}
       />
-      <span
-        className="text-white/65 text-xl md:text-2xl text-center px-6 leading-tight"
-        style={{ fontFamily: "Norwige, sans-serif" }}
-      >
-        {service.title}
-      </span>
+
+      {/* Large ghost icon — upper center */}
+      <div className="absolute inset-0 flex items-center justify-center pb-10 pointer-events-none">
+        <Icon
+          size={72}
+          strokeWidth={0.75}
+          className="transition-all duration-500 group-hover:scale-110"
+          style={{ color: "rgba(255,255,255,0.12)", filter: "drop-shadow(0 0 18px rgba(255,255,255,0.06))" }}
+        />
+      </div>
+
+      {/* Bottom-left: title + arrow */}
+      <div className="absolute bottom-0 left-0 right-0 px-5 pb-5 flex items-end justify-between">
+        <span
+          className="text-white/60 group-hover:text-white/90 transition-colors duration-300 text-lg md:text-xl leading-tight"
+          style={{ fontFamily: "Norwige, sans-serif" }}
+        >
+          {service.title}
+        </span>
+        <ArrowUpRight
+          size={16}
+          strokeWidth={1.5}
+          className="text-white/20 group-hover:text-white/60 transition-colors duration-300 shrink-0 mb-0.5"
+        />
+      </div>
     </div>
   );
 }
