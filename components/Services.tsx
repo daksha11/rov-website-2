@@ -119,7 +119,7 @@ function FannedImages({ images, order, transparent }: { images: string[]; order:
             src={images[imgIdx]}
             alt=""
             fill
-            unoptimized
+            sizes={transparent ? "560px" : "300px"}
             className={transparent ? "object-contain" : "object-cover"}
           />
         </div>
@@ -465,7 +465,7 @@ export default function Services() {
                         src={src}
                         alt=""
                         fill
-                        unoptimized
+                        sizes="120px"
                         className={service.transparent ? "object-contain" : "object-cover"}
                       />
                     </div>
