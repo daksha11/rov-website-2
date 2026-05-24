@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { motion, LayoutGroup } from "framer-motion";
 import { Globe, Headphones, Clapperboard, Bot, ArrowUpRight, type LucideIcon } from "lucide-react";
 import GradientBlob from "./GradientBlob";
 
@@ -352,24 +353,12 @@ function SideCard({ service }: { service: typeof SERVICES[number] }) {
 
 export default function Services() {
   const [activeId, setActiveId] = useState(SERVICES[0].id);
-  // "visible" | "fading" — used to dissolve between configs without competing animations
-  const [phase, setPhase] = useState<"visible" | "fading">("visible");
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const config = GRID_CONFIGS[activeId];
 
   const activate = (id: string) => {
-    if (id === activeId || phase === "fading") return;
-
-    // Cancel any queued transition
-    if (timerRef.current) clearTimeout(timerRef.current);
-
-    setPhase("fading");
-    timerRef.current = setTimeout(() => {
-      setActiveId(id);
-      setPhase("visible");
-      timerRef.current = null;
-    }, 180);
+    if (id === activeId) return;
+    setActiveId(id);
   };
 
   return (
@@ -392,41 +381,42 @@ export default function Services() {
         </div>
 
         {/* ── Desktop interactive grid ── */}
-        <div
-          className="hidden md:grid gap-3"
-          style={{
-            gridTemplateAreas: config.areas,
-            gridTemplateColumns: config.columns,
-            gridTemplateRows: config.rows,
-            minHeight: 560,
-            // Dissolve: fade grid out → swap config → fade back in
-            opacity: phase === "fading" ? 0 : 1,
-            transition: "opacity 0.18s ease",
-          }}
-        >
-          {SERVICES.map((service) => {
-            const slot = config.slots[service.id];
-            const isFeatured = slot === "A";
-            const isStrip = slot === "D";
+        <LayoutGroup>
+          <div
+            className="hidden md:grid gap-3"
+            style={{
+              gridTemplateAreas: config.areas,
+              gridTemplateColumns: config.columns,
+              gridTemplateRows: config.rows,
+              minHeight: 560,
+            }}
+          >
+            {SERVICES.map((service) => {
+              const slot = config.slots[service.id];
+              const isFeatured = slot === "A";
+              const isStrip = slot === "D";
 
-            return (
-              <div
-                key={service.id}
-                className="relative overflow-hidden rounded-2xl cursor-pointer"
-                style={{ gridArea: slot }}
-                onMouseEnter={() => activate(service.id)}
-              >
-                {isFeatured ? (
-                  <FeaturedCard service={service} onDotClick={activate} />
-                ) : isStrip ? (
-                  <StripCard service={service} />
-                ) : (
-                  <SideCard service={service} />
-                )}
-              </div>
-            );
-          })}
-        </div>
+              return (
+                <motion.div
+                  key={service.id}
+                  layout
+                  transition={{ duration: 0.48, ease: [0.16, 1, 0.3, 1] }}
+                  className="relative overflow-hidden rounded-2xl cursor-pointer"
+                  style={{ gridArea: slot }}
+                  onMouseEnter={() => activate(service.id)}
+                >
+                  {isFeatured ? (
+                    <FeaturedCard service={service} onDotClick={activate} />
+                  ) : isStrip ? (
+                    <StripCard service={service} />
+                  ) : (
+                    <SideCard service={service} />
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
+        </LayoutGroup>
 
         {/* ── Mobile: stacked full-width cards ── */}
         <div className="flex flex-col gap-4 md:hidden">
