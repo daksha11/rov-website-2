@@ -34,7 +34,8 @@ const teamMembers: TeamMember[] = [
         role: "FOUNDER & CREATIVE DIRECTOR",
         skills: ["Creative Direction", "Brand Strategy", "Web Development", "Design Systems", "Client Relations"],
         location: "Atlanta",
-        specialties: "I lead creative direction across all client projects and internal initiatives while overseeing company operations. I contribute hands-on to design, development, and client communications—making sure R.O.V.'s vision stays consistent from pitch to delivery.",
+        portfolioLink: "https://www.ayushbasu.com/",
+        specialties: "I lead creative direction across all client projects and internal initiatives while overseeing company operations. I contribute hands-on to design, development, and client communications, making sure R.O.V.'s vision stays consistent from pitch to delivery.",
         shadowColor: "101, 67, 33"
     },
     {
@@ -47,7 +48,7 @@ const teamMembers: TeamMember[] = [
         skills: ["Creative Direction", "Brand Strategy", "Web Development", "Design Systems", "Client Relations"],
         location: "Atlanta",
         portfolioLink: "https://www.ayushbasu.com/",
-        specialties: "I lead creative direction across all client projects and internal initiatives while overseeing company operations. I contribute hands-on to design, development, and client communications—making sure R.O.V.'s vision stays consistent from pitch to delivery.",
+        specialties: "I lead creative direction across all client projects and internal initiatives while overseeing company operations. I contribute hands-on to design, development, and client communications, making sure R.O.V.'s vision stays consistent from pitch to delivery.",
         shadowColor: "101, 67, 33"
     },
     {
@@ -60,7 +61,7 @@ const teamMembers: TeamMember[] = [
         skills: ["Creative Direction", "Brand Strategy", "Web Development", "Design Systems", "Client Relations"],
         location: "Atlanta",
         portfolioLink: "https://www.ayushbasu.com/",
-        specialties: "I lead creative direction across all client projects and internal initiatives while overseeing company operations. I contribute hands-on to design, development, and client communications—making sure R.O.V.'s vision stays consistent from pitch to delivery.",
+        specialties: "I lead creative direction across all client projects and internal initiatives while overseeing company operations. I contribute hands-on to design, development, and client communications, making sure R.O.V.'s vision stays consistent from pitch to delivery.",
         shadowColor: "101, 67, 33"
     },
     {
@@ -73,7 +74,7 @@ const teamMembers: TeamMember[] = [
         skills: ["UI/UX Design", "Design Systems", "Web Design", "Design Infrastructure", "Brand Guidelines", "Design Standards", "Team Leadership", "Project Delegation", "Client Relations", "Creative Strategy"],
         location: "Atlanta",
         portfolioLink: "https://www.kavyaray.com/",
-        specialties: "I'm ROV Studios' Director of Design — a SCAD-trained UI/UX designer and design systems specialist with enterprise-level experience from brands like Porsche, Lowe's, and UBS. Based in Atlanta, I lead the design team end-to-end: from delegating creative tasks and setting design standards to managing client relationships and delivering polished, system-driven work at every touchpoint.",
+        specialties: "I'm ROV Studios' Director of Design, a SCAD-trained UI/UX designer and design systems specialist with enterprise-level experience from brands like Porsche, Lowe's, and UBS. Based in Atlanta, I lead the design team end-to-end: from delegating creative tasks and setting design standards to managing client relationships and delivering polished, system-driven work at every touchpoint.",
         shadowColor: "100, 100, 100"
     },
     {
@@ -85,7 +86,7 @@ const teamMembers: TeamMember[] = [
         role: "CREATIVE DIRECTOR & VIDEO STRATEGIST",
         skills: ["Video Creative Direction", "Visual Storytelling", "Campaign Strategy", "Motion Design"],
         location: "Atlanta",
-        specialties: "I help brands tell stories that stick—through motion, narrative structure, and campaign-level thinking. Whether it's directing video concepts or modeling creative strategies, I make sure every decision connects back to what the brand needs to say and how people should feel it.",
+        specialties: "I help brands tell stories that stick, through motion, narrative structure, and campaign-level thinking. Whether it's directing video concepts or modeling creative strategies, I make sure every decision connects back to what the brand needs to say and how people should feel it.",
         shadowColor: "180, 120, 90"
     },
     {
@@ -143,7 +144,7 @@ const teamMembers: TeamMember[] = [
         role: "DEVELOPER & FRONTEND SPECIALIST",
         skills: ["Frontend Development", "Creative Problem Solving", "UI Implementation", "Interactive Features", "Component Development"],
         location: "Atlanta",
-        specialties: "I work across projects solving complex technical problems and building innovative frontend solutions. I bring creative thinking to development—always looking for elegant ways to turn ambitious design ideas into reality.",
+        specialties: "I work across projects solving complex technical problems and building innovative frontend solutions. I bring creative thinking to development, always looking for elegant ways to turn ambitious design ideas into reality.",
         shadowColor: "120, 140, 100"
     },
     {
@@ -154,7 +155,8 @@ const teamMembers: TeamMember[] = [
         role: "FOUNDER & CREATIVE DIRECTOR",
         skills: ["Creative Direction", "Brand Strategy", "Web Development", "Design Systems", "Client Relations"],
         location: "Atlanta",
-        specialties: "I lead creative direction across all client projects and internal initiatives while overseeing company operations. I contribute hands-on to design, development, and client communications—making sure R.O.V.'s vision stays consistent from pitch to delivery.",
+        portfolioLink: "https://www.ayushbasu.com/",
+        specialties: "I lead creative direction across all client projects and internal initiatives while overseeing company operations. I contribute hands-on to design, development, and client communications, making sure R.O.V.'s vision stays consistent from pitch to delivery.",
     },
     {
         id: 10,
@@ -187,18 +189,6 @@ const teamMembers: TeamMember[] = [
         specialties: "I'm R.O.V.'s go-to technical lead for complex coding challenges and scalable solutions. I solve the toughest tech problems, architect robust systems, and make sure every build is performant, maintainable, and production-ready.",
     },
     {
-        id: 2,
-        image: "/teammembers/jahnavitm.webp",
-        category: "Creative",
-        creativeSubcategory: "Illustrative",
-        name: "Jahnavi",
-        role: "DESIGN ASSISTANT",
-        skills: ["UI/UX Design", "Brand Identity", "Design Systems", "Illustration", "Visual Design", "Prototyping"],
-        location: "India",
-        specialties: "I master every design discipline—from UI/UX and visual systems to custom illustration and brand identity. I create cohesive, polished design solutions across all touchpoints, making sure R.O.V.'s work is as functional as it is beautiful.",
-        shadowColor: "150, 100, 120"
-    },
-    {
         id: 5,
         image: "/teammembers/chamantm.webp",
         category: "Creative",
@@ -207,7 +197,7 @@ const teamMembers: TeamMember[] = [
         role: "VIDEO EDITOR & MOTION DESIGNER",
         skills: ["Video Editing", "Motion Graphics", "After Effects Design", "Creative Concepting", "Rapid Turnaround Production"],
         location: "India",
-        specialties: "I bring fresh creative ideas and fast execution to R.O.V.'s edits and media production. Whether it's complex motion work or quick-turn content, I specialize in After Effects wizardry and turn concepts into polished, dynamic visuals—even on tight timelines.",
+        specialties: "I bring fresh creative ideas and fast execution to R.O.V.'s edits and media production. Whether it's complex motion work or quick-turn content, I specialize in After Effects wizardry and turn concepts into polished, dynamic visuals, even on tight timelines.",
         shadowColor: "200, 100, 50"
     },
     {
@@ -243,7 +233,7 @@ const teamMembers: TeamMember[] = [
         role: "CUSTOM ILLUSTRATOR",
         skills: ["Custom Illustration", "Hand-Drawn Art", "Character Design", "Creative Concepting", "Visual Storytelling"],
         location: "Birmingham, UK",
-        specialties: "I draw custom, fun illustrations from scratch for R.O.V.'s projects. I bring a playful, hand-crafted touch to every piece—turning ideas into one-of-a-kind visuals that give each project its own personality and charm.",
+        specialties: "I draw custom, fun illustrations from scratch for R.O.V.'s projects. I bring a playful, hand-crafted touch to every piece, turning ideas into one-of-a-kind visuals that give each project its own personality and charm.",
         shadowColor: "160, 110, 130"
     },
 ];
@@ -569,7 +559,7 @@ const TeamSection: React.FC = () => {
                                         <button className="category-button" onClick={() => setActiveCategory("Creative")}>CREATIVE</button>
                                         <ImageCard src={teamMembers[6].image} alt="Daksha" name={teamMembers[6].name} role={teamMembers[6].role} onClick={() => handleMarqueeMemberClick(teamMembers[6])} />
                                         <ImageCard src={teamMembers[1].image} alt="Kavya" name={teamMembers[1].name} role={teamMembers[1].role} onClick={() => handleMarqueeMemberClick(teamMembers[1])} />
-                                        <ImageCard src={teamMembers[14].image} alt="Anish" name={teamMembers[14].name} role={teamMembers[14].role} onClick={() => handleMarqueeMemberClick(teamMembers[14])} />
+                                        <ImageCard src={teamMembers[16].image} alt="Anish" name={teamMembers[16].name} role={teamMembers[16].role} onClick={() => handleMarqueeMemberClick(teamMembers[16])} />
                                     </React.Fragment>
                                 ))}
                             </div>
