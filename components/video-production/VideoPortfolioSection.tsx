@@ -181,7 +181,7 @@ export default function VideoPortfolioSection() {
     }, [currentVideo]);
 
     return (
-        <section className="relative bg-black text-[#FFF4E3] py-24 px-6 md:px-12 lg:px-16">
+        <section className="relative bg-black text-[#FFF4E3] pt-24 pb-12 px-6 md:px-12 lg:px-16">
             {/* Section Label + Minimal Category Tabs */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10 md:mb-12 pb-5 border-b border-[#FFF4E3]/[0.08]">
                 <p

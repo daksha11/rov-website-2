@@ -114,7 +114,7 @@ export default function TestimonialsSection({ testimonials, variant }: Props) {
 
   return (
     <section
-      className="relative py-24 md:py-32 lg:py-40 px-4 sm:px-6 lg:px-8 bg-black overflow-hidden"
+      className="relative pt-12 pb-24 md:pt-16 md:pb-32 lg:pt-20 lg:pb-40 px-4 sm:px-6 lg:px-8 bg-black overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >

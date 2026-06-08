@@ -151,7 +151,7 @@ function VideoTogglePair({ pair }: { pair: VideoPair }) {
 
 export default function PostProductionSection() {
     return (
-        <section className="relative bg-black text-[#FFF4E3] py-24 px-6 md:px-12 lg:px-16 border-t border-[#FFF4E3]/5">
+        <section className="relative bg-black text-[#FFF4E3] pt-12 pb-12 px-6 md:px-12 lg:px-16 border-t border-[#FFF4E3]/5">
             {/* Label */}
             <p
                 className="text-xs uppercase tracking-[0.3em] text-[#FFF4E3]/40 mb-6"

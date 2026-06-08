@@ -102,12 +102,14 @@ function ProjectSlide({
   total,
   onPrev,
   onNext,
+  onGoTo,
 }: {
   project: Project;
   index: number;
   total: number;
   onPrev: () => void;
   onNext: () => void;
+  onGoTo: (i: number) => void;
 }) {
   const [showBefore, setShowBefore] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
@@ -129,55 +131,80 @@ function ProjectSlide({
 
   return (
     <div className="relative w-full min-h-[80vh] md:min-h-[88vh] flex flex-col overflow-hidden">
-      {/* Background — static tint + gradient (single video decoder only) */}
+      {/* Background — static tint + gradient */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0" style={{ background: project.bgTint }} />
+        <div className="absolute inset-0 transition-colors duration-300" style={{ background: project.bgTint }} />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/50" />
       </div>
+
+      {/* Bottom fade — eases the slide into the CTA strip */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 z-[1] pointer-events-none" style={{ background: "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 100%)" }} />
 
       {/* Content */}
       <div className="relative z-10 flex-1 flex flex-col justify-between p-6 pb-16 md:p-10 md:pb-20 lg:p-14 lg:pb-24 max-w-[1400px] mx-auto w-full">
         {/* Top row */}
         <div className="flex items-start justify-between">
-          {/* Top-left: original circle counter + prev/next arrows */}
-          <div className="flex items-center gap-3">
-            {/* Prev arrow */}
-            <button
-              onClick={onPrev}
-              className="w-11 h-11 md:w-11 md:h-11 rounded-full border border-white/20 hover:border-white/40 flex items-center justify-center transition-all duration-300 hover:bg-white/[0.04] cursor-pointer"
-              aria-label="Previous project"
+          {/* Top-left: section label + nav */}
+          <div className="flex flex-col gap-3">
+            <span
+              className="text-[clamp(0.7rem,1.8vw,0.85rem)] uppercase tracking-[0.28em] text-white/60 font-medium"
+              style={{ fontFamily: BODY }}
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50">
-                <path d="M15 18l-6-6 6-6" />
-              </svg>
-            </button>
+              Featured Projects
+            </span>
+            <div className="flex items-center gap-3">
+              {/* Prev arrow */}
+              <button
+                onClick={onPrev}
+                className="w-9 h-9 rounded-full border border-white/20 hover:border-white/40 flex items-center justify-center transition-all duration-200 hover:bg-white/[0.06] cursor-pointer"
+                aria-label="Previous project"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50">
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </button>
 
-            {/* Circle counter */}
-            <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border border-white/25 flex flex-col items-center justify-center shrink-0">
-              <span className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-white/40" style={{ fontFamily: BODY }}>
-                Project
-              </span>
-              <div className="flex items-baseline gap-1.5">
-                <span className="text-white text-lg md:text-xl font-bold" style={{ fontFamily: HEADING }}>
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <span className="text-white/30 text-sm">|</span>
-                <span className="text-white/30 text-sm" style={{ fontFamily: BODY }}>
-                  {String(total).padStart(2, "0")}
-                </span>
+              {/* Progress bar segments */}
+              <div className="flex items-center gap-1.5">
+                {Array.from({ length: total }).map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => onGoTo(i)}
+                    aria-label={`Go to project ${i + 1}`}
+                    className="group relative h-[3px] rounded-full overflow-hidden transition-all duration-300 cursor-pointer"
+                    style={{ width: i === index ? 36 : 16, background: "rgba(255,255,255,0.12)" }}
+                  >
+                    {i === index && (
+                      <motion.div
+                        className="absolute inset-0 rounded-full"
+                        style={{ background: "#EA9A61" }}
+                        layoutId="progress-fill"
+                        transition={{ duration: 0.25 }}
+                      />
+                    )}
+                    {i !== index && (
+                      <div className="absolute inset-0 rounded-full bg-white/0 group-hover:bg-white/30 transition-colors duration-200" />
+                    )}
+                  </button>
+                ))}
               </div>
-            </div>
 
-            {/* Next arrow */}
-            <button
-              onClick={onNext}
-              className="w-11 h-11 md:w-11 md:h-11 rounded-full border border-white/20 hover:border-white/40 flex items-center justify-center transition-all duration-300 hover:bg-white/[0.04] cursor-pointer"
-              aria-label="Next project"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50">
-                <path d="M9 18l6-6-6-6" />
-              </svg>
-            </button>
+              {/* Counter */}
+              <span className="text-[11px] text-white/30 tabular-nums" style={{ fontFamily: BODY }}>
+                {String(index + 1).padStart(2, "0")}<span className="text-white/15">/{String(total).padStart(2, "0")}</span>
+              </span>
+
+              {/* Next arrow */}
+              <button
+                onClick={onNext}
+                className="w-9 h-9 rounded-full border border-white/20 hover:border-white/40 flex items-center justify-center transition-all duration-200 hover:bg-white/[0.06] cursor-pointer"
+                aria-label="Next project"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50">
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
+            </div>
           </div>
 
           {/* Category + tags (desktop) — right-aligned */}
@@ -203,8 +230,16 @@ function ProjectSlide({
 
         {/* Bottom area */}
         <div className="flex flex-col lg:flex-row items-end gap-8 mt-auto">
-          {/* Left: title + description */}
-          <div className="flex-1 min-w-0">
+          {/* Left: title + description — fast crossfade on project change */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
+              className="flex-1 min-w-0"
+            >
             <span className="md:hidden block text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-white/50 mb-3" style={{ fontFamily: BODY }}>
               {project.category}
             </span>
@@ -249,7 +284,8 @@ function ProjectSlide({
                 </button>
               )}
             </div>
-          </div>
+            </motion.div>
+          </AnimatePresence>
 
           {/* Right: video mockup — right-aligned under tags */}
           <div className="w-full lg:w-[420px] flex justify-center lg:justify-end shrink-0">
@@ -307,13 +343,11 @@ const MARQUEE_ITEMS = Array.from({ length: 8 }, (_, i) => i);
 
 function AllWorkCTA({ total, activeBgTint }: { total: number; activeBgTint: string }) {
   return (
-    <Link
-      href="/works"
-      className="group relative border-t border-white/[0.07] overflow-hidden block cursor-pointer"
+    <div
+      className="relative overflow-hidden"
       style={{ background: "#050505" }}
-      aria-label="View all work"
     >
-      {/* color bridge — cross-fades as active slide changes, visually connects carousel → CTA */}
+      {/* color bridge — tall gradient so the slide bleeds smoothly into the strip */}
       <AnimatePresence mode="wait">
         <motion.div
           key={activeBgTint}
@@ -321,121 +355,81 @@ function AllWorkCTA({ total, activeBgTint }: { total: number; activeBgTint: stri
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="pointer-events-none absolute top-0 left-0 right-0 h-24"
-          style={{
-            background: `linear-gradient(to bottom, ${activeBgTint} 0%, transparent 100%)`,
-          }}
+          transition={{ duration: 0.9, ease: "easeInOut" }}
+          className="pointer-events-none absolute top-0 left-0 right-0 h-48"
+          style={{ background: `linear-gradient(to bottom, ${activeBgTint}cc 0%, ${activeBgTint}44 40%, transparent 100%)` }}
         />
       </AnimatePresence>
 
-      {/* scalable metadata bar — count + disciplines */}
-      <div className="relative z-10 flex items-center gap-4 px-8 md:px-14 pt-6 pb-0">
-        <span
-          className="text-[9px] uppercase tracking-[0.28em] text-white/50"
-          style={{ fontFamily: BODY }}
+      {/* Main content — headline + CTA */}
+      <div className="relative z-10 max-w-7xl mx-auto px-8 md:px-14 pt-10 pb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <div>
+          <p
+            className="text-[10px] uppercase tracking-[0.3em] text-[#EA9A61]/60 mb-2"
+            style={{ fontFamily: BODY }}
+          >
+            Full Portfolio
+          </p>
+          <h3
+            className="text-2xl md:text-3xl lg:text-4xl font-bold italic text-white leading-tight"
+            style={{ fontFamily: HEADING }}
+          >
+            These are the highlights.
+          </h3>
+          <p
+            className="text-white/40 text-sm mt-2 max-w-sm"
+            style={{ fontFamily: BODY }}
+          >
+            We&apos;ve built {total}+ client websites across web, brand, AI &amp; motion — browse every project in our archive.
+          </p>
+        </div>
+
+        <Link
+          href="/works"
+          className="group inline-flex items-center gap-3 shrink-0 self-start md:self-auto"
+          aria-label="Browse all projects"
         >
-          <span className="text-[#EA9A61]/70">{String(total).padStart(2, "0")}</span>
-          {" "}Projects
-        </span>
-        <span className="text-white/10 text-[10px]">·</span>
-        {(["Web", "Brand", "AI", "Motion"] as const).map((cat, i, arr) => (
-          <span key={cat} className="flex items-center gap-4">
-            <span
-              className="text-[9px] uppercase tracking-[0.28em] text-white/25"
-              style={{ fontFamily: BODY }}
-            >
-              {cat}
-            </span>
-            {i < arr.length - 1 && <span className="text-white/10 text-[10px]">·</span>}
+          <span
+            className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full text-[#0d0500] text-[11px] uppercase tracking-[0.22em] font-bold transition-all duration-300 group-hover:scale-[1.03]"
+            style={{
+              fontFamily: BODY,
+              background: "linear-gradient(132deg, #EA9A61 4.77%, #B16937 50%, #A64D2B 100%)",
+              boxShadow: "0 8px 32px -6px rgba(177,105,55,0.45)",
+            }}
+          >
+            Browse All {total} Projects
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M7 17L17 7M17 7H7M17 7v10" />
+            </svg>
           </span>
-        ))}
+        </Link>
       </div>
 
-      {/* ambient ember sweep on hover */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
-        style={{
-          background:
-            "radial-gradient(ellipse 70% 120% at 50% 50%, rgba(177,105,55,0.07) 0%, transparent 65%)",
-        }}
-      />
-
-      {/* marquee track */}
-      <div className="relative py-10 md:py-14 overflow-hidden">
+      {/* Scrolling discipline strip */}
+      <div className="relative overflow-hidden border-t border-white/[0.05]">
         <motion.div
-          className="flex items-center gap-8 md:gap-14 whitespace-nowrap will-change-transform"
+          className="flex items-center gap-10 whitespace-nowrap will-change-transform py-3"
           animate={{ x: ["0%", "-50%"] }}
-          transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
         >
           {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((_, i) => (
-            <span key={i} className="flex items-center gap-8 md:gap-14 shrink-0">
-              <span
-                className="text-white/55 group-hover:text-white/85 transition-colors duration-500 shrink-0"
-                style={{
-                  fontFamily: HEADING,
-                  fontStyle: "italic",
-                  fontSize: "clamp(2.25rem, 4.5vw, 4rem)",
-                  letterSpacing: "-0.025em",
-                }}
-              >
-                View All Work
-              </span>
-              <span
-                aria-hidden
-                className="text-[#EA9A61]/40 group-hover:text-[#EA9A61]/80 transition-colors duration-500 shrink-0 leading-none"
-                style={{ fontSize: "clamp(1rem, 1.5vw, 1.25rem)" }}
-              >
-                ✦
-              </span>
+            <span key={i} className="flex items-center gap-10 shrink-0">
+              {(["Web Design", "Brand Identity", "AI Workflows", "Motion", "Full-Stack"] as const).map((label, j) => (
+                <span key={j} className="flex items-center gap-10">
+                  <span
+                    className="text-[9px] uppercase tracking-[0.3em] text-white/15"
+                    style={{ fontFamily: BODY }}
+                  >
+                    {label}
+                  </span>
+                  <span className="text-white/10 text-[10px]">·</span>
+                </span>
+              ))}
             </span>
           ))}
         </motion.div>
-
-        {/* hover pill — slides up from invisible */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <motion.span
-            initial={{ opacity: 0, y: 8 }}
-            className="opacity-0 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2 transition-all duration-400"
-            style={{
-              background:
-                "linear-gradient(132deg, #EA9A61 4.77%, #B16937 50%, #A64D2B 100%)",
-              boxShadow: "0 12px 40px -8px rgba(177,105,55,0.55)",
-            }}
-          >
-            <span
-              className="inline-flex items-center gap-2.5 px-7 py-3 rounded-full text-[#0d0500] text-[11px] uppercase tracking-[0.22em] font-bold"
-              style={{ fontFamily: BODY }}
-            >
-              {total} Projects — See All
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M7 17L17 7M17 7H7M17 7v10" />
-              </svg>
-            </span>
-          </motion.span>
-        </div>
       </div>
-
-      {/* meta footer bar */}
-      <div className="border-t border-white/[0.05] px-8 md:px-14 py-3.5 flex items-center justify-between">
-        <span
-          className="text-[9px] uppercase tracking-[0.3em] text-white/20"
-          style={{ fontFamily: BODY }}
-        >
-          Range Of View Studios
-        </span>
-        <span
-          className="text-[9px] uppercase tracking-[0.3em] text-white/20 group-hover:text-[#EA9A61]/50 transition-colors duration-400 flex items-center gap-1.5"
-          style={{ fontFamily: BODY }}
-        >
-          rovstudios.com/works
-          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M7 17L17 7M17 7H7M17 7v10" />
-          </svg>
-        </span>
-      </div>
-    </Link>
+    </div>
   );
 }
 
@@ -501,23 +495,14 @@ export default function FeaturedWorksSection() {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeIndex}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: "easeInOut" }}
-        >
-          <ProjectSlide
-            project={projects[activeIndex]}
-            index={activeIndex}
-            total={projects.length}
-            onPrev={goPrev}
-            onNext={goNext}
-          />
-        </motion.div>
-      </AnimatePresence>
+      <ProjectSlide
+        project={projects[activeIndex]}
+        index={activeIndex}
+        total={projects.length}
+        onPrev={goPrev}
+        onNext={goNext}
+        onGoTo={goTo}
+      />
 
       {/* View All Work — magnetic CTA strip */}
       <AllWorkCTA total={projects.length} activeBgTint={projects[activeIndex].bgTint} />

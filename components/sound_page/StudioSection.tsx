@@ -141,8 +141,8 @@ function ValueAccordion() {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ ...spring, delay: i * 0.08 }}
-              onClick={() => setActive(i)}
-              className="cursor-pointer border-t border-white/[0.07] last:border-b"
+              onMouseEnter={() => setActive(i)}
+              className="cursor-default border-t border-white/[0.07] last:border-b"
             >
               <div className="py-6 md:py-8 flex items-start md:items-center gap-4 md:gap-8">
                 {/* Index number */}
@@ -237,7 +237,7 @@ export default function StudioSection() {
     <section
       ref={sectionRef}
       className="relative bg-black overflow-hidden"
-      style={{ padding: "clamp(60px, 10vw, 120px) clamp(16px, 5vw, 60px)" }}
+      style={{ padding: "clamp(60px, 10vw, 120px) clamp(16px, 5vw, 60px) clamp(20px, 4vw, 40px)" }}
     >
       {/* ── Header ── */}
       <div className="max-w-7xl mx-auto mb-16 md:mb-24">
@@ -335,7 +335,7 @@ export default function StudioSection() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }}
         transition={spring}
-        className="max-w-7xl mx-auto mb-16 md:mb-24"
+        className="max-w-7xl mx-auto"
       >
         <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10 py-8 md:py-10 px-6 md:px-10 rounded-2xl border border-[#EA9A61]/15"
           style={{ background: "linear-gradient(135deg, rgba(234,154,97,0.06) 0%, transparent 60%)" }}

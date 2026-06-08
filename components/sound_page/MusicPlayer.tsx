@@ -476,7 +476,7 @@ export default function MusicPlayer() {
                         </div>
 
                         {/* Carousel Indicators */}
-                        <div className="flex gap-2 mt-8">
+                        <div className="flex gap-2 mt-8 mb-10">
                             {songData.map((_, i) => (
                                 <button
                                     key={i}

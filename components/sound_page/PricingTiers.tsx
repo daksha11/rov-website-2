@@ -55,7 +55,7 @@ export default function PricingTiers() {
     <section
       ref={ref}
       className="relative bg-black"
-      style={{ padding: "clamp(60px, 10vw, 100px) clamp(16px, 5vw, 60px)" }}
+      style={{ padding: "clamp(20px, 4vw, 40px) clamp(16px, 5vw, 60px) clamp(60px, 10vw, 100px)" }}
     >
       <div className="max-w-6xl mx-auto">
         {/* Header */}
