@@ -91,7 +91,7 @@ const addons: AddOn[] = [
   },
   {
     name: "Lyric Visualizer",
-    description: "Social-cut video with synced lyrics — drop it straight to Reels and TikTok.",
+    description: "Social-cut video with synced lyrics, ready to drop straight to Reels and TikTok.",
     subPrice: 40,
     oneOff: 60,
     turnaround: "5–7 days",
@@ -99,7 +99,7 @@ const addons: AddOn[] = [
   },
   {
     name: "Merch Design",
-    description: "Print-ready graphic for tees, hoodies, posters — delivered as vector files.",
+    description: "Print-ready graphic for tees, hoodies, and posters. Delivered as vector files.",
     subPrice: 65,
     oneOff: 95,
     turnaround: "3–5 days",
@@ -152,7 +152,7 @@ export default function CreativeAddOns() {
           className="text-white/40 text-sm md:text-base mb-12 max-w-xl"
           style={{ fontFamily: BODY }}
         >
-          Cover art, lyric visuals, and merch — add any of these to your mix &amp; master subscription or grab them one-off.
+          Cover art, lyric visuals, and merch. Add any of these to your mix &amp; master subscription or grab them one-off.
         </motion.p>
 
         {/* Add-on cards */}

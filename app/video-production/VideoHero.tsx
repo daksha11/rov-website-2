@@ -133,6 +133,14 @@ export default function VideoHero() {
             {/* Overlay to ensure text readability */}
             <div className={`absolute inset-0 z-10 transition-opacity duration-500 ${cinemaMode ? "opacity-0" : "opacity-100 bg-black/40"}`} />
 
+            {/* Service label — top left */}
+            <span
+                className={`absolute top-8 left-8 z-20 text-white/40 uppercase transition-opacity duration-500 ${cinemaMode ? "opacity-0" : "opacity-100"}`}
+                style={{ fontFamily: 'Roboto, sans-serif', fontSize: '12px', letterSpacing: '0.2em' }}
+            >
+                Video Production
+            </span>
+
             {/* Subtle overlay layer — between video and text */}
             <div className={`absolute inset-0 z-[15] bg-black/15 pointer-events-none transition-opacity duration-500 ${cinemaMode ? "opacity-0" : "opacity-100"}`} />
 

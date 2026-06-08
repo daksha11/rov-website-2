@@ -70,17 +70,17 @@ const BODY_FONT = "'Roboto', sans-serif";
 const valueProps = [
   {
     label: "Professional Mixing & Mastering in Atlanta",
-    detail: "Every recording session at our Atlanta studio includes professional mixing and mastering — no upsells, no hidden fees. Your vocals are balanced, cleaned, and enhanced with creative effects, then mastered to hit streaming-ready loudness for Spotify, Apple Music, and every major platform. You walk out with a release-ready record.",
+    detail: "Every recording session at our Atlanta studio includes professional mixing and mastering. No upsells, no hidden fees. Your vocals are balanced, cleaned, and enhanced with creative effects, then mastered to hit streaming-ready loudness for Spotify, Apple Music, and every major platform. You walk out with a release-ready record.",
     tag: "All-in-one",
   },
   {
     label: "Industry-Standard Recording Equipment",
-    detail: "Our Atlanta recording studio is equipped with the same tools used on records you already listen to — UAD, Waves, FabFilter, Neumann microphones, and Focusrite preamps. Whether you're tracking vocals, mixing a full trackout, or mastering for distribution, every session is powered by professional-grade plugins and hardware.",
+    detail: "Our Atlanta recording studio is equipped with the same tools used on records you already listen to: UAD, Waves, FabFilter, Neumann microphones, and Focusrite preamps. Whether you're tracking vocals, mixing a full trackout, or mastering for distribution, every session is powered by professional-grade plugins and hardware.",
     tag: "Pro gear",
   },
   {
     label: "Atlanta's Most Affordable Recording Studio",
-    detail: "High-quality mixing and mastering shouldn't break the bank. Our hourly rates are lower than most recording studios in Atlanta — without cutting corners on sound quality. More studio time, more music, less overhead. From independent artists to full project runs, we deliver radio-ready results at prices that make sense.",
+    detail: "High-quality mixing and mastering shouldn't break the bank. Our hourly rates are lower than most recording studios in Atlanta, without cutting corners on sound quality. More studio time, more music, less overhead. From independent artists to full project runs, we deliver radio-ready results at prices that make sense.",
     tag: "Best value",
   },
 ];
@@ -286,7 +286,7 @@ export default function StudioSection() {
               style={{ fontFamily: BODY_FONT }}
             >
               We don&apos;t just mix files from a laptop. Artists record in our Atlanta studio, stand behind real mics,
-              and walk out with professionally mixed and mastered records — ready for Spotify, Apple Music, and every streaming platform.
+              and walk out with professionally mixed and mastered records, ready for Spotify, Apple Music, and every streaming platform.
             </p>
             <a
               href="https://calendly.com/rangeofviewmusic/30min"
@@ -355,7 +355,7 @@ export default function StudioSection() {
               style={{ fontFamily: BODY_FONT }}
             >
               Talent shouldn&apos;t be gated by budget. Show your student ID at our Atlanta recording studio
-              and get discounted hourly rates — same professional mixing and mastering, same gear, same quality. No compromises.
+              and get discounted hourly rates. Same professional mixing and mastering, same gear, same quality. No compromises.
             </p>
           </div>
           <a

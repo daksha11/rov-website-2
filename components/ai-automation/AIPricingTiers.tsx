@@ -40,7 +40,7 @@ export default function AIPricingTiers({ onUnlock }: { onUnlock?: () => void }) 
           className="block text-xs uppercase tracking-[0.3em] text-[#EA9A61] mb-3"
           style={{ fontFamily: BODY }}
         >
-          AI Systems
+          Pricing
         </motion.span>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}

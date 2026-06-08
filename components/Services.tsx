@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, LayoutGroup } from "framer-motion";
@@ -317,7 +317,7 @@ function SideCard({ service }: { service: typeof SERVICES[number] }) {
     >
       {/* Subtle radial glow on hover */}
       <div
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
         style={{
           background: `radial-gradient(ellipse 80% 60% at 50% 40%, ${service.accent}60 0%, transparent 70%)`,
         }}
@@ -328,7 +328,7 @@ function SideCard({ service }: { service: typeof SERVICES[number] }) {
         <Icon
           size={72}
           strokeWidth={0.75}
-          className="transition-all duration-500 group-hover:scale-110"
+          className="transition-all duration-700 group-hover:scale-110"
           style={{ color: "rgba(255,255,255,0.12)", filter: "drop-shadow(0 0 18px rgba(255,255,255,0.06))" }}
         />
       </div>
@@ -336,7 +336,7 @@ function SideCard({ service }: { service: typeof SERVICES[number] }) {
       {/* Bottom-left: title + arrow */}
       <div className="absolute bottom-0 left-0 right-0 px-5 pb-5 flex items-end justify-between">
         <span
-          className="text-white/60 group-hover:text-white/90 transition-colors duration-300 text-lg md:text-xl leading-tight"
+          className="text-white/60 group-hover:text-white/90 transition-colors duration-500 text-lg md:text-xl leading-tight"
           style={{ fontFamily: "Norwige, sans-serif" }}
         >
           {service.title}
@@ -344,7 +344,7 @@ function SideCard({ service }: { service: typeof SERVICES[number] }) {
         <ArrowUpRight
           size={16}
           strokeWidth={1.5}
-          className="text-white/20 group-hover:text-white/60 transition-colors duration-300 shrink-0 mb-0.5"
+          className="text-white/20 group-hover:text-white/60 transition-colors duration-500 shrink-0 mb-0.5"
         />
       </div>
     </div>
@@ -353,12 +353,24 @@ function SideCard({ service }: { service: typeof SERVICES[number] }) {
 
 export default function Services() {
   const [activeId, setActiveId] = useState(SERVICES[0].id);
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const config = GRID_CONFIGS[activeId];
 
   const activate = (id: string) => {
     if (id === activeId) return;
     setActiveId(id);
+  };
+
+  const handleCardEnter = (id: string) => {
+    hoverTimer.current = setTimeout(() => activate(id), 180);
+  };
+
+  const handleCardLeave = () => {
+    if (hoverTimer.current) {
+      clearTimeout(hoverTimer.current);
+      hoverTimer.current = null;
+    }
   };
 
   return (
@@ -400,10 +412,11 @@ export default function Services() {
                 <motion.div
                   key={service.id}
                   layout
-                  transition={{ duration: 0.48, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                   className="relative overflow-hidden rounded-2xl cursor-pointer"
                   style={{ gridArea: slot }}
-                  onMouseEnter={() => activate(service.id)}
+                  onMouseEnter={() => handleCardEnter(service.id)}
+                  onMouseLeave={handleCardLeave}
                 >
                   {isFeatured ? (
                     <FeaturedCard service={service} onDotClick={activate} />

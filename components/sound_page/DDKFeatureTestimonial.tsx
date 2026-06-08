@@ -253,7 +253,7 @@ export default function DDKFeatureTestimonial() {
                   color: "rgba(255,255,255,0.88)",
                 }}
               >
-                Basu is one of the fastest engineers ever — what he was doing
+                Basu is one of the fastest engineers ever. What he was doing
                 with this setup back then amused me.{" "}
                 <span style={{ color: "#EA9A61" }}>
                   My biggest songs are mixed by Basu.

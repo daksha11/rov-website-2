@@ -86,16 +86,16 @@ export default function WebPricingTiers() {
           className="block text-xs uppercase tracking-[0.3em] text-[#EA9A61] mb-3"
           style={{ fontFamily: BODY }}
         >
-          Investment
+          Pricing
         </motion.span>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ ...spring, delay: 0.1 }}
-          className="text-white text-3xl md:text-4xl lg:text-5xl font-bold italic mb-12"
-          style={{ fontFamily: HEADING }}
+          className="text-white text-3xl md:text-4xl lg:text-5xl font-bold italic mb-12 max-w-2xl"
+          style={{ fontFamily: HEADING, textWrap: "balance" } as React.CSSProperties}
         >
-          Your website should be closing deals while you sleep
+          Built to close deals while you sleep
         </motion.h2>
 
         {/* Tier cards */}

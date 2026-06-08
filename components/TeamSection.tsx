@@ -236,6 +236,30 @@ const teamMembers: TeamMember[] = [
         specialties: "I draw custom, fun illustrations from scratch for R.O.V.'s projects. I bring a playful, hand-crafted touch to every piece, turning ideas into one-of-a-kind visuals that give each project its own personality and charm.",
         shadowColor: "160, 110, 130"
     },
+    {
+        id: 20,
+        image: "/teammembers/krina.jpg",
+        category: "Creative",
+        creativeSubcategory: "Motion",
+        name: "Krina",
+        role: "PHOTOGRAPHER & CAMERA OPERATOR",
+        skills: ["Photography", "Camera Operation", "Visual Composition", "Lighting", "On-Set Direction", "Post-Processing"],
+        location: "Atlanta",
+        specialties: "I shoot with a precision-first mentality, framing each shot to tell the story before any edit is applied. From on-location photography to camera operation on set, I handle the lens side of production so every frame is intentional.",
+        shadowColor: "120, 90, 140"
+    },
+    {
+        id: 21,
+        image: "/teammembers/chandra.jpg",
+        category: "Creative",
+        creativeSubcategory: "Motion",
+        name: "Chandra",
+        role: "DIRECTOR & CONTENT STRATEGIST",
+        skills: ["Creative Direction", "Content Strategy", "Camera Operation", "Storytelling", "Production Planning", "Brand Narrative"],
+        location: "Atlanta",
+        specialties: "I direct shoots and shape content strategy from concept to camera. I think in story arcs and translate brand ideas into visual narratives that actually land. On set, I'm also behind the camera, making sure what we capture matches the vision.",
+        shadowColor: "100, 130, 160"
+    },
 ];
 
 const categories: Category[] = ["Creative", "Tech", "Systems"];

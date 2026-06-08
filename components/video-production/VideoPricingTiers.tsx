@@ -18,6 +18,17 @@ export default function VideoPricingTiers() {
       style={{ padding: "0 clamp(16px, 5vw, 60px) clamp(60px, 8vw, 80px)" }}
     >
       <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={spring}
+          className="block text-xs uppercase tracking-[0.3em] text-[#EA9A61] mb-3"
+          style={{ fontFamily: BODY }}
+        >
+          Pricing
+        </motion.span>
+
         {/* Absolute Cinema card */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

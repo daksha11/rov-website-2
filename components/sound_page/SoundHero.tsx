@@ -27,6 +27,9 @@ const SoundHero: React.FC = () => {
 
                 {/* Content */}
                 <div className="relative z-20 px-8 md:px-16 w-full">
+                    <span className="block text-white/40 mb-6 uppercase" style={{ fontFamily: 'Roboto, sans-serif', fontSize: '12px', letterSpacing: '0.2em' }}>
+                        Sound Engineering
+                    </span>
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-start gap-12 md:gap-6 pb-12 pt-2 md:pt-4">
                         {/* Left side - Tagline */}
                         <h1 className="flex flex-col">

@@ -404,7 +404,7 @@ export default function SavingsCalculator() {
               </>
             ) : (
               <p className="text-white/40 text-sm" style={{ fontFamily: BODY }}>
-                R.O.V matches your spend — with faster turnaround and pro mixing included.
+                R.O.V matches your spend, with faster turnaround and pro mixing included.
               </p>
             )}
           </div>
