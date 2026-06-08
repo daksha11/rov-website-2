@@ -563,7 +563,6 @@ const TeamSection: React.FC = () => {
                             const samSuen   = byId(15);
                             const suchet    = byId(10);
                             const daksha    = byId(7);
-                            const jasnoor   = byId(8);
                             const vaishnavi = byId(3);
                             const tanvi     = byId(4);
                             const david     = byId(6);
@@ -600,7 +599,6 @@ const TeamSection: React.FC = () => {
                                                 {mk(suchet)}
                                                 {mk(daksha)}
                                                 <div className="text-block"><h2>THE</h2></div>
-                                                {mk(jasnoor)}
                                                 {mk(vaishnavi)}
                                                 {mk(tanvi)}
                                             </React.Fragment>
