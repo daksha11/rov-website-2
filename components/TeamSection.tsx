@@ -14,6 +14,8 @@ interface TeamMember {
     image: string;
     category: Category;
     creativeSubcategory?: CreativeSubcategory;
+    additionalCategories?: Category[];
+    additionalSubcategories?: CreativeSubcategory[];
     name: string;
     role: string;
     skills: string[];
@@ -30,32 +32,8 @@ const teamMembers: TeamMember[] = [
         image: "/teammembers/basutm2.webp",
         category: "Creative",
         creativeSubcategory: "UI/UX",
-        name: "Ayush",
-        role: "FOUNDER & CREATIVE DIRECTOR",
-        skills: ["Creative Direction", "Brand Strategy", "Web Development", "Design Systems", "Client Relations"],
-        location: "Atlanta",
-        portfolioLink: "https://www.ayushbasu.com/",
-        specialties: "I lead creative direction across all client projects and internal initiatives while overseeing company operations. I contribute hands-on to design, development, and client communications, making sure R.O.V.'s vision stays consistent from pitch to delivery.",
-        shadowColor: "101, 67, 33"
-    },
-    {
-        id: 18,
-        image: "/teammembers/basutm2.webp",
-        category: "Creative",
-        creativeSubcategory: "Motion",
-        name: "Ayush",
-        role: "FOUNDER & CREATIVE DIRECTOR",
-        skills: ["Creative Direction", "Brand Strategy", "Web Development", "Design Systems", "Client Relations"],
-        location: "Atlanta",
-        portfolioLink: "https://www.ayushbasu.com/",
-        specialties: "I lead creative direction across all client projects and internal initiatives while overseeing company operations. I contribute hands-on to design, development, and client communications, making sure R.O.V.'s vision stays consistent from pitch to delivery.",
-        shadowColor: "101, 67, 33"
-    },
-    {
-        id: 19,
-        image: "/teammembers/basutm2.webp",
-        category: "Creative",
-        creativeSubcategory: "Sound",
+        additionalCategories: ["Tech", "Systems"],
+        additionalSubcategories: ["Motion", "Sound"],
         name: "Ayush",
         role: "FOUNDER & CREATIVE DIRECTOR",
         skills: ["Creative Direction", "Brand Strategy", "Web Development", "Design Systems", "Client Relations"],
@@ -136,28 +114,8 @@ const teamMembers: TeamMember[] = [
         specialties: "I'm R.O.V.'s go-to technical lead for complex coding challenges and scalable solutions. I solve the toughest tech problems, architect robust systems, and make sure every build is performant, maintainable, and production-ready.",
         shadowColor: "90, 120, 150"
     },
-    {
-        id: 8,
-        image: "/teammembers/jasnoortm.webp",
-        category: "Tech",
-        name: "Jasnoor",
-        role: "DEVELOPER & FRONTEND SPECIALIST",
-        skills: ["Frontend Development", "Creative Problem Solving", "UI Implementation", "Interactive Features", "Component Development"],
-        location: "Atlanta",
-        specialties: "I work across projects solving complex technical problems and building innovative frontend solutions. I bring creative thinking to development, always looking for elegant ways to turn ambitious design ideas into reality.",
-        shadowColor: "120, 140, 100"
-    },
-    {
-        id: 9,
-        image: "/teammembers/basutm2.webp",
-        category: "Tech",
-        name: "Ayush",
-        role: "FOUNDER & CREATIVE DIRECTOR",
-        skills: ["Creative Direction", "Brand Strategy", "Web Development", "Design Systems", "Client Relations"],
-        location: "Atlanta",
-        portfolioLink: "https://www.ayushbasu.com/",
-        specialties: "I lead creative direction across all client projects and internal initiatives while overseeing company operations. I contribute hands-on to design, development, and client communications, making sure R.O.V.'s vision stays consistent from pitch to delivery.",
-    },
+    // hidden: Jasnoor
+
     {
         id: 10,
         image: "/teammembers/suchettm.webp",
@@ -331,7 +289,10 @@ const TeamSection: React.FC = () => {
 
     const filteredMembers = activeCategory === "All"
         ? teamMembers.filter((m, i, arr) => arr.findIndex(t => t.name === m.name) === i)
-        : teamMembers.filter(m => m.category === activeCategory);
+        : teamMembers.filter(m =>
+            m.category === activeCategory ||
+            (m.additionalCategories?.includes(activeCategory))
+          );
 
     const ExpandedMemberView = ({ expandedMember }: { expandedMember: TeamMember }) => (
         <motion.div
@@ -367,9 +328,25 @@ const TeamSection: React.FC = () => {
                             <h3 className="text-[clamp(2.5rem,5vw,4rem)] font-black text-[#F7F2E4] uppercase leading-none mb-4" style={{ fontFamily: 'Norwige, sans-serif' }}>
                                 {expandedMember.name}
                             </h3>
-                            <p className="text-sm tracking-[0.2em] uppercase text-[#DAA520] mb-8" style={{ fontFamily: 'Roboto, sans-serif' }}>
+                            <p className="text-sm tracking-[0.2em] uppercase text-[#DAA520] mb-4" style={{ fontFamily: 'Roboto, sans-serif' }}>
                                 {expandedMember.role} • {expandedMember.location}
                             </p>
+                            {expandedMember.additionalCategories && expandedMember.additionalCategories.length > 0 && (
+                                <div className="flex flex-wrap gap-2 mb-8">
+                                    {[expandedMember.category, ...expandedMember.additionalCategories].filter(c => c !== "All").map(cat => (
+                                        <span key={cat} className="px-3 py-1 rounded-full text-[10px] uppercase tracking-[0.18em]"
+                                            style={{ fontFamily: 'Roboto, sans-serif', background: 'rgba(101,67,33,0.5)', color: '#FFF4E3', border: '1px solid rgba(255,244,227,0.15)' }}>
+                                            {cat}
+                                        </span>
+                                    ))}
+                                    {expandedMember.creativeSubcategory && [expandedMember.creativeSubcategory, ...(expandedMember.additionalSubcategories ?? [])].map(sub => (
+                                        <span key={sub} className="px-3 py-1 rounded-full text-[10px] uppercase tracking-[0.18em]"
+                                            style={{ fontFamily: 'Roboto, sans-serif', background: 'rgba(255,244,227,0.06)', color: 'rgba(255,244,227,0.5)', border: '1px solid rgba(255,244,227,0.1)' }}>
+                                            {sub}
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 {expandedMember.specialties && (
@@ -408,21 +385,21 @@ const TeamSection: React.FC = () => {
     const MemberGrid = ({ members }: { members: TeamMember[] }) => (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {members.map((member) => (
-                <motion.div
-                    layout
-                    key={member.id}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="relative h-[300px] rounded-2xl overflow-hidden cursor-pointer group border border-white/10"
-                    onClick={() => setExpandedMemberId(member.id)}
-                >
-                    <Image src={member.image} alt={member.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-                    <div className="absolute bottom-6 left-6 right-6">
-                        <h4 className="text-2xl font-black text-white uppercase" style={{ fontFamily: 'Norwige, sans-serif' }}>{member.name}</h4>
-                        <p className="text-[clamp(0.7rem,1.5vw,0.75rem)] tracking-[0.2em] text-[#DAA520] uppercase" style={{ fontFamily: 'Roboto, sans-serif' }}>{member.role}</p>
-                    </div>
-                </motion.div>
+                    <motion.div
+                        layout
+                        key={member.id}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="relative h-[300px] rounded-2xl overflow-hidden cursor-pointer group border border-white/10"
+                        onClick={() => setExpandedMemberId(member.id)}
+                    >
+                        <Image src={member.image} alt={member.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+                        <div className="absolute bottom-6 left-6 right-6">
+                            <h4 className="text-2xl font-black text-white uppercase" style={{ fontFamily: 'Norwige, sans-serif' }}>{member.name}</h4>
+                            <p className="text-[clamp(0.7rem,1.5vw,0.75rem)] tracking-[0.2em] text-[#DAA520] uppercase" style={{ fontFamily: 'Roboto, sans-serif' }}>{member.role}</p>
+                        </div>
+                    </motion.div>
             ))}
         </div>
     );
@@ -449,12 +426,15 @@ const TeamSection: React.FC = () => {
     const CreativeSection = ({ members }: { members: TeamMember[] }) => {
         const expandedMember = members.find(m => m.id === expandedMemberId);
 
+        const inSub = (m: TeamMember, sub: CreativeSubcategory) =>
+            m.creativeSubcategory === sub || m.additionalSubcategories?.includes(sub);
+
         // Get members for the active sub-filter
         const getSubMembers = () => {
             if (activeCreativeSub === "All") {
                 return members.filter(m => m.id !== expandedMemberId);
             }
-            return members.filter(m => m.creativeSubcategory === activeCreativeSub && m.id !== expandedMemberId);
+            return members.filter(m => inSub(m, activeCreativeSub) && m.id !== expandedMemberId);
         };
 
         const subMembers = getSubMembers();
@@ -463,7 +443,7 @@ const TeamSection: React.FC = () => {
         const groupedBySubcategory = activeCreativeSub === "All"
             ? creativeSubcategories.map(sub => ({
                 label: sub,
-                members: members.filter(m => m.creativeSubcategory === sub && m.id !== expandedMemberId),
+                members: members.filter(m => inSub(m, sub) && m.id !== expandedMemberId),
             })).filter(g => g.members.length > 0)
             : [];
 
@@ -573,51 +553,79 @@ const TeamSection: React.FC = () => {
                     </motion.div>
                 ) : activeCategory === "All" ? (
                     <motion.div key="marquee" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full">
-                        <div className="marquee-row">
-                            <div className="marquee-track scroll-left">
-                                {[...Array(2)].map((_, i) => (
-                                    <React.Fragment key={`r1-${i}`}>
-                                        <div className="text-block"><h2>MEET</h2></div>
-                                        <ImageCard src={teamMembers[0].image} alt="Ayush" name={teamMembers[0].name} role={teamMembers[0].role} onClick={() => handleMarqueeMemberClick(teamMembers[0])} />
-                                        <ImageCard src={teamMembers[9].image} alt="Suchet" name={teamMembers[9].name} role={teamMembers[9].role} onClick={() => handleMarqueeMemberClick(teamMembers[9])} />
-                                        <button className="category-button" onClick={() => setActiveCategory("Creative")}>CREATIVE</button>
-                                        <ImageCard src={teamMembers[6].image} alt="Daksha" name={teamMembers[6].name} role={teamMembers[6].role} onClick={() => handleMarqueeMemberClick(teamMembers[6])} />
-                                        <ImageCard src={teamMembers[1].image} alt="Kavya" name={teamMembers[1].name} role={teamMembers[1].role} onClick={() => handleMarqueeMemberClick(teamMembers[1])} />
-                                        <ImageCard src={teamMembers[16].image} alt="Anish" name={teamMembers[16].name} role={teamMembers[16].role} onClick={() => handleMarqueeMemberClick(teamMembers[16])} />
-                                    </React.Fragment>
-                                ))}
-                            </div>
-                        </div>
+                        {(() => {
+                            // Resolve by id so array order changes never break the marquee
+                            const byId = (id: number) => teamMembers.find(m => m.id === id)!;
+                            const ayush     = byId(1);
+                            const kavya     = byId(13);
+                            const jiwon     = byId(14);
+                            const anish     = byId(16);
+                            const samSuen   = byId(15);
+                            const suchet    = byId(10);
+                            const daksha    = byId(7);
+                            const jasnoor   = byId(8);
+                            const vaishnavi = byId(3);
+                            const tanvi     = byId(4);
+                            const david     = byId(6);
+                            const chaman    = byId(5);
+                            const krina     = byId(20);
+                            const chandra   = byId(21);
+                            const eshaal    = byId(17);
+                            const mk = (m: TeamMember) => (
+                                <ImageCard key={m.id} src={m.image} alt={m.name} name={m.name} role={m.role} onClick={() => handleMarqueeMemberClick(m)} rotation={m.imageRotation} />
+                            );
+                            return (
+                                <>
+                                <div className="marquee-row">
+                                    <div className="marquee-track scroll-left">
+                                        {[...Array(2)].map((_, i) => (
+                                            <React.Fragment key={`r1-${i}`}>
+                                                <div className="text-block"><h2>MEET</h2></div>
+                                                {mk(ayush)}
+                                                {mk(kavya)}
+                                                <button className="category-button" onClick={() => setActiveCategory("Creative")}>CREATIVE</button>
+                                                {mk(jiwon)}
+                                                {mk(anish)}
+                                                {mk(samSuen)}
+                                            </React.Fragment>
+                                        ))}
+                                    </div>
+                                </div>
 
-                        <div className="marquee-row">
-                            <div className="marquee-track scroll-right">
-                                {[...Array(2)].map((_, i) => (
-                                    <React.Fragment key={`r2-${i}`}>
-                                        <button className="category-button" onClick={() => setActiveCategory("Tech")}>TECH</button>
-                                        <ImageCard src={teamMembers[12].image} alt="Kavya" name={teamMembers[12].name} role={teamMembers[12].role} onClick={() => handleMarqueeMemberClick(teamMembers[12])} />
-                                        <ImageCard src={teamMembers[13].image} alt="Jiwon" name={teamMembers[13].name} role={teamMembers[13].role} onClick={() => handleMarqueeMemberClick(teamMembers[13])} />
-                                        <div className="text-block"><h2>THE</h2></div>
-                                        <ImageCard src={teamMembers[2].image} alt="Vaishnavi" name={teamMembers[2].name} role={teamMembers[2].role} onClick={() => handleMarqueeMemberClick(teamMembers[2])} />
-                                        <ImageCard src={teamMembers[3].image} alt="Tanvi" name={teamMembers[3].name} role={teamMembers[3].role} onClick={() => handleMarqueeMemberClick(teamMembers[3])} />
-                                    </React.Fragment>
-                                ))}
-                            </div>
-                        </div>
+                                <div className="marquee-row">
+                                    <div className="marquee-track scroll-right">
+                                        {[...Array(2)].map((_, i) => (
+                                            <React.Fragment key={`r2-${i}`}>
+                                                <button className="category-button" onClick={() => setActiveCategory("Tech")}>TECH</button>
+                                                {mk(suchet)}
+                                                {mk(daksha)}
+                                                <div className="text-block"><h2>THE</h2></div>
+                                                {mk(jasnoor)}
+                                                {mk(vaishnavi)}
+                                                {mk(tanvi)}
+                                            </React.Fragment>
+                                        ))}
+                                    </div>
+                                </div>
 
-                        <div className="marquee-row">
-                            <div className="marquee-track scroll-left">
-                                {[...Array(2)].map((_, i) => (
-                                    <React.Fragment key={`r3-${i}`}>
-                                        <ImageCard src={teamMembers[5].image} alt="David" name={teamMembers[5].name} role={teamMembers[5].role} onClick={() => handleMarqueeMemberClick(teamMembers[5])} />
-                                        <ImageCard src={teamMembers[4].image} alt="Chaman" name={teamMembers[4].name} role={teamMembers[4].role} onClick={() => handleMarqueeMemberClick(teamMembers[4])} rotation={teamMembers[4].imageRotation} />
-                                        <div className="text-block"><h2>TEAM</h2></div>
-                                        <ImageCard src={teamMembers[7].image} alt="Jasnoor" name={teamMembers[7].name} role={teamMembers[7].role} onClick={() => handleMarqueeMemberClick(teamMembers[7])} />
-                                        <ImageCard src={teamMembers[10].image} alt="Suchet" name={teamMembers[10].name} role={teamMembers[10].role} onClick={() => handleMarqueeMemberClick(teamMembers[10])} />
-                                        <button className="category-button" onClick={() => setActiveCategory("Systems")}>SYSTEMS</button>
-                                    </React.Fragment>
-                                ))}
-                            </div>
-                        </div>
+                                <div className="marquee-row">
+                                    <div className="marquee-track scroll-left">
+                                        {[...Array(2)].map((_, i) => (
+                                            <React.Fragment key={`r3-${i}`}>
+                                                {mk(david)}
+                                                {mk(chaman)}
+                                                <div className="text-block"><h2>TEAM</h2></div>
+                                                {mk(krina)}
+                                                {mk(chandra)}
+                                                <button className="category-button" onClick={() => setActiveCategory("Systems")}>SYSTEMS</button>
+                                                {mk(eshaal)}
+                                            </React.Fragment>
+                                        ))}
+                                    </div>
+                                </div>
+                                </>
+                            );
+                        })()}
                     </motion.div>
                 ) : activeCategory === "Creative" ? (
                     <CreativeSection members={filteredMembers} />
