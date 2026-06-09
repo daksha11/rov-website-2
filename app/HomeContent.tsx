@@ -117,7 +117,7 @@ export default function HomeContent() {
 
         <TeamSection />
 
-        <div className="py-20">
+        {/* <div className="py-20">
           <AlbumCoverLoop
             logos={albumCovers}
             speed={100}
@@ -125,7 +125,7 @@ export default function HomeContent() {
             gap={20}
             direction="left"
           />
-        </div>
+        </div> */}
 
         <Footer />
 
