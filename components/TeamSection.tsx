@@ -196,7 +196,7 @@ const teamMembers: TeamMember[] = [
     },
     {
         id: 20,
-        image: "/teammembers/krina.jpg",
+        image: "/teammembers/krinapic.jpg",
         category: "Creative",
         creativeSubcategory: "Motion",
         name: "Krina",
