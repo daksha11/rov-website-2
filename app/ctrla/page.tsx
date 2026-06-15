@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import CtrlAContent from "./CtrlAContent";
 
 export const metadata: Metadata = {
-    title: "CTRL A — The Creative Command",
+    title: "CTRL A — Issue 01 | The Creative Command",
     description:
-        "CTRL A by Range of View Studios — a creative platform for music, web development, and design. Tools, community, and resources for builders.",
+        "CTRL A by Range of View Studios — a creative magazine for music, web development, and design. Tested tools, honest reviews, and a new pick every Friday.",
     alternates: { canonical: "https://www.rovstudios.com/ctrla" },
     openGraph: {
         title: "CTRL A — The Creative Command | Range of View Studios",

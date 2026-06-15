@@ -30,10 +30,39 @@ export interface ToolkitSection {
   pageNumber: string;
   accentColor: string;
   intro: string;
+  /** Short editorial blurb for the "Three Toolkits" column (1–2 lines). */
+  blurb: string;
+  /** e.g. "12 PICKS" — shown on the toolkit column. */
+  pickCount: string;
+  /** e.g. "Updated weekly". */
+  cadence: string;
   tools: Tool[];
   misconceptions: Misconception[];
   guide: { title: string; steps: GuideStep[] };
 }
+
+// ── ISSUE MASTHEAD / STATS ──────────────────────────────
+
+export interface IssueStat {
+  value: string;
+  label: string;
+}
+
+export const issueMeta = {
+  volume: "Vol. 04",
+  issue: "Issue 01",
+  season: "Spring 2026",
+  date: "Fri. 15 March",
+  tagline: "On the tools changing creative work, tested and reviewed.",
+  stats: [
+    { value: "52", label: "Tools tested" },
+    { value: "12", label: "Picks made" },
+    { value: "04", label: "Categories" },
+    { value: "01", label: "Cadence" },
+  ] as IssueStat[],
+  thisWeek:
+    "This Week: the brand-kit generator ships OKLCH harmony controls — engineer a full palette from one colour, then export it to Markdown.",
+};
 
 // ── MUSIC TOOLKIT ──────────────────────────────────────
 
@@ -397,6 +426,9 @@ export const toolkitSections: ToolkitSection[] = [
     pageNumber: "01",
     accentColor: "#EA9A61",
     intro: "The tools, plugins, and platforms our sound engineers actually use — not what gets promoted on YouTube. From DAWs to distribution, every pick has been tested in real sessions with real artists.",
+    blurb: "DAWs, plugins, and platforms our engineers run in real sessions. No sponsored picks.",
+    pickCount: "8 Picks",
+    cadence: "Updated weekly",
     tools: musicTools,
     misconceptions: musicMisconceptions,
     guide: musicGuide,
@@ -407,6 +439,9 @@ export const toolkitSections: ToolkitSection[] = [
     pageNumber: "02",
     accentColor: "#B16937",
     intro: "Our full development stack, from framework to deployment. These are the tools we build client sites with every day — chosen for speed, reliability, and developer experience.",
+    blurb: "The stack we ship client sites on, framework to deploy. Chosen for speed and DX.",
+    pickCount: "8 Picks",
+    cadence: "Updated weekly",
     tools: webDevTools,
     misconceptions: webDevMisconceptions,
     guide: webDevGuide,
@@ -417,6 +452,9 @@ export const toolkitSections: ToolkitSection[] = [
     pageNumber: "03",
     accentColor: "#C4956A",
     intro: "The design toolkit our creative team swears by. Interface design, branding, 3D, and everything in between. Curated by designers who ship real client work, not concept pieces.",
+    blurb: "Interface, brand, and 3D tools our designers swear by. Curated from real client work.",
+    pickCount: "8 Picks",
+    cadence: "Updated weekly",
     tools: designTools,
     misconceptions: designMisconceptions,
     guide: designGuide,

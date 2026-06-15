@@ -12,6 +12,7 @@ const SERVICES = [
     id: "web",
     title: "Web Optimization",
     tagline: "Turning clicks into connections with seamless, high-impact designs.",
+    subtitle: "Built to perform, designed to feel right.",
     link: "/web",
     accent: "#4C2D16",
     images: ["/heroassets/webfolder1.png", "/heroassets/webfolder2.png", "/heroassets/webfolder3.webp"],
@@ -23,6 +24,7 @@ const SERVICES = [
     id: "sound",
     title: "Sound Engineering",
     tagline: "Studio-grade mixing and mastering delivered in 48 hours.",
+    subtitle: "Because great music deserves to sound like it.",
     link: "/sound",
     accent: "#7A4E28",
     images: ["/heroassets/1.png", "/heroassets/2.png", "/heroassets/3.png"],
@@ -33,18 +35,20 @@ const SERVICES = [
   {
     id: "video",
     title: "Video Production",
-    tagline: "Aerial to street level — editorial-grade footage that makes your brand impossible to scroll past.",
+    tagline: "Aerial to street level, editorial-grade footage that makes your brand impossible to scroll past.",
+    subtitle: "We find the frame that says everything.",
     link: "/video-production",
     accent: "#6B2E1A",
     images: ["/heroassets/hydvideoframe.webp", "/heroassets/ponceshowframe.webp", "/heroassets/samxbasuvid.webp"],
     transparent: false,
-    cta: "Watch Our Reel",
+    cta: "See Our Work",
     icon: Clapperboard,
   },
   {
     id: "ai",
     title: "AI Solutions",
     tagline: "Automations and AI systems that cut manual work by 60%.",
+    subtitle: "Built smart, so your team can think bigger.",
     link: "/ai-automation",
     accent: "#2E1A08",
     images: ["/heroassets/codingframe.webp", "/heroassets/excelframe.webp", "/heroassets/n8nframe.webp"],
@@ -179,25 +183,6 @@ function FeaturedCard({
           }}
         />
 
-        {/* Pagination dots — top right */}
-        <div className="absolute top-8 right-8 flex items-center gap-2 z-10">
-          {SERVICES.map((s) => (
-            <button
-              key={s.id}
-              onClick={() => onDotClick(s.id)}
-              className="rounded-full"
-              style={{
-                width: s.id === service.id ? 22 : 10,
-                height: 10,
-                background:
-                  s.id === service.id
-                    ? "rgba(255,255,255,0.92)"
-                    : "rgba(255,255,255,0.28)",
-                transition: "width 0.25s ease, background 0.25s ease",
-              }}
-            />
-          ))}
-        </div>
 
         {/* Text block — top left */}
         <div className="relative z-10 max-w-xs">
@@ -208,10 +193,16 @@ function FeaturedCard({
             {service.title}
           </h3>
           <p
-            className="text-white/80 text-sm md:text-base mb-7"
+            className="text-white/80 text-sm md:text-base mb-2"
             style={{ fontFamily: "Roboto, sans-serif", fontWeight: 300, lineHeight: 1.6 }}
           >
             {service.tagline}
+          </p>
+          <p
+            className="text-white/55 text-sm md:text-base mb-7"
+            style={{ fontFamily: "Roboto, sans-serif", fontWeight: 300, lineHeight: 1.6 }}
+          >
+            {service.subtitle}
           </p>
           <Link href={service.link}>
             <button
@@ -456,10 +447,16 @@ export default function Services() {
                     {service.title}
                   </h3>
                   <p
-                    className="text-white/72 text-sm mb-5"
+                    className="text-white/72 text-sm mb-1"
                     style={{ fontFamily: "Roboto, sans-serif", fontWeight: 300, lineHeight: 1.55 }}
                   >
                     {service.tagline}
+                  </p>
+                  <p
+                    className="text-white/45 text-sm mb-5"
+                    style={{ fontFamily: "Roboto, sans-serif", fontWeight: 300, lineHeight: 1.55 }}
+                  >
+                    {service.subtitle}
                   </p>
                   <span
                     className="inline-block px-5 py-2 rounded-full text-sm text-white"

@@ -34,6 +34,37 @@ const clamp = (n: number, lo: number, hi: number) =>
   Math.max(lo, Math.min(hi, n));
 const mod360 = (h: number) => ((h % 360) + 360) % 360;
 
+function hexToHsl(hex: string): { h: number; s: number; l: number } {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h = 0, s = 0;
+  const l = (max + min) / 2;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+      case g: h = (b - r) / d + 2; break;
+      default: h = (r - g) / d + 4;
+    }
+    h /= 6;
+  }
+  return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+}
+
+function hslToHex(h: number, s: number, l: number): string {
+  const sl = s / 100, ll = l / 100;
+  const a = sl * Math.min(ll, 1 - ll);
+  const f = (n: number) => {
+    const k = (n + h / 30) % 12;
+    const c = ll - a * Math.max(-1, Math.min(k - 3, 9 - k, 1));
+    return Math.round(c * 255).toString(16).padStart(2, "0");
+  };
+  return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
+}
+
 function buildRoles(baseOk: OklchColor): {
   primary: OklchColor;
   secondary: OklchColor;
@@ -208,8 +239,29 @@ export default function ColorPaletteStep() {
     Array(ROLE_LABELS_5.length).fill("")
   );
   const [pickedIdx, setPickedIdx] = useState<number | null>(null);
+  const [hslTarget, setHslTarget] = useState<"base" | number>("base");
+  const [generatedOverrides, setGeneratedOverrides] = useState<Record<number, string>>({});
 
   const generated = useMemo(() => generatePalette(baseColor, harmony), [baseColor, harmony]);
+
+  const displayedSwatches = useMemo(
+    () => generated.map((s, i) =>
+      generatedOverrides[i] ? { hex: generatedOverrides[i], gamutClipped: false } : s
+    ),
+    [generated, generatedOverrides]
+  );
+
+  const hsl = useMemo(() => {
+    if (typeof hslTarget === "number") {
+      const hex = generatedOverrides[hslTarget] ?? generated[hslTarget]?.hex;
+      if (hex && /^#[0-9a-fA-F]{6}$/.test(hex)) return hexToHsl(hex);
+    }
+    const sv = hsva.s / 100;
+    const vv = hsva.v / 100;
+    const l = vv * (1 - sv / 2);
+    const sl = (l === 0 || l === 1) ? 0 : (vv - l) / Math.min(l, 1 - l);
+    return { h: Math.round(hsva.h), s: Math.round(sl * 100), l: Math.round(l * 100) };
+  }, [hsva, hslTarget, generated, generatedOverrides]);
 
   useEffect(() => {
     const target = getRoleLabels(harmony).length;
@@ -220,6 +272,8 @@ export default function ColorPaletteStep() {
       return prev.slice(0, target);
     });
     setPickedIdx(null);
+    setHslTarget("base");
+    setGeneratedOverrides({});
   }, [harmony]);
 
   const syncToStore = useCallback(
@@ -284,7 +338,7 @@ export default function ColorPaletteStep() {
   };
 
   const handleAutoFill = () => {
-    const hexes = generated.map((g) => g.hex);
+    const hexes = displayedSwatches.map((s) => s.hex);
     setPaletteSlots((prev) => prev.map((_, i) => hexes[i] ?? prev[i] ?? ""));
     setPickedIdx(null);
   };
@@ -327,6 +381,21 @@ export default function ColorPaletteStep() {
     if (/^#[0-9a-fA-F]{6}$/.test(val)) {
       setHsva(hexToHsva(val));
     }
+  };
+
+  const handleHslChange = (channel: "h" | "s" | "l", val: number) => {
+    const next = { ...hsl, [channel]: val };
+    if (typeof hslTarget === "number") {
+      setGeneratedOverrides((prev) => ({ ...prev, [hslTarget]: hslToHex(next.h, next.s, next.l) }));
+      return;
+    }
+    const sl = next.s / 100;
+    const ll = next.l / 100;
+    const v = ll + sl * Math.min(ll, 1 - ll);
+    const sv = v === 0 ? 0 : 2 * (1 - ll / v);
+    const nextHsva: HsvaColor = { h: next.h, s: Math.round(sv * 100), v: Math.round(v * 100), a: hsva.a };
+    setHsva(nextHsva);
+    setBaseColor(hsvaToHex(nextHsva).toUpperCase());
   };
 
   const handleHexPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
@@ -456,6 +525,108 @@ export default function ColorPaletteStep() {
               </div>
             </div>
 
+            {/* HSL Sliders */}
+            <div className="mt-4 pt-4 border-t border-[rgba(208,190,165,0.08)] space-y-3">
+              {/* Target selector */}
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <span className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#D0BEA5]/60 shrink-0 mr-1">
+                  Adjust
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setHslTarget("base")}
+                  className={cn(
+                    "px-2.5 py-1 rounded-full text-[9px] font-semibold tracking-[0.12em] uppercase transition-all border",
+                    hslTarget === "base"
+                      ? "bg-[rgba(208,190,165,0.15)] border-[rgba(208,190,165,0.45)] text-[#D0BEA5]"
+                      : "bg-[rgba(255,244,227,0.02)] border-[rgba(208,190,165,0.12)] text-[#D0BEA5]/45 hover:text-[#D0BEA5]/75 hover:border-[rgba(208,190,165,0.25)]"
+                  )}
+                >
+                  Base
+                </button>
+                {displayedSwatches.map((swatch, i) => {
+                  const isActive = hslTarget === i;
+                  const label = getRoleLabels(harmony)[i] ?? `Color ${i + 1}`;
+                  const isOverridden = !!generatedOverrides[i];
+                  return (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => setHslTarget(isActive ? "base" : i)}
+                      className={cn(
+                        "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9px] font-semibold tracking-[0.12em] uppercase transition-all",
+                        isActive
+                          ? "border-2 border-[rgba(208,190,165,0.5)] text-[#D0BEA5]"
+                          : "border border-[rgba(208,190,165,0.12)] text-[#D0BEA5]/45 hover:text-[#D0BEA5]/75 hover:border-[rgba(208,190,165,0.25)]"
+                      )}
+                      style={{ background: isActive ? `${swatch.hex}28` : "rgba(255,244,227,0.02)" }}
+                    >
+                      <span
+                        className="w-2.5 h-2.5 rounded-full shrink-0 border border-white/20"
+                        style={{ background: swatch.hex }}
+                      />
+                      {label}
+                      {isOverridden && (
+                        <span className="text-[#C9A961] leading-none" title="Manually adjusted">✦</span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {(
+                [
+                  {
+                    key: "h" as const,
+                    label: "Hue",
+                    min: 0,
+                    max: 360,
+                    value: hsl.h,
+                    unit: "°",
+                    track: "linear-gradient(to right,#ff0000,#ffff00,#00ff00,#00ffff,#0000ff,#ff00ff,#ff0000)",
+                  },
+                  {
+                    key: "s" as const,
+                    label: "Saturation",
+                    min: 0,
+                    max: 100,
+                    value: hsl.s,
+                    unit: "%",
+                    track: `linear-gradient(to right,hsl(${hsl.h},0%,${hsl.l}%),hsl(${hsl.h},100%,${hsl.l}%))`,
+                  },
+                  {
+                    key: "l" as const,
+                    label: "Luminance",
+                    min: 0,
+                    max: 100,
+                    value: hsl.l,
+                    unit: "%",
+                    track: `linear-gradient(to right,#000000,hsl(${hsl.h},${hsl.s}%,50%),#ffffff)`,
+                  },
+                ] as const
+              ).map(({ key, label, min, max, value, unit, track }) => (
+                <div key={key}>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#D0BEA5]/60">
+                      {label}
+                    </label>
+                    <span className="text-[9px] font-mono text-[#FFF4E3]/50 tabular-nums w-10 text-right">
+                      {value}{unit}
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min={min}
+                    max={max}
+                    value={value}
+                    onChange={(e) => handleHslChange(key, +e.target.value)}
+                    className="w-full h-2 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-[0_1px_6px_rgba(0,0,0,0.6),0_0_0_1.5px_rgba(255,255,255,0.3)] [&::-webkit-slider-thumb]:cursor-grab [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-none [&::-moz-range-thumb]:shadow-[0_1px_6px_rgba(0,0,0,0.6)]"
+                    style={{ background: track }}
+                  />
+                </div>
+              ))}
+            </div>
+
             {firstLogo && (
               <div className="flex items-center gap-2 mt-4 pt-4 border-t border-[rgba(208,190,165,0.08)]">
                 <button
@@ -516,9 +687,9 @@ export default function ColorPaletteStep() {
             </p>
             <div
               className="grid gap-2"
-              style={{ gridTemplateColumns: `repeat(${generated.length}, minmax(0, 1fr))` }}
+              style={{ gridTemplateColumns: `repeat(${displayedSwatches.length}, minmax(0, 1fr))` }}
             >
-              {generated.map((sugg, i) => {
+              {displayedSwatches.map((sugg, i) => {
                 const isPicked = pickedIdx === i;
                 const dimmed = pickedIdx !== null && !isPicked;
                 return (
