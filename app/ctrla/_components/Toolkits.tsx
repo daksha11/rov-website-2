@@ -48,7 +48,7 @@ export function ThreeToolkits() {
           {toolkitSections.map((s, i) => (
             <motion.a
               key={s.id}
-              href={`#${s.id}`}
+              href={`/ctrla/toolkit/${s.id}`}
               initial={{ opacity: 0, y: 24 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ ...spring, delay: i * 0.1 }}
@@ -173,7 +173,7 @@ function ToolCard({ tool, accent }: { tool: Tool; accent: string }) {
 
       <p
         style={{
-          fontFamily: ed.grotesque,
+          fontFamily: ed.body,
           fontWeight: 400,
           fontSize: 13.5,
           lineHeight: 1.6,
@@ -269,7 +269,7 @@ export function ToolkitDetail({ section }: { section: ToolkitSection }) {
             </h2>
             <p
               style={{
-                fontFamily: ed.grotesque,
+                fontFamily: ed.body,
                 fontWeight: 400,
                 fontSize: "clamp(13px, 1.5vw, 16px)",
                 lineHeight: 1.6,
@@ -341,7 +341,7 @@ export function ToolkitDetail({ section }: { section: ToolkitSection }) {
                 </Label>
                 <p
                   style={{
-                    fontFamily: ed.grotesque,
+                    fontFamily: ed.body,
                     fontWeight: 400,
                     fontSize: "clamp(13px, 1.5vw, 15px)",
                     lineHeight: 1.65,
@@ -407,7 +407,7 @@ export function ToolkitDetail({ section }: { section: ToolkitSection }) {
               </h4>
               <p
                 style={{
-                  fontFamily: ed.grotesque,
+                  fontFamily: ed.body,
                   fontWeight: 400,
                   fontSize: 13,
                   lineHeight: 1.6,

@@ -588,3 +588,43 @@ input[type="range"]::-webkit-slider-thumb {
   backdrop-filter: blur(16px);
   box-shadow: 0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,244,227,0.07);
 }
+
+/* ───────────────── CTRL-A magazine ───────────────── */
+@keyframes ctrlaBelt {
+  from { transform: translateX(0); }
+  to { transform: translateX(-33.333%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ctrla-belt-track { animation: none !important; }
+}
+
+.ctrla-picks-grid {
+  display: grid;
+  gap: clamp(14px, 2vw, 24px);
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-areas:
+    "a a a a a a a b b b b b"
+    "a a a a a a a c c c c c"
+    "d d d d e e e e f f f f";
+}
+.ctrla-pick:hover .ctrla-pick-arrow { color: #B05C56; transform: translate(2px, -2px); }
+@media (max-width: 760px) {
+  .ctrla-picks-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "a a"
+      "b c"
+      "d e"
+      "f f";
+  }
+  .ctrla-statband { grid-template-columns: 1fr 1fr !important; }
+}
+
+.ctrla-social:hover { color: #B05C56 !important; }
+
+.ctrla-foot-link:hover span { color: #B05C56; }
+.ctrla-foot-soc:hover { color: #231235 !important; background: #B05C56 !important; }
+.ctrla-foot-mark:hover .ctrla-foot-mark-img { background: #B05C56; }
+
+.ctrla-pn span { transition: color 0.2s; }
+.ctrla-pn:hover span { color: #B05C56; }

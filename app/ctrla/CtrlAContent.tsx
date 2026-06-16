@@ -1,14 +1,15 @@
 "use client";
 
 import { useEffect } from "react";
-import CtrlAFooter from "@/components/CtrlAFooter";
+import Image from "next/image";
 import { NavigationDock } from "@/components/NavDoc";
+import EditorialFooter from "./_components/EditorialFooter";
 import { GlobalTeamGlobe } from "@/components/ctrla/GlobalTeamGlobe";
 import { BrandKitSection } from "@/components/ctrla/BrandKitSection";
 import { EventsHubSection } from "@/components/ctrla/EventsHubSection";
-import { ThreeToolkits, ToolkitDetail } from "./_components/Toolkits";
+import { ThreeToolkits } from "./_components/Toolkits";
 import { ed, Bleed, Rule, Label } from "./_components/editorial";
-import { toolkitSections, issueMeta } from "./data";
+import { issueMeta } from "./data";
 
 // ═══════════════════════════════════════════════════════
 // SHARED
@@ -20,57 +21,10 @@ const ChakraRibbon = () => (
       height: 4,
       width: "100%",
       background:
-        "linear-gradient(135deg,#6B2318 0%,#C4622D 18%,#E0A44A 36%,#4A7A50 54%,#3A6E8C 72%,#4A3F8C 86%,#7B4FAE 100%)",
+        "linear-gradient(135deg,#231235 0%,#422A4C 22%,#693A4C 44%,#B05C56 66%,#D89A00 86%,#B9928F 100%)",
     }}
   />
 );
-
-// Compact CTRL / A keycap for the cover art
-function KeyCap({ label, sub, wide = false }: { label: string; sub: string; wide?: boolean }) {
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        width: wide ? "clamp(96px, 13vw, 150px)" : "clamp(64px, 8vw, 96px)",
-        height: "clamp(64px, 8vw, 96px)",
-        padding: "clamp(8px,1.2vw,14px) clamp(10px,1.4vw,16px)",
-        borderRadius: 12,
-        background: "linear-gradient(160deg,#2a1a12 0%,#140c08 55%,#0d0806 100%)",
-        boxShadow:
-          "0 6px 0 #060302, 0 12px 26px rgba(0,0,0,0.7), inset 0 1px 0 rgba(245,237,216,0.08), inset 0 0 0 1px rgba(196,98,45,0.2)",
-        userSelect: "none",
-      }}
-    >
-      <span
-        style={{
-          fontFamily: ed.serif,
-          fontStyle: "italic",
-          fontWeight: 900,
-          fontSize: "clamp(20px, 3vw, 40px)",
-          color: ed.amber,
-          lineHeight: 1,
-          textShadow: "0 0 16px rgba(196,98,45,0.35)",
-        }}
-      >
-        {label}
-      </span>
-      <span
-        style={{
-          fontFamily: ed.mono,
-          fontSize: "clamp(6px, 0.7vw, 8px)",
-          color: "rgba(196,98,45,0.5)",
-          letterSpacing: "0.14em",
-          textTransform: "uppercase",
-          alignSelf: "flex-end",
-        }}
-      >
-        {sub}
-      </span>
-    </div>
-  );
-}
 
 // ═══════════════════════════════════════════════════════
 // MASTHEAD
@@ -84,17 +38,14 @@ function Masthead() {
           <Label color={ed.ink}>
             {issueMeta.volume} — {issueMeta.issue}
           </Label>
-          <span
-            style={{
-              fontFamily: ed.grotesque,
-              fontWeight: 800,
-              fontSize: "clamp(14px, 1.8vw, 20px)",
-              letterSpacing: "0.04em",
-              color: ed.ink,
-            }}
-          >
-            CTRL-A
-          </span>
+          <Image
+            src="/ctrla/ctrla-flat-logo-black.png"
+            alt="CTRL-A"
+            width={48}
+            height={35}
+            priority
+            style={{ height: "clamp(22px, 2.6vw, 32px)", width: "auto" }}
+          />
           <Label color={ed.ink} style={{ textAlign: "right" }}>
             {issueMeta.season} · {issueMeta.date}
           </Label>
@@ -113,7 +64,7 @@ function Cover() {
   return (
     <section style={{ background: ed.paper, padding: "clamp(24px,4vw,44px) 0 clamp(40px,6vw,72px)" }}>
       <Bleed>
-        {/* Cover art block — keyboard motif on black */}
+        {/* Cover art block — finalized 3D CTRL-A logo on a framed panel */}
         <div
           style={{
             position: "relative",
@@ -124,29 +75,36 @@ function Cover() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            gap: "clamp(10px,1.5vw,18px)",
+            padding: "clamp(20px,4vw,48px)",
             overflow: "hidden",
           }}
         >
           <span
             style={{
               position: "absolute",
-              top: 16,
-              right: 18,
+              top: 14,
+              right: 16,
               fontFamily: ed.mono,
               fontSize: "clamp(8px,0.9vw,10px)",
               letterSpacing: "0.24em",
               textTransform: "uppercase",
-              color: "rgba(196,98,45,0.7)",
+              color: ed.gold,
+              zIndex: 1,
             }}
           >
             A ROV Creative Platform
           </span>
-          <KeyCap label="CTRL" sub="control" wide />
-          <span style={{ color: "rgba(196,98,45,0.4)", fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(16px,2.5vw,30px)" }}>
-            +
-          </span>
-          <KeyCap label="A" sub="select all" />
+          <div style={{ position: "relative", width: "100%", height: "100%" }}>
+            <Image
+              src="/ctrla/ctrla-3d-logo-color.svg"
+              alt="CTRL-A"
+              fill
+              priority
+              unoptimized
+              sizes="(max-width: 768px) 90vw, 1100px"
+              style={{ objectFit: "contain" }}
+            />
+          </div>
         </div>
 
         {/* Headline row */}
@@ -230,7 +188,6 @@ const STICKERS = [
   "/ctrla/carsticker.webp",
   "/ctrla/grillsticker.webp",
   "/ctrla/gradysticker.webp",
-  "/ctrla/tunnelsticker.webp",
   "/ctrla/atlsticker.webp",
   "/ctrla/martasticker.webp",
   "/ctrla/futuresticker.webp",
@@ -246,7 +203,7 @@ function StickerBelt() {
           fontFamily: ed.mono,
           fontSize: 10,
           letterSpacing: "0.26em",
-          color: "rgba(196,98,45,0.45)",
+          color: "rgba(216,154,0,0.7)",
           textTransform: "uppercase",
           margin: "0 0 18px",
         }}
@@ -255,7 +212,7 @@ function StickerBelt() {
       </p>
       <div aria-hidden style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 120, background: `linear-gradient(to right, ${ed.ink} 30%, transparent)`, zIndex: 2 }} />
       <div aria-hidden style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 120, background: `linear-gradient(to left, ${ed.ink} 30%, transparent)`, zIndex: 2 }} />
-      <div style={{ display: "flex", alignItems: "center", gap: 64, width: "max-content", animation: "ctrlaBelt 36s linear infinite" }}>
+      <div className="ctrla-belt-track" style={{ display: "flex", alignItems: "center", gap: 64, width: "max-content", animation: "ctrlaBelt 36s linear infinite" }}>
         {track.map((src, i) => (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -267,10 +224,6 @@ function StickerBelt() {
           />
         ))}
       </div>
-      <style>{`
-        @keyframes ctrlaBelt { from { transform: translateX(0); } to { transform: translateX(-33.333%); } }
-        @media (prefers-reduced-motion: reduce) { [style*="ctrlaBelt"] { animation: none !important; } }
-      `}</style>
     </div>
   );
 }
@@ -285,9 +238,9 @@ const PICKS: Pick[] = [
   { area: "a", kicker: "ROV Tool", title: "Brand Kit Generator", page: "P.012", href: "/ctrla/brand-kit" },
   { area: "b", kicker: "Gatherings", title: "Events Hub", page: "P.007", href: "/ctrla/events" },
   { area: "c", kicker: "Mixtape", title: "The ROV Tape 3", page: "P.023", href: "/ctrla/tape3" },
-  { area: "d", kicker: "Toolkit 01", title: "Music", page: "P.001", href: "#music" },
-  { area: "e", kicker: "Toolkit 02", title: "Web Dev", page: "P.002", href: "#web-dev" },
-  { area: "f", kicker: "Toolkit 03", title: "Design", page: "P.003", href: "#design" },
+  { area: "d", kicker: "Toolkit 01", title: "Music", page: "P.001", href: "/ctrla/toolkit/music" },
+  { area: "e", kicker: "Toolkit 02", title: "Web Dev", page: "P.002", href: "/ctrla/toolkit/web-dev" },
+  { area: "f", kicker: "Toolkit 03", title: "Design", page: "P.003", href: "/ctrla/toolkit/design" },
 ];
 
 function PickCell({ pick }: { pick: Pick }) {
@@ -312,7 +265,7 @@ function PickCell({ pick }: { pick: Pick }) {
           padding: 18,
         }}
       >
-        <span style={{ fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(196,98,45,0.7)" }}>
+        <span style={{ fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(185,146,143,0.9)" }}>
           {pick.kicker}
         </span>
         <span aria-hidden className="ctrla-pick-arrow" style={{ alignSelf: "flex-end", color: "rgba(245,237,216,0.3)", fontSize: 22, lineHeight: 1, transition: "color .25s, transform .25s" }}>
@@ -347,29 +300,6 @@ function PicksReviews() {
           ))}
         </div>
       </Bleed>
-
-      <style>{`
-        .ctrla-picks-grid {
-          display: grid;
-          gap: clamp(14px, 2vw, 24px);
-          grid-template-columns: repeat(12, 1fr);
-          grid-template-areas:
-            "a a a a a a a b b b b b"
-            "a a a a a a a c c c c c"
-            "d d d d e e e e f f f f";
-        }
-        .ctrla-pick:hover .ctrla-pick-arrow { color: #C4622D; transform: translate(2px,-2px); }
-        @media (max-width: 760px) {
-          .ctrla-picks-grid {
-            grid-template-columns: 1fr 1fr;
-            grid-template-areas:
-              "a a"
-              "b c"
-              "d e"
-              "f f";
-          }
-        }
-      `}</style>
     </section>
   );
 }
@@ -416,11 +346,6 @@ function StatBand() {
           </p>
         </div>
       </Bleed>
-      <style>{`
-        @media (max-width: 760px) {
-          .ctrla-statband { grid-template-columns: 1fr 1fr !important; }
-        }
-      `}</style>
     </section>
   );
 }
@@ -461,7 +386,6 @@ function StayInTouch() {
         </div>
         <Rule />
       </Bleed>
-      <style>{`.ctrla-social:hover { color: #C4622D !important; }`}</style>
     </section>
   );
 }
@@ -472,7 +396,12 @@ function StayInTouch() {
 
 function FridayFooter() {
   return (
-    <section style={{ background: ed.ink, padding: "clamp(48px,7vw,96px) 0" }}>
+    <section
+      style={{
+        background: ed.ink,
+        padding: "clamp(48px,7vw,96px) 0",
+      }}
+    >
       <Bleed>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 28, flexWrap: "wrap" }}>
           <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(34px,6vw,84px)", letterSpacing: "-0.03em", lineHeight: 0.9, color: ed.paper, margin: 0 }}>
@@ -560,9 +489,6 @@ export default function CtrlAContent() {
       <ChakraRibbon />
 
       <ThreeToolkits />
-      {toolkitSections.map((section) => (
-        <ToolkitDetail key={section.id} section={section} />
-      ))}
 
       {/* Brand Kit — feature spread (dark, interactive) */}
       <ChakraRibbon />
@@ -581,7 +507,7 @@ export default function CtrlAContent() {
       <StayInTouch />
       <FridayFooter />
 
-      <CtrlAFooter />
+      <EditorialFooter />
     </div>
   );
 }

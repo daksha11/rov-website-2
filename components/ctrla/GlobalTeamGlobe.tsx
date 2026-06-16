@@ -63,7 +63,7 @@ export function GlobalTeamGlobe() {
   return (
     <section
       style={{
-        backgroundColor: "#2B1F14",
+        backgroundColor: "#231235",
         padding: "clamp(60px, 10vw, 120px) clamp(20px, 5vw, 60px)",
         display: "flex",
         flexDirection: "column",
@@ -72,18 +72,18 @@ export function GlobalTeamGlobe() {
     >
       {/* Header */}
       <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 12 }}>
-        <div style={{ width: "clamp(24px, 4vw, 48px)", height: "1px", backgroundColor: "rgba(196,98,45,0.5)" }} />
+        <div style={{ width: "clamp(24px, 4vw, 48px)", height: "1px", backgroundColor: "rgba(176,92,86,0.5)" }} />
         <span
           style={{
-            fontFamily: "'DM Mono', monospace",
-            color: "#C4622D",
+            fontFamily: "'Gontserrat', sans-serif",
+            color: "#B05C56",
             fontSize: "clamp(11px, 1.5vw, 14px)",
             letterSpacing: "5px",
           }}
         >
           WORLDWIDE
         </span>
-        <div style={{ width: "clamp(24px, 4vw, 48px)", height: "1px", backgroundColor: "rgba(196,98,45,0.5)" }} />
+        <div style={{ width: "clamp(24px, 4vw, 48px)", height: "1px", backgroundColor: "rgba(176,92,86,0.5)" }} />
       </div>
 
       {/* Title */}
@@ -91,9 +91,9 @@ export function GlobalTeamGlobe() {
         style={{
           fontSize: "clamp(2rem, 6vw, 3.5rem)",
           fontWeight: "900",
-          color: "#F5EDD8",
+          color: "#F4E7EA",
           textAlign: "center",
-          fontFamily: "'Thistora', Georgia, serif",
+          fontFamily: "'Gontserrat', sans-serif",
           fontStyle: "italic",
           marginBottom: 16,
           letterSpacing: "-0.5px",
@@ -102,7 +102,7 @@ export function GlobalTeamGlobe() {
         One Vision,{" "}
         <span
           style={{
-            background: "linear-gradient(132deg, #6B2318 4.77%, #C4622D 40%, #E0A44A 100%)",
+            background: "linear-gradient(132deg, #422A4C 4.77%, #B05C56 40%, #D89A00 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -115,10 +115,10 @@ export function GlobalTeamGlobe() {
       {/* Subtitle */}
       <p
         style={{
-          fontFamily: "'DM Sans', system-ui, sans-serif",
+          fontFamily: "'Franklin Gothic Book', sans-serif",
           fontWeight: 300,
           fontSize: "clamp(13px, 1.8vw, 16px)",
-          color: "rgba(245,237,216,0.5)",
+          color: "rgba(244,231,234,0.5)",
           textAlign: "center",
           maxWidth: 500,
           marginBottom: "clamp(40px, 6vw, 72px)",
@@ -163,19 +163,19 @@ export function GlobalTeamGlobe() {
           const baseStyle = isHQ
             ? {
                 border: "1px solid transparent",
-                background: "linear-gradient(132deg, #6B2318 4.77%, #C4622D 40%, #E0A44A 100%)",
-                color: "#F5EDD8",
+                background: "linear-gradient(132deg, #422A4C 4.77%, #B05C56 40%, #D89A00 100%)",
+                color: "#F4E7EA",
                 boxShadow: isActive
-                  ? "0 12px 32px -8px rgba(196,98,45,0.7)"
-                  : "0 6px 20px -8px rgba(196,98,45,0.45)",
+                  ? "0 12px 32px -8px rgba(176,92,86,0.7)"
+                  : "0 6px 20px -8px rgba(176,92,86,0.45)",
                 transform: isActive ? "translateY(-2px)" : "translateY(0)",
               }
             : {
                 border: isActive
-                  ? "1px solid rgba(196,98,45,0.35)"
-                  : "1px solid rgba(245,237,216,0.1)",
-                background: isActive ? "rgba(196,98,45,0.08)" : "transparent",
-                color: isActive ? "rgba(245,237,216,0.9)" : "rgba(245,237,216,0.45)",
+                  ? "1px solid rgba(176,92,86,0.35)"
+                  : "1px solid rgba(244,231,234,0.1)",
+                background: isActive ? "rgba(176,92,86,0.08)" : "transparent",
+                color: isActive ? "rgba(244,231,234,0.9)" : "rgba(244,231,234,0.45)",
                 boxShadow: "none",
                 transform: isActive ? "translateY(-1px)" : "translateY(0)",
               };
@@ -185,7 +185,7 @@ export function GlobalTeamGlobe() {
               key={loc.city}
               onClick={() => handleCityClick(loc.city)}
               style={{
-                fontFamily: "'DM Mono', monospace",
+                fontFamily: "'Gontserrat', sans-serif",
                 fontSize: "clamp(11px, 1.4vw, 13px)",
                 padding: isHQ ? "7px 20px" : "6px 16px",
                 borderRadius: 999,
@@ -207,9 +207,9 @@ export function GlobalTeamGlobe() {
         <p
           style={{
             marginTop: 16,
-            fontFamily: "'DM Mono', monospace",
+            fontFamily: "'Gontserrat', sans-serif",
             fontSize: "clamp(10px, 1.2vw, 12px)",
-            color: "rgba(196,98,45,0.5)",
+            color: "rgba(176,92,86,0.5)",
             letterSpacing: "0.12em",
             textTransform: "uppercase",
           }}

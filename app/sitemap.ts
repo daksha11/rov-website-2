@@ -86,10 +86,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
         },
         {
             url: `${baseUrl}/ctrla`,
-            lastModified: '2025-03-01',
+            lastModified: '2026-06-15',
             changeFrequency: 'monthly',
             priority: 0.7,
         },
+        ...['music', 'web-dev', 'design'].map((id) => ({
+            url: `${baseUrl}/ctrla/toolkit/${id}`,
+            lastModified: '2026-06-15',
+            changeFrequency: 'weekly' as const,
+            priority: 0.6,
+        })),
         {
             url: `${baseUrl}/blog`,
             lastModified: '2026-03-30',
