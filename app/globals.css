@@ -628,3 +628,47 @@ input[type="range"]::-webkit-slider-thumb {
 
 .ctrla-pn span { transition: color 0.2s; }
 .ctrla-pn:hover span { color: #B05C56; }
+
+/* CTRL-A — issue sections */
+.ctrla-artist-grid {
+  display: grid;
+  gap: clamp(20px, 3vw, 40px);
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-areas:
+    "feat feat feat feat feat feat feat a a a a a"
+    "feat feat feat feat feat feat feat b b b b b";
+}
+@media (max-width: 820px) {
+  .ctrla-artist-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "feat feat"
+      "a b";
+  }
+}
+@media (max-width: 560px) {
+  .ctrla-artist-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas: "feat" "a" "b";
+  }
+}
+
+.ctrla-spotlight {
+  display: grid;
+  gap: clamp(24px, 4vw, 56px);
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+}
+@media (max-width: 820px) {
+  .ctrla-spotlight { grid-template-columns: 1fr; }
+}
+
+.ctrla-event-row .ctrla-event-name { transition: color 0.2s; }
+.ctrla-event-row:hover .ctrla-event-name { color: #B05C56; }
+.ctrla-seeall:hover { opacity: 0.7; }
+@media (max-width: 680px) {
+  .ctrla-event-row {
+    grid-template-columns: minmax(60px, 0.7fr) 1fr auto !important;
+  }
+  .ctrla-event-row > :nth-child(3) { display: none; }
+}

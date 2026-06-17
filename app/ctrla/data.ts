@@ -54,6 +54,9 @@ export const issueMeta = {
   season: "Spring 2026",
   date: "Fri. 15 March",
   tagline: "On the tools changing creative work, tested and reviewed.",
+  coverHeadline: "From the bedroom to the stage.",
+  coverDeck:
+    "Sam Suen headlines DreamAsia Fest. The full workflow, the tools, the media — and how to apply it to yours.",
   stats: [
     { value: "52", label: "Tools tested" },
     { value: "12", label: "Picks made" },
@@ -61,7 +64,120 @@ export const issueMeta = {
     { value: "01", label: "Cadence" },
   ] as IssueStat[],
   thisWeek:
-    "This Week: the brand-kit generator ships OKLCH harmony controls — engineer a full palette from one colour, then export it to Markdown.",
+    "This Week: Sam Suen takes the DreamAsia Fest stage — inside the full production workflow, from FL Studio demos to the BMPCC 6K cut.",
+};
+
+// ── ATL ARTIST SHOWCASE ─────────────────────────────────
+
+export interface Artist {
+  name: string;
+  discipline: string;
+  blurb: string;
+  quote: string;
+  feature?: boolean; // larger card
+  image?: string;
+}
+
+export const artists: Artist[] = [
+  {
+    name: "Sam Suen",
+    discipline: "Korean-American R&B",
+    feature: true,
+    blurb:
+      "A bedroom producer turned festival headliner. Sam's writing the kind of R&B that sounds like 2am in a city that never quite sleeps — intimate, patient, and built to fill a room the moment it needs to.",
+    quote: "The stage at DreamAsia wasn't a destination. It was just the next logical step.",
+  },
+  {
+    name: "Artist TBD",
+    discipline: "Visual Art / Photography",
+    blurb:
+      "Placeholder for the issue's featured visual artist. Two to three sentences on why their work matters right now — the show, the series, the moment — not a career résumé.",
+    quote: "A line that captures how they think about the work.",
+  },
+  {
+    name: "Artist TBD",
+    discipline: "Any Discipline",
+    blurb:
+      "Placeholder for the third pick — film, ceramics, design, whatever's interesting this issue. Keep it to the now: what they just made and why you should care.",
+    quote: "A short, sharp quote in their own voice.",
+  },
+];
+
+// ── ROV SPOTLIGHT ───────────────────────────────────────
+
+export const spotlight = {
+  eyebrow: "ROV Spotlight · Issue 01",
+  headline: "Producing DreamAsia Fest, end to end.",
+  body:
+    "When Sam Suen needed a set ready for DreamAsia, ROV ran the whole pipeline — demos to mix, stage to screen. The records were built and mixed in-house, the visuals shot and cut in-house, and the whole thing pulled together on a deadline that didn't move. No outsourcing, no hand-offs. The work below is the proof.",
+  tools: ["FL Studio", "DaVinci Resolve", "Premiere Pro", "BMPCC 6K", "Canon", "Claude"],
+  image: undefined as string | undefined,
+};
+
+// ── ATL EVENTS — FIFA World Cup 26, Atlanta ─────────────
+// Atlanta (Mercedes-Benz Stadium) is a host city for the FIFA World
+// Cup 2026. Each event links out to an authoritative source — these
+// outbound citations + the structured data below aid SEO/GEO.
+
+export interface IssueEvent {
+  date: string;
+  /** ISO date for schema.org structured data. */
+  isoDate: string;
+  name: string;
+  location: string;
+  /** Full venue address for structured data. */
+  venue: string;
+  badge: "Free" | "Ticketed";
+  /** Authoritative outbound link (official source) — backlink for SEO/GEO. */
+  url: string;
+}
+
+export const events: IssueEvent[] = [
+  {
+    date: "Jun 15",
+    isoDate: "2026-06-15",
+    name: "FIFA World Cup 26™ — Atlanta Group Stage",
+    location: "Mercedes-Benz Stadium, ATL",
+    venue: "Mercedes-Benz Stadium, 1 AMB Dr NW, Atlanta, GA 30313",
+    badge: "Ticketed",
+    url: "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026",
+  },
+  {
+    date: "Jun 20",
+    isoDate: "2026-06-20",
+    name: "FIFA Fan Festival™ Atlanta",
+    location: "Centennial Olympic Park, ATL",
+    venue: "Centennial Olympic Park, 265 Park Ave W NW, Atlanta, GA 30313",
+    badge: "Free",
+    url: "https://discoveratlanta.com/fifa-world-cup-2026/",
+  },
+  {
+    date: "Jul 07",
+    isoDate: "2026-07-07",
+    name: "FIFA World Cup 26™ — Atlanta Round of 16",
+    location: "Mercedes-Benz Stadium, ATL",
+    venue: "Mercedes-Benz Stadium, 1 AMB Dr NW, Atlanta, GA 30313",
+    badge: "Ticketed",
+    url: "https://www.mercedesbenzstadium.com/fifa-world-cup-2026",
+  },
+];
+
+/** Authoritative outbound references shown under the events list. */
+export const eventSources: { label: string; url: string }[] = [
+  { label: "FIFA World Cup 26™", url: "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026" },
+  { label: "Mercedes-Benz Stadium", url: "https://www.mercedesbenzstadium.com/" },
+  { label: "Atlanta Sports Council", url: "https://www.atlsports.org/" },
+  { label: "Discover Atlanta — World Cup 2026", url: "https://discoveratlanta.com/fifa-world-cup-2026/" },
+];
+
+// ── VUE — CLOSING NOTE ──────────────────────────────────
+
+export const vueClose = {
+  eyebrow: "Vue · Closing note · Issue 01",
+  body:
+    "I spend most of my time drifting a little above all this, watching what you build. Issue 01 started with one question — what does it actually take to get from a bedroom setup to a festival stage? Turns out the answer isn't a secret tool or a lucky break. It's reps. It's the boring, repeatable work nobody posts about. Sam did the reps. So can you. That's the whole magazine, really — proof that the gap is smaller than it looks.",
+  signoff: "See you next week.",
+  signature: "— Vue · Issue 01 · CTRL-A",
 };
 
 // ── MUSIC TOOLKIT ──────────────────────────────────────

@@ -4,27 +4,14 @@ import { useEffect } from "react";
 import Image from "next/image";
 import { NavigationDock } from "@/components/NavDoc";
 import EditorialFooter from "./_components/EditorialFooter";
-import { GlobalTeamGlobe } from "@/components/ctrla/GlobalTeamGlobe";
-import { BrandKitSection } from "@/components/ctrla/BrandKitSection";
-import { EventsHubSection } from "@/components/ctrla/EventsHubSection";
 import { ThreeToolkits } from "./_components/Toolkits";
+import { ArtistShowcase, RovSpotlight, CondensedEvents, VueClose } from "./_components/IssueSections";
 import { ed, Bleed, Rule, Label } from "./_components/editorial";
 import { issueMeta } from "./data";
 
 // ═══════════════════════════════════════════════════════
 // SHARED
 // ═══════════════════════════════════════════════════════
-
-const ChakraRibbon = () => (
-  <div
-    style={{
-      height: 4,
-      width: "100%",
-      background:
-        "linear-gradient(135deg,#231235 0%,#422A4C 22%,#693A4C 44%,#B05C56 66%,#D89A00 86%,#B9928F 100%)",
-    }}
-  />
-);
 
 // ═══════════════════════════════════════════════════════
 // MASTHEAD
@@ -117,21 +104,33 @@ function Cover() {
             marginTop: "clamp(24px,4vw,44px)",
           }}
         >
-          <h1
-            style={{
-              fontFamily: ed.grotesque,
-              fontWeight: 800,
-              fontSize: "clamp(44px, 9vw, 132px)",
-              lineHeight: 0.86,
-              letterSpacing: "-0.03em",
-              color: ed.ink,
-              margin: 0,
-            }}
-          >
-            The Creative
-            <br />
-            Command.
-          </h1>
+          <div>
+            <h1
+              style={{
+                fontFamily: ed.grotesque,
+                fontWeight: 800,
+                fontSize: "clamp(40px, 8vw, 116px)",
+                lineHeight: 0.9,
+                letterSpacing: "-0.03em",
+                color: ed.ink,
+                margin: 0,
+              }}
+            >
+              {issueMeta.coverHeadline}
+            </h1>
+            <p
+              style={{
+                fontFamily: ed.body,
+                fontSize: "clamp(15px, 1.9vw, 22px)",
+                lineHeight: 1.5,
+                color: ed.inkSoft,
+                margin: "clamp(16px,2vw,24px) 0 0",
+                maxWidth: 640,
+              }}
+            >
+              {issueMeta.coverDeck}
+            </p>
+          </div>
           <div style={{ paddingTop: 8 }}>
             <Label style={{ display: "block", marginBottom: 8 }}>{issueMeta.season}</Label>
             <p
@@ -143,7 +142,7 @@ function Cover() {
                 margin: 0,
               }}
             >
-              {issueMeta.tagline}
+              Cover Story · {issueMeta.issue}
             </p>
           </div>
         </div>
@@ -339,52 +338,6 @@ function StatBand() {
         </div>
         <Rule />
 
-        {/* This week callout */}
-        <div style={{ border: `1px solid ${ed.ink}`, padding: "clamp(20px,3vw,32px)", marginTop: "clamp(28px,4vw,44px)" }}>
-          <p style={{ fontFamily: ed.grotesque, fontWeight: 700, fontSize: "clamp(15px,1.8vw,20px)", lineHeight: 1.5, color: ed.ink, margin: 0 }}>
-            {issueMeta.thisWeek}
-          </p>
-        </div>
-      </Bleed>
-    </section>
-  );
-}
-
-// ═══════════════════════════════════════════════════════
-// STAY IN TOUCH (socials)
-// ═══════════════════════════════════════════════════════
-
-const SOCIALS = [
-  { label: "Discord", href: "https://discord.gg/GfzXdmu" },
-  { label: "Instagram", href: "#" },
-  { label: "Reddit", href: "#" },
-];
-
-function StayInTouch() {
-  return (
-    <section style={{ background: ed.paper, padding: "clamp(48px,7vw,88px) 0" }}>
-      <Bleed>
-        <Rule />
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap", padding: "clamp(28px,4vw,44px) 0" }}>
-          <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4vw,52px)", letterSpacing: "-0.02em", color: ed.ink, margin: 0 }}>
-            Stay in touch.
-          </h2>
-          <div style={{ display: "flex", gap: "clamp(16px,3vw,40px)", flexWrap: "wrap" }}>
-            {SOCIALS.map((s) => (
-              <a
-                key={s.label}
-                href={s.href}
-                {...(s.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                className="ctrla-social"
-                style={{ fontFamily: ed.grotesque, fontWeight: 700, fontSize: "clamp(16px,2vw,24px)", letterSpacing: "-0.01em", color: ed.ink, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}
-              >
-                {s.label}
-                <span aria-hidden style={{ color: ed.amber }}>↗</span>
-              </a>
-            ))}
-          </div>
-        </div>
-        <Rule />
       </Bleed>
     </section>
   );
@@ -486,27 +439,16 @@ export default function CtrlAContent() {
       <StickerBelt />
 
       <PicksReviews />
-      <ChakraRibbon />
-
       <ThreeToolkits />
 
-      {/* Brand Kit — feature spread (dark, interactive) */}
-      <ChakraRibbon />
-      <BrandKitSection />
+      <ArtistShowcase />
+      <RovSpotlight />
+      <CondensedEvents />
 
-      {/* Events — feature spread (dark, interactive) */}
-      <ChakraRibbon />
-      <EventsHubSection />
-
-      <ChakraRibbon />
       <StatBand />
+      <VueClose />
 
-      {/* Global team map */}
-      <GlobalTeamGlobe />
-
-      <StayInTouch />
       <FridayFooter />
-
       <EditorialFooter />
     </div>
   );

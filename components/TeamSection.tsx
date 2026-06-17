@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import Image from "next/image";
 import GradientBlob from "./GradientBlob";
+import TeamGlobeView from "./TeamGlobeView";
 
 type Category = "All" | "Creative" | "Tech" | "Systems";
 type CreativeSubcategory = "UI/UX" | "Motion" | "Illustrative" | "Sound";
@@ -276,6 +277,7 @@ const TeamSection: React.FC = () => {
     const [activeCategory, setActiveCategory] = useState<Category>("All");
     const [activeCreativeSub, setActiveCreativeSub] = useState<CreativeSubcategory | "All">("All");
     const [expandedMemberId, setExpandedMemberId] = useState<number | null>(null);
+    const [view, setView] = useState<"grid" | "globe">("grid");
 
     const handleMarqueeMemberClick = (member: TeamMember) => {
         setExpandedMemberId(member.id);
@@ -510,27 +512,64 @@ const TeamSection: React.FC = () => {
         >
             <GradientBlob position="top-left" opacity={0.45} size="600px" blur="150px" />
             <GradientBlob position="bottom-right" opacity={0.45} size="600px" blur="150px" />
-            <div className="z-50 mb-8 md:mb-12 flex flex-wrap items-center gap-2 md:gap-6 justify-center md:justify-end w-full px-2 md:px-8">
-                <button
-                    onClick={() => { setActiveCategory("All"); setActiveCreativeSub("All"); setExpandedMemberId(null); }}
-                    className={`text-sm md:text-xl font-normal transition-all duration-300 ${activeCategory === "All" ? "text-white" : "text-white/50 hover:text-white/80"}`}
-                    style={{ fontFamily: 'Roboto, sans-serif' }}
-                > ALL </button>
-                <span className="text-white/30 text-xs md:text-base">|</span>
-                {categories.map((cat, index) => (
-                    <React.Fragment key={cat}>
+            <div className="z-50 mb-8 md:mb-12 flex flex-wrap items-center gap-3 md:gap-6 justify-between w-full px-2 md:px-8">
+                {/* View toggle — Grid vs Globe */}
+                <div
+                    className="flex items-center rounded-full p-1"
+                    style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)" }}
+                >
+                    {(["grid", "globe"] as const).map((v) => (
                         <button
-                            onClick={() => { setActiveCategory(cat); setActiveCreativeSub("All"); setExpandedMemberId(null); }}
-                            className={`text-sm md:text-xl font-normal transition-all duration-300 ${activeCategory === cat ? "text-white" : "text-white/50 hover:text-white/80"}`}
+                            key={v}
+                            onClick={() => setView(v)}
+                            className="text-xs md:text-sm font-normal transition-all duration-300 rounded-full px-3 md:px-4 py-1.5"
+                            style={{
+                                fontFamily: 'Roboto, sans-serif',
+                                letterSpacing: '0.08em',
+                                background: view === v ? 'rgba(224,164,74,0.18)' : 'transparent',
+                                color: view === v ? '#FFF4E3' : 'rgba(255,255,255,0.5)',
+                            }}
+                        >
+                            {v === "grid" ? "GRID" : "GLOBE"}
+                        </button>
+                    ))}
+                </div>
+
+                {/* Category filters — grid view only */}
+                {view === "grid" && (
+                    <div className="flex flex-wrap items-center gap-2 md:gap-6 justify-center md:justify-end">
+                        <button
+                            onClick={() => { setActiveCategory("All"); setActiveCreativeSub("All"); setExpandedMemberId(null); }}
+                            className={`text-sm md:text-xl font-normal transition-all duration-300 ${activeCategory === "All" ? "text-white" : "text-white/50 hover:text-white/80"}`}
                             style={{ fontFamily: 'Roboto, sans-serif' }}
-                        > {cat.toUpperCase()} </button>
-                        {index < categories.length - 1 && <span className="text-white/30 text-xs md:text-base">|</span>}
-                    </React.Fragment>
-                ))}
+                        > ALL </button>
+                        <span className="text-white/30 text-xs md:text-base">|</span>
+                        {categories.map((cat, index) => (
+                            <React.Fragment key={cat}>
+                                <button
+                                    onClick={() => { setActiveCategory(cat); setActiveCreativeSub("All"); setExpandedMemberId(null); }}
+                                    className={`text-sm md:text-xl font-normal transition-all duration-300 ${activeCategory === cat ? "text-white" : "text-white/50 hover:text-white/80"}`}
+                                    style={{ fontFamily: 'Roboto, sans-serif' }}
+                                > {cat.toUpperCase()} </button>
+                                {index < categories.length - 1 && <span className="text-white/30 text-xs md:text-base">|</span>}
+                            </React.Fragment>
+                        ))}
+                    </div>
+                )}
             </div>
 
             <div className="w-full flex-1 flex items-center justify-center">
-                {activeCategory === "All" && expandedMemberId ? (
+                {view === "globe" ? (
+                    <motion.div
+                        key="globe-view"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="w-full"
+                    >
+                        <TeamGlobeView />
+                    </motion.div>
+                ) : activeCategory === "All" && expandedMemberId ? (
                     <motion.div
                         key="all-expanded"
                         initial={{ opacity: 0, y: 20 }}
