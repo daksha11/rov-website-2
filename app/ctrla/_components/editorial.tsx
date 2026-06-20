@@ -14,22 +14,23 @@ import type { CSSProperties, ReactNode } from "react";
 // CTRL-A cosmic brand system. Key names kept stable so the whole
 // magazine surface re-themes from this one object.
 export const ed = {
-  paper: "#F4E7EA", // star white (light ground)
-  paperDeep: "#E8D6D9", // deeper star white (panels)
-  ink: "#231235", // deep space indigo (dark ground)
-  inkSoft: "rgba(35,18,53,0.64)",
-  inkFaint: "rgba(35,18,53,0.42)",
-  hair: "rgba(35,18,53,0.18)",
-  amber: "#B05C56", // clay rose — primary accent (key kept for cascade)
-  gold: "#D89A00", // cosmic gold — line / secondary accent
-  plum: "#422A4C", // nebula plum
-  wine: "#693A4C", // wine
-  dusty: "#B9928F", // dusty rose
-  // Display: Gontserrat (Montserrat). Body: Franklin Gothic Book.
-  grotesque: "'Gontserrat', 'Montserrat', 'Helvetica Neue', Arial, sans-serif",
-  body: "'Franklin Gothic Book', 'Libre Franklin', 'Helvetica Neue', Arial, sans-serif",
-  serif: "'Franklin Gothic Book', 'Libre Franklin', Georgia, sans-serif",
-  mono: "'Gontserrat', 'Montserrat', sans-serif",
+  paper: "#F0E6E0", // magazine ground (light)
+  paperDeep: "#F0E6E0", // single light tone in the system
+  ink: "#24123A", // primary dark — text + dark panels
+  void: "#0F0820", // deepest dark — footer / subscribe band
+  inkSoft: "rgba(36,18,58,0.64)",
+  inkFaint: "rgba(36,18,58,0.42)",
+  hair: "rgba(36,18,58,0.20)",
+  amber: "#A56A67", // rose accent (key kept for cascade)
+  gold: "#E3C24A", // gold accent
+  plum: "#4E3D73", // muted purple (mid)
+  wine: "#4E3D73",
+  dusty: "#A56A67",
+  // Display/headings: Neue Montreal. Body: Instrument Serif.
+  grotesque: "'Neue Montreal', 'Helvetica Neue', Arial, sans-serif",
+  body: "'Instrument Serif', Georgia, 'Times New Roman', serif",
+  serif: "'Instrument Serif', Georgia, 'Times New Roman', serif",
+  mono: "'Neue Montreal', 'Helvetica Neue', Arial, sans-serif",
 };
 
 // ── Page container with print margins ──────────────────

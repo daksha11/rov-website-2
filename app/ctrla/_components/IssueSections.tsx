@@ -113,9 +113,9 @@ export function ArtistShowcase() {
 
 export function RovSpotlight() {
   return (
-    <section style={{ background: ed.paperDeep, padding: "clamp(56px,8vw,104px) 0" }}>
+    <section style={{ background: ed.ink, padding: "clamp(56px,8vw,104px) 0" }}>
       <Bleed>
-        <Label style={{ display: "block", marginBottom: 20 }}>{spotlight.eyebrow}</Label>
+        <Label color={ed.gold} style={{ display: "block", marginBottom: 20 }}>{spotlight.eyebrow}</Label>
         <div className="ctrla-spotlight">
           {/* Image */}
           <div
@@ -123,7 +123,7 @@ export function RovSpotlight() {
               position: "relative",
               width: "100%",
               aspectRatio: "4 / 3",
-              background: ed.ink,
+              background: ed.plum,
               overflow: "hidden",
               backgroundImage: spotlight.image ? `url('${spotlight.image}')` : undefined,
               backgroundSize: "cover",
@@ -139,13 +139,13 @@ export function RovSpotlight() {
                 fontSize: "clamp(28px,3.6vw,48px)",
                 letterSpacing: "-0.02em",
                 lineHeight: 0.98,
-                color: ed.ink,
+                color: ed.paper,
                 margin: "0 0 18px",
               }}
             >
               {spotlight.headline}
             </h2>
-            <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,16px)", lineHeight: 1.65, color: ed.inkSoft, margin: "0 0 22px", maxWidth: 540 }}>
+            <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,16px)", lineHeight: 1.65, color: "rgba(240,230,224,0.72)", margin: "0 0 22px", maxWidth: 540 }}>
               {spotlight.body}
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
@@ -157,8 +157,8 @@ export function RovSpotlight() {
                     fontSize: 10,
                     letterSpacing: "0.12em",
                     textTransform: "uppercase",
-                    color: ed.ink,
-                    border: `1px solid ${ed.ink}`,
+                    color: ed.gold,
+                    border: `1px solid ${ed.gold}`,
                     padding: "5px 12px",
                   }}
                 >
@@ -239,7 +239,7 @@ export function CondensedEvents() {
                   padding: "clamp(18px,2.4vw,26px) clamp(12px,1.5vw,18px)",
                   borderBottom: `1px solid ${ed.hair}`,
                   borderLeft: `3px solid ${isFree ? ed.amber : "transparent"}`,
-                  background: isFree ? "rgba(176,92,86,0.06)" : "transparent",
+                  background: isFree ? "rgba(165,106,103,0.06)" : "transparent",
                   textDecoration: "none",
                 }}
               >
@@ -299,7 +299,7 @@ export function CondensedEvents() {
 
 export function VueClose() {
   return (
-    <section style={{ background: "#EDE0C4", padding: "clamp(64px,9vw,128px) 0" }}>
+    <section style={{ background: "#F0E6E0", padding: "clamp(64px,9vw,128px) 0" }}>
       <Bleed>
         {/* Vue mascot illustration goes here (skipped for now) */}
         <div style={{ maxWidth: 640 }}>

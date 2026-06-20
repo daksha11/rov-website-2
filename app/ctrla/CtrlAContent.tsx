@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Image from "next/image";
 import { NavigationDock } from "@/components/NavDoc";
 import EditorialFooter from "./_components/EditorialFooter";
+import AnimatedShaderBackground from "@/components/ui/animated-shader-background";
 import { ThreeToolkits } from "./_components/Toolkits";
 import { ArtistShowcase, RovSpotlight, CondensedEvents, VueClose } from "./_components/IssueSections";
 import { ed, Bleed, Rule, Label } from "./_components/editorial";
@@ -66,6 +67,9 @@ function Cover() {
             overflow: "hidden",
           }}
         >
+          {/* Animated shader background (palette-tuned), behind the logo */}
+          <AnimatedShaderBackground style={{ zIndex: 0 }} intensity={1.15} />
+
           <span
             style={{
               position: "absolute",
@@ -76,14 +80,14 @@ function Cover() {
               letterSpacing: "0.24em",
               textTransform: "uppercase",
               color: ed.gold,
-              zIndex: 1,
+              zIndex: 2,
             }}
           >
             A ROV Creative Platform
           </span>
-          <div style={{ position: "relative", width: "100%", height: "100%" }}>
+          <div style={{ position: "relative", zIndex: 1, width: "100%", height: "100%" }}>
             <Image
-              src="/ctrla/ctrla-3d-logo-color.svg"
+              src="/ctrla/ctrla-3d-logo-white.svg"
               alt="CTRL-A"
               fill
               priority
@@ -202,7 +206,7 @@ function StickerBelt() {
           fontFamily: ed.mono,
           fontSize: 10,
           letterSpacing: "0.26em",
-          color: "rgba(216,154,0,0.7)",
+          color: "rgba(227,194,74,0.7)",
           textTransform: "uppercase",
           margin: "0 0 18px",
         }}
@@ -264,10 +268,10 @@ function PickCell({ pick }: { pick: Pick }) {
           padding: 18,
         }}
       >
-        <span style={{ fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(185,146,143,0.9)" }}>
+        <span style={{ fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(165,106,103,0.9)" }}>
           {pick.kicker}
         </span>
-        <span aria-hidden className="ctrla-pick-arrow" style={{ alignSelf: "flex-end", color: "rgba(245,237,216,0.3)", fontSize: 22, lineHeight: 1, transition: "color .25s, transform .25s" }}>
+        <span aria-hidden className="ctrla-pick-arrow" style={{ alignSelf: "flex-end", color: "rgba(240,230,224,0.3)", fontSize: 22, lineHeight: 1, transition: "color .25s, transform .25s" }}>
           ↗
         </span>
       </div>
@@ -309,35 +313,34 @@ function PicksReviews() {
 
 function StatBand() {
   return (
-    <section style={{ background: ed.paper, padding: "clamp(40px,6vw,72px) 0" }}>
+    <section style={{ background: ed.plum, padding: "clamp(48px,7vw,88px) 0" }}>
       <Bleed>
-        <Rule />
+        <Rule color="rgba(240,230,224,0.25)" />
         <div
           style={{
             display: "grid",
             gridTemplateColumns: "minmax(0,1.4fr) repeat(4, minmax(0,1fr))",
             gap: "clamp(16px,3vw,32px)",
             alignItems: "center",
-            padding: "clamp(24px,3vw,36px) 0",
+            padding: "clamp(28px,3.5vw,44px) 0",
           }}
           className="ctrla-statband"
         >
-          <p style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.6vw,30px)", letterSpacing: "-0.02em", color: ed.ink, margin: 0 }}>
-            The first twelve weeks. <span style={{ color: ed.amber }}>+</span>
+          <p style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.6vw,30px)", letterSpacing: "-0.02em", color: ed.paper, margin: 0 }}>
+            The first twelve weeks. <span style={{ color: ed.gold }}>+</span>
           </p>
           {issueMeta.stats.map((s) => (
             <div key={s.label}>
-              <div style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,4vw,52px)", letterSpacing: "-0.03em", color: ed.ink, lineHeight: 1 }}>
+              <div style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,4vw,52px)", letterSpacing: "-0.03em", color: ed.gold, lineHeight: 1 }}>
                 {s.value}
               </div>
-              <Label color={ed.inkFaint} style={{ display: "block", marginTop: 6 }}>
+              <Label color="rgba(240,230,224,0.6)" style={{ display: "block", marginTop: 6 }}>
                 {s.label}
               </Label>
             </div>
           ))}
         </div>
-        <Rule />
-
+        <Rule color="rgba(240,230,224,0.25)" />
       </Bleed>
     </section>
   );
@@ -351,7 +354,7 @@ function FridayFooter() {
   return (
     <section
       style={{
-        background: ed.ink,
+        background: ed.void,
         padding: "clamp(48px,7vw,96px) 0",
       }}
     >
@@ -367,7 +370,7 @@ function FridayFooter() {
           {/* Visual-only capture */}
           <form
             onSubmit={(e) => e.preventDefault()}
-            style={{ display: "flex", alignItems: "center", gap: 0, borderBottom: `1px solid rgba(245,237,216,0.4)`, minWidth: "min(100%, 340px)", flex: "0 1 380px" }}
+            style={{ display: "flex", alignItems: "center", gap: 0, borderBottom: `1px solid rgba(240,230,224,0.4)`, minWidth: "min(100%, 340px)", flex: "0 1 380px" }}
           >
             <input
               type="email"
@@ -403,7 +406,7 @@ function FridayFooter() {
             </button>
           </form>
         </div>
-        <Label color="rgba(245,237,216,0.4)" style={{ display: "block", marginTop: 24 }}>
+        <Label color="rgba(240,230,224,0.4)" style={{ display: "block", marginTop: 24 }}>
           No spam. One signal a week. Unsubscribe anytime.
         </Label>
       </Bleed>

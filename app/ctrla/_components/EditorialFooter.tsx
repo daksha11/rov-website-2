@@ -8,6 +8,7 @@
 
 import Link from "next/link";
 import { Instagram } from "lucide-react";
+import AnimatedShaderBackground from "@/components/ui/animated-shader-background";
 import { ed, Bleed, Rule, Label } from "./editorial";
 
 const NAV = [
@@ -16,19 +17,24 @@ const NAV = [
   { kicker: "Contact", title: "Calendly", href: "https://calendly.com/rangeofviewmusic/30min", external: true },
 ];
 
-const paperSoft = "rgba(244,231,234,0.66)";
-const paperFaint = "rgba(244,231,234,0.42)";
+const paperSoft = "rgba(240,230,224,0.66)";
+const paperFaint = "rgba(240,230,224,0.42)";
 
 export default function EditorialFooter() {
   return (
     <footer
       style={{
-        background: ed.ink,
+        position: "relative",
+        backgroundColor: ed.void,
         color: ed.paper,
         width: "100%",
         overflow: "hidden",
       }}
     >
+      {/* Animated shooting-stars shader, behind footer content */}
+      <AnimatedShaderBackground style={{ zIndex: 0 }} intensity={1} />
+
+      <div style={{ position: "relative", zIndex: 1 }}>
       <Bleed style={{ padding: "clamp(40px,6vw,72px) clamp(18px,5vw,64px) clamp(20px,3vw,32px)" }}>
         {/* Nav columns */}
         <div
@@ -125,12 +131,13 @@ export default function EditorialFooter() {
 
       {/* Colophon */}
       <Bleed style={{ padding: "0 clamp(18px,5vw,64px) clamp(24px,3vw,32px)" }}>
-        <Rule color="rgba(245,237,216,0.14)" />
+        <Rule color="rgba(240,230,224,0.14)" />
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap", paddingTop: 16 }}>
           <Label color={paperSoft}>CTRL-A · Issue 01 · Spring 2026</Label>
           <Label color={paperFaint}>© Range of View Studios</Label>
         </div>
       </Bleed>
+      </div>
     </footer>
   );
 }
@@ -143,6 +150,6 @@ const socStyle: React.CSSProperties = {
   alignItems: "center",
   justifyContent: "center",
   color: ed.paper,
-  background: "rgba(244,231,234,0.1)",
+  background: "rgba(240,230,224,0.1)",
   transition: "background .25s, color .25s",
 };
