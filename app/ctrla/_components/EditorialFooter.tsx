@@ -81,7 +81,7 @@ export default function EditorialFooter() {
           }}
         >
           <p style={{ fontFamily: ed.mono, fontSize: 12, lineHeight: 1.6, color: paperFaint, margin: 0, maxWidth: 360 }}>
-            Book a call — *we&apos;re millennials and gen-z, please do not call us.
+            Book a call. *We&apos;re millennials and gen-z, please do not call us.
           </p>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <a href="https://discord.gg/GfzXdmu" target="_blank" rel="noopener noreferrer" aria-label="Discord" className="ctrla-foot-soc" style={socStyle}>

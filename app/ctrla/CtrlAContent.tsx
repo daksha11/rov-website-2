@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { NavigationDock } from "@/components/NavDoc";
+import CtrlALoader from "./_components/CtrlALoader";
 import EditorialFooter from "./_components/EditorialFooter";
 import AnimatedShaderBackground from "@/components/ui/animated-shader-background";
-import { ThreeToolkits } from "./_components/Toolkits";
-import { ArtistShowcase, RovSpotlight, CondensedEvents, VueClose } from "./_components/IssueSections";
+import { DreamAsiaTeaser } from "./_components/DreamAsiaSections";
+import { BrandKitFeature, CondensedEvents, VueClose } from "./_components/IssueSections";
 import { ed, Bleed, Rule, Label } from "./_components/editorial";
 import { issueMeta } from "./data";
 
@@ -24,7 +25,7 @@ function Masthead() {
       <Bleed style={{ padding: "12px clamp(18px,5vw,64px)" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
           <Label color={ed.ink}>
-            {issueMeta.volume} — {issueMeta.issue}
+            {issueMeta.volume} · {issueMeta.issue}
           </Label>
           <Image
             src="/ctrla/ctrla-flat-logo-black.png"
@@ -211,7 +212,7 @@ function StickerBelt() {
           margin: "0 0 18px",
         }}
       >
-        Plate I — Custom hand-drawn illustrations
+        Plate I · Custom hand-drawn illustrations
       </p>
       <div aria-hidden style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 120, background: `linear-gradient(to right, ${ed.ink} 30%, transparent)`, zIndex: 2 }} />
       <div aria-hidden style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 120, background: `linear-gradient(to left, ${ed.ink} 30%, transparent)`, zIndex: 2 }} />
@@ -228,82 +229,6 @@ function StickerBelt() {
         ))}
       </div>
     </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════
-// PICKS + REVIEWS (editorial featured grid)
-// ═══════════════════════════════════════════════════════
-
-type Pick = { area: string; kicker: string; title: string; page: string; href: string; external?: boolean };
-
-const PICKS: Pick[] = [
-  { area: "a", kicker: "ROV Tool", title: "Brand Kit Generator", page: "P.012", href: "/ctrla/brand-kit" },
-  { area: "b", kicker: "Gatherings", title: "Events Hub", page: "P.007", href: "/ctrla/events" },
-  { area: "c", kicker: "Mixtape", title: "The ROV Tape 3", page: "P.023", href: "/ctrla/tape3" },
-  { area: "d", kicker: "Toolkit 01", title: "Music", page: "P.001", href: "/ctrla/toolkit/music" },
-  { area: "e", kicker: "Toolkit 02", title: "Web Dev", page: "P.002", href: "/ctrla/toolkit/web-dev" },
-  { area: "f", kicker: "Toolkit 03", title: "Design", page: "P.003", href: "/ctrla/toolkit/design" },
-];
-
-function PickCell({ pick }: { pick: Pick }) {
-  const tall = pick.area === "a";
-  return (
-    <a
-      href={pick.href}
-      {...(pick.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className="ctrla-pick"
-      style={{ gridArea: pick.area, display: "flex", flexDirection: "column", textDecoration: "none" }}
-    >
-      <div
-        style={{
-          position: "relative",
-          width: "100%",
-          aspectRatio: tall ? "4 / 5" : "4 / 3",
-          background: ed.ink,
-          overflow: "hidden",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          padding: 18,
-        }}
-      >
-        <span style={{ fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(165,106,103,0.9)" }}>
-          {pick.kicker}
-        </span>
-        <span aria-hidden className="ctrla-pick-arrow" style={{ alignSelf: "flex-end", color: "rgba(240,230,224,0.3)", fontSize: 22, lineHeight: 1, transition: "color .25s, transform .25s" }}>
-          ↗
-        </span>
-      </div>
-      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, paddingTop: 10 }}>
-        <span style={{ fontFamily: ed.grotesque, fontWeight: 700, fontSize: "clamp(14px,1.6vw,18px)", letterSpacing: "-0.01em", color: ed.ink }}>
-          {pick.title}
-        </span>
-        <Label color={ed.inkFaint}>{pick.page}</Label>
-      </div>
-    </a>
-  );
-}
-
-function PicksReviews() {
-  return (
-    <section style={{ background: ed.paper, padding: "clamp(48px,7vw,88px) 0" }}>
-      <Bleed>
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-          <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4vw,52px)", letterSpacing: "-0.02em", color: ed.ink, margin: 0 }}>
-            Picks + Reviews
-          </h2>
-          <Label color={ed.inkFaint}>What we tested this issue</Label>
-        </div>
-        <Rule style={{ margin: "clamp(24px,3vw,40px) 0" }} />
-
-        <div className="ctrla-picks-grid">
-          {PICKS.map((p) => (
-            <PickCell key={p.area} pick={p} />
-          ))}
-        </div>
-      </Bleed>
-    </section>
   );
 }
 
@@ -419,6 +344,22 @@ function FridayFooter() {
 // ═══════════════════════════════════════════════════════
 
 export default function CtrlAContent() {
+  // Loading screen — shows once per browser session.
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    if (typeof window !== "undefined" && sessionStorage.getItem("ctrla-loaded")) {
+      setLoading(false);
+    }
+  }, []);
+  const dismissLoader = () => {
+    setLoading(false);
+    try {
+      sessionStorage.setItem("ctrla-loaded", "1");
+    } catch {
+      /* ignore */
+    }
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
@@ -435,18 +376,21 @@ export default function CtrlAContent() {
 
   return (
     <div style={{ background: ed.paper, minHeight: "100vh", width: "100%", overflowX: "hidden" }}>
+      {loading && <CtrlALoader onDone={dismissLoader} />}
       <NavigationDock />
 
       <Masthead />
       <Cover />
       <StickerBelt />
 
-      <PicksReviews />
-      <ThreeToolkits />
+      {/* DreamAsia Fest — compact teaser; full story at /ctrla/dreamasia */}
+      <DreamAsiaTeaser />
 
-      <ArtistShowcase />
-      <RovSpotlight />
+      {/* FIFA World Cup 26 — Atlanta events */}
       <CondensedEvents />
+
+      {/* Standing feature — recurs every volume */}
+      <BrandKitFeature />
 
       <StatBand />
       <VueClose />

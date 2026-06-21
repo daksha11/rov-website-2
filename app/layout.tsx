@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import dynamic from "next/dynamic";
+// import dynamic from "next/dynamic"; // chatbot hidden for now
 import Script from "next/script";
 import StyledComponentsRegistry from "@/lib/registry";
 import { OrganizationSchema } from "@/components/OrganizationSchema";
@@ -10,10 +10,10 @@ import ClarityProvider from "@/components/ClarityProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// Dynamically import the chat widget (client-only)
-const ChatWidget = dynamic(() => import("@/components/ChatWidget"), {
-  ssr: false,
-});
+// Dynamically import the chat widget (client-only) — hidden for now
+// const ChatWidget = dynamic(() => import("@/components/ChatWidget"), {
+//   ssr: false,
+// });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.rovstudios.com"),
@@ -120,8 +120,8 @@ export default function RootLayout({
         <StyledComponentsRegistry>
           {children}
         </StyledComponentsRegistry>
-        {/* Floating chatbot */}
-        <ChatWidget />
+        {/* Floating chatbot — hidden for now */}
+        {/* <ChatWidget /> */}
       </body>
     </html>
   );

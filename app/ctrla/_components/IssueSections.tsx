@@ -6,7 +6,7 @@
 // ═══════════════════════════════════════════════════════
 
 import { ed, Bleed, Rule, Label } from "./editorial";
-import { artists, spotlight, events, eventSources, vueClose, type Artist } from "../data";
+import { artists, spotlight, events, eventSources, eventsCover, vueClose, type Artist } from "../data";
 
 // ── ATL Artist Showcase ────────────────────────────────
 
@@ -109,6 +109,124 @@ export function ArtistShowcase() {
   );
 }
 
+// ── Brand Kit Generator (featured tool) ────────────────
+
+const BK_SWATCHES = [
+  { c: "#0F0820", label: "Void" },
+  { c: "#24123A", label: "Ink" },
+  { c: "#4E3D73", label: "Plum" },
+  { c: "#A56A67", label: "Rose" },
+  { c: "#E3C24A", label: "Gold" },
+  { c: "#F0E6E0", label: "Paper" },
+];
+
+const BK_FEATURES = ["Colour tokens", "Typography scale", "Voice & tone", "Export to .md"];
+
+export function BrandKitFeature() {
+  return (
+    <section style={{ background: ed.paper, padding: "clamp(56px,8vw,104px) 0" }}>
+      <Bleed>
+        {/* Standing-feature header — recurs every volume of CTRL-A */}
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginBottom: "clamp(20px,2.6vw,32px)" }}>
+          <Label color={ed.ink}>The Toolbox · A CTRL-A Standing Feature</Label>
+          <Label color={ed.inkFaint}>In every volume</Label>
+        </div>
+        <Rule style={{ marginBottom: "clamp(28px,4vw,48px)" }} />
+
+        {/* Framed feature panel — emphasized as its own product */}
+        <div style={{ border: `1px solid ${ed.ink}`, borderTop: `5px solid ${ed.amber}`, background: "rgba(255,255,255,0.18)" }}>
+          <div className="ctrla-brandkit">
+            {/* Left — copy */}
+            <div style={{ padding: "clamp(28px,4vw,52px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <Label color={ed.amber} style={{ display: "block", marginBottom: 14 }}>
+                ROV Tool · Always On
+              </Label>
+              <h2
+                style={{
+                  fontFamily: ed.grotesque,
+                  fontWeight: 800,
+                  fontSize: "clamp(34px,5vw,68px)",
+                  letterSpacing: "-0.03em",
+                  lineHeight: 0.92,
+                  color: ed.ink,
+                  margin: "0 0 18px",
+                }}
+              >
+                Brand Kit
+                <br />
+                Generator
+              </h2>
+              <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.6vw,18px)", lineHeight: 1.6, color: ed.inkSoft, margin: "0 0 24px", maxWidth: 460 }}>
+                Drop in your colours, type, and tone. Walk away with a complete, structured
+                system, exported to Markdown, ready to drop into any build or AI prompt.
+              </p>
+
+              {/* Feature chips */}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 28 }}>
+                {BK_FEATURES.map((f) => (
+                  <span
+                    key={f}
+                    style={{
+                      fontFamily: ed.mono,
+                      fontSize: 10,
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      color: ed.ink,
+                      border: `1px solid ${ed.hair}`,
+                      padding: "5px 12px",
+                    }}
+                  >
+                    {f}
+                  </span>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <a
+                href="/ctrla/brand-kit"
+                className="ctrla-bk-cta"
+                style={{
+                  alignSelf: "flex-start",
+                  fontFamily: ed.mono,
+                  fontSize: "clamp(11px,1.2vw,13px)",
+                  letterSpacing: "0.16em",
+                  textTransform: "uppercase",
+                  color: ed.paper,
+                  background: ed.amber,
+                  padding: "14px 28px",
+                  textDecoration: "none",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 10,
+                }}
+              >
+                Try the Generator <span aria-hidden>→</span>
+              </a>
+            </div>
+
+            {/* Right — palette visual (on the ink panel) */}
+            <div style={{ background: ed.ink, padding: "clamp(28px,4vw,52px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <span style={{ fontFamily: ed.mono, fontSize: 11, letterSpacing: "0.1em", color: "rgba(240,230,224,0.5)", marginBottom: 18 }}>
+                ## Colour Tokens
+              </span>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
+                {BK_SWATCHES.map((s) => (
+                  <div key={s.label} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                    <div style={{ width: "100%", aspectRatio: "1 / 1", background: s.c, border: "1px solid rgba(240,230,224,0.14)" }} />
+                    <span style={{ fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(240,230,224,0.55)" }}>
+                      {s.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </Bleed>
+    </section>
+  );
+}
+
 // ── ROV Spotlight ──────────────────────────────────────
 
 export function RovSpotlight() {
@@ -199,7 +317,7 @@ export function CondensedEvents() {
   };
 
   return (
-    <section style={{ background: ed.paper, padding: "clamp(56px,8vw,104px) 0" }}>
+    <section id="events" style={{ background: ed.paper, padding: "clamp(56px,8vw,104px) 0", scrollMarginTop: 0 }}>
       {/* Structured data for search + generative engines */}
       <script
         type="application/ld+json"
@@ -212,13 +330,52 @@ export function CondensedEvents() {
               ATL Events
             </h2>
             <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(13px,1.5vw,16px)", color: ed.inkSoft, margin: "8px 0 0" }}>
-              The FIFA World Cup 26™ comes to Atlanta — Mercedes-Benz Stadium hosts the world.
+              The FIFA World Cup 26™ comes to Atlanta. Mercedes-Benz Stadium hosts the world.
             </p>
           </div>
-          <a href="/ctrla/events" className="ctrla-seeall" style={{ fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.18em", textTransform: "uppercase", color: ed.amber, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
-            See all events <span aria-hidden>→</span>
+          <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026" target="_blank" rel="noopener" className="ctrla-seeall" style={{ fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.18em", textTransform: "uppercase", color: ed.amber, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
+            Full match schedule <span aria-hidden>→</span>
           </a>
         </div>
+        {/* Section cover image */}
+        <div
+          style={{
+            position: "relative",
+            width: "100%",
+            aspectRatio: "16 / 7",
+            minHeight: 200,
+            background: ed.ink,
+            overflow: "hidden",
+            margin: "clamp(24px,3vw,40px) 0 0",
+            backgroundImage: `url('${eventsCover.src}')`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "linear-gradient(to top, rgba(15,8,32,0.66) 0%, transparent 52%)",
+            }}
+          />
+          <span
+            style={{
+              position: "absolute",
+              left: 16,
+              bottom: 12,
+              fontFamily: ed.mono,
+              fontSize: "clamp(8px,0.9vw,10px)",
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              color: "rgba(240,230,224,0.88)",
+            }}
+          >
+            {eventsCover.label}
+          </span>
+        </div>
+
         <Rule style={{ margin: "clamp(24px,3vw,40px) 0 0" }} />
 
         <div>

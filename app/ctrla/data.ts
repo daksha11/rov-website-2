@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════
-// CTRL A MAGAZINE — CONTENT DATA
+// CTRL A MAGAZINE, CONTENT DATA
 // ═══════════════════════════════════════════════════════
 
 export interface Tool {
@@ -32,7 +32,7 @@ export interface ToolkitSection {
   intro: string;
   /** Short editorial blurb for the "Three Toolkits" column (1–2 lines). */
   blurb: string;
-  /** e.g. "12 PICKS" — shown on the toolkit column. */
+  /** e.g. "12 PICKS", shown on the toolkit column. */
   pickCount: string;
   /** e.g. "Updated weekly". */
   cadence: string;
@@ -56,7 +56,7 @@ export const issueMeta = {
   tagline: "On the tools changing creative work, tested and reviewed.",
   coverHeadline: "From the bedroom to the stage.",
   coverDeck:
-    "Sam Suen headlines DreamAsia Fest. The full workflow, the tools, the media — and how to apply it to yours.",
+    "How a small team produced a multi-city festival headline. Sam Suen headlines DreamAsia Fest across two states. This is everything that happened before the lights came up.",
   stats: [
     { value: "52", label: "Tools tested" },
     { value: "12", label: "Picks made" },
@@ -64,7 +64,7 @@ export const issueMeta = {
     { value: "01", label: "Cadence" },
   ] as IssueStat[],
   thisWeek:
-    "This Week: Sam Suen takes the DreamAsia Fest stage — inside the full production workflow, from FL Studio demos to the BMPCC 6K cut.",
+    "This Week: Sam Suen takes the DreamAsia Fest stage, inside the full production workflow, from FL Studio demos to the BMPCC 6K cut.",
 };
 
 // ── ATL ARTIST SHOWCASE ─────────────────────────────────
@@ -84,21 +84,21 @@ export const artists: Artist[] = [
     discipline: "Korean-American R&B",
     feature: true,
     blurb:
-      "A bedroom producer turned festival headliner. Sam's writing the kind of R&B that sounds like 2am in a city that never quite sleeps — intimate, patient, and built to fill a room the moment it needs to.",
+      "A bedroom producer turned festival headliner. Sam's writing the kind of R&B that sounds like 2am in a city that never quite sleeps, intimate, patient, and built to fill a room the moment it needs to.",
     quote: "The stage at DreamAsia wasn't a destination. It was just the next logical step.",
   },
   {
     name: "Artist TBD",
     discipline: "Visual Art / Photography",
     blurb:
-      "Placeholder for the issue's featured visual artist. Two to three sentences on why their work matters right now — the show, the series, the moment — not a career résumé.",
+      "Placeholder for the issue's featured visual artist. Two to three sentences on why their work matters right now, the show, the series, the moment, not a career résumé.",
     quote: "A line that captures how they think about the work.",
   },
   {
     name: "Artist TBD",
     discipline: "Any Discipline",
     blurb:
-      "Placeholder for the third pick — film, ceramics, design, whatever's interesting this issue. Keep it to the now: what they just made and why you should care.",
+      "Placeholder for the third pick, film, ceramics, design, whatever's interesting this issue. Keep it to the now: what they just made and why you should care.",
     quote: "A short, sharp quote in their own voice.",
   },
 ];
@@ -109,14 +109,14 @@ export const spotlight = {
   eyebrow: "ROV Spotlight · Issue 01",
   headline: "Producing DreamAsia Fest, end to end.",
   body:
-    "When Sam Suen needed a set ready for DreamAsia, ROV ran the whole pipeline — demos to mix, stage to screen. The records were built and mixed in-house, the visuals shot and cut in-house, and the whole thing pulled together on a deadline that didn't move. No outsourcing, no hand-offs. The work below is the proof.",
+    "When Sam Suen needed a set ready for DreamAsia, ROV ran the whole pipeline, demos to mix, stage to screen. The records were built and mixed in-house, the visuals shot and cut in-house, and the whole thing pulled together on a deadline that didn't move. No outsourcing, no hand-offs. The work below is the proof.",
   tools: ["FL Studio", "DaVinci Resolve", "Premiere Pro", "BMPCC 6K", "Canon", "Claude"],
   image: undefined as string | undefined,
 };
 
-// ── ATL EVENTS — FIFA World Cup 26, Atlanta ─────────────
+// ── ATL EVENTS, FIFA World Cup 26, Atlanta ─────────────
 // Atlanta (Mercedes-Benz Stadium) is a host city for the FIFA World
-// Cup 2026. Each event links out to an authoritative source — these
+// Cup 2026. Each event links out to an authoritative source, these
 // outbound citations + the structured data below aid SEO/GEO.
 
 export interface IssueEvent {
@@ -128,7 +128,7 @@ export interface IssueEvent {
   /** Full venue address for structured data. */
   venue: string;
   badge: "Free" | "Ticketed";
-  /** Authoritative outbound link (official source) — backlink for SEO/GEO. */
+  /** Authoritative outbound link (official source), backlink for SEO/GEO. */
   url: string;
 }
 
@@ -136,7 +136,7 @@ export const events: IssueEvent[] = [
   {
     date: "Jun 15",
     isoDate: "2026-06-15",
-    name: "FIFA World Cup 26™ — Atlanta Group Stage",
+    name: "FIFA World Cup 26™, Atlanta Group Stage",
     location: "Mercedes-Benz Stadium, ATL",
     venue: "Mercedes-Benz Stadium, 1 AMB Dr NW, Atlanta, GA 30313",
     badge: "Ticketed",
@@ -154,7 +154,7 @@ export const events: IssueEvent[] = [
   {
     date: "Jul 07",
     isoDate: "2026-07-07",
-    name: "FIFA World Cup 26™ — Atlanta Round of 16",
+    name: "FIFA World Cup 26™, Atlanta Round of 16",
     location: "Mercedes-Benz Stadium, ATL",
     venue: "Mercedes-Benz Stadium, 1 AMB Dr NW, Atlanta, GA 30313",
     badge: "Ticketed",
@@ -162,22 +162,120 @@ export const events: IssueEvent[] = [
   },
 ];
 
+/** Section cover image for the FIFA events block. */
+export const eventsCover = {
+  src: "/ctrla/VOL1/fanfestatl.webp",
+  alt: "FIFA Fan Festival crowd in Atlanta",
+  label: "FIFA Fan Festival · Atlanta",
+};
+
 /** Authoritative outbound references shown under the events list. */
 export const eventSources: { label: string; url: string }[] = [
   { label: "FIFA World Cup 26™", url: "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026" },
   { label: "Mercedes-Benz Stadium", url: "https://www.mercedesbenzstadium.com/" },
   { label: "Atlanta Sports Council", url: "https://www.atlsports.org/" },
-  { label: "Discover Atlanta — World Cup 2026", url: "https://discoveratlanta.com/fifa-world-cup-2026/" },
+  { label: "Discover Atlanta, World Cup 2026", url: "https://discoveratlanta.com/fifa-world-cup-2026/" },
 ];
 
-// ── VUE — CLOSING NOTE ──────────────────────────────────
+// ── VUE, CLOSING NOTE ──────────────────────────────────
 
 export const vueClose = {
-  eyebrow: "Vue · Closing note · Issue 01",
+  eyebrow: "Vue · Closing note · DreamAsia Fest",
   body:
-    "I spend most of my time drifting a little above all this, watching what you build. Issue 01 started with one question — what does it actually take to get from a bedroom setup to a festival stage? Turns out the answer isn't a secret tool or a lucky break. It's reps. It's the boring, repeatable work nobody posts about. Sam did the reps. So can you. That's the whole magazine, really — proof that the gap is smaller than it looks.",
+    "I spend most of my time drifting a little above all this, watching what you build. DreamAsia wasn't supposed to be possible for a team this size, too many cities, too many moving parts, not enough hands. They did it anyway. That's the only lesson worth keeping: the gap between a bedroom setup and a festival stage isn't money or gear or a lucky break. It's reps, and the nerve to run the whole thing yourself. Sam and the crew had both. So can you.",
   signoff: "See you next week.",
-  signature: "— Vue · Issue 01 · CTRL-A",
+  signature: "Vue · Issue 01 · CTRL-A",
+};
+
+// ═══════════════════════════════════════════════════════
+// DREAMASIA FEST, FEATURE ISSUE CONTENT
+// Real media drops into /ctrla/VOL1; everything else is a
+// labelled placeholder block at locked size + aspect ratio.
+// ═══════════════════════════════════════════════════════
+
+// ── Cover ──────────────────────────────────────────────
+export const coverShot = {
+  src: "/ctrla/VOL1/dreamasiacover.webp",
+  alt: "Sam Suen mid-set at DreamAsia Fest, stage visuals and crowd behind him",
+  label: "HERO: peak performance frame",
+};
+
+// ── 1. The story, how it started ───────────────────────
+export const issueOpen = {
+  eyebrow: "The story · How it started",
+  headline: "Two friends, one deadline, a festival stage.",
+  body: [
+    "Sam Suen and the ROV team have made music together since high school: bedroom sessions, borrowed gear, songs nobody had asked for yet. DreamAsia Fest is the same two friends, years on, headlining a national celebration of Asian entertainment, food, and culture across two states.",
+    "Nothing about the setup got bigger overnight. The crew stayed small. What changed was the reps, and the nerve to run the whole thing themselves, from the first demo to the last light cue.",
+  ],
+  vueNote:
+    "Underdog math: a small crew, a big room, and nobody coming to save the show. They built it anyway.",
+  prep: { label: "EARLY PREP: bedroom / studio setup", ratio: "4 / 5" as const },
+  stage: {
+    src: "/ctrla/VOL1/dreamasiafestpic2.webp",
+    label: "THE BIG STAGE: first load-in",
+    ratio: "4 / 5" as const,
+  },
+};
+
+// ── 2. Behind the scenes (HERO gallery) ────────────────
+export interface BtsTile {
+  label: string;
+  ratio: string;
+  /** column span on the 12-col mosaic (desktop). */
+  span: number;
+  /** full-bleed row on mobile. */
+  wide?: boolean;
+  img?: string;
+  video?: string;
+}
+
+export const bts = {
+  eyebrow: "Behind the scenes · The real work",
+  headline: "Everything before the lights came up.",
+  note: "Fan experience, stage visuals, soundcheck, load-in. The part the audience never sees, and the reason the show worked.",
+  tiles: [
+    { label: "BTS: crew load-in & stage build", ratio: "16 / 9", span: 8, wide: true, video: "/ctrla/VOL1/Dreamasiafest.mp4" },
+    { label: "BTS: stage visuals on the wall", ratio: "4 / 5", span: 4, img: "/ctrla/VOL1/dreamasiafestpic2.webp" },
+    { label: "BTS: the sound board, mid-soundcheck", ratio: "1 / 1", span: 4 },
+    { label: "BTS: fan experience setup", ratio: "1 / 1", span: 4 },
+    { label: "BTS: Sam at soundcheck", ratio: "1 / 1", span: 4 },
+    { label: "BTS: front of house & lighting", ratio: "16 / 9", span: 6, video: "/ctrla/VOL1/concert1.mp4" },
+    { label: "BTS: backstage, pre-show", ratio: "16 / 9", span: 6, video: "/ctrla/VOL1/Dreamasiacirc.mp4" },
+    { label: "BTS: doors open, the room fills", ratio: "21 / 9", span: 12, wide: true },
+  ] as BtsTile[],
+};
+
+// ── 3. Two cities, the scale ───────────────────────────
+export const twoCities = {
+  eyebrow: "Two cities · The scale",
+  headline: "The same headline show. Twice. Two states.",
+  body: "DreamAsia ran in North Carolina and Georgia: the same production, rebuilt on a new stage, for a new crowd, days apart. Delivering it once is a show. Delivering it twice is an operation.",
+  cities: [
+    { state: "North Carolina", label: "NC: crowd at peak", note: "Where it opened. New venue, a new room to read.", ratio: "4 / 5" as const },
+    { state: "Georgia", label: "GA: the headline set", note: "Where it closed. Same show, dialled in and bigger.", ratio: "4 / 5" as const },
+  ],
+};
+
+// ── 4. The toolkit, what you can use ───────────────────
+export interface ProdTool {
+  name: string;
+  role: string;
+  line: string;
+}
+
+export const productionToolkit = {
+  eyebrow: "The toolkit · What you can use",
+  headline: "How it was made, so you can too.",
+  note: "The exact stack behind the records, the visuals, and the cut. Steal the workflow.",
+  tools: [
+    { name: "FL Studio", role: "Records & demos", line: "Where the songs started: beats and demos built in the box." },
+    { name: "DaVinci Resolve", role: "Color & finish", line: "The final cut and the color. The recap's whole look lives here." },
+    { name: "Premiere Pro", role: "Edit & social", line: "Fast turnarounds and social cut-downs while the tour moved." },
+    { name: "BMPCC 6K Pro", role: "A-cam", line: "Our cinema camera for the set and the crowd in full frame." },
+    { name: "Canon", role: "B-cam & stills", line: "Run-and-gun coverage and stills, backstage to front of house." },
+    { name: "Claude", role: "Run-of-show", line: "Show notes, run-of-show, and copy, all drafted fast so the team could move." },
+  ] as ProdTool[],
 };
 
 // ── MUSIC TOOLKIT ──────────────────────────────────────
@@ -256,7 +354,7 @@ const musicMisconceptions: Misconception[] = [
   },
   {
     myth: "You need a treated room to mix well",
-    reality: "Reference your mixes on multiple systems — car speakers, earbuds, phone, studio monitors. Knowing how your room sounds matters more than perfect treatment.",
+    reality: "Reference your mixes on multiple systems, car speakers, earbuds, phone, studio monitors. Knowing how your room sounds matters more than perfect treatment.",
   },
   {
     myth: "More tracks = better song",
@@ -271,7 +369,7 @@ const musicGuide: { title: string; steps: GuideStep[] } = {
       number: 1,
       title: "Choose your DAW and learn the shortcuts",
       body: "Pick Logic, Pro Tools, or Ableton and commit for at least 6 months. Don't DAW-hop. Learn the keyboard shortcuts for record, split, copy, and bounce. Speed comes from muscle memory.",
-      tip: "Logic is the best value — $200 one-time with world-class stock plugins.",
+      tip: "Logic is the best value, $200 one-time with world-class stock plugins.",
     },
     {
       number: 2,
@@ -335,7 +433,7 @@ const webDevTools: Tool[] = [
   {
     name: "shadcn/ui",
     category: "Components",
-    description: "Copy-paste component library built on Radix UI. Not a dependency — you own the code. Customize everything without fighting a framework.",
+    description: "Copy-paste component library built on Radix UI. Not a dependency, you own the code. Customize everything without fighting a framework.",
     url: "https://ui.shadcn.com/",
     tags: ["Components", "Radix", "Accessible"],
   },
@@ -390,7 +488,7 @@ const webDevGuide: { title: string; steps: GuideStep[] } = {
       number: 1,
       title: "Scaffold with create-next-app",
       body: "Run npx create-next-app@latest with TypeScript and Tailwind enabled. This gives you a production-ready setup in 30 seconds. Don't waste time configuring webpack.",
-      tip: "Always pick the App Router — it's the future of Next.js.",
+      tip: "Always pick the App Router, it's the future of Next.js.",
     },
     {
       number: 2,
@@ -406,7 +504,7 @@ const webDevGuide: { title: string; steps: GuideStep[] } = {
       number: 4,
       title: "Deploy to Vercel",
       body: "Connect your GitHub repo. Every push to main deploys automatically. Every PR gets a preview URL. Share it, get feedback, iterate.",
-      tip: "Set up a custom domain early — it makes everything feel real.",
+      tip: "Set up a custom domain early, it makes everything feel real.",
     },
     {
       number: 5,
@@ -492,7 +590,7 @@ const designMisconceptions: Misconception[] = [
   },
   {
     myth: "Following trends makes you a good designer",
-    reality: "Trends are references, not rules. The glassmorphism phase proved this — most of it was unreadable. Understand why a trend works before copying it.",
+    reality: "Trends are references, not rules. The glassmorphism phase proved this, most of it was unreadable. Understand why a trend works before copying it.",
   },
   {
     myth: "Clients know what they want",
@@ -541,7 +639,7 @@ export const toolkitSections: ToolkitSection[] = [
     title: "Music",
     pageNumber: "01",
     accentColor: "#B05C56",
-    intro: "The tools, plugins, and platforms our sound engineers actually use — not what gets promoted on YouTube. From DAWs to distribution, every pick has been tested in real sessions with real artists.",
+    intro: "The tools, plugins, and platforms our sound engineers actually use, not what gets promoted on YouTube. From DAWs to distribution, every pick has been tested in real sessions with real artists.",
     blurb: "DAWs, plugins, and platforms our engineers run in real sessions. No sponsored picks.",
     pickCount: "8 Picks",
     cadence: "Updated weekly",
@@ -554,7 +652,7 @@ export const toolkitSections: ToolkitSection[] = [
     title: "Web Dev",
     pageNumber: "02",
     accentColor: "#D89A00",
-    intro: "Our full development stack, from framework to deployment. These are the tools we build client sites with every day — chosen for speed, reliability, and developer experience.",
+    intro: "Our full development stack, from framework to deployment. These are the tools we build client sites with every day, chosen for speed, reliability, and developer experience.",
     blurb: "The stack we ship client sites on, framework to deploy. Chosen for speed and DX.",
     pickCount: "8 Picks",
     cadence: "Updated weekly",

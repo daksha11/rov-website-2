@@ -90,6 +90,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'monthly',
             priority: 0.7,
         },
+        {
+            url: `${baseUrl}/ctrla/dreamasia`,
+            lastModified: '2026-06-21',
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
         ...['music', 'web-dev', 'design'].map((id) => ({
             url: `${baseUrl}/ctrla/toolkit/${id}`,
             lastModified: '2026-06-15',

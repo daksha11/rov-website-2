@@ -17,10 +17,13 @@ export default function AnimatedShaderBackground({
   className,
   style,
   intensity = 1.25,
+  speed = 1,
 }: {
   className?: string;
   style?: React.CSSProperties;
   intensity?: number;
+  /** Multiplies the per-frame time step — higher = stars travel faster. */
+  speed?: number;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -133,12 +136,32 @@ export default function AnimatedShaderBackground({
     const ro = new ResizeObserver(resize);
     ro.observe(container);
 
+    // Only render while the canvas is actually on-screen. A full-viewport
+    // fragment shader running off-screen is pure wasted GPU and the main
+    // cause of scroll jank when several of these are mounted at once.
+    let onScreen = true;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        onScreen = entry.isIntersecting;
+      },
+      { rootMargin: "120px" }
+    );
+    io.observe(container);
+
+    // Respect users who prefer less motion — render a single static frame.
+    const reduceMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     let frameId = 0;
     const animate = () => {
       frameId = requestAnimationFrame(animate);
       // Guard against 0-dimension frames before layout settles.
       if (container.clientWidth === 0 || container.clientHeight === 0) return;
-      material.uniforms.iTime.value += 0.016;
+      // Skip the expensive draw entirely while scrolled out of view.
+      if (!onScreen) return;
+      if (!reduceMotion) material.uniforms.iTime.value += 0.016 * speed;
       renderer.render(scene, camera);
     };
     animate();
@@ -146,12 +169,13 @@ export default function AnimatedShaderBackground({
     return () => {
       cancelAnimationFrame(frameId);
       ro.disconnect();
+      io.disconnect();
       if (canvas.parentNode === container) container.removeChild(canvas);
       geometry.dispose();
       material.dispose();
       renderer.dispose();
     };
-  }, [intensity]);
+  }, [intensity, speed]);
 
   return (
     <div

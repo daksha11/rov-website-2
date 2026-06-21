@@ -206,7 +206,7 @@ function ToolCard({ tool, accent }: { tool: Tool; accent: string }) {
       {tool.favoriteBy && (
         <div style={{ marginTop: 14, paddingTop: 14, borderTop: `1px solid ${ed.hair}` }}>
           <Label color={accent} style={{ display: "block", marginBottom: 5 }}>
-            ROV Pick — {tool.favoriteBy}
+            ROV Pick · {tool.favoriteBy}
           </Label>
           <p
             style={{
