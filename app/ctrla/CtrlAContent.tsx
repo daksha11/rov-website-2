@@ -5,8 +5,10 @@ import Image from "next/image";
 import { NavigationDock } from "@/components/NavDoc";
 import CtrlALoader from "./_components/CtrlALoader";
 import EditorialFooter from "./_components/EditorialFooter";
-import AnimatedShaderBackground from "@/components/ui/animated-shader-background";
+import ShootingStars from "@/components/ui/shooting-stars";
+import { ThreeToolkits } from "./_components/Toolkits";
 import { DreamAsiaTeaser } from "./_components/DreamAsiaSections";
+import { StarField, CometStreak, FloatingAsset, COSMIC } from "./_components/CosmicAccents";
 import { BrandKitFeature, CondensedEvents, VueClose } from "./_components/IssueSections";
 import { ed, Bleed, Rule, Label } from "./_components/editorial";
 import { issueMeta } from "./data";
@@ -68,8 +70,8 @@ function Cover() {
             overflow: "hidden",
           }}
         >
-          {/* Animated shader background (palette-tuned), behind the logo */}
-          <AnimatedShaderBackground style={{ zIndex: 0 }} intensity={1.15} />
+          {/* Real-sky shooting stars, behind the logo */}
+          <ShootingStars style={{ zIndex: 0 }} />
 
           <span
             style={{
@@ -238,8 +240,12 @@ function StickerBelt() {
 
 function StatBand() {
   return (
-    <section style={{ background: ed.plum, padding: "clamp(48px,7vw,88px) 0" }}>
-      <Bleed>
+    <section style={{ background: ed.plum, padding: "clamp(48px,7vw,88px) 0", position: "relative", overflow: "hidden" }}>
+      {/* Cosmic moment — faint parallax starfield + a comet that streaks once */}
+      <StarField opacity={0.14} />
+      <CometStreak style={{ top: "18%", left: 0 }} />
+
+      <Bleed style={{ position: "relative", zIndex: 1 }}>
         <Rule color="rgba(240,230,224,0.25)" />
         <div
           style={{
@@ -384,13 +390,29 @@ export default function CtrlAContent() {
       <StickerBelt />
 
       {/* DreamAsia Fest — compact teaser; full story at /ctrla/dreamasia */}
-      <DreamAsiaTeaser />
+      <div className="ctrla-cosmic-wrap">
+        <DreamAsiaTeaser />
+        <FloatingAsset src={COSMIC.saturn} motion="spin" top="7%" right="-34px" size="clamp(96px,13vw,200px)" driftFrom={42} driftTo={-34} opacity={0.62} />
+      </div>
+
+      {/* The CTRL-A toolkits — Music / Web Dev / Design */}
+      <div className="ctrla-cosmic-wrap">
+        <ThreeToolkits />
+        <FloatingAsset src={COSMIC.planets} motion="bob" bottom="9%" left="-30px" size="clamp(80px,10vw,158px)" driftFrom={-28} driftTo={34} opacity={0.5} />
+      </div>
 
       {/* FIFA World Cup 26 — Atlanta events */}
-      <CondensedEvents />
+      <div className="ctrla-cosmic-wrap">
+        <CondensedEvents />
+        <FloatingAsset src={COSMIC.spaceship} motion="bob" top="11%" right="-6px" size="clamp(58px,8vw,112px)" driftFrom={56} driftTo={-56} opacity={0.72} />
+        <FloatingAsset src={COSMIC.sideLines2} motion="sway" bottom="7%" left="-22px" size="clamp(96px,12vw,188px)" driftFrom={-22} driftTo={26} opacity={0.42} />
+      </div>
 
       {/* Standing feature — recurs every volume */}
-      <BrandKitFeature />
+      <div className="ctrla-cosmic-wrap">
+        <BrandKitFeature />
+        <FloatingAsset src={COSMIC.galaxy} motion="spin" top="-3%" right="-44px" size="clamp(130px,17vw,280px)" driftFrom={22} driftTo={-22} opacity={0.34} />
+      </div>
 
       <StatBand />
       <VueClose />

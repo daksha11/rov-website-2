@@ -20,6 +20,7 @@ import {
   type ToolkitSection,
   type Tool,
 } from "../data";
+import { DrawLine } from "./CosmicAccents";
 
 const spring = { type: "spring" as const, stiffness: 90, damping: 20 };
 
@@ -36,7 +37,8 @@ export function ThreeToolkits() {
           title="Three Toolkits."
           meta="Living libraries. Growing with each week's pick."
         />
-        <Rule style={{ margin: "clamp(28px, 4vw, 48px) 0" }} />
+        {/* Drawn cosmic divider in place of the plain rule */}
+        <DrawLine color={ed.amber} style={{ margin: "clamp(18px, 2.6vw, 32px) 0" }} />
 
         <div
           style={{

@@ -668,6 +668,41 @@ input[type="range"]::-webkit-slider-thumb {
 
 /* CTRL-A — DreamAsia feature ───────────────────────────── */
 
+/* Cosmic floating assets — parallax set pieces peeking from the margins */
+.ctrla-cosmic-wrap { position: relative; overflow: hidden; }
+.ctrla-cosmic-float { will-change: transform; }
+@media (max-width: 860px) {
+  /* Margins vanish on small screens — hide so they never sit over text. */
+  .ctrla-cosmic-float { display: none; }
+}
+
+/* Idle micro-animations — celestial behaviour per body */
+.ctrla-cosmic-anim { transform-origin: center; will-change: transform; }
+/* Orbit/spin — planets & galaxies turn */
+.ctrla-cosmic-spin { animation: ctrla-cosmic-spin 90s linear infinite; }
+@keyframes ctrla-cosmic-spin { to { transform: rotate(360deg); } }
+/* Hover-bob — the spaceship & wandering planets drift and tip */
+.ctrla-cosmic-bob { animation: ctrla-cosmic-bob 6.5s ease-in-out infinite; }
+@keyframes ctrla-cosmic-bob {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-9px) rotate(3deg); }
+}
+/* Sway — flowing line work eases side to side */
+.ctrla-cosmic-sway { animation: ctrla-cosmic-sway 8.5s ease-in-out infinite; }
+@keyframes ctrla-cosmic-sway {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  50% { transform: translateX(7px) rotate(2deg); }
+}
+/* Pulse — slow breathing scale (opacity left to the inline base) */
+.ctrla-cosmic-pulse { animation: ctrla-cosmic-pulse 5.5s ease-in-out infinite; }
+@keyframes ctrla-cosmic-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ctrla-cosmic-anim { animation: none !important; }
+}
+
 /* Front-page feature teaser — image zoom + arrow nudge on hover */
 .ctrla-feature-card { cursor: pointer; }
 .ctrla-feature-img { transition: transform 0.5s ease; }

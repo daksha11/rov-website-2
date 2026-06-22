@@ -8,7 +8,7 @@
 
 import Link from "next/link";
 import { Instagram } from "lucide-react";
-import AnimatedShaderBackground from "@/components/ui/animated-shader-background";
+import ShootingStars from "@/components/ui/shooting-stars";
 import { ed, Bleed, Rule, Label } from "./editorial";
 
 const NAV = [
@@ -31,8 +31,8 @@ export default function EditorialFooter() {
         overflow: "hidden",
       }}
     >
-      {/* Animated shooting-stars shader, behind footer content */}
-      <AnimatedShaderBackground style={{ zIndex: 0 }} intensity={1} />
+      {/* Real-sky shooting stars, behind footer content */}
+      <ShootingStars style={{ zIndex: 0 }} />
 
       <div style={{ position: "relative", zIndex: 1 }}>
       <Bleed style={{ padding: "clamp(40px,6vw,72px) clamp(18px,5vw,64px) clamp(20px,3vw,32px)" }}>
