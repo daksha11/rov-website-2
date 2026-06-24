@@ -10,6 +10,7 @@
 import { useEffect } from "react";
 import { NavigationDock } from "@/components/NavDoc";
 import EditorialFooter from "../_components/EditorialFooter";
+import CosmicBackdrop from "../_components/CosmicBackdrop";
 import { IssueOpen, BehindTheScenes, TwoCities, ProductionToolkit } from "../_components/DreamAsiaSections";
 import { ed, Bleed, Rule, Label } from "../_components/editorial";
 
@@ -28,16 +29,17 @@ export default function DreamAsiaFeatureContent() {
   }, []);
 
   return (
-    <div style={{ background: ed.ground, minHeight: "100vh", width: "100%", overflowX: "hidden" }}>
+    <div style={{ background: "transparent", minHeight: "100vh", width: "100%", overflowX: "hidden" }}>
+      <CosmicBackdrop />
       <NavigationDock />
 
       {/* Back-nav masthead */}
-      <div style={{ background: ed.ground, position: "relative", zIndex: 5 }}>
+      <div style={{ background: "transparent", position: "relative", zIndex: 5 }}>
         <Bleed style={{ padding: "12px clamp(18px,5vw,64px)" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
             <a href="/ctrla" className="ctrla-back" style={{ display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
               <span style={{ color: ed.amber }}>←</span>
-              <Label color={ed.ink}>CTRL-A · Issue 01</Label>
+              <Label color={ed.ink}>CTRL-A · Vol. 01</Label>
             </a>
             <Label color={ed.inkFaint}>Issue Feature</Label>
           </div>

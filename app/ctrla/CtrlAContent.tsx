@@ -4,13 +4,15 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { NavigationDock } from "@/components/NavDoc";
 import CtrlALoader from "./_components/CtrlALoader";
+import CosmicBackdrop from "./_components/CosmicBackdrop";
 import EditorialFooter from "./_components/EditorialFooter";
 import ShootingStars from "@/components/ui/shooting-stars";
 import { ThreeToolkits } from "./_components/Toolkits";
+import Cookbook from "./_components/Cookbook";
 import { DreamAsiaTeaser } from "./_components/DreamAsiaSections";
 import { StarField, CometStreak, FloatingAsset, COSMIC } from "./_components/CosmicAccents";
-import { BrandKitFeature, CondensedEvents, VueClose } from "./_components/IssueSections";
-import { ed, Bleed, Rule, Label } from "./_components/editorial";
+import { ArtistShowcase, BrandKitFeature, CondensedEvents, VueClose } from "./_components/IssueSections";
+import { ed, Bleed, Rule, Label, Kicker } from "./_components/editorial";
 import { issueMeta } from "./data";
 
 // ═══════════════════════════════════════════════════════
@@ -23,11 +25,11 @@ import { issueMeta } from "./data";
 
 function Masthead() {
   return (
-    <div style={{ background: ed.ground, position: "relative", zIndex: 5 }}>
+    <div style={{ background: "transparent", position: "relative", zIndex: 5 }}>
       <Bleed style={{ padding: "12px clamp(18px,5vw,64px)" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
           <Label color={ed.ink}>
-            {issueMeta.volume} · {issueMeta.issue}
+            {issueMeta.volume} · {issueMeta.edition}
           </Label>
           <Image
             src="/ctrla/ctrla-flat-logo-white.svg"
@@ -39,7 +41,7 @@ function Masthead() {
             style={{ height: "clamp(22px, 2.6vw, 32px)", width: "auto" }}
           />
           <Label color={ed.ink} style={{ textAlign: "right" }}>
-            {issueMeta.season} · {issueMeta.date}
+            {issueMeta.cadence} · CTRL-A
           </Label>
         </div>
       </Bleed>
@@ -54,7 +56,7 @@ function Masthead() {
 
 function Cover() {
   return (
-    <section style={{ background: ed.ground, padding: "clamp(24px,4vw,44px) 0 clamp(40px,6vw,72px)" }}>
+    <section style={{ background: "transparent", padding: "clamp(24px,4vw,44px) 0 clamp(40px,6vw,72px)" }}>
       <Bleed>
         {/* Cover art block — finalized 3D CTRL-A logo on a framed panel */}
         <div
@@ -63,7 +65,9 @@ function Cover() {
             width: "100%",
             aspectRatio: "16 / 6",
             minHeight: 180,
-            background: ed.panel,
+            // Deep-space wash: plum glow up top falling into the void.
+            background: `radial-gradient(120% 150% at 50% -20%, ${ed.plum} 0%, ${ed.panel} 42%, ${ed.ground} 100%)`,
+            border: `1px solid ${ed.hair}`,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -71,6 +75,9 @@ function Cover() {
             overflow: "hidden",
           }}
         >
+          {/* Gold accent bar — the issue's signature edge */}
+          <div aria-hidden style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: ed.gold, zIndex: 3 }} />
+
           {/* Real-sky shooting stars, behind the logo */}
           <ShootingStars style={{ zIndex: 0 }} />
 
@@ -113,6 +120,7 @@ function Cover() {
           }}
         >
           <div>
+            <Kicker color={ed.gold} style={{ marginBottom: 18 }}>{issueMeta.coverEyebrow}</Kicker>
             <h1
               style={{
                 fontFamily: ed.grotesque,
@@ -139,20 +147,33 @@ function Cover() {
               {issueMeta.coverDeck}
             </p>
           </div>
-          <div style={{ paddingTop: 8 }}>
-            <Label style={{ display: "block", marginBottom: 8 }}>{issueMeta.season}</Label>
+          {/* This volume's feature, teased on the cover */}
+          <a
+            href="/ctrla/dreamasia"
+            className="ctrla-feature-card"
+            style={{ paddingTop: 8, textDecoration: "none", display: "block" }}
+          >
+            <Kicker color={ed.amber} style={{ marginBottom: 12 }}>This volume's feature</Kicker>
             <p
               style={{
-                fontFamily: ed.mono,
-                fontSize: "clamp(11px,1.2vw,13px)",
-                lineHeight: 1.6,
-                color: ed.inkSoft,
-                margin: 0,
+                fontFamily: ed.grotesque,
+                fontWeight: 800,
+                fontSize: "clamp(20px,2.4vw,30px)",
+                letterSpacing: "-0.02em",
+                lineHeight: 1.02,
+                color: ed.ink,
+                margin: "0 0 10px",
               }}
             >
-              Cover Story · {issueMeta.issue}
+              {issueMeta.featureHeadline}
             </p>
-          </div>
+            <p style={{ fontFamily: ed.body, fontSize: "clamp(13px,1.4vw,15px)", lineHeight: 1.5, color: ed.inkSoft, margin: "0 0 12px" }}>
+              Inside DreamAsia Fest.
+            </p>
+            <span className="ctrla-feature-cta" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.16em", textTransform: "uppercase", color: ed.amber }}>
+              Read the feature <span aria-hidden className="ctrla-feature-arrow" style={{ transition: "transform .25s" }}>→</span>
+            </span>
+          </a>
         </div>
 
         {/* Issue line */}
@@ -166,7 +187,7 @@ function Cover() {
             flexWrap: "wrap",
           }}
         >
-          <Label color={ed.inkFaint}>Free Magazine</Label>
+          <Label color={ed.inkFaint}>Free · Monthly</Label>
           <span
             style={{
               fontFamily: ed.grotesque,
@@ -177,7 +198,7 @@ function Cover() {
               color: ed.ink,
             }}
           >
-            Issue 01
+            Vol. <span style={{ color: ed.gold }}>01</span>
           </span>
         </div>
       </Bleed>
@@ -203,7 +224,9 @@ const STICKERS = [
 function StickerBelt() {
   const track = [...STICKERS, ...STICKERS, ...STICKERS];
   return (
-    <div style={{ background: ed.panel, overflow: "hidden", padding: "20px 0 30px", position: "relative" }}>
+    <div style={{ background: ed.panel, overflow: "hidden", padding: "20px 0 30px", position: "relative", borderTop: `1px solid ${ed.hair}`, borderBottom: `1px solid ${ed.hair}` }}>
+      {/* Gold hairline along the top edge */}
+      <div aria-hidden style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(to right, transparent, ${ed.gold}, transparent)`, opacity: 0.5 }} />
       <p
         style={{
           textAlign: "center",
@@ -217,8 +240,9 @@ function StickerBelt() {
       >
         Plate I · Custom hand-drawn illustrations
       </p>
-      <div aria-hidden style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 120, background: `linear-gradient(to right, ${ed.ink} 30%, transparent)`, zIndex: 2 }} />
-      <div aria-hidden style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 120, background: `linear-gradient(to left, ${ed.ink} 30%, transparent)`, zIndex: 2 }} />
+      {/* Edge fades match the dark panel so stickers dissolve, not flash */}
+      <div aria-hidden style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 120, background: `linear-gradient(to right, ${ed.panel} 30%, transparent)`, zIndex: 2 }} />
+      <div aria-hidden style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 120, background: `linear-gradient(to left, ${ed.panel} 30%, transparent)`, zIndex: 2 }} />
       <div className="ctrla-belt-track" style={{ display: "flex", alignItems: "center", gap: 64, width: "max-content", animation: "ctrlaBelt 36s linear infinite" }}>
         {track.map((src, i) => (
           // eslint-disable-next-line @next/next/no-img-element
@@ -236,7 +260,79 @@ function StickerBelt() {
 }
 
 // ═══════════════════════════════════════════════════════
-// STATS BAND + THIS WEEK
+// CONTENTS — the thesis + a map of the volume
+// ═══════════════════════════════════════════════════════
+
+const CONTENTS = [
+  { n: "01", title: "The Toolkits", meta: "Music · Web Dev · Design", href: "#toolkits", note: "Immersive and level by level. Learn the tool without the overwhelm." },
+  { n: "02", title: "Brand Kit Generator", meta: "Standing feature", href: "/ctrla/brand-kit", note: "Your colours, type, and tone, exported to a working system in minutes." },
+  { n: "03", title: "The Feature: DreamAsia Fest", meta: "The process, deep", href: "/ctrla/dreamasia", note: "From the bedroom to the stage, with none of the ugly steps skipped." },
+  { n: "04", title: "Taste", meta: "Featured art", href: "#taste", note: "The work we cannot stop thinking about, one artist a volume." },
+  { n: "05", title: "The Cookbook", meta: "Fuel for the work", href: "#cookbook", note: "Easy recipes for creatives short on time and money." },
+  { n: "06", title: "The City", meta: "World Cup, Atlanta", href: "#events", note: "Our hometown stage, and the summer the whole world arrives." },
+];
+
+function Contents() {
+  return (
+    <section style={{ background: "transparent", padding: "clamp(48px,7vw,96px) 0" }}>
+      <Bleed>
+        {/* The thesis — what CTRL-A is, stated plainly */}
+        <Kicker color={ed.gold}>What CTRL-A is</Kicker>
+        <p
+          style={{
+            fontFamily: ed.serif,
+            fontStyle: "italic",
+            fontWeight: 400,
+            fontSize: "clamp(22px,3.4vw,46px)",
+            lineHeight: 1.28,
+            letterSpacing: "-0.01em",
+            color: ed.ink,
+            margin: "clamp(18px,2.4vw,28px) 0 clamp(40px,5vw,64px)",
+            maxWidth: 1080,
+          }}
+        >
+          {issueMeta.thesis}
+        </p>
+
+        {/* The map */}
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, marginBottom: "clamp(16px,2vw,24px)" }}>
+          <Kicker color={ed.amber}>In this volume</Kicker>
+          <Label color={ed.inkFaint}>{issueMeta.volume} · {issueMeta.edition}</Label>
+        </div>
+        <Rule color={ed.hair} />
+        <div>
+          {CONTENTS.map((c) => (
+            <a
+              key={c.n}
+              href={c.href}
+              className="ctrla-toc-row"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "auto minmax(0, 1.1fr) minmax(0, 1.4fr) auto",
+                alignItems: "center",
+                gap: "clamp(12px,2.5vw,32px)",
+                padding: "clamp(18px,2.4vw,26px) clamp(6px,1vw,12px)",
+                borderBottom: `1px solid ${ed.hair}`,
+                textDecoration: "none",
+              }}
+            >
+              <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.4vw,34px)", letterSpacing: "-0.02em", color: ed.gold }}>{c.n}</span>
+              <span>
+                <span style={{ display: "block", fontFamily: ed.grotesque, fontWeight: 700, fontSize: "clamp(18px,2.1vw,28px)", letterSpacing: "-0.01em", color: ed.ink }}>{c.title}</span>
+                <Label color={ed.inkFaint} style={{ display: "block", marginTop: 6 }}>{c.meta}</Label>
+              </span>
+              <span className="ctrla-toc-note" style={{ fontFamily: ed.body, fontSize: "clamp(13px,1.4vw,15px)", lineHeight: 1.5, color: ed.inkSoft }}>{c.note}</span>
+              <span aria-hidden className="ctrla-toc-arrow" style={{ justifySelf: "end", color: ed.amber, fontSize: 18, transition: "transform .25s" }}>→</span>
+            </a>
+          ))}
+        </div>
+      </Bleed>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════════════════════
+// STATS BAND
 // ═══════════════════════════════════════════════════════
 
 function StatBand() {
@@ -247,7 +343,7 @@ function StatBand() {
       <CometStreak style={{ top: "18%", left: 0 }} />
 
       <Bleed style={{ position: "relative", zIndex: 1 }}>
-        <Rule color="rgba(240,230,224,0.25)" />
+        <Rule color="rgba(227,194,74,0.4)" />
         <div
           style={{
             display: "grid",
@@ -259,7 +355,7 @@ function StatBand() {
           className="ctrla-statband"
         >
           <p style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.6vw,30px)", letterSpacing: "-0.02em", color: ed.paper, margin: 0 }}>
-            The first twelve weeks. <span style={{ color: ed.gold }}>+</span>
+            What a volume holds. <span style={{ color: ed.gold }}>+</span>
           </p>
           {issueMeta.stats.map((s) => (
             <div key={s.label}>
@@ -272,17 +368,17 @@ function StatBand() {
             </div>
           ))}
         </div>
-        <Rule color="rgba(240,230,224,0.25)" />
+        <Rule color="rgba(227,194,74,0.4)" />
       </Bleed>
     </section>
   );
 }
 
 // ═══════════════════════════════════════════════════════
-// FRIDAY-DROP FOOTER (visual email capture)
+// SUBSCRIBE FOOTER (visual email capture, monthly drop)
 // ═══════════════════════════════════════════════════════
 
-function FridayFooter() {
+function SubscribeFooter() {
   return (
     <section
       style={{
@@ -293,10 +389,10 @@ function FridayFooter() {
       <Bleed>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 28, flexWrap: "wrap" }}>
           <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(34px,6vw,84px)", letterSpacing: "-0.03em", lineHeight: 0.9, color: ed.paper, margin: 0 }}>
-            One tool,
+            One volume,
             <br />
             every{" "}
-            <span style={{ fontFamily: ed.serif, fontStyle: "italic", fontWeight: 400, color: ed.amber }}>Friday</span>.
+            <span style={{ fontFamily: ed.serif, fontStyle: "italic", fontWeight: 400, color: ed.amber }}>month</span>.
           </h2>
 
           {/* Visual-only capture */}
@@ -339,7 +435,7 @@ function FridayFooter() {
           </form>
         </div>
         <Label color="rgba(240,230,224,0.4)" style={{ display: "block", marginTop: 24 }}>
-          No spam. One signal a week. Unsubscribe anytime.
+          No spam. One drop a month. Unsubscribe anytime.
         </Label>
       </Bleed>
     </section>
@@ -382,31 +478,27 @@ export default function CtrlAContent() {
   }, []);
 
   return (
-    <div style={{ background: ed.ground, minHeight: "100vh", width: "100%", overflowX: "hidden" }}>
+    <div style={{ background: "transparent", minHeight: "100vh", width: "100%", overflowX: "hidden" }}>
+      <CosmicBackdrop />
       {loading && <CtrlALoader onDone={dismissLoader} />}
       <NavigationDock />
 
       <Masthead />
       <Cover />
+
+      {/* The thesis + a map of the volume */}
+      <Contents />
+
       <StickerBelt />
 
-      {/* DreamAsia Fest — compact teaser; full story at /ctrla/dreamasia */}
-      <div className="ctrla-cosmic-wrap">
-        <DreamAsiaTeaser />
-        <FloatingAsset src={COSMIC.saturn} motion="spin" top="7%" right="-34px" size="clamp(96px,13vw,200px)" driftFrom={42} driftTo={-34} opacity={0.62} />
-      </div>
+      {/* ─────────────────────────────────────────────
+          THE REFERENCE HALF — the tools, made deep
+          ───────────────────────────────────────────── */}
 
       {/* The CTRL-A toolkits — Music / Web Dev / Design */}
       <div className="ctrla-cosmic-wrap">
         <ThreeToolkits />
         <FloatingAsset src={COSMIC.planets} motion="bob" bottom="9%" left="-30px" size="clamp(80px,10vw,158px)" driftFrom={-28} driftTo={34} opacity={0.5} />
-      </div>
-
-      {/* FIFA World Cup 26 — Atlanta events */}
-      <div className="ctrla-cosmic-wrap">
-        <CondensedEvents />
-        <FloatingAsset src={COSMIC.spaceship} motion="bob" top="11%" right="-6px" size="clamp(58px,8vw,112px)" driftFrom={56} driftTo={-56} opacity={0.72} />
-        <FloatingAsset src={COSMIC.sideLines2} motion="sway" bottom="7%" left="-22px" size="clamp(96px,12vw,188px)" driftFrom={-22} driftTo={26} opacity={0.42} />
       </div>
 
       {/* Standing feature — recurs every volume */}
@@ -416,9 +508,36 @@ export default function CtrlAContent() {
       </div>
 
       <StatBand />
+
+      {/* ─────────────────────────────────────────────
+          THE STORY HALF — process, taste, the city
+          ───────────────────────────────────────────── */}
+
+      {/* The deep feature — compact teaser; full story at /ctrla/dreamasia */}
+      <div className="ctrla-cosmic-wrap">
+        <DreamAsiaTeaser />
+        <FloatingAsset src={COSMIC.saturn} motion="spin" top="7%" right="-34px" size="clamp(96px,13vw,200px)" driftFrom={42} driftTo={-34} opacity={0.62} />
+      </div>
+
+      {/* Taste — the art we can't stop thinking about */}
+      <ArtistShowcase />
+
+      {/* The Cookbook — feeding the maker, on no time or budget */}
+      <div className="ctrla-cosmic-wrap">
+        <Cookbook />
+        <FloatingAsset src={COSMIC.comet} motion="sway" top="9%" right="-26px" size="clamp(70px,9vw,140px)" driftFrom={40} driftTo={-30} opacity={0.5} />
+      </div>
+
+      {/* The city — World Cup 26, Atlanta */}
+      <div className="ctrla-cosmic-wrap">
+        <CondensedEvents />
+        <FloatingAsset src={COSMIC.spaceship} motion="bob" top="11%" right="-6px" size="clamp(58px,8vw,112px)" driftFrom={56} driftTo={-56} opacity={0.72} />
+        <FloatingAsset src={COSMIC.sideLines2} motion="sway" bottom="7%" left="-22px" size="clamp(96px,12vw,188px)" driftFrom={-22} driftTo={26} opacity={0.42} />
+      </div>
+
       <VueClose />
 
-      <FridayFooter />
+      <SubscribeFooter />
       <EditorialFooter />
     </div>
   );

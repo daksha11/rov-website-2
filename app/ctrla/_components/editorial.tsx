@@ -104,6 +104,27 @@ export function Label({
   );
 }
 
+// ── Kicker — accent tick + mono label (section signature) ──
+// A small coloured rule before a label. Gives each section a
+// signature accent from the palette instead of flat white kickers.
+
+export function Kicker({
+  children,
+  color = ed.amber,
+  style,
+}: {
+  children: ReactNode;
+  color?: string;
+  style?: CSSProperties;
+}) {
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 9, ...style }}>
+      <span aria-hidden style={{ width: 18, height: 2, background: color, flexShrink: 0 }} />
+      <Label color={color}>{children}</Label>
+    </span>
+  );
+}
+
 // ── Section header — big grotesque title + right meta ──
 
 export function SectionHeader({

@@ -11,17 +11,17 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { ed, Bleed, Rule, Label } from "./editorial";
+import { ed, Bleed, Rule, Label, Kicker } from "./editorial";
 import { issueMeta, coverShot, issueOpen, bts, twoCities, productionToolkit, type BtsTile } from "../data";
 
 // ── Feature teaser — compact, clickable cover on the front page ──
 
 export function DreamAsiaTeaser() {
   return (
-    <section style={{ background: ed.ground, padding: "clamp(48px,7vw,88px) 0" }}>
+    <section style={{ background: "transparent", padding: "clamp(48px,7vw,88px) 0" }}>
       <Bleed>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginBottom: "clamp(18px,2.4vw,28px)" }}>
-          <Label color={ed.ink}>Issue Feature</Label>
+          <Kicker color={ed.gold}>Issue Feature</Kicker>
           <Label color={ed.inkFaint}>DreamAsia Fest</Label>
         </div>
         <Rule style={{ marginBottom: "clamp(24px,3vw,36px)" }} />
@@ -48,10 +48,10 @@ export function DreamAsiaTeaser() {
           </span>
           <div style={{ position: "absolute", left: 20, right: 20, bottom: 18, display: "flex", flexDirection: "column", gap: 12 }}>
             <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,5vw,68px)", letterSpacing: "-0.03em", lineHeight: 0.92, color: ed.paper, margin: 0, maxWidth: 760 }}>
-              {issueMeta.coverHeadline}
+              {issueMeta.featureHeadline}
             </h2>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.6vw,18px)", lineHeight: 1.5, color: "rgba(240,230,224,0.86)", margin: 0, maxWidth: 560 }}>
-              How a small team produced a multi-city festival headline. Sam Suen headlines DreamAsia Fest across two states.
+              {issueMeta.featureDeck}
             </p>
             <span className="ctrla-feature-cta" style={{ display: "inline-flex", alignItems: "center", gap: 9, fontFamily: ed.mono, fontSize: "clamp(11px,1.2vw,13px)", letterSpacing: "0.16em", textTransform: "uppercase", color: ed.paper, marginTop: 4 }}>
               Read the feature <span aria-hidden className="ctrla-feature-arrow" style={{ transition: "transform .25s" }}>→</span>
@@ -241,7 +241,7 @@ function VueNote({ children, dark = false }: { children: React.ReactNode; dark?:
 
 export function IssueOpen() {
   return (
-    <section style={{ background: ed.ground, padding: "clamp(56px,8vw,104px) 0" }}>
+    <section style={{ background: "transparent", padding: "clamp(56px,8vw,104px) 0" }}>
       <Bleed>
         {/* Feature lead — the issue's hero performance frame */}
         <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 7", minHeight: 220, background: ed.panel, overflow: "hidden", marginBottom: "clamp(40px,5vw,72px)" }}>
@@ -265,7 +265,7 @@ export function IssueOpen() {
           </span>
           <div style={{ position: "absolute", left: 18, right: 18, bottom: 16, display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
             <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.6vw,60px)", letterSpacing: "-0.03em", lineHeight: 0.9, color: ed.paper, margin: 0, maxWidth: 760 }}>
-              {issueMeta.coverHeadline}
+              {issueMeta.featureHeadline}
             </h2>
             <span style={{ fontFamily: ed.mono, fontSize: "clamp(8px,0.9vw,10px)", letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(240,230,224,0.7)" }}>
               {coverShot.label}
@@ -375,7 +375,7 @@ export function BehindTheScenes() {
 
 export function TwoCities() {
   return (
-    <section style={{ background: ed.ground, padding: "clamp(56px,8vw,104px) 0" }}>
+    <section style={{ background: "transparent", padding: "clamp(56px,8vw,104px) 0" }}>
       <Bleed>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
           <div style={{ maxWidth: 640 }}>
@@ -425,7 +425,7 @@ export function TwoCities() {
 
 export function ProductionToolkit() {
   return (
-    <section style={{ background: ed.ground, padding: "clamp(56px,8vw,104px) 0" }}>
+    <section style={{ background: "transparent", padding: "clamp(56px,8vw,104px) 0" }}>
       <Bleed>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
           <div style={{ maxWidth: 640 }}>

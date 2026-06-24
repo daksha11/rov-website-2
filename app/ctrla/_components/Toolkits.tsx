@@ -13,6 +13,7 @@ import {
   Bleed,
   Rule,
   Label,
+  Kicker,
   SectionHeader,
 } from "./editorial";
 import {
@@ -31,8 +32,9 @@ export function ThreeToolkits() {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} style={{ background: ed.ground, padding: "clamp(56px, 8vw, 104px) 0" }}>
+    <section id="toolkits" ref={ref} style={{ background: "transparent", padding: "clamp(56px, 8vw, 104px) 0", scrollMarginTop: 0 }}>
       <Bleed>
+        <Kicker color={ed.amber} style={{ marginBottom: 16 }}>The Libraries</Kicker>
         <SectionHeader
           title="Three Toolkits."
           meta="Living libraries. Growing with each week's pick."
@@ -56,13 +58,15 @@ export function ThreeToolkits() {
               transition={{ ...spring, delay: i * 0.1 }}
               style={{ display: "flex", flexDirection: "column", textDecoration: "none" }}
             >
-              {/* Cover block with oversized page number */}
+              {/* Cover block with oversized page number, washed in the
+                  toolkit's signature accent and capped with a colour bar */}
               <div
                 style={{
                   position: "relative",
                   width: "100%",
                   aspectRatio: "3 / 4",
-                  background: ed.panel,
+                  background: `linear-gradient(160deg, ${s.accentColor}24 0%, ${ed.panel} 58%)`,
+                  borderBottom: `3px solid ${s.accentColor}`,
                   overflow: "hidden",
                   display: "flex",
                   alignItems: "flex-end",
@@ -75,7 +79,7 @@ export function ThreeToolkits() {
                     fontWeight: 800,
                     fontSize: "clamp(72px, 12vw, 132px)",
                     lineHeight: 0.8,
-                    color: `${s.accentColor}26`,
+                    color: `${s.accentColor}4D`,
                     letterSpacing: "-0.04em",
                   }}
                 >
@@ -112,7 +116,7 @@ export function ThreeToolkits() {
                 {s.blurb}
               </p>
 
-              <Rule color={ed.hair} />
+              <Rule color={`${s.accentColor}40`} />
               <div
                 style={{
                   display: "flex",
@@ -121,10 +125,10 @@ export function ThreeToolkits() {
                   paddingTop: 12,
                 }}
               >
-                <Label color={ed.inkFaint}>
+                <Label color={s.accentColor}>
                   {s.pickCount} · {s.cadence}
                 </Label>
-                <span style={{ color: ed.amber, fontSize: 16, lineHeight: 1 }}>→</span>
+                <span style={{ color: s.accentColor, fontSize: 16, lineHeight: 1 }}>→</span>
               </div>
             </motion.a>
           ))}
@@ -147,6 +151,7 @@ function ToolCard({ tool, accent }: { tool: Tool; accent: string }) {
         flexDirection: "column",
         padding: "20px 20px 22px",
         border: `1px solid ${ed.hair}`,
+        borderTop: `2px solid ${accent}`,
         background: "rgba(240,230,224,0.05)",
         textDecoration: "none",
         height: "100%",
@@ -238,7 +243,7 @@ export function ToolkitDetail({ section }: { section: ToolkitSection }) {
     <section
       id={section.id}
       ref={ref}
-      style={{ background: ed.ground, padding: "clamp(56px, 8vw, 104px) 0", scrollMarginTop: 0 }}
+      style={{ background: "transparent", padding: "clamp(56px, 8vw, 104px) 0", scrollMarginTop: 0 }}
     >
       <Bleed>
         {/* Chapter head */}
@@ -250,12 +255,15 @@ export function ToolkitDetail({ section }: { section: ToolkitSection }) {
               fontSize: "clamp(96px, 18vw, 220px)",
               lineHeight: 0.74,
               letterSpacing: "-0.04em",
-              color: `${section.accentColor}26`,
+              color: `${section.accentColor}4D`,
             }}
           >
             {section.pageNumber}
           </span>
           <div style={{ paddingBottom: "clamp(8px, 2vw, 24px)" }}>
+            <Kicker color={section.accentColor} style={{ marginBottom: 14 }}>
+              Sector {section.pageNumber} · The Toolkit
+            </Kicker>
             <h2
               style={{
                 fontFamily: ed.grotesque,
@@ -267,7 +275,7 @@ export function ToolkitDetail({ section }: { section: ToolkitSection }) {
                 margin: "0 0 12px",
               }}
             >
-              {section.title}.
+              {section.title}<span style={{ color: section.accentColor }}>.</span>
             </h2>
             <p
               style={{
@@ -285,10 +293,10 @@ export function ToolkitDetail({ section }: { section: ToolkitSection }) {
           </div>
         </div>
 
-        <Rule style={{ margin: "clamp(32px, 5vw, 56px) 0 clamp(24px, 3vw, 36px)" }} />
+        <Rule color={`${section.accentColor}40`} style={{ margin: "clamp(32px, 5vw, 56px) 0 clamp(24px, 3vw, 36px)" }} />
 
         {/* Tools */}
-        <Label style={{ display: "block", marginBottom: 20 }}>The Tools</Label>
+        <Label color={section.accentColor} style={{ display: "block", marginBottom: 20 }}>The Tools</Label>
         <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
@@ -305,7 +313,7 @@ export function ToolkitDetail({ section }: { section: ToolkitSection }) {
         </motion.div>
 
         {/* Myths */}
-        <Label style={{ display: "block", margin: "clamp(48px, 7vw, 80px) 0 8px" }}>Myths Busted</Label>
+        <Label color={section.accentColor} style={{ display: "block", margin: "clamp(48px, 7vw, 80px) 0 8px" }}>Myths Busted</Label>
         <div>
           {section.misconceptions.map((m) => (
             <div
@@ -360,7 +368,7 @@ export function ToolkitDetail({ section }: { section: ToolkitSection }) {
         </div>
 
         {/* Quick-start guide */}
-        <Label style={{ display: "block", margin: "clamp(48px, 7vw, 80px) 0 8px" }}>
+        <Label color={section.accentColor} style={{ display: "block", margin: "clamp(48px, 7vw, 80px) 0 8px" }}>
           Quick Start Guide
         </Label>
         <h3
@@ -380,7 +388,7 @@ export function ToolkitDetail({ section }: { section: ToolkitSection }) {
             <div
               key={step.number}
               style={{
-                borderTop: `1px solid ${ed.ink}`,
+                borderTop: `2px solid ${section.accentColor}`,
                 padding: "16px 16px 22px 0",
               }}
             >

@@ -3,7 +3,9 @@
 import { useEffect } from "react";
 import { NavigationDock } from "@/components/NavDoc";
 import EditorialFooter from "../../_components/EditorialFooter";
+import CosmicBackdrop from "../../_components/CosmicBackdrop";
 import { ToolkitDetail } from "../../_components/Toolkits";
+import ToolkitStations from "../../_components/ToolkitStations";
 import { ed, Bleed, Rule, Label } from "../../_components/editorial";
 import { toolkitSections } from "../../data";
 
@@ -29,29 +31,35 @@ export default function ToolkitPageContent({ id }: { id: string }) {
   if (!section) return null;
 
   return (
-    <div style={{ background: ed.ground, minHeight: "100vh", width: "100%", overflowX: "hidden" }}>
+    <div style={{ background: "transparent", minHeight: "100vh", width: "100%", overflowX: "hidden" }}>
+      <CosmicBackdrop />
       <NavigationDock />
 
+      {/* Signature accent bar — this sector's colour, full bleed */}
+      <div aria-hidden style={{ height: 3, background: section.accentColor }} />
+
       {/* Back-nav masthead */}
-      <div style={{ background: ed.ground, position: "relative", zIndex: 5 }}>
+      <div style={{ background: "transparent", position: "relative", zIndex: 5 }}>
         <Bleed style={{ padding: "12px clamp(18px,5vw,64px)" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
             <a href="/ctrla" className="ctrla-back" style={{ display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
-              <span style={{ color: ed.amber }}>←</span>
-              <Label color={ed.ink}>CTRL-A · Issue 01</Label>
+              <span style={{ color: section.accentColor }}>←</span>
+              <Label color={ed.ink}>CTRL-A · Vol. 01</Label>
             </a>
-            <Label color={ed.inkFaint}>Toolkit {section.pageNumber}</Label>
+            <Label color={section.accentColor}>Toolkit {section.pageNumber}</Label>
           </div>
         </Bleed>
-        <Rule />
+        <Rule color={ed.hair} />
       </div>
 
-      <ToolkitDetail section={section} />
+      {/* Flagship sectors with curated Signals get the immersive Stations
+          experience; the rest fall back to the editorial detail for now. */}
+      {section.signals ? <ToolkitStations section={section} /> : <ToolkitDetail section={section} />}
 
       {/* Prev / next toolkit */}
-      <section style={{ background: ed.ground, padding: "0 0 clamp(56px,8vw,104px)" }}>
+      <section style={{ background: "transparent", padding: "0 0 clamp(56px,8vw,104px)" }}>
         <Bleed>
-          <Rule />
+          <Rule color={ed.hair} />
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, paddingTop: "clamp(24px,3vw,36px)", flexWrap: "wrap" }}>
             <a href={`/ctrla/toolkit/${prev.id}`} className="ctrla-pn" style={{ textDecoration: "none" }}>
               <Label color={ed.inkFaint} style={{ display: "block", marginBottom: 6 }}>← Previous</Label>

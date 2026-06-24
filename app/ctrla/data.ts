@@ -2,6 +2,8 @@
 // CTRL A MAGAZINE, CONTENT DATA
 // ═══════════════════════════════════════════════════════
 
+export type ToolLevel = "Beginner" | "Intermediate" | "Pro";
+
 export interface Tool {
   name: string;
   category: string;
@@ -10,6 +12,28 @@ export interface Tool {
   tags: string[];
   favoriteBy?: string;
   favoriteQuote?: string;
+  // ── Immersive "Tool Station" fields (optional; web-dev is the flagship) ──
+  /** One punchy sentence — what it is, fast. */
+  oneLiner?: string;
+  /** The single moment you reach for it. */
+  whenToUse?: string;
+  /** Difficulty, drives the level filter. */
+  level?: ToolLevel;
+  /** Names of tools it works best alongside. */
+  pairsWith?: string[];
+  /** Site allows iframe embedding, so the preview can run a live frame
+   *  on top of the screenshot. Most tool sites block this, so default off. */
+  embeddable?: boolean;
+}
+
+/** A dated industry-shift entry for the "Signals" feed (hand-curated). */
+export type SignalKind = "Release" | "Shift" | "Trend" | "Sunset";
+export interface Signal {
+  date: string; // display, e.g. "Jun 2026"
+  kind: SignalKind;
+  title: string;
+  note: string;
+  url?: string;
 }
 
 export interface Misconception {
@@ -39,6 +63,8 @@ export interface ToolkitSection {
   tools: Tool[];
   misconceptions: Misconception[];
   guide: { title: string; steps: GuideStep[] };
+  /** Hand-curated industry shifts for the Signals feed (flagship: web-dev). */
+  signals?: Signal[];
 }
 
 // ── ISSUE MASTHEAD / STATS ──────────────────────────────
@@ -49,22 +75,138 @@ export interface IssueStat {
 }
 
 export const issueMeta = {
-  volume: "Vol. 04",
-  issue: "Issue 01",
-  season: "Spring 2026",
-  date: "Fri. 15 March",
-  tagline: "On the tools changing creative work, tested and reviewed.",
-  coverHeadline: "From the bedroom to the stage.",
+  volume: "Vol. 01",
+  edition: "June 2026",
+  cadence: "Monthly",
+  tagline: "A digital muse for creatives everywhere.",
+  // The thesis: what CTRL-A is, and why these sections belong together.
+  thesis:
+    "CTRL-A is how Range Of View plays digital muse to creatives everywhere, helping you see the bigger picture. We go deep on the tools worth your time, walk the whole process with none of the ugly steps skipped, and feature the art we cannot stop thinking about. Because nothing matters more in creative work than taste. Taste is the sky you set as your limit.",
+  coverEyebrow: "ROV's monthly field guide for creatives",
+  coverHeadline: "See the bigger picture.",
   coverDeck:
-    "How a small team produced a multi-city festival headline. Sam Suen headlines DreamAsia Fest across two states. This is everything that happened before the lights came up.",
+    "CTRL-A is ROV's digital muse for creatives everywhere: immersive toolkits, the whole process with none of the ugly steps skipped, and the art we cannot stop thinking about. Because taste is the sky you set as your limit.",
+  // The volume's deep feature, kept separate from the cover thesis.
+  featureHeadline: "From the bedroom to the stage.",
+  featureDeck:
+    "How a small team produced a multi-city festival headline. Sam Suen headlines DreamAsia Fest across two states. Everything that happened before the lights came up.",
   stats: [
-    { value: "52", label: "Tools tested" },
-    { value: "12", label: "Picks made" },
-    { value: "04", label: "Categories" },
-    { value: "01", label: "Cadence" },
+    { value: "24", label: "Tools in rotation" },
+    { value: "03", label: "Toolkits" },
+    { value: "01", label: "Deep feature" },
+    { value: "12", label: "Volumes a year" },
   ] as IssueStat[],
-  thisWeek:
-    "This Week: Sam Suen takes the DreamAsia Fest stage, inside the full production workflow, from FL Studio demos to the BMPCC 6K cut.",
+};
+
+// ── TASTE / FEATURED ART ────────────────────────────────
+// "We feature the art we can't stop thinking about." One feature per
+// volume, any discipline. Taste is the throughline.
+export const taste = {
+  eyebrow: "Featured art · Taste",
+  headline: "Taste.",
+  lede: "Taste is the sky you set as your limit.",
+  note: "Every volume we feature one artist whose work we cannot stop thinking about. Not the loudest. The truest.",
+  openCall: {
+    title: "Featured next volume?",
+    body: "One artist a volume, across any discipline. If you are making something true, show us.",
+    cta: "Send us the work",
+    email: "admin@pursuenetworking.com",
+  },
+};
+
+// ── THE COOKBOOK ────────────────────────────────────────
+// A digital muse feeds the maker too. Easy recipes from the
+// cultures we work with, built for creatives short on time
+// and money. Recurring standing feature, refreshed per volume.
+
+export interface Recipe {
+  name: string;
+  origin: string;
+  /** the collaborator / culture it comes by way of */
+  by?: string;
+  time: string;
+  cost: string;
+  serves: string;
+  blurb: string;
+  ingredients: string[];
+  steps: string[];
+  /** the volume's sneak-peek dish, the most appetising one */
+  featured?: boolean;
+  /** optional hero food photo for the sneak peek */
+  image?: string;
+}
+
+export const cookbook = {
+  eyebrow: "The Cookbook · Fuel for the work",
+  headline: "The Cookbook.",
+  lede: "A digital muse feeds the maker, too.",
+  note: "Easy recipes from the cultures we work with, built for creatives short on time and money. Real food, few ingredients, done before your render finishes.",
+  recipes: [
+    {
+      name: "Gyeran Bap",
+      origin: "Korean",
+      by: "by way of DreamAsia",
+      time: "10 min",
+      cost: "About $3",
+      serves: "1",
+      featured: true,
+      blurb: "The 2am edit-session staple. Hot rice, a glossy fried egg, sesame and soy. Comfort with almost nothing in the fridge.",
+      ingredients: ["1 bowl hot cooked rice", "1 to 2 eggs", "Toasted sesame oil", "Soy sauce", "Sesame seeds", "Optional: seaweed, green onion"],
+      steps: [
+        "Fry the egg in a little oil, keep the yolk runny.",
+        "Tip the hot rice into a bowl, add a small spoon of sesame oil and a splash of soy.",
+        "Slide the egg on top, break the yolk, and mix it through.",
+        "Finish with sesame seeds and torn seaweed.",
+      ],
+    },
+    {
+      name: "Menemen",
+      origin: "Turkish",
+      by: "by way of Aysegul",
+      time: "15 min",
+      cost: "About $4",
+      serves: "2",
+      blurb: "Soft eggs cooked down with tomato and pepper. One pan, scoop it with bread, nothing to plate.",
+      ingredients: ["3 eggs", "2 tomatoes, or a small tin", "1 green pepper", "Olive oil", "Salt, pepper, pinch of chili", "Bread, to serve"],
+      steps: [
+        "Soften chopped pepper in olive oil for 3 to 4 minutes.",
+        "Add chopped tomato and cook down to a loose sauce.",
+        "Lower the heat, pour in beaten eggs, and fold gently until just set.",
+        "Season, then scoop straight from the pan with bread.",
+      ],
+    },
+    {
+      name: "Egg Bhurji",
+      origin: "Indian",
+      by: "by way of DKM",
+      time: "12 min",
+      cost: "About $4",
+      serves: "2",
+      blurb: "A spiced scramble that turns three eggs and an onion into a real meal. Roll it in roti or pile it on toast.",
+      ingredients: ["3 eggs", "1 onion", "1 tomato", "Green chili, optional", "Turmeric, chili powder, salt", "Oil, fresh coriander"],
+      steps: [
+        "Fry chopped onion until soft, then add tomato and chili.",
+        "Stir in a pinch of turmeric and chili powder.",
+        "Pour in the beaten eggs and scramble until just set.",
+        "Top with coriander and serve with roti or toast.",
+      ],
+    },
+    {
+      name: "Cheese Grits",
+      origin: "Southern · ATL",
+      time: "15 min",
+      cost: "About $3",
+      serves: "2",
+      blurb: "Hometown comfort in one pot. Creamy, warm, cheap. The bowl you make when the budget is gone but the deadline isn't.",
+      ingredients: ["1/2 cup quick grits", "2 cups water, or half milk", "Butter", "Sharp cheddar", "Salt, black pepper", "Hot sauce, to finish"],
+      steps: [
+        "Bring the water to a boil, whisk in the grits, and lower the heat.",
+        "Stir often for 5 to 7 minutes, until creamy.",
+        "Off the heat, stir in butter and a handful of cheddar.",
+        "Season well and finish with hot sauce.",
+      ],
+    },
+  ] as Recipe[],
 };
 
 // ── ATL ARTIST SHOWCASE ─────────────────────────────────
@@ -84,29 +226,15 @@ export const artists: Artist[] = [
     discipline: "Korean-American R&B",
     feature: true,
     blurb:
-      "A bedroom producer turned festival headliner. Sam's writing the kind of R&B that sounds like 2am in a city that never quite sleeps, intimate, patient, and built to fill a room the moment it needs to.",
+      "A bedroom producer turned festival headliner. Sam writes the kind of R&B that sounds like 2am in a city that never quite sleeps: intimate, patient, and built to fill a room the moment it needs to.",
     quote: "The stage at DreamAsia wasn't a destination. It was just the next logical step.",
-  },
-  {
-    name: "Artist TBD",
-    discipline: "Visual Art / Photography",
-    blurb:
-      "Placeholder for the issue's featured visual artist. Two to three sentences on why their work matters right now, the show, the series, the moment, not a career résumé.",
-    quote: "A line that captures how they think about the work.",
-  },
-  {
-    name: "Artist TBD",
-    discipline: "Any Discipline",
-    blurb:
-      "Placeholder for the third pick, film, ceramics, design, whatever's interesting this issue. Keep it to the now: what they just made and why you should care.",
-    quote: "A short, sharp quote in their own voice.",
   },
 ];
 
 // ── ROV SPOTLIGHT ───────────────────────────────────────
 
 export const spotlight = {
-  eyebrow: "ROV Spotlight · Issue 01",
+  eyebrow: "ROV Spotlight · Vol. 01",
   headline: "Producing DreamAsia Fest, end to end.",
   body:
     "When Sam Suen needed a set ready for DreamAsia, ROV ran the whole pipeline, demos to mix, stage to screen. The records were built and mixed in-house, the visuals shot and cut in-house, and the whole thing pulled together on a deadline that didn't move. No outsourcing, no hand-offs. The work below is the proof.",
@@ -183,8 +311,8 @@ export const vueClose = {
   eyebrow: "Vue · Closing note · DreamAsia Fest",
   body:
     "I spend most of my time drifting a little above all this, watching what you build. DreamAsia wasn't supposed to be possible for a team this size, too many cities, too many moving parts, not enough hands. They did it anyway. That's the only lesson worth keeping: the gap between a bedroom setup and a festival stage isn't money or gear or a lucky break. It's reps, and the nerve to run the whole thing yourself. Sam and the crew had both. So can you.",
-  signoff: "See you next week.",
-  signature: "Vue · Issue 01 · CTRL-A",
+  signoff: "See you next volume.",
+  signature: "Vue · Vol. 01 · CTRL-A",
 };
 
 // ═══════════════════════════════════════════════════════
@@ -406,6 +534,10 @@ const webDevTools: Tool[] = [
     tags: ["React", "SSR", "Full-Stack"],
     favoriteBy: "Daksha",
     favoriteQuote: "Server components changed everything. You get the DX of React with the performance of static sites.",
+    level: "Intermediate",
+    oneLiner: "The React framework that turns a folder of files into a fast, production site.",
+    whenToUse: "Reach for it the moment a project needs real routing, SEO, or a backend, not just a single page.",
+    pairsWith: ["Tailwind CSS", "Vercel", "Supabase"],
   },
   {
     name: "Tailwind CSS",
@@ -415,6 +547,10 @@ const webDevTools: Tool[] = [
     tags: ["CSS", "Utility-First", "Responsive"],
     favoriteBy: "Ayush",
     favoriteQuote: "Once you stop fighting it and just build, you realize you're shipping 3x faster.",
+    level: "Beginner",
+    oneLiner: "Style straight in your markup with small utility classes, no naming, no dead CSS.",
+    whenToUse: "Use it on day one of any UI when you want to move fast and stay consistent.",
+    pairsWith: ["Next.js", "shadcn/ui"],
   },
   {
     name: "Framer Motion",
@@ -422,6 +558,10 @@ const webDevTools: Tool[] = [
     description: "Production-grade React animation library. Spring physics, gestures, layout animations, and scroll-triggered effects in a clean API.",
     url: "https://www.framer.com/motion/",
     tags: ["Animation", "React", "Gestures"],
+    level: "Intermediate",
+    oneLiner: "Spring-physics animation for React that looks expensive with very little code.",
+    whenToUse: "Bring it in once a UI works and you want it to feel alive, transitions, gestures, scroll.",
+    pairsWith: ["Next.js", "shadcn/ui"],
   },
   {
     name: "Vercel",
@@ -429,6 +569,10 @@ const webDevTools: Tool[] = [
     description: "Deploy Next.js apps in seconds. Preview deployments on every PR, edge functions, and analytics built in. Zero config.",
     url: "https://vercel.com/",
     tags: ["Hosting", "CI/CD", "Edge"],
+    level: "Beginner",
+    oneLiner: "Push to GitHub, get a live URL in seconds, with a preview for every change.",
+    whenToUse: "The day you want others to see it. Connect the repo and you are deployed.",
+    pairsWith: ["Next.js"],
   },
   {
     name: "shadcn/ui",
@@ -436,6 +580,10 @@ const webDevTools: Tool[] = [
     description: "Copy-paste component library built on Radix UI. Not a dependency, you own the code. Customize everything without fighting a framework.",
     url: "https://ui.shadcn.com/",
     tags: ["Components", "Radix", "Accessible"],
+    level: "Intermediate",
+    oneLiner: "Accessible components you copy into your code and own outright, no black box.",
+    whenToUse: "When you need buttons, dialogs, and menus that are solid but still yours to restyle.",
+    pairsWith: ["Tailwind CSS", "Next.js"],
   },
   {
     name: "Figma",
@@ -445,6 +593,10 @@ const webDevTools: Tool[] = [
     tags: ["Design", "Prototype", "Collaboration"],
     favoriteBy: "Kavya",
     favoriteQuote: "Dev mode + auto layout changed our handoff process completely. No more guessing spacing.",
+    level: "Beginner",
+    oneLiner: "Where the screen gets designed before it gets built, together, in the browser.",
+    whenToUse: "Before you write code, to settle layout, spacing, and type without guessing.",
+    pairsWith: ["Tailwind CSS"],
   },
   {
     name: "Supabase",
@@ -452,6 +604,10 @@ const webDevTools: Tool[] = [
     description: "Open-source Firebase alternative. Postgres database, auth, storage, and real-time subscriptions. SQL power with a clean dashboard.",
     url: "https://supabase.com/",
     tags: ["Database", "Auth", "Real-time"],
+    level: "Intermediate",
+    oneLiner: "A real Postgres database with auth and storage, wired up from a clean dashboard.",
+    whenToUse: "The moment your app needs to remember things: users, data, uploads, logins.",
+    pairsWith: ["Next.js"],
   },
   {
     name: "Cursor",
@@ -459,6 +615,43 @@ const webDevTools: Tool[] = [
     description: "AI-native code editor built on VS Code. Tab completion that understands your codebase, inline chat, and multi-file edits.",
     url: "https://cursor.sh/",
     tags: ["AI", "Editor", "Productivity"],
+    level: "Beginner",
+    oneLiner: "VS Code with an AI that actually understands your whole project.",
+    whenToUse: "All the time, but especially when stuck, refactoring, or moving across many files.",
+    pairsWith: ["Next.js"],
+  },
+];
+
+// Hand-curated industry shifts for the Web Dev sector. Edit this list to keep
+// the Signals feed current; entries render newest-first as written.
+const webDevSignals: Signal[] = [
+  {
+    date: "Jun 2026",
+    kind: "Shift",
+    title: "Server Components are the default",
+    note: "New React projects now assume server-first. Reach for client components only where you truly need interactivity.",
+    url: "https://nextjs.org/docs",
+  },
+  {
+    date: "May 2026",
+    kind: "Release",
+    title: "Tailwind's engine keeps getting faster",
+    note: "The newer build pipeline means near-instant rebuilds. If you are on an old config, the upgrade is worth an afternoon.",
+    url: "https://tailwindcss.com/blog",
+  },
+  {
+    date: "Apr 2026",
+    kind: "Trend",
+    title: "AI editors moved from novelty to default",
+    note: "Tab-complete that reads your codebase is now table stakes. The skill is steering it well, not whether you use it.",
+    url: "https://cursor.sh/",
+  },
+  {
+    date: "Mar 2026",
+    kind: "Shift",
+    title: "You own your components now",
+    note: "Copy-in libraries like shadcn/ui keep winning over heavy dependencies. Less lock-in, more control over the details.",
+    url: "https://ui.shadcn.com/",
   },
 ];
 
@@ -638,11 +831,11 @@ export const toolkitSections: ToolkitSection[] = [
     id: "music",
     title: "Music",
     pageNumber: "01",
-    accentColor: "#B05C56",
+    accentColor: "#A56A67",
     intro: "The tools, plugins, and platforms our sound engineers actually use, not what gets promoted on YouTube. From DAWs to distribution, every pick has been tested in real sessions with real artists.",
     blurb: "DAWs, plugins, and platforms our engineers run in real sessions. No sponsored picks.",
     pickCount: "8 Picks",
-    cadence: "Updated weekly",
+    cadence: "Updated monthly",
     tools: musicTools,
     misconceptions: musicMisconceptions,
     guide: musicGuide,
@@ -651,24 +844,25 @@ export const toolkitSections: ToolkitSection[] = [
     id: "web-dev",
     title: "Web Dev",
     pageNumber: "02",
-    accentColor: "#D89A00",
+    accentColor: "#E3C24A",
     intro: "Our full development stack, from framework to deployment. These are the tools we build client sites with every day, chosen for speed, reliability, and developer experience.",
     blurb: "The stack we ship client sites on, framework to deploy. Chosen for speed and DX.",
     pickCount: "8 Picks",
-    cadence: "Updated weekly",
+    cadence: "Updated monthly",
     tools: webDevTools,
     misconceptions: webDevMisconceptions,
     guide: webDevGuide,
+    signals: webDevSignals,
   },
   {
     id: "design",
     title: "Design",
     pageNumber: "03",
-    accentColor: "#693A4C",
+    accentColor: "#4E3D73",
     intro: "The design toolkit our creative team swears by. Interface design, branding, 3D, and everything in between. Curated by designers who ship real client work, not concept pieces.",
     blurb: "Interface, brand, and 3D tools our designers swear by. Curated from real client work.",
     pickCount: "8 Picks",
-    cadence: "Updated weekly",
+    cadence: "Updated monthly",
     tools: designTools,
     misconceptions: designMisconceptions,
     guide: designGuide,

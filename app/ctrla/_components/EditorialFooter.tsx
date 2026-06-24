@@ -133,7 +133,7 @@ export default function EditorialFooter() {
       <Bleed style={{ padding: "0 clamp(18px,5vw,64px) clamp(24px,3vw,32px)" }}>
         <Rule color="rgba(240,230,224,0.14)" />
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap", paddingTop: 16 }}>
-          <Label color={paperSoft}>CTRL-A · Issue 01 · Spring 2026</Label>
+          <Label color={paperSoft}>CTRL-A · Vol. 01 · June 2026</Label>
           <Label color={paperFaint}>© Range of View Studios</Label>
         </div>
       </Bleed>

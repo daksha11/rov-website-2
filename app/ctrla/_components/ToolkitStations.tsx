@@ -1,0 +1,285 @@
+"use client";
+
+// ═══════════════════════════════════════════════════════
+// CTRL-A — TOOLKIT STATIONS (immersive edutainment, Phase 1)
+// Each tool is a calm, bite-size "station": one-liner, when
+// to reach for it, what it pairs with, a demo slot, and
+// optional depth on demand. A level filter keeps it from
+// overwhelming; a constellation rail tracks where you are;
+// a Signals feed keeps the sector current. Flagship: Web Dev.
+// ═══════════════════════════════════════════════════════
+
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ed, Bleed, Label, Kicker } from "./editorial";
+import ToolPreview from "./ToolPreview";
+import type { ToolkitSection, ToolLevel, SignalKind } from "../data";
+
+const LEVELS: (ToolLevel | "All")[] = ["All", "Beginner", "Intermediate", "Pro"];
+
+const levelColor = (l?: ToolLevel) =>
+  l === "Beginner" ? ed.gold : l === "Intermediate" ? ed.amber : l === "Pro" ? ed.plum : ed.inkFaint;
+
+const kindColor = (k: SignalKind) =>
+  k === "Release" ? ed.gold : k === "Shift" ? ed.amber : k === "Trend" ? ed.plum : ed.inkFaint;
+
+export default function ToolkitStations({ section }: { section: ToolkitSection }) {
+  const accent = section.accentColor;
+  const [level, setLevel] = useState<ToolLevel | "All">("All");
+  const [open, setOpen] = useState<string | null>(null);
+  const [active, setActive] = useState(0);
+
+  const tools = section.tools.filter((t) => level === "All" || t.level === level);
+  const stationRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Scroll-spy: highlight the station nearest the centre of the viewport.
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            const i = Number((e.target as HTMLElement).dataset.idx);
+            if (!Number.isNaN(i)) setActive(i);
+          }
+        });
+      },
+      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
+    );
+    stationRefs.current.forEach((el) => el && io.observe(el));
+    return () => io.disconnect();
+  }, [tools.length, level]);
+
+  const scrollTo = (i: number) => {
+    stationRefs.current[i]?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
+  return (
+    <section style={{ background: "transparent", padding: "clamp(40px,6vw,72px) 0 clamp(64px,9vw,120px)" }}>
+      <Bleed>
+        {/* ── Sector header ── */}
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
+          <div style={{ maxWidth: 720 }}>
+            <Kicker color={accent}>Sector {section.pageNumber} · Tool Stations</Kicker>
+            <h2
+              style={{
+                fontFamily: ed.grotesque,
+                fontWeight: 800,
+                fontSize: "clamp(40px,7vw,92px)",
+                letterSpacing: "-0.03em",
+                lineHeight: 0.9,
+                color: ed.ink,
+                margin: "14px 0 16px",
+              }}
+            >
+              {section.title}<span style={{ color: accent }}>.</span>
+            </h2>
+            <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0, maxWidth: 560 }}>
+              {section.intro}
+            </p>
+          </div>
+          <span style={{ fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.18em", textTransform: "uppercase", color: ed.inkFaint }}>
+            {section.pickCount} · {section.cadence}
+          </span>
+        </div>
+
+        {/* ── Signals feed (stay current) ── */}
+        {section.signals && section.signals.length > 0 && (
+          <div style={{ marginTop: "clamp(36px,5vw,56px)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+              <span style={{ width: 7, height: 7, borderRadius: "50%", background: accent, boxShadow: `0 0 10px ${accent}` }} />
+              <Label color={ed.ink}>Industry Signals · what shifted lately</Label>
+            </div>
+            <div className="ctrla-signals">
+              {section.signals.map((s) => (
+                <a
+                  key={s.title}
+                  href={s.url || "#"}
+                  {...(s.url ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  className="ctrla-signal"
+                  style={{ borderTop: `2px solid ${kindColor(s.kind)}` }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 10 }}>
+                    <span style={{ fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", color: kindColor(s.kind) }}>{s.kind}</span>
+                    <span style={{ fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.1em", color: ed.inkFaint }}>{s.date}</span>
+                  </div>
+                  <h4 style={{ fontFamily: ed.grotesque, fontWeight: 700, fontSize: "clamp(15px,1.6vw,18px)", letterSpacing: "-0.01em", color: ed.ink, margin: "0 0 8px" }}>{s.title}</h4>
+                  <p style={{ fontFamily: ed.body, fontSize: "clamp(13px,1.4vw,14px)", lineHeight: 1.55, color: ed.inkSoft, margin: 0 }}>{s.note}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ── Level filter ── */}
+        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", margin: "clamp(40px,5vw,64px) 0 clamp(24px,3vw,36px)" }}>
+          <Label color={ed.inkFaint} style={{ marginRight: 4 }}>Start where you are</Label>
+          {LEVELS.map((l) => {
+            const on = level === l;
+            const c = l === "All" ? accent : levelColor(l as ToolLevel);
+            return (
+              <button
+                key={l}
+                onClick={() => { setLevel(l); setOpen(null); }}
+                className="ctrla-level-pill"
+                style={{
+                  fontFamily: ed.mono,
+                  fontSize: "clamp(10px,1.1vw,12px)",
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  color: on ? ed.ground : c,
+                  background: on ? c : "transparent",
+                  border: `1px solid ${on ? c : ed.hair}`,
+                  padding: "8px 16px",
+                  cursor: "pointer",
+                }}
+              >
+                {l}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* ── Constellation rail + stations ── */}
+        <div className="ctrla-stations">
+          {/* Rail */}
+          <aside className="ctrla-station-rail" aria-hidden>
+            <div className="ctrla-rail-line" />
+            {tools.map((t, i) => (
+              <button
+                key={t.name}
+                onClick={() => scrollTo(i)}
+                className="ctrla-rail-dot"
+                title={t.name}
+                style={{
+                  background: i === active ? accent : "transparent",
+                  borderColor: i === active ? accent : ed.hair,
+                  boxShadow: i === active ? `0 0 12px ${accent}` : "none",
+                }}
+              />
+            ))}
+          </aside>
+
+          {/* Stations */}
+          <div>
+            {tools.map((t, i) => {
+              const isOpen = open === t.name;
+              return (
+                <motion.div
+                  key={t.name}
+                  data-idx={i}
+                  ref={(el) => { stationRefs.current[i] = el; }}
+                  className="ctrla-station"
+                  initial={{ opacity: 0, y: 28 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                  style={{
+                    // Active station lights its left edge in the sector accent.
+                    borderLeft: `2px solid ${i === active ? accent : "transparent"}`,
+                    paddingLeft: "clamp(18px,2.5vw,32px)",
+                    transition: "border-color 0.4s ease",
+                  }}
+                >
+                  {/* Head: index + category + level */}
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, marginBottom: 14 }}>
+                    <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(34px,5vw,64px)", lineHeight: 0.8, letterSpacing: "-0.04em", color: `${accent}55` }}>
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <Label color={ed.inkFaint}>{t.category}</Label>
+                      {t.level && (
+                        <span style={{ fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: levelColor(t.level), border: `1px solid ${levelColor(t.level)}`, padding: "4px 10px", borderRadius: 2 }}>
+                          {t.level}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Name + one-liner */}
+                  <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,4.4vw,56px)", letterSpacing: "-0.02em", lineHeight: 0.96, color: ed.ink, margin: "0 0 14px" }}>
+                    {t.name}
+                  </h3>
+                  <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(17px,2vw,26px)", lineHeight: 1.4, color: ed.ink, margin: "0 0 22px", maxWidth: 640 }}>
+                    {t.oneLiner || t.description}
+                  </p>
+
+                  {/* Body: when-to-use / pairs / depth  +  demo slot */}
+                  <div className="ctrla-station-body">
+                    <div>
+                      {t.whenToUse && (
+                        <>
+                          <Label color={accent} style={{ display: "block", marginBottom: 8 }}>When to reach for it</Label>
+                          <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,16px)", lineHeight: 1.6, color: ed.inkSoft, margin: "0 0 20px", maxWidth: 460 }}>{t.whenToUse}</p>
+                        </>
+                      )}
+
+                      {t.pairsWith && t.pairsWith.length > 0 && (
+                        <div style={{ marginBottom: 22 }}>
+                          <Label color={ed.inkFaint} style={{ display: "block", marginBottom: 8 }}>Pairs with</Label>
+                          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                            {t.pairsWith.map((p) => (
+                              <span key={p} style={{ fontFamily: ed.mono, fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: ed.inkSoft, border: `1px solid ${ed.hair}`, padding: "5px 11px" }}>{p}</span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+                        <button
+                          onClick={() => setOpen(isOpen ? null : t.name)}
+                          className="ctrla-station-more"
+                          style={{ fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.14em", textTransform: "uppercase", color: accent, background: "transparent", border: "none", cursor: "pointer", padding: 0, display: "inline-flex", alignItems: "center", gap: 8 }}
+                        >
+                          {isOpen ? "Less" : "Go deeper"} <span aria-hidden style={{ transform: isOpen ? "rotate(180deg)" : "none", transition: "transform .2s" }}>↓</span>
+                        </button>
+                        <a href={t.url} target="_blank" rel="noopener noreferrer" style={{ fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.14em", textTransform: "uppercase", color: ed.ink, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}>
+                          Open {t.name} <span aria-hidden>↗</span>
+                        </a>
+                      </div>
+
+                      <AnimatePresence initial={false}>
+                        {isOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.35, ease: "easeInOut" }}
+                            style={{ overflow: "hidden" }}
+                          >
+                            <div style={{ paddingTop: 22, marginTop: 22, borderTop: `1px solid ${ed.hair}` }}>
+                              <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,16px)", lineHeight: 1.65, color: ed.inkSoft, margin: 0, maxWidth: 540 }}>{t.description}</p>
+                              {t.favoriteBy && (
+                                <div style={{ marginTop: 18, paddingLeft: 16, borderLeft: `2px solid ${accent}` }}>
+                                  <Label color={accent} style={{ display: "block", marginBottom: 6 }}>ROV Pick · {t.favoriteBy}</Label>
+                                  <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(14px,1.5vw,17px)", lineHeight: 1.5, color: ed.ink, margin: 0, maxWidth: 520 }}>&ldquo;{t.favoriteQuote}&rdquo;</p>
+                                </div>
+                              )}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+
+                    {/* Live look at the tool's own site, in a CTRL-A frame */}
+                    <div
+                      className="ctrla-station-demo"
+                      style={{ position: "relative", background: ed.panel, border: `1px solid ${ed.hair}` }}
+                    >
+                      <ToolPreview url={t.url} name={t.name} accent={accent} embeddable={t.embeddable} />
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+
+            {tools.length === 0 && (
+              <p style={{ fontFamily: ed.body, fontStyle: "italic", fontSize: 18, color: ed.inkSoft }}>
+                No tools at this level yet. Try another.
+              </p>
+            )}
+          </div>
+        </div>
+      </Bleed>
+    </section>
+  );
+}

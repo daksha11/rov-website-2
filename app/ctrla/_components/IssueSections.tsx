@@ -5,8 +5,8 @@
 // Artist Showcase · ROV Spotlight · Events (condensed) · Vue Close
 // ═══════════════════════════════════════════════════════
 
-import { ed, Bleed, Rule, Label } from "./editorial";
-import { artists, spotlight, events, eventSources, eventsCover, vueClose, type Artist } from "../data";
+import { ed, Bleed, Rule, Label, Kicker } from "./editorial";
+import { artists, taste, spotlight, events, eventSources, eventsCover, vueClose, type Artist } from "../data";
 
 // ── ATL Artist Showcase ────────────────────────────────
 
@@ -79,29 +79,69 @@ function ArtistCard({ artist }: { artist: Artist }) {
 
 export function ArtistShowcase() {
   const feature = artists.find((a) => a.feature) ?? artists[0];
-  const rest = artists.filter((a) => a !== feature);
   return (
-    <section style={{ background: ed.ground, padding: "clamp(56px,8vw,104px) 0" }}>
+    <section id="taste" style={{ background: "transparent", padding: "clamp(56px,8vw,104px) 0", scrollMarginTop: 0 }}>
       <Bleed>
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-          <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,5vw,64px)", letterSpacing: "-0.02em", lineHeight: 0.95, color: ed.ink, margin: 0 }}>
-            ATL Artist Showcase
+        <Kicker color={ed.gold} style={{ marginBottom: 16 }}>{taste.eyebrow}</Kicker>
+        {/* Manifesto head — the throughline of the magazine */}
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 24, flexWrap: "wrap" }}>
+          <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(48px,9vw,128px)", letterSpacing: "-0.03em", lineHeight: 0.86, color: ed.ink, margin: 0 }}>
+            Taste<span style={{ color: ed.gold }}>.</span>
           </h2>
-          <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(12px,1.4vw,15px)", color: ed.inkSoft, textAlign: "right", maxWidth: 280, margin: 0 }}>
-            Three creatives worth knowing right now.
+          <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(16px,2.1vw,28px)", lineHeight: 1.3, color: ed.gold, textAlign: "right", maxWidth: 420, margin: 0 }}>
+            {taste.lede}
           </p>
         </div>
+        <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.6vw,18px)", lineHeight: 1.6, color: ed.inkSoft, margin: "clamp(18px,2.4vw,28px) 0 0", maxWidth: 560 }}>
+          {taste.note}
+        </p>
         <Rule style={{ margin: "clamp(28px,4vw,48px) 0" }} />
 
-        <div className="ctrla-artist-grid">
-          <div style={{ gridArea: "feat" }}>
-            <ArtistCard artist={feature} />
-          </div>
-          <div style={{ gridArea: "a" }}>
-            <ArtistCard artist={rest[0]} />
-          </div>
-          <div style={{ gridArea: "b" }}>
-            <ArtistCard artist={rest[1]} />
+        <div className="ctrla-taste-grid">
+          {/* The featured artist */}
+          <ArtistCard artist={feature} />
+
+          {/* Open call — taste is an invitation, not a closed door */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              gap: 18,
+              padding: "clamp(24px,3.5vw,44px)",
+              border: `1px solid ${ed.hair}`,
+              borderTop: `4px solid ${ed.gold}`,
+              background: "rgba(240,230,224,0.05)",
+            }}
+          >
+            <Label color={ed.gold}>Open call</Label>
+            <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,3.4vw,44px)", letterSpacing: "-0.02em", lineHeight: 0.96, color: ed.ink, margin: 0 }}>
+              {taste.openCall.title}
+            </h3>
+            <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,17px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0, maxWidth: 380 }}>
+              {taste.openCall.body}
+            </p>
+            <a
+              href={`mailto:${taste.openCall.email}`}
+              className="ctrla-bk-cta"
+              style={{
+                alignSelf: "flex-start",
+                fontFamily: ed.mono,
+                fontSize: "clamp(11px,1.2vw,13px)",
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                color: ed.ground,
+                background: ed.gold,
+                padding: "13px 26px",
+                textDecoration: "none",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 10,
+                marginTop: 4,
+              }}
+            >
+              {taste.openCall.cta} <span aria-hidden>→</span>
+            </a>
           </div>
         </div>
       </Bleed>
@@ -124,11 +164,11 @@ const BK_FEATURES = ["Colour tokens", "Typography scale", "Voice & tone", "Expor
 
 export function BrandKitFeature() {
   return (
-    <section style={{ background: ed.ground, padding: "clamp(56px,8vw,104px) 0" }}>
+    <section style={{ background: "transparent", padding: "clamp(56px,8vw,104px) 0" }}>
       <Bleed>
         {/* Standing-feature header — recurs every volume of CTRL-A */}
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginBottom: "clamp(20px,2.6vw,32px)" }}>
-          <Label color={ed.ink}>The Toolbox · A CTRL-A Standing Feature</Label>
+          <Kicker color={ed.amber}>The Toolbox · A CTRL-A Standing Feature</Kicker>
           <Label color={ed.inkFaint}>In every volume</Label>
         </div>
         <Rule style={{ marginBottom: "clamp(28px,4vw,48px)" }} />
@@ -317,7 +357,7 @@ export function CondensedEvents() {
   };
 
   return (
-    <section id="events" style={{ background: ed.ground, padding: "clamp(56px,8vw,104px) 0", scrollMarginTop: 0 }}>
+    <section id="events" style={{ background: "transparent", padding: "clamp(56px,8vw,104px) 0", scrollMarginTop: 0 }}>
       {/* Structured data for search + generative engines */}
       <script
         type="application/ld+json"
@@ -326,11 +366,12 @@ export function CondensedEvents() {
       <Bleed>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
           <div>
+            <Kicker color={ed.amber} style={{ marginBottom: 14 }}>FIFA World Cup 26</Kicker>
             <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,5vw,64px)", letterSpacing: "-0.02em", color: ed.ink, margin: 0 }}>
               ATL Events
             </h2>
-            <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(13px,1.5vw,16px)", color: ed.inkSoft, margin: "8px 0 0" }}>
-              The FIFA World Cup 26™ comes to Atlanta. Mercedes-Benz Stadium hosts the world.
+            <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(13px,1.5vw,16px)", color: ed.inkSoft, margin: "8px 0 0", maxWidth: 540 }}>
+              We are an Atlanta studio, so we cover our city's biggest stages. This summer the whole world arrives: the FIFA World Cup 26™ comes to Mercedes-Benz Stadium.
             </p>
           </div>
           <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026" target="_blank" rel="noopener" className="ctrla-seeall" style={{ fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.18em", textTransform: "uppercase", color: ed.amber, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
@@ -456,11 +497,11 @@ export function CondensedEvents() {
 
 export function VueClose() {
   return (
-    <section style={{ background: ed.ground, padding: "clamp(64px,9vw,128px) 0" }}>
+    <section style={{ background: "transparent", padding: "clamp(64px,9vw,128px) 0" }}>
       <Bleed>
         {/* Vue mascot illustration goes here (skipped for now) */}
-        <div style={{ maxWidth: 640 }}>
-          <Label style={{ display: "block", marginBottom: 20 }}>{vueClose.eyebrow}</Label>
+        <div style={{ maxWidth: 660, borderLeft: `3px solid ${ed.plum}`, paddingLeft: "clamp(20px,3vw,40px)" }}>
+          <Kicker color={ed.plum} style={{ marginBottom: 20 }}>{vueClose.eyebrow}</Kicker>
           <p style={{ fontFamily: ed.body, fontSize: "clamp(16px,1.9vw,21px)", lineHeight: 1.7, color: ed.ink, margin: "0 0 24px" }}>
             {vueClose.body}
           </p>
@@ -470,7 +511,7 @@ export function VueClose() {
               fontStyle: "italic",
               fontWeight: 400,
               fontSize: "clamp(20px,2.6vw,30px)",
-              color: ed.ink,
+              color: ed.gold,
               margin: "0 0 28px",
             }}
           >
