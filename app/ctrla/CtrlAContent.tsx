@@ -23,18 +23,19 @@ import { issueMeta } from "./data";
 
 function Masthead() {
   return (
-    <div style={{ background: ed.paper, position: "relative", zIndex: 5 }}>
+    <div style={{ background: ed.ground, position: "relative", zIndex: 5 }}>
       <Bleed style={{ padding: "12px clamp(18px,5vw,64px)" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
           <Label color={ed.ink}>
             {issueMeta.volume} · {issueMeta.issue}
           </Label>
           <Image
-            src="/ctrla/ctrla-flat-logo-black.png"
+            src="/ctrla/ctrla-flat-logo-white.svg"
             alt="CTRL-A"
             width={48}
             height={35}
             priority
+            unoptimized
             style={{ height: "clamp(22px, 2.6vw, 32px)", width: "auto" }}
           />
           <Label color={ed.ink} style={{ textAlign: "right" }}>
@@ -53,7 +54,7 @@ function Masthead() {
 
 function Cover() {
   return (
-    <section style={{ background: ed.paper, padding: "clamp(24px,4vw,44px) 0 clamp(40px,6vw,72px)" }}>
+    <section style={{ background: ed.ground, padding: "clamp(24px,4vw,44px) 0 clamp(40px,6vw,72px)" }}>
       <Bleed>
         {/* Cover art block — finalized 3D CTRL-A logo on a framed panel */}
         <div
@@ -62,7 +63,7 @@ function Cover() {
             width: "100%",
             aspectRatio: "16 / 6",
             minHeight: 180,
-            background: ed.ink,
+            background: ed.panel,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -202,7 +203,7 @@ const STICKERS = [
 function StickerBelt() {
   const track = [...STICKERS, ...STICKERS, ...STICKERS];
   return (
-    <div style={{ background: ed.ink, overflow: "hidden", padding: "20px 0 30px", position: "relative" }}>
+    <div style={{ background: ed.panel, overflow: "hidden", padding: "20px 0 30px", position: "relative" }}>
       <p
         style={{
           textAlign: "center",
@@ -370,7 +371,7 @@ export default function CtrlAContent() {
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
     const prevBg = document.body.style.backgroundColor;
-    document.body.style.backgroundColor = ed.paper;
+    document.body.style.backgroundColor = ed.ground;
     document.body.style.overflowX = "hidden";
     document.body.style.height = "auto";
     return () => {
@@ -381,7 +382,7 @@ export default function CtrlAContent() {
   }, []);
 
   return (
-    <div style={{ background: ed.paper, minHeight: "100vh", width: "100%", overflowX: "hidden" }}>
+    <div style={{ background: ed.ground, minHeight: "100vh", width: "100%", overflowX: "hidden" }}>
       {loading && <CtrlALoader onDone={dismissLoader} />}
       <NavigationDock />
 

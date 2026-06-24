@@ -18,7 +18,7 @@ import { issueMeta, coverShot, issueOpen, bts, twoCities, productionToolkit, typ
 
 export function DreamAsiaTeaser() {
   return (
-    <section style={{ background: ed.paper, padding: "clamp(48px,7vw,88px) 0" }}>
+    <section style={{ background: ed.ground, padding: "clamp(48px,7vw,88px) 0" }}>
       <Bleed>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginBottom: "clamp(18px,2.4vw,28px)" }}>
           <Label color={ed.ink}>Issue Feature</Label>
@@ -26,7 +26,7 @@ export function DreamAsiaTeaser() {
         </div>
         <Rule style={{ marginBottom: "clamp(24px,3vw,36px)" }} />
 
-        <a href="/ctrla/dreamasia" className="ctrla-feature-card" style={{ position: "relative", display: "block", width: "100%", aspectRatio: "16 / 7", minHeight: 260, background: ed.ink, overflow: "hidden", textDecoration: "none" }}>
+        <a href="/ctrla/dreamasia" className="ctrla-feature-card" style={{ position: "relative", display: "block", width: "100%", aspectRatio: "16 / 7", minHeight: 260, background: ed.panel, overflow: "hidden", textDecoration: "none" }}>
           <Image
             src={coverShot.src}
             alt={coverShot.alt}
@@ -120,11 +120,14 @@ function MediaBlock({
         position: "relative",
         width: "100%",
         aspectRatio: ratio,
-        background: ed.ink,
+        background: hasMedia ? ed.panel : ed.paper,
+        backgroundImage: hasMedia
+          ? undefined
+          : "repeating-linear-gradient(45deg, rgba(36,18,58,0.05) 0, rgba(36,18,58,0.05) 1px, transparent 1px, transparent 11px)",
         overflow: "hidden",
         borderRadius: rounded ? 12 : 0,
-        // dashed frame only when empty — reads as a drop-in slot
-        boxShadow: hasMedia ? "none" : `inset 0 0 0 1px ${ed.plum}`,
+        // Light wireframe frame when empty — reads as a drop-in slot.
+        boxShadow: hasMedia ? "none" : "inset 0 0 0 1.5px rgba(36,18,58,0.3)",
       }}
     >
       {video ? (
@@ -152,7 +155,7 @@ function MediaBlock({
               fontSize: "clamp(9px,1vw,11px)",
               letterSpacing: "0.18em",
               textTransform: "uppercase",
-              color: "rgba(240,230,224,0.5)",
+              color: "rgba(36,18,58,0.65)",
               lineHeight: 1.5,
             }}
           >
@@ -238,10 +241,10 @@ function VueNote({ children, dark = false }: { children: React.ReactNode; dark?:
 
 export function IssueOpen() {
   return (
-    <section style={{ background: ed.paper, padding: "clamp(56px,8vw,104px) 0" }}>
+    <section style={{ background: ed.ground, padding: "clamp(56px,8vw,104px) 0" }}>
       <Bleed>
         {/* Feature lead — the issue's hero performance frame */}
-        <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 7", minHeight: 220, background: ed.ink, overflow: "hidden", marginBottom: "clamp(40px,5vw,72px)" }}>
+        <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 7", minHeight: 220, background: ed.panel, overflow: "hidden", marginBottom: "clamp(40px,5vw,72px)" }}>
           <Image
             src={coverShot.src}
             alt={coverShot.alt}
@@ -333,7 +336,7 @@ function BtsCell({ tile }: { tile: BtsTile }) {
 
 export function BehindTheScenes() {
   return (
-    <section style={{ background: ed.ink, padding: "clamp(64px,9vw,120px) 0" }}>
+    <section style={{ background: ed.panel, padding: "clamp(64px,9vw,120px) 0" }}>
       <Bleed>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
           <div style={{ maxWidth: 720 }}>
@@ -372,7 +375,7 @@ export function BehindTheScenes() {
 
 export function TwoCities() {
   return (
-    <section style={{ background: ed.paper, padding: "clamp(56px,8vw,104px) 0" }}>
+    <section style={{ background: ed.ground, padding: "clamp(56px,8vw,104px) 0" }}>
       <Bleed>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
           <div style={{ maxWidth: 640 }}>
@@ -422,7 +425,7 @@ export function TwoCities() {
 
 export function ProductionToolkit() {
   return (
-    <section style={{ background: ed.paper, padding: "clamp(56px,8vw,104px) 0" }}>
+    <section style={{ background: ed.ground, padding: "clamp(56px,8vw,104px) 0" }}>
       <Bleed>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
           <div style={{ maxWidth: 640 }}>

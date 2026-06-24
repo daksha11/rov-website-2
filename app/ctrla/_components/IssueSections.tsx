@@ -23,7 +23,7 @@ function ArtistCard({ artist }: { artist: Artist }) {
           position: "relative",
           width: "100%",
           aspectRatio: feature ? "4 / 5" : "4 / 3",
-          background: ed.ink,
+          background: ed.panel,
           overflow: "hidden",
           backgroundImage: artist.image ? `url('${artist.image}')` : undefined,
           backgroundSize: "cover",
@@ -81,7 +81,7 @@ export function ArtistShowcase() {
   const feature = artists.find((a) => a.feature) ?? artists[0];
   const rest = artists.filter((a) => a !== feature);
   return (
-    <section style={{ background: ed.paper, padding: "clamp(56px,8vw,104px) 0" }}>
+    <section style={{ background: ed.ground, padding: "clamp(56px,8vw,104px) 0" }}>
       <Bleed>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
           <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,5vw,64px)", letterSpacing: "-0.02em", lineHeight: 0.95, color: ed.ink, margin: 0 }}>
@@ -124,7 +124,7 @@ const BK_FEATURES = ["Colour tokens", "Typography scale", "Voice & tone", "Expor
 
 export function BrandKitFeature() {
   return (
-    <section style={{ background: ed.paper, padding: "clamp(56px,8vw,104px) 0" }}>
+    <section style={{ background: ed.ground, padding: "clamp(56px,8vw,104px) 0" }}>
       <Bleed>
         {/* Standing-feature header — recurs every volume of CTRL-A */}
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginBottom: "clamp(20px,2.6vw,32px)" }}>
@@ -134,7 +134,7 @@ export function BrandKitFeature() {
         <Rule style={{ marginBottom: "clamp(28px,4vw,48px)" }} />
 
         {/* Framed feature panel — emphasized as its own product */}
-        <div style={{ border: `1px solid ${ed.ink}`, borderTop: `5px solid ${ed.amber}`, background: "rgba(255,255,255,0.18)" }}>
+        <div style={{ border: `1px solid ${ed.hair}`, borderTop: `5px solid ${ed.amber}`, background: "rgba(240,230,224,0.05)" }}>
           <div className="ctrla-brandkit">
             {/* Left — copy */}
             <div style={{ padding: "clamp(28px,4vw,52px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
@@ -205,7 +205,7 @@ export function BrandKitFeature() {
             </div>
 
             {/* Right — palette visual (on the ink panel) */}
-            <div style={{ background: ed.ink, padding: "clamp(28px,4vw,52px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <div style={{ background: ed.panel, padding: "clamp(28px,4vw,52px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
               <span style={{ fontFamily: ed.mono, fontSize: 11, letterSpacing: "0.1em", color: "rgba(240,230,224,0.5)", marginBottom: 18 }}>
                 ## Colour Tokens
               </span>
@@ -231,7 +231,7 @@ export function BrandKitFeature() {
 
 export function RovSpotlight() {
   return (
-    <section style={{ background: ed.ink, padding: "clamp(56px,8vw,104px) 0" }}>
+    <section style={{ background: ed.panel, padding: "clamp(56px,8vw,104px) 0" }}>
       <Bleed>
         <Label color={ed.gold} style={{ display: "block", marginBottom: 20 }}>{spotlight.eyebrow}</Label>
         <div className="ctrla-spotlight">
@@ -317,7 +317,7 @@ export function CondensedEvents() {
   };
 
   return (
-    <section id="events" style={{ background: ed.paper, padding: "clamp(56px,8vw,104px) 0", scrollMarginTop: 0 }}>
+    <section id="events" style={{ background: ed.ground, padding: "clamp(56px,8vw,104px) 0", scrollMarginTop: 0 }}>
       {/* Structured data for search + generative engines */}
       <script
         type="application/ld+json"
@@ -344,7 +344,7 @@ export function CondensedEvents() {
             width: "100%",
             aspectRatio: "16 / 7",
             minHeight: 200,
-            background: ed.ink,
+            background: ed.panel,
             overflow: "hidden",
             margin: "clamp(24px,3vw,40px) 0 0",
             backgroundImage: `url('${eventsCover.src}')`,
@@ -456,7 +456,7 @@ export function CondensedEvents() {
 
 export function VueClose() {
   return (
-    <section style={{ background: "#F0E6E0", padding: "clamp(64px,9vw,128px) 0" }}>
+    <section style={{ background: ed.ground, padding: "clamp(64px,9vw,128px) 0" }}>
       <Bleed>
         {/* Vue mascot illustration goes here (skipped for now) */}
         <div style={{ maxWidth: 640 }}>

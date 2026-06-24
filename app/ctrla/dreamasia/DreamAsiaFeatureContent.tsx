@@ -17,7 +17,7 @@ export default function DreamAsiaFeatureContent() {
   useEffect(() => {
     window.scrollTo(0, 0);
     const prevBg = document.body.style.backgroundColor;
-    document.body.style.backgroundColor = ed.paper;
+    document.body.style.backgroundColor = ed.ground;
     document.body.style.overflowX = "hidden";
     document.body.style.height = "auto";
     return () => {
@@ -28,11 +28,11 @@ export default function DreamAsiaFeatureContent() {
   }, []);
 
   return (
-    <div style={{ background: ed.paper, minHeight: "100vh", width: "100%", overflowX: "hidden" }}>
+    <div style={{ background: ed.ground, minHeight: "100vh", width: "100%", overflowX: "hidden" }}>
       <NavigationDock />
 
       {/* Back-nav masthead */}
-      <div style={{ background: ed.paper, position: "relative", zIndex: 5 }}>
+      <div style={{ background: ed.ground, position: "relative", zIndex: 5 }}>
         <Bleed style={{ padding: "12px clamp(18px,5vw,64px)" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
             <a href="/ctrla" className="ctrla-back" style={{ display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none" }}>

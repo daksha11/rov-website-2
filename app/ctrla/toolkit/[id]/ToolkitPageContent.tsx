@@ -16,7 +16,7 @@ export default function ToolkitPageContent({ id }: { id: string }) {
   useEffect(() => {
     window.scrollTo(0, 0);
     const prevBg = document.body.style.backgroundColor;
-    document.body.style.backgroundColor = ed.paper;
+    document.body.style.backgroundColor = ed.ground;
     document.body.style.overflowX = "hidden";
     document.body.style.height = "auto";
     return () => {
@@ -29,11 +29,11 @@ export default function ToolkitPageContent({ id }: { id: string }) {
   if (!section) return null;
 
   return (
-    <div style={{ background: ed.paper, minHeight: "100vh", width: "100%", overflowX: "hidden" }}>
+    <div style={{ background: ed.ground, minHeight: "100vh", width: "100%", overflowX: "hidden" }}>
       <NavigationDock />
 
       {/* Back-nav masthead */}
-      <div style={{ background: ed.paper, position: "relative", zIndex: 5 }}>
+      <div style={{ background: ed.ground, position: "relative", zIndex: 5 }}>
         <Bleed style={{ padding: "12px clamp(18px,5vw,64px)" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
             <a href="/ctrla" className="ctrla-back" style={{ display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
@@ -49,7 +49,7 @@ export default function ToolkitPageContent({ id }: { id: string }) {
       <ToolkitDetail section={section} />
 
       {/* Prev / next toolkit */}
-      <section style={{ background: ed.paper, padding: "0 0 clamp(56px,8vw,104px)" }}>
+      <section style={{ background: ed.ground, padding: "0 0 clamp(56px,8vw,104px)" }}>
         <Bleed>
           <Rule />
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, paddingTop: "clamp(24px,3vw,36px)", flexWrap: "wrap" }}>

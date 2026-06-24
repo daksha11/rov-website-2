@@ -31,7 +31,7 @@ export function ThreeToolkits() {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} style={{ background: ed.paper, padding: "clamp(56px, 8vw, 104px) 0" }}>
+    <section ref={ref} style={{ background: ed.ground, padding: "clamp(56px, 8vw, 104px) 0" }}>
       <Bleed>
         <SectionHeader
           title="Three Toolkits."
@@ -62,7 +62,7 @@ export function ThreeToolkits() {
                   position: "relative",
                   width: "100%",
                   aspectRatio: "3 / 4",
-                  background: ed.ink,
+                  background: ed.panel,
                   overflow: "hidden",
                   display: "flex",
                   alignItems: "flex-end",
@@ -147,7 +147,7 @@ function ToolCard({ tool, accent }: { tool: Tool; accent: string }) {
         flexDirection: "column",
         padding: "20px 20px 22px",
         border: `1px solid ${ed.hair}`,
-        background: "rgba(255,255,255,0.18)",
+        background: "rgba(240,230,224,0.05)",
         textDecoration: "none",
         height: "100%",
       }}
@@ -238,7 +238,7 @@ export function ToolkitDetail({ section }: { section: ToolkitSection }) {
     <section
       id={section.id}
       ref={ref}
-      style={{ background: ed.paper, padding: "clamp(56px, 8vw, 104px) 0", scrollMarginTop: 0 }}
+      style={{ background: ed.ground, padding: "clamp(56px, 8vw, 104px) 0", scrollMarginTop: 0 }}
     >
       <Bleed>
         {/* Chapter head */}

@@ -11,16 +11,20 @@
 import Image from "next/image";
 import type { CSSProperties, ReactNode } from "react";
 
-// CTRL-A cosmic brand system. Key names kept stable so the whole
-// magazine surface re-themes from this one object.
+// CTRL-A cosmic brand system — DARK theme (illustrative space vibe).
+// Key names kept stable so the whole magazine surface re-themes from
+// this one object. Stays within the locked 6-colour palette:
+// ground #0F0820 · panel #24123A · text/light #F0E6E0 · rose · gold · plum.
 export const ed = {
-  paper: "#F0E6E0", // magazine ground (light)
-  paperDeep: "#F0E6E0", // single light tone in the system
-  ink: "#24123A", // primary dark — text + dark panels
+  paper: "#F0E6E0", // light — primary text + light fills (logo masks etc.)
+  paperDeep: "#F0E6E0",
+  ground: "#0F0820", // dark page ground (sections)
+  panel: "#24123A", // lifted dark surface — cards, cover, image placeholders
+  ink: "#F0E6E0", // primary text/foreground — now LIGHT (key kept so it cascades)
   void: "#0F0820", // deepest dark — footer / subscribe band
-  inkSoft: "rgba(36,18,58,0.64)",
-  inkFaint: "rgba(36,18,58,0.42)",
-  hair: "rgba(36,18,58,0.20)",
+  inkSoft: "rgba(240,230,224,0.66)",
+  inkFaint: "rgba(240,230,224,0.42)",
+  hair: "rgba(240,230,224,0.16)",
   amber: "#A56A67", // rose accent (key kept for cascade)
   gold: "#E3C24A", // gold accent
   plum: "#4E3D73", // muted purple (mid)
@@ -212,7 +216,12 @@ export function ImageBlock({
         position: "relative",
         width: "100%",
         aspectRatio: ratio,
-        background: ed.ink,
+        // Real image sits on a dark panel; an empty slot reads as a light wireframe.
+        background: src ? ed.panel : ed.paper,
+        backgroundImage: src
+          ? undefined
+          : "repeating-linear-gradient(45deg, rgba(36,18,58,0.05) 0, rgba(36,18,58,0.05) 1px, transparent 1px, transparent 11px)",
+        boxShadow: src ? "none" : "inset 0 0 0 1.5px rgba(36,18,58,0.3)",
         borderRadius: rounded ? 14 : 0,
         overflow: "hidden",
         ...style,
