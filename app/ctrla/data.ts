@@ -24,6 +24,9 @@ export interface Tool {
   /** Site allows iframe embedding, so the preview can run a live frame
    *  on top of the screenshot. Most tool sites block this, so default off. */
   embeddable?: boolean;
+  /** Curated screenshot in /public — overrides the auto screenshot for tools
+   *  whose site won't capture cleanly. Drop a real image and point here. */
+  preview?: string;
 }
 
 /** A dated industry-shift entry for the "Signals" feed (hand-curated). */
@@ -86,6 +89,9 @@ export const issueMeta = {
   coverHeadline: "See the bigger picture.",
   coverDeck:
     "CTRL-A is ROV's digital muse for creatives everywhere: immersive toolkits, the whole process with none of the ugly steps skipped, and the art we cannot stop thinking about. Because taste is the sky you set as your limit.",
+  // Concrete value, so a cold visitor gets the function, not just the feeling.
+  coverValue:
+    "Every volume, free: a deep-dive toolkit for music, web, and design, the real process behind the work, and a brand-kit generator you can use today.",
   // The volume's deep feature, kept separate from the cover thesis.
   featureHeadline: "From the bedroom to the stage.",
   featureDeck:
@@ -417,6 +423,10 @@ const musicTools: Tool[] = [
     tags: ["Production", "Mixing", "macOS"],
     favoriteBy: "Basu",
     favoriteQuote: "Logic's stock compressor and EQ are genuinely underrated. I reach for them before any third-party plugin.",
+    level: "Intermediate",
+    oneLiner: "Apple's whole studio in a box, with stock plugins good enough to finish on.",
+    whenToUse: "When you want one affordable place to take a song from first idea to final mix on a Mac.",
+    pairsWith: ["FabFilter Pro-Q 3", "iZotope Ozone"],
   },
   {
     name: "Pro Tools",
@@ -424,6 +434,10 @@ const musicTools: Tool[] = [
     description: "Industry standard for recording studios. Unmatched for tracking, editing, and large session management.",
     url: "https://www.avid.com/pro-tools",
     tags: ["Recording", "Mixing", "Industry Standard"],
+    level: "Pro",
+    oneLiner: "The studio standard for tracking and editing big, serious sessions.",
+    whenToUse: "When you're recording a band or handing sessions between studios that all expect Pro Tools.",
+    pairsWith: ["Waves CLA-2A"],
   },
   {
     name: "FabFilter Pro-Q 3",
@@ -433,6 +447,10 @@ const musicTools: Tool[] = [
     tags: ["EQ", "Mixing", "Essential"],
     favoriteBy: "Basu",
     favoriteQuote: "If I could only keep one plugin, this is it. The dynamic bands alone changed how I mix vocals.",
+    level: "Beginner",
+    oneLiner: "The EQ that teaches your ears while you use it.",
+    whenToUse: "Any time something sounds muddy, harsh, or boxy and you need to carve it clean.",
+    pairsWith: ["Logic Pro", "Pro Tools"],
   },
   {
     name: "Waves CLA-2A",
@@ -440,6 +458,10 @@ const musicTools: Tool[] = [
     description: "Optical compressor modeled after the hardware classic. Smooth, musical compression that works on everything from vocals to bass.",
     url: "https://www.waves.com/plugins/cla-2a-compressor-limiter",
     tags: ["Compression", "Vocals", "Classic"],
+    level: "Intermediate",
+    oneLiner: "A classic optical compressor that makes vocals sit smooth and forward.",
+    whenToUse: "When a vocal jumps around in level and you want it glued and up front.",
+    pairsWith: ["FabFilter Pro-Q 3"],
   },
   {
     name: "Valhalla VintageVerb",
@@ -447,6 +469,10 @@ const musicTools: Tool[] = [
     description: "Lush, affordable reverb with vintage character. Covers everything from tight rooms to massive halls without the price tag.",
     url: "https://valhalladsp.com/shop/reverb/valhalla-vintage-verb/",
     tags: ["Reverb", "Effects", "Affordable"],
+    level: "Beginner",
+    oneLiner: "Lush, vintage-flavoured reverb for almost nothing.",
+    whenToUse: "When a dry track needs space, from a tight room to a cathedral.",
+    pairsWith: ["Logic Pro"],
   },
   {
     name: "iZotope Ozone",
@@ -454,6 +480,10 @@ const musicTools: Tool[] = [
     description: "All-in-one mastering suite. AI-assisted mastering that actually sounds good, plus manual controls when you need precision.",
     url: "https://www.izotope.com/en/products/ozone.html",
     tags: ["Mastering", "AI", "Suite"],
+    level: "Pro",
+    oneLiner: "A full mastering chain, with an AI assistant for a strong first move.",
+    whenToUse: "The last step, when the mix is done and you want it loud, balanced, and upload-ready.",
+    pairsWith: ["DistroKid"],
   },
   {
     name: "Splice",
@@ -461,6 +491,10 @@ const musicTools: Tool[] = [
     description: "Sample marketplace and plugin rent-to-own. Access millions of sounds and try expensive plugins before committing.",
     url: "https://splice.com/",
     tags: ["Samples", "Sounds", "Rent-to-Own"],
+    level: "Beginner",
+    oneLiner: "Millions of samples and rent-to-own plugins, a few dollars at a time.",
+    whenToUse: "When you need a sound you don't have, or want a pricey plugin before you buy it.",
+    pairsWith: ["Logic Pro"],
   },
   {
     name: "DistroKid",
@@ -468,6 +502,41 @@ const musicTools: Tool[] = [
     description: "Fastest way to get music on streaming platforms. Unlimited uploads, keep 100% of royalties, and splits built in.",
     url: "https://distrokid.com/",
     tags: ["Distribution", "Streaming", "Royalties"],
+    level: "Beginner",
+    oneLiner: "The fastest way onto Spotify and Apple Music, with all your royalties kept.",
+    whenToUse: "When the master is done and you want it live on streaming this week.",
+    pairsWith: ["iZotope Ozone"],
+  },
+];
+
+// Hand-curated industry shifts for the Music sector.
+const musicSignals: Signal[] = [
+  {
+    date: "Jun 2026",
+    kind: "Trend",
+    title: "Stem separation is everywhere",
+    note: "One-click stem splitting is now baked into most tools. Remixing, sampling, and cleanup workflows changed overnight.",
+    url: "https://www.izotope.com/en/products/rx.html",
+  },
+  {
+    date: "May 2026",
+    kind: "Shift",
+    title: "AI mastering got genuinely good",
+    note: "Assistant masters are a credible starting point now, not a gimmick. The skill is knowing when to trust them and when to take over.",
+    url: "https://www.izotope.com/en/products/ozone.html",
+  },
+  {
+    date: "Apr 2026",
+    kind: "Trend",
+    title: "You master for LUFS, not loudness",
+    note: "Streaming normalization keeps winning. Aim for dynamics and a target loudness, not the loudest possible file.",
+  },
+  {
+    date: "Mar 2026",
+    kind: "Release",
+    title: "Rent-to-own keeps lowering the barrier",
+    note: "More flagship plugins are pay-as-you-go. Still, learning your stock chain first beats hoarding plugins.",
+    url: "https://splice.com/",
   },
 ];
 
@@ -718,6 +787,10 @@ const designTools: Tool[] = [
     tags: ["UI/UX", "Prototyping", "Collaboration"],
     favoriteBy: "Kavya",
     favoriteQuote: "Auto layout + component variants changed how I think about design systems. Everything is a system now.",
+    level: "Beginner",
+    oneLiner: "Where screens get designed and prototyped, together, in the browser.",
+    whenToUse: "Before you build anything, to settle layout, spacing, and flow with your team.",
+    pairsWith: ["Mobbin", "Google Fonts"],
   },
   {
     name: "Adobe Illustrator",
@@ -725,6 +798,10 @@ const designTools: Tool[] = [
     description: "Vector illustration powerhouse. Logo design, icon systems, and complex illustrations. Nothing matches it for precision vector work.",
     url: "https://www.adobe.com/products/illustrator.html",
     tags: ["Vector", "Logo", "Illustration"],
+    level: "Intermediate",
+    oneLiner: "Precision vector tool for logos, icons, and clean illustration.",
+    whenToUse: "When you need crisp artwork that scales to any size without blurring.",
+    pairsWith: ["Photoshop"],
   },
   {
     name: "Photoshop",
@@ -732,6 +809,10 @@ const designTools: Tool[] = [
     description: "Photo editing and compositing. Still unmatched for photo manipulation, texture work, and complex image editing.",
     url: "https://www.adobe.com/products/photoshop.html",
     tags: ["Photo", "Compositing", "Textures"],
+    level: "Intermediate",
+    oneLiner: "The standard for photo editing, retouching, and compositing.",
+    whenToUse: "When you're working with photos and textures, not shapes and type.",
+    pairsWith: ["Adobe Illustrator"],
   },
   {
     name: "Blender",
@@ -741,6 +822,10 @@ const designTools: Tool[] = [
     tags: ["3D", "Free", "Open Source"],
     favoriteBy: "David",
     favoriteQuote: "The fact that this is free is insane. Cycles renderer produces photorealistic output that rivals paid tools.",
+    level: "Pro",
+    oneLiner: "A complete 3D suite, modeling to render, that happens to be free.",
+    whenToUse: "When a project needs real 3D: product shots, motion, or scenes you can't fake in 2D.",
+    pairsWith: ["Spline"],
   },
   {
     name: "Coolors",
@@ -748,6 +833,10 @@ const designTools: Tool[] = [
     description: "Color palette generator. Lock colors you like, generate complementary ones, and export to any format. Saves hours of color theory.",
     url: "https://coolors.co/",
     tags: ["Color", "Palette", "Generator"],
+    level: "Beginner",
+    oneLiner: "Generate, lock, and export colour palettes in seconds.",
+    whenToUse: "At the start of a brand or UI, when you're hunting a palette that actually works.",
+    pairsWith: ["Figma"],
   },
   {
     name: "Google Fonts",
@@ -755,6 +844,10 @@ const designTools: Tool[] = [
     description: "Free, open-source font library. Over 1,500 families. Performance-optimized for web. Variable fonts for maximum flexibility.",
     url: "https://fonts.google.com/",
     tags: ["Typography", "Free", "Web Fonts"],
+    level: "Beginner",
+    oneLiner: "1,500+ free, web-ready type families, variable fonts included.",
+    whenToUse: "Any time you need quality type with no licensing headache.",
+    pairsWith: ["Figma"],
   },
   {
     name: "Mobbin",
@@ -762,6 +855,10 @@ const designTools: Tool[] = [
     description: "Real-world design pattern library. Screenshots of actual apps organized by flow, screen type, and platform. Better than Dribbble for real UI work.",
     url: "https://mobbin.com/",
     tags: ["Inspiration", "Patterns", "Research"],
+    level: "Beginner",
+    oneLiner: "Screenshots of real shipped apps, organized by flow and screen.",
+    whenToUse: "When you're designing a flow and want to see how real products solve it.",
+    pairsWith: ["Figma"],
   },
   {
     name: "Spline",
@@ -769,6 +866,41 @@ const designTools: Tool[] = [
     description: "Design and publish 3D scenes for the web. No code needed. Interactive 3D elements that export as React components.",
     url: "https://spline.design/",
     tags: ["3D", "Web", "Interactive"],
+    level: "Intermediate",
+    oneLiner: "Design interactive 3D for the web with no code, then export to React.",
+    whenToUse: "When a site needs a 3D element that reacts, without opening Blender.",
+    pairsWith: ["Figma", "Blender"],
+  },
+];
+
+// Hand-curated industry shifts for the Design sector.
+const designSignals: Signal[] = [
+  {
+    date: "Jun 2026",
+    kind: "Trend",
+    title: "3D on the web went mainstream",
+    note: "Interactive 3D and WebGL hero moments are common on product sites now. Tools made it approachable for solo designers.",
+    url: "https://spline.design/",
+  },
+  {
+    date: "May 2026",
+    kind: "Shift",
+    title: "Variable fonts are the default",
+    note: "One file, every weight and width. Type systems are lighter and more flexible than the static-font era ever allowed.",
+    url: "https://fonts.google.com/",
+  },
+  {
+    date: "Apr 2026",
+    kind: "Trend",
+    title: "Real-product reference beats concept art",
+    note: "Designers reference shipped apps over dribbble concepts. Patterns that actually work in production win.",
+    url: "https://mobbin.com/",
+  },
+  {
+    date: "Mar 2026",
+    kind: "Release",
+    title: "Design tools lean into AI assists",
+    note: "First-pass layouts, variants, and content fills are a click away. Taste is still the whole differentiator.",
   },
 ];
 
@@ -839,6 +971,7 @@ export const toolkitSections: ToolkitSection[] = [
     tools: musicTools,
     misconceptions: musicMisconceptions,
     guide: musicGuide,
+    signals: musicSignals,
   },
   {
     id: "web-dev",
@@ -866,5 +999,6 @@ export const toolkitSections: ToolkitSection[] = [
     tools: designTools,
     misconceptions: designMisconceptions,
     guide: designGuide,
+    signals: designSignals,
   },
 ];

@@ -11,19 +11,22 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ed, Bleed, Label, Kicker } from "./editorial";
+import { ed as edBase, Bleed, Label, Kicker } from "./editorial";
 import ToolPreview from "./ToolPreview";
 import type { ToolkitSection, ToolLevel, SignalKind } from "../data";
 
 const LEVELS: (ToolLevel | "All")[] = ["All", "Beginner", "Intermediate", "Pro"];
 
+// Level/kind colours are accents (theme-independent), so they stay on the base.
 const levelColor = (l?: ToolLevel) =>
-  l === "Beginner" ? ed.gold : l === "Intermediate" ? ed.amber : l === "Pro" ? ed.plum : ed.inkFaint;
+  l === "Beginner" ? edBase.gold : l === "Intermediate" ? edBase.amber : l === "Pro" ? edBase.plum : edBase.inkFaint;
 
 const kindColor = (k: SignalKind) =>
-  k === "Release" ? ed.gold : k === "Shift" ? ed.amber : k === "Trend" ? ed.plum : ed.inkFaint;
+  k === "Release" ? edBase.gold : k === "Shift" ? edBase.amber : k === "Trend" ? edBase.plum : edBase.inkFaint;
 
-export default function ToolkitStations({ section }: { section: ToolkitSection }) {
+export default function ToolkitStations({ section, theme }: { section: ToolkitSection; theme?: typeof edBase }) {
+  // Shadow `ed` with the active theme so every token below re-themes for free.
+  const ed = theme ?? edBase;
   const accent = section.accentColor;
   const [level, setLevel] = useState<ToolLevel | "All">("All");
   const [open, setOpen] = useState<string | null>(null);
@@ -265,7 +268,7 @@ export default function ToolkitStations({ section }: { section: ToolkitSection }
                       className="ctrla-station-demo"
                       style={{ position: "relative", background: ed.panel, border: `1px solid ${ed.hair}` }}
                     >
-                      <ToolPreview url={t.url} name={t.name} accent={accent} embeddable={t.embeddable} />
+                      <ToolPreview url={t.url} name={t.name} accent={accent} embeddable={t.embeddable} preview={t.preview} theme={ed} />
                     </div>
                   </div>
                 </motion.div>

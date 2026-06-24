@@ -751,7 +751,9 @@ input[type="range"]::-webkit-slider-thumb {
   .ctrla-toc-note { display: none; }
 }
 
-/* ── Cosmic backdrop — cartoony lit-space ambient layer ── */
+/* ── Cosmic backdrop — Japanese bokashi twilight (intentional, not scattered) ──
+   Reads top→bottom like a sky: deep night zenith, a luminous horizon band low
+   and off-centre, then dark again. One direction, one focal glow, plus grain. */
 .ctrla-cosmic-backdrop {
   position: fixed;
   inset: 0;
@@ -759,37 +761,40 @@ input[type="range"]::-webkit-slider-thumb {
   pointer-events: none;
   overflow: hidden;
   background-color: #0F0820;
-  /* Nebula pools: gold "sun" top-left, plum + rose clouds bleeding
-     out of the void. Brighter cores + soft falloff = illustrated, not photoreal. */
   background-image:
-    radial-gradient(42% 32% at 14% 10%, rgba(227,194,74,0.14), rgba(227,194,74,0.04) 38%, transparent 64%),
-    radial-gradient(48% 40% at 86% 16%, rgba(78,61,115,0.55), rgba(78,61,115,0.16) 42%, transparent 70%),
-    radial-gradient(40% 34% at 78% 12%, rgba(165,106,103,0.20), transparent 55%),
-    radial-gradient(52% 42% at 16% 46%, rgba(165,106,103,0.20), transparent 66%),
-    radial-gradient(46% 38% at 84% 60%, rgba(78,61,115,0.42), transparent 68%),
-    radial-gradient(54% 42% at 32% 82%, rgba(165,106,103,0.16), transparent 66%),
-    radial-gradient(40% 32% at 92% 92%, rgba(227,194,74,0.10), transparent 62%);
-  /* Edge vignette for depth */
-  box-shadow:
-    inset 0 0 clamp(140px, 20vw, 340px) rgba(7,3,16,0.78),
-    inset 0 0 60px rgba(7,3,16,0.42);
+    /* the luminous horizon band — narrow, warm, placed low (~82%) */
+    radial-gradient(150% 40% at 50% 82%,
+      rgba(227,194,74,0.16) 0%,
+      rgba(165,106,103,0.24) 22%,
+      rgba(78,61,115,0.18) 48%,
+      transparent 76%),
+    /* cool plum mass at the zenith for depth */
+    radial-gradient(130% 52% at 50% -10%, rgba(36,18,58,0.75) 0%, transparent 60%),
+    /* vertical wash, uneven stops (compress the warm low third) */
+    linear-gradient(180deg,
+      #0F0820 0%,
+      #0F0820 30%,
+      #24123A 60%,
+      #24123A 74%,
+      #0F0820 100%);
+  box-shadow: inset 0 0 clamp(140px, 20vw, 340px) rgba(7,3,16,0.62);
 }
-/* Soft diagonal galaxy band sweeping through the void */
+/* Paper grain — the bokashi softness that kills banding and reads as printed */
 .ctrla-cosmic-backdrop::before {
   content: "";
   position: absolute;
-  inset: -25%;
-  background: radial-gradient(60% 15% at 50% 50%, rgba(78,61,115,0.24), transparent 72%);
-  transform: rotate(-19deg);
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: 0.5;
+  mix-blend-mode: overlay;
 }
-/* Slow breathing bloom — gives the lighting a little life */
+/* Slow breathing on the horizon glow — keeps the light alive */
 .ctrla-cosmic-backdrop::after {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(36% 30% at 70% 38%, rgba(165,106,103,0.16), transparent 66%),
-    radial-gradient(30% 26% at 24% 66%, rgba(227,194,74,0.07), transparent 64%);
+  background: radial-gradient(130% 34% at 50% 84%, rgba(227,194,74,0.10), rgba(165,106,103,0.08) 40%, transparent 72%);
   animation: ctrla-cosmic-breathe 22s ease-in-out infinite alternate;
 }
 @keyframes ctrla-cosmic-breathe {
@@ -799,6 +804,49 @@ input[type="range"]::-webkit-slider-thumb {
 @media (prefers-reduced-motion: reduce) {
   .ctrla-cosmic-backdrop::after { animation: none; }
 }
+
+/* Cover primary CTA — gentle lift on hover */
+.ctrla-cover-cta { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.ctrla-cover-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(227,194,74,0.28); }
+
+/* Reusable paper grain — overlay on any gradient surface for bokashi richness */
+.ctrla-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  opacity: 0.42;
+  mix-blend-mode: overlay;
+}
+
+/* ── Toolkit atmosphere — light, airy lit-cream ambient layer ── */
+.ctrla-toolkit-atmos {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  background-color: #F0E6E0;
+  /* Soft warm nebula bleeding into the cream, much lighter than the dark theme */
+  background-image:
+    radial-gradient(45% 35% at 14% 8%, rgba(227,194,74,0.20), transparent 64%),
+    radial-gradient(48% 40% at 86% 14%, rgba(78,61,115,0.14), transparent 70%),
+    radial-gradient(50% 42% at 16% 60%, rgba(165,106,103,0.13), transparent 68%),
+    radial-gradient(46% 38% at 88% 80%, rgba(78,61,115,0.10), transparent 70%);
+  box-shadow: inset 0 0 clamp(120px, 18vw, 300px) rgba(165,106,103,0.12);
+}
+.ctrla-atmos-decor { will-change: transform; }
+@media (max-width: 760px) {
+  /* Margins vanish on small screens — keep the set pieces from sitting on text */
+  .ctrla-atmos-decor { display: none; }
+}
+
+/* ── Light-mode overrides for station chrome (assumes a dark ground by default) ── */
+.ctrla-light .ctrla-rail-line { background: rgba(22,12,40,0.18); }
+.ctrla-light .ctrla-station { border-top-color: rgba(22,12,40,0.12); }
+.ctrla-light .ctrla-signal { background: rgba(22,12,40,0.04); }
+.ctrla-light .ctrla-signal:hover { background: rgba(22,12,40,0.08); }
 
 /* Cookbook — purpose + single sneak-peek dish */
 .ctrla-cookbook-peek {

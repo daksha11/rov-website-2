@@ -37,6 +37,23 @@ export const ed = {
   mono: "'Neue Montreal', 'Helvetica Neue', Arial, sans-serif",
 };
 
+// LIGHT theme — used on the toolkit pages only. Inverts the surfaces and
+// text so the toolkits read as the bright, airy reveal from the loader
+// (cream ground, near-black plum text), while accents stay the same. The
+// key names match `ed` exactly so a component can swap themes by aliasing.
+export const edLight: typeof ed = {
+  ...ed,
+  paper: "#160C28",
+  paperDeep: "#160C28",
+  ground: "#F0E6E0", // cream page
+  panel: "#E7D8CD", // warm sand — lifted surface / device frames on cream
+  ink: "#160C28", // primary text — near-black plum
+  void: "#0F0820",
+  inkSoft: "rgba(22,12,40,0.66)",
+  inkFaint: "rgba(22,12,40,0.42)",
+  hair: "rgba(22,12,40,0.16)",
+};
+
 // ── Page container with print margins ──────────────────
 
 export function Bleed({

@@ -15,10 +15,13 @@ export default function ShootingStars({
   className,
   style,
   colors = ["#E3C24A", "#F0E6E0", "#A56A67"],
+  starColor = "#F0E6E0",
 }: {
   className?: string;
   style?: React.CSSProperties;
   colors?: string[];
+  /** Colour of the static twinkle field (use a dark value on light grounds). */
+  starColor?: string;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -129,7 +132,7 @@ export default function ShootingStars({
       ctx.clearRect(0, 0, W, H);
 
       // Twinkling field
-      ctx.fillStyle = "#F0E6E0";
+      ctx.fillStyle = starColor;
       for (const s of stars) {
         const a = s.a * (0.55 + 0.45 * Math.sin(time * s.tw + s.ph));
         if (a <= 0) continue;
@@ -190,7 +193,7 @@ export default function ShootingStars({
       io.disconnect();
       if (canvas.parentNode === container) container.removeChild(canvas);
     };
-  }, [colors]);
+  }, [colors, starColor]);
 
   return <div ref={containerRef} aria-hidden className={className} style={{ position: "absolute", inset: 0, ...style }} />;
 }

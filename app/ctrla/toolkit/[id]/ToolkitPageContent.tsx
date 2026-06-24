@@ -3,10 +3,11 @@
 import { useEffect } from "react";
 import { NavigationDock } from "@/components/NavDoc";
 import EditorialFooter from "../../_components/EditorialFooter";
-import CosmicBackdrop from "../../_components/CosmicBackdrop";
+import ToolkitAtmosphere from "../../_components/ToolkitAtmosphere";
 import { ToolkitDetail } from "../../_components/Toolkits";
 import ToolkitStations from "../../_components/ToolkitStations";
-import { ed, Bleed, Rule, Label } from "../../_components/editorial";
+// Toolkit pages run the LIGHT theme — the airy, cream reveal from the loader.
+import { edLight as ed, Bleed, Rule, Label } from "../../_components/editorial";
 import { toolkitSections } from "../../data";
 
 export default function ToolkitPageContent({ id }: { id: string }) {
@@ -31,8 +32,8 @@ export default function ToolkitPageContent({ id }: { id: string }) {
   if (!section) return null;
 
   return (
-    <div style={{ background: "transparent", minHeight: "100vh", width: "100%", overflowX: "hidden" }}>
-      <CosmicBackdrop />
+    <div className="ctrla-light" style={{ background: "transparent", minHeight: "100vh", width: "100%", overflowX: "hidden" }}>
+      <ToolkitAtmosphere />
       <NavigationDock />
 
       {/* Signature accent bar — this sector's colour, full bleed */}
@@ -54,7 +55,7 @@ export default function ToolkitPageContent({ id }: { id: string }) {
 
       {/* Flagship sectors with curated Signals get the immersive Stations
           experience; the rest fall back to the editorial detail for now. */}
-      {section.signals ? <ToolkitStations section={section} /> : <ToolkitDetail section={section} />}
+      {section.signals ? <ToolkitStations section={section} theme={ed} /> : <ToolkitDetail section={section} />}
 
       {/* Prev / next toolkit */}
       <section style={{ background: "transparent", padding: "0 0 clamp(56px,8vw,104px)" }}>

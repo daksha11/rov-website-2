@@ -5,12 +5,13 @@ import Image from "next/image";
 import { NavigationDock } from "@/components/NavDoc";
 import CtrlALoader from "./_components/CtrlALoader";
 import CosmicBackdrop from "./_components/CosmicBackdrop";
+import GooeyLogoMorph from "./_components/GooeyLogoMorph";
 import EditorialFooter from "./_components/EditorialFooter";
 import ShootingStars from "@/components/ui/shooting-stars";
 import { ThreeToolkits } from "./_components/Toolkits";
 import Cookbook from "./_components/Cookbook";
 import { DreamAsiaTeaser } from "./_components/DreamAsiaSections";
-import { StarField, CometStreak, FloatingAsset, COSMIC } from "./_components/CosmicAccents";
+import { FloatingAsset, COSMIC } from "./_components/CosmicAccents";
 import { ArtistShowcase, BrandKitFeature, CondensedEvents, VueClose } from "./_components/IssueSections";
 import { ed, Bleed, Rule, Label, Kicker } from "./_components/editorial";
 import { issueMeta } from "./data";
@@ -65,8 +66,9 @@ function Cover() {
             width: "100%",
             aspectRatio: "16 / 6",
             minHeight: 180,
-            // Deep-space wash: plum glow up top falling into the void.
-            background: `radial-gradient(120% 150% at 50% -20%, ${ed.plum} 0%, ${ed.panel} 42%, ${ed.ground} 100%)`,
+            // Japanese bokashi sky: night zenith → twilight → a narrow luminous
+            // gold horizon low (~78%), then back to night. Uneven stops on purpose.
+            background: `linear-gradient(180deg, ${ed.ground} 0%, ${ed.panel} 22%, ${ed.plum} 46%, ${ed.dusty} 66%, ${ed.gold} 78%, ${ed.dusty} 85%, ${ed.plum} 93%, ${ed.ground} 100%)`,
             border: `1px solid ${ed.hair}`,
             display: "flex",
             alignItems: "center",
@@ -77,6 +79,9 @@ function Cover() {
         >
           {/* Gold accent bar — the issue's signature edge */}
           <div aria-hidden style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: ed.gold, zIndex: 3 }} />
+
+          {/* Paper grain over the sky gradient — bokashi richness */}
+          <div aria-hidden className="ctrla-grain" style={{ zIndex: 0 }} />
 
           {/* Real-sky shooting stars, behind the logo */}
           <ShootingStars style={{ zIndex: 0 }} />
@@ -96,17 +101,11 @@ function Cover() {
           >
             A ROV Creative Platform
           </span>
-          <div style={{ position: "relative", zIndex: 1, width: "100%", height: "100%" }}>
-            <Image
-              src="/ctrla/ctrla-3d-logo-white.svg"
-              alt="CTRL-A"
-              fill
-              priority
-              unoptimized
-              sizes="(max-width: 768px) 90vw, 1100px"
-              style={{ objectFit: "contain" }}
-            />
-          </div>
+          <GooeyLogoMorph
+            srcs={["/ctrla/ctrla-3d-logo-white.svg", "/ctrla/ctrla-flat-logo-white.svg"]}
+            interval={4000}
+            style={{ zIndex: 1, width: "100%", height: "100%" }}
+          />
         </div>
 
         {/* Headline row */}
@@ -146,6 +145,62 @@ function Cover() {
             >
               {issueMeta.coverDeck}
             </p>
+
+            {/* Concrete value — what you actually get, and that it's free */}
+            <p
+              style={{
+                fontFamily: ed.grotesque,
+                fontWeight: 500,
+                fontSize: "clamp(14px,1.5vw,17px)",
+                lineHeight: 1.55,
+                color: ed.ink,
+                margin: "clamp(16px,2vw,22px) 0 0",
+                maxWidth: 600,
+              }}
+            >
+              <span style={{ color: ed.gold, fontWeight: 800 }}>Every volume, free:</span> a deep-dive toolkit for
+              music, web, and design, the real process behind the work, and a brand-kit generator you can use today.
+            </p>
+
+            {/* Utility-first CTAs — point a cold visitor at the value */}
+            <div style={{ display: "flex", alignItems: "center", gap: "clamp(12px,2vw,22px)", flexWrap: "wrap", marginTop: "clamp(20px,2.6vw,30px)" }}>
+              <a
+                href="#toolkits"
+                className="ctrla-cover-cta"
+                style={{
+                  fontFamily: ed.mono,
+                  fontSize: "clamp(11px,1.2vw,13px)",
+                  letterSpacing: "0.16em",
+                  textTransform: "uppercase",
+                  color: ed.ground,
+                  background: ed.gold,
+                  padding: "14px 26px",
+                  textDecoration: "none",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 10,
+                }}
+              >
+                Explore the toolkits <span aria-hidden>→</span>
+              </a>
+              <a
+                href="/ctrla/brand-kit"
+                className="ctrla-seeall"
+                style={{
+                  fontFamily: ed.mono,
+                  fontSize: "clamp(11px,1.2vw,13px)",
+                  letterSpacing: "0.16em",
+                  textTransform: "uppercase",
+                  color: ed.ink,
+                  textDecoration: "none",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                }}
+              >
+                Try the Brand Kit Generator <span aria-hidden>→</span>
+              </a>
+            </div>
           </div>
           {/* This volume's feature, teased on the cover */}
           <a
@@ -187,7 +242,7 @@ function Cover() {
             flexWrap: "wrap",
           }}
         >
-          <Label color={ed.inkFaint}>Free · Monthly</Label>
+          <Label color={ed.gold}>Always free · New volume monthly</Label>
           <span
             style={{
               fontFamily: ed.grotesque,
@@ -240,9 +295,6 @@ function StickerBelt() {
       >
         Plate I · Custom hand-drawn illustrations
       </p>
-      {/* Edge fades match the dark panel so stickers dissolve, not flash */}
-      <div aria-hidden style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 120, background: `linear-gradient(to right, ${ed.panel} 30%, transparent)`, zIndex: 2 }} />
-      <div aria-hidden style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 120, background: `linear-gradient(to left, ${ed.panel} 30%, transparent)`, zIndex: 2 }} />
       <div className="ctrla-belt-track" style={{ display: "flex", alignItems: "center", gap: 64, width: "max-content", animation: "ctrlaBelt 36s linear infinite" }}>
         {track.map((src, i) => (
           // eslint-disable-next-line @next/next/no-img-element
@@ -281,7 +333,7 @@ function Contents() {
         <p
           style={{
             fontFamily: ed.serif,
-            fontStyle: "italic",
+            fontStyle: "normal",
             fontWeight: 400,
             fontSize: "clamp(22px,3.4vw,46px)",
             lineHeight: 1.28,
@@ -291,7 +343,12 @@ function Contents() {
             maxWidth: 1080,
           }}
         >
-          {issueMeta.thesis}
+          CTRL-A is how Range Of View plays <em style={{ fontStyle: "italic" }}>digital muse</em> to creatives
+          everywhere, helping you <em style={{ fontStyle: "italic" }}>see the bigger picture</em>. We go deep on
+          the tools worth your time, walk the whole process with{" "}
+          <em style={{ fontStyle: "italic" }}>none of the ugly steps skipped</em>, and feature the art we cannot
+          stop thinking about. Because nothing matters more in creative work than taste.{" "}
+          <em style={{ fontStyle: "italic", color: ed.gold }}>Taste is the sky you set as your limit.</em>
         </p>
 
         {/* The map */}
@@ -337,10 +394,9 @@ function Contents() {
 
 function StatBand() {
   return (
-    <section style={{ background: ed.plum, padding: "clamp(48px,7vw,88px) 0", position: "relative", overflow: "hidden" }}>
-      {/* Cosmic moment — faint parallax starfield + a comet that streaks once */}
-      <StarField opacity={0.14} />
-      <CometStreak style={{ top: "18%", left: 0 }} />
+    <section style={{ background: `linear-gradient(180deg, ${ed.ground} 0%, ${ed.plum} 30%, ${ed.plum} 70%, ${ed.ground} 100%)`, padding: "clamp(48px,7vw,88px) 0", position: "relative", overflow: "hidden" }}>
+      {/* Real-sky shooting stars, same as the cover */}
+      <ShootingStars style={{ zIndex: 0 }} />
 
       <Bleed style={{ position: "relative", zIndex: 1 }}>
         <Rule color="rgba(227,194,74,0.4)" />

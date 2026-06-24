@@ -12,7 +12,7 @@
 // ═══════════════════════════════════════════════════════
 
 import { useEffect, useRef, useState } from "react";
-import { ed } from "./editorial";
+import { ed as edBase } from "./editorial";
 
 const shot = (url: string) =>
   `https://s0.wp.com/mshots/v1/${encodeURIComponent(url)}?w=1200&h=750`;
@@ -21,7 +21,8 @@ const shot = (url: string) =>
 const SCALE = 0.4;
 const INV = `${(100 / SCALE).toFixed(2)}%`;
 
-function Chrome({ url, accent }: { url: string; accent: string }) {
+function Chrome({ url, accent, theme }: { url: string; accent: string; theme: typeof edBase }) {
+  const ed = theme;
   const label = url.replace(/^https?:\/\//, "").replace(/\/$/, "");
   return (
     <div
@@ -73,17 +74,26 @@ export default function ToolPreview({
   name,
   accent,
   embeddable = false,
+  preview,
+  theme,
 }: {
   url: string;
   name: string;
   accent: string;
   embeddable?: boolean;
+  preview?: string;
+  theme?: typeof edBase;
 }) {
+  const ed = theme ?? edBase;
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [frameLoaded, setFrameLoaded] = useState(false);
+  const [failed, setFailed] = useState(false);
   const [tick, setTick] = useState(0);
+
+  // Curated image wins; otherwise the auto screenshot.
+  const src = preview ?? shot(url);
 
   // Load the heavy preview only once the station nears the viewport.
   useEffect(() => {
@@ -102,13 +112,18 @@ export default function ToolPreview({
     return () => io.disconnect();
   }, []);
 
-  // mShots renders the shot server-side on first request; nudge a couple
-  // of silent reloads until the real screenshot is ready.
+  // mShots renders the shot server-side on first request; nudge a few silent
+  // reloads, then give up to the branded fallback if it never resolves.
+  // (A curated `preview` image is local, so it needs no nudging.)
   useEffect(() => {
-    if (!inView || loaded || tick >= 3) return;
+    if (!inView || loaded || failed || preview) return;
+    if (tick >= 3) {
+      const id = setTimeout(() => setFailed(true), 3000);
+      return () => clearTimeout(id);
+    }
     const id = setTimeout(() => setTick((t) => t + 1), 2600);
     return () => clearTimeout(id);
-  }, [inView, loaded, tick]);
+  }, [inView, loaded, failed, tick, preview]);
 
   return (
     <div
@@ -122,11 +137,11 @@ export default function ToolPreview({
         overflow: "hidden",
       }}
     >
-      <Chrome url={url} accent={accent} />
+      <Chrome url={url} accent={accent} theme={ed} />
 
       <div style={{ position: "relative", flex: 1, overflow: "hidden" }}>
         {/* Loading */}
-        {inView && !loaded && (
+        {inView && !loaded && !failed && (
           <div
             style={{
               position: "absolute",
@@ -150,14 +165,15 @@ export default function ToolPreview({
           </div>
         )}
 
-        {/* Screenshot — base layer / poster (works for every site) */}
-        {inView && (
+        {/* Screenshot — base layer / poster (curated image or auto capture) */}
+        {inView && !failed && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             key={tick}
-            src={shot(url)}
+            src={src}
             alt={`${name} website preview`}
             onLoad={() => setLoaded(true)}
+            onError={() => setFailed(true)}
             loading="lazy"
             style={{
               position: "absolute",
@@ -170,6 +186,46 @@ export default function ToolPreview({
               transition: "opacity 0.6s ease",
             }}
           />
+        )}
+
+        {/* Branded fallback — a preview never reads as broken */}
+        {inView && failed && (
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 14,
+              padding: 20,
+              textAlign: "center",
+              textDecoration: "none",
+              background: `radial-gradient(120% 120% at 30% 20%, ${accent}26 0%, ${ed.panel} 62%)`,
+              zIndex: 2,
+            }}
+          >
+            <span
+              aria-hidden
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: "50%",
+                background: `radial-gradient(circle at 34% 30%, ${accent}, ${ed.panel} 78%)`,
+                boxShadow: `0 0 22px ${accent}44`,
+              }}
+            />
+            <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(18px,2.4vw,28px)", letterSpacing: "-0.02em", color: ed.ink }}>
+              {name}
+            </span>
+            <span style={{ fontFamily: ed.mono, fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: accent }}>
+              Open site ↗
+            </span>
+          </a>
         )}
 
         {/* Live iframe — layered on top only where the site allows it */}
@@ -197,25 +253,27 @@ export default function ToolPreview({
           />
         )}
 
-        {/* Status badge */}
-        <span
-          style={{
-            position: "absolute",
-            right: 10,
-            bottom: 9,
-            zIndex: 3,
-            fontFamily: ed.mono,
-            fontSize: 8,
-            letterSpacing: "0.16em",
-            textTransform: "uppercase",
-            color: ed.ground,
-            background: accent,
-            padding: "3px 7px",
-            borderRadius: 2,
-          }}
-        >
-          {embeddable ? "Live" : "Live preview"}
-        </span>
+        {/* Status badge — only over an actual preview, not the fallback */}
+        {!failed && (
+          <span
+            style={{
+              position: "absolute",
+              right: 10,
+              bottom: 9,
+              zIndex: 3,
+              fontFamily: ed.mono,
+              fontSize: 8,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              color: ed.ground,
+              background: accent,
+              padding: "3px 7px",
+              borderRadius: 2,
+            }}
+          >
+            {embeddable && frameLoaded ? "Live" : "Preview"}
+          </span>
+        )}
       </div>
     </div>
   );
