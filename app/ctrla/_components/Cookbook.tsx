@@ -116,7 +116,7 @@ export default function Cookbook() {
 
           {/* The pitch */}
           <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            <Kicker color={accent} style={{ marginBottom: 14 }}>This volume's pick</Kicker>
+            <Kicker color={accent} style={{ marginBottom: 14 }}>This volume&apos;s pick</Kicker>
             <Label color={ed.inkFaint} style={{ display: "block", marginBottom: 12 }}>
               {peek.origin}
               {peek.by ? ` · ${peek.by}` : ""}

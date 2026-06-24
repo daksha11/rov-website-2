@@ -371,7 +371,7 @@ export function CondensedEvents() {
               ATL Events
             </h2>
             <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(13px,1.5vw,16px)", color: ed.inkSoft, margin: "8px 0 0", maxWidth: 540 }}>
-              We are an Atlanta studio, so we cover our city's biggest stages. This summer the whole world arrives: the FIFA World Cup 26™ comes to Mercedes-Benz Stadium.
+              We are an Atlanta studio, so we cover our city&apos;s biggest stages. This summer the whole world arrives: the FIFA World Cup 26™ comes to Mercedes-Benz Stadium.
             </p>
           </div>
           <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026" target="_blank" rel="noopener" className="ctrla-seeall" style={{ fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.18em", textTransform: "uppercase", color: ed.amber, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>

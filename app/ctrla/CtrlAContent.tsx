@@ -208,7 +208,7 @@ function Cover() {
             className="ctrla-feature-card"
             style={{ paddingTop: 8, textDecoration: "none", display: "block" }}
           >
-            <Kicker color={ed.amber} style={{ marginBottom: 12 }}>This volume's feature</Kicker>
+            <Kicker color={ed.amber} style={{ marginBottom: 12 }}>This volume&apos;s feature</Kicker>
             <p
               style={{
                 fontFamily: ed.grotesque,
