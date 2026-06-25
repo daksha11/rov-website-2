@@ -11,7 +11,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ed as edBase, Bleed, Label, Kicker } from "./editorial";
+import { ed as edBase, edLight, Bleed, Label, Kicker, legibleAccent, legibleAccentDeep } from "./editorial";
 import ToolPreview from "./ToolPreview";
 import type { ToolkitSection, ToolLevel, SignalKind } from "../data";
 
@@ -27,7 +27,12 @@ const kindColor = (k: SignalKind) =>
 export default function ToolkitStations({ section, theme }: { section: ToolkitSection; theme?: typeof edBase }) {
   // Shadow `ed` with the active theme so every token below re-themes for free.
   const ed = theme ?? edBase;
-  const accent = section.accentColor;
+  // On the cream light theme, gold accents are illegible — remap them.
+  const isLight = ed.ground === edLight.ground;
+  const accent = isLight ? legibleAccent(section.accentColor) : section.accentColor;
+  // Theme-aware level/kind colours (gold → deep ink-panel on cream).
+  const lvlColor = (l?: ToolLevel) => (isLight ? legibleAccentDeep(levelColor(l)) : levelColor(l));
+  const kndColor = (k: SignalKind) => (isLight ? legibleAccentDeep(kindColor(k)) : kindColor(k));
   const [level, setLevel] = useState<ToolLevel | "All">("All");
   const [open, setOpen] = useState<string | null>(null);
   const [active, setActive] = useState(0);
@@ -99,10 +104,10 @@ export default function ToolkitStations({ section, theme }: { section: ToolkitSe
                   href={s.url || "#"}
                   {...(s.url ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                   className="ctrla-signal"
-                  style={{ borderTop: `2px solid ${kindColor(s.kind)}` }}
+                  style={{ borderTop: `2px solid ${kndColor(s.kind)}` }}
                 >
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 10 }}>
-                    <span style={{ fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", color: kindColor(s.kind) }}>{s.kind}</span>
+                    <span style={{ fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", color: kndColor(s.kind) }}>{s.kind}</span>
                     <span style={{ fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.1em", color: ed.inkFaint }}>{s.date}</span>
                   </div>
                   <h4 style={{ fontFamily: ed.grotesque, fontWeight: 700, fontSize: "clamp(15px,1.6vw,18px)", letterSpacing: "-0.01em", color: ed.ink, margin: "0 0 8px" }}>{s.title}</h4>
@@ -118,7 +123,7 @@ export default function ToolkitStations({ section, theme }: { section: ToolkitSe
           <Label color={ed.inkFaint} style={{ marginRight: 4 }}>Start where you are</Label>
           {LEVELS.map((l) => {
             const on = level === l;
-            const c = l === "All" ? accent : levelColor(l as ToolLevel);
+            const c = l === "All" ? accent : lvlColor(l as ToolLevel);
             return (
               <button
                 key={l}
@@ -185,13 +190,13 @@ export default function ToolkitStations({ section, theme }: { section: ToolkitSe
                 >
                   {/* Head: index + category + level */}
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, marginBottom: 14 }}>
-                    <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(34px,5vw,64px)", lineHeight: 0.8, letterSpacing: "-0.04em", color: `${accent}55` }}>
+                    <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(34px,5vw,64px)", lineHeight: 0.8, letterSpacing: "-0.04em", color: `${accent}${isLight ? "AA" : "55"}` }}>
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                       <Label color={ed.inkFaint}>{t.category}</Label>
                       {t.level && (
-                        <span style={{ fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: levelColor(t.level), border: `1px solid ${levelColor(t.level)}`, padding: "4px 10px", borderRadius: 2 }}>
+                        <span style={{ fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: lvlColor(t.level), border: `1px solid ${lvlColor(t.level)}`, padding: "4px 10px", borderRadius: 2 }}>
                           {t.level}
                         </span>
                       )}

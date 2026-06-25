@@ -22,8 +22,8 @@ export const ed = {
   panel: "#24123A", // lifted dark surface — cards, cover, image placeholders
   ink: "#F0E6E0", // primary text/foreground — now LIGHT (key kept so it cascades)
   void: "#0F0820", // deepest dark — footer / subscribe band
-  inkSoft: "rgba(240,230,224,0.66)",
-  inkFaint: "rgba(240,230,224,0.42)",
+  inkSoft: "rgba(240,230,224,0.86)", // body — kept bright so nothing reads as dim grey
+  inkFaint: "rgba(240,230,224,0.64)", // secondary meta — lifted out of dim-grey territory
   hair: "rgba(240,230,224,0.16)",
   amber: "#A56A67", // rose accent (key kept for cascade)
   gold: "#E3C24A", // gold accent
@@ -53,6 +53,18 @@ export const edLight: typeof ed = {
   inkFaint: "rgba(22,12,40,0.42)",
   hair: "rgba(22,12,40,0.16)",
 };
+
+// On the cream light theme, gold (#E3C24A) is the one palette accent that is
+// too light to read. Remap it to a legible palette colour on light-bg surfaces;
+// rose and plum already pass on cream and stay as-is.
+//   legibleAccent      → plum (#4E3D73), for headline-scale accents
+//   legibleAccentDeep  → ink-panel (#24123A), for tiny caps labels so they
+//                        stay distinct from the plum used elsewhere
+export const legibleAccent = (accent: string): string =>
+  accent === ed.gold ? ed.plum : accent;
+
+export const legibleAccentDeep = (accent: string): string =>
+  accent === ed.gold ? ed.panel : accent;
 
 // ── Page container with print margins ──────────────────
 

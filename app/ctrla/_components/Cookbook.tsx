@@ -23,12 +23,12 @@ function MetaStat({ label, value, accent }: { label: string; value: string; acce
 
 export default function Cookbook() {
   const peek = cookbook.recipes.find((r) => r.featured) ?? cookbook.recipes[0];
-  const accent = ed.amber;
+  const accent = ed.gold;
 
   return (
     <section id="cookbook" style={{ background: "transparent", padding: "clamp(56px,8vw,104px) 0", scrollMarginTop: 0 }}>
       <Bleed>
-        <Kicker color={ed.amber} style={{ marginBottom: 16 }}>{cookbook.eyebrow}</Kicker>
+        <Kicker color={ed.gold} style={{ marginBottom: 16 }}>{cookbook.eyebrow}</Kicker>
 
         {/* Purpose */}
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 24, flexWrap: "wrap" }}>
@@ -45,62 +45,75 @@ export default function Cookbook() {
 
         <Rule style={{ margin: "clamp(32px,4.5vw,56px) 0" }} />
 
-        {/* Sneak peek — the most appetising thing this volume */}
+        {/* Sneak peek — a plate emerging from the void. The frame is
+            feathered so the photo melts into the cosmic backdrop instead
+            of a hard rectangle; gold registration corners + grain frame
+            it as an editorial plate. */}
         <div className="ctrla-cookbook-peek">
           {/* The dish */}
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              aspectRatio: "4 / 3",
-              overflow: "hidden",
-              background: peek.image
-                ? ed.panel
-                : `radial-gradient(120% 130% at 30% 25%, ${accent}2E 0%, ${ed.panel} 52%, ${ed.ground} 100%)`,
-              border: `1px solid ${ed.hair}`,
-            }}
-          >
-            {peek.image ? (
-              <Image src={peek.image} alt={peek.name} fill sizes="(max-width: 820px) 92vw, 560px" style={{ objectFit: "cover" }} />
-            ) : (
-              <>
-                {/* The plate, a little planet */}
-                <span
-                  aria-hidden
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%,-50%)",
-                    width: "min(48%, 220px)",
-                    aspectRatio: "1 / 1",
-                    borderRadius: "50%",
-                    background: `radial-gradient(circle at 34% 30%, ${accent}, ${ed.panel} 78%)`,
-                    boxShadow: `0 0 60px ${accent}44, inset 0 0 0 1px ${ed.hair}`,
-                  }}
-                />
-                <span
-                  style={{
-                    position: "absolute",
-                    left: 16,
-                    bottom: 14,
-                    fontFamily: ed.mono,
-                    fontSize: "clamp(8px,0.9vw,10px)",
-                    letterSpacing: "0.18em",
-                    textTransform: "uppercase",
-                    color: ed.inkFaint,
-                  }}
-                >
-                  Hero shot: {peek.name}
-                </span>
-              </>
-            )}
+          <div className="ctrla-plate-frame">
+            {/* Soft gold halo that seats the plate in space */}
+            <span aria-hidden className="ctrla-plate-glow" />
+
+            <div
+              className="ctrla-plate"
+              style={{
+                background: peek.image
+                  ? ed.panel
+                  : `radial-gradient(120% 130% at 30% 25%, ${accent}2E 0%, ${ed.panel} 52%, ${ed.ground} 100%)`,
+              }}
+            >
+              {peek.image ? (
+                <Image src={peek.image} alt={peek.name} fill sizes="(max-width: 820px) 92vw, 560px" style={{ objectFit: "cover" }} />
+              ) : (
+                <>
+                  {/* The plate, a little planet */}
+                  <span
+                    aria-hidden
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%,-50%)",
+                      width: "min(48%, 220px)",
+                      aspectRatio: "1 / 1",
+                      borderRadius: "50%",
+                      background: `radial-gradient(circle at 34% 30%, ${accent}, ${ed.panel} 78%)`,
+                      boxShadow: `0 0 60px ${accent}44, inset 0 0 0 1px ${ed.hair}`,
+                    }}
+                  />
+                  <span
+                    style={{
+                      position: "absolute",
+                      left: 16,
+                      bottom: 14,
+                      fontFamily: ed.mono,
+                      fontSize: "clamp(8px,0.9vw,10px)",
+                      letterSpacing: "0.18em",
+                      textTransform: "uppercase",
+                      color: ed.inkFaint,
+                    }}
+                  >
+                    Hero shot: {peek.name}
+                  </span>
+                </>
+              )}
+              {/* Cosmic grain ties the photo to the rest of the world */}
+              <span aria-hidden className="ctrla-grain ctrla-plate-grain" />
+            </div>
+
+            {/* Gold registration corners — crop marks bracketing the plate */}
+            <span aria-hidden className="ctrla-plate-tick tl" />
+            <span aria-hidden className="ctrla-plate-tick bl" />
+            <span aria-hidden className="ctrla-plate-tick br" />
+
             {/* Sneak-peek tag */}
             <span
               style={{
                 position: "absolute",
                 top: 14,
                 right: 14,
+                zIndex: 4,
                 fontFamily: ed.mono,
                 fontSize: 9,
                 letterSpacing: "0.16em",
@@ -116,7 +129,7 @@ export default function Cookbook() {
 
           {/* The pitch */}
           <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            <Kicker color={accent} style={{ marginBottom: 14 }}>This volume&apos;s pick</Kicker>
+            <Kicker color={ed.gold} style={{ marginBottom: 14 }}>This volume&apos;s pick</Kicker>
             <Label color={ed.inkFaint} style={{ display: "block", marginBottom: 12 }}>
               {peek.origin}
               {peek.by ? ` · ${peek.by}` : ""}

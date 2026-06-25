@@ -5,80 +5,13 @@
 // Artist Showcase · ROV Spotlight · Events (condensed) · Vue Close
 // ═══════════════════════════════════════════════════════
 
+import Image from "next/image";
 import { ed, Bleed, Rule, Label, Kicker } from "./editorial";
-import { artists, taste, spotlight, events, eventSources, eventsCover, vueClose, type Artist } from "../data";
+import { taste, onRepeat, artForm, spotlight, events, eventSources, eventsCover, vueClose } from "../data";
 
-// ── ATL Artist Showcase ────────────────────────────────
-
-function ArtistCard({ artist }: { artist: Artist }) {
-  const feature = !!artist.feature;
-  return (
-    <div
-      className={feature ? "ctrla-artist-feat" : "ctrla-artist"}
-      style={{ display: "flex", flexDirection: "column" }}
-    >
-      {/* Full-bleed image */}
-      <div
-        style={{
-          position: "relative",
-          width: "100%",
-          aspectRatio: feature ? "4 / 5" : "4 / 3",
-          background: ed.panel,
-          overflow: "hidden",
-          backgroundImage: artist.image ? `url('${artist.image}')` : undefined,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
-      {/* Eyebrow */}
-      <Label style={{ display: "block", margin: "16px 0 8px" }}>{artist.discipline}</Label>
-      {/* Name */}
-      <h3
-        style={{
-          fontFamily: ed.grotesque,
-          fontWeight: 800,
-          fontSize: feature ? "clamp(28px,3.5vw,44px)" : "clamp(22px,2.4vw,28px)",
-          letterSpacing: "-0.02em",
-          color: ed.ink,
-          margin: "0 0 10px",
-        }}
-      >
-        {artist.name}
-      </h3>
-      {/* Blurb */}
-      <p
-        style={{
-          fontFamily: ed.body,
-          fontSize: feature ? "clamp(14px,1.5vw,16px)" : "clamp(13px,1.4vw,14px)",
-          lineHeight: 1.6,
-          color: ed.inkSoft,
-          margin: "0 0 16px",
-          maxWidth: 520,
-        }}
-      >
-        {artist.blurb}
-      </p>
-      {/* Quote */}
-      <p
-        style={{
-          fontFamily: ed.serif,
-          fontStyle: "italic",
-          fontSize: feature ? "clamp(16px,1.8vw,20px)" : "clamp(14px,1.5vw,16px)",
-          lineHeight: 1.45,
-          color: ed.ink,
-          margin: 0,
-          paddingLeft: 16,
-          borderLeft: `2px solid ${ed.amber}`,
-        }}
-      >
-        &ldquo;{artist.quote}&rdquo;
-      </p>
-    </div>
-  );
-}
+// ── Taste — the throughline manifesto ──────────────────
 
 export function ArtistShowcase() {
-  const feature = artists.find((a) => a.feature) ?? artists[0];
   return (
     <section id="taste" style={{ background: "transparent", padding: "clamp(56px,8vw,104px) 0", scrollMarginTop: 0 }}>
       <Bleed>
@@ -95,53 +28,151 @@ export function ArtistShowcase() {
         <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.6vw,18px)", lineHeight: 1.6, color: ed.inkSoft, margin: "clamp(18px,2.4vw,28px) 0 0", maxWidth: 560 }}>
           {taste.note}
         </p>
-        <Rule style={{ margin: "clamp(28px,4vw,48px) 0" }} />
+      </Bleed>
+    </section>
+  );
+}
 
-        <div className="ctrla-taste-grid">
-          {/* The featured artist */}
-          <ArtistCard artist={feature} />
+// ── On Repeat — two songs the studio can't stop playing ──
 
-          {/* Open call — taste is an invitation, not a closed door */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              gap: 18,
-              padding: "clamp(24px,3.5vw,44px)",
-              border: `1px solid ${ed.hair}`,
-              borderTop: `4px solid ${ed.gold}`,
-              background: "rgba(240,230,224,0.05)",
-            }}
-          >
-            <Label color={ed.gold}>Open call</Label>
-            <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,3.4vw,44px)", letterSpacing: "-0.02em", lineHeight: 0.96, color: ed.ink, margin: 0 }}>
-              {taste.openCall.title}
-            </h3>
-            <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,17px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0, maxWidth: 380 }}>
-              {taste.openCall.body}
-            </p>
+export function OnRepeat() {
+  return (
+    <section style={{ background: "transparent", padding: "clamp(56px,8vw,104px) 0" }}>
+      <Bleed>
+        <Kicker color={ed.gold} style={{ marginBottom: 16 }}>{onRepeat.eyebrow}</Kicker>
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 24, flexWrap: "wrap" }}>
+          <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(40px,7.5vw,104px)", letterSpacing: "-0.03em", lineHeight: 0.88, color: ed.ink, margin: 0 }}>
+            Two on repeat<span style={{ color: ed.gold }}>.</span>
+          </h2>
+          <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(16px,2.1vw,28px)", lineHeight: 1.3, color: ed.gold, textAlign: "right", maxWidth: 420, margin: 0 }}>
+            {onRepeat.note}
+          </p>
+        </div>
+
+        <Rule style={{ margin: "clamp(32px,4.5vw,56px) 0" }} />
+
+        <div className="ctrla-onrepeat">
+          {onRepeat.tracks.map((t, i) => (
             <a
-              href={`mailto:${taste.openCall.email}`}
-              className="ctrla-bk-cta"
-              style={{
-                alignSelf: "flex-start",
-                fontFamily: ed.mono,
-                fontSize: "clamp(11px,1.2vw,13px)",
-                letterSpacing: "0.16em",
-                textTransform: "uppercase",
-                color: ed.ground,
-                background: ed.gold,
-                padding: "13px 26px",
-                textDecoration: "none",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 10,
-                marginTop: 4,
-              }}
+              key={t.url}
+              href={t.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ctrla-track"
+              style={{ display: "flex", flexDirection: "column", gap: 16, textDecoration: "none" }}
             >
-              {taste.openCall.cta} <span aria-hidden>→</span>
+              <Label color={ed.gold}>Track {String(i + 1).padStart(2, "0")}</Label>
+
+              {/* Full square cover art */}
+              <div style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", overflow: "hidden", background: ed.panel, border: `1px solid ${ed.hair}` }}>
+                <Image
+                  src={t.image}
+                  alt={`${t.title} — ${t.artist}`}
+                  fill
+                  sizes="(max-width: 720px) 92vw, 560px"
+                  className="ctrla-track-img"
+                  style={{ objectFit: "cover" }}
+                />
+                {/* Play affordance on hover */}
+                <span className="ctrla-track-play" aria-hidden>
+                  <span style={{ width: 0, height: 0, borderTop: "11px solid transparent", borderBottom: "11px solid transparent", borderLeft: `18px solid ${ed.void}`, marginLeft: 5 }} />
+                </span>
+              </div>
+
+              {/* Title + artist */}
+              <div>
+                <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(22px,2.8vw,36px)", letterSpacing: "-0.02em", lineHeight: 1, color: ed.ink, margin: "0 0 6px" }}>
+                  {t.title}
+                </h3>
+                <Label color={ed.gold}>{t.artist}</Label>
+              </div>
             </a>
+          ))}
+        </div>
+      </Bleed>
+    </section>
+  );
+}
+
+// ── Form of the Volume — a rotating craft (Vol.01: kintsugi) ──
+
+// Shows the volume's craft photo when one is set; otherwise a
+// CSS/SVG "mended ceramic" so the section is never an empty frame.
+function KintsugiPanel() {
+  return (
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        aspectRatio: "4 / 5",
+        overflow: "hidden",
+        background: `radial-gradient(130% 120% at 32% 26%, ${ed.plum} 0%, ${ed.panel} 46%, ${ed.void} 100%)`,
+        border: `1px solid ${ed.hair}`,
+      }}
+    >
+      {artForm.image ? (
+        <Image src={artForm.image} alt={`${artForm.form} — ${artForm.origin}`} fill sizes="(max-width: 820px) 92vw, 520px" style={{ objectFit: "cover" }} />
+      ) : (
+        <svg viewBox="0 0 400 500" preserveAspectRatio="none" aria-hidden style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+          <defs>
+            <linearGradient id="ctrla-gold-seam" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stopColor="#F0E6E0" />
+              <stop offset="0.5" stopColor="#E3C24A" />
+              <stop offset="1" stopColor="#A56A67" />
+            </linearGradient>
+          </defs>
+          {/* Mended seams — gold lacquer joining the broken shards */}
+          <g fill="none" stroke="url(#ctrla-gold-seam)" strokeLinecap="round">
+            <path d="M196 -10 L210 120 L150 230 L230 320 L188 510" strokeWidth="3.4" />
+            <path d="M210 120 L330 96" strokeWidth="2.4" />
+            <path d="M150 230 L36 210" strokeWidth="2.4" />
+            <path d="M150 230 L70 360" strokeWidth="2" />
+            <path d="M230 320 L350 350" strokeWidth="2.4" />
+            <path d="M230 320 L300 470" strokeWidth="1.8" />
+          </g>
+          {/* Seam glow */}
+          <g fill="none" stroke="#E3C24A" strokeOpacity="0.22" strokeLinecap="round" style={{ filter: "blur(3px)" }}>
+            <path d="M196 -10 L210 120 L150 230 L230 320 L188 510" strokeWidth="8" />
+          </g>
+        </svg>
+      )}
+      {/* Scrim so the caption stays legible over any photo */}
+      <div aria-hidden style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(15,8,32,0.72) 0%, rgba(15,8,32,0.12) 38%, transparent 64%)" }} />
+      <span style={{ position: "absolute", left: 16, bottom: 14, fontFamily: ed.mono, fontSize: "clamp(8px,0.9vw,10px)", letterSpacing: "0.18em", textTransform: "uppercase", color: ed.gold }}>
+        {artForm.form} · {artForm.origin}
+      </span>
+    </div>
+  );
+}
+
+export function ArtForm() {
+  return (
+    <section style={{ background: "transparent", padding: "clamp(56px,8vw,104px) 0" }}>
+      <Bleed>
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginBottom: "clamp(20px,2.6vw,32px)" }}>
+          <Kicker color={ed.gold}>{artForm.eyebrow}</Kicker>
+          <Label color={ed.gold}>One craft a volume</Label>
+        </div>
+        <Rule style={{ marginBottom: "clamp(28px,4vw,48px)" }} />
+
+        <div className="ctrla-artform">
+          <KintsugiPanel />
+
+          <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <Label color={ed.gold} style={{ display: "block", marginBottom: 12 }}>{artForm.origin}</Label>
+            <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(40px,6vw,96px)", letterSpacing: "-0.03em", lineHeight: 0.9, color: ed.ink, margin: "0 0 8px" }}>
+              {artForm.form}<span style={{ color: ed.gold }}>.</span>
+            </h2>
+            <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(18px,2.4vw,30px)", lineHeight: 1.3, color: ed.gold, margin: "0 0 22px", maxWidth: 460 }}>
+              {artForm.headline}
+            </p>
+            <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: "0 0 24px", maxWidth: 520 }}>
+              {artForm.blurb}
+            </p>
+            <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(16px,2vw,24px)", lineHeight: 1.35, color: ed.ink, margin: "0 0 24px", paddingLeft: 16, borderLeft: `2px solid ${ed.gold}`, maxWidth: 460 }}>
+              &ldquo;{artForm.pullquote}&rdquo;
+            </p>
+            <Label color={ed.gold} style={{ display: "block", maxWidth: 480, lineHeight: 1.7 }}>{artForm.note}</Label>
           </div>
         </div>
       </Bleed>
@@ -168,8 +199,8 @@ export function BrandKitFeature() {
       <Bleed>
         {/* Standing-feature header — recurs every volume of CTRL-A */}
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginBottom: "clamp(20px,2.6vw,32px)" }}>
-          <Kicker color={ed.amber}>The Toolbox · A CTRL-A Standing Feature</Kicker>
-          <Label color={ed.inkFaint}>In every volume</Label>
+          <Kicker color={ed.gold}>The Toolbox · A CTRL-A Standing Feature</Kicker>
+          <Label color={ed.gold}>In every volume</Label>
         </div>
         <Rule style={{ marginBottom: "clamp(28px,4vw,48px)" }} />
 
@@ -178,7 +209,7 @@ export function BrandKitFeature() {
           <div className="ctrla-brandkit">
             {/* Left — copy */}
             <div style={{ padding: "clamp(28px,4vw,52px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-              <Label color={ed.amber} style={{ display: "block", marginBottom: 14 }}>
+              <Label color={ed.gold} style={{ display: "block", marginBottom: 14 }}>
                 ROV Tool · Always On
               </Label>
               <h2
@@ -366,7 +397,7 @@ export function CondensedEvents() {
       <Bleed>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
           <div>
-            <Kicker color={ed.amber} style={{ marginBottom: 14 }}>FIFA World Cup 26</Kicker>
+            <Kicker color={ed.gold} style={{ marginBottom: 14 }}>FIFA World Cup 26</Kicker>
             <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,5vw,64px)", letterSpacing: "-0.02em", color: ed.ink, margin: 0 }}>
               ATL Events
             </h2>
@@ -374,7 +405,7 @@ export function CondensedEvents() {
               We are an Atlanta studio, so we cover our city&apos;s biggest stages. This summer the whole world arrives: the FIFA World Cup 26™ comes to Mercedes-Benz Stadium.
             </p>
           </div>
-          <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026" target="_blank" rel="noopener" className="ctrla-seeall" style={{ fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.18em", textTransform: "uppercase", color: ed.amber, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
+          <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026" target="_blank" rel="noopener" className="ctrla-seeall" style={{ fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.18em", textTransform: "uppercase", color: ed.gold, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
             Full match schedule <span aria-hidden>→</span>
           </a>
         </div>
@@ -441,7 +472,7 @@ export function CondensedEvents() {
                   textDecoration: "none",
                 }}
               >
-                <span style={{ fontFamily: ed.mono, fontSize: "clamp(11px,1.2vw,13px)", letterSpacing: "0.08em", textTransform: "uppercase", color: ed.amber }}>
+                <span style={{ fontFamily: ed.mono, fontSize: "clamp(11px,1.2vw,13px)", letterSpacing: "0.08em", textTransform: "uppercase", color: ed.gold }}>
                   {e.date}
                 </span>
                 <span className="ctrla-event-name" style={{ fontFamily: ed.grotesque, fontWeight: isFree ? 800 : 700, fontSize: "clamp(18px,2.2vw,28px)", letterSpacing: "-0.01em", color: ed.ink }}>
@@ -474,7 +505,7 @@ export function CondensedEvents() {
 
         {/* Official sources — outbound authority links (SEO / GEO) */}
         <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "10px 18px", marginTop: "clamp(24px,3vw,36px)" }}>
-          <Label color={ed.inkFaint}>Official sources:</Label>
+          <Label color={ed.gold}>Official sources:</Label>
           {eventSources.map((s) => (
             <a
               key={s.url}
@@ -482,7 +513,7 @@ export function CondensedEvents() {
               target="_blank"
               rel="noopener"
               className="ctrla-seeall"
-              style={{ fontFamily: ed.body, fontSize: "clamp(12px,1.3vw,14px)", color: ed.amber, textDecoration: "underline", textUnderlineOffset: 3 }}
+              style={{ fontFamily: ed.body, fontSize: "clamp(12px,1.3vw,14px)", color: ed.gold, textDecoration: "underline", textUnderlineOffset: 3 }}
             >
               {s.label}
             </a>
@@ -501,7 +532,7 @@ export function VueClose() {
       <Bleed>
         {/* Vue mascot illustration goes here (skipped for now) */}
         <div style={{ maxWidth: 660, borderLeft: `3px solid ${ed.plum}`, paddingLeft: "clamp(20px,3vw,40px)" }}>
-          <Kicker color={ed.plum} style={{ marginBottom: 20 }}>{vueClose.eyebrow}</Kicker>
+          <Kicker color={ed.gold} style={{ marginBottom: 20 }}>{vueClose.eyebrow}</Kicker>
           <p style={{ fontFamily: ed.body, fontSize: "clamp(16px,1.9vw,21px)", lineHeight: 1.7, color: ed.ink, margin: "0 0 24px" }}>
             {vueClose.body}
           </p>

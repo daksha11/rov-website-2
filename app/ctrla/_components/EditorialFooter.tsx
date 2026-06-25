@@ -52,7 +52,7 @@ export default function EditorialFooter() {
               className="ctrla-foot-link"
               style={{ display: "flex", flexDirection: "column", gap: 12, textDecoration: "none" }}
             >
-              <Label color={ed.amber}>{n.kicker}</Label>
+              <Label color={ed.gold}>{n.kicker}</Label>
               <span
                 style={{
                   fontFamily: ed.grotesque,

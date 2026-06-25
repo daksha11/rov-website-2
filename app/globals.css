@@ -853,10 +853,97 @@ input[type="range"]::-webkit-slider-thumb {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: clamp(24px, 4vw, 64px);
-  align-items: stretch;
+  align-items: start;
 }
 @media (max-width: 820px) {
   .ctrla-cookbook-peek { grid-template-columns: 1fr; }
+}
+
+/* Cookbook sneak-peek — a plate emerging from the void.
+   Feathered edges dissolve the hard rectangle into the cosmic backdrop;
+   a gold halo seats it in space and registration corners frame it. */
+.ctrla-plate-frame {
+  position: relative;
+  width: 100%;
+}
+.ctrla-plate {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 5px;
+  /* Vignette mask — corners and base feather out into the page */
+  -webkit-mask-image: radial-gradient(128% 132% at 50% 42%, #000 52%, rgba(0, 0, 0, 0.45) 78%, transparent 100%);
+  mask-image: radial-gradient(128% 132% at 50% 42%, #000 52%, rgba(0, 0, 0, 0.45) 78%, transparent 100%);
+}
+.ctrla-plate-glow {
+  position: absolute;
+  inset: -12% -9% -16%;
+  background: radial-gradient(58% 54% at 50% 47%, rgba(227, 194, 74, 0.2), rgba(227, 194, 74, 0.05) 54%, transparent 74%);
+  filter: blur(24px);
+  z-index: 0;
+  pointer-events: none;
+}
+.ctrla-plate-grain {
+  z-index: 2;
+  opacity: 0.3;
+}
+/* Gold registration corners — crop marks bracketing the plate */
+.ctrla-plate-tick {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 0 solid #e3c24a;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0.9;
+}
+.ctrla-plate-tick.tl { top: 13px; left: 13px; border-top-width: 2px; border-left-width: 2px; }
+.ctrla-plate-tick.bl { bottom: 13px; left: 13px; border-bottom-width: 2px; border-left-width: 2px; }
+.ctrla-plate-tick.br { bottom: 13px; right: 13px; border-bottom-width: 2px; border-right-width: 2px; }
+
+/* On Repeat — two Spotify players side by side */
+.ctrla-onrepeat {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(20px, 3vw, 40px);
+  align-items: start;
+}
+@media (max-width: 720px) {
+  .ctrla-onrepeat { grid-template-columns: 1fr; }
+}
+.ctrla-track-img { transition: transform 0.5s ease; }
+.ctrla-track:hover .ctrla-track-img { transform: scale(1.04); }
+.ctrla-track-play {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #E3C24A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 22px rgba(15, 8, 32, 0.5);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.ctrla-track:hover .ctrla-track-play {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Form of the Volume — craft panel + copy */
+.ctrla-artform {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: clamp(24px, 4vw, 64px);
+  align-items: start;
+}
+@media (max-width: 820px) {
+  .ctrla-artform { grid-template-columns: 1fr; }
 }
 
 /* Taste — featured artist + open call */

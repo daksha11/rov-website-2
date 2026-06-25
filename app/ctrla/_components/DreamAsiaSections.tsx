@@ -22,7 +22,7 @@ export function DreamAsiaTeaser() {
       <Bleed>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginBottom: "clamp(18px,2.4vw,28px)" }}>
           <Kicker color={ed.gold}>Issue Feature</Kicker>
-          <Label color={ed.inkFaint}>DreamAsia Fest</Label>
+          <Label color={ed.gold}>DreamAsia Fest</Label>
         </div>
         <Rule style={{ marginBottom: "clamp(24px,3vw,36px)" }} />
 

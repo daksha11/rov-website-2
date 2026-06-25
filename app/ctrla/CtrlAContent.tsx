@@ -12,7 +12,7 @@ import { ThreeToolkits } from "./_components/Toolkits";
 import Cookbook from "./_components/Cookbook";
 import { DreamAsiaTeaser } from "./_components/DreamAsiaSections";
 import { FloatingAsset, COSMIC } from "./_components/CosmicAccents";
-import { ArtistShowcase, BrandKitFeature, CondensedEvents, VueClose } from "./_components/IssueSections";
+import { ArtistShowcase, OnRepeat, ArtForm, BrandKitFeature, CondensedEvents, VueClose } from "./_components/IssueSections";
 import { ed, Bleed, Rule, Label, Kicker } from "./_components/editorial";
 import { issueMeta } from "./data";
 
@@ -208,7 +208,7 @@ function Cover() {
             className="ctrla-feature-card"
             style={{ paddingTop: 8, textDecoration: "none", display: "block" }}
           >
-            <Kicker color={ed.amber} style={{ marginBottom: 12 }}>This volume&apos;s feature</Kicker>
+            <Kicker color={ed.gold} style={{ marginBottom: 12 }}>This volume&apos;s feature</Kicker>
             <p
               style={{
                 fontFamily: ed.grotesque,
@@ -225,7 +225,7 @@ function Cover() {
             <p style={{ fontFamily: ed.body, fontSize: "clamp(13px,1.4vw,15px)", lineHeight: 1.5, color: ed.inkSoft, margin: "0 0 12px" }}>
               Inside DreamAsia Fest.
             </p>
-            <span className="ctrla-feature-cta" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.16em", textTransform: "uppercase", color: ed.amber }}>
+            <span className="ctrla-feature-cta" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.16em", textTransform: "uppercase", color: ed.gold }}>
               Read the feature <span aria-hidden className="ctrla-feature-arrow" style={{ transition: "transform .25s" }}>→</span>
             </span>
           </a>
@@ -353,8 +353,8 @@ function Contents() {
 
         {/* The map */}
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, marginBottom: "clamp(16px,2vw,24px)" }}>
-          <Kicker color={ed.amber}>In this volume</Kicker>
-          <Label color={ed.inkFaint}>{issueMeta.volume} · {issueMeta.edition}</Label>
+          <Kicker color={ed.gold}>In this volume</Kicker>
+          <Label color={ed.gold}>{issueMeta.volume} · {issueMeta.edition}</Label>
         </div>
         <Rule color={ed.hair} />
         <div>
@@ -376,10 +376,10 @@ function Contents() {
               <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.4vw,34px)", letterSpacing: "-0.02em", color: ed.gold }}>{c.n}</span>
               <span>
                 <span style={{ display: "block", fontFamily: ed.grotesque, fontWeight: 700, fontSize: "clamp(18px,2.1vw,28px)", letterSpacing: "-0.01em", color: ed.ink }}>{c.title}</span>
-                <Label color={ed.inkFaint} style={{ display: "block", marginTop: 6 }}>{c.meta}</Label>
+                <Label color={ed.gold} style={{ display: "block", marginTop: 6 }}>{c.meta}</Label>
               </span>
               <span className="ctrla-toc-note" style={{ fontFamily: ed.body, fontSize: "clamp(13px,1.4vw,15px)", lineHeight: 1.5, color: ed.inkSoft }}>{c.note}</span>
-              <span aria-hidden className="ctrla-toc-arrow" style={{ justifySelf: "end", color: ed.amber, fontSize: 18, transition: "transform .25s" }}>→</span>
+              <span aria-hidden className="ctrla-toc-arrow" style={{ justifySelf: "end", color: ed.gold, fontSize: 18, transition: "transform .25s" }}>→</span>
             </a>
           ))}
         </div>
@@ -418,7 +418,7 @@ function StatBand() {
               <div style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,4vw,52px)", letterSpacing: "-0.03em", color: ed.gold, lineHeight: 1 }}>
                 {s.value}
               </div>
-              <Label color="rgba(240,230,224,0.6)" style={{ display: "block", marginTop: 6 }}>
+              <Label color={ed.gold} style={{ display: "block", marginTop: 6 }}>
                 {s.label}
               </Label>
             </div>
@@ -448,7 +448,7 @@ function SubscribeFooter() {
             One volume,
             <br />
             every{" "}
-            <span style={{ fontFamily: ed.serif, fontStyle: "italic", fontWeight: 400, color: ed.amber }}>month</span>.
+            <span style={{ fontFamily: ed.serif, fontStyle: "italic", fontWeight: 400, color: ed.gold }}>month</span>.
           </h2>
 
           {/* Visual-only capture */}
@@ -478,7 +478,7 @@ function SubscribeFooter() {
                 fontSize: 11,
                 letterSpacing: "0.18em",
                 textTransform: "uppercase",
-                color: ed.amber,
+                color: ed.gold,
                 background: "transparent",
                 border: "none",
                 cursor: "pointer",
@@ -490,7 +490,7 @@ function SubscribeFooter() {
             </button>
           </form>
         </div>
-        <Label color="rgba(240,230,224,0.4)" style={{ display: "block", marginTop: 24 }}>
+        <Label color={ed.gold} style={{ display: "block", marginTop: 24 }}>
           No spam. One drop a month. Unsubscribe anytime.
         </Label>
       </Bleed>
@@ -577,6 +577,15 @@ export default function CtrlAContent() {
 
       {/* Taste — the art we can't stop thinking about */}
       <ArtistShowcase />
+
+      {/* On Repeat — what's soundtracking the studio this volume */}
+      <div className="ctrla-cosmic-wrap">
+        <OnRepeat />
+        <FloatingAsset src={COSMIC.comet} motion="sway" top="8%" left="-26px" size="clamp(60px,8vw,120px)" driftFrom={-34} driftTo={28} opacity={0.42} />
+      </div>
+
+      {/* Form of the Volume — a rotating craft (Vol.01: kintsugi) */}
+      <ArtForm />
 
       {/* The Cookbook — feeding the maker, on no time or budget */}
       <div className="ctrla-cosmic-wrap">

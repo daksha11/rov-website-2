@@ -7,7 +7,7 @@ import ToolkitAtmosphere from "../../_components/ToolkitAtmosphere";
 import { ToolkitDetail } from "../../_components/Toolkits";
 import ToolkitStations from "../../_components/ToolkitStations";
 // Toolkit pages run the LIGHT theme — the airy, cream reveal from the loader.
-import { edLight as ed, Bleed, Rule, Label } from "../../_components/editorial";
+import { edLight as ed, Bleed, Rule, Label, legibleAccent } from "../../_components/editorial";
 import { toolkitSections } from "../../data";
 
 export default function ToolkitPageContent({ id }: { id: string }) {
@@ -31,23 +31,26 @@ export default function ToolkitPageContent({ id }: { id: string }) {
 
   if (!section) return null;
 
+  // Gold is illegible on the cream light theme — remap the sector accent.
+  const pageAccent = legibleAccent(section.accentColor);
+
   return (
     <div className="ctrla-light" style={{ background: "transparent", minHeight: "100vh", width: "100%", overflowX: "hidden" }}>
       <ToolkitAtmosphere />
       <NavigationDock />
 
       {/* Signature accent bar — this sector's colour, full bleed */}
-      <div aria-hidden style={{ height: 3, background: section.accentColor }} />
+      <div aria-hidden style={{ height: 3, background: pageAccent }} />
 
       {/* Back-nav masthead */}
       <div style={{ background: "transparent", position: "relative", zIndex: 5 }}>
         <Bleed style={{ padding: "12px clamp(18px,5vw,64px)" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
             <a href="/ctrla" className="ctrla-back" style={{ display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
-              <span style={{ color: section.accentColor }}>←</span>
+              <span style={{ color: pageAccent }}>←</span>
               <Label color={ed.ink}>CTRL-A · Vol. 01</Label>
             </a>
-            <Label color={section.accentColor}>Toolkit {section.pageNumber}</Label>
+            <Label color={pageAccent}>Toolkit {section.pageNumber}</Label>
           </div>
         </Bleed>
         <Rule color={ed.hair} />

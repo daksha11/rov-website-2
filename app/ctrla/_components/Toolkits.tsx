@@ -34,13 +34,13 @@ export function ThreeToolkits() {
   return (
     <section id="toolkits" ref={ref} style={{ background: "transparent", padding: "clamp(56px, 8vw, 104px) 0", scrollMarginTop: 0 }}>
       <Bleed>
-        <Kicker color={ed.amber} style={{ marginBottom: 16 }}>The Libraries</Kicker>
+        <Kicker color={ed.gold} style={{ marginBottom: 16 }}>The Libraries</Kicker>
         <SectionHeader
           title="Three Toolkits."
           meta="Living libraries. Growing with each week's pick."
         />
         {/* Drawn cosmic divider in place of the plain rule */}
-        <DrawLine color={ed.amber} style={{ margin: "clamp(18px, 2.6vw, 32px) 0" }} />
+        <DrawLine color={ed.gold} style={{ margin: "clamp(18px, 2.6vw, 32px) 0" }} />
 
         <div
           style={{
@@ -125,7 +125,7 @@ export function ThreeToolkits() {
                   paddingTop: 12,
                 }}
               >
-                <Label color={s.accentColor}>
+                <Label color={ed.gold}>
                   {s.pickCount} · {s.cadence}
                 </Label>
                 <span style={{ color: s.accentColor, fontSize: 16, lineHeight: 1 }}>→</span>

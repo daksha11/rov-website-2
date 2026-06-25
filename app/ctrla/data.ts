@@ -120,6 +120,53 @@ export const taste = {
   },
 };
 
+// ── ON REPEAT ───────────────────────────────────────────
+// Two songs the studio cannot stop playing this volume. Shown
+// as full square cover art; each tile links out to Spotify.
+export interface RepeatTrack {
+  title: string;
+  artist: string;
+  image: string;
+  url: string;
+}
+
+export const onRepeat = {
+  eyebrow: "On repeat · Sound",
+  headline: "Two on repeat.",
+  note: "What is soundtracking the studio this volume. Hit play, then go make something.",
+  tracks: [
+    {
+      title: "Stars Collide",
+      artist: "SAM SUEN, Basu",
+      image: "/ctrla/onrepeat/stars-collide.jpg",
+      url: "https://open.spotify.com/track/2jAoNrw7bhzNTDoMNJSQz9",
+    },
+    {
+      title: "you could be my woman",
+      artist: "Basu",
+      image: "/ctrla/onrepeat/you-could-be-my-woman.jpg",
+      url: "https://open.spotify.com/track/78bezRj4TvB0XJhpsfOi48",
+    },
+  ] as RepeatTrack[],
+};
+
+// ── FORM OF THE VOLUME ──────────────────────────────────
+// A different art form each volume: pottery, graffiti, weaving,
+// glass. The crafts that teach us how makers actually think.
+// Vol. 01 — kintsugi, repair in gold (on-theme: nothing hidden).
+export const artForm = {
+  eyebrow: "Form of the volume · Craft",
+  form: "Kintsugi",
+  origin: "Japan · since the 15th century",
+  headline: "Repair, in gold.",
+  blurb:
+    "Kintsugi mends broken ceramics with lacquer and powdered gold, so the seams become the most beautiful part of the piece. The break is not hidden. It is the point. That is the whole CTRL-A thesis in a bowl: none of the ugly steps skipped, the process worn proudly on the surface.",
+  note: "Each volume we sit with one craft, pottery, graffiti, weaving, glass, for what it teaches about taste and patience.",
+  pullquote: "The crack is where the gold goes.",
+  // Placeholder stock photo until we shoot/source the real piece.
+  image: "/ctrla/placeholder/artform-kintsugi.jpg",
+};
+
 // ── THE COOKBOOK ────────────────────────────────────────
 // A digital muse feeds the maker too. Easy recipes from the
 // cultures we work with, built for creatives short on time
@@ -156,6 +203,7 @@ export const cookbook = {
       cost: "About $3",
       serves: "1",
       featured: true,
+      image: "/ctrla/placeholder/cookbook-dish.jpg",
       blurb: "The 2am edit-session staple. Hot rice, a glossy fried egg, sesame and soy. Comfort with almost nothing in the fridge.",
       ingredients: ["1 bowl hot cooked rice", "1 to 2 eggs", "Toasted sesame oil", "Soy sauce", "Sesame seeds", "Optional: seaweed, green onion"],
       steps: [
