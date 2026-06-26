@@ -1,9 +1,15 @@
+"use client";
+
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 import { FAQPageSchema } from "@/components/FAQPageSchema";
 
 // Case-study FAQ — a full-width editorial band matching the testimonial style.
-// Emits FAQPage structured data (AEO / featured snippets) AND renders every
-// answer in the DOM (always visible, no click-gating) so crawlers and AI answer
-// engines can read them. Optionally shows a named project-lead credit (E-E-A-T).
+// Emits FAQPage structured data (AEO / featured snippets) AND keeps every answer
+// in the DOM at all times (height-collapsed when closed), so the accordion is
+// purely visual and crawlers / AI answer engines still read every answer.
+// Optionally shows a named project-lead credit (E-E-A-T).
 
 export function CaseStudyFAQ({
   faqs,
@@ -16,6 +22,7 @@ export function CaseStudyFAQ({
   leadName?: string;
   leadRole?: string;
 }) {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
   if (!faqs.length) return null;
 
   return (
@@ -30,23 +37,56 @@ export function CaseStudyFAQ({
             Frequently asked
           </p>
 
-          <dl className="space-y-9 md:space-y-10">
-            {faqs.map((f) => (
-              <div key={f.question}>
-                <dt
-                  className="text-lg md:text-2xl leading-snug"
-                  style={{ fontFamily: "Norwige, sans-serif", color: "#FFF4E3" }}
+          <dl className="m-0">
+            {faqs.map((f, i) => {
+              const isOpen = openIndex === i;
+              return (
+                <div
+                  key={f.question}
+                  className="border-b"
+                  style={{ borderColor: "rgba(255,255,255,0.1)" }}
                 >
-                  {f.question}
-                </dt>
-                <dd
-                  className="mt-3 text-base md:text-lg leading-relaxed"
-                  style={{ fontFamily: "'Roboto', sans-serif", color: "#9ca3af" }}
-                >
-                  {f.answer}
-                </dd>
-              </div>
-            ))}
+                  <dt>
+                    <button
+                      type="button"
+                      onClick={() => setOpenIndex(isOpen ? null : i)}
+                      aria-expanded={isOpen}
+                      className="flex w-full items-center justify-between gap-6 py-5 md:py-6 text-left"
+                    >
+                      <span
+                        className="text-lg md:text-2xl leading-snug transition-colors"
+                        style={{ fontFamily: "Norwige, sans-serif", color: isOpen ? accentColor : "#FFF4E3" }}
+                      >
+                        {f.question}
+                      </span>
+                      <motion.span
+                        animate={{ rotate: isOpen ? 180 : 0 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        className="flex-shrink-0"
+                      >
+                        <ChevronDown className="h-5 w-5 md:h-6 md:w-6" style={{ color: accentColor }} />
+                      </motion.span>
+                    </button>
+                  </dt>
+
+                  {/* Answer is always in the DOM (height-collapsed when closed). */}
+                  <motion.dd
+                    initial={false}
+                    animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    className="m-0 overflow-hidden"
+                    style={{ willChange: "height, opacity" }}
+                  >
+                    <p
+                      className="pb-6 pr-8 text-base md:text-lg leading-relaxed"
+                      style={{ fontFamily: "'Roboto', sans-serif", color: "#9ca3af" }}
+                    >
+                      {f.answer}
+                    </p>
+                  </motion.dd>
+                </div>
+              );
+            })}
           </dl>
 
           {leadName ? (
