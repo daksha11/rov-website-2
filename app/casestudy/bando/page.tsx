@@ -32,6 +32,7 @@ export default function BandoCaseStudyPage() {
                 url="/casestudy/bando"
                 image="/og/og-bando.webp"
                 aboutName="The Bando"
+                lead={{ name: "Ayush Basu", role: "Founder & Creative Director" }}
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "" },

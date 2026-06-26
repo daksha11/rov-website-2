@@ -4,6 +4,7 @@ import { NavigationDock } from "@/components/NavDoc";
 import Footer from "@/components/Footer";
 import { CaseStudyHero } from "@/components/casestudy/CaseStudyHero";
 import { Testimonial } from "@/components/casestudy/Testimonial";
+import { CaseStudyFAQ } from "@/components/casestudy/CaseStudyFAQ";
 import { CaseStudySidebar } from "@/components/casestudy/CaseStudySidebar";
 import { OverviewSection } from "@/components/casestudy/OverviewSection";
 import { ChallengeSection } from "@/components/casestudy/ChallengeSection";
@@ -240,6 +241,17 @@ export default function DkmContent() {
                 itemName="DKM Corp Global Digital Infrastructure"
                 itemUrl="/casestudy/dkm"
                 accentColor="#C9A96E"
+            />
+
+            <CaseStudyFAQ
+                accentColor="#C9A96E"
+                leadName="Ayush Basu"
+                leadRole="Founder & Creative Director"
+                faqs={[
+                    { question: "What did Range of View Studios deliver for DKM Corp?", answer: "A global digital infrastructure and brand identity rebuild for DKM Corp, a private growth partner operating across India, Australia, the US, and Dubai." },
+                    { question: "Why did DKM Corp need a new digital presence?", answer: "Their previous presence didn't reflect the scale or seriousness of a multi-country growth firm. The new build matches their global footprint and earns partner trust on first impression." },
+                    { question: "Where does DKM Corp operate?", answer: "Across four primary markets, India, Australia, the United States, and Dubai." },
+                ]}
             />
 
             <Footer />

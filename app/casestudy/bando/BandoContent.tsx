@@ -11,6 +11,7 @@ import Footer from "@/components/Footer";
 import { CaseStudyHero } from "@/components/casestudy/CaseStudyHero";
 import { CaseStudySidebar } from "@/components/casestudy/CaseStudySidebar";
 import { Testimonial } from "@/components/casestudy/Testimonial";
+import { CaseStudyFAQ } from "@/components/casestudy/CaseStudyFAQ";
 import { OverviewSection } from "@/components/casestudy/OverviewSection";
 import { ChallengeSection } from "@/components/casestudy/ChallengeSection";
 import { CompetitorAnalysis } from "@/components/casestudy/CompetitorAnalysis";
@@ -125,6 +126,17 @@ export default function BandoContent() {
                 itemName="The Bando Website Redesign"
                 itemUrl="/casestudy/bando"
                 accentColor="#C90000"
+            />
+
+            <CaseStudyFAQ
+                accentColor="#C90000"
+                leadName="Ayush Basu"
+                leadRole="Founder & Creative Director"
+                faqs={[
+                    { question: "What did Range of View Studios build for The Bando?", answer: "A full website redesign for The Bando, a Black history museum and fried-chicken restaurant in Atlanta, rebuilding the brand experience and the online ordering flow into one cohesive identity." },
+                    { question: "What results did The Bando redesign achieve?", answer: "The redesigned site cut bounce rate by 60%, turning curiosity into orders and repeat visits, and drove a dramatic increase in online ordering." },
+                    { question: "What makes The Bando project unique?", answer: "It blends two identities, a museum and a restaurant, into a single, unapologetically Atlanta digital experience that reflects the brand's bold personality." },
+                ]}
             />
 
             <Footer />

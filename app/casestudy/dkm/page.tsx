@@ -32,6 +32,8 @@ export default function DkmCaseStudyPage() {
                 url="/casestudy/dkm"
                 image="/og/og-dkm.webp"
                 aboutName="DKM Corp"
+                lead={{ name: "Ayush Basu", role: "Founder & Creative Director" }}
+                clientUrl="https://www.dkmcorp.in/"
             />
             <BreadcrumbSchema items={[
                 { name: "Home", url: "" },

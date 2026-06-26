@@ -13,6 +13,7 @@ import { DesignSystem } from "@/components/casestudy/DesignSystem";
 import { Approach } from "@/components/casestudy/Approach";
 import { Result } from "@/components/casestudy/Result";
 import { Testimonial } from "@/components/casestudy/Testimonial";
+import { CaseStudyFAQ } from "@/components/casestudy/CaseStudyFAQ";
 
 export const metadata: Metadata = {
     title: 'Atlanta Tech Meetup - Case Study',
@@ -123,6 +124,8 @@ export default function AtlantaTechMeetupCaseStudyPage() {
             url="/casestudy/atlanta-tech-meetup"
             image="/casestudy/atm/atm1.webp"
             aboutName="Atlanta Tech Meetup"
+            lead={{ name: "Ayush Basu", role: "Founder & Creative Director" }}
+            clientUrl="https://www.atltechmeetup.com/"
         />
         <BreadcrumbSchema items={[
             { name: "Home", url: "" },
@@ -248,6 +251,17 @@ export default function AtlantaTechMeetupCaseStudyPage() {
                 itemName="Atlanta Tech Meetup Community Platform"
                 itemUrl="/casestudy/atlanta-tech-meetup"
                 accentColor="#EA9A61"
+            />
+
+            <CaseStudyFAQ
+                accentColor="#EA9A61"
+                leadName="Ayush Basu"
+                leadRole="Founder & Creative Director"
+                faqs={[
+                    { question: "What did Range of View Studios build for Atlanta Tech Meetup?", answer: "A 100% hand-coded community platform with founder voices, community photography, and an integrated RSVP flow, with no off-the-shelf event template." },
+                    { question: "How big is the Atlanta Tech Meetup community?", answer: "More than 500 members across 50-plus events, and growing." },
+                    { question: "Why build a custom platform instead of using an existing tool?", answer: "Generic event tools flatten every community into the same template. A hand-built platform preserves the meetup's distinct voice and brand." },
+                ]}
             />
 
             <Footer />

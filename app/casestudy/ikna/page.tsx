@@ -13,6 +13,7 @@ import { Approach } from "@/components/casestudy/Approach";
 import { Result } from "@/components/casestudy/Result";
 import IknaInstagramFeature from "@/components/casestudy/IknaInstagramFeature";
 import { Testimonial } from "@/components/casestudy/Testimonial";
+import { CaseStudyFAQ } from "@/components/casestudy/CaseStudyFAQ";
 
 export const metadata: Metadata = {
     title: 'Aysegul Ikna - Case Study',
@@ -131,6 +132,8 @@ export default function IknaCaseStudyPage() {
             url="/casestudy/ikna"
             image="/og/og-ikna.webp"
             aboutName="Aysegul Ikna"
+            lead={{ name: "Ayush Basu", role: "Founder & Creative Director" }}
+            clientUrl="https://www.aysegulikna.com/"
         />
         <BreadcrumbSchema items={[
             { name: "Home", url: "" },
@@ -238,6 +241,18 @@ export default function IknaCaseStudyPage() {
                 itemName="Aysegul Ikna Website Design"
                 itemUrl="/casestudy/ikna"
                 accentColor="#4CAF7D"
+            />
+
+            <CaseStudyFAQ
+                accentColor="#4CAF7D"
+                leadName="Ayush Basu"
+                leadRole="Founder & Creative Director"
+                faqs={[
+                    { question: "What did Range of View Studios deliver for Aysegul Ikna?", answer: "A custom-coded luxury e-commerce website, full brand identity refinement, Square payment integration, Meta Pixel retargeting, automated email sequences, and a complete Instagram overhaul, end to end." },
+                    { question: "What results did the new Aysegul Ikna website drive?", answer: "Within months of launch, Aysegul Ikna saw a 30% increase in monthly sales, with an online experience that finally matched the premium price point of her boutique at Ponce City Market." },
+                    { question: "What was the Aysegul Ikna website built with?", answer: "A hand-coded architecture with Square integration for high-value transactions, rather than a templated store, so every detail reflects the craftsmanship of the garments." },
+                    { question: "Who is Aysegul Ikna?", answer: "A sustainable, high-fashion brand based at Citizen Supply in Ponce City Market, Atlanta, known for handcrafted, premium pieces." },
+                ]}
             />
 
             <Footer />

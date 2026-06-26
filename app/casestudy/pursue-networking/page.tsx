@@ -13,6 +13,7 @@ import { DesignSystem } from "@/components/casestudy/DesignSystem";
 import { Approach } from "@/components/casestudy/Approach";
 import { Result } from "@/components/casestudy/Result";
 import { Testimonial } from "@/components/casestudy/Testimonial";
+import { CaseStudyFAQ } from "@/components/casestudy/CaseStudyFAQ";
 
 export const metadata: Metadata = {
     title: 'Pursue Networking - Case Study',
@@ -123,6 +124,8 @@ export default function PursueNetworkingCaseStudyPage() {
             url="/casestudy/pursue-networking"
             image="/casestudy/Pursue/pursue1.webp"
             aboutName="Pursue Networking"
+            lead={{ name: "Ayush Basu", role: "Founder & Creative Director" }}
+            clientUrl="https://pursuenetworking.com/"
         />
         <BreadcrumbSchema items={[
             { name: "Home", url: "" },
@@ -249,6 +252,17 @@ export default function PursueNetworkingCaseStudyPage() {
                 itemName="Pursue Networking Platform"
                 itemUrl="/casestudy/pursue-networking"
                 accentColor="#F5C842"
+            />
+
+            <CaseStudyFAQ
+                accentColor="#F5C842"
+                leadName="Ayush Basu"
+                leadRole="Founder & Creative Director"
+                faqs={[
+                    { question: "What is Pursue Networking?", answer: "An AI-powered LinkedIn copilot that turns B2B networking into revenue for more than 500 sales professionals." },
+                    { question: "What did Range of View Studios build for Pursue Networking?", answer: "A custom platform built from the ground up, including the product experience, brand, and pipeline, that translates a complex AI tool into something intuitive and scales onboarding for 500-plus sales professionals." },
+                    { question: "Who is Pursue Networking for?", answer: "B2B sales professionals and teams who want to turn LinkedIn networking into pipeline and revenue." },
+                ]}
             />
 
             <Footer />
