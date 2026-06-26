@@ -1,8 +1,11 @@
 ---
 title: "From Zero Online Sales to 20% Revenue Growth: An Atlanta E-Commerce Case Study"
+seoTitle: "Ikna: From Zero to 20% E-Commerce Growth"
 slug: "ikna-ecommerce-growth"
 description: "ROV Studios built Aysegul Ikna's e-commerce website and brand identity from scratch in Atlanta, driving a 20% sales increase from zero online revenue. Full case study with results."
-author: "ROV Studios"
+author: "Daksha"
+authorRole: "Head of Development"
+authorUrl: "https://www.rovstudios.com/about"
 date: "2026-03-30"
 dateModified: "2026-03-30"
 category: "Branding & Web Design"

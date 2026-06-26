@@ -47,7 +47,10 @@ export function BlogPostHeader({ post }: { post: BlogPost }) {
       )}
 
       <div className="mt-6 flex flex-wrap items-center gap-3 text-sm text-gray-500">
-        <span className="text-gray-300">{post.author}</span>
+        <span className="text-gray-300">
+          <a href="/about" className="hover:text-white transition-colors">{post.author}</a>
+          {post.authorRole ? <span className="text-gray-500">, {post.authorRole}</span> : null}
+        </span>
         <span aria-hidden="true">&middot;</span>
         <time dateTime={post.date}>{formatDate(post.date)}</time>
         <span aria-hidden="true">&middot;</span>

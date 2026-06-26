@@ -35,7 +35,9 @@ export async function generateMetadata({
   if (!post) return { title: "Post Not Found" };
 
   return {
-    title: post.title,
+    // seoTitle (if set) keeps the <title> short so it doesn't truncate in SERPs;
+    // the long, keyword-rich post.title remains the on-page H1.
+    title: post.seoTitle ?? post.title,
     description: post.description,
     alternates: {
       canonical: `https://www.rovstudios.com/blog/${post.slug}`,

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
 interface BlogFAQProps {
@@ -70,37 +70,28 @@ export function BlogFAQ({ faqs }: BlogFAQProps) {
                   </motion.div>
                 </button>
 
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, scaleY: 0 }}
-                      animate={{ opacity: 1, scaleY: 1 }}
-                      exit={{ opacity: 0, scaleY: 0 }}
-                      transition={{
-                        duration: 0.2,
-                        ease: "easeOut",
-                      }}
+                {/* Answer is always rendered (height-collapsed when closed) so it
+                    sits in the server-rendered DOM for crawlers and AI answer
+                    engines, not only after a click. */}
+                <motion.div
+                  initial={false}
+                  animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
+                  style={{ overflow: "hidden", willChange: "height, opacity" }}
+                >
+                  <div className="px-6 md:px-8 pb-5 md:pb-6 pt-2">
+                    <p
+                      className="text-base md:text-lg lg:text-xl leading-relaxed"
                       style={{
-                        transformOrigin: "top",
-                        willChange: "transform, opacity",
+                        fontFamily: "Roboto, sans-serif",
+                        color: "#FFF4E3",
+                        opacity: 0.85,
                       }}
-                      className="overflow-hidden"
                     >
-                      <div className="px-6 md:px-8 pb-5 md:pb-6 pt-2">
-                        <p
-                          className="text-base md:text-lg lg:text-xl leading-relaxed"
-                          style={{
-                            fontFamily: "Roboto, sans-serif",
-                            color: "#FFF4E3",
-                            opacity: 0.85,
-                          }}
-                        >
-                          {item.answer}
-                        </p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                      {item.answer}
+                    </p>
+                  </div>
+                </motion.div>
               </div>
             );
           })}

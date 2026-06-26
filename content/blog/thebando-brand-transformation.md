@@ -1,8 +1,11 @@
 ---
 title: "689x More Online Orders: An Atlanta Restaurant Website Redesign Case Study"
+seoTitle: "The Bando: 689x More Online Orders"
 slug: "thebando-brand-transformation"
 description: "ROV Studios redesigned TheBando's Atlanta restaurant website and drove a 689x increase in online orders in 139 days. See the full case study with before-and-after results."
-author: "ROV Studios"
+author: "Ayush"
+authorRole: "Founder & Creative Director"
+authorUrl: "https://www.rovstudios.com/about"
 date: "2026-03-30"
 dateModified: "2026-03-30"
 category: "Web Design"

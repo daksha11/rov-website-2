@@ -3,6 +3,7 @@ import WebContent from "./WebContent";
 import { ServiceSchema } from "@/components/ServiceSchema";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { FAQPageSchema } from "@/components/FAQPageSchema";
+import { HowToSchema } from "@/components/HowToSchema";
 
 export const metadata: Metadata = {
     title: "Custom Web Development & Design Services",
@@ -45,6 +46,20 @@ export default function WebDevPage() {
                 { question: "Will I be able to update my website myself?", answer: "Yes, we build sites with user-friendly content management systems that let you make basic updates like changing text, adding images, or posting blog content without needing technical skills. During the handoff process, we provide training and documentation so you feel confident making these changes." },
                 { question: "Do you handle ongoing website updates and maintenance?", answer: "Yes, we offer flexible maintenance packages for clients who want ongoing support after launch. This can include regular content updates, security monitoring, performance optimization, plugin updates, and technical troubleshooting." },
             ]} />
+            <HowToSchema
+                name="How Range of View Studios builds a website"
+                description="Our six-phase web development process, from discovery to launch and growth."
+                totalTime="P6W"
+                url="/web"
+                steps={[
+                    { name: "Discover", text: "We start with strategy: goals, audience, competitors, and the outcomes the site needs to drive before any design begins." },
+                    { name: "Design", text: "We design mockups of every key page, establishing the visual system, layout, and content hierarchy for sign-off." },
+                    { name: "Build", text: "We develop the site with Next.js and modern web technologies for speed, flexibility, and full control." },
+                    { name: "Refine", text: "We integrate content and review the build together, refining interactions, copy, and detail across breakpoints." },
+                    { name: "Optimize", text: "We test across devices and optimize performance, accessibility, and on-page SEO before launch." },
+                    { name: "Launch & Grow", text: "We launch with support and provide training, documentation, and optional ongoing maintenance to keep the site growing." },
+                ]}
+            />
             <WebContent />
         </>
     );

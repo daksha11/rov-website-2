@@ -1,8 +1,11 @@
 ---
 title: "Building a Global Brand Identity: DKM Corp Website Redesign Case Study"
+seoTitle: "DKM Corp: A Global Brand Identity Rebuild"
 slug: "dkm-corp-brand-identity"
 description: "How ROV Studios rebuilt DKM Corp's website and brand identity from scratch, collaborating across Atlanta and India. A full website redesign case study for professional services companies."
-author: "ROV Studios"
+author: "Kavya"
+authorRole: "Director of Design"
+authorUrl: "https://www.rovstudios.com/about"
 date: "2026-03-30"
 dateModified: "2026-03-30"
 category: "Branding & Web Design"

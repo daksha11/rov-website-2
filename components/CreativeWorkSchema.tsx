@@ -23,6 +23,7 @@ export function CreativeWorkSchema({
       name: "Range of View Studios",
     },
     dateCreated,
+    datePublished: dateCreated,
     url: `https://www.rovstudios.com${url}`,
     image: `https://www.rovstudios.com${image}`,
     about: {

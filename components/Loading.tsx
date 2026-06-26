@@ -82,7 +82,11 @@ export default function Loading({ onLoadingComplete }: LoadingProps) {
         <div className="relative flex flex-col items-center gap-8 p-12 rounded-3xl backdrop-blur-md bg-black/30 border border-[#F99288]/20 shadow-2xl">
           {/* Animated Logo/Text */}
           <div className="relative">
-            <h1
+            {/* Decorative loader branding — not a document heading (the page H1
+                lives in app/page.tsx). Kept as a div so the homepage has a
+                single H1 in the server-rendered HTML. */}
+            <div
+              aria-hidden="true"
               className="text-white font-bold tracking-wider animate-pulse"
               style={{
                 fontSize: 'clamp(2rem, 5vw, 3.5rem)',
@@ -91,7 +95,7 @@ export default function Loading({ onLoadingComplete }: LoadingProps) {
               }}
             >
               RANGE OF VIEW
-            </h1>
+            </div>
 
             {/* Animated underline with gradient */}
             <div
@@ -179,9 +183,9 @@ export default function Loading({ onLoadingComplete }: LoadingProps) {
       {/* Fallback for browsers that don't support video */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <noscript>
-          <h1 className="text-white text-4xl font-bold">
+          <div className="text-white text-4xl font-bold">
             RANGE OF VIEW
-          </h1>
+          </div>
         </noscript>
       </div>
 

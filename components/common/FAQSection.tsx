@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
 export type FaqItem = {
@@ -163,27 +163,25 @@ export default function FAQSection({ items }: FAQSectionProps) {
                                         </motion.div>
                                     </button>
 
-                                    <AnimatePresence initial={false}>
-                                        {isOpen && (
-                                            <motion.div
-                                                initial={{ opacity: 0, scaleY: 0 }}
-                                                animate={{ opacity: 1, scaleY: 1 }}
-                                                exit={{ opacity: 0, scaleY: 0 }}
-                                                transition={{ duration: 0.2, ease: "easeOut" }}
-                                                style={{ transformOrigin: "top", willChange: "transform, opacity" }}
-                                                className="overflow-hidden"
+                                    {/* Answer is ALWAYS rendered (just height-collapsed when
+                                        closed) so the text is in the server-rendered DOM and
+                                        readable by search crawlers and AI answer engines — not
+                                        only when a user clicks. */}
+                                    <motion.div
+                                        initial={false}
+                                        animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
+                                        transition={{ duration: 0.25, ease: "easeOut" }}
+                                        style={{ overflow: "hidden", willChange: "height, opacity" }}
+                                    >
+                                        <div className="px-6 md:px-8 pb-5 md:pb-6 pt-2">
+                                            <p
+                                                className="text-base md:text-lg lg:text-xl leading-relaxed"
+                                                style={{ fontFamily: "Roboto, sans-serif", color: "#FFF4E3", opacity: 0.85 }}
                                             >
-                                                <div className="px-6 md:px-8 pb-5 md:pb-6 pt-2">
-                                                    <p
-                                                        className="text-base md:text-lg lg:text-xl leading-relaxed"
-                                                        style={{ fontFamily: "Roboto, sans-serif", color: "#FFF4E3", opacity: 0.85 }}
-                                                    >
-                                                        {item.answer}
-                                                    </p>
-                                                </div>
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
+                                                {item.answer}
+                                            </p>
+                                        </div>
+                                    </motion.div>
                                 </div>
                             );
                         })}

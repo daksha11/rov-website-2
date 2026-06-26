@@ -37,8 +37,11 @@ function parseFrontmatter(slug: string, fileContent: string): BlogPost {
   return {
     slug,
     title: data.title ?? "",
+    seoTitle: data.seoTitle ?? undefined,
     description: data.description ?? "",
     author: data.author ?? "",
+    authorRole: data.authorRole ?? undefined,
+    authorUrl: data.authorUrl ?? undefined,
     date: data.date ?? "",
     dateModified: data.dateModified ?? data.date ?? "",
     category: data.category ?? "",

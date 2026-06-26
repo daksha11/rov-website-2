@@ -21,8 +21,15 @@ export interface ChatbotRequest {
 export interface BlogPost {
   slug: string;
   title: string;
+  /** Optional shorter title for the <title> tag / OG (keeps SERP titles from
+   *  truncating while the long, keyword-rich title stays as the on-page H1). */
+  seoTitle?: string;
   description: string;
   author: string;
+  /** Author's job title — emitted as Person.jobTitle in BlogPosting schema. */
+  authorRole?: string;
+  /** Link to the author's bio (e.g. /about) — strengthens E-E-A-T. */
+  authorUrl?: string;
   date: string;
   dateModified: string;
   category: string;
