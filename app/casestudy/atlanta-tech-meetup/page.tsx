@@ -12,6 +12,7 @@ import { CompetitorAnalysis } from "@/components/casestudy/CompetitorAnalysis";
 import { DesignSystem } from "@/components/casestudy/DesignSystem";
 import { Approach } from "@/components/casestudy/Approach";
 import { Result } from "@/components/casestudy/Result";
+import { Testimonial } from "@/components/casestudy/Testimonial";
 
 export const metadata: Metadata = {
     title: 'Atlanta Tech Meetup - Case Study',
@@ -239,6 +240,15 @@ export default function AtlantaTechMeetupCaseStudyPage() {
                     </div>
                 </div>
             </section>
+
+            <Testimonial
+                quote="Off-the-shelf tools flattened our community into a template. ROV hand-built a platform with our voice baked in, and it's carried us past 500 members and 50 events without ever feeling generic."
+                authorName="Andrew Schillinger & A.D. Slaton"
+                authorTitle="Co-Founders, Atlanta Tech Meetup"
+                itemName="Atlanta Tech Meetup Community Platform"
+                itemUrl="/casestudy/atlanta-tech-meetup"
+                accentColor="#EA9A61"
+            />
 
             <Footer />
         </main>

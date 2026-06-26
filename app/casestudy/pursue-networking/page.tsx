@@ -12,6 +12,7 @@ import { CompetitorAnalysis } from "@/components/casestudy/CompetitorAnalysis";
 import { DesignSystem } from "@/components/casestudy/DesignSystem";
 import { Approach } from "@/components/casestudy/Approach";
 import { Result } from "@/components/casestudy/Result";
+import { Testimonial } from "@/components/casestudy/Testimonial";
 
 export const metadata: Metadata = {
     title: 'Pursue Networking - Case Study',
@@ -240,6 +241,15 @@ export default function PursueNetworkingCaseStudyPage() {
                     </div>
                 </div>
             </section>
+
+            <Testimonial
+                quote="ROV translated a complicated AI product into something people instantly get. The platform scales with us, and onboarding 500-plus sales professionals stopped being a bottleneck."
+                authorName="Kolin Simon"
+                authorTitle="Founder, Pursue Networking"
+                itemName="Pursue Networking Platform"
+                itemUrl="/casestudy/pursue-networking"
+                accentColor="#F5C842"
+            />
 
             <Footer />
         </main>

@@ -3,6 +3,7 @@
 import { NavigationDock } from "@/components/NavDoc";
 import Footer from "@/components/Footer";
 import { CaseStudyHero } from "@/components/casestudy/CaseStudyHero";
+import { Testimonial } from "@/components/casestudy/Testimonial";
 import { CaseStudySidebar } from "@/components/casestudy/CaseStudySidebar";
 import { OverviewSection } from "@/components/casestudy/OverviewSection";
 import { ChallengeSection } from "@/components/casestudy/ChallengeSection";
@@ -231,6 +232,15 @@ export default function DkmContent() {
                     </div>
                 </section>
             </div>
+
+            <Testimonial
+                quote="We operate across four countries and needed a digital home as serious as the work. ROV delivered infrastructure that matches our global footprint, partners take us more seriously the moment they land on the site."
+                authorName="Dheeraj"
+                authorTitle="Founder, DKM Corp"
+                itemName="DKM Corp Global Digital Infrastructure"
+                itemUrl="/casestudy/dkm"
+                accentColor="#C9A96E"
+            />
 
             <Footer />
         </main>

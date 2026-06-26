@@ -10,6 +10,7 @@ const roboto = Roboto({
 import Footer from "@/components/Footer";
 import { CaseStudyHero } from "@/components/casestudy/CaseStudyHero";
 import { CaseStudySidebar } from "@/components/casestudy/CaseStudySidebar";
+import { Testimonial } from "@/components/casestudy/Testimonial";
 import { OverviewSection } from "@/components/casestudy/OverviewSection";
 import { ChallengeSection } from "@/components/casestudy/ChallengeSection";
 import { CompetitorAnalysis } from "@/components/casestudy/CompetitorAnalysis";
@@ -116,6 +117,15 @@ export default function BandoContent() {
                     </div>
                 </div>
             </section>
+
+            <Testimonial
+                quote="ROV understood what we're about, the food and the history, and built a site that finally moves like we do. Online orders went from a trickle to a flood, and people actually stay to read our story now."
+                authorName="Terry"
+                authorTitle="Owner, The Bando"
+                itemName="The Bando Website Redesign"
+                itemUrl="/casestudy/bando"
+                accentColor="#C90000"
+            />
 
             <Footer />
         </main>
