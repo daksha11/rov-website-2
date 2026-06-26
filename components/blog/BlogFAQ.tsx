@@ -70,28 +70,28 @@ export function BlogFAQ({ faqs }: BlogFAQProps) {
                   </motion.div>
                 </button>
 
-                {/* Answer is always rendered (height-collapsed when closed) so it
-                    sits in the server-rendered DOM for crawlers and AI answer
-                    engines, not only after a click. */}
-                <motion.div
-                  initial={false}
-                  animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
-                  transition={{ duration: 0.25, ease: "easeOut" }}
-                  style={{ overflow: "hidden", willChange: "height, opacity" }}
+                {/* Answer always in the DOM (collapsed with a CSS grid-rows
+                    transition, not unmounted) so crawlers and AI answer engines
+                    read it. Pure CSS = no hydration mismatch. */}
+                <div
+                  className="grid transition-[grid-template-rows] duration-300 ease-out"
+                  style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
                 >
-                  <div className="px-6 md:px-8 pb-5 md:pb-6 pt-2">
-                    <p
-                      className="text-base md:text-lg lg:text-xl leading-relaxed"
-                      style={{
-                        fontFamily: "Roboto, sans-serif",
-                        color: "#FFF4E3",
-                        opacity: 0.85,
-                      }}
-                    >
-                      {item.answer}
-                    </p>
+                  <div className="overflow-hidden">
+                    <div className="px-6 md:px-8 pb-5 md:pb-6 pt-2">
+                      <p
+                        className="text-base md:text-lg lg:text-xl leading-relaxed"
+                        style={{
+                          fontFamily: "Roboto, sans-serif",
+                          color: "#FFF4E3",
+                          opacity: 0.85,
+                        }}
+                      >
+                        {item.answer}
+                      </p>
+                    </div>
                   </div>
-                </motion.div>
+                </div>
               </div>
             );
           })}
