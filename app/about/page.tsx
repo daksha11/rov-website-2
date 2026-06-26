@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 // Named leadership — emitted as Person entities so search engines and AI answer
 // engines can attribute the studio's work to real, credentialed people (E-E-A-T).
 const LEADERSHIP = [
-  { name: "Ayush", jobTitle: "Founder & Creative Director" },
+  { name: "Ayush Basu", jobTitle: "Founder & Creative Director" },
   { name: "Suchet", jobTitle: "Co-Founder & Systems Architect" },
   { name: "Kavya", jobTitle: "Director of Design" },
   { name: "Daksha", jobTitle: "Head of Development" },

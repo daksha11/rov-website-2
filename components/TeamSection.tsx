@@ -35,7 +35,7 @@ const teamMembers: TeamMember[] = [
         creativeSubcategory: "UI/UX",
         additionalCategories: ["Tech", "Systems"],
         additionalSubcategories: ["Motion", "Sound"],
-        name: "Ayush",
+        name: "Ayush Basu",
         role: "FOUNDER & CREATIVE DIRECTOR",
         skills: ["Creative Direction", "Brand Strategy", "Web Development", "Design Systems", "Client Relations"],
         location: "Atlanta",
