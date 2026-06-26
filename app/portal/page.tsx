@@ -361,7 +361,7 @@ export default function ClientPortal() {
 
   const cardStyle: React.CSSProperties = {
     background: 'rgba(255,255,255,0.03)',
-    border: '1px solid rgba(255,244,227,0.08)',
+    border: '1px solid rgba(240,230,224,0.08)',
     borderRadius: '16px',
     padding: '32px',
   };
@@ -372,11 +372,11 @@ export default function ClientPortal() {
     gap: '8px',
     padding: '14px 32px',
     borderRadius: '9999px',
-    border: '1px solid rgba(234,154,97,0.3)',
-    background: 'rgba(234,154,97,0.12)',
-    color: '#EA9A61',
+    border: '1px solid rgba(227,194,74,0.3)',
+    background: 'rgba(227,194,74,0.12)',
+    color: '#E3C24A',
     fontSize: '14px',
-    fontFamily: "'Roboto', sans-serif",
+    fontFamily: "'Neue Montreal', 'Roboto', sans-serif",
     fontWeight: 600,
     letterSpacing: '0.05em',
     cursor: 'pointer',
@@ -388,10 +388,10 @@ export default function ClientPortal() {
     width: '100%',
     padding: '12px 16px',
     borderRadius: '8px',
-    border: '1px solid rgba(255,244,227,0.1)',
+    border: '1px solid rgba(240,230,224,0.1)',
     background: 'rgba(0,0,0,0.3)',
-    color: '#FFF4E3',
-    fontFamily: "'Roboto', sans-serif",
+    color: '#F0E6E0',
+    fontFamily: "'Neue Montreal', 'Roboto', sans-serif",
     fontSize: '14px',
     outline: 'none',
     transition: 'border-color 0.2s',
@@ -399,14 +399,14 @@ export default function ClientPortal() {
 
   if (loading) {
     return (
-      <div style={{ padding: '50px', background: '#0A0A0A', color: '#FFF4E3', minHeight: '100vh', fontFamily: "'Roboto', sans-serif" }}>
-        <p style={{ color: 'rgba(255,244,227,0.5)' }}>Loading your project workspace...</p>
+      <div className="dash-ground" style={{ padding: '50px', color: '#F0E6E0', minHeight: '100vh', fontFamily: "'Neue Montreal', 'Roboto', sans-serif" }}>
+        <p style={{ color: 'rgba(240,230,224,0.5)' }}>Loading your project workspace...</p>
       </div>
     );
   }
 
   return (
-    <main style={{ background: '#0A0A0A', color: '#FFF4E3', minHeight: '100vh', fontFamily: "'Roboto', sans-serif" }}>
+    <main className="dash-ground" style={{ color: '#F0E6E0', minHeight: '100vh', fontFamily: "'Neue Montreal', 'Roboto', sans-serif" }}>
       {/* Welcome greeting overlay */}
       {showGreeting && (
         <div
@@ -417,7 +417,7 @@ export default function ClientPortal() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            background: 'rgba(10,10,10,0.85)',
+            background: 'rgba(15,8,32,0.85)',
             backdropFilter: 'blur(24px)',
             WebkitBackdropFilter: 'blur(24px)',
             opacity: greetingFading ? 0 : 1,
@@ -434,7 +434,7 @@ export default function ClientPortal() {
               fontSize: '14px',
               textTransform: 'uppercase',
               letterSpacing: '0.3em',
-              color: 'rgba(255,244,227,0.4)',
+              color: 'rgba(240,230,224,0.4)',
               marginBottom: '16px',
             }}>
               Welcome back
@@ -445,7 +445,7 @@ export default function ClientPortal() {
               fontWeight: 700,
               fontStyle: 'italic',
               margin: 0,
-              color: '#FFF4E3',
+              color: '#F0E6E0',
             }}>
               {fullName}
             </h1>
@@ -494,14 +494,14 @@ export default function ClientPortal() {
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '20px clamp(20px, 5vw, 60px)',
-          borderBottom: '1px solid rgba(255,244,227,0.08)',
-          background: 'rgba(10,10,10,0.6)',
+          borderBottom: '1px solid rgba(240,230,224,0.08)',
+          background: 'rgba(15,8,32,0.6)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
         }}
       >
         <div>
-          <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(255,244,227,0.35)', margin: '0 0 6px 0' }}>
+          <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(240,230,224,0.35)', margin: '0 0 6px 0' }}>
             Client Portal
           </p>
         </div>
@@ -513,11 +513,11 @@ export default function ClientPortal() {
             style={{
               padding: '10px 28px',
               borderRadius: '9999px',
-              border: menuOpen ? '1px solid rgba(255,244,227,0.25)' : '1px solid rgba(255,244,227,0.12)',
+              border: menuOpen ? '1px solid rgba(240,230,224,0.25)' : '1px solid rgba(240,230,224,0.12)',
               background: menuOpen ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.04)',
-              color: '#FFF4E3',
+              color: '#F0E6E0',
               fontSize: '12px',
-              fontFamily: "'Roboto', sans-serif",
+              fontFamily: "'Neue Montreal', 'Roboto', sans-serif",
               fontWeight: 500,
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
@@ -526,12 +526,12 @@ export default function ClientPortal() {
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
-              e.currentTarget.style.borderColor = 'rgba(255,244,227,0.25)';
+              e.currentTarget.style.borderColor = 'rgba(240,230,224,0.25)';
             }}
             onMouseLeave={(e) => {
               if (!menuOpen) {
                 e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
-                e.currentTarget.style.borderColor = 'rgba(255,244,227,0.12)';
+                e.currentTarget.style.borderColor = 'rgba(240,230,224,0.12)';
               }
             }}
           >
@@ -545,10 +545,10 @@ export default function ClientPortal() {
                 top: 'calc(100% + 8px)',
                 right: 0,
                 minWidth: '180px',
-                background: 'rgba(15,15,15,0.95)',
+                background: 'rgba(15,8,32,0.95)',
                 backdropFilter: 'blur(20px)',
                 WebkitBackdropFilter: 'blur(20px)',
-                border: '1px solid rgba(255,244,227,0.1)',
+                border: '1px solid rgba(240,230,224,0.1)',
                 borderRadius: '12px',
                 padding: '6px',
                 animation: 'portalMenuIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards',
@@ -562,9 +562,9 @@ export default function ClientPortal() {
                   padding: '10px 14px',
                   background: 'transparent',
                   border: 'none',
-                  color: 'rgba(255,244,227,0.5)',
+                  color: 'rgba(240,230,224,0.5)',
                   fontSize: '13px',
-                  fontFamily: "'Roboto', sans-serif",
+                  fontFamily: "'Neue Montreal', 'Roboto', sans-serif",
                   textAlign: 'left',
                   cursor: 'pointer',
                   borderRadius: '8px',
@@ -572,11 +572,11 @@ export default function ClientPortal() {
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
-                  e.currentTarget.style.color = '#FFF4E3';
+                  e.currentTarget.style.color = '#F0E6E0';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = 'rgba(255,244,227,0.5)';
+                  e.currentTarget.style.color = 'rgba(240,230,224,0.5)';
                 }}
               >
                 Sign Out
@@ -585,6 +585,30 @@ export default function ClientPortal() {
           )}
         </div>
       </header>
+
+      {/* Hero — the signature CTRL-A sunset band */}
+      <section className="dash-hero" style={{
+        height: 'clamp(150px, 22vw, 240px)',
+        display: 'flex', alignItems: 'flex-end',
+        borderBottom: '1px solid rgba(240,230,224,0.1)',
+      }}>
+        <div className="ctrla-grain" style={{ zIndex: 1 }} />
+        <span style={{
+          position: 'absolute', top: 18, right: 'clamp(20px, 5vw, 60px)', zIndex: 2,
+          fontSize: '11px', letterSpacing: '0.22em', textTransform: 'uppercase',
+          color: '#E3C24A', fontWeight: 600,
+        }}>
+          A ROV Creative Platform
+        </span>
+        <div style={{ position: 'relative', zIndex: 2, width: '100%', maxWidth: '640px', margin: '0 auto', padding: '0 clamp(20px, 5vw, 60px) clamp(20px, 4vw, 34px)' }}>
+          <p style={{ margin: 0, fontSize: '11px', letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(240,230,224,0.72)', textShadow: '0 1px 10px rgba(15,8,32,0.55)' }}>
+            {firstName ? `Welcome back, ${firstName}` : 'Range of View Studios'}
+          </p>
+          <h1 style={{ margin: '6px 0 0', fontFamily: "'Instrument Serif', Georgia, serif", fontStyle: 'italic', fontWeight: 400, fontSize: 'clamp(34px, 6vw, 60px)', lineHeight: 1, color: '#F0E6E0', textShadow: '0 2px 20px rgba(15,8,32,0.65)' }}>
+            Your Studio
+          </h1>
+        </div>
+      </section>
 
       {/* Dashboard Content */}
       <div style={{
@@ -602,7 +626,7 @@ export default function ClientPortal() {
               fontSize: '11px',
               textTransform: 'uppercase',
               letterSpacing: '0.25em',
-              color: 'rgba(255,244,227,0.35)',
+              color: 'rgba(240,230,224,0.35)',
               marginBottom: '16px',
             }}>
               No Active Project
@@ -613,11 +637,11 @@ export default function ClientPortal() {
               fontWeight: 700,
               fontStyle: 'italic',
               margin: '0 0 12px 0',
-              color: '#FFF4E3',
+              color: '#F0E6E0',
             }}>
               Nothing here yet
             </h2>
-            <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.4)', margin: '0 0 32px 0' }}>
+            <p style={{ fontSize: '14px', color: 'rgba(240,230,224,0.4)', margin: '0 0 32px 0' }}>
               We’ll set up your project workspace once we’ve connected. Reach out to get started.
             </p>
             <a
@@ -628,11 +652,11 @@ export default function ClientPortal() {
                 gap: '8px',
                 padding: '14px 32px',
                 borderRadius: '9999px',
-                border: '1px solid rgba(234,154,97,0.3)',
-                background: 'rgba(234,154,97,0.12)',
-                color: '#EA9A61',
+                border: '1px solid rgba(227,194,74,0.3)',
+                background: 'rgba(227,194,74,0.12)',
+                color: '#E3C24A',
                 fontSize: '14px',
-                fontFamily: "'Roboto', sans-serif",
+                fontFamily: "'Neue Montreal', 'Roboto', sans-serif",
                 fontWeight: 600,
                 letterSpacing: '0.05em',
                 cursor: 'pointer',
@@ -640,12 +664,12 @@ export default function ClientPortal() {
                 textDecoration: 'none',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(234,154,97,0.22)';
-                e.currentTarget.style.borderColor = 'rgba(234,154,97,0.5)';
+                e.currentTarget.style.background = 'rgba(227,194,74,0.22)';
+                e.currentTarget.style.borderColor = 'rgba(227,194,74,0.5)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(234,154,97,0.12)';
-                e.currentTarget.style.borderColor = 'rgba(234,154,97,0.3)';
+                e.currentTarget.style.background = 'rgba(227,194,74,0.12)';
+                e.currentTarget.style.borderColor = 'rgba(227,194,74,0.3)';
               }}
             >
               Contact Us
@@ -662,7 +686,7 @@ export default function ClientPortal() {
                       <div style={{
                         flex: 1,
                         height: '2px',
-                        background: i <= currentStep ? '#EA9A61' : 'rgba(255,244,227,0.08)',
+                        background: i <= currentStep ? '#E3C24A' : 'rgba(240,230,224,0.08)',
                         transition: 'background 0.4s ease',
                       }} />
                     )}
@@ -671,16 +695,16 @@ export default function ClientPortal() {
                       height: '10px',
                       borderRadius: '50%',
                       flexShrink: 0,
-                      background: i <= currentStep ? '#EA9A61' : 'rgba(255,244,227,0.12)',
-                      border: i === currentStep ? '2px solid #EA9A61' : '2px solid transparent',
-                      boxShadow: i === currentStep ? '0 0 0 4px rgba(234,154,97,0.15)' : 'none',
+                      background: i <= currentStep ? '#E3C24A' : 'rgba(240,230,224,0.12)',
+                      border: i === currentStep ? '2px solid #E3C24A' : '2px solid transparent',
+                      boxShadow: i === currentStep ? '0 0 0 4px rgba(227,194,74,0.15)' : 'none',
                       transition: 'all 0.4s ease',
                     }} />
                     {i < stepLabels.length - 1 && (
                       <div style={{
                         flex: 1,
                         height: '2px',
-                        background: i < currentStep ? '#EA9A61' : 'rgba(255,244,227,0.08)',
+                        background: i < currentStep ? '#E3C24A' : 'rgba(240,230,224,0.08)',
                         transition: 'background 0.4s ease',
                       }} />
                     )}
@@ -689,7 +713,7 @@ export default function ClientPortal() {
                     fontSize: '10px',
                     textTransform: 'uppercase',
                     letterSpacing: '0.15em',
-                    color: i <= currentStep ? 'rgba(234,154,97,0.8)' : 'rgba(255,244,227,0.25)',
+                    color: i <= currentStep ? 'rgba(227,194,74,0.8)' : 'rgba(240,230,224,0.25)',
                     fontWeight: i === currentStep ? 600 : 400,
                     transition: 'all 0.4s ease',
                   }}>
@@ -705,7 +729,7 @@ export default function ClientPortal() {
                 fontSize: '11px',
                 textTransform: 'uppercase',
                 letterSpacing: '0.25em',
-                color: 'rgba(255,244,227,0.35)',
+                color: 'rgba(240,230,224,0.35)',
                 margin: '0 0 12px 0',
               }}>
                 Start Here
@@ -716,11 +740,11 @@ export default function ClientPortal() {
                 fontWeight: 700,
                 fontStyle: 'italic',
                 margin: '0 0 8px 0',
-                color: '#FFF4E3',
+                color: '#F0E6E0',
               }}>
                 Welcome, {firstName}
               </h2>
-              <p style={{ fontSize: '15px', color: 'rgba(255,244,227,0.5)', margin: 0, lineHeight: 1.6 }}>
+              <p style={{ fontSize: '15px', color: 'rgba(240,230,224,0.5)', margin: 0, lineHeight: 1.6 }}>
                 {getSubtitle()}
               </p>
             </div>
@@ -736,14 +760,14 @@ export default function ClientPortal() {
                     fontWeight: 700,
                     fontStyle: 'italic',
                     margin: 0,
-                    color: '#FFF4E3',
+                    color: '#F0E6E0',
                   }}>
                     Review &amp; Sign Agreements
                   </h3>
                 </div>
                 <p style={{
                   fontSize: '14px',
-                  color: 'rgba(255,244,227,0.4)',
+                  color: 'rgba(240,230,224,0.4)',
                   margin: '0 0 24px 0',
                   lineHeight: 1.6,
                 }}>
@@ -760,13 +784,13 @@ export default function ClientPortal() {
                   }}
                   onMouseEnter={(e) => {
                     if (!updating) {
-                      e.currentTarget.style.background = 'rgba(234,154,97,0.2)';
-                      e.currentTarget.style.borderColor = 'rgba(234,154,97,0.5)';
+                      e.currentTarget.style.background = 'rgba(227,194,74,0.2)';
+                      e.currentTarget.style.borderColor = 'rgba(227,194,74,0.5)';
                     }
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'rgba(234,154,97,0.12)';
-                    e.currentTarget.style.borderColor = 'rgba(234,154,97,0.3)';
+                    e.currentTarget.style.background = 'rgba(227,194,74,0.12)';
+                    e.currentTarget.style.borderColor = 'rgba(227,194,74,0.3)';
                   }}
                 >
                   {updating ? 'Updating...' : 'Review & Sign'}
@@ -777,7 +801,7 @@ export default function ClientPortal() {
                       href={project.folder_link} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      style={{ fontSize: '13px', color: '#EA9A61', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px' }}
+                      style={{ fontSize: '13px', color: '#E3C24A', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px' }}
                     >
                       <span style={{ fontSize: '16px' }}>📄</span>
                       View Signed Agreement
@@ -798,7 +822,7 @@ export default function ClientPortal() {
                     fontWeight: 700,
                     fontStyle: 'italic',
                     margin: 0,
-                    color: '#FFF4E3',
+                    color: '#F0E6E0',
                   }}>
                     Invoice &amp; Payment
                   </h3>
@@ -807,7 +831,7 @@ export default function ClientPortal() {
                   <>
                     <p style={{
                       fontSize: '14px',
-                      color: 'rgba(255,244,227,0.4)',
+                      color: 'rgba(240,230,224,0.4)',
                       margin: '0 0 24px 0',
                       lineHeight: 1.6,
                     }}>
@@ -819,12 +843,12 @@ export default function ClientPortal() {
                       rel="noopener noreferrer"
                       style={ctaStyle}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'rgba(234,154,97,0.2)';
-                        e.currentTarget.style.borderColor = 'rgba(234,154,97,0.5)';
+                        e.currentTarget.style.background = 'rgba(227,194,74,0.2)';
+                        e.currentTarget.style.borderColor = 'rgba(227,194,74,0.5)';
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'rgba(234,154,97,0.12)';
-                        e.currentTarget.style.borderColor = 'rgba(234,154,97,0.3)';
+                        e.currentTarget.style.background = 'rgba(227,194,74,0.12)';
+                        e.currentTarget.style.borderColor = 'rgba(227,194,74,0.3)';
                       }}
                     >
                       Pay Securely via Stripe
@@ -833,7 +857,7 @@ export default function ClientPortal() {
                 ) : (
                   <p style={{
                     fontSize: '14px',
-                    color: 'rgba(255,244,227,0.4)',
+                    color: 'rgba(240,230,224,0.4)',
                     margin: 0,
                     lineHeight: 1.6,
                     animation: 'subtlePulse 2s ease-in-out infinite',
@@ -855,7 +879,7 @@ export default function ClientPortal() {
                     fontWeight: 700,
                     fontStyle: 'italic',
                     margin: 0,
-                    color: '#FFF4E3',
+                    color: '#F0E6E0',
                   }}>
                     What We Need From You
                   </h3>
@@ -875,14 +899,14 @@ export default function ClientPortal() {
                         alignItems: 'flex-start',
                         gap: '12px',
                         fontSize: '14px',
-                        color: 'rgba(255,244,227,0.6)',
+                        color: 'rgba(240,230,224,0.6)',
                         lineHeight: 1.6,
                       }}>
                         <span style={{
                           width: '6px',
                           height: '6px',
                           borderRadius: '50%',
-                          background: '#EA9A61',
+                          background: '#E3C24A',
                           flexShrink: 0,
                           marginTop: '7px',
                         }} />
@@ -891,7 +915,7 @@ export default function ClientPortal() {
                     ))}
                   </ul>
                 ) : (
-                  <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.4)', margin: 0, lineHeight: 1.6 }}>
+                  <p style={{ fontSize: '14px', color: 'rgba(240,230,224,0.4)', margin: 0, lineHeight: 1.6 }}>
                     No deliverables needed &mdash; we&apos;re all set.
                   </p>
                 )}
@@ -909,14 +933,14 @@ export default function ClientPortal() {
                     fontWeight: 700,
                     fontStyle: 'italic',
                     margin: 0,
-                    color: '#FFF4E3',
+                    color: '#F0E6E0',
                   }}>
                     Your Finished Project
                   </h3>
                 </div>
                 <p style={{
                   fontSize: '14px',
-                  color: 'rgba(255,244,227,0.4)',
+                  color: 'rgba(240,230,224,0.4)',
                   margin: '0 0 24px 0',
                   lineHeight: 1.6,
                 }}>
@@ -929,12 +953,12 @@ export default function ClientPortal() {
                     rel="noopener noreferrer"
                     style={ctaStyle}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'rgba(234,154,97,0.2)';
-                      e.currentTarget.style.borderColor = 'rgba(234,154,97,0.5)';
+                      e.currentTarget.style.background = 'rgba(227,194,74,0.2)';
+                      e.currentTarget.style.borderColor = 'rgba(227,194,74,0.5)';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'rgba(234,154,97,0.12)';
-                      e.currentTarget.style.borderColor = 'rgba(234,154,97,0.3)';
+                      e.currentTarget.style.background = 'rgba(227,194,74,0.12)';
+                      e.currentTarget.style.borderColor = 'rgba(227,194,74,0.3)';
                     }}
                   >
                     View Your Project
@@ -960,21 +984,21 @@ export default function ClientPortal() {
                 fontWeight: 700,
                 fontStyle: 'italic',
                 margin: 0,
-                color: '#FFF4E3',
+                color: '#F0E6E0',
               }}>
                Audio Tracks
                <span style={{ 
                  fontSize: '11px', 
-                 color: audioTracks.length >= 6 ? '#EA9A61' : 'rgba(255,244,227,0.35)',
+                 color: audioTracks.length >= 6 ? '#E3C24A' : 'rgba(240,230,224,0.35)',
                  marginLeft: '8px',
                  fontWeight: 400,
                  fontStyle: 'normal',
-                 fontFamily: "'Roboto', sans-serif"
+                 fontFamily: "'Neue Montreal', 'Roboto', sans-serif"
                }}>
                  ({audioTracks.length}/6 used)
                </span>
               </h3>
-              <div style={{ color: 'rgba(255,244,227,0.25)', transition: 'transform 0.3s ease', transform: isAudioTracksExpanded ? 'rotate(180deg)' : 'rotate(0)' }}>
+              <div style={{ color: 'rgba(240,230,224,0.25)', transition: 'transform 0.3s ease', transform: isAudioTracksExpanded ? 'rotate(180deg)' : 'rotate(0)' }}>
                 <ChevronDown size={18} />
               </div>
             </div>
@@ -988,10 +1012,10 @@ export default function ClientPortal() {
                   padding: '8px 16px',
                   borderRadius: '9999px',
                   background: audioTracks.length >= 6 ? 'rgba(255,255,255,0.02)' : 'transparent',
-                  border: '1px solid rgba(255,244,227,0.15)',
-                  color: audioTracks.length >= 6 ? 'rgba(255,244,227,0.2)' : '#FFF4E3',
+                  border: '1px solid rgba(240,230,224,0.15)',
+                  color: audioTracks.length >= 6 ? 'rgba(240,230,224,0.2)' : '#F0E6E0',
                   fontSize: '12px',
-                  fontFamily: "'Roboto', sans-serif",
+                  fontFamily: "'Neue Montreal', 'Roboto', sans-serif",
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em',
                   cursor: audioTracks.length >= 6 ? 'not-allowed' : 'pointer',
@@ -1001,13 +1025,13 @@ export default function ClientPortal() {
                 onMouseEnter={(e) => {
                     if (audioTracks.length < 6) {
                       e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
-                      e.currentTarget.style.borderColor = 'rgba(255,244,227,0.3)';
+                      e.currentTarget.style.borderColor = 'rgba(240,230,224,0.3)';
                     }
                 }}
                 onMouseLeave={(e) => {
                     if (audioTracks.length < 6) {
                       e.currentTarget.style.background = 'transparent';
-                      e.currentTarget.style.borderColor = 'rgba(255,244,227,0.15)';
+                      e.currentTarget.style.borderColor = 'rgba(240,230,224,0.15)';
                     }
                 }}
             >
@@ -1018,9 +1042,9 @@ export default function ClientPortal() {
           {isAudioTracksExpanded && (
             <div style={{ animation: 'confirmFadeIn 0.3s ease-out forwards' }}>
               {audioTracks.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '30px 0', border: '1px dashed rgba(255,244,227,0.1)', borderRadius: '12px' }}>
-                    <FileAudio size={32} strokeWidth={1.5} style={{ margin: '0 auto 12px auto', color: 'rgba(255,244,227,0.2)'}} />
-                    <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.4)', margin: 0 }}>No tracks uploaded yet.</p>
+                <div style={{ textAlign: 'center', padding: '30px 0', border: '1px dashed rgba(240,230,224,0.1)', borderRadius: '12px' }}>
+                    <FileAudio size={32} strokeWidth={1.5} style={{ margin: '0 auto 12px auto', color: 'rgba(240,230,224,0.2)'}} />
+                    <p style={{ fontSize: '14px', color: 'rgba(240,230,224,0.4)', margin: 0 }}>No tracks uploaded yet.</p>
                 </div>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -1031,7 +1055,7 @@ export default function ClientPortal() {
                           gap: '16px',
                           padding: '12px',
                           background: 'rgba(255,255,255,0.02)',
-                          border: '1px solid rgba(255,244,227,0.05)',
+                          border: '1px solid rgba(240,230,224,0.05)',
                           borderRadius: '12px',
                           position: 'relative'
                       }}>
@@ -1041,21 +1065,21 @@ export default function ClientPortal() {
                               height: '56px',
                               borderRadius: '8px',
                               background: 'rgba(0,0,0,0.4)',
-                              border: '1px solid rgba(255,244,227,0.1)',
+                              border: '1px solid rgba(240,230,224,0.1)',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
                               flexShrink: 0
                           }}>
-                              <FileAudio size={24} style={{ color: 'rgba(255,244,227,0.3)' }} />
+                              <FileAudio size={24} style={{ color: 'rgba(240,230,224,0.3)' }} />
                           </div>
                           
                           {/* Info & Player */}
                           <div style={{ flex: 1, minWidth: 0 }}>
-                            <h4 style={{ margin: '0 0 4px 0', fontSize: '14px', color: '#FFF4E3', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            <h4 style={{ margin: '0 0 4px 0', fontSize: '14px', color: '#F0E6E0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                 {track.title}
                             </h4>
-                            <span style={{ fontSize: '11px', color: 'rgba(255,244,227,0.3)' }}>
+                            <span style={{ fontSize: '11px', color: 'rgba(240,230,224,0.3)' }}>
                                 {new Date(track.created_at).toLocaleDateString()}
                             </span>
                              {/* Audio Element (Hidden technically, using custom controls) */}
@@ -1077,14 +1101,14 @@ export default function ClientPortal() {
                                      display: 'flex',
                                      alignItems: 'center',
                                      justifyContent: 'center',
-                                     background: 'rgba(234,154,97,0.1)',
-                                     border: '1px solid rgba(234,154,97,0.3)',
-                                     color: '#EA9A61',
+                                     background: 'rgba(227,194,74,0.1)',
+                                     border: '1px solid rgba(227,194,74,0.3)',
+                                     color: '#E3C24A',
                                      cursor: 'pointer',
                                      transition: 'all 0.2s'
                                  }}
-                                 onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(234,154,97,0.2)'}
-                                 onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(234,154,97,0.1)'}
+                                 onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(227,194,74,0.2)'}
+                                 onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(227,194,74,0.1)'}
                                >
                                  {currentlyPlaying === track.id ? <Pause size={18} fill="currentColor"/> : <Play size={18} fill="currentColor" style={{ marginLeft: '2px' }}/>}
                                </button>
@@ -1113,15 +1137,15 @@ export default function ClientPortal() {
                     fontWeight: 700,
                     fontStyle: 'italic',
                     margin: '0 0 2px 0',
-                    color: '#FFF4E3',
+                    color: '#F0E6E0',
                   }}>
                     Mixed Audio Tracks
                   </h3>
-                  <p style={{ fontSize: '11px', color: 'rgba(255,244,227,0.35)', margin: 0 }}>
+                  <p style={{ fontSize: '11px', color: 'rgba(240,230,224,0.35)', margin: 0 }}>
                     Mastered tracks uploaded by Admin
                   </p>
                 </div>
-                <div style={{ color: 'rgba(255,244,227,0.25)', transition: 'transform 0.3s ease', transform: isMixedTracksExpanded ? 'rotate(180deg)' : 'rotate(0)' }}>
+                <div style={{ color: 'rgba(240,230,224,0.25)', transition: 'transform 0.3s ease', transform: isMixedTracksExpanded ? 'rotate(180deg)' : 'rotate(0)' }}>
                   <ChevronDown size={18} />
                 </div>
               </div>
@@ -1131,9 +1155,9 @@ export default function ClientPortal() {
                   <div style={{
                     padding: '8px 16px',
                     borderRadius: '9999px',
-                    background: 'rgba(234,154,97,0.1)',
-                    border: '1px solid rgba(234,154,97,0.2)',
-                    color: '#EA9A61',
+                    background: 'rgba(227,194,74,0.1)',
+                    border: '1px solid rgba(227,194,74,0.2)',
+                    color: '#E3C24A',
                     fontSize: '11px',
                     fontWeight: 600,
                     textTransform: 'uppercase',
@@ -1142,7 +1166,7 @@ export default function ClientPortal() {
                     alignItems: 'center',
                     gap: '6px'
                   }}>
-                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#EA9A61', animation: 'subtlePulse 1.5s infinite' }} />
+                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#E3C24A', animation: 'subtlePulse 1.5s infinite' }} />
                     Review Pending
                   </div>
                 ) : revisions.length < 2 ? (
@@ -1155,10 +1179,10 @@ export default function ClientPortal() {
                       padding: '8px 16px',
                       borderRadius: '9999px',
                       background: 'transparent',
-                      border: '1px solid rgba(255,244,227,0.15)',
-                      color: '#FFF4E3',
+                      border: '1px solid rgba(240,230,224,0.15)',
+                      color: '#F0E6E0',
                       fontSize: '12px',
-                      fontFamily: "'Roboto', sans-serif",
+                      fontFamily: "'Neue Montreal', 'Roboto', sans-serif",
                       textTransform: 'uppercase',
                       letterSpacing: '0.05em',
                       cursor: 'pointer',
@@ -1166,11 +1190,11 @@ export default function ClientPortal() {
                     }}
                     onMouseEnter={(e) => {
                         e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
-                        e.currentTarget.style.borderColor = 'rgba(255,244,227,0.3)';
+                        e.currentTarget.style.borderColor = 'rgba(240,230,224,0.3)';
                     }}
                     onMouseLeave={(e) => {
                         e.currentTarget.style.background = 'transparent';
-                        e.currentTarget.style.borderColor = 'rgba(255,244,227,0.15)';
+                        e.currentTarget.style.borderColor = 'rgba(240,230,224,0.15)';
                     }}
                   >
                     <MessageSquare size={14} /> Request Review ({revisions.length}/2)
@@ -1180,8 +1204,8 @@ export default function ClientPortal() {
                     padding: '8px 16px',
                     borderRadius: '9999px',
                     background: 'rgba(255,255,255,0.03)',
-                    border: '1px solid rgba(255,244,227,0.1)',
-                    color: 'rgba(255,244,227,0.4)',
+                    border: '1px solid rgba(240,230,224,0.1)',
+                    color: 'rgba(240,230,224,0.4)',
                     fontSize: '11px',
                     fontWeight: 500,
                     textTransform: 'uppercase',
@@ -1201,25 +1225,25 @@ export default function ClientPortal() {
                     alignItems: 'center',
                     gap: '16px',
                     padding: '12px',
-                    background: 'rgba(234,154,97,0.03)',
-                    border: '1px solid rgba(234,154,97,0.1)',
+                    background: 'rgba(227,194,74,0.03)',
+                    border: '1px solid rgba(227,194,74,0.1)',
                     borderRadius: '12px',
                   }}>
                     <div style={{
                       width: '56px', height: '56px', borderRadius: '8px',
-                      background: 'rgba(234,154,97,0.1)',
-                      border: '1px solid rgba(234,154,97,0.2)',
+                      background: 'rgba(227,194,74,0.1)',
+                      border: '1px solid rgba(227,194,74,0.2)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       flexShrink: 0
                     }}>
-                      <Music2 size={24} style={{ color: '#EA9A61' }} />
+                      <Music2 size={24} style={{ color: '#E3C24A' }} />
                     </div>
                     
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <h4 style={{ margin: '0 0 4px 0', fontSize: '14px', color: '#FFF4E3', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <h4 style={{ margin: '0 0 4px 0', fontSize: '14px', color: '#F0E6E0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {track.title}
                       </h4>
-                      <span style={{ fontSize: '11px', color: 'rgba(255,244,227,0.3)' }}>
+                      <span style={{ fontSize: '11px', color: 'rgba(240,230,224,0.3)' }}>
                         Available since {new Date(track.created_at).toLocaleDateString()}
                       </span>
                       <audio 
@@ -1235,10 +1259,10 @@ export default function ClientPortal() {
                         style={{
                           width: '40px', height: '40px', borderRadius: '50%',
                           display: 'flex', alignItems: 'center', justifyContent: 'center',
-                          background: '#EA9A61', color: '#0A0A0A',
+                          background: '#E3C24A', color: '#0F0820',
                           cursor: 'pointer', transition: 'all 0.2s'
                         }}
-                        onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.boxShadow = '0 0 15px rgba(234,154,97,0.3)'; }}
+                        onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.boxShadow = '0 0 15px rgba(227,194,74,0.3)'; }}
                         onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = 'none'; }}
                       >
                         {currentlyPlaying === track.id ? <Pause size={18} fill="currentColor"/> : <Play size={18} fill="currentColor" style={{ marginLeft: '2px' }}/>}
@@ -1272,8 +1296,8 @@ export default function ClientPortal() {
            <div
              onClick={(e) => e.stopPropagation()}
              style={{
-               background: 'rgba(15,15,15,0.95)',
-               border: '1px solid rgba(255,244,227,0.08)',
+               background: 'rgba(15,8,32,0.95)',
+               border: '1px solid rgba(240,230,224,0.08)',
                borderRadius: '24px',
                padding: '40px',
                width: '90%',
@@ -1292,7 +1316,7 @@ export default function ClientPortal() {
                       right: '20px',
                       background: 'transparent',
                       border: 'none',
-                      color: 'rgba(255,244,227,0.4)',
+                      color: 'rgba(240,230,224,0.4)',
                       cursor: 'pointer',
                       padding: '4px'
                    }}
@@ -1306,7 +1330,7 @@ export default function ClientPortal() {
                fontFamily: 'Norwige, sans-serif',
                fontWeight: 700,
                fontStyle: 'italic',
-               color: '#FFF4E3',
+               color: '#F0E6E0',
                margin: '0 0 24px 0',
              }}>
                Upload Audio Track
@@ -1316,17 +1340,17 @@ export default function ClientPortal() {
                  {isConfirmingUpload ? (
                    <div style={{
                       padding: '24px',
-                      background: 'rgba(234,154,97,0.05)',
-                      border: '1px solid rgba(234,154,97,0.2)',
+                      background: 'rgba(227,194,74,0.05)',
+                      border: '1px solid rgba(227,194,74,0.2)',
                       borderRadius: '16px',
                       textAlign: 'center',
                       animation: 'confirmCardIn 0.3s ease-out'
                    }}>
-                      <UploadCloud size={32} style={{ color: '#EA9A61', marginBottom: '16px' }} />
-                      <h3 style={{ fontSize: '18px', color: '#FFF4E3', margin: '0 0 8px 0', fontFamily: 'Norwige, sans-serif', fontStyle: 'italic' }}>Confirm Upload</h3>
-                      <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.5)', lineHeight: 1.6, margin: '0 0 24px 0' }}>
-                         Are you sure you want to upload <strong style={{ color: '#FFF4E3' }}>{trackTitle}</strong>? 
-                         Once uploaded, audio tracks <span style={{ color: '#EA9A61' }}>cannot be deleted</span> from your portal.
+                      <UploadCloud size={32} style={{ color: '#E3C24A', marginBottom: '16px' }} />
+                      <h3 style={{ fontSize: '18px', color: '#F0E6E0', margin: '0 0 8px 0', fontFamily: 'Norwige, sans-serif', fontStyle: 'italic' }}>Confirm Upload</h3>
+                      <p style={{ fontSize: '14px', color: 'rgba(240,230,224,0.5)', lineHeight: 1.6, margin: '0 0 24px 0' }}>
+                         Are you sure you want to upload <strong style={{ color: '#F0E6E0' }}>{trackTitle}</strong>? 
+                         Once uploaded, audio tracks <span style={{ color: '#E3C24A' }}>cannot be deleted</span> from your portal.
                       </p>
                       
                       <div style={{ display: 'flex', gap: '12px' }}>
@@ -1337,9 +1361,9 @@ export default function ClientPortal() {
                               flex: 1,
                               padding: '12px',
                               borderRadius: '9999px',
-                              border: '1px solid rgba(255,244,227,0.1)',
+                              border: '1px solid rgba(240,230,224,0.1)',
                               background: 'transparent',
-                              color: 'rgba(255,244,227,0.5)',
+                              color: 'rgba(240,230,224,0.5)',
                               fontSize: '13px',
                               cursor: 'pointer'
                            }}
@@ -1353,8 +1377,8 @@ export default function ClientPortal() {
                               flex: 2,
                               padding: '12px',
                               borderRadius: '9999px',
-                              background: '#EA9A61',
-                              color: '#0A0A0A',
+                              background: '#E3C24A',
+                              color: '#0F0820',
                               border: 'none',
                               fontSize: '13px',
                               fontWeight: 600,
@@ -1369,7 +1393,7 @@ export default function ClientPortal() {
                    <>
                     {/* Audio File Picker */}
                     <div>
-                       <label style={{ display: 'block', fontSize: '13px', color: 'rgba(255,244,227,0.6)', marginBottom: '8px' }}>Audio File (Required)</label>
+                       <label style={{ display: 'block', fontSize: '13px', color: 'rgba(240,230,224,0.6)', marginBottom: '8px' }}>Audio File (Required)</label>
                        <div style={{ position: 'relative' }}>
                           <input 
                              type="file" 
@@ -1389,24 +1413,24 @@ export default function ClientPortal() {
                           />
                           <div style={{
                              padding: '24px',
-                             border: '1px dashed rgba(255,244,227,0.2)',
+                             border: '1px dashed rgba(240,230,224,0.2)',
                              borderRadius: '12px',
-                             background: audioFile ? 'rgba(234,154,97,0.05)' : 'rgba(0,0,0,0.3)',
-                             borderColor: audioFile ? 'rgba(234,154,97,0.3)' : 'rgba(255,244,227,0.2)',
+                             background: audioFile ? 'rgba(227,194,74,0.05)' : 'rgba(0,0,0,0.3)',
+                             borderColor: audioFile ? 'rgba(227,194,74,0.3)' : 'rgba(240,230,224,0.2)',
                              textAlign: 'center',
                              transition: 'all 0.2s',
                           }}>
                               {audioFile ? (
                                  <>
-                                    <FileAudio size={28} style={{ margin: '0 auto 8px auto', color: '#EA9A61' }} />
-                                    <p style={{ fontSize: '14px', color: '#FFF4E3', margin: '0 0 4px 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{audioFile.name}</p>
-                                    <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.4)', margin: 0 }}>Click to change file</p>
+                                    <FileAudio size={28} style={{ margin: '0 auto 8px auto', color: '#E3C24A' }} />
+                                    <p style={{ fontSize: '14px', color: '#F0E6E0', margin: '0 0 4px 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{audioFile.name}</p>
+                                    <p style={{ fontSize: '12px', color: 'rgba(240,230,224,0.4)', margin: 0 }}>Click to change file</p>
                                  </>
                               ) : (
                                  <>
-                                    <UploadCloud size={28} style={{ margin: '0 auto 8px auto', color: 'rgba(255,244,227,0.3)' }} />
-                                    <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.6)', margin: '0 0 4px 0' }}>Drag & drop or browse</p>
-                                    <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.3)', margin: 0 }}>MP3, WAV, FLAC</p>
+                                    <UploadCloud size={28} style={{ margin: '0 auto 8px auto', color: 'rgba(240,230,224,0.3)' }} />
+                                    <p style={{ fontSize: '14px', color: 'rgba(240,230,224,0.6)', margin: '0 0 4px 0' }}>Drag & drop or browse</p>
+                                    <p style={{ fontSize: '12px', color: 'rgba(240,230,224,0.3)', margin: 0 }}>MP3, WAV, FLAC</p>
                                  </>
                               )}
                           </div>
@@ -1415,7 +1439,7 @@ export default function ClientPortal() {
     
                     {/* Title Input */}
                     <div>
-                       <label style={{ display: 'block', fontSize: '13px', color: 'rgba(255,244,227,0.6)', marginBottom: '8px' }}>Track Title</label>
+                       <label style={{ display: 'block', fontSize: '13px', color: 'rgba(240,230,224,0.6)', marginBottom: '8px' }}>Track Title</label>
                        <input 
                           type="text" 
                           value={trackTitle}
@@ -1429,7 +1453,7 @@ export default function ClientPortal() {
     
                     {/* Notes Input */}
                     <div>
-                       <label style={{ display: 'block', fontSize: '13px', color: 'rgba(255,244,227,0.6)', marginBottom: '8px' }}>Notes</label>
+                       <label style={{ display: 'block', fontSize: '13px', color: 'rgba(240,230,224,0.6)', marginBottom: '8px' }}>Notes</label>
                        <textarea 
                           value={trackNotes}
                           onChange={(e) => setTrackNotes(e.target.value)}
@@ -1449,14 +1473,14 @@ export default function ClientPortal() {
                     <div style={{ marginTop: '12px' }}>
                         {isUploading ? (
                            <div>
-                               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: 'rgba(255,244,227,0.5)', marginBottom: '8px' }}>
+                               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: 'rgba(240,230,224,0.5)', marginBottom: '8px' }}>
                                   <span>Uploading...</span>
                                   <span>{uploadProgress}%</span>
                                </div>
-                               <div style={{ height: '6px', background: 'rgba(255,244,227,0.05)', borderRadius: '999px', overflow: 'hidden' }}>
+                               <div style={{ height: '6px', background: 'rgba(240,230,224,0.05)', borderRadius: '999px', overflow: 'hidden' }}>
                                    <div style={{ 
                                       height: '100%', 
-                                      background: '#EA9A61', 
+                                      background: '#E3C24A', 
                                       width: `${uploadProgress}%`,
                                       transition: 'width 0.3s ease'
                                    }} />
@@ -1470,11 +1494,11 @@ export default function ClientPortal() {
                                  width: '100%',
                                  padding: '16px',
                                  borderRadius: '12px',
-                                 background: (!audioFile || !trackTitle || audioTracks.length >= 6) ? 'rgba(234,154,97,0.1)' : '#EA9A61',
-                                 color: (!audioFile || !trackTitle || audioTracks.length >= 6) ? 'rgba(234,154,97,0.3)' : '#0A0A0A',
+                                 background: (!audioFile || !trackTitle || audioTracks.length >= 6) ? 'rgba(227,194,74,0.1)' : '#E3C24A',
+                                 color: (!audioFile || !trackTitle || audioTracks.length >= 6) ? 'rgba(227,194,74,0.3)' : '#0F0820',
                                  border: 'none',
                                  fontSize: '15px',
-                                 fontFamily: "'Roboto', sans-serif",
+                                 fontFamily: "'Neue Montreal', 'Roboto', sans-serif",
                                  fontWeight: 600,
                                  cursor: (!audioFile || !trackTitle || audioTracks.length >= 6) ? 'not-allowed' : 'pointer',
                                  transition: 'all 0.2s',
@@ -1511,8 +1535,8 @@ export default function ClientPortal() {
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              background: 'rgba(18,18,18,0.95)',
-              border: '1px solid rgba(255,244,227,0.1)',
+              background: 'rgba(15,8,32,0.95)',
+              border: '1px solid rgba(240,230,224,0.1)',
               borderRadius: '20px',
               padding: '40px',
               maxWidth: '380px',
@@ -1525,7 +1549,7 @@ export default function ClientPortal() {
               fontSize: '11px',
               textTransform: 'uppercase',
               letterSpacing: '0.25em',
-              color: 'rgba(255,244,227,0.35)',
+              color: 'rgba(240,230,224,0.35)',
               marginBottom: '12px',
             }}>
               Confirm
@@ -1535,16 +1559,16 @@ export default function ClientPortal() {
               fontFamily: 'Norwige, sans-serif',
               fontWeight: 700,
               fontStyle: 'italic',
-              color: '#FFF4E3',
+              color: '#F0E6E0',
               margin: '0 0 8px 0',
             }}>
               Sign out?
             </h2>
             <p style={{
               fontSize: '14px',
-              color: 'rgba(255,244,227,0.4)',
+              color: 'rgba(240,230,224,0.4)',
               marginBottom: '32px',
-              fontFamily: "'Roboto', sans-serif",
+              fontFamily: "'Neue Montreal', 'Roboto', sans-serif",
             }}>
               You will need to sign in again to access your portal.
             </p>
@@ -1556,11 +1580,11 @@ export default function ClientPortal() {
                   flex: 1,
                   padding: '12px 20px',
                   borderRadius: '9999px',
-                  border: '1px solid rgba(255,244,227,0.12)',
+                  border: '1px solid rgba(240,230,224,0.12)',
                   background: 'rgba(255,255,255,0.04)',
-                  color: '#FFF4E3',
+                  color: '#F0E6E0',
                   fontSize: '13px',
-                  fontFamily: "'Roboto', sans-serif",
+                  fontFamily: "'Neue Montreal', 'Roboto', sans-serif",
                   fontWeight: 500,
                   letterSpacing: '0.05em',
                   cursor: 'pointer',
@@ -1568,11 +1592,11 @@ export default function ClientPortal() {
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
-                  e.currentTarget.style.borderColor = 'rgba(255,244,227,0.2)';
+                  e.currentTarget.style.borderColor = 'rgba(240,230,224,0.2)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
-                  e.currentTarget.style.borderColor = 'rgba(255,244,227,0.12)';
+                  e.currentTarget.style.borderColor = 'rgba(240,230,224,0.12)';
                 }}
               >
                 Cancel
@@ -1584,23 +1608,23 @@ export default function ClientPortal() {
                   flex: 1,
                   padding: '12px 20px',
                   borderRadius: '9999px',
-                  border: '1px solid rgba(234,154,97,0.3)',
-                  background: 'rgba(234,154,97,0.12)',
-                  color: '#EA9A61',
+                  border: '1px solid rgba(227,194,74,0.3)',
+                  background: 'rgba(227,194,74,0.12)',
+                  color: '#E3C24A',
                   fontSize: '13px',
-                  fontFamily: "'Roboto', sans-serif",
+                  fontFamily: "'Neue Montreal', 'Roboto', sans-serif",
                   fontWeight: 600,
                   letterSpacing: '0.05em',
                   cursor: 'pointer',
                   transition: 'all 0.2s',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(234,154,97,0.2)';
-                  e.currentTarget.style.borderColor = 'rgba(234,154,97,0.5)';
+                  e.currentTarget.style.background = 'rgba(227,194,74,0.2)';
+                  e.currentTarget.style.borderColor = 'rgba(227,194,74,0.5)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(234,154,97,0.12)';
-                  e.currentTarget.style.borderColor = 'rgba(234,154,97,0.3)';
+                  e.currentTarget.style.background = 'rgba(227,194,74,0.12)';
+                  e.currentTarget.style.borderColor = 'rgba(227,194,74,0.3)';
                 }}
               >
                 Sign Out
@@ -1630,8 +1654,8 @@ export default function ClientPortal() {
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              background: 'rgba(15,15,15,0.95)',
-              border: '1px solid rgba(255,244,227,0.08)',
+              background: 'rgba(15,8,32,0.95)',
+              border: '1px solid rgba(240,230,224,0.08)',
               borderRadius: '24px',
               padding: '40px',
               width: '90%',
@@ -1645,7 +1669,7 @@ export default function ClientPortal() {
               disabled={isSubmittingRevision}
               style={{
                 position: 'absolute', top: '24px', right: '24px',
-                background: 'transparent', border: 'none', color: 'rgba(255,244,227,0.4)',
+                background: 'transparent', border: 'none', color: 'rgba(240,230,224,0.4)',
                 cursor: 'pointer', padding: '4px'
               }}
             >
@@ -1653,7 +1677,7 @@ export default function ClientPortal() {
             </button>
 
             <div style={{ marginBottom: '24px' }}>
-              <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.2em', color: 'rgba(254,154,97,0.6)', marginBottom: '8px' }}>
+              <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.2em', color: 'rgba(227,194,74,0.6)', marginBottom: '8px' }}>
                 Revision {revisions.length + 1} of 2
               </p>
               <h2 style={{
@@ -1661,7 +1685,7 @@ export default function ClientPortal() {
                 fontFamily: 'Norwige, sans-serif',
                 fontWeight: 700,
                 fontStyle: 'italic',
-                color: '#FFF4E3',
+                color: '#F0E6E0',
                 margin: 0,
               }}>
                 Request a Review
@@ -1670,7 +1694,7 @@ export default function ClientPortal() {
 
             <form onSubmit={handleRevisionSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '13px', color: 'rgba(255,244,227,0.6)', marginBottom: '12px' }}>
+                <label style={{ display: 'block', fontSize: '13px', color: 'rgba(240,230,224,0.6)', marginBottom: '12px' }}>
                   What would you like us to change? Please be specific.
                 </label>
                 <textarea 
@@ -1697,11 +1721,11 @@ export default function ClientPortal() {
                   width: '100%',
                   padding: '16px',
                   borderRadius: '12px',
-                  background: (!revisionNotes.trim() || isSubmittingRevision) ? 'rgba(234,154,97,0.1)' : '#EA9A61',
-                  color: (!revisionNotes.trim() || isSubmittingRevision) ? 'rgba(234,154,97,0.3)' : '#0A0A0A',
+                  background: (!revisionNotes.trim() || isSubmittingRevision) ? 'rgba(227,194,74,0.1)' : '#E3C24A',
+                  color: (!revisionNotes.trim() || isSubmittingRevision) ? 'rgba(227,194,74,0.3)' : '#0F0820',
                   border: 'none',
                   fontSize: '15px',
-                  fontFamily: "'Roboto', sans-serif",
+                  fontFamily: "'Neue Montreal', 'Roboto', sans-serif",
                   fontWeight: 600,
                   cursor: (!revisionNotes.trim() || isSubmittingRevision) ? 'not-allowed' : 'pointer',
                   transition: 'all 0.2s',
@@ -1710,7 +1734,7 @@ export default function ClientPortal() {
                 {isSubmittingRevision ? 'Submitting...' : 'Submit Revision Request'}
               </button>
               
-              <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.3)', textAlign: 'center', margin: 0 }}>
+              <p style={{ fontSize: '12px', color: 'rgba(240,230,224,0.3)', textAlign: 'center', margin: 0 }}>
                 This will count as revision {revisions.length + 1} out of 2.
               </p>
             </form>

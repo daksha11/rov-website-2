@@ -20,10 +20,11 @@ import { ed } from "./editorial";
 const LOGO_FROM = encodeURI("/ctrla/Logos/CTRL A_flat logo_white.svg");
 const LOGO_TO = encodeURI("/ctrla/Logos/CTRL A_3D logo_white.svg");
 
-// One subtle ground shift as the morph happens (void → ink). Both are dark
-// enough that the white logo stays legible throughout.
+// One subtle ground shift as the morph happens (void → panel). Both stay dark
+// so the white logo and light caption read cleanly throughout. (Note: ed.ink is
+// now a LIGHT cream, so it must NOT be used as a loader ground.)
 const BG_FROM = ed.void;
-const BG_TO = ed.ink;
+const BG_TO = ed.panel;
 
 // Cosmic set decoration — used sparingly, pinned to the edges so the
 // centre stays clear for the logo morph. Each drifts on its own loop.

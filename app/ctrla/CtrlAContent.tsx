@@ -11,7 +11,6 @@ import ShootingStars from "@/components/ui/shooting-stars";
 import { ThreeToolkits } from "./_components/Toolkits";
 import Cookbook from "./_components/Cookbook";
 import { DreamAsiaTeaser } from "./_components/DreamAsiaSections";
-import { FloatingAsset, COSMIC } from "./_components/CosmicAccents";
 import { ArtistShowcase, OnRepeat, ArtForm, BrandKitFeature, CondensedEvents, VueClose } from "./_components/IssueSections";
 import { ed, Bleed, Rule, Label, Kicker } from "./_components/editorial";
 import { issueMeta } from "./data";
@@ -552,16 +551,10 @@ export default function CtrlAContent() {
           ───────────────────────────────────────────── */}
 
       {/* The CTRL-A toolkits — Music / Web Dev / Design */}
-      <div className="ctrla-cosmic-wrap">
-        <ThreeToolkits />
-        <FloatingAsset src={COSMIC.planets} motion="bob" bottom="9%" left="-30px" size="clamp(80px,10vw,158px)" driftFrom={-28} driftTo={34} opacity={0.5} />
-      </div>
+      <ThreeToolkits />
 
       {/* Standing feature — recurs every volume */}
-      <div className="ctrla-cosmic-wrap">
-        <BrandKitFeature />
-        <FloatingAsset src={COSMIC.galaxy} motion="spin" top="-3%" right="-44px" size="clamp(130px,17vw,280px)" driftFrom={22} driftTo={-22} opacity={0.34} />
-      </div>
+      <BrandKitFeature />
 
       <StatBand />
 
@@ -570,35 +563,22 @@ export default function CtrlAContent() {
           ───────────────────────────────────────────── */}
 
       {/* The deep feature — compact teaser; full story at /ctrla/dreamasia */}
-      <div className="ctrla-cosmic-wrap">
-        <DreamAsiaTeaser />
-        <FloatingAsset src={COSMIC.saturn} motion="spin" top="7%" right="-34px" size="clamp(96px,13vw,200px)" driftFrom={42} driftTo={-34} opacity={0.62} />
-      </div>
+      <DreamAsiaTeaser />
 
       {/* Taste — the art we can't stop thinking about */}
       <ArtistShowcase />
 
       {/* On Repeat — what's soundtracking the studio this volume */}
-      <div className="ctrla-cosmic-wrap">
-        <OnRepeat />
-        <FloatingAsset src={COSMIC.comet} motion="sway" top="8%" left="-26px" size="clamp(60px,8vw,120px)" driftFrom={-34} driftTo={28} opacity={0.42} />
-      </div>
+      <OnRepeat />
 
       {/* Form of the Volume — a rotating craft (Vol.01: kintsugi) */}
       <ArtForm />
 
       {/* The Cookbook — feeding the maker, on no time or budget */}
-      <div className="ctrla-cosmic-wrap">
-        <Cookbook />
-        <FloatingAsset src={COSMIC.comet} motion="sway" top="9%" right="-26px" size="clamp(70px,9vw,140px)" driftFrom={40} driftTo={-30} opacity={0.5} />
-      </div>
+      <Cookbook />
 
       {/* The city — World Cup 26, Atlanta */}
-      <div className="ctrla-cosmic-wrap">
-        <CondensedEvents />
-        <FloatingAsset src={COSMIC.spaceship} motion="bob" top="11%" right="-6px" size="clamp(58px,8vw,112px)" driftFrom={56} driftTo={-56} opacity={0.72} />
-        <FloatingAsset src={COSMIC.sideLines2} motion="sway" bottom="7%" left="-22px" size="clamp(96px,12vw,188px)" driftFrom={-22} driftTo={26} opacity={0.42} />
-      </div>
+      <CondensedEvents />
 
       <VueClose />
 

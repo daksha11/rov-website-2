@@ -699,36 +699,36 @@ export default function AdminDashboard() {
 
   const cardStyle: React.CSSProperties = {
     background: 'rgba(255,255,255,0.03)',
-    border: '1px solid rgba(255,244,227,0.08)',
+    border: '1px solid rgba(240,230,224,0.08)',
     borderRadius: '16px',
     padding: '32px',
   };
 
   if (loading) {
     return (
-      <div style={{ padding: '50px', background: '#0A0A0A', color: '#FFF4E3', minHeight: '100vh', fontFamily: "'Roboto', sans-serif" }}>
-        <p style={{ color: 'rgba(255,244,227,0.5)' }}>Loading the command center...</p>
+      <div className="dash-ground" style={{ padding: '50px', color: '#F0E6E0', minHeight: '100vh', fontFamily: "'Neue Montreal', 'Roboto', sans-serif" }}>
+        <p style={{ color: 'rgba(240,230,224,0.5)' }}>Loading the command center...</p>
       </div>
     );
   }
 
   return (
-    <main style={{ background: '#0A0A0A', color: '#FFF4E3', minHeight: '100vh', fontFamily: "'Roboto', sans-serif" }}>
+    <main className="dash-ground" style={{ color: '#F0E6E0', minHeight: '100vh', fontFamily: "'Neue Montreal', 'Roboto', sans-serif" }}>
 
       {/* Welcome greeting overlay */}
       {showGreeting && (
         <div style={{
           position: 'fixed', inset: 0, zIndex: 9999,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: 'rgba(10,10,10,0.85)',
+          background: 'rgba(15,8,32,0.85)',
           backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)',
           opacity: greetingFading ? 0 : 1, transition: 'opacity 0.6s ease-out',
         }}>
           <div style={{ textAlign: 'center', animation: 'portalGreetIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards' }}>
-            <p style={{ fontSize: '14px', textTransform: 'uppercase', letterSpacing: '0.3em', color: 'rgba(255,244,227,0.4)', marginBottom: '16px' }}>
+            <p style={{ fontSize: '14px', textTransform: 'uppercase', letterSpacing: '0.3em', color: 'rgba(240,230,224,0.4)', marginBottom: '16px' }}>
               Welcome back
             </p>
-            <h1 style={{ fontSize: 'clamp(36px, 8vw, 72px)', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: 0, color: '#FFF4E3' }}>
+            <h1 style={{ fontSize: 'clamp(36px, 8vw, 72px)', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: 0, color: '#F0E6E0' }}>
               {fullName}
             </h1>
           </div>
@@ -771,12 +771,12 @@ export default function AdminDashboard() {
         position: 'sticky', top: 0, zIndex: 50,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '20px clamp(20px, 5vw, 60px)',
-        borderBottom: '1px solid rgba(255,244,227,0.08)',
-        background: 'rgba(10,10,10,0.6)',
+        borderBottom: '1px solid rgba(240,230,224,0.08)',
+        background: 'rgba(15,8,32,0.6)',
         backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
       }}>
         <div>
-          <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(255,244,227,0.35)', margin: 0 }}>
+          <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(240,230,224,0.35)', margin: 0 }}>
             Admin Command Center
           </p>
         </div>
@@ -787,14 +787,14 @@ export default function AdminDashboard() {
             type="button"
             style={{
               padding: '10px 28px', borderRadius: '9999px',
-              border: menuOpen ? '1px solid rgba(255,244,227,0.25)' : '1px solid rgba(255,244,227,0.12)',
+              border: menuOpen ? '1px solid rgba(240,230,224,0.25)' : '1px solid rgba(240,230,224,0.12)',
               background: menuOpen ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.04)',
-              color: '#FFF4E3', fontSize: '12px', fontFamily: "'Roboto', sans-serif",
+              color: '#F0E6E0', fontSize: '12px', fontFamily: "'Neue Montreal', 'Roboto', sans-serif",
               fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase',
               cursor: 'pointer', transition: 'all 0.3s ease',
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.borderColor = 'rgba(255,244,227,0.25)'; }}
-            onMouseLeave={(e) => { if (!menuOpen) { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor = 'rgba(255,244,227,0.12)'; } }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.borderColor = 'rgba(240,230,224,0.25)'; }}
+            onMouseLeave={(e) => { if (!menuOpen) { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor = 'rgba(240,230,224,0.12)'; } }}
           >
             {fullName}
           </button>
@@ -802,17 +802,17 @@ export default function AdminDashboard() {
           {menuOpen && (
             <div style={{
               position: 'absolute', top: 'calc(100% + 8px)', right: 0,
-              minWidth: '180px', background: 'rgba(15,15,15,0.95)',
+              minWidth: '180px', background: 'rgba(15,8,32,0.95)',
               backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255,244,227,0.1)', borderRadius: '12px',
+              border: '1px solid rgba(240,230,224,0.1)', borderRadius: '12px',
               padding: '6px', animation: 'portalMenuIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards',
             }}>
               <button
                 onClick={() => { setMenuOpen(false); setConfirmOpen(true); }}
                 type="button"
-                style={{ width: '100%', padding: '10px 14px', background: 'transparent', border: 'none', color: 'rgba(255,244,227,0.5)', fontSize: '13px', fontFamily: "'Roboto', sans-serif", textAlign: 'left', cursor: 'pointer', borderRadius: '8px', transition: 'all 0.2s' }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = '#FFF4E3'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'rgba(255,244,227,0.5)'; }}
+                style={{ width: '100%', padding: '10px 14px', background: 'transparent', border: 'none', color: 'rgba(240,230,224,0.5)', fontSize: '13px', fontFamily: "'Neue Montreal', 'Roboto', sans-serif", textAlign: 'left', cursor: 'pointer', borderRadius: '8px', transition: 'all 0.2s' }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = '#F0E6E0'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'rgba(240,230,224,0.5)'; }}
               >
                 Sign Out
               </button>
@@ -820,6 +820,30 @@ export default function AdminDashboard() {
           )}
         </div>
       </header>
+
+      {/* Hero — the signature CTRL-A sunset band */}
+      <section className="dash-hero" style={{
+        height: 'clamp(150px, 22vw, 240px)',
+        display: 'flex', alignItems: 'flex-end',
+        borderBottom: '1px solid rgba(240,230,224,0.1)',
+      }}>
+        <div className="ctrla-grain" style={{ zIndex: 1 }} />
+        <span style={{
+          position: 'absolute', top: 18, right: 'clamp(20px, 5vw, 60px)', zIndex: 2,
+          fontSize: '11px', letterSpacing: '0.22em', textTransform: 'uppercase',
+          color: '#E3C24A', fontWeight: 600,
+        }}>
+          A ROV Creative Platform
+        </span>
+        <div style={{ position: 'relative', zIndex: 2, width: '100%', maxWidth: '860px', margin: '0 auto', padding: '0 clamp(20px, 5vw, 60px) clamp(20px, 4vw, 34px)' }}>
+          <p style={{ margin: 0, fontSize: '11px', letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(240,230,224,0.72)', textShadow: '0 1px 10px rgba(15,8,32,0.55)' }}>
+            Range of View Studios
+          </p>
+          <h1 style={{ margin: '6px 0 0', fontFamily: "'Instrument Serif', Georgia, serif", fontStyle: 'italic', fontWeight: 400, fontSize: 'clamp(34px, 6vw, 60px)', lineHeight: 1, color: '#F0E6E0', textShadow: '0 2px 20px rgba(15,8,32,0.65)' }}>
+            Command Center
+          </h1>
+        </div>
+      </section>
 
       {/* Main Content */}
       <div style={{
@@ -836,8 +860,8 @@ export default function AdminDashboard() {
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
           gap: '1px',
-          background: 'rgba(255,244,227,0.06)',
-          border: '1px solid rgba(255,244,227,0.06)',
+          background: 'rgba(240,230,224,0.06)',
+          border: '1px solid rgba(240,230,224,0.06)',
           borderRadius: '16px',
           overflow: 'hidden',
           animation: 'cardFadeIn 0.4s ease-out forwards',
@@ -860,10 +884,10 @@ export default function AdminDashboard() {
             { label: 'Tracks Submitted', value: submissions.length, isLoading: loadingTracks, urgent: false },
           ]).map(({ label, value, isLoading, urgent }) => (
             <div key={label} style={{ padding: '22px 24px', background: 'rgba(255,255,255,0.02)' }}>
-              <p style={{ margin: '0 0 5px 0', fontSize: '32px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', color: urgent ? '#EA9A61' : '#FFF4E3', lineHeight: 1 }}>
+              <p style={{ margin: '0 0 5px 0', fontSize: '32px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', color: urgent ? '#E3C24A' : '#F0E6E0', lineHeight: 1 }}>
                 {isLoading ? '—' : value}
               </p>
-              <p style={{ margin: 0, fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.18em', color: urgent ? 'rgba(234,154,97,0.6)' : 'rgba(255,244,227,0.3)', fontWeight: 500 }}>
+              <p style={{ margin: 0, fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.18em', color: urgent ? 'rgba(227,194,74,0.6)' : 'rgba(240,230,224,0.3)', fontWeight: 500 }}>
                 {label}
               </p>
             </div>
@@ -876,8 +900,8 @@ export default function AdminDashboard() {
             display: 'flex',
             gap: '4px',
             padding: '6px',
-            background: 'linear-gradient(135deg, #1A0D08 0%, #2E1A0E 50%, #3D1C10 100%)',
-            border: '1px solid rgba(255,244,227,0.08)',
+            background: 'linear-gradient(135deg, #0F0820 0%, #24123A 50%, #4E3D73 100%)',
+            border: '1px solid rgba(240,230,224,0.08)',
             borderRadius: '16px',
             overflow: 'hidden',
           }}>
@@ -889,10 +913,10 @@ export default function AdminDashboard() {
                   flex: 1,
                   padding: '10px 16px',
                   borderRadius: '10px',
-                  background: activeTab === tab ? 'linear-gradient(135deg, #FFF4E3 0%, #EA9A61 45%, #90422C 100%)' : 'transparent',
-                  color: activeTab === tab ? '#3B2114' : 'rgba(255,244,227,0.5)',
+                  background: activeTab === tab ? 'linear-gradient(135deg, #F0E6E0 0%, #E3C24A 45%, #A56A67 100%)' : 'transparent',
+                  color: activeTab === tab ? '#0F0820' : 'rgba(240,230,224,0.5)',
                   fontSize: '12px',
-                  fontFamily: "'Roboto', sans-serif",
+                  fontFamily: "'Neue Montreal', 'Roboto', sans-serif",
                   fontWeight: activeTab === tab ? 600 : 400,
                   letterSpacing: '0.12em',
                   textTransform: 'uppercase',
@@ -900,10 +924,10 @@ export default function AdminDashboard() {
                   transition: 'all 0.2s ease',
                   outline: 'none',
                   border: '1px solid transparent',
-                  boxShadow: activeTab === tab ? '0 2px 16px rgba(234,154,97,0.35)' : 'none',
+                  boxShadow: activeTab === tab ? '0 2px 16px rgba(227,194,74,0.35)' : 'none',
                 }}
-                onMouseEnter={(e) => { if (activeTab !== tab) { e.currentTarget.style.color = 'rgba(255,244,227,0.75)'; e.currentTarget.style.background = 'rgba(255,255,255,0.07)'; } }}
-                onMouseLeave={(e) => { if (activeTab !== tab) { e.currentTarget.style.color = 'rgba(255,244,227,0.35)'; e.currentTarget.style.background = 'transparent'; } }}
+                onMouseEnter={(e) => { if (activeTab !== tab) { e.currentTarget.style.color = 'rgba(240,230,224,0.75)'; e.currentTarget.style.background = 'rgba(255,255,255,0.07)'; } }}
+                onMouseLeave={(e) => { if (activeTab !== tab) { e.currentTarget.style.color = 'rgba(240,230,224,0.35)'; e.currentTarget.style.background = 'transparent'; } }}
               >
                 <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '7px' }}>
                   {tab === 'client' ? <Users size={13} /> : tab === 'sound' ? <Music2 size={13} /> : <User size={13} />}
@@ -916,22 +940,22 @@ export default function AdminDashboard() {
 
         {/* ── Mixed Audio Revisions (Pending Only) ── */}
         {activeTab === 'sound' && allRevisions.some(r => r.status === 'pending') && (
-          <div style={{ ...cardStyle, animation: 'cardFadeIn 0.4s ease-out both', border: '1px solid rgba(234,154,97,0.45)', boxShadow: '0 0 0 1px rgba(234,154,97,0.08), 0 4px 24px rgba(166,77,43,0.12)' }}>
+          <div style={{ ...cardStyle, animation: 'cardFadeIn 0.4s ease-out both', border: '1px solid rgba(227,194,74,0.45)', boxShadow: '0 0 0 1px rgba(227,194,74,0.08), 0 4px 24px rgba(78,61,115,0.12)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(59,33,20,0.4)' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #A56A67 0%, #24123A 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(36,18,58,0.4)' }}>
                   <span style={{ fontSize: '16px', lineHeight: 1 }}>📢</span>
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#FFF4E3' }}>
+                  <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#F0E6E0' }}>
                     Pending Revisions
                   </h3>
-                  <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.35)', margin: 0 }}>
+                  <p style={{ fontSize: '12px', color: 'rgba(240,230,224,0.35)', margin: 0 }}>
                     Clients awaiting review updates
                   </p>
                 </div>
               </div>
-              <div style={{ padding: '4px 12px', borderRadius: '9999px', background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)', color: '#FFF4E3', fontSize: '13px', fontWeight: 700, boxShadow: '0 2px 10px rgba(166,77,43,0.4)' }}>
+              <div style={{ padding: '4px 12px', borderRadius: '9999px', background: 'linear-gradient(135deg, #F2DD93 0%, #E3C24A 50%, #CDA63C 100%)', color: '#0F0820', fontSize: '13px', fontWeight: 700, boxShadow: '0 2px 10px rgba(78,61,115,0.4)' }}>
                 {allRevisions.filter(r => r.status === 'pending').length} pending
               </div>
             </div>
@@ -943,8 +967,8 @@ export default function AdminDashboard() {
                 return (
                   <div key={rev.id} style={{
                     padding: '20px',
-                    background: 'rgba(234,154,97,0.05)',
-                    border: '1px solid rgba(234,154,97,0.15)',
+                    background: 'rgba(227,194,74,0.05)',
+                    border: '1px solid rgba(227,194,74,0.15)',
                     borderRadius: '16px',
                     display: 'flex',
                     flexDirection: 'column',
@@ -952,20 +976,20 @@ export default function AdminDashboard() {
                   }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <div>
-                        <h4 style={{ margin: '0 0 2px 0', fontSize: '15px', color: '#FFF4E3', fontWeight: 600 }}>
+                        <h4 style={{ margin: '0 0 2px 0', fontSize: '15px', color: '#F0E6E0', fontWeight: 600 }}>
                           {client?.full_name || 'Loading...'}
                         </h4>
-                        <p style={{ margin: 0, fontSize: '11px', color: '#EA9A61', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        <p style={{ margin: 0, fontSize: '11px', color: '#E3C24A', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                           Revision {rev.revision_number}
                         </p>
                       </div>
-                      <span style={{ fontSize: '10px', color: 'rgba(255,244,227,0.3)' }}>
+                      <span style={{ fontSize: '10px', color: 'rgba(240,230,224,0.3)' }}>
                         {new Date(rev.created_at).toLocaleDateString()}
                       </span>
                     </div>
 
                     <p style={{
-                      margin: 0, fontSize: '13px', color: 'rgba(255,244,227,0.7)',
+                      margin: 0, fontSize: '13px', color: 'rgba(240,230,224,0.7)',
                       lineHeight: 1.5, background: 'rgba(0,0,0,0.2)',
                       padding: '12px', borderRadius: '8px', fontStyle: 'italic'
                     }}>
@@ -989,15 +1013,15 @@ export default function AdminDashboard() {
                         }}
                         style={{
                           flex: 1, padding: '12px', borderRadius: '9999px',
-                          background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)',
-                          color: '#FFF4E3',
+                          background: 'linear-gradient(135deg, #A56A67 0%, #24123A 100%)',
+                          color: '#F0E6E0',
                           border: 'none', fontSize: '12px', fontWeight: 700,
                           cursor: 'pointer', transition: 'all 0.2s',
                           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-                          boxShadow: '0 2px 10px rgba(59,33,20,0.4)',
+                          boxShadow: '0 2px 10px rgba(36,18,58,0.4)',
                         }}
-                        onMouseEnter={(e) => { e.currentTarget.style.filter = 'brightness(1.15)'; e.currentTarget.style.boxShadow = '0 4px 18px rgba(144,66,44,0.45)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.boxShadow = '0 2px 10px rgba(59,33,20,0.4)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                        onMouseEnter={(e) => { e.currentTarget.style.filter = 'brightness(1.15)'; e.currentTarget.style.boxShadow = '0 4px 18px rgba(165,106,103,0.45)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.boxShadow = '0 2px 10px rgba(36,18,58,0.4)'; e.currentTarget.style.transform = 'translateY(0)'; }}
                       >
                         <UploadCloud size={14} /> Upload Final Track
                       </button>
@@ -1015,14 +1039,14 @@ export default function AdminDashboard() {
           {/* Section header */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,244,227,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,244,227,0.4)' }}>
+              <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(240,230,224,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(240,230,224,0.4)' }}>
                 <FileAudio size={16} />
               </div>
               <div>
-                <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#FFF4E3' }}>
+                <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#F0E6E0' }}>
                   Audio Submissions
                 </h3>
-                <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.35)', margin: 0 }}>All client-uploaded tracks</p>
+                <p style={{ fontSize: '12px', color: 'rgba(240,230,224,0.35)', margin: 0 }}>All client-uploaded tracks</p>
               </div>
             </div>
             {/* Count badge */}
@@ -1030,12 +1054,12 @@ export default function AdminDashboard() {
               <div style={{
                 padding: '4px 14px',
                 borderRadius: '9999px',
-                background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)',
+                background: 'linear-gradient(135deg, #A56A67 0%, #24123A 100%)',
                 border: 'none',
-                color: '#FFF4E3',
+                color: '#F0E6E0',
                 fontSize: '13px',
                 fontWeight: 600,
-                boxShadow: '0 2px 8px rgba(59,33,20,0.35)',
+                boxShadow: '0 2px 8px rgba(36,18,58,0.35)',
               }}>
                 {groupedSubmissions.length} {groupedSubmissions.length === 1 ? 'client' : 'clients'}
               </div>
@@ -1047,18 +1071,18 @@ export default function AdminDashboard() {
             <div style={{ textAlign: 'center', padding: '48px 0' }}>
               <div style={{
                 width: '28px', height: '28px', borderRadius: '50%',
-                border: '2px solid rgba(255,244,227,0.08)',
-                borderTop: '2px solid rgba(234,154,97,0.6)',
+                border: '2px solid rgba(240,230,224,0.08)',
+                borderTop: '2px solid rgba(227,194,74,0.6)',
                 margin: '0 auto 12px auto',
                 animation: 'spin 0.8s linear infinite',
               }} />
-              <p style={{ fontSize: '13px', color: 'rgba(255,244,227,0.3)', margin: 0 }}>Loading submissions...</p>
+              <p style={{ fontSize: '13px', color: 'rgba(240,230,224,0.3)', margin: 0 }}>Loading submissions...</p>
             </div>
           ) : submissions.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '48px 0', border: '1px dashed rgba(255,244,227,0.08)', borderRadius: '12px' }}>
-              <Music2 size={36} strokeWidth={1.5} style={{ margin: '0 auto 12px auto', color: 'rgba(255,244,227,0.15)' }} />
-              <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.4)', margin: '0 0 4px 0' }}>No audio tracks uploaded yet.</p>
-              <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.2)', margin: 0 }}>Client submissions will appear here.</p>
+            <div style={{ textAlign: 'center', padding: '48px 0', border: '1px dashed rgba(240,230,224,0.08)', borderRadius: '12px' }}>
+              <Music2 size={36} strokeWidth={1.5} style={{ margin: '0 auto 12px auto', color: 'rgba(240,230,224,0.15)' }} />
+              <p style={{ fontSize: '14px', color: 'rgba(240,230,224,0.4)', margin: '0 0 4px 0' }}>No audio tracks uploaded yet.</p>
+              <p style={{ fontSize: '12px', color: 'rgba(240,230,224,0.2)', margin: 0 }}>Client submissions will appear here.</p>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -1067,7 +1091,7 @@ export default function AdminDashboard() {
                 return (
                   <div key={clientId} style={{
                     background: 'rgba(255,255,255,0.015)',
-                    border: '1px solid rgba(255,244,227,0.04)',
+                    border: '1px solid rgba(240,230,224,0.04)',
                     borderRadius: '16px',
                     overflow: 'hidden',
                     transition: 'all 0.3s ease',
@@ -1093,18 +1117,18 @@ export default function AdminDashboard() {
                     >
                       <div style={{
                         width: '40px', height: '40px', borderRadius: '10px',
-                        background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)',
+                        background: 'linear-gradient(135deg, #A56A67 0%, #24123A 100%)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        color: '#FFF4E3',
-                        boxShadow: '0 2px 8px rgba(59,33,20,0.4)',
+                        color: '#F0E6E0',
+                        boxShadow: '0 2px 8px rgba(36,18,58,0.4)',
                       }}>
                         <User size={20} />
                       </div>
                       <div style={{ minWidth: 0 }}>
-                        <h4 style={{ margin: '0 0 2px 0', fontSize: '15px', color: '#FFF4E3', fontWeight: 600 }}>
+                        <h4 style={{ margin: '0 0 2px 0', fontSize: '15px', color: '#F0E6E0', fontWeight: 600 }}>
                           {group.uploader_name}
                         </h4>
-                        <p style={{ margin: 0, fontSize: '12px', color: 'rgba(255,244,227,0.35)' }}>
+                        <p style={{ margin: 0, fontSize: '12px', color: 'rgba(240,230,224,0.35)' }}>
                           {group.uploader_email}
                         </p>
                       </div>
@@ -1112,7 +1136,7 @@ export default function AdminDashboard() {
                         padding: '4px 10px',
                         borderRadius: '6px',
                         background: 'rgba(255,255,255,0.05)',
-                        color: 'rgba(255,244,227,0.5)',
+                        color: 'rgba(240,230,224,0.5)',
                         fontSize: '12px',
                         fontWeight: 500,
                       }}>
@@ -1131,14 +1155,14 @@ export default function AdminDashboard() {
                         style={{
                           width: '32px', height: '32px', borderRadius: '8px',
                           display: 'flex', alignItems: 'center', justifyContent: 'center',
-                          background: downloadingClientId === clientId ? 'rgba(234,154,97,0.2)' : 'rgba(255,255,255,0.05)',
-                          border: '1px solid rgba(255,244,227,0.08)',
-                          color: downloadingClientId === clientId ? '#EA9A61' : 'rgba(255,244,227,0.4)',
+                          background: downloadingClientId === clientId ? 'rgba(227,194,74,0.2)' : 'rgba(255,255,255,0.05)',
+                          border: '1px solid rgba(240,230,224,0.08)',
+                          color: downloadingClientId === clientId ? '#E3C24A' : 'rgba(240,230,224,0.4)',
                           cursor: downloadingClientId === clientId ? 'wait' : 'pointer',
                           transition: 'all 0.2s',
                         }}
-                        onMouseEnter={(e) => { if (downloadingClientId !== clientId) { e.currentTarget.style.background = 'rgba(234,154,97,0.1)'; e.currentTarget.style.color = '#EA9A61'; e.currentTarget.style.borderColor = 'rgba(234,154,97,0.3)'; } }}
-                        onMouseLeave={(e) => { if (downloadingClientId !== clientId) { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = 'rgba(255,244,227,0.4)'; e.currentTarget.style.borderColor = 'rgba(255,244,227,0.08)'; } }}
+                        onMouseEnter={(e) => { if (downloadingClientId !== clientId) { e.currentTarget.style.background = 'rgba(227,194,74,0.1)'; e.currentTarget.style.color = '#E3C24A'; e.currentTarget.style.borderColor = 'rgba(227,194,74,0.3)'; } }}
+                        onMouseLeave={(e) => { if (downloadingClientId !== clientId) { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = 'rgba(240,230,224,0.4)'; e.currentTarget.style.borderColor = 'rgba(240,230,224,0.08)'; } }}
                       >
                         <Download size={16} className={downloadingClientId === clientId ? 'animate-pulse' : ''} />
                       </button>
@@ -1162,16 +1186,16 @@ export default function AdminDashboard() {
                         style={{
                           width: '32px', height: '32px', borderRadius: '8px',
                           display: 'flex', alignItems: 'center', justifyContent: 'center',
-                          background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,244,227,0.08)',
-                          color: 'rgba(255,244,227,0.4)', cursor: 'pointer', transition: 'all 0.2s',
+                          background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(240,230,224,0.08)',
+                          color: 'rgba(240,230,224,0.4)', cursor: 'pointer', transition: 'all 0.2s',
                         }}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(234,154,97,0.1)'; e.currentTarget.style.color = '#EA9A61'; e.currentTarget.style.borderColor = 'rgba(234,154,97,0.3)'; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = 'rgba(255,244,227,0.4)'; e.currentTarget.style.borderColor = 'rgba(255,244,227,0.08)'; }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(227,194,74,0.1)'; e.currentTarget.style.color = '#E3C24A'; e.currentTarget.style.borderColor = 'rgba(227,194,74,0.3)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = 'rgba(240,230,224,0.4)'; e.currentTarget.style.borderColor = 'rgba(240,230,224,0.08)'; }}
                       >
                         <UploadCloud size={16} />
                       </button>
 
-                      <div style={{ color: 'rgba(255,244,227,0.25)', transition: 'transform 0.3s ease', transform: isExpanded ? 'rotate(180deg)' : 'rotate(0)' }}>
+                      <div style={{ color: 'rgba(240,230,224,0.25)', transition: 'transform 0.3s ease', transform: isExpanded ? 'rotate(180deg)' : 'rotate(0)' }}>
                         <ChevronDown size={20} />
                       </div>
                     </div>
@@ -1184,7 +1208,7 @@ export default function AdminDashboard() {
                         flexDirection: 'column',
                         gap: '8px',
                         background: 'rgba(0,0,0,0.1)',
-                        borderTop: '1px solid rgba(255,244,227,0.03)',
+                        borderTop: '1px solid rgba(240,230,224,0.03)',
                       }}>
                         {/* Internal header */}
                         <div style={{
@@ -1192,11 +1216,11 @@ export default function AdminDashboard() {
                           gridTemplateColumns: '1fr 180px 100px',
                           gap: '12px',
                           padding: '0 12px 8px 12px',
-                          borderBottom: '1px solid rgba(255,244,227,0.04)',
+                          borderBottom: '1px solid rgba(240,230,224,0.04)',
                         }}>
-                          <span style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.2)', fontWeight: 500 }}>Track</span>
-                          <span style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.2)', fontWeight: 500 }}>Uploaded</span>
-                          <span style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.2)', fontWeight: 500 }}></span>
+                          <span style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(240,230,224,0.2)', fontWeight: 500 }}>Track</span>
+                          <span style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(240,230,224,0.2)', fontWeight: 500 }}>Uploaded</span>
+                          <span style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(240,230,224,0.2)', fontWeight: 500 }}></span>
                         </div>
 
                         {group.tracks.map((sub) => (
@@ -1207,36 +1231,36 @@ export default function AdminDashboard() {
                             alignItems: 'center',
                             padding: '10px 12px',
                             background: 'rgba(255,255,255,0.01)',
-                            border: '1px solid rgba(255,244,227,0.04)',
+                            border: '1px solid rgba(240,230,224,0.04)',
                             borderRadius: '10px',
                             transition: 'border-color 0.2s',
                           }}
-                            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255,244,227,0.08)'}
-                            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(255,244,227,0.04)'}
+                            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(240,230,224,0.08)'}
+                            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(240,230,224,0.04)'}
                           >
                             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
                               <div style={{
                                 width: '36px', height: '36px', borderRadius: '8px',
                                 background: 'rgba(0,0,0,0.3)',
-                                border: '1px solid rgba(255,244,227,0.06)',
+                                border: '1px solid rgba(240,230,224,0.06)',
                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                                 flexShrink: 0,
                               }}>
-                                <FileAudio size={18} style={{ color: 'rgba(255,244,227,0.2)' }} />
+                                <FileAudio size={18} style={{ color: 'rgba(240,230,224,0.2)' }} />
                               </div>
                               <div style={{ minWidth: 0, display: 'flex', flexDirection: 'column' }}>
-                                <span style={{ fontSize: '14px', color: '#FFF4E3', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: 500 }}>
+                                <span style={{ fontSize: '14px', color: '#F0E6E0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: 500 }}>
                                   {sub.title}
                                 </span>
                                 {sub.notes && (
-                                  <span style={{ fontSize: '11px', color: 'rgba(234,154,97,0.7)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginTop: '2px' }}>
+                                  <span style={{ fontSize: '11px', color: 'rgba(227,194,74,0.7)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginTop: '2px' }}>
                                     Note: {sub.notes}
                                   </span>
                                 )}
                               </div>
                             </div>
 
-                            <span style={{ fontSize: '13px', color: 'rgba(255,244,227,0.4)' }}>
+                            <span style={{ fontSize: '13px', color: 'rgba(240,230,224,0.4)' }}>
                               {new Date(sub.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                             </span>
 
@@ -1252,13 +1276,13 @@ export default function AdminDashboard() {
                                 style={{
                                   width: '32px', height: '32px', borderRadius: '50%',
                                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                  background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)',
+                                  background: 'linear-gradient(135deg, #A56A67 0%, #24123A 100%)',
                                   border: 'none',
-                                  color: '#FFF4E3', cursor: 'pointer', transition: 'all 0.2s',
-                                  boxShadow: '0 2px 6px rgba(59,33,20,0.4)',
+                                  color: '#F0E6E0', cursor: 'pointer', transition: 'all 0.2s',
+                                  boxShadow: '0 2px 6px rgba(36,18,58,0.4)',
                                 }}
-                                onMouseEnter={(e) => { e.currentTarget.style.filter = 'brightness(1.18)'; e.currentTarget.style.boxShadow = '0 3px 12px rgba(144,66,44,0.5)'; }}
-                                onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.boxShadow = '0 2px 6px rgba(59,33,20,0.4)'; }}
+                                onMouseEnter={(e) => { e.currentTarget.style.filter = 'brightness(1.18)'; e.currentTarget.style.boxShadow = '0 3px 12px rgba(165,106,103,0.5)'; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.boxShadow = '0 2px 6px rgba(36,18,58,0.4)'; }}
                               >
                                 {currentlyPlaying === sub.id
                                   ? <Pause size={14} fill="currentColor" />
@@ -1296,23 +1320,23 @@ export default function AdminDashboard() {
 
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,244,227,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,244,227,0.4)' }}>
+              <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(240,230,224,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(240,230,224,0.4)' }}>
                 <Users size={16} />
               </div>
               <div>
-                <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#FFF4E3' }}>
+                <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#F0E6E0' }}>
                   Client Projects
                 </h3>
-                <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.35)', margin: 0 }}>Launch & track project roadmaps per user</p>
+                <p style={{ fontSize: '12px', color: 'rgba(240,230,224,0.35)', margin: 0 }}>Launch & track project roadmaps per user</p>
               </div>
             </div>
             {!loadingClients && (
               <div style={{
                 padding: '4px 14px', borderRadius: '9999px',
-                background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)',
+                background: 'linear-gradient(135deg, #A56A67 0%, #24123A 100%)',
                 border: 'none',
-                color: '#FFF4E3', fontSize: '13px', fontWeight: 600,
-                boxShadow: '0 2px 8px rgba(59,33,20,0.35)',
+                color: '#F0E6E0', fontSize: '13px', fontWeight: 600,
+                boxShadow: '0 2px 8px rgba(36,18,58,0.35)',
               }}>
                 {filteredClients.length} {filteredClients.length === 1 ? 'client' : 'clients'}
               </div>
@@ -1322,7 +1346,7 @@ export default function AdminDashboard() {
           {/* Search box */}
           {!loadingClients && clients.length > 0 && (
             <div style={{ marginBottom: '20px', position: 'relative' }}>
-              <div style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,244,227,0.25)', pointerEvents: 'none', display: 'flex' }}>
+              <div style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(240,230,224,0.25)', pointerEvents: 'none', display: 'flex' }}>
                 <Search size={15} />
               </div>
               <input
@@ -1335,15 +1359,15 @@ export default function AdminDashboard() {
                   padding: '12px 16px 12px 40px',
                   borderRadius: '12px',
                   background: 'rgba(255, 255, 255, 0.02)',
-                  border: '1px solid rgba(255, 244, 227, 0.08)',
-                  color: '#FFF4E3',
+                  border: '1px solid rgba(240,230,224, 0.08)',
+                  color: '#F0E6E0',
                   fontSize: '14px',
                   outline: 'none',
                   transition: 'all 0.2s',
                   boxSizing: 'border-box',
                 }}
-                onFocus={(e) => e.currentTarget.style.borderColor = 'rgba(234,154,97,0.4)'}
-                onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(255, 244, 227, 0.08)'}
+                onFocus={(e) => e.currentTarget.style.borderColor = 'rgba(227,194,74,0.4)'}
+                onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(240,230,224, 0.08)'}
               />
             </div>
           )}
@@ -1352,22 +1376,22 @@ export default function AdminDashboard() {
             <div style={{ textAlign: 'center', padding: '48px 0' }}>
               <div style={{
                 width: '28px', height: '28px', borderRadius: '50%',
-                border: '2px solid rgba(255,244,227,0.08)',
-                borderTop: '2px solid rgba(234,154,97,0.6)',
+                border: '2px solid rgba(240,230,224,0.08)',
+                borderTop: '2px solid rgba(227,194,74,0.6)',
                 margin: '0 auto 12px auto',
                 animation: 'spin 0.8s linear infinite',
               }} />
-              <p style={{ fontSize: '13px', color: 'rgba(255,244,227,0.3)', margin: 0 }}>Loading clients...</p>
+              <p style={{ fontSize: '13px', color: 'rgba(240,230,224,0.3)', margin: 0 }}>Loading clients...</p>
             </div>
           ) : clients.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '48px 0', border: '1px dashed rgba(255,244,227,0.08)', borderRadius: '12px' }}>
-              <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.4)', margin: '0 0 4px 0' }}>No clients found.</p>
-              <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.2)', margin: 0 }}>Users who sign up will appear here.</p>
+            <div style={{ textAlign: 'center', padding: '48px 0', border: '1px dashed rgba(240,230,224,0.08)', borderRadius: '12px' }}>
+              <p style={{ fontSize: '14px', color: 'rgba(240,230,224,0.4)', margin: '0 0 4px 0' }}>No clients found.</p>
+              <p style={{ fontSize: '12px', color: 'rgba(240,230,224,0.2)', margin: 0 }}>Users who sign up will appear here.</p>
             </div>
           ) : filteredClients.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '48px 0', border: '1px dashed rgba(255,244,227,0.08)', borderRadius: '12px' }}>
-              <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.4)', margin: '0 0 4px 0' }}>{`No results matching "${clientSearchQuery}"`}</p>
-              <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.2)', margin: 0 }}>Try searching for a different email or name.</p>
+            <div style={{ textAlign: 'center', padding: '48px 0', border: '1px dashed rgba(240,230,224,0.08)', borderRadius: '12px' }}>
+              <p style={{ fontSize: '14px', color: 'rgba(240,230,224,0.4)', margin: '0 0 4px 0' }}>{`No results matching "${clientSearchQuery}"`}</p>
+              <p style={{ fontSize: '12px', color: 'rgba(240,230,224,0.2)', margin: 0 }}>Try searching for a different email or name.</p>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -1378,10 +1402,10 @@ export default function AdminDashboard() {
                 gridTemplateColumns: '1fr 1fr 160px 140px',
                 gap: '12px',
                 padding: '0 14px 10px 14px',
-                borderBottom: '1px solid rgba(255,244,227,0.06)',
+                borderBottom: '1px solid rgba(240,230,224,0.06)',
               }}>
                 {['Client', 'Email', 'Status', ''].map((h) => (
-                  <span key={h} style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.25)', fontWeight: 500 }}>{h}</span>
+                  <span key={h} style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(240,230,224,0.25)', fontWeight: 500 }}>{h}</span>
                 ))}
               </div>
 
@@ -1398,7 +1422,7 @@ export default function AdminDashboard() {
                 const isLaunching = startingProjectFor === client.id;
 
                 const statusColor: Record<string, string> = {
-                  Discovery: 'rgba(130,100,255,0.75)',
+                  Discovery: 'rgba(190,170,255,0.98)',
                   'In Progress': 'rgba(99,179,237,0.9)',
                   Review: 'rgba(255,210,80,0.85)',
                   Completed: 'rgba(80,210,130,0.85)',
@@ -1414,22 +1438,22 @@ export default function AdminDashboard() {
                       alignItems: 'center',
                       padding: '14px',
                       background: 'rgba(255,255,255,0.02)',
-                      border: '1px solid rgba(255,244,227,0.05)',
+                      border: '1px solid rgba(240,230,224,0.05)',
                       borderRadius: '12px',
                       transition: 'border-color 0.2s',
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255,244,227,0.1)'}
-                    onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(255,244,227,0.05)'}
+                    onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(240,230,224,0.1)'}
+                    onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(240,230,224,0.05)'}
                   >
                     {/* Name */}
                     <div style={{ minWidth: 0 }}>
-                      <p style={{ margin: 0, fontSize: '14px', color: '#FFF4E3', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <p style={{ margin: 0, fontSize: '14px', color: '#F0E6E0', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {client.full_name || 'Unnamed User'}
                       </p>
                     </div>
 
                     {/* Email */}
-                    <p style={{ margin: 0, fontSize: '13px', color: 'rgba(255,244,227,0.45)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    <p style={{ margin: 0, fontSize: '13px', color: 'rgba(240,230,224,0.45)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       {client.email || '—'}
                     </p>
 
@@ -1440,9 +1464,9 @@ export default function AdminDashboard() {
                           display: 'inline-flex', alignItems: 'center', gap: '6px',
                           padding: '4px 12px', borderRadius: '9999px',
                           fontSize: '11px', fontWeight: 600,
-                          background: `${(statusColor[proj.status] || 'rgba(255,244,227,0.2)')}22`,
-                          border: `1px solid ${(statusColor[proj.status] || 'rgba(255,244,227,0.2)')}55`,
-                          color: statusColor[proj.status] || 'rgba(255,244,227,0.5)',
+                          background: `${(statusColor[proj.status] || 'rgba(240,230,224,0.2)')}22`,
+                          border: `1px solid ${(statusColor[proj.status] || 'rgba(240,230,224,0.2)')}55`,
+                          color: statusColor[proj.status] || 'rgba(240,230,224,0.5)',
                         }}>
                           <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'currentColor', flexShrink: 0 }} />
                           {proj.status}
@@ -1452,9 +1476,9 @@ export default function AdminDashboard() {
                           display: 'inline-flex', alignItems: 'center', gap: '6px',
                           padding: '4px 12px', borderRadius: '9999px',
                           fontSize: '11px', fontWeight: 500,
-                          background: 'rgba(255,244,227,0.04)',
-                          border: '1px solid rgba(255,244,227,0.08)',
-                          color: 'rgba(255,244,227,0.3)',
+                          background: 'rgba(240,230,224,0.04)',
+                          border: '1px solid rgba(240,230,224,0.08)',
+                          color: 'rgba(240,230,224,0.3)',
                         }}>
                           No Project
                         </span>
@@ -1471,11 +1495,11 @@ export default function AdminDashboard() {
                           style={{
                             width: '32px', height: '32px', borderRadius: '8px',
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,244,227,0.08)',
-                            color: 'rgba(255,244,227,0.4)', cursor: 'pointer', transition: 'all 0.2s',
+                            background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(240,230,224,0.08)',
+                            color: 'rgba(240,230,224,0.4)', cursor: 'pointer', transition: 'all 0.2s',
                           }}
-                          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(234,154,97,0.1)'; e.currentTarget.style.color = '#EA9A61'; e.currentTarget.style.borderColor = 'rgba(234,154,97,0.3)'; }}
-                          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = 'rgba(255,244,227,0.4)'; e.currentTarget.style.borderColor = 'rgba(255,244,227,0.08)'; }}
+                          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(227,194,74,0.1)'; e.currentTarget.style.color = '#E3C24A'; e.currentTarget.style.borderColor = 'rgba(227,194,74,0.3)'; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = 'rgba(240,230,224,0.4)'; e.currentTarget.style.borderColor = 'rgba(240,230,224,0.08)'; }}
                         >
                           <ChevronRight size={18} />
                         </button>
@@ -1487,17 +1511,17 @@ export default function AdminDashboard() {
                           style={{
                             padding: '8px 18px', borderRadius: '9999px',
                             border: 'none',
-                            background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
-                            color: '#FFF4E3', fontSize: '12px',
-                            fontFamily: "'Roboto', sans-serif",
+                            background: 'linear-gradient(135deg, #F2DD93 0%, #E3C24A 50%, #CDA63C 100%)',
+                            color: '#0F0820', fontSize: '12px',
+                            fontFamily: "'Neue Montreal', 'Roboto', sans-serif",
                             fontWeight: 700, letterSpacing: '0.04em',
                             cursor: isLaunching ? 'not-allowed' : 'pointer',
                             transition: 'all 0.2s',
                             opacity: isLaunching ? 0.5 : 1,
-                            boxShadow: '0 2px 12px rgba(166,77,43,0.35)',
+                            boxShadow: '0 2px 12px rgba(78,61,115,0.35)',
                           }}
-                          onMouseEnter={(e) => { if (!isLaunching) { e.currentTarget.style.filter = 'brightness(1.1)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(166,77,43,0.5)'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
-                          onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.boxShadow = '0 2px 12px rgba(166,77,43,0.35)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                          onMouseEnter={(e) => { if (!isLaunching) { e.currentTarget.style.filter = 'brightness(1.1)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(78,61,115,0.5)'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
+                          onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.boxShadow = '0 2px 12px rgba(78,61,115,0.35)'; e.currentTarget.style.transform = 'translateY(0)'; }}
                         >
                           {isLaunching ? 'Launching...' : '✦ Launch'}
                         </button>
@@ -1513,14 +1537,14 @@ export default function AdminDashboard() {
         {/* ── Revision & Delivery History Archive ── */}
         {activeTab === 'sound' && <div style={{ ...cardStyle, animation: 'cardFadeIn 0.4s ease-out 0.3s both' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px' }}>
-            <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,244,227,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,244,227,0.4)' }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(240,230,224,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(240,230,224,0.4)' }}>
               <Music2 size={16} />
             </div>
             <div>
-              <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#FFF4E3' }}>
+              <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#F0E6E0' }}>
                 Revision & Delivery History
               </h3>
-              <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.35)', margin: 0 }}>
+              <p style={{ fontSize: '12px', color: 'rgba(240,230,224,0.35)', margin: 0 }}>
                 Historical archive of feedback and delivered tracks
               </p>
             </div>
@@ -1531,8 +1555,8 @@ export default function AdminDashboard() {
               allRevisions.some(r => r.client_id === c.id && r.status === 'resolved') ||
               allMixedTracks.some(t => t.client_id === c.id)
             ).length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '40px', border: '1px dashed rgba(255,244,227,0.05)', borderRadius: '16px' }}>
-                <p style={{ color: 'rgba(255,244,227,0.2)', fontSize: '13px' }}>No historical data found yet.</p>
+              <div style={{ textAlign: 'center', padding: '40px', border: '1px dashed rgba(240,230,224,0.05)', borderRadius: '16px' }}>
+                <p style={{ color: 'rgba(240,230,224,0.2)', fontSize: '13px' }}>No historical data found yet.</p>
               </div>
             ) : (
               clients
@@ -1548,7 +1572,7 @@ export default function AdminDashboard() {
                   return (
                     <div key={client.id} style={{
                       background: 'rgba(255,255,255,0.015)',
-                      border: '1px solid rgba(255,244,227,0.04)',
+                      border: '1px solid rgba(240,230,224,0.04)',
                       borderRadius: '16px',
                       overflow: 'hidden'
                     }}>
@@ -1561,38 +1585,38 @@ export default function AdminDashboard() {
                         }}
                       >
                         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                          <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFF4E3', boxShadow: '0 2px 8px rgba(59,33,20,0.4)', flexShrink: 0 }}><User size={16} /></div>
+                          <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #A56A67 0%, #24123A 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#F0E6E0', boxShadow: '0 2px 8px rgba(36,18,58,0.4)', flexShrink: 0 }}><User size={16} /></div>
                           <div style={{ textAlign: 'left' }}>
-                            <h4 style={{ margin: 0, fontSize: '15px', color: '#FFF4E3', fontWeight: 600 }}>{client.full_name}</h4>
-                            <p style={{ margin: 0, fontSize: '11px', color: 'rgba(255,244,227,0.3)' }}>{client.email}</p>
+                            <h4 style={{ margin: 0, fontSize: '15px', color: '#F0E6E0', fontWeight: 600 }}>{client.full_name}</h4>
+                            <p style={{ margin: 0, fontSize: '11px', color: 'rgba(240,230,224,0.3)' }}>{client.email}</p>
                           </div>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                           <div style={{ textAlign: 'right' }}>
-                            <span style={{ fontSize: '10px', color: 'rgba(255,244,227,0.25)', textTransform: 'uppercase', display: 'block' }}>Activity</span>
-                            <span style={{ fontSize: '12px', color: '#EA9A61', fontWeight: 600 }}>{clientRevs.length} Revisions • {clientTracks.length} Tracks</span>
+                            <span style={{ fontSize: '10px', color: 'rgba(240,230,224,0.25)', textTransform: 'uppercase', display: 'block' }}>Activity</span>
+                            <span style={{ fontSize: '12px', color: '#E3C24A', fontWeight: 600 }}>{clientRevs.length} Revisions • {clientTracks.length} Tracks</span>
                           </div>
-                          <div style={{ color: 'rgba(255,244,227,0.2)', transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.3s', display: 'flex' }}><ChevronRight size={18} /></div>
+                          <div style={{ color: 'rgba(240,230,224,0.2)', transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.3s', display: 'flex' }}><ChevronRight size={18} /></div>
                         </div>
                       </button>
 
                       {isExpanded && (
-                        <div style={{ padding: '24px', borderTop: '1px solid rgba(255,244,227,0.05)', background: 'rgba(0,0,0,0.1)' }}>
+                        <div style={{ padding: '24px', borderTop: '1px solid rgba(240,230,224,0.05)', background: 'rgba(0,0,0,0.1)' }}>
                           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
                             {/* Left: Feedback History */}
                             <div>
-                              <h5 style={{ fontSize: '11px', textTransform: 'uppercase', color: 'rgba(255,244,227,0.3)', marginBottom: '16px', letterSpacing: '0.1em' }}>Feedback History</h5>
+                              <h5 style={{ fontSize: '11px', textTransform: 'uppercase', color: 'rgba(240,230,224,0.3)', marginBottom: '16px', letterSpacing: '0.1em' }}>Feedback History</h5>
                               {clientRevs.length === 0 ? (
-                                <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.15)' }}>No feedback notes.</p>
+                                <p style={{ fontSize: '12px', color: 'rgba(240,230,224,0.15)' }}>No feedback notes.</p>
                               ) : (
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                   {clientRevs.map(rev => (
-                                    <div key={rev.id} style={{ padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: '1px solid rgba(255,244,227,0.03)' }}>
+                                    <div key={rev.id} style={{ padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: '1px solid rgba(240,230,224,0.03)' }}>
                                       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-                                        <span style={{ fontSize: '11px', fontWeight: 700, color: '#EA9A61' }}>Revision {rev.revision_number}</span>
-                                        <span style={{ fontSize: '10px', color: 'rgba(255,244,227,0.3)' }}>{new Date(rev.created_at).toLocaleDateString()}</span>
+                                        <span style={{ fontSize: '11px', fontWeight: 700, color: '#E3C24A' }}>Revision {rev.revision_number}</span>
+                                        <span style={{ fontSize: '10px', color: 'rgba(240,230,224,0.3)' }}>{new Date(rev.created_at).toLocaleDateString()}</span>
                                       </div>
-                                      <p style={{ margin: 0, fontSize: '12px', color: 'rgba(255,244,227,0.6)', lineHeight: 1.4, fontStyle: 'italic' }}>{`"${rev.notes}"`}</p>
+                                      <p style={{ margin: 0, fontSize: '12px', color: 'rgba(240,230,224,0.6)', lineHeight: 1.4, fontStyle: 'italic' }}>{`"${rev.notes}"`}</p>
                                     </div>
                                   ))}
                                 </div>
@@ -1601,21 +1625,21 @@ export default function AdminDashboard() {
 
                             {/* Right: Delivered Responses */}
                             <div>
-                              <h5 style={{ fontSize: '11px', textTransform: 'uppercase', color: 'rgba(255,244,227,0.3)', marginBottom: '16px', letterSpacing: '0.1em' }}>Delivered Tracks</h5>
+                              <h5 style={{ fontSize: '11px', textTransform: 'uppercase', color: 'rgba(240,230,224,0.3)', marginBottom: '16px', letterSpacing: '0.1em' }}>Delivered Tracks</h5>
                               {clientTracks.length === 0 ? (
-                                <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.15)' }}>No tracks delivered yet.</p>
+                                <p style={{ fontSize: '12px', color: 'rgba(240,230,224,0.15)' }}>No tracks delivered yet.</p>
                               ) : (
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                   {clientTracks.map(track => (
                                     <div key={track.id} style={{ padding: '12px', background: 'rgba(80,210,130,0.05)', borderRadius: '10px', border: '1px solid rgba(80,210,130,0.1)' }}>
                                       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
                                         <span style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(80,210,130,0.8)' }}>Delivered</span>
-                                        <span style={{ fontSize: '10px', color: 'rgba(255,244,227,0.3)' }}>{new Date(track.created_at).toLocaleDateString()}</span>
+                                        <span style={{ fontSize: '10px', color: 'rgba(240,230,224,0.3)' }}>{new Date(track.created_at).toLocaleDateString()}</span>
                                       </div>
-                                      <p style={{ margin: '0 0 8px 0', fontSize: '13px', color: '#FFF4E3', fontWeight: 500 }}>{track.title}</p>
+                                      <p style={{ margin: '0 0 8px 0', fontSize: '13px', color: '#F0E6E0', fontWeight: 500 }}>{track.title}</p>
                                       <button
                                         onClick={() => window.open(track.file_url, '_blank')}
-                                        style={{ background: 'transparent', border: 'none', color: '#EA9A61', fontSize: '11px', padding: 0, cursor: 'pointer', fontWeight: 600 }}
+                                        style={{ background: 'transparent', border: 'none', color: '#E3C24A', fontSize: '11px', padding: 0, cursor: 'pointer', fontWeight: 600 }}
                                       >
                                         Listen to Track →
                                       </button>
@@ -1639,14 +1663,14 @@ export default function AdminDashboard() {
           <div style={{ ...cardStyle, animation: 'cardFadeIn 0.4s ease-out both' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFF4E3', boxShadow: '0 2px 8px rgba(59,33,20,0.4)' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #A56A67 0%, #24123A 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#F0E6E0', boxShadow: '0 2px 8px rgba(36,18,58,0.4)' }}>
                   <Users size={16} />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#FFF4E3' }}>
+                  <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#F0E6E0' }}>
                     User Management
                   </h3>
-                  <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.35)', margin: 0 }}>
+                  <p style={{ fontSize: '12px', color: 'rgba(240,230,224,0.35)', margin: 0 }}>
                     Manage user accounts and roles
                   </p>
                 </div>
@@ -1654,10 +1678,10 @@ export default function AdminDashboard() {
               {!loadingProfiles && (
                 <div style={{
                   padding: '4px 14px', borderRadius: '9999px',
-                  background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)',
+                  background: 'linear-gradient(135deg, #A56A67 0%, #24123A 100%)',
                   border: 'none',
-                  color: '#FFF4E3', fontSize: '13px', fontWeight: 600,
-                  boxShadow: '0 2px 8px rgba(59,33,20,0.35)',
+                  color: '#F0E6E0', fontSize: '13px', fontWeight: 600,
+                  boxShadow: '0 2px 8px rgba(36,18,58,0.35)',
                 }}>
                   {allProfiles.length} total
                 </div>
@@ -1667,7 +1691,7 @@ export default function AdminDashboard() {
             {/* Search box */}
             {!loadingProfiles && allProfiles.length > 0 && (
               <div style={{ marginBottom: '20px', position: 'relative' }}>
-                <div style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,244,227,0.25)', pointerEvents: 'none', display: 'flex' }}>
+                <div style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(240,230,224,0.25)', pointerEvents: 'none', display: 'flex' }}>
                   <Search size={15} />
                 </div>
                 <input
@@ -1680,15 +1704,15 @@ export default function AdminDashboard() {
                     padding: '12px 16px 12px 40px',
                     borderRadius: '12px',
                     background: 'rgba(255, 255, 255, 0.02)',
-                    border: '1px solid rgba(255, 244, 227, 0.08)',
-                    color: '#FFF4E3',
+                    border: '1px solid rgba(240,230,224, 0.08)',
+                    color: '#F0E6E0',
                     fontSize: '14px',
                     outline: 'none',
                     transition: 'all 0.2s',
                     boxSizing: 'border-box',
                   }}
-                  onFocus={(e) => e.currentTarget.style.borderColor = 'rgba(234,154,97,0.4)'}
-                  onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(255, 244, 227, 0.08)'}
+                  onFocus={(e) => e.currentTarget.style.borderColor = 'rgba(227,194,74,0.4)'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(240,230,224, 0.08)'}
                 />
               </div>
             )}
@@ -1697,16 +1721,16 @@ export default function AdminDashboard() {
               <div style={{ textAlign: 'center', padding: '48px 0' }}>
                 <div style={{
                   width: '28px', height: '28px', borderRadius: '50%',
-                  border: '2px solid rgba(255,244,227,0.08)',
-                  borderTop: '2px solid rgba(234,154,97,0.6)',
+                  border: '2px solid rgba(240,230,224,0.08)',
+                  borderTop: '2px solid rgba(227,194,74,0.6)',
                   margin: '0 auto 12px auto',
                   animation: 'spin 0.8s linear infinite',
                 }} />
-                <p style={{ fontSize: '13px', color: 'rgba(255,244,227,0.3)', margin: 0 }}>Loading users...</p>
+                <p style={{ fontSize: '13px', color: 'rgba(240,230,224,0.3)', margin: 0 }}>Loading users...</p>
               </div>
             ) : filteredUsers.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '48px 0', border: '1px dashed rgba(255,244,227,0.08)', borderRadius: '12px' }}>
-                <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.4)', margin: '0 0 4px 0' }}>No users found.</p>
+              <div style={{ textAlign: 'center', padding: '48px 0', border: '1px dashed rgba(240,230,224,0.08)', borderRadius: '12px' }}>
+                <p style={{ fontSize: '14px', color: 'rgba(240,230,224,0.4)', margin: '0 0 4px 0' }}>No users found.</p>
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -1716,10 +1740,10 @@ export default function AdminDashboard() {
                   gridTemplateColumns: '1fr 1.5fr 150px',
                   gap: '12px',
                   padding: '0 14px 10px 14px',
-                  borderBottom: '1px solid rgba(255,244,227,0.06)',
+                  borderBottom: '1px solid rgba(240,230,224,0.06)',
                 }}>
                   {['Name', 'Email', 'Role'].map((h) => (
-                    <span key={h} style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.25)', fontWeight: 500 }}>{h}</span>
+                    <span key={h} style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(240,230,224,0.25)', fontWeight: 500 }}>{h}</span>
                   ))}
                 </div>
 
@@ -1733,16 +1757,16 @@ export default function AdminDashboard() {
                       alignItems: 'center',
                       padding: '14px',
                       background: 'rgba(255,255,255,0.02)',
-                      border: '1px solid rgba(255,244,227,0.05)',
+                      border: '1px solid rgba(240,230,224,0.05)',
                       borderRadius: '12px',
                     }}
                   >
                     <div style={{ minWidth: 0 }}>
-                      <p style={{ margin: 0, fontSize: '14px', color: '#FFF4E3', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <p style={{ margin: 0, fontSize: '14px', color: '#F0E6E0', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {user.full_name || '—'}
                       </p>
                     </div>
-                    <p style={{ margin: 0, fontSize: '13px', color: 'rgba(255,244,227,0.45)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    <p style={{ margin: 0, fontSize: '13px', color: 'rgba(240,230,224,0.45)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       {user.email || '—'}
                     </p>
                     <div>
@@ -1753,8 +1777,8 @@ export default function AdminDashboard() {
                         style={{
                           width: '100%',
                           background: 'rgba(0,0,0,0.3)',
-                          border: '1px solid rgba(255,244,227,0.1)',
-                          color: '#FFF4E3',
+                          border: '1px solid rgba(240,230,224,0.1)',
+                          color: '#F0E6E0',
                           fontSize: '12px',
                           padding: '6px 10px',
                           borderRadius: '8px',
@@ -1791,28 +1815,28 @@ export default function AdminDashboard() {
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              background: 'rgba(18,18,18,0.95)',
-              border: '1px solid rgba(255,244,227,0.1)',
+              background: 'rgba(15,8,32,0.95)',
+              border: '1px solid rgba(240,230,224,0.1)',
               borderRadius: '20px', padding: '40px',
               maxWidth: '380px', width: '90%',
               textAlign: 'center',
               animation: 'confirmCardIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
             }}
           >
-            <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(255,244,227,0.35)', marginBottom: '12px' }}>
+            <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(240,230,224,0.35)', marginBottom: '12px' }}>
               Confirm
             </p>
-            <h2 style={{ fontSize: '22px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', color: '#FFF4E3', margin: '0 0 8px 0' }}>
+            <h2 style={{ fontSize: '22px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', color: '#F0E6E0', margin: '0 0 8px 0' }}>
               Sign out?
             </h2>
-            <p style={{ fontSize: '14px', color: 'rgba(255,244,227,0.4)', marginBottom: '32px', fontFamily: "'Roboto', sans-serif" }}>
+            <p style={{ fontSize: '14px', color: 'rgba(240,230,224,0.4)', marginBottom: '32px', fontFamily: "'Neue Montreal', 'Roboto', sans-serif" }}>
               You will need to sign in again to access the command center.
             </p>
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
               <button
                 onClick={() => setConfirmOpen(false)}
                 type="button"
-                style={{ flex: 1, padding: '12px 20px', borderRadius: '9999px', border: '1px solid rgba(255,244,227,0.12)', background: 'rgba(255,255,255,0.04)', color: '#FFF4E3', fontSize: '13px', fontFamily: "'Roboto', sans-serif", fontWeight: 500, cursor: 'pointer', transition: 'all 0.2s' }}
+                style={{ flex: 1, padding: '12px 20px', borderRadius: '9999px', border: '1px solid rgba(240,230,224,0.12)', background: 'rgba(255,255,255,0.04)', color: '#F0E6E0', fontSize: '13px', fontFamily: "'Neue Montreal', 'Roboto', sans-serif", fontWeight: 500, cursor: 'pointer', transition: 'all 0.2s' }}
                 onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
               >
@@ -1821,9 +1845,9 @@ export default function AdminDashboard() {
               <button
                 onClick={handleSignOut}
                 type="button"
-                style={{ flex: 1, padding: '12px 20px', borderRadius: '9999px', border: 'none', background: 'linear-gradient(135deg, #90422C 0%, #3B2114 100%)', color: '#FFF4E3', fontSize: '13px', fontFamily: "'Roboto', sans-serif", fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s', boxShadow: '0 2px 10px rgba(59,33,20,0.4)' }}
-                onMouseEnter={(e) => { e.currentTarget.style.filter = 'brightness(1.12)'; e.currentTarget.style.boxShadow = '0 4px 18px rgba(144,66,44,0.4)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.boxShadow = '0 2px 10px rgba(59,33,20,0.4)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                style={{ flex: 1, padding: '12px 20px', borderRadius: '9999px', border: 'none', background: 'linear-gradient(135deg, #A56A67 0%, #24123A 100%)', color: '#F0E6E0', fontSize: '13px', fontFamily: "'Neue Montreal', 'Roboto', sans-serif", fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s', boxShadow: '0 2px 10px rgba(36,18,58,0.4)' }}
+                onMouseEnter={(e) => { e.currentTarget.style.filter = 'brightness(1.12)'; e.currentTarget.style.boxShadow = '0 4px 18px rgba(165,106,103,0.4)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.boxShadow = '0 2px 10px rgba(36,18,58,0.4)'; e.currentTarget.style.transform = 'translateY(0)'; }}
               >
                 Sign Out
               </button>
@@ -1847,8 +1871,8 @@ export default function AdminDashboard() {
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              background: 'rgba(14,14,14,0.98)',
-              border: '1px solid rgba(255,244,227,0.1)',
+              background: 'rgba(15,8,32,0.98)',
+              border: '1px solid rgba(240,230,224,0.1)',
               borderRadius: '24px',
               padding: '40px',
               width: '90%',
@@ -1857,13 +1881,13 @@ export default function AdminDashboard() {
             }}
           >
             {/* Header */}
-            <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(255,244,227,0.35)', margin: '0 0 6px 0' }}>
+            <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(240,230,224,0.35)', margin: '0 0 6px 0' }}>
               New Project
             </p>
-            <h2 style={{ fontSize: '22px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', color: '#FFF4E3', margin: '0 0 4px 0' }}>
+            <h2 style={{ fontSize: '22px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', color: '#F0E6E0', margin: '0 0 4px 0' }}>
               Launch for {launchTarget.full_name || 'User'}
             </h2>
-            <p style={{ fontSize: '13px', color: 'rgba(255,244,227,0.35)', margin: '0 0 28px 0' }}>
+            <p style={{ fontSize: '13px', color: 'rgba(240,230,224,0.35)', margin: '0 0 28px 0' }}>
               {launchTarget.email}
             </p>
 
@@ -1871,8 +1895,8 @@ export default function AdminDashboard() {
 
               {/* Project Name */}
               <div>
-                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.4)', marginBottom: '8px' }}>
-                  Project Name <span style={{ color: 'rgba(255,244,227,0.2)' }}>(optional)</span>
+                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(240,230,224,0.4)', marginBottom: '8px' }}>
+                  Project Name <span style={{ color: 'rgba(240,230,224,0.2)' }}>(optional)</span>
                 </label>
                 <input
                   type="text"
@@ -1881,19 +1905,19 @@ export default function AdminDashboard() {
                   onChange={(e) => setLaunchProjectName(e.target.value)}
                   style={{
                     width: '100%', padding: '12px 14px', boxSizing: 'border-box',
-                    borderRadius: '10px', border: '1px solid rgba(255,244,227,0.1)',
-                    background: 'rgba(255,255,255,0.04)', color: '#FFF4E3',
-                    fontFamily: "'Roboto', sans-serif", fontSize: '14px', outline: 'none',
+                    borderRadius: '10px', border: '1px solid rgba(240,230,224,0.1)',
+                    background: 'rgba(255,255,255,0.04)', color: '#F0E6E0',
+                    fontFamily: "'Neue Montreal', 'Roboto', sans-serif", fontSize: '14px', outline: 'none',
                   }}
-                  onFocus={(e) => e.currentTarget.style.borderColor = 'rgba(234,154,97,0.4)'}
-                  onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(255,244,227,0.1)'}
+                  onFocus={(e) => e.currentTarget.style.borderColor = 'rgba(227,194,74,0.4)'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(240,230,224,0.1)'}
                 />
               </div>
 
               {/* Delivery Date */}
               <div>
-                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.4)', marginBottom: '8px' }}>
-                  Delivery Date <span style={{ color: 'rgba(255,244,227,0.2)' }}>(optional)</span>
+                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(240,230,224,0.4)', marginBottom: '8px' }}>
+                  Delivery Date <span style={{ color: 'rgba(240,230,224,0.2)' }}>(optional)</span>
                 </label>
                 <input
                   type="date"
@@ -1901,20 +1925,20 @@ export default function AdminDashboard() {
                   onChange={(e) => setLaunchDeliveryDate(e.target.value)}
                   style={{
                     width: '100%', padding: '12px 14px', boxSizing: 'border-box',
-                    borderRadius: '10px', border: '1px solid rgba(255,244,227,0.1)',
-                    background: 'rgba(255,255,255,0.04)', color: launchDeliveryDate ? '#FFF4E3' : 'rgba(255,244,227,0.3)',
-                    fontFamily: "'Roboto', sans-serif", fontSize: '14px', outline: 'none',
+                    borderRadius: '10px', border: '1px solid rgba(240,230,224,0.1)',
+                    background: 'rgba(255,255,255,0.04)', color: launchDeliveryDate ? '#F0E6E0' : 'rgba(240,230,224,0.3)',
+                    fontFamily: "'Neue Montreal', 'Roboto', sans-serif", fontSize: '14px', outline: 'none',
                     colorScheme: 'dark',
                   }}
-                  onFocus={(e) => e.currentTarget.style.borderColor = 'rgba(234,154,97,0.4)'}
-                  onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(255,244,227,0.1)'}
+                  onFocus={(e) => e.currentTarget.style.borderColor = 'rgba(227,194,74,0.4)'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(240,230,224,0.1)'}
                 />
               </div>
 
               {/* Deliverables */}
               <div>
-                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.4)', marginBottom: '8px' }}>
-                  Deliverables Needed <span style={{ color: 'rgba(255,244,227,0.2)' }}>(optional)</span>
+                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(240,230,224,0.4)', marginBottom: '8px' }}>
+                  Deliverables Needed <span style={{ color: 'rgba(240,230,224,0.2)' }}>(optional)</span>
                 </label>
                 <div style={{ display: 'flex', gap: '8px' }}>
                   <input
@@ -1925,24 +1949,24 @@ export default function AdminDashboard() {
                     onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addDeliverable(); } }}
                     style={{
                       flex: 1, padding: '10px 14px',
-                      borderRadius: '10px', border: '1px solid rgba(255,244,227,0.1)',
-                      background: 'rgba(255,255,255,0.04)', color: '#FFF4E3',
-                      fontFamily: "'Roboto', sans-serif", fontSize: '14px', outline: 'none',
+                      borderRadius: '10px', border: '1px solid rgba(240,230,224,0.1)',
+                      background: 'rgba(255,255,255,0.04)', color: '#F0E6E0',
+                      fontFamily: "'Neue Montreal', 'Roboto', sans-serif", fontSize: '14px', outline: 'none',
                     }}
-                    onFocus={(e) => e.currentTarget.style.borderColor = 'rgba(234,154,97,0.4)'}
-                    onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(255,244,227,0.1)'}
+                    onFocus={(e) => e.currentTarget.style.borderColor = 'rgba(227,194,74,0.4)'}
+                    onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(240,230,224,0.1)'}
                   />
                   <button
                     type="button"
                     onClick={addDeliverable}
                     style={{
                       padding: '10px 16px', borderRadius: '10px',
-                      border: '1px solid rgba(234,154,97,0.3)',
-                      background: 'rgba(234,154,97,0.1)', color: '#EA9A61',
+                      border: '1px solid rgba(227,194,74,0.3)',
+                      background: 'rgba(227,194,74,0.1)', color: '#E3C24A',
                       fontSize: '18px', cursor: 'pointer', transition: 'all 0.2s', lineHeight: 1,
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(234,154,97,0.2)'}
-                    onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(234,154,97,0.1)'}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(227,194,74,0.2)'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(227,194,74,0.1)'}
                   >+</button>
                 </div>
 
@@ -1955,15 +1979,15 @@ export default function AdminDashboard() {
                         style={{
                           display: 'inline-flex', alignItems: 'center', gap: '6px',
                           padding: '5px 12px', borderRadius: '9999px',
-                          background: 'rgba(234,154,97,0.1)', border: '1px solid rgba(234,154,97,0.25)',
-                          color: '#EA9A61', fontSize: '12px', fontWeight: 500,
+                          background: 'rgba(227,194,74,0.1)', border: '1px solid rgba(227,194,74,0.25)',
+                          color: '#E3C24A', fontSize: '12px', fontWeight: 500,
                         }}
                       >
                         {d}
                         <button
                           type="button"
                           onClick={() => removeDeliverable(i)}
-                          style={{ background: 'none', border: 'none', color: 'rgba(234,154,97,0.5)', cursor: 'pointer', padding: '0', fontSize: '14px', lineHeight: 1 }}
+                          style={{ background: 'none', border: 'none', color: 'rgba(227,194,74,0.5)', cursor: 'pointer', padding: '0', fontSize: '14px', lineHeight: 1 }}
                         >&times;</button>
                       </span>
                     ))}
@@ -1979,9 +2003,9 @@ export default function AdminDashboard() {
                 onClick={() => setLaunchModalOpen(false)}
                 style={{
                   flex: 1, padding: '13px 20px', borderRadius: '9999px',
-                  border: '1px solid rgba(255,244,227,0.12)',
-                  background: 'rgba(255,255,255,0.04)', color: 'rgba(255,244,227,0.7)',
-                  fontSize: '13px', fontFamily: "'Roboto', sans-serif",
+                  border: '1px solid rgba(240,230,224,0.12)',
+                  background: 'rgba(255,255,255,0.04)', color: 'rgba(240,230,224,0.7)',
+                  fontSize: '13px', fontFamily: "'Neue Montreal', 'Roboto', sans-serif",
                   fontWeight: 500, cursor: 'pointer', transition: 'all 0.2s',
                 }}
                 onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}
@@ -1996,17 +2020,17 @@ export default function AdminDashboard() {
                 style={{
                   flex: 2, padding: '13px 20px', borderRadius: '9999px',
                   border: 'none',
-                  background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
-                  color: '#FFF4E3',
-                  fontSize: '13px', fontFamily: "'Roboto', sans-serif",
+                  background: 'linear-gradient(135deg, #F2DD93 0%, #E3C24A 50%, #CDA63C 100%)',
+                  color: '#0F0820',
+                  fontSize: '13px', fontFamily: "'Neue Montreal', 'Roboto', sans-serif",
                   fontWeight: 700, letterSpacing: '0.04em',
                   cursor: startingProjectFor ? 'not-allowed' : 'pointer',
                   opacity: startingProjectFor ? 0.6 : 1,
                   transition: 'all 0.2s',
-                  boxShadow: '0 2px 14px rgba(166,77,43,0.4)',
+                  boxShadow: '0 2px 14px rgba(78,61,115,0.4)',
                 }}
-                onMouseEnter={(e) => { if (!startingProjectFor) { e.currentTarget.style.filter = 'brightness(1.1)'; e.currentTarget.style.boxShadow = '0 6px 24px rgba(166,77,43,0.55)'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
-                onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.boxShadow = '0 2px 14px rgba(166,77,43,0.4)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                onMouseEnter={(e) => { if (!startingProjectFor) { e.currentTarget.style.filter = 'brightness(1.1)'; e.currentTarget.style.boxShadow = '0 6px 24px rgba(78,61,115,0.55)'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
+                onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.boxShadow = '0 2px 14px rgba(78,61,115,0.4)'; e.currentTarget.style.transform = 'translateY(0)'; }}
               >
                 {startingProjectFor ? 'Launching...' : '✦ Launch Project'}
               </button>
@@ -2029,8 +2053,8 @@ export default function AdminDashboard() {
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              background: 'rgba(14,14,14,0.98)',
-              border: '1px solid rgba(255,244,227,0.1)',
+              background: 'rgba(15,8,32,0.98)',
+              border: '1px solid rgba(240,230,224,0.1)',
               borderRadius: '24px',
               padding: '40px',
               width: '90%',
@@ -2040,19 +2064,19 @@ export default function AdminDashboard() {
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
               <div>
-                <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(255,244,227,0.35)', margin: '0 0 6px 0' }}>
+                <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(240,230,224,0.35)', margin: '0 0 6px 0' }}>
                   Mixed Audio Track
                 </p>
-                <h2 style={{ fontSize: '22px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', color: '#FFF4E3', margin: 0 }}>
+                <h2 style={{ fontSize: '22px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', color: '#F0E6E0', margin: 0 }}>
                   Upload for {mixedUploadTarget.full_name || 'User'}
                 </h2>
               </div>
               <button
                 onClick={() => setMixedUploadModalOpen(false)}
                 disabled={isUploadingMixed}
-                style={{ background: 'none', border: 'none', color: 'rgba(255,244,227,0.2)', cursor: 'pointer', padding: '4px' }}
-                onMouseEnter={(e) => e.currentTarget.style.color = '#FFF4E3'}
-                onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,244,227,0.2)'}
+                style={{ background: 'none', border: 'none', color: 'rgba(240,230,224,0.2)', cursor: 'pointer', padding: '4px' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#F0E6E0'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(240,230,224,0.2)'}
               >
                 <X size={20} />
               </button>
@@ -2060,7 +2084,7 @@ export default function AdminDashboard() {
 
             <form onSubmit={handleMixedTrackUpload} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.4)', marginBottom: '8px' }}>
+                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(240,230,224,0.4)', marginBottom: '8px' }}>
                   Track Title
                 </label>
                 <input
@@ -2071,15 +2095,15 @@ export default function AdminDashboard() {
                   onChange={(e) => setMixedUploadTitle(e.target.value)}
                   style={{
                     width: '100%', padding: '12px 14px', boxSizing: 'border-box',
-                    borderRadius: '10px', border: '1px solid rgba(255,244,227,0.1)',
-                    background: 'rgba(255,255,255,0.04)', color: '#FFF4E3',
-                    fontFamily: "'Roboto', sans-serif", fontSize: '14px', outline: 'none',
+                    borderRadius: '10px', border: '1px solid rgba(240,230,224,0.1)',
+                    background: 'rgba(255,255,255,0.04)', color: '#F0E6E0',
+                    fontFamily: "'Neue Montreal', 'Roboto', sans-serif", fontSize: '14px', outline: 'none',
                   }}
                 />
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.4)', marginBottom: '8px' }}>
+                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(240,230,224,0.4)', marginBottom: '8px' }}>
                   Audio File (.mp3)
                 </label>
                 <div style={{ position: 'relative' }}>
@@ -2095,9 +2119,9 @@ export default function AdminDashboard() {
                     }}
                     style={{
                       width: '100%', padding: '12px 14px', boxSizing: 'border-box',
-                      borderRadius: '10px', border: '1px dashed rgba(255,244,227,0.1)',
-                      background: 'rgba(255,255,255,0.02)', color: '#FFF4E3',
-                      fontFamily: "'Roboto', sans-serif", fontSize: '14px', cursor: 'pointer',
+                      borderRadius: '10px', border: '1px dashed rgba(240,230,224,0.1)',
+                      background: 'rgba(255,255,255,0.02)', color: '#F0E6E0',
+                      fontFamily: "'Neue Montreal', 'Roboto', sans-serif", fontSize: '14px', cursor: 'pointer',
                     }}
                   />
                 </div>
@@ -2105,10 +2129,10 @@ export default function AdminDashboard() {
 
               {isUploadingMixed && (
                 <div style={{ marginTop: '10px' }}>
-                  <div style={{ width: '100%', height: '4px', background: 'rgba(255,244,227,0.05)', borderRadius: '2px', overflow: 'hidden' }}>
-                    <div style={{ width: `${mixedUploadProgress}%`, height: '100%', background: '#EA9A61', transition: 'width 0.3s ease' }} />
+                  <div style={{ width: '100%', height: '4px', background: 'rgba(240,230,224,0.05)', borderRadius: '2px', overflow: 'hidden' }}>
+                    <div style={{ width: `${mixedUploadProgress}%`, height: '100%', background: '#E3C24A', transition: 'width 0.3s ease' }} />
                   </div>
-                  <p style={{ fontSize: '11px', color: 'rgba(255,244,227,0.4)', marginTop: '8px', textAlign: 'center' }}>
+                  <p style={{ fontSize: '11px', color: 'rgba(240,230,224,0.4)', marginTop: '8px', textAlign: 'center' }}>
                     Uploading securely... {mixedUploadProgress}%
                   </p>
                 </div>
@@ -2120,15 +2144,15 @@ export default function AdminDashboard() {
                 style={{
                   marginTop: '12px', padding: '14px', borderRadius: '9999px',
                   border: 'none',
-                  background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
-                  color: '#FFF4E3',
-                  fontSize: '14px', fontFamily: "'Roboto', sans-serif",
+                  background: 'linear-gradient(135deg, #F2DD93 0%, #E3C24A 50%, #CDA63C 100%)',
+                  color: '#0F0820',
+                  fontSize: '14px', fontFamily: "'Neue Montreal', 'Roboto', sans-serif",
                   fontWeight: 700, cursor: (isUploadingMixed || !mixedUploadFile) ? 'not-allowed' : 'pointer',
                   transition: 'all 0.2s', opacity: (isUploadingMixed || !mixedUploadFile) ? 0.6 : 1,
-                  boxShadow: '0 2px 14px rgba(166,77,43,0.35)',
+                  boxShadow: '0 2px 14px rgba(78,61,115,0.35)',
                 }}
-                onMouseEnter={(e) => { if (!isUploadingMixed && mixedUploadFile) { e.currentTarget.style.filter = 'brightness(1.1)'; e.currentTarget.style.boxShadow = '0 6px 22px rgba(166,77,43,0.5)'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
-                onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.boxShadow = '0 2px 14px rgba(166,77,43,0.35)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                onMouseEnter={(e) => { if (!isUploadingMixed && mixedUploadFile) { e.currentTarget.style.filter = 'brightness(1.1)'; e.currentTarget.style.boxShadow = '0 6px 22px rgba(78,61,115,0.5)'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
+                onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.boxShadow = '0 2px 14px rgba(78,61,115,0.35)'; e.currentTarget.style.transform = 'translateY(0)'; }}
               >
                 {isUploadingMixed ? 'Uploading...' : 'Confirm Upload'}
               </button>
@@ -2151,8 +2175,8 @@ export default function AdminDashboard() {
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              background: 'rgba(14,14,14,0.98)',
-              border: '1px solid rgba(255,244,227,0.1)',
+              background: 'rgba(15,8,32,0.98)',
+              border: '1px solid rgba(240,230,224,0.1)',
               borderRadius: '24px',
               padding: 'clamp(20px, 5vw, 40px)',
               width: '95%',
@@ -2166,22 +2190,22 @@ export default function AdminDashboard() {
             {/* Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
               <div>
-                <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(255,244,227,0.35)', margin: '0 0 6px 0' }}>
+                <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(240,230,224,0.35)', margin: '0 0 6px 0' }}>
                   Project Management
                 </p>
-                <h2 style={{ fontSize: '24px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', color: '#FFF4E3', margin: 0 }}>
+                <h2 style={{ fontSize: '24px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', color: '#F0E6E0', margin: 0 }}>
                   {detailTarget.full_name || 'Client'}
                 </h2>
-                <p style={{ fontSize: '12px', color: 'rgba(255,244,227,0.25)', fontFamily: 'monospace', marginTop: '4px' }}>
+                <p style={{ fontSize: '12px', color: 'rgba(240,230,224,0.25)', fontFamily: 'monospace', marginTop: '4px' }}>
                   ID: {detailTarget.id}
                 </p>
               </div>
               <button
                 onClick={() => setDetailModalOpen(false)}
                 disabled={isSavingProject || isUploadingDoc}
-                style={{ background: 'none', border: 'none', color: 'rgba(255,244,227,0.2)', cursor: 'pointer', padding: '4px' }}
-                onMouseEnter={(e) => e.currentTarget.style.color = '#FFF4E3'}
-                onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,244,227,0.2)'}
+                style={{ background: 'none', border: 'none', color: 'rgba(240,230,224,0.2)', cursor: 'pointer', padding: '4px' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#F0E6E0'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(240,230,224,0.2)'}
               >
                 <X size={20} />
               </button>
@@ -2191,7 +2215,7 @@ export default function AdminDashboard() {
 
               {/* Project Name */}
               <div>
-                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.4)', marginBottom: '8px' }}>
+                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(240,230,224,0.4)', marginBottom: '8px' }}>
                   Project Name
                 </label>
                 <input
@@ -2200,9 +2224,9 @@ export default function AdminDashboard() {
                   onChange={(e) => setEditProjectName(e.target.value)}
                   style={{
                     width: '100%', padding: '12px 14px', boxSizing: 'border-box',
-                    borderRadius: '10px', border: '1px solid rgba(255,244,227,0.1)',
-                    background: 'rgba(255,255,255,0.04)', color: '#FFF4E3',
-                    fontFamily: "'Roboto', sans-serif", fontSize: '14px', outline: 'none',
+                    borderRadius: '10px', border: '1px solid rgba(240,230,224,0.1)',
+                    background: 'rgba(255,255,255,0.04)', color: '#F0E6E0',
+                    fontFamily: "'Neue Montreal', 'Roboto', sans-serif", fontSize: '14px', outline: 'none',
                   }}
                 />
               </div>
@@ -2210,7 +2234,7 @@ export default function AdminDashboard() {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
                 {/* Status */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.4)', marginBottom: '8px' }}>
+                  <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(240,230,224,0.4)', marginBottom: '8px' }}>
                     Status
                   </label>
                   <select
@@ -2218,9 +2242,9 @@ export default function AdminDashboard() {
                     onChange={(e) => setEditStatus(e.target.value)}
                     style={{
                       width: '100%', padding: '12px 14px', boxSizing: 'border-box',
-                      borderRadius: '10px', border: '1px solid rgba(255,244,227,0.1)',
-                      background: 'rgba(255,255,255,0.04)', color: '#FFF4E3',
-                      fontFamily: "'Roboto', sans-serif", fontSize: '14px', outline: 'none',
+                      borderRadius: '10px', border: '1px solid rgba(240,230,224,0.1)',
+                      background: 'rgba(255,255,255,0.04)', color: '#F0E6E0',
+                      fontFamily: "'Neue Montreal', 'Roboto', sans-serif", fontSize: '14px', outline: 'none',
                       appearance: 'none',
                     }}
                   >
@@ -2233,7 +2257,7 @@ export default function AdminDashboard() {
 
                 {/* Delivery Date */}
                 <div>
-                  <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.4)', marginBottom: '8px' }}>
+                  <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(240,230,224,0.4)', marginBottom: '8px' }}>
                     Delivery Date
                   </label>
                   <input
@@ -2242,9 +2266,9 @@ export default function AdminDashboard() {
                     onChange={(e) => setEditDeliveryDate(e.target.value)}
                     style={{
                       width: '100%', padding: '12px 14px', boxSizing: 'border-box',
-                      borderRadius: '10px', border: '1px solid rgba(255,244,227,0.1)',
-                      background: 'rgba(255,255,255,0.04)', color: '#FFF4E3',
-                      fontFamily: "'Roboto', sans-serif", fontSize: '14px', outline: 'none',
+                      borderRadius: '10px', border: '1px solid rgba(240,230,224,0.1)',
+                      background: 'rgba(255,255,255,0.04)', color: '#F0E6E0',
+                      fontFamily: "'Neue Montreal', 'Roboto', sans-serif", fontSize: '14px', outline: 'none',
                       colorScheme: 'dark',
                     }}
                   />
@@ -2253,7 +2277,7 @@ export default function AdminDashboard() {
 
               {/* Signed Document */}
               <div>
-                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.4)', marginBottom: '8px' }}>
+                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(240,230,224,0.4)', marginBottom: '8px' }}>
                   Signed Document
                 </label>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -2267,8 +2291,8 @@ export default function AdminDashboard() {
                     htmlFor="signed-doc-upload"
                     style={{
                       padding: '10px 16px', borderRadius: '10px',
-                      border: '1px solid rgba(255,244,227,0.1)',
-                      background: 'rgba(255,255,255,0.04)', color: 'rgba(255,244,227,0.6)',
+                      border: '1px solid rgba(240,230,224,0.1)',
+                      background: 'rgba(255,255,255,0.04)', color: 'rgba(240,230,224,0.6)',
                       fontSize: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px'
                     }}
                   >
@@ -2276,21 +2300,21 @@ export default function AdminDashboard() {
                     {isUploadingDoc ? 'Uploading...' : 'Upload Signed Doc'}
                   </label>
                   {editFolderLink && (
-                    <a href={editFolderLink} target="_blank" rel="noreferrer" style={{ fontSize: '12px', color: '#EA9A61', textDecoration: 'none' }}>
+                    <a href={editFolderLink} target="_blank" rel="noreferrer" style={{ fontSize: '12px', color: '#E3C24A', textDecoration: 'none' }}>
                       View Current
                     </a>
                   )}
                 </div>
                 {isUploadingDoc && (
-                  <div style={{ width: '100%', height: '2px', background: 'rgba(255,244,227,0.05)', marginTop: '8px', borderRadius: '1px', overflow: 'hidden' }}>
-                    <div style={{ width: `${docUploadProgress}%`, height: '100%', background: '#EA9A61', transition: 'width 0.3s' }} />
+                  <div style={{ width: '100%', height: '2px', background: 'rgba(240,230,224,0.05)', marginTop: '8px', borderRadius: '1px', overflow: 'hidden' }}>
+                    <div style={{ width: `${docUploadProgress}%`, height: '100%', background: '#E3C24A', transition: 'width 0.3s' }} />
                   </div>
                 )}
               </div>
 
               {/* Deliverables */}
               <div>
-                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.4)', marginBottom: '8px' }}>
+                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(240,230,224,0.4)', marginBottom: '8px' }}>
                   Deliverables Needed
                 </label>
                 <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
@@ -2302,9 +2326,9 @@ export default function AdminDashboard() {
                     onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addEditDeliverable(); } }}
                     style={{
                       flex: 1, padding: '10px 14px',
-                      borderRadius: '10px', border: '1px solid rgba(255,244,227,0.1)',
-                      background: 'rgba(255,255,255,0.04)', color: '#FFF4E3',
-                      fontFamily: "'Roboto', sans-serif", fontSize: '14px', outline: 'none',
+                      borderRadius: '10px', border: '1px solid rgba(240,230,224,0.1)',
+                      background: 'rgba(255,255,255,0.04)', color: '#F0E6E0',
+                      fontFamily: "'Neue Montreal', 'Roboto', sans-serif", fontSize: '14px', outline: 'none',
                     }}
                   />
                   <button
@@ -2312,8 +2336,8 @@ export default function AdminDashboard() {
                     onClick={addEditDeliverable}
                     style={{
                       padding: '10px 16px', borderRadius: '10px',
-                      border: '1px solid rgba(234,154,97,0.3)',
-                      background: 'rgba(234,154,97,0.1)', color: '#EA9A61',
+                      border: '1px solid rgba(227,194,74,0.3)',
+                      background: 'rgba(227,194,74,0.1)', color: '#E3C24A',
                       fontSize: '18px', cursor: 'pointer', lineHeight: 1,
                     }}
                   >+</button>
@@ -2323,11 +2347,11 @@ export default function AdminDashboard() {
                     <span key={i} style={{
                       display: 'inline-flex', alignItems: 'center', gap: '6px',
                       padding: '5px 12px', borderRadius: '9999px',
-                      background: 'rgba(234,154,97,0.1)', border: '1px solid rgba(234,154,97,0.25)',
-                      color: '#EA9A61', fontSize: '12px', fontWeight: 500,
+                      background: 'rgba(227,194,74,0.1)', border: '1px solid rgba(227,194,74,0.25)',
+                      color: '#E3C24A', fontSize: '12px', fontWeight: 500,
                     }}>
                       {d}
-                      <button type="button" onClick={() => removeEditDeliverable(i)} style={{ background: 'none', border: 'none', color: 'rgba(234,154,97,0.5)', cursor: 'pointer', fontSize: '14px', lineHeight: 1 }}>&times;</button>
+                      <button type="button" onClick={() => removeEditDeliverable(i)} style={{ background: 'none', border: 'none', color: 'rgba(227,194,74,0.5)', cursor: 'pointer', fontSize: '14px', lineHeight: 1 }}>&times;</button>
                     </span>
                   ))}
                 </div>
@@ -2335,7 +2359,7 @@ export default function AdminDashboard() {
 
               {/* Final URL */}
               <div>
-                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,244,227,0.4)', marginBottom: '8px' }}>
+                <label style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(240,230,224,0.4)', marginBottom: '8px' }}>
                   Final Project URL
                 </label>
                 <input
@@ -2345,9 +2369,9 @@ export default function AdminDashboard() {
                   onChange={(e) => setEditFinalUrl(e.target.value)}
                   style={{
                     width: '100%', padding: '12px 14px', boxSizing: 'border-box',
-                    borderRadius: '10px', border: '1px solid rgba(255,244,227,0.1)',
-                    background: 'rgba(255,255,255,0.04)', color: '#FFF4E3',
-                    fontFamily: "'Roboto', sans-serif", fontSize: '14px', outline: 'none',
+                    borderRadius: '10px', border: '1px solid rgba(240,230,224,0.1)',
+                    background: 'rgba(255,255,255,0.04)', color: '#F0E6E0',
+                    fontFamily: "'Neue Montreal', 'Roboto', sans-serif", fontSize: '14px', outline: 'none',
                   }}
                 />
               </div>
@@ -2362,8 +2386,8 @@ export default function AdminDashboard() {
                 disabled={isSavingProject}
                 style={{
                   flex: 1, padding: '14px', borderRadius: '9999px',
-                  border: '1px solid rgba(255,244,227,0.12)',
-                  background: 'rgba(255,255,255,0.04)', color: 'rgba(255,244,227,0.7)',
+                  border: '1px solid rgba(240,230,224,0.12)',
+                  background: 'rgba(255,255,255,0.04)', color: 'rgba(240,230,224,0.7)',
                   fontSize: '14px', fontWeight: 500, cursor: 'pointer',
                 }}
               >
@@ -2376,15 +2400,15 @@ export default function AdminDashboard() {
                 style={{
                   flex: 2, padding: '14px', borderRadius: '9999px',
                   border: 'none',
-                  background: 'linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)',
-                  color: '#FFF4E3',
+                  background: 'linear-gradient(135deg, #F2DD93 0%, #E3C24A 50%, #CDA63C 100%)',
+                  color: '#0F0820',
                   fontSize: '14px', fontWeight: 700, cursor: isSavingProject ? 'not-allowed' : 'pointer',
                   opacity: isSavingProject ? 0.6 : 1,
-                  boxShadow: '0 2px 14px rgba(166,77,43,0.35)',
+                  boxShadow: '0 2px 14px rgba(78,61,115,0.35)',
                   transition: 'all 0.2s',
                 }}
-                onMouseEnter={(e) => { if (!isSavingProject && !isUploadingDoc) { e.currentTarget.style.filter = 'brightness(1.1)'; e.currentTarget.style.boxShadow = '0 6px 22px rgba(166,77,43,0.5)'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
-                onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.boxShadow = '0 2px 14px rgba(166,77,43,0.35)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                onMouseEnter={(e) => { if (!isSavingProject && !isUploadingDoc) { e.currentTarget.style.filter = 'brightness(1.1)'; e.currentTarget.style.boxShadow = '0 6px 22px rgba(78,61,115,0.5)'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
+                onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.boxShadow = '0 2px 14px rgba(78,61,115,0.35)'; e.currentTarget.style.transform = 'translateY(0)'; }}
               >
                 {isSavingProject ? 'Saving Changes...' : 'Save Changes'}
               </button>

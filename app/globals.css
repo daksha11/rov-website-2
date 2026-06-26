@@ -5,6 +5,18 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 
 /* --- FONT DECLARATIONS --- */
+/* CTRL-A magazine faces, registered app-wide so the dashboards can share the
+   magazine's typography. These only load when referenced, so other pages are
+   unaffected. */
+@font-face { font-family: 'Neue Montreal'; src: url('/ctrla/fonts/pp-neue-montreal-cufonfonts/ppneuemontreal-thin.otf') format('opentype'); font-weight: 100 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Neue Montreal'; src: url('/ctrla/fonts/pp-neue-montreal-cufonfonts/ppneuemontreal-book.otf') format('opentype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Neue Montreal'; src: url('/ctrla/fonts/pp-neue-montreal-cufonfonts/ppneuemontreal-italic.otf') format('opentype'); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Neue Montreal'; src: url('/ctrla/fonts/pp-neue-montreal-cufonfonts/ppneuemontreal-medium.otf') format('opentype'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Neue Montreal'; src: url('/ctrla/fonts/pp-neue-montreal-cufonfonts/ppneuemontreal-semibolditalic.otf') format('opentype'); font-weight: 600; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Neue Montreal'; src: url('/ctrla/fonts/pp-neue-montreal-cufonfonts/ppneuemontreal-bold.otf') format('opentype'); font-weight: 700 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Instrument Serif'; src: url('/ctrla/fonts/Instrument_Serif/InstrumentSerif-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Instrument Serif'; src: url('/ctrla/fonts/Instrument_Serif/InstrumentSerif-Italic.ttf') format('truetype'); font-weight: 400; font-style: italic; font-display: swap; }
+
 @font-face {
   font-family: 'Thistora';
   src: url('/font/thistora/Thistora-Regular.otf') format('opentype');
@@ -808,6 +820,68 @@ input[type="range"]::-webkit-slider-thumb {
 /* Cover primary CTA — gentle lift on hover */
 .ctrla-cover-cta { transition: transform 0.2s ease, box-shadow 0.2s ease; }
 .ctrla-cover-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(227,194,74,0.28); }
+
+/* ──────────────────────────────────────────────────────────────
+   DASHBOARD SKIN — the CTRL-A magazine palette + Japanese twilight
+   gradient, applied to the admin + client (music) dashboards.
+   ────────────────────────────────────────────────────────────── */
+
+/* The page ground: the same bokashi twilight as the magazine, fixed behind
+   the (translucent) dashboard cards so the whole surface reads as one sky. */
+.dash-ground {
+  background-color: #0F0820;
+  background-image:
+    radial-gradient(150% 38% at 50% 84%,
+      rgba(227,194,74,0.14) 0%,
+      rgba(165,106,103,0.20) 24%,
+      rgba(78,61,115,0.16) 50%,
+      transparent 78%),
+    radial-gradient(130% 50% at 50% -12%, rgba(36,18,58,0.70) 0%, transparent 60%),
+    linear-gradient(180deg, #0F0820 0%, #0F0820 34%, #1B0E2E 64%, #0F0820 100%);
+  background-attachment: fixed;
+}
+
+/* The hero band: the signature sunset — deep night to a low, luminous gold
+   horizon and back to night. The showpiece, lifted from the cover but toned
+   down (muted gold) so heading text stays readable over it. */
+.dash-hero {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg,
+    #0F0820 0%,
+    #20102F 26%,
+    #463768 48%,
+    #8C595A 66%,
+    #C2A957 78%,
+    #8C595A 85%,
+    #463768 93%,
+    #0F0820 100%);
+}
+/* Legibility scrim — darkest at the bottom where the heading sits, fading to
+   clear by mid-band so the upper sunset keeps its glow. */
+.dash-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(to top,
+    rgba(15,8,32,0.82) 0%,
+    rgba(15,8,32,0.46) 26%,
+    rgba(15,8,32,0) 54%);
+}
+/* a faint breathing glow, so the band feels alive (toned down) */
+.dash-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(120% 56% at 50% 78%, rgba(227,194,74,0.10), transparent 70%);
+  animation: ctrla-cosmic-breathe 22s ease-in-out infinite alternate;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dash-hero::after { animation: none; }
+}
 
 /* Reusable paper grain — overlay on any gradient surface for bokashi richness */
 .ctrla-grain {
