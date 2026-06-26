@@ -1,7 +1,9 @@
-// Client testimonial — renders the visible quote AND its Review structured data
-// (itemReviewed -> the case study CreativeWork). Only use with a real, attributed
-// client quote. Note: first-party testimonials are valid structured data but are
-// not eligible for Google star-rating rich results, so no reviewRating is emitted.
+// Client testimonial — a full-width editorial closing band that matches the
+// case-study design language (Norwige display, Roboto labels, accent rule).
+// Renders the visible quote AND its Review structured data (itemReviewed -> the
+// case study). Use only with a real, attributed client quote. Note: first-party
+// testimonials are valid structured data but are not eligible for Google star
+// rich results, so no reviewRating is emitted.
 
 export function Testimonial({
   quote,
@@ -38,33 +40,60 @@ export function Testimonial({
   };
 
   return (
-    <section className="py-8">
+    <section className="relative bg-black px-6 md:px-12 lg:px-16 pb-20 md:pb-28">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <figure
-        className="max-w-3xl mx-auto rounded-3xl px-7 py-10 md:px-12 md:py-14"
-        style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${accentColor}40` }}
-      >
-        <span
-          aria-hidden="true"
-          className="block text-5xl leading-none mb-2"
-          style={{ color: accentColor, fontFamily: "Georgia, serif" }}
-        >
-          &ldquo;
-        </span>
-        <blockquote
-          className="text-xl md:text-2xl lg:text-3xl leading-relaxed text-white"
-          style={{ fontFamily: "Norwige, sans-serif" }}
-        >
-          {quote}
-        </blockquote>
-        <figcaption className="mt-6 text-sm md:text-base">
-          <span className="font-semibold text-white">{authorName}</span>
-          <span className="text-white/60"> &middot; {authorTitle}</span>
-        </figcaption>
-      </figure>
+      <div className="max-w-4xl mx-auto">
+        <div className="pt-12 md:pt-16" style={{ borderTop: `1px solid ${accentColor}33` }}>
+          <p
+            className="text-[0.6875rem] md:text-xs uppercase mb-7 md:mb-9"
+            style={{ fontFamily: "'Roboto', sans-serif", letterSpacing: "0.22em", color: accentColor }}
+          >
+            In their words
+          </p>
+
+          <figure className="m-0">
+            <blockquote className="relative m-0">
+              <span
+                aria-hidden="true"
+                className="absolute -top-8 -left-1 select-none leading-none"
+                style={{
+                  color: accentColor,
+                  opacity: 0.22,
+                  fontFamily: "Georgia, serif",
+                  fontSize: "clamp(4.5rem, 11vw, 8rem)",
+                }}
+              >
+                &ldquo;
+              </span>
+              <p
+                className="relative text-2xl leading-snug sm:text-3xl md:text-4xl"
+                style={{ fontFamily: "Norwige, sans-serif", color: "#FFF4E3" }}
+              >
+                {quote}
+              </p>
+            </blockquote>
+
+            <figcaption className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1">
+              <span aria-hidden="true" className="h-px w-8" style={{ backgroundColor: accentColor }} />
+              <span
+                className="text-base md:text-lg font-semibold"
+                style={{ fontFamily: "'Roboto', sans-serif", color: accentColor }}
+              >
+                {authorName}
+              </span>
+              <span
+                className="text-sm md:text-base"
+                style={{ fontFamily: "'Roboto', sans-serif", color: "#9ca3af" }}
+              >
+                {authorTitle}
+              </span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
     </section>
   );
 }
