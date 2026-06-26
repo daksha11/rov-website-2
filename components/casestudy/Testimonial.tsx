@@ -55,21 +55,9 @@ export function Testimonial({
           </p>
 
           <figure className="m-0">
-            <blockquote className="relative m-0">
-              <span
-                aria-hidden="true"
-                className="absolute -top-8 -left-1 select-none leading-none"
-                style={{
-                  color: accentColor,
-                  opacity: 0.22,
-                  fontFamily: "Georgia, serif",
-                  fontSize: "clamp(4.5rem, 11vw, 8rem)",
-                }}
-              >
-                &ldquo;
-              </span>
+            <blockquote className="m-0">
               <p
-                className="relative text-2xl leading-snug sm:text-3xl md:text-4xl"
+                className="text-2xl leading-snug sm:text-3xl md:text-4xl"
                 style={{ fontFamily: "Norwige, sans-serif", color: "#FFF4E3" }}
               >
                 {quote}
