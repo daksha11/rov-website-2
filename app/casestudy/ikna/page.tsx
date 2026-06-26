@@ -12,6 +12,7 @@ import { DesignSystem } from "@/components/casestudy/DesignSystem";
 import { Approach } from "@/components/casestudy/Approach";
 import { Result } from "@/components/casestudy/Result";
 import IknaInstagramFeature from "@/components/casestudy/IknaInstagramFeature";
+import { Testimonial } from "@/components/casestudy/Testimonial";
 
 export const metadata: Metadata = {
     title: 'Aysegul Ikna - Case Study',
@@ -226,6 +227,15 @@ export default function IknaCaseStudyPage() {
                                 ctaHoverBgColor="#4CAF7D"
                             />
                         </div>
+
+                        <Testimonial
+                            quote="Everything finally looks like it came from one brain. It all tells the same story now."
+                            authorName="Aysegul Ikna"
+                            authorTitle="Owner, Designer & Founder, Aysegul Ikna"
+                            itemName="Aysegul Ikna Website Design"
+                            itemUrl="/casestudy/ikna"
+                            accentColor="#4CAF7D"
+                        />
                     </div>
                 </div>
             </section>
