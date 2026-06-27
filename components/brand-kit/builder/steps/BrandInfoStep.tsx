@@ -16,7 +16,7 @@ function FieldAccent({ error }: { error?: boolean }) {
         width: "3px",
         height: "13px",
         borderRadius: "2px",
-        background: error ? "#E89178" : "rgba(201,169,97,0.5)",
+        background: error ? "#E89178" : "rgba(227,194,74,0.5)",
         flexShrink: 0,
         transition: "background 0.2s ease",
       }}
@@ -44,7 +44,7 @@ export default function BrandInfoStep() {
               fontFamily: "monospace",
               fontSize: "10px",
               letterSpacing: "0.28em",
-              color: "rgba(201,169,97,0.65)",
+              color: "rgba(227,194,74,0.65)",
               textTransform: "uppercase",
               fontWeight: 500,
             }}
@@ -56,7 +56,7 @@ export default function BrandInfoStep() {
             style={{
               flex: "0 0 28px",
               height: "1px",
-              background: "rgba(201,169,97,0.25)",
+              background: "rgba(227,194,74,0.25)",
             }}
           />
           <span
@@ -64,7 +64,7 @@ export default function BrandInfoStep() {
               fontFamily: "monospace",
               fontSize: "10px",
               letterSpacing: "0.18em",
-              color: "rgba(208,190,165,0.28)",
+              color: "rgba(240,230,224,0.28)",
               textTransform: "uppercase",
             }}
           >
@@ -81,13 +81,13 @@ export default function BrandInfoStep() {
             fontSize: "clamp(40px, 10vw, 56px)",
             lineHeight: 0.92,
             letterSpacing: "-0.02em",
-            color: "#FFF4E3",
+            color: "#F0E6E0",
             margin: 0,
           }}
         >
           Brand
           <br />
-          <span style={{ color: "#C9A961" }}>Information</span>
+          <span style={{ color: "#E3C24A" }}>Information</span>
         </h2>
 
         {/* Body */}
@@ -96,7 +96,7 @@ export default function BrandInfoStep() {
             fontFamily: "'Roboto', sans-serif",
             fontSize: "14px",
             lineHeight: 1.75,
-            color: "rgba(255,244,227,0.48)",
+            color: "rgba(240,230,224,0.48)",
             margin: 0,
             maxWidth: "340px",
           }}
@@ -117,8 +117,8 @@ export default function BrandInfoStep() {
           gap: "12px",
           padding: "16px 20px",
           borderRadius: "16px",
-          background: "linear-gradient(135deg, rgba(201,169,97,0.09) 0%, rgba(201,169,97,0.04) 100%)",
-          border: "1px solid rgba(201,169,97,0.26)",
+          background: "linear-gradient(135deg, rgba(227,194,74,0.09) 0%, rgba(227,194,74,0.04) 100%)",
+          border: "1px solid rgba(227,194,74,0.26)",
           cursor: "pointer",
           textAlign: "left",
           transition: "all 0.22s cubic-bezier(0.16,1,0.3,1)",
@@ -128,24 +128,24 @@ export default function BrandInfoStep() {
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.background =
-            "linear-gradient(135deg, rgba(201,169,97,0.15) 0%, rgba(201,169,97,0.07) 100%)";
-          e.currentTarget.style.borderColor = "rgba(201,169,97,0.5)";
+            "linear-gradient(135deg, rgba(227,194,74,0.15) 0%, rgba(227,194,74,0.07) 100%)";
+          e.currentTarget.style.borderColor = "rgba(227,194,74,0.5)";
           e.currentTarget.style.transform = "translateY(-1px)";
-          e.currentTarget.style.boxShadow = "0 8px 28px rgba(42,16,12,0.4)";
+          e.currentTarget.style.boxShadow = "0 8px 28px rgba(36,18,58,0.4)";
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.background =
-            "linear-gradient(135deg, rgba(201,169,97,0.09) 0%, rgba(201,169,97,0.04) 100%)";
-          e.currentTarget.style.borderColor = "rgba(201,169,97,0.26)";
+            "linear-gradient(135deg, rgba(227,194,74,0.09) 0%, rgba(227,194,74,0.04) 100%)";
+          e.currentTarget.style.borderColor = "rgba(227,194,74,0.26)";
           e.currentTarget.style.transform = "translateY(0)";
           e.currentTarget.style.boxShadow = "none";
         }}
         onFocus={(e) => {
-          e.currentTarget.style.borderColor = "rgba(201,169,97,0.55)";
-          e.currentTarget.style.boxShadow = "0 0 0 3px rgba(201,169,97,0.12)";
+          e.currentTarget.style.borderColor = "rgba(227,194,74,0.55)";
+          e.currentTarget.style.boxShadow = "0 0 0 3px rgba(227,194,74,0.12)";
         }}
         onBlur={(e) => {
-          e.currentTarget.style.borderColor = "rgba(201,169,97,0.26)";
+          e.currentTarget.style.borderColor = "rgba(227,194,74,0.26)";
           e.currentTarget.style.boxShadow = "none";
         }}
       >
@@ -159,7 +159,7 @@ export default function BrandInfoStep() {
             width: "130px",
             height: "130px",
             borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(201,169,97,0.14) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(227,194,74,0.14) 0%, transparent 70%)",
             pointerEvents: "none",
           }}
         />
@@ -171,15 +171,15 @@ export default function BrandInfoStep() {
               width: "42px",
               height: "42px",
               borderRadius: "12px",
-              background: "rgba(201,169,97,0.1)",
-              border: "1px solid rgba(201,169,97,0.22)",
+              background: "rgba(227,194,74,0.1)",
+              border: "1px solid rgba(227,194,74,0.22)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               flexShrink: 0,
             }}
           >
-            <Sparkles size={17} color="#C9A961" strokeWidth={1.8} />
+            <Sparkles size={17} color="#E3C24A" strokeWidth={1.8} />
           </div>
 
           <div style={{ minWidth: 0 }}>
@@ -188,7 +188,7 @@ export default function BrandInfoStep() {
                 fontFamily: "'Roboto', sans-serif",
                 fontSize: "13px",
                 fontWeight: 600,
-                color: "#FFF4E3",
+                color: "#F0E6E0",
                 marginBottom: "3px",
                 letterSpacing: "0.01em",
               }}
@@ -199,13 +199,13 @@ export default function BrandInfoStep() {
               style={{
                 fontFamily: "'Roboto', sans-serif",
                 fontSize: "11px",
-                color: "rgba(255,244,227,0.42)",
+                color: "rgba(240,230,224,0.42)",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
               }}
             >
-              Populate with Range of View Studios as a starting point
+              Populate with CTRL-A, the Range of View creative platform
             </div>
           </div>
         </div>
@@ -217,7 +217,7 @@ export default function BrandInfoStep() {
             fontSize: "9px",
             letterSpacing: "0.22em",
             fontWeight: 700,
-            color: "#C9A961",
+            color: "#E3C24A",
             textTransform: "uppercase",
             flexShrink: 0,
             position: "relative",
@@ -236,19 +236,19 @@ export default function BrandInfoStep() {
           margin: "-8px 0",
         }}
       >
-        <div style={{ flex: 1, height: "1px", background: "rgba(208,190,165,0.08)" }} />
+        <div style={{ flex: 1, height: "1px", background: "rgba(240,230,224,0.08)" }} />
         <span
           style={{
             fontFamily: "monospace",
             fontSize: "9px",
             letterSpacing: "0.22em",
-            color: "rgba(208,190,165,0.25)",
+            color: "rgba(240,230,224,0.25)",
             textTransform: "uppercase",
           }}
         >
           Details
         </span>
-        <div style={{ flex: 1, height: "1px", background: "rgba(208,190,165,0.08)" }} />
+        <div style={{ flex: 1, height: "1px", background: "rgba(240,230,224,0.08)" }} />
       </div>
 
       {/* ── Form Fields ── */}
@@ -260,7 +260,7 @@ export default function BrandInfoStep() {
             <FieldAccent error={nameMissing} />
             <Label>
               Brand Name{" "}
-              <span style={{ color: nameMissing ? "#E89178" : "rgba(201,169,97,0.55)" }}>*</span>
+              <span style={{ color: nameMissing ? "#E89178" : "rgba(227,194,74,0.55)" }}>*</span>
             </Label>
           </div>
           <Input

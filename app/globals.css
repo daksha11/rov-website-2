@@ -601,6 +601,47 @@ input[type="range"]::-webkit-slider-thumb {
   box-shadow: 0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,244,227,0.07);
 }
 
+/* ── Brand Kit Generator — CTRL-A cosmic skin ──
+   The button/surface utilities above are shared with the warm site sections,
+   so we re-skin them to the cosmic palette ONLY inside the brand-kit builder
+   (scoped under .brandkit-cosmic). The rest of the site keeps the warm theme. */
+.brandkit-cosmic .btn-brown {
+  background: linear-gradient(135deg, #F2DD93 0%, #E3C24A 50%, #CDA63C 100%);
+  color: #0F0820;
+  border: 1px solid rgba(227,194,74,0.5);
+  box-shadow: 0 2px 14px rgba(227,194,74,0.3), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+.brandkit-cosmic .btn-brown:hover {
+  background: linear-gradient(135deg, #F7E6A6 0%, #ECCB55 50%, #D9B146 100%);
+  box-shadow: 0 4px 22px rgba(227,194,74,0.45), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+.brandkit-cosmic .btn-tan {
+  background: rgba(240,230,224,0.08);
+  color: #F0E6E0;
+  border: 1px solid rgba(240,230,224,0.22);
+  box-shadow: inset 0 1px 0 rgba(240,230,224,0.06);
+}
+.brandkit-cosmic .btn-tan:hover {
+  background: rgba(240,230,224,0.14);
+  border-color: rgba(240,230,224,0.4);
+  color: #F0E6E0;
+}
+.brandkit-cosmic .surface-1 {
+  background: rgba(240,230,224,0.03);
+  border: 1px solid rgba(240,230,224,0.1);
+  box-shadow: 0 4px 20px rgba(7,3,16,0.4), inset 0 1px 0 rgba(240,230,224,0.04);
+}
+.brandkit-cosmic .surface-2 {
+  background: rgba(240,230,224,0.06);
+  border: 1px solid rgba(240,230,224,0.16);
+  box-shadow: 0 8px 32px rgba(7,3,16,0.45), inset 0 1px 0 rgba(240,230,224,0.07);
+}
+.brandkit-cosmic .gold-pulse { animation: gold-pulse-cosmic 2.4s ease-in-out infinite; }
+@keyframes gold-pulse-cosmic {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(227,194,74,0.35); }
+  50%       { box-shadow: 0 0 0 6px rgba(227,194,74,0); }
+}
+
 /* ───────────────── CTRL-A magazine ───────────────── */
 @keyframes ctrlaBelt {
   from { transform: translateX(0); }
@@ -1181,4 +1222,226 @@ input[type="range"]::-webkit-slider-thumb {
   0% { transform: translate(0, 0) rotate(8deg); opacity: 0; }
   12% { opacity: 0.9; }
   60%, 100% { transform: translate(135vw, 58vh) rotate(8deg); opacity: 0; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   THE FOLD — ambient creative room (CTRL-A feature)
+   Slow, breathing, intentional. Nothing snaps. The gradients here
+   are the "Japanese variations": layered bokashi washes, no images.
+   ══════════════════════════════════════════════════════════════ */
+
+/* Entrances */
+.fold-fade-up { animation: fold-fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+@keyframes fold-fade-up {
+  0%   { opacity: 0; transform: translateY(14px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.fold-fade-in { animation: fold-fade-in 1.1s ease both; }
+@keyframes fold-fade-in {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Enter CTA — text + hairline, the line grows and the arrow drifts */
+.fold-enter-cta .fold-enter-line { transform-origin: left center; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); }
+.fold-enter-cta:hover .fold-enter-arrow { transform: translateX(6px); }
+.fold-enter-cta:hover .fold-enter-line { transform: scaleX(1.12); }
+
+/* Ritual choice rows — the tick lengthens, the word warms */
+.fold-choice .fold-choice-tick { transition: width 0.3s cubic-bezier(0.16,1,0.3,1), background 0.3s ease; }
+.fold-choice:hover .fold-choice-tick,
+.fold-choice[data-selected="true"] .fold-choice-tick { width: 30px; }
+
+/* Pillars grid */
+.fold-pillars {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(22px, 3vw, 40px);
+}
+
+/* Enter transition overlay */
+.fold-enter-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 1.1s ease;
+  pointer-events: none;
+}
+.fold-enter-overlay.is-revealing { opacity: 0; }
+.fold-enter-word { animation: fold-word-in 0.7s ease both; }
+@keyframes fold-word-in {
+  0%   { opacity: 0; letter-spacing: 0.08em; }
+  100% { opacity: 1; letter-spacing: -0.01em; }
+}
+
+/* The room */
+.fold-room {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  overflow: hidden;
+  background-color: #0F0820;
+  display: flex;
+}
+.fold-room-inner {
+  position: relative;
+  z-index: 2;
+  margin: auto auto clamp(72px, 12vh, 140px);
+  padding: 0 clamp(20px, 5vw, 64px);
+  width: 100%;
+  max-width: 1100px;
+}
+
+/* The room's living light — a low breathing horizon, by soundscape.
+   These are the layered Japanese gradient variations. */
+.fold-room-atmos {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-color: #0F0820;
+  background-image:
+    radial-gradient(150% 42% at 50% 86%, rgba(227,194,74,0.14) 0%, rgba(165,106,103,0.20) 24%, rgba(78,61,115,0.16) 50%, transparent 78%),
+    radial-gradient(130% 50% at 50% -12%, rgba(36,18,58,0.7) 0%, transparent 60%),
+    linear-gradient(180deg, #0F0820 0%, #160B28 60%, #0F0820 100%);
+  animation: fold-breathe 26s ease-in-out infinite alternate;
+}
+@keyframes fold-breathe {
+  0%   { opacity: 0.85; transform: scale(1) translateY(0); }
+  100% { opacity: 1; transform: scale(1.04) translateY(-1.2%); }
+}
+
+/* Soundscape atmosphere variants — each a different Japanese wash.
+   WIDE OPEN: sparse, cool dawn. IN IT: dense plum. LAST LIGHT: warm dusk.
+   STATIC: desaturated. GOLDEN HOUR: rare warm elevation. */
+.fold-room[data-soundscape="wide-open"] .fold-room-atmos {
+  background-image:
+    radial-gradient(150% 46% at 50% 90%, rgba(165,106,103,0.16) 0%, rgba(78,61,115,0.14) 40%, transparent 76%),
+    radial-gradient(120% 48% at 50% -14%, rgba(36,18,58,0.6) 0%, transparent 62%),
+    linear-gradient(180deg, #0F0820 0%, #19112E 64%, #0F0820 100%);
+}
+.fold-room[data-soundscape="in-it"] .fold-room-atmos {
+  background-image:
+    radial-gradient(140% 40% at 50% 84%, rgba(78,61,115,0.26) 0%, rgba(36,18,58,0.2) 46%, transparent 78%),
+    radial-gradient(130% 50% at 50% -10%, rgba(36,18,58,0.8) 0%, transparent 58%),
+    linear-gradient(180deg, #0C0619 0%, #1A0E30 58%, #0C0619 100%);
+}
+.fold-room[data-soundscape="last-light"] .fold-room-atmos {
+  background-image:
+    radial-gradient(160% 44% at 50% 82%, rgba(227,194,74,0.20) 0%, rgba(165,106,103,0.26) 26%, rgba(78,61,115,0.16) 52%, transparent 80%),
+    radial-gradient(120% 46% at 50% -12%, rgba(36,18,58,0.6) 0%, transparent 60%),
+    linear-gradient(180deg, #120A22 0%, #2A1733 58%, #120A22 100%);
+}
+.fold-room[data-soundscape="static"] .fold-room-atmos {
+  background-image:
+    radial-gradient(150% 44% at 50% 86%, rgba(165,106,103,0.10) 0%, rgba(78,61,115,0.10) 44%, transparent 78%),
+    linear-gradient(180deg, #0E0B16 0%, #17131F 60%, #0E0B16 100%);
+}
+.fold-room[data-soundscape="golden-hour"] .fold-room-atmos {
+  background-image:
+    radial-gradient(170% 50% at 50% 80%, rgba(227,194,74,0.30) 0%, rgba(165,106,103,0.28) 28%, rgba(78,61,115,0.16) 54%, transparent 82%),
+    radial-gradient(120% 46% at 50% -10%, rgba(36,18,58,0.55) 0%, transparent 60%),
+    linear-gradient(180deg, #14091F 0%, #34203A 56%, #14091F 100%);
+}
+
+.fold-leave { transition: opacity 0.3s ease; opacity: 0.7; }
+.fold-leave:hover { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fold-fade-up, .fold-fade-in, .fold-enter-word { animation: none; }
+  .fold-room-atmos { animation: none; }
+  .fold-enter-overlay { transition: opacity 0.3s ease; }
+}
+
+/* ── Room regions ── */
+.fold-room-center {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(80px, 12vh, 140px) clamp(20px, 5vw, 48px);
+}
+.fold-room-bl {
+  position: absolute;
+  left: clamp(20px, 5vw, 48px);
+  bottom: clamp(20px, 4vh, 40px);
+  z-index: 3;
+}
+.fold-room-bc {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: clamp(20px, 4vh, 40px);
+  z-index: 3;
+  max-width: min(90vw, 620px);
+}
+.fold-fuel {
+  position: absolute;
+  right: clamp(16px, 3vw, 36px);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: clamp(240px, 24vw, 320px);
+  max-height: 70vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2vw, 22px);
+  padding: clamp(16px, 1.6vw, 22px);
+  padding-right: 4px;
+  border-left: 1px solid rgba(240,230,224,0.1);
+  background: linear-gradient(to right, transparent 0%, rgba(15,8,32,0.34) 22%);
+  scrollbar-width: none;
+}
+.fold-fuel::-webkit-scrollbar { display: none; }
+.fold-end {
+  max-width: 920px;
+  width: 100%;
+  padding: 0 clamp(20px, 5vw, 64px);
+  text-align: left;
+}
+
+/* ── Presence dots ── */
+.fold-dot {
+  animation-name: fold-dot-pulse;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-direction: alternate;
+}
+@keyframes fold-dot-pulse {
+  0%   { opacity: 0.22; transform: scale(0.7); }
+  100% { opacity: 0.9;  transform: scale(1.12); }
+}
+
+/* ── Whisper drift ── */
+.fold-whisper { animation: fold-whisper-drift 17s linear forwards; }
+@keyframes fold-whisper-drift {
+  0%   { transform: translateX(-14vw); opacity: 0; }
+  12%  { opacity: 0.34; }
+  86%  { opacity: 0.34; }
+  100% { transform: translateX(98vw); opacity: 0; }
+}
+
+/* ── Soundscape rail item ── */
+.fold-stream-item { transition: color 0.3s ease; }
+
+@media (max-width: 860px) {
+  .fold-fuel { display: none; }
+  .fold-room-bc { position: static; transform: none; max-width: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fold-dot { animation: none; opacity: 0.6; }
+  .fold-whisper { animation: fold-whisper-fade 17s linear forwards; }
+}
+@keyframes fold-whisper-fade {
+  0%, 100% { opacity: 0; }
+  12%, 86% { opacity: 0.3; }
 }

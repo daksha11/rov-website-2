@@ -7,11 +7,11 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
     <div
       className={cn(
         "flex flex-col gap-4 rounded-xl py-4 text-card-foreground",
-        "bg-[rgba(255,244,227,0.03)] backdrop-blur-md",
-        "border border-[rgba(208,190,165,0.1)]",
-        "shadow-[0_4px_20px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,244,227,0.04)]",
+        "bg-[rgba(240,230,224,0.03)] backdrop-blur-md",
+        "border border-[rgba(240,230,224,0.1)]",
+        "shadow-[0_4px_20px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(240,230,224,0.04)]",
         "transition-all duration-200",
-        "hover:border-[rgba(208,190,165,0.18)]",
+        "hover:border-[rgba(240,230,224,0.18)]",
         className
       )}
       {...props}

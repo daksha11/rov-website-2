@@ -20,16 +20,16 @@ interface ContactUsModalProps {
 export default function ContactUsModal({ isOpen, onClose }: ContactUsModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md bg-[#1F0F08] border-[rgba(208,190,165,0.15)] text-[#FFF4E3]">
+      <DialogContent className="sm:max-w-md bg-[#1B0E2E] border-[rgba(240,230,224,0.15)] text-[#F0E6E0]">
         <DialogHeader className="flex flex-col items-center text-center space-y-4 pt-4">
-          <div className="w-16 h-16 rounded-full bg-[rgba(234,154,97,0.1)] flex items-center justify-center border border-[rgba(234,154,97,0.2)]">
-            <AlertCircle className="size-8 text-[#EA9A61]" />
+          <div className="w-16 h-16 rounded-full bg-[rgba(227,194,74,0.1)] flex items-center justify-center border border-[rgba(227,194,74,0.2)]">
+            <AlertCircle className="size-8 text-[#E3C24A]" />
           </div>
           <div className="space-y-2">
-            <DialogTitle className="text-2xl font-semibold tracking-tight text-[#FFF4E3]">
+            <DialogTitle className="text-2xl font-semibold tracking-tight text-[#F0E6E0]">
               Point Limit Reached
             </DialogTitle>
-            <DialogDescription className="text-[#D0BEA5]/70 text-base leading-relaxed">
+            <DialogDescription className="text-[#F0E6E0]/70 text-base leading-relaxed">
               {`You've used all your points. To continue generating premium brand kits, please contact our support team to refill your credits.`}
             </DialogDescription>
           </div>
@@ -38,11 +38,11 @@ export default function ContactUsModal({ isOpen, onClose }: ContactUsModalProps)
           <Button
             variant="outline"
             onClick={onClose}
-            className="w-full sm:flex-1 border-[rgba(208,190,165,0.2)] text-[#D0BEA5] hover:bg-[rgba(208,190,165,0.05)]"
+            className="w-full sm:flex-1 border-[rgba(240,230,224,0.2)] text-[#F0E6E0] hover:bg-[rgba(240,230,224,0.05)]"
           >
             Cancel
           </Button>
-          <Button asChild className="w-full sm:flex-1 shadow-[0_4px_20px_rgba(59,33,20,0.5)]">
+          <Button asChild className="w-full sm:flex-1 shadow-[0_4px_20px_rgba(36,18,58,0.5)]">
             <Link href="/contact">
               <MessageSquare className="size-4" />
               Contact Support

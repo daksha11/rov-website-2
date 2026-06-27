@@ -77,13 +77,13 @@ export default function WizardShell({
 
   return (
     <div className="flex flex-col h-full">
-      <div className="relative border-b border-[rgba(208,190,165,0.1)]">
+      <div className="relative border-b border-[rgba(240,230,224,0.1)]">
         <div
           aria-hidden
           className="pointer-events-none absolute left-0 top-0 bottom-0 w-6 z-10"
           style={{
             background:
-              "linear-gradient(to right, rgba(31,15,8,0.95) 0%, rgba(31,15,8,0) 100%)",
+              "linear-gradient(to right, rgba(15,8,32,0.95) 0%, rgba(15,8,32,0) 100%)",
           }}
         />
         <div
@@ -91,12 +91,12 @@ export default function WizardShell({
           className="pointer-events-none absolute right-0 top-0 bottom-0 w-6 z-10"
           style={{
             background:
-              "linear-gradient(to left, rgba(31,15,8,0.95) 0%, rgba(31,15,8,0) 100%)",
+              "linear-gradient(to left, rgba(15,8,32,0.95) 0%, rgba(15,8,32,0) 100%)",
           }}
         />
       <nav
         ref={navRef}
-        className="flex items-center gap-1 px-3 py-3 overflow-x-auto backdrop-blur-md bg-[rgba(31,15,8,0.72)] scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex items-center gap-1 px-3 py-3 overflow-x-auto backdrop-blur-md bg-[rgba(15,8,32,0.72)] scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {WIZARD_STEPS.map((step, i) => {
           const isActive = i === currentIdx;
@@ -109,26 +109,26 @@ export default function WizardShell({
               className={cn(
                 "relative flex items-center gap-2 px-3 py-2 rounded-full text-xs transition-all whitespace-nowrap",
                 isActive
-                  ? "text-[#3B2114]"
+                  ? "text-[#24123A]"
                   : isCompleted
-                  ? "text-[#D0BEA5] hover:text-[#FFF4E3] hover:bg-[rgba(208,190,165,0.06)]"
-                  : "text-[rgba(208,190,165,0.5)] hover:text-[#D0BEA5]"
+                  ? "text-[#F0E6E0] hover:text-[#F0E6E0] hover:bg-[rgba(240,230,224,0.06)]"
+                  : "text-[rgba(240,230,224,0.5)] hover:text-[#F0E6E0]"
               )}
             >
               {isActive && (
                 <span
                   aria-hidden
-                  className="absolute inset-0 rounded-full bg-[#D0BEA5] shadow-[0_2px_12px_rgba(201,169,97,0.35),inset_0_1px_0_rgba(229,194,106,0.5)]"
+                  className="absolute inset-0 rounded-full bg-[#F0E6E0] shadow-[0_2px_12px_rgba(227,194,74,0.35),inset_0_1px_0_rgba(227,194,74,0.5)]"
                 />
               )}
               <span
                 className={cn(
                   "relative w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-semibold flex-shrink-0",
                   isActive
-                    ? "bg-[#3B2114] text-[#FFF4E3]"
+                    ? "bg-[#24123A] text-[#F0E6E0]"
                     : isCompleted
                     ? "bg-[rgba(168,200,150,0.12)] text-[#A8C896] border border-[rgba(168,200,150,0.3)]"
-                    : "bg-[rgba(208,190,165,0.06)] text-[rgba(208,190,165,0.5)]"
+                    : "bg-[rgba(240,230,224,0.06)] text-[rgba(240,230,224,0.5)]"
                 )}
               >
                 {isCompleted ? <CheckIcon /> : step.num}
@@ -144,7 +144,7 @@ export default function WizardShell({
 
       <div className="flex-1 overflow-y-auto px-6 py-8">{children}</div>
 
-      <div className="flex items-center justify-between px-6 py-4 border-t border-[rgba(208,190,165,0.08)] backdrop-blur-md bg-[rgba(20,10,5,0.82)] gap-3 overflow-hidden">
+      <div className="flex items-center justify-between px-6 py-4 border-t border-[rgba(240,230,224,0.08)] backdrop-blur-md bg-[rgba(15,8,32,0.82)] gap-3 overflow-hidden">
         <div className="flex-1 flex justify-start min-w-0">
           {prevStep ? (
             <Button variant="ghost" size="sm" asChild>
@@ -160,11 +160,11 @@ export default function WizardShell({
           className="flex items-center gap-1.5 font-mono text-[10px] tracking-[0.2em] select-none"
           aria-label={`Step ${currentIdx + 1} of ${WIZARD_STEPS.length}`}
         >
-          <span className="text-[#D0BEA5]">
+          <span className="text-[#F0E6E0]">
             {String(currentIdx + 1).padStart(2, "0")}
           </span>
-          <span className="text-[#D0BEA5]/30">/</span>
-          <span className="text-[#D0BEA5]/40">
+          <span className="text-[#F0E6E0]/30">/</span>
+          <span className="text-[#F0E6E0]/40">
             {String(WIZARD_STEPS.length).padStart(2, "0")}
           </span>
         </div>

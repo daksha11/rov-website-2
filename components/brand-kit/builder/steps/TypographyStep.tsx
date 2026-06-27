@@ -117,24 +117,24 @@ export default function TypographyStep() {
   return (
     <div className="max-w-md space-y-7">
       <div>
-        <p className="text-[10px] tracking-[0.25em] uppercase text-[#D0BEA5]/60 mb-2 font-medium">
+        <p className="text-[10px] tracking-[0.25em] uppercase text-[#F0E6E0]/60 mb-2 font-medium">
           Step 04
         </p>
-        <h2 className="text-2xl font-light tracking-tight mb-1 text-[#FFF4E3]">
+        <h2 className="text-2xl font-light tracking-tight mb-1 text-[#F0E6E0]">
           <span className="font-semibold">Typography</span>
         </h2>
-        <p className="text-sm text-[#FFF4E3]/65">
+        <p className="text-sm text-[#F0E6E0]/65">
           Pick any Google Font or upload your own — preview updates live.
         </p>
       </div>
 
       {/* Live Combined Preview */}
-      <div className="p-4 rounded-2xl bg-[rgba(255,244,227,0.03)] border border-[rgba(208,190,165,0.12)] backdrop-blur-md overflow-hidden">
-        <p className="text-[9px] tracking-[0.25em] uppercase text-[#D0BEA5]/40 mb-3 font-medium">
+      <div className="p-4 rounded-2xl bg-[rgba(240,230,224,0.03)] border border-[rgba(240,230,224,0.12)] backdrop-blur-md overflow-hidden">
+        <p className="text-[9px] tracking-[0.25em] uppercase text-[#F0E6E0]/40 mb-3 font-medium">
           Live Preview
         </p>
         <p
-          className="text-[28px] leading-tight text-[#FFF4E3] mb-2"
+          className="text-[28px] leading-tight text-[#F0E6E0] mb-2"
           style={{
             fontFamily: `'${typography.displayFont.name}', ${typography.displayFont.fallback}`,
             fontWeight: 600,
@@ -143,7 +143,7 @@ export default function TypographyStep() {
           {previewHeadline}
         </p>
         <p
-          className="text-sm text-[#FFF4E3]/65 leading-relaxed"
+          className="text-sm text-[#F0E6E0]/65 leading-relaxed"
           style={{
             fontFamily: `'${typography.bodyFont.name}', ${typography.bodyFont.fallback}`,
             fontWeight: 300,
@@ -151,16 +151,16 @@ export default function TypographyStep() {
         >
           {previewBody}
         </p>
-        <div className="mt-3 pt-3 border-t border-[rgba(208,190,165,0.08)] flex items-center justify-between">
+        <div className="mt-3 pt-3 border-t border-[rgba(240,230,224,0.08)] flex items-center justify-between">
           <span
-            className="text-[10px] text-[#D0BEA5]/50"
+            className="text-[10px] text-[#F0E6E0]/50"
             style={{ fontFamily: `'${typography.displayFont.name}', ${typography.displayFont.fallback}` }}
           >
             {typography.displayFont.name}
           </span>
-          <span className="text-[10px] text-[#D0BEA5]/25">+</span>
+          <span className="text-[10px] text-[#F0E6E0]/25">+</span>
           <span
-            className="text-[10px] text-[#D0BEA5]/50"
+            className="text-[10px] text-[#F0E6E0]/50"
             style={{ fontFamily: `'${typography.bodyFont.name}', ${typography.bodyFont.fallback}` }}
           >
             {typography.bodyFont.name}
@@ -197,27 +197,27 @@ export default function TypographyStep() {
       />
 
       {/* Type Scale — collapsed */}
-      <div className="rounded-xl border border-[rgba(208,190,165,0.1)] bg-[rgba(255,244,227,0.02)] overflow-hidden">
+      <div className="rounded-xl border border-[rgba(240,230,224,0.1)] bg-[rgba(240,230,224,0.02)] overflow-hidden">
         <button
           type="button"
           onClick={() => setScaleOpen((v) => !v)}
           aria-expanded={scaleOpen}
-          className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-[rgba(255,244,227,0.03)] transition-colors"
+          className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-[rgba(240,230,224,0.03)] transition-colors"
         >
           <div className="flex items-center gap-3 min-w-0">
-            <Sliders className="size-3.5 text-[#D0BEA5]/60 flex-shrink-0" />
+            <Sliders className="size-3.5 text-[#F0E6E0]/60 flex-shrink-0" />
             <div className="min-w-0">
-              <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#D0BEA5]/80">
+              <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#F0E6E0]/80">
                 Advanced · Type Scale
               </p>
-              <p className="text-[10px] text-[#FFF4E3]/45 truncate">
+              <p className="text-[10px] text-[#F0E6E0]/45 truncate">
                 Fine-tune size, weight, and line height for each level
               </p>
             </div>
           </div>
           <ChevronDown
             className={cn(
-              "size-4 text-[#D0BEA5]/60 flex-shrink-0 ml-2 transition-transform",
+              "size-4 text-[#F0E6E0]/60 flex-shrink-0 ml-2 transition-transform",
               scaleOpen && "rotate-180"
             )}
           />
@@ -231,7 +231,7 @@ export default function TypographyStep() {
               transition={{ duration: 0.18 }}
               className="overflow-hidden"
             >
-              <div className="px-4 pb-4 pt-1 space-y-2.5 border-t border-[rgba(208,190,165,0.08)]">
+              <div className="px-4 pb-4 pt-1 space-y-2.5 border-t border-[rgba(240,230,224,0.08)]">
                 {typography.scale.map((entry, i) => {
                   const fontDef =
                     entry.fontFamily === "display"
@@ -240,26 +240,26 @@ export default function TypographyStep() {
                   return (
                     <div
                       key={entry.label}
-                      className="rounded-xl bg-[rgba(255,244,227,0.03)] backdrop-blur-md border border-[rgba(208,190,165,0.1)] overflow-hidden"
+                      className="rounded-xl bg-[rgba(240,230,224,0.03)] backdrop-blur-md border border-[rgba(240,230,224,0.1)] overflow-hidden"
                     >
                       <div className="px-3 pt-3 pb-2">
                         <div className="flex items-center gap-2 mb-2">
-                          <span className="text-[8px] tracking-[0.2em] uppercase text-[#D0BEA5]/50 font-semibold">
+                          <span className="text-[8px] tracking-[0.2em] uppercase text-[#F0E6E0]/50 font-semibold">
                             {entry.label}
                           </span>
                           <span
                             className={cn(
                               "text-[8px] tracking-[0.12em] uppercase px-1.5 py-0.5 rounded-full font-medium",
                               entry.fontFamily === "display"
-                                ? "bg-[rgba(201,169,97,0.12)] text-[#C9A961]/70"
-                                : "bg-[rgba(208,190,165,0.08)] text-[#D0BEA5]/45"
+                                ? "bg-[rgba(227,194,74,0.12)] text-[#E3C24A]/70"
+                                : "bg-[rgba(240,230,224,0.08)] text-[#F0E6E0]/45"
                             )}
                           >
                             {entry.fontFamily}
                           </span>
                         </div>
                         <div
-                          className="text-[#FFF4E3] leading-tight truncate"
+                          className="text-[#F0E6E0] leading-tight truncate"
                           style={{
                             fontFamily: `'${fontDef.name}', ${fontDef.fallback}`,
                             fontSize: capFontSize(entry.fontSize),
@@ -272,21 +272,21 @@ export default function TypographyStep() {
                           {resolveSampleText(entry, brandInfo) || entry.label}
                         </div>
                       </div>
-                      <div className="px-3 pb-3 pt-2 border-t border-[rgba(208,190,165,0.06)] space-y-2">
+                      <div className="px-3 pb-3 pt-2 border-t border-[rgba(240,230,224,0.06)] space-y-2">
                         <div className="grid grid-cols-3 gap-2">
                           <div className="space-y-1">
-                            <p className="text-[8px] tracking-[0.12em] uppercase text-[#D0BEA5]/30 font-medium">
+                            <p className="text-[8px] tracking-[0.12em] uppercase text-[#F0E6E0]/30 font-medium">
                               Size
                             </p>
                             <input
                               value={entry.fontSize}
                               onChange={(e) => updateScaleEntry(i, { fontSize: e.target.value })}
                               placeholder="16px"
-                              className="w-full h-7 px-2 rounded-lg bg-[rgba(208,190,165,0.06)] border border-[rgba(208,190,165,0.12)] text-[11px] text-[#FFF4E3]/80 font-mono outline-none focus:border-[rgba(208,190,165,0.4)] transition-colors"
+                              className="w-full h-7 px-2 rounded-lg bg-[rgba(240,230,224,0.06)] border border-[rgba(240,230,224,0.12)] text-[11px] text-[#F0E6E0]/80 font-mono outline-none focus:border-[rgba(240,230,224,0.4)] transition-colors"
                             />
                           </div>
                           <div className="space-y-1">
-                            <p className="text-[8px] tracking-[0.12em] uppercase text-[#D0BEA5]/30 font-medium">
+                            <p className="text-[8px] tracking-[0.12em] uppercase text-[#F0E6E0]/30 font-medium">
                               Weight
                             </p>
                             <input
@@ -298,18 +298,18 @@ export default function TypographyStep() {
                               step={100}
                               min={100}
                               max={900}
-                              className="w-full h-7 px-2 rounded-lg bg-[rgba(208,190,165,0.06)] border border-[rgba(208,190,165,0.12)] text-[11px] text-[#FFF4E3]/80 font-mono outline-none focus:border-[rgba(208,190,165,0.4)] transition-colors"
+                              className="w-full h-7 px-2 rounded-lg bg-[rgba(240,230,224,0.06)] border border-[rgba(240,230,224,0.12)] text-[11px] text-[#F0E6E0]/80 font-mono outline-none focus:border-[rgba(240,230,224,0.4)] transition-colors"
                             />
                           </div>
                           <div className="space-y-1">
-                            <p className="text-[8px] tracking-[0.12em] uppercase text-[#D0BEA5]/30 font-medium">
+                            <p className="text-[8px] tracking-[0.12em] uppercase text-[#F0E6E0]/30 font-medium">
                               Line H.
                             </p>
                             <input
                               value={entry.lineHeight}
                               onChange={(e) => updateScaleEntry(i, { lineHeight: e.target.value })}
                               placeholder="1.5"
-                              className="w-full h-7 px-2 rounded-lg bg-[rgba(208,190,165,0.06)] border border-[rgba(208,190,165,0.12)] text-[11px] text-[#FFF4E3]/80 font-mono outline-none focus:border-[rgba(208,190,165,0.4)] transition-colors"
+                              className="w-full h-7 px-2 rounded-lg bg-[rgba(240,230,224,0.06)] border border-[rgba(240,230,224,0.12)] text-[11px] text-[#F0E6E0]/80 font-mono outline-none focus:border-[rgba(240,230,224,0.4)] transition-colors"
                             />
                           </div>
                         </div>
@@ -317,7 +317,7 @@ export default function TypographyStep() {
                           value={entry.sampleText}
                           onChange={(e) => updateScaleEntry(i, { sampleText: e.target.value })}
                           placeholder="Edit sample text..."
-                          className="w-full bg-transparent border-b border-[rgba(208,190,165,0.08)] pb-1 text-[10px] text-[#FFF4E3]/40 outline-none focus:text-[#FFF4E3]/70 focus:border-[rgba(208,190,165,0.35)] transition-all"
+                          className="w-full bg-transparent border-b border-[rgba(240,230,224,0.08)] pb-1 text-[10px] text-[#F0E6E0]/40 outline-none focus:text-[#F0E6E0]/70 focus:border-[rgba(240,230,224,0.35)] transition-all"
                         />
                       </div>
                     </div>
@@ -384,23 +384,23 @@ function FontDropdown({
         aria-haspopup="listbox"
         aria-expanded={open}
         className={cn(
-          "w-full h-10 flex items-center justify-between px-3 rounded-lg border bg-[rgba(208,190,165,0.06)] transition-all",
+          "w-full h-10 flex items-center justify-between px-3 rounded-lg border bg-[rgba(240,230,224,0.06)] transition-all",
           disabled
-            ? "opacity-60 cursor-not-allowed border-[rgba(208,190,165,0.1)]"
+            ? "opacity-60 cursor-not-allowed border-[rgba(240,230,224,0.1)]"
             : open
-            ? "border-[rgba(208,190,165,0.5)] bg-[rgba(208,190,165,0.1)]"
-            : "border-[rgba(208,190,165,0.15)] hover:border-[rgba(208,190,165,0.3)]"
+            ? "border-[rgba(240,230,224,0.5)] bg-[rgba(240,230,224,0.1)]"
+            : "border-[rgba(240,230,224,0.15)] hover:border-[rgba(240,230,224,0.3)]"
         )}
       >
         <span
-          className="text-sm text-[#FFF4E3] truncate"
+          className="text-sm text-[#F0E6E0] truncate"
           style={{ fontFamily: `'${value}', sans-serif` }}
         >
           {value || "Pick a font"}
         </span>
         <ChevronDown
           className={cn(
-            "size-4 text-[#D0BEA5]/60 flex-shrink-0 ml-2 transition-transform",
+            "size-4 text-[#F0E6E0]/60 flex-shrink-0 ml-2 transition-transform",
             open && "rotate-180"
           )}
         />
@@ -413,9 +413,9 @@ function FontDropdown({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.12 }}
-            className="absolute left-0 right-0 top-[calc(100%+4px)] z-30 rounded-xl border border-[rgba(208,190,165,0.35)] bg-[rgba(42,24,16,0.98)] backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.6)] overflow-hidden"
+            className="absolute left-0 right-0 top-[calc(100%+4px)] z-30 rounded-xl border border-[rgba(240,230,224,0.35)] bg-[rgba(36,18,58,0.98)] backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.6)] overflow-hidden"
           >
-            <div className="p-2 border-b border-[rgba(208,190,165,0.1)]">
+            <div className="p-2 border-b border-[rgba(240,230,224,0.1)]">
               <input
                 autoFocus
                 value={query}
@@ -426,7 +426,7 @@ function FontDropdown({
                   if (e.key === "Escape") { setOpen(false); setQuery(""); }
                 }}
                 placeholder="Search or type any Google Font…"
-                className="w-full h-8 px-2 rounded-md bg-transparent border border-[rgba(208,190,165,0.15)] text-[12px] text-[#FFF4E3] placeholder:text-[#D0BEA5]/35 outline-none focus:border-[rgba(208,190,165,0.45)]"
+                className="w-full h-8 px-2 rounded-md bg-transparent border border-[rgba(240,230,224,0.15)] text-[12px] text-[#F0E6E0] placeholder:text-[#F0E6E0]/35 outline-none focus:border-[rgba(240,230,224,0.45)]"
               />
             </div>
             <ul role="listbox" className="max-h-64 overflow-y-auto py-1 [scrollbar-width:thin]">
@@ -442,8 +442,8 @@ function FontDropdown({
                       className={cn(
                         "w-full flex items-center justify-between px-3 py-2 text-left transition-colors",
                         isCurrent
-                          ? "bg-[rgba(201,169,97,0.14)] text-[#FFF4E3]"
-                          : "text-[#FFF4E3]/85 hover:bg-[rgba(208,190,165,0.08)]"
+                          ? "bg-[rgba(227,194,74,0.14)] text-[#F0E6E0]"
+                          : "text-[#F0E6E0]/85 hover:bg-[rgba(240,230,224,0.08)]"
                       )}
                     >
                       <span
@@ -453,25 +453,25 @@ function FontDropdown({
                         {s}
                       </span>
                       {isCurrent && (
-                        <Check className="size-3.5 text-[#C9A961] flex-shrink-0 ml-2" />
+                        <Check className="size-3.5 text-[#E3C24A] flex-shrink-0 ml-2" />
                       )}
                     </button>
                   </li>
                 );
               })}
               {filtered.length === 0 && !canAddCustom && (
-                <li className="px-3 py-3 text-[11px] text-[#D0BEA5]/40 text-center">
+                <li className="px-3 py-3 text-[11px] text-[#F0E6E0]/40 text-center">
                   No matches
                 </li>
               )}
               {canAddCustom && (
-                <li className="border-t border-[rgba(208,190,165,0.08)] mt-1 pt-1">
+                <li className="border-t border-[rgba(240,230,224,0.08)] mt-1 pt-1">
                   <button
                     type="button"
                     onClick={() => commit(trimmedQuery)}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-left text-[12px] text-[#C9A961] hover:bg-[rgba(201,169,97,0.1)] transition-colors"
+                    className="w-full flex items-center gap-2 px-3 py-2 text-left text-[12px] text-[#E3C24A] hover:bg-[rgba(227,194,74,0.1)] transition-colors"
                   >
-                    <span className="text-[#D0BEA5]/50">Use custom:</span>
+                    <span className="text-[#F0E6E0]/50">Use custom:</span>
                     <span className="truncate" style={{ fontFamily: `'${trimmedQuery}', sans-serif` }}>
                       {trimmedQuery}
                     </span>
@@ -523,14 +523,14 @@ function FontSlot({
   );
 
   return (
-    <div className="p-4 rounded-xl bg-[rgba(255,244,227,0.03)] backdrop-blur-md border border-[rgba(208,190,165,0.1)] shadow-[inset_0_1px_0_rgba(255,244,227,0.03)] space-y-3">
+    <div className="p-4 rounded-xl bg-[rgba(240,230,224,0.03)] backdrop-blur-md border border-[rgba(240,230,224,0.1)] shadow-[inset_0_1px_0_rgba(240,230,224,0.03)] space-y-3">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-[10px] tracking-[0.2em] uppercase text-[#D0BEA5]/70 font-semibold">{label}</p>
-          <p className="text-[10px] text-[#FFF4E3]/40 mt-0.5">{description}</p>
+          <p className="text-[10px] tracking-[0.2em] uppercase text-[#F0E6E0]/70 font-semibold">{label}</p>
+          <p className="text-[10px] text-[#F0E6E0]/40 mt-0.5">{description}</p>
         </div>
         {isCustom && (
-          <span className="text-[8px] tracking-[0.15em] uppercase px-2 py-0.5 rounded-full bg-[rgba(201,169,97,0.12)] text-[#C9A961]/80 font-medium">
+          <span className="text-[8px] tracking-[0.15em] uppercase px-2 py-0.5 rounded-full bg-[rgba(227,194,74,0.12)] text-[#E3C24A]/80 font-medium">
             Custom
           </span>
         )}
@@ -544,14 +544,14 @@ function FontSlot({
       />
 
       {isCustom && (
-        <p className="text-[10px] text-[#D0BEA5]/45">
+        <p className="text-[10px] text-[#F0E6E0]/45">
           Using an uploaded font. Remove it in the upload section below to switch back to Google Fonts.
         </p>
       )}
 
-      <div className="pt-2 border-t border-[rgba(208,190,165,0.08)]">
+      <div className="pt-2 border-t border-[rgba(240,230,224,0.08)]">
         <p
-          className="text-[22px] text-[#FFF4E3] leading-tight"
+          className="text-[22px] text-[#F0E6E0] leading-tight"
           style={{
             fontFamily: `'${font.name}', ${font.fallback}`,
             fontWeight: role === "display" ? 600 : 400,
@@ -560,7 +560,7 @@ function FontSlot({
           Aa Bb Cc 0-9
         </p>
         <p
-          className="text-xs text-[#FFF4E3]/50 mt-0.5 truncate"
+          className="text-xs text-[#F0E6E0]/50 mt-0.5 truncate"
           style={{ fontFamily: `'${font.name}', ${font.fallback}`, fontWeight: 300 }}
         >
           {font.name} — The quick brown fox jumps over the lazy dog
@@ -586,27 +586,27 @@ function UploadSection({
   const [open, setOpen] = useState(hasAnyCustom);
 
   return (
-    <div className="rounded-xl border border-[rgba(208,190,165,0.1)] bg-[rgba(255,244,227,0.02)] overflow-hidden">
+    <div className="rounded-xl border border-[rgba(240,230,224,0.1)] bg-[rgba(240,230,224,0.02)] overflow-hidden">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-[rgba(255,244,227,0.03)] transition-colors"
+        className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-[rgba(240,230,224,0.03)] transition-colors"
       >
         <div className="flex items-center gap-3 min-w-0">
-          <Upload className="size-3.5 text-[#D0BEA5]/60 flex-shrink-0" />
+          <Upload className="size-3.5 text-[#F0E6E0]/60 flex-shrink-0" />
           <div className="min-w-0">
-            <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#D0BEA5]/80">
+            <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#F0E6E0]/80">
               Upload Custom Fonts
             </p>
-            <p className="text-[10px] text-[#FFF4E3]/45 truncate">
+            <p className="text-[10px] text-[#F0E6E0]/45 truncate">
               WOFF2 / WOFF / TTF / OTF · embeds directly in your exported kit
             </p>
           </div>
         </div>
         <ChevronDown
           className={cn(
-            "size-4 text-[#D0BEA5]/60 flex-shrink-0 ml-2 transition-transform",
+            "size-4 text-[#F0E6E0]/60 flex-shrink-0 ml-2 transition-transform",
             open && "rotate-180"
           )}
         />
@@ -620,7 +620,7 @@ function UploadSection({
             transition={{ duration: 0.18 }}
             className="overflow-hidden"
           >
-            <div className="px-4 pb-4 pt-2 space-y-3 border-t border-[rgba(208,190,165,0.08)]">
+            <div className="px-4 pb-4 pt-2 space-y-3 border-t border-[rgba(240,230,224,0.08)]">
               <UploadZone label="Display" font={displayFont} role="display" onChange={onDisplayChange} />
               <UploadZone label="Body" font={bodyFont} role="body" onChange={onBodyChange} />
             </div>
@@ -678,14 +678,14 @@ function UploadZone({
 
   return (
     <div>
-      <p className="text-[9px] tracking-[0.18em] uppercase text-[#D0BEA5]/55 font-semibold mb-1.5">
+      <p className="text-[9px] tracking-[0.18em] uppercase text-[#F0E6E0]/55 font-semibold mb-1.5">
         {label}
       </p>
       {isCustom ? (
-        <div className="flex items-center justify-between gap-2 p-3 rounded-lg bg-[rgba(201,169,97,0.08)] border border-[rgba(201,169,97,0.3)]">
+        <div className="flex items-center justify-between gap-2 p-3 rounded-lg bg-[rgba(227,194,74,0.08)] border border-[rgba(227,194,74,0.3)]">
           <div className="min-w-0">
-            <p className="text-sm text-[#FFF4E3] truncate">{font.name}</p>
-            <p className="text-[9px] text-[#D0BEA5]/55 tracking-wide uppercase mt-0.5">
+            <p className="text-sm text-[#F0E6E0] truncate">{font.name}</p>
+            <p className="text-[9px] text-[#F0E6E0]/55 tracking-wide uppercase mt-0.5">
               .{font.customFontFormat}
             </p>
           </div>
@@ -693,15 +693,15 @@ function UploadZone({
             type="button"
             onClick={clearCustom}
             aria-label={`Remove uploaded ${label.toLowerCase()} font`}
-            className="size-7 rounded-full flex items-center justify-center text-[#D0BEA5]/55 hover:text-[#E89178] hover:bg-[rgba(220,120,100,0.1)] transition-all flex-shrink-0"
+            className="size-7 rounded-full flex items-center justify-center text-[#F0E6E0]/55 hover:text-[#E89178] hover:bg-[rgba(220,120,100,0.1)] transition-all flex-shrink-0"
           >
             <X className="size-3.5" />
           </button>
         </div>
       ) : (
-        <label className="flex items-center justify-center gap-2 p-3 border-2 border-dashed border-[rgba(208,190,165,0.18)] rounded-lg cursor-pointer hover:border-[rgba(208,190,165,0.4)] hover:bg-[rgba(208,190,165,0.03)] transition-all">
-          <Upload className="size-3.5 text-[#D0BEA5]/50" />
-          <span className="text-xs text-[#FFF4E3]/55">
+        <label className="flex items-center justify-center gap-2 p-3 border-2 border-dashed border-[rgba(240,230,224,0.18)] rounded-lg cursor-pointer hover:border-[rgba(240,230,224,0.4)] hover:bg-[rgba(240,230,224,0.03)] transition-all">
+          <Upload className="size-3.5 text-[#F0E6E0]/50" />
+          <span className="text-xs text-[#F0E6E0]/55">
             Click to upload {label.toLowerCase()} font file
           </span>
           <input

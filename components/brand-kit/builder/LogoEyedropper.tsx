@@ -66,7 +66,7 @@ export default function LogoEyedropper({
     bg === "checker"
       ? {
           background:
-            "repeating-conic-gradient(rgba(255,244,227,0.06) 0% 25%, transparent 0% 50%) 50% / 16px 16px",
+            "repeating-conic-gradient(rgba(240,230,224,0.06) 0% 25%, transparent 0% 50%) 50% / 16px 16px",
         }
       : bg === "light"
       ? { background: "#FFFFFF" }
@@ -80,7 +80,7 @@ export default function LogoEyedropper({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.15 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(10,5,2,0.78)] backdrop-blur-md p-6"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(15,8,32,0.78)] backdrop-blur-md p-6"
           onClick={onClose}
         >
           <motion.div
@@ -89,27 +89,27 @@ export default function LogoEyedropper({
             exit={{ scale: 0.96, y: 8 }}
             transition={{ duration: 0.18 }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-2xl rounded-2xl border border-[rgba(208,190,165,0.18)] bg-[#1F0F08] shadow-[0_24px_60px_rgba(0,0,0,0.6)] overflow-hidden"
+            className="w-full max-w-2xl rounded-2xl border border-[rgba(240,230,224,0.18)] bg-[#1B0E2E] shadow-[0_24px_60px_rgba(0,0,0,0.6)] overflow-hidden"
           >
-            <div className="flex items-center justify-between px-5 py-3 border-b border-[rgba(208,190,165,0.1)]">
+            <div className="flex items-center justify-between px-5 py-3 border-b border-[rgba(240,230,224,0.1)]">
               <div>
-                <p className="text-[10px] tracking-[0.25em] uppercase text-[#D0BEA5]/60 font-semibold">
+                <p className="text-[10px] tracking-[0.25em] uppercase text-[#F0E6E0]/60 font-semibold">
                   Eyedropper
                 </p>
-                <p className="text-sm text-[#FFF4E3] mt-0.5">
+                <p className="text-sm text-[#F0E6E0] mt-0.5">
                   Click any pixel to sample
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <div className="flex items-center gap-0.5 rounded-full p-1 bg-[rgba(208,190,165,0.06)] border border-[rgba(208,190,165,0.12)]">
+                <div className="flex items-center gap-0.5 rounded-full p-1 bg-[rgba(240,230,224,0.06)] border border-[rgba(240,230,224,0.12)]">
                   {(["checker", "light", "dark"] as const).map((opt) => (
                     <button
                       key={opt}
                       onClick={() => setBg(opt)}
                       className={`px-2.5 py-1 text-[9px] tracking-[0.18em] uppercase rounded-full transition-all ${
                         bg === opt
-                          ? "bg-[#D0BEA5] text-[#3B2114] font-semibold"
-                          : "text-[#D0BEA5]/55 hover:text-[#D0BEA5]"
+                          ? "bg-[#F0E6E0] text-[#24123A] font-semibold"
+                          : "text-[#F0E6E0]/55 hover:text-[#F0E6E0]"
                       }`}
                     >
                       {opt}
@@ -119,7 +119,7 @@ export default function LogoEyedropper({
                 <button
                   onClick={onClose}
                   aria-label="Close eyedropper"
-                  className="size-8 rounded-full flex items-center justify-center text-[#D0BEA5]/60 hover:text-[#FFF4E3] hover:bg-[rgba(208,190,165,0.08)] transition-all"
+                  className="size-8 rounded-full flex items-center justify-center text-[#F0E6E0]/60 hover:text-[#F0E6E0] hover:bg-[rgba(240,230,224,0.08)] transition-all"
                 >
                   <X className="size-4" />
                 </button>
@@ -143,24 +143,24 @@ export default function LogoEyedropper({
               />
               {hover && hover.hex && (
                 <div
-                  className="absolute pointer-events-none flex items-center gap-2 rounded-full px-2.5 py-1.5 bg-[rgba(10,5,2,0.92)] border border-[rgba(208,190,165,0.25)] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
+                  className="absolute pointer-events-none flex items-center gap-2 rounded-full px-2.5 py-1.5 bg-[rgba(15,8,32,0.92)] border border-[rgba(240,230,224,0.25)] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
                   style={{
                     left: hover.x + 16,
                     top: hover.y + 16,
                   }}
                 >
                   <span
-                    className="size-4 rounded-full border border-[rgba(255,244,227,0.4)] shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]"
+                    className="size-4 rounded-full border border-[rgba(240,230,224,0.4)] shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]"
                     style={{ background: hover.hex }}
                   />
-                  <code className="text-[11px] font-mono text-[#FFF4E3] tracking-wide">
+                  <code className="text-[11px] font-mono text-[#F0E6E0] tracking-wide">
                     {hover.hex}
                   </code>
                 </div>
               )}
             </div>
 
-            <div className="px-5 py-3 border-t border-[rgba(208,190,165,0.1)] text-[10px] text-[#D0BEA5]/50 tracking-wide">
+            <div className="px-5 py-3 border-t border-[rgba(240,230,224,0.1)] text-[10px] text-[#F0E6E0]/50 tracking-wide">
               Esc to cancel · Transparent pixels are skipped
             </div>
           </motion.div>

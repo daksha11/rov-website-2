@@ -16,7 +16,7 @@ const TONE_CLASSES: Record<ToastTone, string> = {
   error:
     "border-[rgba(220,120,100,0.45)] text-[#E89178] shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_0_1px_rgba(220,120,100,0.12)]",
   info:
-    "border-[rgba(208,190,165,0.35)] text-[#D0BEA5] shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_0_1px_rgba(208,190,165,0.1)]",
+    "border-[rgba(240,230,224,0.35)] text-[#F0E6E0] shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_0_1px_rgba(240,230,224,0.1)]",
 };
 
 export default function Toaster() {
@@ -34,21 +34,21 @@ export default function Toaster() {
           key={t.id}
           role="status"
           className={cn(
-            "pointer-events-auto flex items-center gap-2.5 pl-3 pr-2 py-2 rounded-full bg-[rgba(42,24,16,0.92)] backdrop-blur-xl border text-[12px] font-medium animate-in fade-in slide-in-from-bottom-2 duration-200",
+            "pointer-events-auto flex items-center gap-2.5 pl-3 pr-2 py-2 rounded-full bg-[rgba(36,18,58,0.92)] backdrop-blur-xl border text-[12px] font-medium animate-in fade-in slide-in-from-bottom-2 duration-200",
             TONE_CLASSES[t.tone]
           )}
         >
           <span className="flex items-center justify-center size-6 rounded-full bg-black/25">
             {ICONS[t.tone]}
           </span>
-          <span className="text-[#FFF4E3] font-medium whitespace-nowrap">
+          <span className="text-[#F0E6E0] font-medium whitespace-nowrap">
             {t.message}
           </span>
           <button
             type="button"
             onClick={() => dismiss(t.id)}
             aria-label="Dismiss"
-            className="ml-1 flex items-center justify-center size-6 rounded-full text-[#FFF4E3]/50 hover:text-[#FFF4E3] hover:bg-white/5 transition-colors"
+            className="ml-1 flex items-center justify-center size-6 rounded-full text-[#F0E6E0]/50 hover:text-[#F0E6E0] hover:bg-white/5 transition-colors"
           >
             <X className="size-3.5" />
           </button>

@@ -67,9 +67,9 @@ export default function BrandVoiceStep() {
   return (
     <div className="max-w-md space-y-6">
       <div>
-        <p className="text-[10px] tracking-[0.25em] uppercase text-[#D0BEA5]/60 mb-2 font-medium">Step 06</p>
-        <h2 className="text-2xl font-light tracking-tight mb-1 text-[#FFF4E3]">Brand <span className="font-semibold">Voice</span></h2>
-        <p className="text-sm text-[#FFF4E3]/65">
+        <p className="text-[10px] tracking-[0.25em] uppercase text-[#F0E6E0]/60 mb-2 font-medium">Step 06</p>
+        <h2 className="text-2xl font-light tracking-tight mb-1 text-[#F0E6E0]">Brand <span className="font-semibold">Voice</span></h2>
+        <p className="text-sm text-[#F0E6E0]/65">
           Define voice pillars and tone guidelines.
         </p>
       </div>
@@ -79,11 +79,11 @@ export default function BrandVoiceStep() {
         {voice.pillars.map((pillar, pi) => (
           <div
             key={pillar.id}
-            className="group p-3 rounded-xl bg-[rgba(255,244,227,0.03)] backdrop-blur-md border border-[rgba(208,190,165,0.1)] shadow-[0_4px_20px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,244,227,0.04)] space-y-2 hover:border-[rgba(208,190,165,0.2)] transition-all"
+            className="group p-3 rounded-xl bg-[rgba(240,230,224,0.03)] backdrop-blur-md border border-[rgba(240,230,224,0.1)] shadow-[0_4px_20px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(240,230,224,0.04)] space-y-2 hover:border-[rgba(240,230,224,0.2)] transition-all"
           >
             <div className="flex justify-between items-center gap-2">
               <div className="flex items-center gap-2 min-w-0 flex-1">
-                <span className="text-[9px] font-mono tracking-wider uppercase text-[#D0BEA5]/50 flex-shrink-0">
+                <span className="text-[9px] font-mono tracking-wider uppercase text-[#F0E6E0]/50 flex-shrink-0">
                   {String(pi + 1).padStart(2, "0")}
                 </span>
                 <input
@@ -91,13 +91,13 @@ export default function BrandVoiceStep() {
                   onChange={(e) =>
                     updatePillar(pillar.id, { word: e.target.value })
                   }
-                  className="flex-1 font-medium bg-transparent border-0 p-0 text-sm text-[#FFF4E3] outline-none focus:text-[#D0BEA5] transition-colors min-w-0"
+                  className="flex-1 font-medium bg-transparent border-0 p-0 text-sm text-[#F0E6E0] outline-none focus:text-[#F0E6E0] transition-colors min-w-0"
                   placeholder="e.g. Grounded"
                 />
               </div>
               <button
                 onClick={() => removePillar(pillar.id)}
-                className="size-6 rounded-full flex items-center justify-center text-[#D0BEA5]/40 hover:text-destructive hover:bg-destructive/10 transition-all opacity-0 group-hover:opacity-100 flex-shrink-0"
+                className="size-6 rounded-full flex items-center justify-center text-[#F0E6E0]/40 hover:text-destructive hover:bg-destructive/10 transition-all opacity-0 group-hover:opacity-100 flex-shrink-0"
               >
                 <X className="size-3" />
               </button>

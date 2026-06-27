@@ -41,20 +41,20 @@ export default function PreviewFrame() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#2A1810]">
-      <div className="flex items-center justify-between px-4 py-2.5 border-b border-[rgba(208,190,165,0.12)] backdrop-blur-md bg-[rgba(59,33,20,0.6)]">
-        <span className="text-[10px] tracking-[0.2em] uppercase text-[#D0BEA5]/70 font-medium">
+    <div className="flex flex-col h-full bg-[#24123A]">
+      <div className="flex items-center justify-between px-4 py-2.5 border-b border-[rgba(240,230,224,0.12)] backdrop-blur-md bg-[rgba(36,18,58,0.6)]">
+        <span className="text-[10px] tracking-[0.2em] uppercase text-[#F0E6E0]/70 font-medium">
           Live Preview
         </span>
-        <div className="flex items-center gap-0.5 rounded-full p-1 bg-[rgba(208,190,165,0.04)] border border-[rgba(208,190,165,0.12)]">
+        <div className="flex items-center gap-0.5 rounded-full p-1 bg-[rgba(240,230,224,0.04)] border border-[rgba(240,230,224,0.12)]">
           {(["desktop", "tablet", "mobile"] as const).map((vp) => (
             <button
               key={vp}
               onClick={() => setViewport(vp)}
               className={`px-3 py-1 text-[10px] tracking-wider uppercase rounded-full transition-all ${
                 viewport === vp
-                  ? "bg-[#D0BEA5] text-[#3B2114] font-semibold"
-                  : "text-[#D0BEA5]/50 hover:text-[#D0BEA5]"
+                  ? "bg-[#F0E6E0] text-[#24123A] font-semibold"
+                  : "text-[#F0E6E0]/50 hover:text-[#F0E6E0]"
               }`}
             >
               {vp}
@@ -92,8 +92,8 @@ export default function PreviewFrame() {
           <iframe
             ref={iframeRef}
             srcDoc={html}
-            className="w-full h-full border border-[rgba(208,190,165,0.15)] rounded-xl transition-opacity duration-200 shadow-[0_8px_40px_rgba(0,0,0,0.5)]"
-            style={{ opacity: isUpdating ? 0.85 : 1, backgroundColor: "#3B2114" }}
+            className="w-full h-full border border-[rgba(240,230,224,0.15)] rounded-xl transition-opacity duration-200 shadow-[0_8px_40px_rgba(0,0,0,0.5)]"
+            style={{ opacity: isUpdating ? 0.85 : 1, backgroundColor: "#24123A" }}
             sandbox="allow-scripts allow-same-origin"
             title="Brand Kit Preview"
           />

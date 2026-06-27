@@ -228,8 +228,8 @@ export default function ColorPaletteStep() {
   const pushToast = useToast((s) => s.push);
 
   const [mode, setMode] = useState<Mode>("assisted");
-  const [baseColor, setBaseColor] = useState<string>("#EA9A61");
-  const [hsva, setHsva] = useState<HsvaColor>(hexToHsva("#EA9A61"));
+  const [baseColor, setBaseColor] = useState<string>("#E3C24A");
+  const [hsva, setHsva] = useState<HsvaColor>(hexToHsva("#E3C24A"));
   const [harmony, setHarmony] = useState<Harmony>("complementary");
   const [eyedropperOpen, setEyedropperOpen] = useState(false);
   const [extracting, setExtracting] = useState(false);
@@ -447,19 +447,19 @@ export default function ColorPaletteStep() {
   return (
     <div className="max-w-md space-y-7">
       <div>
-        <p className="text-[10px] tracking-[0.25em] uppercase text-[#D0BEA5]/60 mb-2 font-medium">
+        <p className="text-[10px] tracking-[0.25em] uppercase text-[#F0E6E0]/60 mb-2 font-medium">
           Step 03
         </p>
-        <h2 className="text-2xl font-light tracking-tight mb-1 text-[#FFF4E3]">
+        <h2 className="text-2xl font-light tracking-tight mb-1 text-[#F0E6E0]">
           Color <span className="font-semibold">Palette</span>
         </h2>
-        <p className="text-sm text-[#FFF4E3]/65">
+        <p className="text-sm text-[#F0E6E0]/65">
           Build a harmonious palette or define your own.
         </p>
       </div>
 
       {/* Mode Toggle */}
-      <div className="inline-flex p-1 rounded-full bg-[rgba(59,33,20,0.6)] backdrop-blur-md border border-[rgba(208,190,165,0.15)] shadow-[inset_0_1px_0_rgba(0,0,0,0.2)]">
+      <div className="inline-flex p-1 rounded-full bg-[rgba(36,18,58,0.6)] backdrop-blur-md border border-[rgba(240,230,224,0.15)] shadow-[inset_0_1px_0_rgba(0,0,0,0.2)]">
         {(
           [
             { id: "assisted", label: "Help me build a palette" },
@@ -474,15 +474,15 @@ export default function ColorPaletteStep() {
               className={cn(
                 "relative px-4 py-2 rounded-full text-xs font-semibold transition-colors duration-150 whitespace-nowrap",
                 isActive
-                  ? "text-[#3B2114]"
-                  : "text-[#D0BEA5]/50 hover:text-[#D0BEA5]"
+                  ? "text-[#24123A]"
+                  : "text-[#F0E6E0]/50 hover:text-[#F0E6E0]"
               )}
             >
               {isActive && (
                 <motion.span
                   layoutId="palette-toggle-pill"
                   aria-hidden
-                  className="absolute inset-0 rounded-full bg-[#D0BEA5] shadow-[0_2px_10px_rgba(208,190,165,0.35)]"
+                  className="absolute inset-0 rounded-full bg-[#F0E6E0] shadow-[0_2px_10px_rgba(240,230,224,0.35)]"
                   transition={{ type: "spring", stiffness: 500, damping: 35 }}
                 />
               )}
@@ -495,8 +495,8 @@ export default function ColorPaletteStep() {
       {/* Assisted Mode */}
       {mode === "assisted" && (
         <div className="space-y-6 animate-in fade-in duration-200">
-          <div className="p-5 rounded-2xl bg-[rgba(255,244,227,0.03)] backdrop-blur-md border border-[rgba(208,190,165,0.1)] shadow-[0_4px_20px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,244,227,0.04)]">
-            <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-[#D0BEA5]/60 mb-4">
+          <div className="p-5 rounded-2xl bg-[rgba(240,230,224,0.03)] backdrop-blur-md border border-[rgba(240,230,224,0.1)] shadow-[0_4px_20px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(240,230,224,0.04)]">
+            <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-[#F0E6E0]/60 mb-4">
               Pick a base color
             </p>
             <div className="flex items-start gap-5">
@@ -505,7 +505,7 @@ export default function ColorPaletteStep() {
               </div>
               <div className="flex-1 space-y-3 min-w-0">
                 <div>
-                  <label className="block text-[9px] font-medium tracking-[0.2em] uppercase text-[#D0BEA5]/60 mb-1.5">
+                  <label className="block text-[9px] font-medium tracking-[0.2em] uppercase text-[#F0E6E0]/60 mb-1.5">
                     HEX
                   </label>
                   <input
@@ -513,23 +513,23 @@ export default function ColorPaletteStep() {
                     value={baseColor}
                     onChange={(e) => handleHexChange(e.target.value)}
                     onPaste={handleHexPaste}
-                    className="w-full h-10 px-3 rounded-lg bg-[rgba(255,244,227,0.03)] border border-[rgba(208,190,165,0.12)] text-sm font-mono uppercase text-[#FFF4E3] shadow-[inset_0_1px_0_rgba(255,244,227,0.04)] transition-all focus:outline-none focus:border-[rgba(208,190,165,0.55)] focus:bg-[rgba(255,244,227,0.05)] focus:ring-2 focus:ring-[rgba(208,190,165,0.18)]"
+                    className="w-full h-10 px-3 rounded-lg bg-[rgba(240,230,224,0.03)] border border-[rgba(240,230,224,0.12)] text-sm font-mono uppercase text-[#F0E6E0] shadow-[inset_0_1px_0_rgba(240,230,224,0.04)] transition-all focus:outline-none focus:border-[rgba(240,230,224,0.55)] focus:bg-[rgba(240,230,224,0.05)] focus:ring-2 focus:ring-[rgba(240,230,224,0.18)]"
                     placeholder="#000000 · paste hex/rgb"
                     maxLength={20}
                   />
                 </div>
                 <div
-                  className="h-16 rounded-lg border border-[rgba(208,190,165,0.15)] shadow-[inset_0_1px_0_rgba(255,244,227,0.1)] transition-all"
+                  className="h-16 rounded-lg border border-[rgba(240,230,224,0.15)] shadow-[inset_0_1px_0_rgba(240,230,224,0.1)] transition-all"
                   style={{ background: baseColor }}
                 />
               </div>
             </div>
 
             {/* HSL Sliders */}
-            <div className="mt-4 pt-4 border-t border-[rgba(208,190,165,0.08)] space-y-3">
+            <div className="mt-4 pt-4 border-t border-[rgba(240,230,224,0.08)] space-y-3">
               {/* Target selector */}
               <div className="flex items-center gap-1.5 flex-wrap">
-                <span className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#D0BEA5]/60 shrink-0 mr-1">
+                <span className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#F0E6E0]/60 shrink-0 mr-1">
                   Adjust
                 </span>
                 <button
@@ -538,8 +538,8 @@ export default function ColorPaletteStep() {
                   className={cn(
                     "px-2.5 py-1 rounded-full text-[9px] font-semibold tracking-[0.12em] uppercase transition-all border",
                     hslTarget === "base"
-                      ? "bg-[rgba(208,190,165,0.15)] border-[rgba(208,190,165,0.45)] text-[#D0BEA5]"
-                      : "bg-[rgba(255,244,227,0.02)] border-[rgba(208,190,165,0.12)] text-[#D0BEA5]/45 hover:text-[#D0BEA5]/75 hover:border-[rgba(208,190,165,0.25)]"
+                      ? "bg-[rgba(240,230,224,0.15)] border-[rgba(240,230,224,0.45)] text-[#F0E6E0]"
+                      : "bg-[rgba(240,230,224,0.02)] border-[rgba(240,230,224,0.12)] text-[#F0E6E0]/45 hover:text-[#F0E6E0]/75 hover:border-[rgba(240,230,224,0.25)]"
                   )}
                 >
                   Base
@@ -556,10 +556,10 @@ export default function ColorPaletteStep() {
                       className={cn(
                         "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9px] font-semibold tracking-[0.12em] uppercase transition-all",
                         isActive
-                          ? "border-2 border-[rgba(208,190,165,0.5)] text-[#D0BEA5]"
-                          : "border border-[rgba(208,190,165,0.12)] text-[#D0BEA5]/45 hover:text-[#D0BEA5]/75 hover:border-[rgba(208,190,165,0.25)]"
+                          ? "border-2 border-[rgba(240,230,224,0.5)] text-[#F0E6E0]"
+                          : "border border-[rgba(240,230,224,0.12)] text-[#F0E6E0]/45 hover:text-[#F0E6E0]/75 hover:border-[rgba(240,230,224,0.25)]"
                       )}
-                      style={{ background: isActive ? `${swatch.hex}28` : "rgba(255,244,227,0.02)" }}
+                      style={{ background: isActive ? `${swatch.hex}28` : "rgba(240,230,224,0.02)" }}
                     >
                       <span
                         className="w-2.5 h-2.5 rounded-full shrink-0 border border-white/20"
@@ -567,7 +567,7 @@ export default function ColorPaletteStep() {
                       />
                       {label}
                       {isOverridden && (
-                        <span className="text-[#C9A961] leading-none" title="Manually adjusted">✦</span>
+                        <span className="text-[#E3C24A] leading-none" title="Manually adjusted">✦</span>
                       )}
                     </button>
                   );
@@ -607,10 +607,10 @@ export default function ColorPaletteStep() {
               ).map(({ key, label, min, max, value, unit, track }) => (
                 <div key={key}>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#D0BEA5]/60">
+                    <label className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#F0E6E0]/60">
                       {label}
                     </label>
-                    <span className="text-[9px] font-mono text-[#FFF4E3]/50 tabular-nums w-10 text-right">
+                    <span className="text-[9px] font-mono text-[#F0E6E0]/50 tabular-nums w-10 text-right">
                       {value}{unit}
                     </span>
                   </div>
@@ -628,11 +628,11 @@ export default function ColorPaletteStep() {
             </div>
 
             {firstLogo && (
-              <div className="flex items-center gap-2 mt-4 pt-4 border-t border-[rgba(208,190,165,0.08)]">
+              <div className="flex items-center gap-2 mt-4 pt-4 border-t border-[rgba(240,230,224,0.08)]">
                 <button
                   type="button"
                   onClick={() => setEyedropperOpen(true)}
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 h-9 px-3 rounded-lg text-[10px] tracking-[0.15em] uppercase font-semibold text-[#D0BEA5] bg-[rgba(208,190,165,0.06)] hover:bg-[rgba(208,190,165,0.12)] border border-[rgba(208,190,165,0.18)] transition-colors"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 h-9 px-3 rounded-lg text-[10px] tracking-[0.15em] uppercase font-semibold text-[#F0E6E0] bg-[rgba(240,230,224,0.06)] hover:bg-[rgba(240,230,224,0.12)] border border-[rgba(240,230,224,0.18)] transition-colors"
                 >
                   <Pipette className="size-3.5" />
                   Pick from logo
@@ -641,7 +641,7 @@ export default function ColorPaletteStep() {
                   type="button"
                   onClick={handleExtractFromLogo}
                   disabled={extracting}
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 h-9 px-3 rounded-lg text-[10px] tracking-[0.15em] uppercase font-semibold text-[#C9A961] bg-[rgba(201,169,97,0.08)] hover:bg-[rgba(201,169,97,0.18)] border border-[rgba(201,169,97,0.3)] transition-colors disabled:opacity-50 disabled:cursor-wait"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 h-9 px-3 rounded-lg text-[10px] tracking-[0.15em] uppercase font-semibold text-[#E3C24A] bg-[rgba(227,194,74,0.08)] hover:bg-[rgba(227,194,74,0.18)] border border-[rgba(227,194,74,0.3)] transition-colors disabled:opacity-50 disabled:cursor-wait"
                 >
                   <Sparkles className="size-3.5" />
                   {extracting ? "Extracting…" : "Extract palette"}
@@ -652,7 +652,7 @@ export default function ColorPaletteStep() {
 
           {/* Harmony Selector */}
           <div>
-            <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-[#D0BEA5]/60 mb-3">
+            <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-[#F0E6E0]/60 mb-3">
               Choose a harmony
             </p>
             <div className="grid grid-cols-3 gap-2">
@@ -663,8 +663,8 @@ export default function ColorPaletteStep() {
                   className={cn(
                     "relative flex flex-col items-center gap-2 p-3 rounded-xl border transition-all duration-200 backdrop-blur-sm",
                     harmony === h.id
-                      ? "border-[rgba(208,190,165,0.45)] bg-[rgba(208,190,165,0.1)] text-[#D0BEA5] shadow-[0_4px_16px_rgba(208,190,165,0.18)]"
-                      : "border-[rgba(208,190,165,0.1)] bg-[rgba(255,244,227,0.02)] text-[#FFF4E3]/50 hover:text-[#FFF4E3]/80 hover:border-[rgba(208,190,165,0.2)] hover:bg-[rgba(255,244,227,0.04)]"
+                      ? "border-[rgba(240,230,224,0.45)] bg-[rgba(240,230,224,0.1)] text-[#F0E6E0] shadow-[0_4px_16px_rgba(240,230,224,0.18)]"
+                      : "border-[rgba(240,230,224,0.1)] bg-[rgba(240,230,224,0.02)] text-[#F0E6E0]/50 hover:text-[#F0E6E0]/80 hover:border-[rgba(240,230,224,0.2)] hover:bg-[rgba(240,230,224,0.04)]"
                   )}
                 >
                   <HarmonyIcon type={h.id} />
@@ -682,7 +682,7 @@ export default function ColorPaletteStep() {
       {mode === "assisted" && (
         <>
           <div className="space-y-3">
-            <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-[#D0BEA5]/60">
+            <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-[#F0E6E0]/60">
               Suggested colors
             </p>
             <div
@@ -700,17 +700,17 @@ export default function ColorPaletteStep() {
                     aria-pressed={isPicked}
                     className={cn(
                       "relative flex flex-col items-center gap-1 rounded-lg p-1 transition-all duration-200",
-                      isPicked && "ring-2 ring-[#C9A961] ring-offset-2 ring-offset-[#1F0F08] -translate-y-0.5",
+                      isPicked && "ring-2 ring-[#E3C24A] ring-offset-2 ring-offset-[#1B0E2E] -translate-y-0.5",
                       dimmed && "opacity-45 hover:opacity-80",
                       !isPicked && "hover:-translate-y-0.5"
                     )}
                   >
                     <div
-                      className="relative w-full h-14 rounded-md border border-[rgba(208,190,165,0.15)] shadow-[0_4px_12px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,244,227,0.1)]"
+                      className="relative w-full h-14 rounded-md border border-[rgba(240,230,224,0.15)] shadow-[0_4px_12px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(240,230,224,0.1)]"
                       style={{ background: sugg.hex }}
                     />
-                    <code className="text-[9px] font-mono text-[#FFF4E3]/70 tracking-wide">
-                      {sugg.gamutClipped && <span className="text-[#D0BEA5]/45">≈ </span>}
+                    <code className="text-[9px] font-mono text-[#F0E6E0]/70 tracking-wide">
+                      {sugg.gamutClipped && <span className="text-[#F0E6E0]/45">≈ </span>}
                       {sugg.hex.toUpperCase()}
                     </code>
                   </button>
@@ -726,20 +726,20 @@ export default function ColorPaletteStep() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -6 }}
                 transition={{ duration: 0.15 }}
-                className="flex items-center gap-3 p-3 rounded-xl bg-[rgba(201,169,97,0.12)] border border-[rgba(201,169,97,0.45)] shadow-[0_4px_20px_rgba(201,169,97,0.18)]"
+                className="flex items-center gap-3 p-3 rounded-xl bg-[rgba(227,194,74,0.12)] border border-[rgba(227,194,74,0.45)] shadow-[0_4px_20px_rgba(227,194,74,0.18)]"
               >
                 <span
-                  className="size-9 rounded-lg border border-[rgba(255,244,227,0.25)] shadow-[inset_0_1px_0_rgba(255,244,227,0.15)] flex-shrink-0"
+                  className="size-9 rounded-lg border border-[rgba(240,230,224,0.25)] shadow-[inset_0_1px_0_rgba(240,230,224,0.15)] flex-shrink-0"
                   style={{ background: generated[pickedIdx].hex }}
                 />
                 <div className="flex-1 min-w-0 leading-tight">
-                  <p className="text-[11px] text-[#FFF4E3]/85">
-                    <span className="font-semibold text-[#FFF4E3]">
+                  <p className="text-[11px] text-[#F0E6E0]/85">
+                    <span className="font-semibold text-[#F0E6E0]">
                       {generated[pickedIdx].hex.toUpperCase()}
                     </span>{" "}
-                    <span className="text-[#D0BEA5]/70">is ready —</span>
+                    <span className="text-[#F0E6E0]/70">is ready —</span>
                   </p>
-                  <p className="text-[11px] text-[#C9A961] font-semibold flex items-center gap-1">
+                  <p className="text-[11px] text-[#E3C24A] font-semibold flex items-center gap-1">
                     <ArrowDown className="size-3 animate-bounce" />
                     tap a slot below to assign
                   </p>
@@ -748,7 +748,7 @@ export default function ColorPaletteStep() {
                   type="button"
                   onClick={() => setPickedIdx(null)}
                   aria-label="Cancel pick (Esc)"
-                  className="size-7 rounded-full flex items-center justify-center text-[#D0BEA5]/60 hover:text-[#FFF4E3] hover:bg-[rgba(208,190,165,0.12)] transition-all flex-shrink-0"
+                  className="size-7 rounded-full flex items-center justify-center text-[#F0E6E0]/60 hover:text-[#F0E6E0] hover:bg-[rgba(240,230,224,0.12)] transition-all flex-shrink-0"
                 >
                   <X className="size-3.5" />
                 </button>
@@ -758,14 +758,14 @@ export default function ColorPaletteStep() {
 
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-[#D0BEA5]/60">
+              <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-[#F0E6E0]/60">
                 Your palette
               </p>
               <div className="flex items-center gap-1">
                 <button
                   type="button"
                   onClick={handleAutoFill}
-                  className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[9px] tracking-[0.15em] uppercase font-semibold text-[#C9A961] bg-[rgba(201,169,97,0.08)] hover:bg-[rgba(201,169,97,0.18)] border border-[rgba(201,169,97,0.3)] transition-colors"
+                  className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[9px] tracking-[0.15em] uppercase font-semibold text-[#E3C24A] bg-[rgba(227,194,74,0.08)] hover:bg-[rgba(227,194,74,0.18)] border border-[rgba(227,194,74,0.3)] transition-colors"
                 >
                   <Wand2 className="size-3" />
                   Auto-fill
@@ -774,7 +774,7 @@ export default function ColorPaletteStep() {
                   <button
                     type="button"
                     onClick={handleClearAll}
-                    className="px-2 py-1 rounded-full text-[9px] tracking-[0.15em] uppercase font-semibold text-[#FFF4E3]/55 hover:text-[#E89178] hover:bg-[rgba(220,120,100,0.08)] transition-colors"
+                    className="px-2 py-1 rounded-full text-[9px] tracking-[0.15em] uppercase font-semibold text-[#F0E6E0]/55 hover:text-[#E89178] hover:bg-[rgba(220,120,100,0.08)] transition-colors"
                   >
                     Clear
                   </button>
@@ -808,10 +808,10 @@ export default function ColorPaletteStep() {
                       className={cn(
                         "relative w-full h-20 rounded-xl transition-all duration-200 group overflow-hidden",
                         isValid
-                          ? "border border-[rgba(208,190,165,0.2)] shadow-[0_4px_16px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,244,227,0.1)] cursor-pointer"
+                          ? "border border-[rgba(240,230,224,0.2)] shadow-[0_4px_16px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(240,230,224,0.1)] cursor-pointer"
                           : canFill
-                          ? "border-2 border-dashed border-[#C9A961] bg-[rgba(201,169,97,0.1)] cursor-pointer shadow-[0_0_0_3px_rgba(201,169,97,0.08),0_6px_20px_rgba(201,169,97,0.25)] animate-pulse"
-                          : "border-2 border-dashed border-[rgba(208,190,165,0.18)] bg-[rgba(255,244,227,0.02)] hover:border-[rgba(208,190,165,0.28)]"
+                          ? "border-2 border-dashed border-[#E3C24A] bg-[rgba(227,194,74,0.1)] cursor-pointer shadow-[0_0_0_3px_rgba(227,194,74,0.08),0_6px_20px_rgba(227,194,74,0.25)] animate-pulse"
+                          : "border-2 border-dashed border-[rgba(240,230,224,0.18)] bg-[rgba(240,230,224,0.02)] hover:border-[rgba(240,230,224,0.28)]"
                       )}
                       style={isValid ? { background: hex } : {}}
                       disabled={!isValid && pickedIdx === null}
@@ -819,7 +819,7 @@ export default function ColorPaletteStep() {
                       {!isValid && !canFill && (
                         <span
                           aria-hidden
-                          className="absolute inset-0 flex items-center justify-center text-[#D0BEA5]/25 group-hover:text-[#D0BEA5]/50 transition-colors"
+                          className="absolute inset-0 flex items-center justify-center text-[#F0E6E0]/25 group-hover:text-[#F0E6E0]/50 transition-colors"
                         >
                           <Plus className="size-5" strokeWidth={1.5} />
                         </span>
@@ -836,10 +836,10 @@ export default function ColorPaletteStep() {
                             className="absolute inset-0 flex flex-col items-center justify-center gap-0.5"
                           >
                             <Plus
-                              className="size-4 text-[#FFF4E3] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+                              className="size-4 text-[#F0E6E0] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
                               strokeWidth={2.5}
                             />
-                            <span className="text-[8px] tracking-[0.2em] uppercase font-bold text-[#FFF4E3] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                            <span className="text-[8px] tracking-[0.2em] uppercase font-bold text-[#F0E6E0] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                               Drop
                             </span>
                           </span>
@@ -850,7 +850,7 @@ export default function ColorPaletteStep() {
                           aria-hidden
                           className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/0 group-hover:bg-black/30 transition-colors"
                         >
-                          <span className="text-[9px] tracking-[0.18em] uppercase font-semibold text-[#FFF4E3] opacity-0 group-hover:opacity-100 transition-opacity">
+                          <span className="text-[9px] tracking-[0.18em] uppercase font-semibold text-[#F0E6E0] opacity-0 group-hover:opacity-100 transition-opacity">
                             Clear
                           </span>
                         </span>
@@ -860,12 +860,12 @@ export default function ColorPaletteStep() {
                       <p
                         className={cn(
                           "text-[8px] font-medium tracking-[0.18em] uppercase transition-colors",
-                          canFill ? "text-[#C9A961]" : "text-[#D0BEA5]/55"
+                          canFill ? "text-[#E3C24A]" : "text-[#F0E6E0]/55"
                         )}
                       >
                         {canFill ? `Drop as ${currentLabels[i]}` : currentLabels[i]}
                       </p>
-                      <code className="block text-[10px] font-mono text-[#FFF4E3]/70 tracking-wide min-h-[14px]">
+                      <code className="block text-[10px] font-mono text-[#F0E6E0]/70 tracking-wide min-h-[14px]">
                         {isValid ? hex.toUpperCase() : "—"}
                       </code>
                       {badge && (
@@ -893,7 +893,7 @@ export default function ColorPaletteStep() {
       {/* Manual mode */}
       {mode === "manual" && (
         <div className="space-y-3">
-          <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-[#D0BEA5]/60">
+          <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-[#F0E6E0]/60">
             Your colors
           </p>
           <div
@@ -912,13 +912,13 @@ export default function ColorPaletteStep() {
                     className={cn(
                       "relative w-full h-20 rounded-xl transition-all duration-300",
                       isValid
-                        ? "border border-[rgba(208,190,165,0.15)] shadow-[0_4px_16px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,244,227,0.1)]"
-                        : "border-2 border-dashed border-[rgba(208,190,165,0.18)] bg-[rgba(255,244,227,0.02)]"
+                        ? "border border-[rgba(240,230,224,0.15)] shadow-[0_4px_16px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(240,230,224,0.1)]"
+                        : "border-2 border-dashed border-[rgba(240,230,224,0.18)] bg-[rgba(240,230,224,0.02)]"
                     )}
                     style={isValid ? { background: raw } : {}}
                   />
                   <div className="text-center space-y-1">
-                    <p className="text-[8px] font-medium tracking-[0.18em] uppercase text-[#D0BEA5]/50">
+                    <p className="text-[8px] font-medium tracking-[0.18em] uppercase text-[#F0E6E0]/50">
                       {label}
                     </p>
                     <input
@@ -927,10 +927,10 @@ export default function ColorPaletteStep() {
                       onChange={(e) => handleManualChange(i, e.target.value)}
                       aria-invalid={invalid}
                       className={cn(
-                        "w-full h-7 px-1.5 rounded-md bg-[rgba(255,244,227,0.03)] border text-[10px] font-mono uppercase text-[#FFF4E3] text-center transition-all focus:outline-none",
+                        "w-full h-7 px-1.5 rounded-md bg-[rgba(240,230,224,0.03)] border text-[10px] font-mono uppercase text-[#F0E6E0] text-center transition-all focus:outline-none",
                         invalid
                           ? "border-[rgba(220,120,100,0.5)] focus:border-[rgba(220,120,100,0.7)] focus:ring-1 focus:ring-[rgba(220,120,100,0.3)]"
-                          : "border-[rgba(208,190,165,0.12)] focus:border-[rgba(208,190,165,0.55)] focus:ring-1 focus:ring-[rgba(208,190,165,0.18)]"
+                          : "border-[rgba(240,230,224,0.12)] focus:border-[rgba(240,230,224,0.55)] focus:ring-1 focus:ring-[rgba(240,230,224,0.18)]"
                       )}
                       placeholder="#______"
                       maxLength={7}

@@ -82,13 +82,13 @@ export default function ExportStep() {
   return (
     <div className="max-w-md space-y-7">
       <div>
-        <p className="text-[10px] tracking-[0.25em] uppercase text-[#D0BEA5]/60 mb-2 font-medium">
+        <p className="text-[10px] tracking-[0.25em] uppercase text-[#F0E6E0]/60 mb-2 font-medium">
           Step 08
         </p>
-        <h2 className="text-2xl font-light tracking-tight mb-1 text-[#FFF4E3]">
+        <h2 className="text-2xl font-light tracking-tight mb-1 text-[#F0E6E0]">
           <span className="font-semibold">Export</span>
         </h2>
-        <p className="text-sm text-[#FFF4E3]/65">
+        <p className="text-sm text-[#F0E6E0]/65">
           Pick a layout format and download your brand kit.
         </p>
       </div>
@@ -100,16 +100,16 @@ export default function ExportStep() {
             value={fileName}
             onChange={(e) => setFileName(e.target.value)}
           />
-          <span className="text-sm text-[#D0BEA5]/60 font-mono">.html</span>
+          <span className="text-sm text-[#F0E6E0]/60 font-mono">.html</span>
         </div>
       </div>
 
       <div className="space-y-2">
         <div className="flex items-center justify-between mb-1">
-          <label className="text-[10px] tracking-[0.18em] uppercase leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#FFF4E3]/60 font-medium">
+          <label className="text-[10px] tracking-[0.18em] uppercase leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#F0E6E0]/60 font-medium">
             Credits
           </label>
-          <span className="text-[10px] font-mono tracking-wider text-[#D0BEA5]">
+          <span className="text-[10px] font-mono tracking-wider text-[#F0E6E0]">
             {loadingPoints ? "..." : `${points ?? 0} / 1000`}
           </span>
         </div>
@@ -141,7 +141,7 @@ export default function ExportStep() {
         <ExportSpecButton data={data} filename={fileName} className="w-full" />
 
         <div className="pt-2">
-          <p className="text-[10px] tracking-[0.2em] uppercase text-[#D0BEA5]/50 mb-2 font-medium">
+          <p className="text-[10px] tracking-[0.2em] uppercase text-[#F0E6E0]/50 mb-2 font-medium">
             For developers
           </p>
           <div className="space-y-2">

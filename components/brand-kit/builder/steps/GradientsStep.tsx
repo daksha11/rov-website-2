@@ -27,8 +27,8 @@ export default function GradientsStep() {
   const colors = useBrandKitStore((s) => s.data.colors.swatches);
 
   const handleAdd = () => {
-    const c1 = colors[0]?.hex || "#EA9A61";
-    const c2 = colors[colors.length - 1]?.hex || "#42201C";
+    const c1 = colors[0]?.hex || "#E3C24A";
+    const c2 = colors[colors.length - 1]?.hex || "#24123A";
     addGradient({
       id: uuid(),
       name: `Gradient ${gradients.length + 1}`,
@@ -40,27 +40,27 @@ export default function GradientsStep() {
   return (
     <div className="max-w-md space-y-6">
       <div>
-        <p className="text-[10px] tracking-[0.25em] uppercase text-[#D0BEA5]/60 mb-2 font-medium">Step 05</p>
-        <h2 className="text-2xl font-light tracking-tight mb-1 text-[#FFF4E3]"><span className="font-semibold">Gradients</span></h2>
-        <p className="text-sm text-[#FFF4E3]/65">
+        <p className="text-[10px] tracking-[0.25em] uppercase text-[#F0E6E0]/60 mb-2 font-medium">Step 05</p>
+        <h2 className="text-2xl font-light tracking-tight mb-1 text-[#F0E6E0]"><span className="font-semibold">Gradients</span></h2>
+        <p className="text-sm text-[#F0E6E0]/65">
           Define gradient styles. Paste the full CSS gradient value.
         </p>
       </div>
 
       {gradients.length === 0 && (
-        <div className="rounded-xl border border-dashed border-[rgba(208,190,165,0.18)] bg-[rgba(255,244,227,0.02)] p-6 text-center">
+        <div className="rounded-xl border border-dashed border-[rgba(240,230,224,0.18)] bg-[rgba(240,230,224,0.02)] p-6 text-center">
           <div
-            className="h-16 rounded-lg mb-3 border border-[rgba(208,190,165,0.1)]"
+            className="h-16 rounded-lg mb-3 border border-[rgba(240,230,224,0.1)]"
             style={{
               background: `linear-gradient(135deg, ${
-                colors[0]?.hex || "#EA9A61"
-              }, ${colors[colors.length - 1]?.hex || "#42201C"})`,
+                colors[0]?.hex || "#E3C24A"
+              }, ${colors[colors.length - 1]?.hex || "#24123A"})`,
             }}
           />
-          <p className="text-xs text-[#FFF4E3]/60 leading-relaxed">
+          <p className="text-xs text-[#F0E6E0]/60 leading-relaxed">
             Create gradient styles from your palette.
             <br />
-            <span className="text-[#D0BEA5]/50">
+            <span className="text-[#F0E6E0]/50">
               Great for covers, CTAs, and accent blocks.
             </span>
           </p>
@@ -71,14 +71,14 @@ export default function GradientsStep() {
         {gradients.map((grad) => (
           <div
             key={grad.id}
-            className="rounded-xl bg-[rgba(255,244,227,0.03)] backdrop-blur-md border border-[rgba(208,190,165,0.1)] shadow-[0_4px_20px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,244,227,0.04)] overflow-hidden"
+            className="rounded-xl bg-[rgba(240,230,224,0.03)] backdrop-blur-md border border-[rgba(240,230,224,0.1)] shadow-[0_4px_20px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(240,230,224,0.04)] overflow-hidden"
           >
             <div
               className="h-28 relative"
               style={{ background: grad.css }}
             >
               {grad.isPrimary && (
-                <div className="absolute top-2 right-2 flex items-center gap-1 px-2 py-1 rounded-full bg-black/40 backdrop-blur-md text-[9px] tracking-[0.15em] uppercase text-[#FFF4E3] font-medium">
+                <div className="absolute top-2 right-2 flex items-center gap-1 px-2 py-1 rounded-full bg-black/40 backdrop-blur-md text-[9px] tracking-[0.15em] uppercase text-[#F0E6E0] font-medium">
                   <Star className="size-2.5 fill-current" />
                   Primary
                 </div>
@@ -110,12 +110,12 @@ export default function GradientsStep() {
                 <p className="text-[10px] text-[#E89178]/85 leading-relaxed">
                   Not a valid CSS background value. Try
                   <code className="mx-1 px-1 py-0.5 rounded bg-[rgba(0,0,0,0.25)]">
-                    linear-gradient(135deg, #EA9A61, #42201C)
+                    linear-gradient(135deg, #E3C24A, #24123A)
                   </code>
                 </p>
               )}
               <div className="flex items-center justify-between pt-1">
-                <label className="flex items-center gap-2 text-xs text-[#D0BEA5]/70 cursor-pointer">
+                <label className="flex items-center gap-2 text-xs text-[#F0E6E0]/70 cursor-pointer">
                   <Switch
                     checked={grad.isPrimary}
                     onCheckedChange={(checked) =>

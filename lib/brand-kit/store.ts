@@ -37,18 +37,18 @@ const DEFAULT_DATA: BrandKitData = {
   colors: { swatches: [] },
   typography: {
     displayFont: {
-      name: 'Playfair Display',
+      name: 'Instrument Serif',
       fallback: 'Georgia, serif',
       googleFontsUrl:
-        'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap',
-      weights: [400, 700],
+        'https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap',
+      weights: [400],
       cssVariable: '--font-display',
     },
     bodyFont: {
-      name: 'Roboto',
+      name: 'Space Grotesk',
       fallback: 'sans-serif',
       googleFontsUrl:
-        'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap',
+        'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap',
       weights: [300, 400, 500, 700],
       cssVariable: '--font-body',
     },
@@ -152,7 +152,7 @@ interface BrandKitStore {
   setStep: (step: number) => void;
   reset: () => void;
   loadSample: (
-    partial: Partial<Pick<BrandKitData, "brandInfo" | "colors" | "gradients" | "voice">>
+    partial: Partial<Pick<BrandKitData, "brandInfo" | "logos" | "colors" | "gradients" | "voice">>
   ) => void;
 }
 
@@ -274,6 +274,7 @@ export const useBrandKitStore = create<BrandKitStore>()(
       set((state) => {
         if (partial.brandInfo)
           Object.assign(state.data.brandInfo, partial.brandInfo);
+        if (partial.logos) state.data.logos = partial.logos;
         if (partial.colors) state.data.colors = partial.colors;
         if (partial.gradients) state.data.gradients = partial.gradients;
         if (partial.voice) state.data.voice = partial.voice;
