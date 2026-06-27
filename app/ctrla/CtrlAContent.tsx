@@ -265,15 +265,18 @@ function Cover() {
 // STICKER BELT (dark spread)
 // ═══════════════════════════════════════════════════════
 
-const STICKERS = [
-  "/ctrla/andresticker.webp",
-  "/ctrla/benzsticker.webp",
-  "/ctrla/carsticker.webp",
-  "/ctrla/grillsticker.webp",
-  "/ctrla/gradysticker.webp",
-  "/ctrla/atlsticker.webp",
-  "/ctrla/martasticker.webp",
-  "/ctrla/futuresticker.webp",
+// Per-sticker scale: the source files bake in different amounts of
+// transparent padding, so we normalize the *artwork* to read at roughly
+// the same size as the two faces (the faces sit near 1.0).
+const STICKERS: { src: string; scale: number }[] = [
+  { src: "/ctrla/andresticker1.webp", scale: 1.05 },
+  { src: "/ctrla/benzsticker.webp", scale: 1.8 },
+  { src: "/ctrla/carsticker.webp", scale: 2.3 },
+  { src: "/ctrla/grillsticker.webp", scale: 2.15 },
+  { src: "/ctrla/gradysticker.webp", scale: 1.85 },
+  { src: "/ctrla/atlsticker.webp", scale: 2.0 },
+  { src: "/ctrla/martasticker.webp", scale: 2.2 },
+  { src: "/ctrla/futuresticker.webp", scale: 1.05 },
 ];
 
 function StickerBelt() {
@@ -295,15 +298,16 @@ function StickerBelt() {
       >
         Plate I · Custom hand-drawn illustrations
       </p>
-      <div className="ctrla-belt-track" style={{ display: "flex", alignItems: "center", gap: 64, width: "max-content", animation: "ctrlaBelt 36s linear infinite" }}>
-        {track.map((src, i) => (
+      <div className="ctrla-belt-track" style={{ display: "flex", alignItems: "center", gap: 104, width: "max-content", animation: "ctrlaBelt 36s linear infinite" }}>
+        {track.map((s, i) => (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             key={i}
-            src={src}
+            src={s.src}
             alt=""
             draggable={false}
-            style={{ flexShrink: 0, width: 104, height: 104, objectFit: "contain", filter: "drop-shadow(0 8px 20px rgba(0,0,0,0.6))", userSelect: "none" }}
+            className="ctrla-sticker"
+            style={{ flexShrink: 0, width: "auto", height: 104, objectFit: "contain", filter: "drop-shadow(0 8px 20px rgba(0,0,0,0.6))", userSelect: "none", ["--s" as string]: s.scale }}
           />
         ))}
       </div>

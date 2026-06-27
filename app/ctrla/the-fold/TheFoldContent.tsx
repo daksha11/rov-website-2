@@ -2,136 +2,103 @@
 
 // ═══════════════════════════════════════════════════════
 // THE FOLD — orchestrator
-// Owns the phase machine and decides what is on screen. The
-// editorial shell (backdrop, nav, intro, ritual) is the light
-// path. The room is dynamically imported (ssr:false) so the
-// heavy subsystems that will live inside it never touch the
-// landing chunk.
+// You arrive into the Commons and drift between rooms. The scene
+// is the immersive shell; audio + presence are effects keyed to
+// the place you are standing in. Heavy work (the cafe) is this
+// whole route; the magazine only carries a static teaser.
 // ═══════════════════════════════════════════════════════
 
-import { useEffect } from "react";
-import dynamic from "next/dynamic";
-import { NavigationDock } from "@/components/NavDoc";
-import CosmicBackdrop from "../_components/CosmicBackdrop";
-import { ed, Bleed, Rule, Label } from "../_components/editorial";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { ed } from "../_components/editorial";
+import { FOLD_COPY } from "./_content/copy";
 import { useFoldSession } from "./_state/useFoldSession";
-import FoldLanding from "./_components/landing/FoldLanding";
-import IntentionRitual from "./_components/ritual/IntentionRitual";
-import EnterTransition from "./_components/ritual/EnterTransition";
-
-// Heavy, deferred. Loaded only when the visitor commits to entering.
-const TheFoldRoom = dynamic(() => import("./_components/room/TheFoldRoom"), {
-  ssr: false,
-});
+import { placeDef, isRoom, COMMONS } from "./_state/foldConfig";
+import { getTimeBand, greetingFor } from "./_state/timeOfDay";
+import type { TimeBand } from "./_state/types";
+import { useCafeAudio } from "./_audio/useCafeAudio";
+import { usePresence } from "./_presence/usePresence";
+import Arrival from "./_components/Arrival";
+import CafeScene from "./_components/CafeScene";
+import Wayfinding from "./_components/Wayfinding";
+import AmbientMixer from "./_components/AmbientMixer";
+import PlacePanel from "./_components/PlacePanel";
 
 export default function TheFoldContent() {
-  const {
-    state,
-    beginRitual,
-    cancelRitual,
-    commitIntention,
-    enter,
-    setSoundscape,
-    endSession,
-    exit,
-  } = useFoldSession();
-  const { phase } = state;
-  const inRoom =
-    phase === "entering" ||
-    phase === "active" ||
-    phase === "ending" ||
-    phase === "done";
+  const router = useRouter();
+  const { state, arrive, go, setNote } = useFoldSession();
+  const { phase, place, visited, note } = state;
+  const inside = phase === "inside";
+  const def = placeDef(place);
+  const roomPlace = isRoom(place);
 
-  // Match the magazine ground while on this route.
+  const { ready, muted, levels, setLevel, applyPreset, toggleMute } = useCafeAudio(
+    inside,
+    COMMONS.preset
+  );
+  const { dots, whisper } = usePresence(place, inside);
+
+  const [band, setBand] = useState<TimeBand | null>(null);
+
+  // Immersive: dark ground, no page scroll.
   useEffect(() => {
     window.scrollTo(0, 0);
-    const prev = document.body.style.backgroundColor;
-    document.body.style.backgroundColor = ed.ground;
+    const prevBg = document.body.style.backgroundColor;
+    const prevOf = document.body.style.overflow;
+    document.body.style.backgroundColor = ed.void;
+    document.body.style.overflow = "hidden";
+    setBand(getTimeBand(new Date()));
     return () => {
-      document.body.style.backgroundColor = prev;
+      document.body.style.backgroundColor = prevBg;
+      document.body.style.overflow = prevOf;
     };
   }, []);
 
-  // The room is immersive: lock page scroll while inside it.
+  // Each place sets its own ambient blend.
   useEffect(() => {
-    if (!inRoom) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, [inRoom]);
+    if (inside) applyPreset(placeDef(place).preset);
+  }, [place, inside, applyPreset]);
+
+  const greeting = band ? greetingFor(band) : "Find your seat.";
 
   return (
     <>
-      {!inRoom && (
-        <div
-          className="fold-root"
-          style={{
-            background: "transparent",
-            minHeight: "100vh",
-            width: "100%",
-            overflowX: "hidden",
-            position: "relative",
-          }}
-        >
-          <CosmicBackdrop />
-          <NavigationDock />
-
-          {/* Back-nav masthead */}
-          <div style={{ position: "relative", zIndex: 5 }}>
-            <Bleed style={{ padding: "12px clamp(18px,5vw,64px)" }}>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: 16,
-                }}
-              >
-                <a
-                  href="/ctrla"
-                  className="ctrla-back"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 8,
-                    textDecoration: "none",
-                  }}
-                >
-                  <span style={{ color: ed.amber }}>←</span>
-                  <Label color={ed.ink}>CTRL-A · Vol. 01</Label>
-                </a>
-                <Label color={ed.inkFaint}>The Fold</Label>
-              </div>
-            </Bleed>
-            <Rule />
+      <CafeScene place={place} dots={dots} whisper={whisper}>
+        {/* Chrome */}
+        <div className="fold-chrome">
+          <div style={{ display: "flex", alignItems: "baseline", gap: 12, minWidth: 0 }}>
+            <span style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(17px,2vw,23px)", color: ed.paper }}>
+              {FOLD_COPY.wordmark}
+            </span>
+            <span style={{ color: ed.inkFaint }}>·</span>
+            <span style={{ fontFamily: ed.mono, fontSize: "clamp(9px,1vw,11px)", letterSpacing: "0.2em", textTransform: "uppercase", color: ed.gold, whiteSpace: "nowrap" }}>
+              {def.name}
+            </span>
           </div>
-
-          {phase === "landing" && <FoldLanding onEnter={beginRitual} />}
-          {phase === "ritual" && (
-            <IntentionRitual onComplete={commitIntention} onBack={cancelRitual} />
-          )}
+          <button
+            type="button"
+            onClick={() => router.push("/ctrla")}
+            className="fold-leave"
+            style={{ background: "transparent", border: "none", padding: 0, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8 }}
+          >
+            <span style={{ fontFamily: ed.mono, fontSize: "clamp(9px,1vw,11px)", letterSpacing: "0.2em", textTransform: "uppercase", color: ed.inkFaint }}>
+              {FOLD_COPY.leave}
+            </span>
+            <span style={{ color: ed.inkFaint }}>→</span>
+          </button>
         </div>
-      )}
 
-      {inRoom && state.intention && (
-        <TheFoldRoom
-          phase={phase}
-          intention={state.intention}
-          soundscape={state.soundscape}
-          sessionCount={state.sessionCount}
-          startedAt={state.startedAt}
-          onSetSoundscape={setSoundscape}
-          onEnd={endSession}
-          onAgain={beginRitual}
-          onExit={exit}
-        />
-      )}
+        {/* The place */}
+        <PlacePanel def={def} isRoomPlace={roomPlace} note={note} setNote={setNote} greeting={greeting} />
 
-      {/* The immersive handoff. Sits above the freshly mounted room and
-          reveals it, then flips the phase to active. */}
-      {phase === "entering" && <EnterTransition onDone={enter} />}
+        {/* The doors */}
+        <Wayfinding current={place} visited={visited} onGo={go} />
+
+        {/* The mix */}
+        <AmbientMixer levels={levels} muted={muted} soundReady={ready} onSet={setLevel} onToggleMute={toggleMute} />
+      </CafeScene>
+
+      {phase === "arriving" && <Arrival onArrived={arrive} />}
     </>
   );
 }

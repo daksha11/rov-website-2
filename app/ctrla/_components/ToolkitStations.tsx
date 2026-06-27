@@ -24,7 +24,7 @@ const levelColor = (l?: ToolLevel) =>
 const kindColor = (k: SignalKind) =>
   k === "Release" ? edBase.gold : k === "Shift" ? edBase.amber : k === "Trend" ? edBase.plum : edBase.inkFaint;
 
-export default function ToolkitStations({ section, theme }: { section: ToolkitSection; theme?: typeof edBase }) {
+export default function ToolkitStations({ section, theme, hideKicker = false }: { section: ToolkitSection; theme?: typeof edBase; hideKicker?: boolean }) {
   // Shadow `ed` with the active theme so every token below re-themes for free.
   const ed = theme ?? edBase;
   // On the cream light theme, gold accents are illegible — remap them.
@@ -67,7 +67,7 @@ export default function ToolkitStations({ section, theme }: { section: ToolkitSe
         {/* ── Sector header ── */}
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
           <div style={{ maxWidth: 720 }}>
-            <Kicker color={accent}>Sector {section.pageNumber} · Tool Stations</Kicker>
+            {!hideKicker && <Kicker color={accent}>Sector {section.pageNumber} · Tool Stations</Kicker>}
             <h2
               style={{
                 fontFamily: ed.grotesque,

@@ -1,13 +1,13 @@
 "use client";
 
-// One soft, asynchronously pulsing dot. No name, no avatar.
-// CSS-driven so the field breathes without a JS animation loop.
+// One patron: a soft warm glow, no name, no face. Pulses on its
+// own clock so the room breathes instead of blinking in unison.
 
-import { ed } from "../../../_components/editorial";
-import type { Dot } from "../../_presence/usePresence";
+import { ed } from "../../_components/editorial";
+import type { Dot } from "../_presence/usePresence";
 
 export default function PresenceDot({ dot }: { dot: Dot }) {
-  const size = dot.isSelf ? 9 : 6;
+  const size = dot.isSelf ? 10 : 7;
   return (
     <span
       className="fold-dot"
@@ -21,10 +21,8 @@ export default function PresenceDot({ dot }: { dot: Dot }) {
         marginLeft: -size / 2,
         marginTop: -size / 2,
         borderRadius: "50%",
-        background: dot.isSelf ? ed.gold : ed.amber,
-        boxShadow: dot.isSelf
-          ? `0 0 14px ${ed.gold}`
-          : "0 0 10px rgba(165,106,103,0.6)",
+        background: dot.isSelf ? ed.gold : "#E8B98A",
+        boxShadow: dot.isSelf ? `0 0 16px ${ed.gold}` : "0 0 12px rgba(232,185,138,0.7)",
         animationDelay: `${dot.delay}s`,
         animationDuration: `${dot.dur}s`,
       }}

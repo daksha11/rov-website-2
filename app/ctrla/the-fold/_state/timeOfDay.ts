@@ -1,11 +1,10 @@
 // ═══════════════════════════════════════════════════════
 // THE FOLD — temporal rhythm
-// The space reads time-of-day and adjusts. Computed CLIENT-SIDE
-// ONLY (after mount) to avoid hydration mismatch: the server has
-// no clock that agrees with the visitor's.
+// The cafe reads the hour. Computed CLIENT-SIDE ONLY (after
+// mount) to avoid hydration mismatch.
 // ═══════════════════════════════════════════════════════
 
-import type { TimeBand, Soundscape } from "./types";
+import type { TimeBand } from "./types";
 
 export function getTimeBand(date: Date): TimeBand {
   const h = date.getHours();
@@ -15,32 +14,29 @@ export function getTimeBand(date: Date): TimeBand {
   return "night";
 }
 
-// A gentle default: the room suggests a soundscape that fits the hour.
-// The visitor can always override.
-export function defaultSoundscapeFor(band: TimeBand): Soundscape {
-  switch (band) {
-    case "dawn":
-      return "wide-open";
-    case "day":
-      return "in-it";
-    case "dusk":
-      return "last-light";
-    case "night":
-      return "in-it";
-  }
-}
-
-// Atmosphere weighting per band (0..1 warmth). The room backdrop reads this.
-// Kept as plain numbers so CSS custom properties can consume it.
+// 0..1 warmth weighting the cafe's interior glow takes on by hour.
 export function bandWarmth(band: TimeBand): number {
   switch (band) {
     case "dawn":
-      return 0.45;
+      return 0.5;
     case "day":
-      return 0.25;
+      return 0.3;
     case "dusk":
-      return 0.7;
+      return 0.75;
     case "night":
-      return 0.15;
+      return 0.2;
+  }
+}
+
+export function greetingFor(band: TimeBand): string {
+  switch (band) {
+    case "dawn":
+      return "Early. The light is just coming up.";
+    case "day":
+      return "The light is full. Find your seat.";
+    case "dusk":
+      return "Last light through the glass.";
+    case "night":
+      return "Late, and the room is yours.";
   }
 }

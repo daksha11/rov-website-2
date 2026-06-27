@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import TheFoldContent from "./TheFoldContent";
 
 export const metadata: Metadata = {
-  title: "The Fold — A Room to Work In | CTRL-A",
+  title: "The Fold — An All-Night Cafe for Creatives | CTRL-A",
   description:
-    "The Fold is an ambient creative space from CTRL-A by Range of View Studios. Soft social presence, a living stream of sound, and a quiet rhythm that reads the hour. You are not here to be productive. You are here because you belong somewhere.",
+    "The Fold is an ambient cafe from CTRL-A by Range of View Studios. Arrive into the Commons, blend the room's sound, and drift between focus rooms. Soft presence, a living stream, and a window onto a cosmic sunset. You are here because you belong somewhere.",
   keywords: [
     "ambient focus space",
     "creative focus room",

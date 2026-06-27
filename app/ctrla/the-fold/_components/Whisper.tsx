@@ -1,12 +1,12 @@
 "use client";
 
-// Occasional opt-in whispers that drift through. Not a chat, not a
-// feed. Texture. One at a time, faint, then gone.
+// An opt-in whisper, drifting through as texture. Not chat. One at
+// a time, faint, then gone.
 
-import { ed } from "../../../_components/editorial";
-import type { Whisper } from "../../_presence/usePresence";
+import { ed } from "../../_components/editorial";
+import type { Whisper as W } from "../_presence/usePresence";
 
-export default function AmbientWhispers({ whisper }: { whisper: Whisper | null }) {
+export default function Whisper({ whisper }: { whisper: W | null }) {
   if (!whisper) return null;
   return (
     <span
@@ -17,12 +17,12 @@ export default function AmbientWhispers({ whisper }: { whisper: Whisper | null }
         position: "absolute",
         top: `${whisper.lane * 100}%`,
         left: 0,
-        zIndex: 1,
+        zIndex: 2,
         whiteSpace: "nowrap",
         fontFamily: ed.serif,
         fontStyle: "italic",
         fontSize: "clamp(13px,1.6vw,18px)",
-        color: "rgba(240,230,224,0.34)",
+        color: "rgba(240,230,224,0.32)",
         pointerEvents: "none",
       }}
     >
