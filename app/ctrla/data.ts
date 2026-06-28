@@ -189,6 +189,71 @@ export interface Recipe {
   image?: string;
 }
 
+// ── THE GALLEY FRIDGE ───────────────────────────────────
+// The cookbook's interactive heart: a fridge drifting in the void
+// that holds exactly three things, one Meal, one Snack, one Drink.
+// One source of truth. Swapping a dish is a one-line edit here.
+
+export type GalleyCategory = "meal" | "snack" | "drink";
+
+export interface GalleyRecipe {
+  id: string;
+  category: GalleyCategory;
+  name: string;
+  cuisine: string;
+  blurb: string;
+  timeMins: number;
+  costUsd: number;
+  serves: number;
+  ingredients: string[];
+}
+
+export const galley: GalleyRecipe[] = [
+  {
+    id: "gyeran-bap",
+    category: "meal",
+    name: "Gyeran Bap",
+    cuisine: "Korean",
+    blurb:
+      "The 2am edit-session staple. Hot rice, a glossy fried egg, sesame and soy. A real meal in one bowl.",
+    timeMins: 10,
+    costUsd: 3,
+    serves: 1,
+    ingredients: ["rice", "egg", "soy sauce", "sesame oil", "scallion"],
+  },
+  {
+    id: "miso-toast",
+    category: "snack",
+    name: "Miso Butter Toast",
+    cuisine: "Japanese-ish",
+    blurb:
+      "Bread, butter, a smear of miso under the grill. Salt and umami to bridge the gap between renders.",
+    timeMins: 4,
+    costUsd: 2,
+    serves: 1,
+    ingredients: ["bread", "butter", "miso paste"],
+  },
+  {
+    id: "focus-tea",
+    category: "drink",
+    name: "Slow-Brew Focus Tea",
+    cuisine: "House blend",
+    blurb:
+      "Green tea, ginger, a little honey. The warm reset that settles the mind without the crash.",
+    timeMins: 6,
+    costUsd: 1,
+    serves: 1,
+    ingredients: ["green tea", "ginger", "honey", "lemon"],
+  },
+];
+
+// Category accents stay inside the house palette: gold / rose / lifted plum.
+export const galleyMeta: Record<GalleyCategory, { label: string; accent: string }> = {
+  meal: { label: "Meal", accent: "#E3C24A" },
+  snack: { label: "Snack", accent: "#A56A67" },
+  drink: { label: "Drink", accent: "#8E76B8" },
+};
+
 export const cookbook = {
   eyebrow: "The Cookbook · Fuel for the work",
   headline: "The Cookbook.",

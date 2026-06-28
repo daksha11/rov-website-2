@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import TheFoldContent from "./TheFoldContent";
+import FoldEntry from "./FoldEntry";
 
 export const metadata: Metadata = {
   title: "The Fold — An All-Night Cafe for Creatives | CTRL-A",
@@ -31,5 +31,5 @@ export const metadata: Metadata = {
 };
 
 export default function TheFoldPage() {
-  return <TheFoldContent />;
+  return <FoldEntry />;
 }

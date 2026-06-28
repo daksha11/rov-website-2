@@ -50,8 +50,12 @@ export default function Cookbook() {
             of a hard rectangle; gold registration corners + grain frame
             it as an editorial plate. */}
         <div className="ctrla-cookbook-peek">
-          {/* The dish */}
-          <div className="ctrla-plate-frame">
+          {/* The dish — links to the galley fridge on its own page */}
+          <a
+            href="/ctrla/cookbook"
+            className="ctrla-plate-frame ctrla-plate-frame-btn"
+            aria-label="Step into the galley fridge"
+          >
             {/* Soft gold halo that seats the plate in space */}
             <span aria-hidden className="ctrla-plate-glow" />
 
@@ -125,7 +129,10 @@ export default function Cookbook() {
             >
               Sneak peek
             </span>
-          </div>
+
+            {/* Click affordance — appears on hover/focus of the plate */}
+            <span aria-hidden className="ctrla-plate-cta">Open the galley →</span>
+          </a>
 
           {/* The pitch */}
           <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>

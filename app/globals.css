@@ -944,6 +944,20 @@ input[type="range"]::-webkit-slider-thumb {
   mix-blend-mode: overlay;
 }
 
+/* Page-wide film grain for the CTRL-A issue — a faint magazine texture that
+   sits over the whole page (fixed, so it reads like film grain, not wallpaper).
+   Kept very low so text stays crisp. */
+.ctrla-page-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 170px 170px;
+  opacity: 0.08;
+  mix-blend-mode: overlay;
+}
+
 /* ── Toolkit atmosphere — light, airy lit-cream ambient layer ── */
 .ctrla-toolkit-atmos {
   position: fixed;
@@ -1025,6 +1039,480 @@ input[type="range"]::-webkit-slider-thumb {
 .ctrla-plate-tick.tl { top: 13px; left: 13px; border-top-width: 2px; border-left-width: 2px; }
 .ctrla-plate-tick.bl { bottom: 13px; left: 13px; border-bottom-width: 2px; border-left-width: 2px; }
 .ctrla-plate-tick.br { bottom: 13px; right: 13px; border-bottom-width: 2px; border-right-width: 2px; }
+
+/* ── THE GALLEY FRIDGE ─────────────────────────────────────
+   The plate becomes a button: click it to step into the galley.
+   A brushed-steel fridge drifts in the void and holds three things. */
+.ctrla-plate-frame-btn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.ctrla-plate-frame-btn .ctrla-plate {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ctrla-plate-frame-btn:hover .ctrla-plate,
+.ctrla-plate-frame-btn:focus-visible .ctrla-plate { transform: scale(1.02); }
+.ctrla-plate-frame-btn:focus-visible { outline: none; }
+.ctrla-plate-frame-btn:focus-visible .ctrla-plate-tick { opacity: 1; }
+.ctrla-plate-cta {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translate(-50%, 8px);
+  z-index: 5;
+  font-family: "Neue Montreal", "Helvetica Neue", Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #0f0820;
+  background: #e3c24a;
+  padding: 8px 16px;
+  border-radius: 999px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s, transform 0.35s;
+}
+.ctrla-plate-frame-btn:hover .ctrla-plate-cta,
+.ctrla-plate-frame-btn:focus-visible .ctrla-plate-cta {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.ctrla-galley-reveal { animation: ctrla-galley-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+@keyframes ctrla-galley-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+
+.ctrla-fridge-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 40px) 0 clamp(8px, 2vw, 20px);
+}
+.ctrla-fridge-stars { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.ctrla-fridge-stars span { position: absolute; border-radius: 50%; background: #f0e6e0; }
+
+.ctrla-fridge-scene {
+  position: relative;
+  width: min(320px, 82vw);
+  perspective: 2200px;
+}
+.ctrla-fridge-body {
+  position: relative;
+  aspect-ratio: 3 / 4.4;
+  border-radius: 20px;
+  transform-style: preserve-3d;
+  background: linear-gradient(100deg, #1d1a2e 0%, #2b2740 28%, #3b3550 50%, #2b2740 72%, #1d1a2e 100%);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.55), inset 0 0 0 1px #4a4566, inset 0 2px 0 rgba(255, 255, 255, 0.06);
+}
+.ctrla-fridge-body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 20px;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 3px);
+  pointer-events: none;
+}
+.ctrla-fridge-hinge {
+  position: absolute;
+  left: -3px;
+  z-index: 6;
+  width: 6px;
+  height: 26px;
+  border-radius: 3px;
+  background: linear-gradient(#4a4566, #1d1a2e);
+}
+.ctrla-fridge-hinge.top { top: 16%; }
+.ctrla-fridge-hinge.bottom { bottom: 16%; }
+.ctrla-fridge-badge {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 7px;
+  letter-spacing: 0.22em;
+  white-space: nowrap;
+  color: rgba(240, 230, 224, 0.4);
+}
+.ctrla-fridge-plinth {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -10px;
+  z-index: 0;
+  height: 12px;
+  border-radius: 0 0 8px 8px;
+  background: linear-gradient(#15101f, #0a0714);
+}
+
+.ctrla-fridge-cabinet {
+  position: absolute;
+  inset: 9px;
+  z-index: 2;
+  border-radius: 13px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #1a1530 0%, #120d22 100%);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.7);
+}
+.ctrla-fridge-glow {
+  position: absolute;
+  inset: 0;
+  opacity: calc(var(--lit, 0));
+  transition: opacity 0.2s linear;
+  background: radial-gradient(140% 80% at 6% 12%, rgba(227, 194, 74, 0.28), transparent 56%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 34%);
+  pointer-events: none;
+}
+.ctrla-fridge-cast {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  transform-origin: left;
+  transform: scaleX(calc(1 - var(--lit, 0)));
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.72), transparent 62%);
+  transition: transform 0.2s linear;
+  pointer-events: none;
+}
+.ctrla-fridge-bay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 14px 12px;
+  pointer-events: none;
+}
+.ctrla-fridge-scene.open .ctrla-fridge-bay { pointer-events: auto; }
+.ctrla-fridge-shelf {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ctrla-fridge-shelf li { opacity: 0; transform: translateY(8px); }
+.ctrla-fridge-scene:not(.open) .ctrla-fridge-shelf li { visibility: hidden; }
+.ctrla-fridge-scene.open .ctrla-fridge-shelf li { animation: ctrla-fridge-settle 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@keyframes ctrla-fridge-settle { to { opacity: 1; transform: none; } }
+.ctrla-fridge-shelf-bar {
+  display: block;
+  height: 1px;
+  margin-top: 10px;
+  background: rgba(240, 230, 224, 0.14);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+}
+.ctrla-fridge-shelf-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 9px;
+  border: 1px solid rgba(240, 230, 224, 0.12);
+  border-radius: 8px;
+  background: rgba(240, 230, 224, 0.04);
+  color: #f0e6e0;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.ctrla-fridge-shelf-item:hover {
+  background: rgba(240, 230, 224, 0.08);
+  border-color: var(--accent);
+  transform: translateX(2px);
+}
+.ctrla-fridge-shelf-glyph { width: 16px; height: 16px; flex: none; color: var(--accent); }
+.ctrla-fridge-shelf-name {
+  flex: 1;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.ctrla-fridge-shelf-cat {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.ctrla-fridge-door {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  border-radius: 20px;
+  transform-origin: left center;
+  transform: rotateY(0deg);
+  transform-style: preserve-3d;
+  background: linear-gradient(100deg, #211d33 0%, #2f2a46 30%, #403a5c 50%, #2f2a46 72%, #211d33 100%);
+  box-shadow: inset 0 0 0 1px #4a4566, inset 0 2px 0 rgba(255, 255, 255, 0.06);
+  transition: transform 1.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 1.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ctrla-fridge-door::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 3px);
+  pointer-events: none;
+}
+.ctrla-fridge-scene.opening .ctrla-fridge-door {
+  transform: rotateY(-12deg);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ctrla-fridge-scene.open .ctrla-fridge-door {
+  transform: rotateY(-122deg);
+  box-shadow: 40px 0 80px rgba(0, 0, 0, 0.6), inset 0 0 0 1px #4a4566;
+}
+.ctrla-fridge-gasket {
+  position: absolute;
+  inset: 6px;
+  z-index: 1;
+  border-radius: 14px;
+  border: 3px solid #15101f;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+.ctrla-fridge-scene.opening .ctrla-fridge-gasket,
+.ctrla-fridge-scene.open .ctrla-fridge-gasket { opacity: 1; }
+.ctrla-fridge-magnets {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px;
+  transition: opacity 0.3s;
+}
+.ctrla-fridge-scene.open .ctrla-fridge-magnets {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s, visibility 0s 0.3s;
+}
+.ctrla-fridge-magnet {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 11px;
+  border: 1px solid rgba(240, 230, 224, 0.14);
+  border-left: 3px solid var(--accent);
+  border-radius: 7px;
+  background: linear-gradient(180deg, rgba(240, 230, 224, 0.1), rgba(240, 230, 224, 0.03));
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+  color: #f0e6e0;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.ctrla-fridge-magnet:hover {
+  transform: translateY(-2px) rotate(-0.4deg);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.45);
+}
+.ctrla-fridge-magnet-glyph { width: 22px; height: 22px; flex: none; color: var(--accent); }
+.ctrla-fridge-magnet-text { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.ctrla-fridge-magnet-cat {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.ctrla-fridge-magnet-name {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ctrla-fridge-magnet-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: none;
+  align-items: flex-end;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 9px;
+  color: rgba(240, 230, 224, 0.62);
+}
+.ctrla-fridge-handle {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  z-index: 4;
+  width: 14px;
+  height: 30%;
+  border: 0;
+  border-radius: 7px;
+  background: linear-gradient(90deg, #4a4566, #2b2740);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+}
+.ctrla-fridge-handle span {
+  position: absolute;
+  inset: 4px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.12), transparent);
+}
+.ctrla-fridge-handle:hover { background: linear-gradient(90deg, #574f78, #332e4d); }
+.ctrla-fridge-hint {
+  margin: 18px 0 0;
+  text-align: center;
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-size: 15px;
+  color: rgba(240, 230, 224, 0.64);
+}
+
+.ctrla-fridge-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(8, 4, 18, 0.72);
+  backdrop-filter: blur(4px);
+  animation: ctrla-fridge-fade 0.25s ease both;
+}
+@keyframes ctrla-fridge-fade { from { opacity: 0; } to { opacity: 1; } }
+.ctrla-fridge-drawer {
+  position: relative;
+  width: min(440px, 100%);
+  max-height: 86vh;
+  overflow-y: auto;
+  border-radius: 16px;
+  border: 1px solid rgba(240, 230, 224, 0.16);
+  border-top: 3px solid var(--accent);
+  background: linear-gradient(180deg, #24123a, #160c28);
+  padding: clamp(24px, 4vw, 36px);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  animation: ctrla-fridge-rise 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes ctrla-fridge-rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+.ctrla-fridge-drawer-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(240, 230, 224, 0.18);
+  border-radius: 50%;
+  background: transparent;
+  color: #f0e6e0;
+  font-size: 13px;
+  cursor: pointer;
+}
+.ctrla-fridge-drawer-close:hover { background: rgba(240, 230, 224, 0.1); }
+.ctrla-fridge-drawer-cat {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.ctrla-fridge-drawer-name {
+  margin: 8px 0 4px;
+  font-family: "Neue Montreal", sans-serif;
+  font-weight: 800;
+  font-size: clamp(28px, 5vw, 40px);
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  color: #f0e6e0;
+}
+.ctrla-fridge-drawer-cuisine {
+  margin: 0 0 14px;
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--accent);
+}
+.ctrla-fridge-drawer-blurb {
+  margin: 0 0 22px;
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: 17px;
+  line-height: 1.5;
+  color: rgba(240, 230, 224, 0.86);
+}
+.ctrla-fridge-gauges { display: flex; gap: 12px; margin-bottom: 22px; }
+.ctrla-fridge-gauge {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 12px;
+  border: 1px solid rgba(240, 230, 224, 0.14);
+  border-radius: 10px;
+  background: rgba(240, 230, 224, 0.03);
+}
+.ctrla-fridge-gauge-val {
+  font-family: "Neue Montreal", sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--accent);
+}
+.ctrla-fridge-gauge-label {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(240, 230, 224, 0.5);
+}
+.ctrla-fridge-drawer-ing-label {
+  display: block;
+  margin-bottom: 10px;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(240, 230, 224, 0.5);
+}
+.ctrla-fridge-drawer-ing ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 7px; }
+.ctrla-fridge-drawer-ing li {
+  padding: 6px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(240, 230, 224, 0.16);
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 12px;
+  color: rgba(240, 230, 224, 0.86);
+}
+@media (max-width: 420px) {
+  .ctrla-fridge-scene.open .ctrla-fridge-door { transform: rotateY(-112deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ctrla-fridge-door,
+  .ctrla-fridge-glow,
+  .ctrla-fridge-cast,
+  .ctrla-fridge-shelf li,
+  .ctrla-galley-reveal,
+  .ctrla-fridge-drawer,
+  .ctrla-fridge-backdrop { transition: none !important; animation: none !important; }
+  .ctrla-fridge-scene.open .ctrla-fridge-door { transform: rotateY(-122deg); }
+  .ctrla-fridge-scene.open .ctrla-fridge-shelf li { opacity: 1; transform: none; }
+}
 
 /* On Repeat — two Spotify players side by side */
 .ctrla-onrepeat {
@@ -1753,3 +2241,287 @@ input[type="range"]::-webkit-slider-thumb {
   .fold-arrival { transition: opacity 0.3s ease; }
 }
 @keyframes fold-whisper-fade { 0%,100% { opacity: 0; } 12%,86% { opacity: 0.3; } }
+
+/* ══════════════════════════════════════════════════════════
+   THE FOLD — asteroid-belt landing (fold__*)
+   Canvas full-bleed (z0), vignette (z1), stage (z2), doorway (z6).
+   Bound to CTRL-A dark tokens: void #0F0820, paper #F0E6E0,
+   gold #E3C24A, rose #A56A67, plum #4E3D73.
+   ══════════════════════════════════════════════════════════ */
+.fold {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #0f0820;
+  color: #f0e6e0;
+  font-family: "Neue Montreal", "Helvetica Neue", Arial, sans-serif;
+}
+.fold__belt {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.fold__vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 42%, transparent 46%, rgba(15, 8, 32, 0.55) 82%, rgba(15, 8, 32, 0.9) 100%);
+}
+
+/* ── Stage: fixed flex column over the belt ── */
+.fold__stage {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(18px, 3vw, 36px) clamp(18px, 4vw, 56px) clamp(20px, 3vw, 40px);
+  pointer-events: none;
+}
+.fold__stage button,
+.fold__stage a { pointer-events: auto; }
+
+.fold__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.fold__brand {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(15px, 2vw, 21px);
+  color: rgba(240, 230, 224, 0.86);
+}
+.fold__brand b { font-style: normal; color: #e3c24a; font-weight: 500; }
+.fold__topnav { display: flex; align-items: center; gap: clamp(10px, 2vw, 22px); }
+.fold__stepout,
+.fold__takeseat {
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.fold__stepout { color: rgba(240, 230, 224, 0.5); transition: color 0.2s; }
+.fold__stepout:hover { color: #f0e6e0; }
+.fold__takeseat {
+  color: #0f0820;
+  background: #e3c24a;
+  padding: 9px 16px;
+  border-radius: 999px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.fold__takeseat:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(227, 194, 74, 0.3); }
+
+/* ── Title block (the room you're vantaged on) ── */
+.fold__title {
+  max-width: 640px;
+  margin: auto 0;
+}
+.fold__floor {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #a56a67;
+  margin-bottom: 14px;
+  min-height: 13px;
+}
+.fold__name {
+  font-family: "Neue Montreal", sans-serif;
+  font-weight: 800;
+  font-size: clamp(44px, 9vw, 128px);
+  letter-spacing: -0.035em;
+  line-height: 0.86;
+  color: #f0e6e0;
+  margin: 0;
+}
+.fold__line {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(18px, 2.6vw, 30px);
+  line-height: 1.35;
+  color: rgba(240, 230, 224, 0.82);
+  margin: clamp(16px, 2vw, 24px) 0 0;
+  max-width: 560px;
+}
+.fold__hint {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(240, 230, 224, 0.5);
+  margin: clamp(20px, 3vw, 34px) 0 0;
+  transition: opacity 0.8s ease;
+}
+.fold__hint--hide { opacity: 0; }
+
+/* ── Footer: rooms + sound mixer ── */
+.fold__footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(16px, 3vw, 40px);
+  flex-wrap: wrap;
+}
+.fold__rooms,
+.fold__mixer { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.fold__lead {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(240, 230, 224, 0.42);
+  margin-right: 4px;
+}
+.fold__lead--cue { color: #e3c24a; }
+.fold__room {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  border: 1px solid rgba(240, 230, 224, 0.16);
+  border-radius: 999px;
+  background: rgba(240, 230, 224, 0.04);
+  color: rgba(240, 230, 224, 0.78);
+  padding: 8px 14px;
+  cursor: pointer;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 12px;
+  letter-spacing: -0.01em;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+}
+.fold__room:hover { background: rgba(240, 230, 224, 0.09); color: #f0e6e0; transform: translateY(-1px); }
+.fold__room--active {
+  background: #4e3d73;
+  border-color: #4e3d73;
+  color: #f0e6e0;
+}
+.fold__state {
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #e3c24a;
+  opacity: 0.85;
+}
+.fold__pad {
+  border: 1px solid rgba(240, 230, 224, 0.16);
+  border-radius: 7px;
+  background: rgba(240, 230, 224, 0.04);
+  color: rgba(240, 230, 224, 0.6);
+  padding: 7px 12px;
+  cursor: pointer;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: capitalize;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.fold__pad:hover { color: #f0e6e0; }
+.fold__pad[aria-pressed="true"] {
+  background: rgba(227, 194, 74, 0.16);
+  border-color: #e3c24a;
+  color: #e3c24a;
+}
+
+/* ── Doorway intro (first visit) ── */
+.fold__door {
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 4px;
+  padding: 24px;
+  background: radial-gradient(120% 100% at 50% 40%, rgba(36, 18, 58, 0.72), rgba(15, 8, 32, 0.92));
+  backdrop-filter: blur(6px);
+  transition: opacity 0.9s ease, visibility 0s 0s;
+}
+.fold__door--gone {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.9s ease, visibility 0s 0.9s;
+}
+.fold__kicker {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #e3c24a;
+  margin-bottom: 18px;
+}
+.fold__doorh {
+  font-family: "Neue Montreal", sans-serif;
+  font-weight: 800;
+  font-size: clamp(30px, 6vw, 68px);
+  letter-spacing: -0.03em;
+  line-height: 0.96;
+  color: #f0e6e0;
+  margin: 0 0 18px;
+  max-width: 16ch;
+}
+.fold__what {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(17px, 2.4vw, 24px);
+  line-height: 1.4;
+  color: rgba(240, 230, 224, 0.86);
+  margin: 0 0 6px;
+  max-width: 46ch;
+}
+.fold__how {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: clamp(13px, 1.6vw, 15px);
+  line-height: 1.5;
+  color: rgba(240, 230, 224, 0.56);
+  margin: 0 0 30px;
+  max-width: 44ch;
+}
+.fold__enter {
+  border: 0;
+  border-radius: 999px;
+  background: #e3c24a;
+  color: #0f0820;
+  padding: 14px 30px;
+  cursor: pointer;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.fold__enter:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(227, 194, 74, 0.35); }
+.fold__skip {
+  margin-top: 14px;
+  border: 0;
+  background: none;
+  color: rgba(240, 230, 224, 0.5);
+  cursor: pointer;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.fold__skip:hover { color: #f0e6e0; }
+
+@media (max-width: 720px) {
+  .fold__footer { flex-direction: column; align-items: flex-start; }
+  .fold__takeseat { padding: 8px 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fold__door,
+  .fold__door--gone,
+  .fold__hint { transition: none; }
+}

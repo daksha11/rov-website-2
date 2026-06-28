@@ -16,14 +16,22 @@ export default function ShootingStars({
   style,
   colors = ["#E3C24A", "#F0E6E0", "#A56A67"],
   starColor = "#F0E6E0",
+  gap = [0.5, 2.2],
+  pairChance = 0.22,
 }: {
   className?: string;
   style?: React.CSSProperties;
   colors?: string[];
   /** Colour of the static twinkle field (use a dark value on light grounds). */
   starColor?: string;
+  /** Seconds between shooting stars, picked at random in [min, max]. */
+  gap?: [number, number];
+  /** Chance (0–1) a second star spawns alongside the first. */
+  pairChance?: number;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const gapMin = gap[0];
+  const gapMax = gap[1];
 
   useEffect(() => {
     const container = containerRef.current;
@@ -89,7 +97,7 @@ export default function ShootingStars({
       width: number;
     };
     const meteors: Meteor[] = [];
-    let nextSpawn = 0.4; // seconds until the next one
+    let nextSpawn = gapMin + Math.random() * (gapMax - gapMin); // seconds until the next one
 
     const spawn = () => {
       const fromLeft = Math.random() < 0.5;
@@ -148,8 +156,8 @@ export default function ShootingStars({
         nextSpawn -= dt;
         if (nextSpawn <= 0) {
           spawn();
-          if (Math.random() < 0.22) spawn(); // occasional pair
-          nextSpawn = Math.random() * 1.7 + 0.5; // random gap, real-sky cadence
+          if (Math.random() < pairChance) spawn(); // occasional pair
+          nextSpawn = gapMin + Math.random() * (gapMax - gapMin); // random gap in range
         }
         for (let i = meteors.length - 1; i >= 0; i--) {
           const m = meteors[i];
@@ -193,7 +201,7 @@ export default function ShootingStars({
       io.disconnect();
       if (canvas.parentNode === container) container.removeChild(canvas);
     };
-  }, [colors, starColor]);
+  }, [colors, starColor, gapMin, gapMax, pairChance]);
 
   return <div ref={containerRef} aria-hidden className={className} style={{ position: "absolute", inset: 0, ...style }} />;
 }
