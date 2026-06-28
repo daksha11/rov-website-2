@@ -2299,9 +2299,7 @@ input[type="range"]::-webkit-slider-thumb {
   color: rgba(240, 230, 224, 0.86);
 }
 .fold__brand b { font-style: normal; color: #e3c24a; font-weight: 500; }
-.fold__topnav { display: flex; align-items: center; gap: clamp(10px, 2vw, 22px); }
-.fold__stepout,
-.fold__takeseat {
+.fold__stepout {
   border: 0;
   background: none;
   cursor: pointer;
@@ -2309,17 +2307,10 @@ input[type="range"]::-webkit-slider-thumb {
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+  color: rgba(240, 230, 224, 0.5);
+  transition: color 0.2s;
 }
-.fold__stepout { color: rgba(240, 230, 224, 0.5); transition: color 0.2s; }
 .fold__stepout:hover { color: #f0e6e0; }
-.fold__takeseat {
-  color: #0f0820;
-  background: #e3c24a;
-  padding: 9px 16px;
-  border-radius: 999px;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.fold__takeseat:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(227, 194, 74, 0.3); }
 
 /* ── Title block (the room you're vantaged on) ── */
 .fold__title {
@@ -2518,7 +2509,6 @@ input[type="range"]::-webkit-slider-thumb {
 
 @media (max-width: 720px) {
   .fold__footer { flex-direction: column; align-items: flex-start; }
-  .fold__takeseat { padding: 8px 13px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .fold__door,

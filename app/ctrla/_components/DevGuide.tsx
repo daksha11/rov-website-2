@@ -39,28 +39,28 @@ function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }
 const TRAP = [
   {
     n: "01",
-    title: "the noise",
+    title: "The noise",
     body: "there is a lot of hype right now. agents, pipelines, systems that supposedly do everything for you. we have tried most of them, so you do not have to.",
   },
   {
     n: "02",
-    title: "the cost",
+    title: "The cost",
     body: "tokens cost money. time costs more. if you are not intentional with every step, all that automation becomes a very expensive way to produce slop.",
   },
   {
     n: "03",
-    title: "faster is not better",
+    title: "Faster is not better",
     body: "an ai confidently building the wrong thing faster is not progress. speed without direction just gets you to the wrong place sooner.",
   },
 ];
 
 const COURSE = [
-  { k: "reusable context", title: "skill files", body: "instructions and context you hand it once, so it knows how you work before you ask for anything." },
-  { k: "one keystroke", title: "slash commands", body: "your repeatable moves saved as a command. a paragraph of setup becomes one word." },
-  { k: "hand it off", title: "subagents", body: "send a whole task to a focused agent, and run several at once while you keep moving." },
-  { k: "scripted jobs", title: "workflows", body: "multi step work scripted to run the same way every time, no babysitting required." },
-  { k: "wire it in", title: "mcp tools", body: "connect it to the apps you already use, so it can act, not just talk." },
-  { k: "more for less", title: "efficiency patterns", body: "better output for fewer tokens and less back and forth. the line between a tool and a money pit." },
+  { k: "reusable context", title: "Skill files", body: "instructions and context you hand it once, so it knows how you work before you ask for anything." },
+  { k: "one keystroke", title: "Slash commands", body: "your repeatable moves saved as a command. a paragraph of setup becomes one word." },
+  { k: "hand it off", title: "Subagents", body: "send a whole task to a focused agent, and run several at once while you keep moving." },
+  { k: "scripted jobs", title: "Workflows", body: "multi step work scripted to run the same way every time, no babysitting required." },
+  { k: "wire it in", title: "MCP tools", body: "connect it to the apps you already use, so it can act, not just talk." },
+  { k: "more for less", title: "Efficiency patterns", body: "better output for fewer tokens and less back and forth. the line between a tool and a money pit." },
 ];
 
 export default function DevGuide({ accent = ed.plum }: { accent?: string }) {
@@ -82,8 +82,8 @@ export default function DevGuide({ accent = ed.plum }: { accent?: string }) {
               maxWidth: 1000,
             }}
           >
-            ai is coming for development.<br />
-            it already did<span style={{ color: accent }}>.</span>
+            AI is coming for development.<br />
+            It already did<span style={{ color: accent }}>.</span>
           </h2>
         </Reveal>
 
@@ -111,7 +111,7 @@ export default function DevGuide({ accent = ed.plum }: { accent?: string }) {
           <Reveal>
             <Kicker color={accent}>Where most people get it wrong</Kicker>
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 clamp(28px,4vw,40px)", maxWidth: 900 }}>
-              the trap is mistaking speed for progress
+              The trap is mistaking speed for progress
             </h3>
           </Reveal>
           <div className="ctrla-guide-grid">
@@ -119,7 +119,7 @@ export default function DevGuide({ accent = ed.plum }: { accent?: string }) {
               <Reveal key={t.n} delay={i * 0.06}>
                 <div style={{ borderTop: `2px solid ${ed.ink}`, paddingTop: 18, height: "100%" }}>
                   <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,4vw,46px)", letterSpacing: "-0.03em", color: accent, display: "block", marginBottom: 10 }}>{t.n}</span>
-                  <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.3vw,26px)", letterSpacing: "-0.02em", color: ed.ink, margin: "0 0 12px", textTransform: "lowercase" }}>{t.title}</h4>
+                  <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.3vw,26px)", letterSpacing: "-0.02em", color: ed.ink, margin: "0 0 12px" }}>{t.title}</h4>
                   <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,16px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0 }}>{t.body}</p>
                 </div>
               </Reveal>
@@ -132,7 +132,7 @@ export default function DevGuide({ accent = ed.plum }: { accent?: string }) {
           <Reveal>
             <Kicker color={accent}>The foundation · prompt engineering</Kicker>
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 10px" }}>
-              the real skill is saying exactly what you mean
+              The real skill is saying exactly what you mean
             </h3>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0, maxWidth: 660 }}>
               not the buzzword version. the actual skill of communicating precisely what you want, in the right context, with the right constraints, so the output is something you can use. it is the most transferable skill in this entire space right now, and we are going deep on it as its own entity in this toolkit, because it deserves that treatment.
@@ -151,7 +151,7 @@ export default function DevGuide({ accent = ed.plum }: { accent?: string }) {
           <Reveal>
             <Kicker color={accent}>The living course · Claude Code</Kicker>
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 10px" }}>
-              the claude code crash course
+              The Claude Code crash course
             </h3>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: "0 0 clamp(24px,3vw,40px)", maxWidth: 660 }}>
               claude code is the tool we actually build in. this is the crash course for it, the real moves from our sessions, not the version posted for engagement. it lives here, updates with every shift, and more lands every month.
@@ -162,7 +162,7 @@ export default function DevGuide({ accent = ed.plum }: { accent?: string }) {
               <Reveal key={c.title} delay={Math.min(i * 0.05, 0.2)}>
                 <div style={{ borderTop: `2px solid ${accent}`, paddingTop: 18, height: "100%" }}>
                   <Label color={ed.inkFaint} style={{ display: "block", marginBottom: 10 }}>{c.k}</Label>
-                  <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.4vw,28px)", letterSpacing: "-0.02em", color: ed.ink, margin: "0 0 12px", textTransform: "lowercase" }}>{c.title}</h4>
+                  <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.4vw,28px)", letterSpacing: "-0.02em", color: ed.ink, margin: "0 0 12px" }}>{c.title}</h4>
                   <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,16px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0 }}>{c.body}</p>
                 </div>
               </Reveal>
@@ -175,7 +175,7 @@ export default function DevGuide({ accent = ed.plum }: { accent?: string }) {
           <Reveal>
             <Kicker color={accent}>Proof · what you can build</Kicker>
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 10px" }}>
-              beautiful things, no team required
+              Beautiful things, no team required
             </h3>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: "0 0 clamp(28px,4vw,44px)", maxWidth: 660 }}>
               this is the whole point. the stuff that used to need a developer, or a whole team, is reachable now. here is the range, and the kind of thing you would ask for.
@@ -190,8 +190,8 @@ export default function DevGuide({ accent = ed.plum }: { accent?: string }) {
         <div style={{ marginTop: "clamp(56px,8vw,112px)" }}>
           <Reveal>
             <Kicker color={accent} style={{ marginBottom: 22 }}>The window is open</Kicker>
-            <p style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,4vw,52px)", lineHeight: 1.04, letterSpacing: "-0.03em", color: ed.ink, margin: 0, maxWidth: 1000, textTransform: "lowercase" }}>
-              the creative who learns to build right now, even imperfectly, has an <span style={{ color: accent }}>unfair advantage</span> for the next several years.
+            <p style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,4vw,52px)", lineHeight: 1.04, letterSpacing: "-0.03em", color: ed.ink, margin: 0, maxWidth: 1000 }}>
+              The creative who learns to build right now, even imperfectly, has an <span style={{ color: accent }}>unfair advantage</span> for the next several years.
             </p>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.6, color: ed.inkSoft, margin: "clamp(20px,2.5vw,28px) 0 0", maxWidth: 620 }}>
               the window is open. this is how we think about walking through it.

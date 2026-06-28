@@ -38,34 +38,34 @@ function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }
 const BRIEF = [
   {
     n: "01",
-    title: "purpose",
+    title: "Purpose",
     body: "what is this trying to do. every color, every typeface, every gap is an answer to this question. the work comes from the brief, not from what looks cool right now.",
   },
   {
     n: "02",
-    title: "audience",
+    title: "Audience",
     body: "who is it for. a downtown jazz crowd and a saas buyer want completely different things. you are designing for them, not for yourself.",
   },
   {
     n: "03",
-    title: "context",
+    title: "Context",
     body: "where does it live. a poster on a wall and a landing page on a phone exist in different worlds. the environment decides as much as the idea does.",
   },
 ];
 
 const MOODBOARD = [
-  { n: "01", name: "typography direction", level: "the voice before the words", body: "serif or sans, sharp or soft, loud or quiet. you are choosing how it speaks before you write a line." },
-  { n: "02", name: "color temperature", level: "the mood, not the hex", body: "warm or cool, saturated or muted. the feeling gets locked here, long before any specific color value." },
-  { n: "03", name: "texture", level: "how the surface feels", body: "clean and flat, or grain, paper, ink, noise. the difference between a thing that feels digital and one that feels made." },
-  { n: "04", name: "density", level: "how much breathes", body: "packed and busy, or open and slow. density sets the pace a person reads at before they read anything." },
-  { n: "05", name: "negative space", level: "what you leave out", body: "the most senior decision on the board. confidence is knowing what to remove and trusting the room it leaves." },
-  { n: "06", name: "photography style", level: "shot on purpose", body: "lit and graded one way, deliberately. or no photography at all, which is also a decision, not a default." },
+  { n: "01", name: "Typography direction", level: "the voice before the words", body: "serif or sans, sharp or soft, loud or quiet. you are choosing how it speaks before you write a line." },
+  { n: "02", name: "Color temperature", level: "the mood, not the hex", body: "warm or cool, saturated or muted. the feeling gets locked here, long before any specific color value." },
+  { n: "03", name: "Texture", level: "how the surface feels", body: "clean and flat, or grain, paper, ink, noise. the difference between a thing that feels digital and one that feels made." },
+  { n: "04", name: "Density", level: "how much breathes", body: "packed and busy, or open and slow. density sets the pace a person reads at before they read anything." },
+  { n: "05", name: "Negative space", level: "what you leave out", body: "the most senior decision on the board. confidence is knowing what to remove and trusting the room it leaves." },
+  { n: "06", name: "Photography style", level: "shot on purpose", body: "lit and graded one way, deliberately. or no photography at all, which is also a decision, not a default." },
 ];
 
 const TOOLS = [
-  { k: "layout", title: "canva", body: "teaches you to place things on a page and make them sit right. it is where most people start, and there is nothing wrong with that." },
-  { k: "systems", title: "figma", body: "teaches you why components exist, why constraints matter, and how a thing stays consistent as it scales across screens." },
-  { k: "texture and light", title: "photoshop", body: "teaches you why blending modes exist, and how light, surface, and depth actually behave. the craft underneath the comp." },
+  { k: "layout", title: "Canva", body: "teaches you to place things on a page and make them sit right. it is where most people start, and there is nothing wrong with that." },
+  { k: "systems", title: "Figma", body: "teaches you why components exist, why constraints matter, and how a thing stays consistent as it scales across screens." },
+  { k: "texture and light", title: "Photoshop", body: "teaches you why blending modes exist, and how light, surface, and depth actually behave. the craft underneath the comp." },
 ];
 
 export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
@@ -87,7 +87,7 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
               maxWidth: 1000,
             }}
           >
-            how do i make this look good<br />
+            How do I make this look good<br />
             is the wrong question<span style={{ color: accent }}>.</span>
           </h2>
         </Reveal>
@@ -116,7 +116,7 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
           <Reveal>
             <Kicker color={accent}>Before the pixels · the brief</Kicker>
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 10px" }}>
-              three questions, asked before you open a file
+              Three questions, asked before you open a file
             </h3>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: "0 0 clamp(28px,4vw,40px)", maxWidth: 640 }}>
               before my friends at scad ever touch a pen or open figma, they answer three things. not a checklist. a way of thinking.
@@ -127,7 +127,7 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
               <Reveal key={b.n} delay={i * 0.06}>
                 <div style={{ borderTop: `2px solid ${ed.ink}`, paddingTop: 18, height: "100%" }}>
                   <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,4vw,46px)", letterSpacing: "-0.03em", color: accent, display: "block", marginBottom: 10 }}>{b.n}</span>
-                  <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.3vw,26px)", letterSpacing: "-0.02em", color: ed.ink, margin: "0 0 12px", textTransform: "lowercase" }}>{b.title}</h4>
+                  <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.3vw,26px)", letterSpacing: "-0.02em", color: ed.ink, margin: "0 0 12px" }}>{b.title}</h4>
                   <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,16px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0 }}>{b.body}</p>
                 </div>
               </Reveal>
@@ -160,7 +160,7 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
           <Reveal>
             <Kicker color={accent}>The step everyone skips · the moodboard</Kicker>
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 10px" }}>
-              lock the language before you make a thing
+              Lock the language before you make a thing
             </h3>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0, maxWidth: 660 }}>
               a moodboard is not an aesthetic pinterest board. it is a decision. you are locking the visual language before any original work starts. pull from anywhere, film stills, architecture, fashion, packaging, editorial. curate until it has a point of view. when every reference feels like it belongs together, it is done. now every choice has a reference point. you are executing, not guessing. here is what the board actually decides.
@@ -174,7 +174,7 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
                   <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,3.4vw,42px)", letterSpacing: "-0.03em", lineHeight: 0.9, color: i === 0 ? accent : `${ed.ink}`, opacity: i === 0 ? 1 : 0.32 }}>{m.n}</span>
                   <div>
                     <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap", marginBottom: 8 }}>
-                      <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.4vw,30px)", letterSpacing: "-0.02em", color: ed.ink, margin: 0, textTransform: "lowercase" }}>{m.name}</h4>
+                      <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.4vw,30px)", letterSpacing: "-0.02em", color: ed.ink, margin: 0 }}>{m.name}</h4>
                       <Label color={i === 0 ? accent : ed.inkFaint}>{m.level}</Label>
                     </div>
                     <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,17px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0, maxWidth: 640 }}>{m.body}</p>
@@ -190,7 +190,7 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
           <Reveal>
             <Kicker color={accent}>The proof · nothing is an accident</Kicker>
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 10px" }}>
-              a poster, defended
+              A poster, defended
             </h3>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: "0 0 clamp(28px,4vw,44px)", maxWidth: 640 }}>
               here is a real piece, built the way we build, no stock art. tap any part of it and it tells you why it is the size it is, the color it is, where it is. that is the whole job. a junior makes it look nice. a senior can defend every choice on the page.
@@ -206,7 +206,7 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
           <Reveal>
             <Kicker color={accent}>Know your instruments · the tools</Kicker>
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 10px" }}>
-              they are not competing
+              They are not competing
             </h3>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: "0 0 clamp(24px,3vw,40px)", maxWidth: 640 }}>
               different instruments, not interchangeable and not rivals. tools do not make the work. understanding what they are doing, and why, makes the work.
@@ -217,7 +217,7 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
               <Reveal key={t.title} delay={i * 0.06}>
                 <div style={{ borderTop: `2px solid ${accent}`, paddingTop: 18, height: "100%" }}>
                   <Label color={ed.inkFaint} style={{ display: "block", marginBottom: 10 }}>{t.k}</Label>
-                  <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(22px,2.6vw,30px)", letterSpacing: "-0.02em", color: ed.ink, margin: "0 0 12px", textTransform: "lowercase" }}>{t.title}</h4>
+                  <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(22px,2.6vw,30px)", letterSpacing: "-0.02em", color: ed.ink, margin: "0 0 12px" }}>{t.title}</h4>
                   <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,16px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0 }}>{t.body}</p>
                 </div>
               </Reveal>
@@ -229,8 +229,8 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
         <div style={{ marginTop: "clamp(56px,8vw,112px)" }}>
           <Reveal>
             <Kicker color={accent} style={{ marginBottom: 22 }}>Junior to senior</Kicker>
-            <p style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,4vw,52px)", lineHeight: 1.04, letterSpacing: "-0.03em", color: ed.ink, margin: 0, maxWidth: 1000, textTransform: "lowercase" }}>
-              the gap is not software skill. it is the ability to <span style={{ color: accent }}>defend every decision</span>. why that size, why that color, why that much space between those two things. nothing arbitrary.
+            <p style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,4vw,52px)", lineHeight: 1.04, letterSpacing: "-0.03em", color: ed.ink, margin: 0, maxWidth: 1000 }}>
+              The gap is not software skill. It is the ability to <span style={{ color: accent }}>defend every decision</span>. Why that size, why that color, why that much space between those two things. Nothing arbitrary.
             </p>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.6, color: ed.inkSoft, margin: "clamp(20px,2.5vw,28px) 0 0", maxWidth: 620 }}>
               the process before the pixels is what makes that possible. start there.

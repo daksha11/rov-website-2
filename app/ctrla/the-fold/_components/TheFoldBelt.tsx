@@ -14,8 +14,8 @@
 // per rock. Background gradient is cached. Rocks recycle in place.
 // Pauses on document.hidden, caps DPR at 2, honors reduced-motion.
 //
-// "Find a seat" leads into the immersive cafe (the deeper experience);
-// the belt is the entry screen in front of it.
+// This belt is the Fold's landing page itself: the doorway is a
+// first-visit intro that dissolves into the drifting belt behind it.
 // ═══════════════════════════════════════════════════════
 
 import { useEffect, useRef, useState } from "react";
@@ -248,7 +248,7 @@ function createBeltEngine(canvas: HTMLCanvasElement) {
   return { setRoom, addPush, setReducedMotion, destroy };
 }
 
-export default function TheFoldBelt({ onEnter }: { onEnter: () => void }) {
+export default function TheFoldBelt() {
   const router = useRouter();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<ReturnType<typeof createBeltEngine> | null>(null);
@@ -306,21 +306,14 @@ export default function TheFoldBelt({ onEnter }: { onEnter: () => void }) {
     setActiveId(id);
     setSound(room.sound);
   };
-  const markSeen = () => {
+  // Dismiss the first-visit doorway into the belt. `toCommons` settles
+  // the camera onto the Commons; otherwise we leave the current vantage.
+  const enterBelt = (toCommons: boolean) => {
+    setDoorOpen(false);
     try {
       localStorage.setItem("fold.seen", "1");
     } catch {}
-  };
-  // Primary path: step into the immersive cafe (the deeper experience).
-  const enterCafe = () => {
-    markSeen();
-    onEnter();
-  };
-  // Linger on the belt landing instead of going straight in.
-  const lingerOnBelt = () => {
-    setDoorOpen(false);
-    markSeen();
-    pickRoom("commons");
+    if (toCommons) pickRoom("commons");
   };
   const room = ROOMS.find((r) => r.id === activeId)!;
 
@@ -334,17 +327,14 @@ export default function TheFoldBelt({ onEnter }: { onEnter: () => void }) {
         <h2 className="fold__doorh">A quiet place to work, open all night.</h2>
         <p className="fold__what">An ambient cafe for focus. Pick a room, blend the sound, and stay as long as you like.</p>
         <p className="fold__how">No sign-up, no clock. Out past the map, a seat is always open.</p>
-        <button className="fold__enter" onClick={enterCafe}>Find a seat →</button>
-        <button className="fold__skip" onClick={lingerOnBelt}>Just let me drift</button>
+        <button className="fold__enter" onClick={() => enterBelt(true)}>Find a seat →</button>
+        <button className="fold__skip" onClick={() => enterBelt(false)}>Just let me drift</button>
       </div>
 
       <div className="fold__stage">
         <header className="fold__top">
           <div className="fold__brand">The Fold · <b>{room.name}</b></div>
-          <div className="fold__topnav">
-            <button className="fold__stepout" onClick={() => router.push("/ctrla")}>Step out →</button>
-            <button className="fold__takeseat" onClick={enterCafe}>Take a seat →</button>
-          </div>
+          <button className="fold__stepout" onClick={() => router.push("/ctrla")}>Step out →</button>
         </header>
 
         <div className="fold__title">
