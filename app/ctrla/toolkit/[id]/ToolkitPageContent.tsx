@@ -8,6 +8,7 @@ import { ToolkitDetail } from "../../_components/Toolkits";
 import ToolkitStations from "../../_components/ToolkitStations";
 import MusicGuide from "../../_components/MusicGuide";
 import DesignGuide from "../../_components/DesignGuide";
+import DevGuide from "../../_components/DevGuide";
 // Toolkit pages run the LIGHT theme — the airy, cream reveal from the loader.
 import { edLight as ed, Bleed, Rule, Label, legibleAccent } from "../../_components/editorial";
 import { toolkitSections } from "../../data";
@@ -58,14 +59,15 @@ export default function ToolkitPageContent({ id }: { id: string }) {
         <Rule color={ed.hair} />
       </div>
 
-      {/* Music and Design sectors open with the founder's craft guide,
-          above the tools. Each is Part 01; the stations are Part 02. */}
+      {/* Music, Design, and Web Dev sectors open with the founder's craft
+          guide, above the tools. Each is Part 01; the stations are Part 02. */}
       {id === "music" && <MusicGuide accent={pageAccent} />}
       {id === "design" && <DesignGuide accent={pageAccent} />}
+      {id === "web-dev" && <DevGuide accent={pageAccent} />}
 
       {/* Flagship sectors with curated Signals get the immersive Stations
           experience; the rest fall back to the editorial detail for now. */}
-      {section.signals ? <ToolkitStations section={section} theme={ed} hideKicker={id === "music" || id === "design"} /> : <ToolkitDetail section={section} />}
+      {section.signals ? <ToolkitStations section={section} theme={ed} hideKicker={id === "music" || id === "design" || id === "web-dev"} /> : <ToolkitDetail section={section} />}
 
       {/* Prev / next toolkit */}
       <section style={{ background: "transparent", padding: "0 0 clamp(56px,8vw,104px)" }}>
