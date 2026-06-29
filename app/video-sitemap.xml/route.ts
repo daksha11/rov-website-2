@@ -45,15 +45,6 @@ export async function GET() {
             duration: 210,
             publicationDate: "2025-01-10",
         },
-        {
-            loc: "https://www.rovstudios.com/sound",
-            title: "Starboy Music Video",
-            description: "Starboy official music video, produced and engineered by Range of View Studios.",
-            contentUrl: "https://www.rovstudios.com/video/starboymv.mp4",
-            thumbnailUrl: "https://www.rovstudios.com/thumbnails/starboythumb.webp",
-            duration: 180,
-            publicationDate: "2025-01-15",
-        },
     ];
 
     const escapeXml = (str: string) =>
