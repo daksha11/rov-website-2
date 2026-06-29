@@ -102,6 +102,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'monthly',
             priority: 0.7,
         },
+        {
+            url: `${baseUrl}/ctrla/the-fold`,
+            lastModified: '2026-06-28',
+            changeFrequency: 'monthly',
+            priority: 0.6,
+        },
+        {
+            url: `${baseUrl}/ctrla/cookbook`,
+            lastModified: '2026-06-28',
+            changeFrequency: 'monthly',
+            priority: 0.6,
+        },
         ...['music', 'web-dev', 'design'].map((id) => ({
             url: `${baseUrl}/ctrla/toolkit/${id}`,
             lastModified: '2026-06-15',

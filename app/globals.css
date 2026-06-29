@@ -1101,24 +1101,28 @@ input[type="range"]::-webkit-slider-thumb {
 
 .ctrla-fridge-scene {
   position: relative;
-  width: min(320px, 82vw);
-  perspective: 2200px;
+  width: min(300px, 80vw);
+  perspective: 2400px;
 }
+/* The cabinet shell: a tall brushed-steel box. Cool graphite so it
+   reads as stainless yet still sits in the cosmic palette. */
 .ctrla-fridge-body {
   position: relative;
-  aspect-ratio: 3 / 4.4;
-  border-radius: 20px;
+  aspect-ratio: 3 / 5.1;
+  border-radius: 16px 16px 10px 10px;
   transform-style: preserve-3d;
-  background: linear-gradient(100deg, #1d1a2e 0%, #2b2740 28%, #3b3550 50%, #2b2740 72%, #1d1a2e 100%);
-  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.55), inset 0 0 0 1px #4a4566, inset 0 2px 0 rgba(255, 255, 255, 0.06);
+  background: linear-gradient(96deg, #34373f 0%, #4c505a 22%, #686d78 50%, #4c505a 78%, #34373f 100%);
+  box-shadow: 0 44px 96px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 2px 0 rgba(255, 255, 255, 0.14), inset 0 -10px 24px rgba(0, 0, 0, 0.4);
 }
+/* Vertical brushed-metal grain over the shell. */
 .ctrla-fridge-body::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 1;
-  border-radius: 20px;
-  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 3px);
+  border-radius: 16px 16px 10px 10px;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.04) 0 1px, rgba(0, 0, 0, 0.05) 1px 2px, transparent 2px 4px);
   pointer-events: none;
 }
 .ctrla-fridge-hinge {
@@ -1126,15 +1130,16 @@ input[type="range"]::-webkit-slider-thumb {
   left: -3px;
   z-index: 6;
   width: 6px;
-  height: 26px;
+  height: 22px;
   border-radius: 3px;
-  background: linear-gradient(#4a4566, #1d1a2e);
+  background: linear-gradient(#8a8e98, #3a3d44);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
-.ctrla-fridge-hinge.top { top: 16%; }
-.ctrla-fridge-hinge.bottom { bottom: 16%; }
+.ctrla-fridge-hinge.top { top: 13%; }
+.ctrla-fridge-hinge.bottom { bottom: 13%; }
 .ctrla-fridge-badge {
   position: absolute;
-  bottom: 8px;
+  bottom: 26px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 6;
@@ -1142,45 +1147,60 @@ input[type="range"]::-webkit-slider-thumb {
   font-size: 7px;
   letter-spacing: 0.22em;
   white-space: nowrap;
-  color: rgba(240, 230, 224, 0.4);
+  color: rgba(15, 8, 32, 0.5);
 }
+/* Two stubby feet under the cabinet. */
 .ctrla-fridge-plinth {
   position: absolute;
-  left: 8%;
-  right: 8%;
-  bottom: -10px;
+  left: 12%;
+  right: 12%;
+  bottom: -9px;
   z-index: 0;
-  height: 12px;
-  border-radius: 0 0 8px 8px;
-  background: linear-gradient(#15101f, #0a0714);
+  height: 10px;
+  border-radius: 0 0 6px 6px;
+  background: #1a1622;
 }
+.ctrla-fridge-plinth::before,
+.ctrla-fridge-plinth::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  width: 16%;
+  height: 7px;
+  border-radius: 0 0 3px 3px;
+  background: linear-gradient(#3a3d44, #15111d);
+}
+.ctrla-fridge-plinth::before { left: 8%; }
+.ctrla-fridge-plinth::after { right: 8%; }
 
 .ctrla-fridge-cabinet {
   position: absolute;
   inset: 9px;
   z-index: 2;
-  border-radius: 13px;
+  border-radius: 11px;
   overflow: hidden;
-  background: linear-gradient(180deg, #1a1530 0%, #120d22 100%);
-  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.7);
+  background: linear-gradient(180deg, #d7d2cb 0%, #b9b3ab 100%);
+  box-shadow: inset 0 0 36px rgba(0, 0, 0, 0.32), inset 0 0 0 1px rgba(0, 0, 0, 0.2);
 }
+/* Warm interior bulb: a light that washes down from the top once the
+   door swings open. */
 .ctrla-fridge-glow {
   position: absolute;
   inset: 0;
   opacity: calc(var(--lit, 0));
   transition: opacity 0.2s linear;
-  background: radial-gradient(140% 80% at 6% 12%, rgba(227, 194, 74, 0.28), transparent 56%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 34%);
+  background: radial-gradient(120% 70% at 50% -8%, rgba(255, 246, 222, 0.95), rgba(255, 240, 205, 0.2) 50%, transparent 72%),
+    radial-gradient(90% 60% at 8% 6%, rgba(227, 194, 74, 0.3), transparent 60%);
   pointer-events: none;
 }
+/* Dark veil over the interior while the door is shut, lifting as it opens. */
 .ctrla-fridge-cast {
   position: absolute;
   inset: 0;
   z-index: 3;
-  transform-origin: left;
-  transform: scaleX(calc(1 - var(--lit, 0)));
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.72), transparent 62%);
-  transition: transform 0.2s linear;
+  opacity: calc(1 - var(--lit, 0));
+  background: linear-gradient(180deg, rgba(18, 12, 28, 0.62), rgba(18, 12, 28, 0.82));
+  transition: opacity 0.2s linear;
   pointer-events: none;
 }
 .ctrla-fridge-bay {
@@ -1206,31 +1226,35 @@ input[type="range"]::-webkit-slider-thumb {
 .ctrla-fridge-scene:not(.open) .ctrla-fridge-shelf li { visibility: hidden; }
 .ctrla-fridge-scene.open .ctrla-fridge-shelf li { animation: ctrla-fridge-settle 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 @keyframes ctrla-fridge-settle { to { opacity: 1; transform: none; } }
+/* A glass shelf ledge: each item sits on a tinted bar with a thin lip. */
 .ctrla-fridge-shelf-bar {
   display: block;
-  height: 1px;
+  height: 4px;
   margin-top: 10px;
-  background: rgba(240, 230, 224, 0.14);
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(120, 132, 150, 0.5));
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.28);
 }
 .ctrla-fridge-shelf-item {
   width: 100%;
   display: flex;
   align-items: center;
   gap: 9px;
-  padding: 7px 9px;
-  border: 1px solid rgba(240, 230, 224, 0.12);
+  padding: 8px 10px;
+  border: 1px solid rgba(15, 8, 32, 0.12);
+  border-left: 3px solid var(--accent);
   border-radius: 8px;
-  background: rgba(240, 230, 224, 0.04);
-  color: #f0e6e0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(245, 240, 233, 0.82));
+  color: #1c1430;
   text-align: left;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+  transition: background 0.2s, border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 .ctrla-fridge-shelf-item:hover {
-  background: rgba(240, 230, 224, 0.08);
-  border-color: var(--accent);
-  transform: translateX(2px);
+  background: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.26);
 }
 .ctrla-fridge-shelf-glyph { width: 16px; height: 16px; flex: none; color: var(--accent); }
 .ctrla-fridge-shelf-name {
@@ -1252,20 +1276,33 @@ input[type="range"]::-webkit-slider-thumb {
   position: absolute;
   inset: 0;
   z-index: 5;
-  border-radius: 20px;
+  border-radius: 16px 16px 10px 10px;
   transform-origin: left center;
   transform: rotateY(0deg);
   transform-style: preserve-3d;
-  background: linear-gradient(100deg, #211d33 0%, #2f2a46 30%, #403a5c 50%, #2f2a46 72%, #211d33 100%);
-  box-shadow: inset 0 0 0 1px #4a4566, inset 0 2px 0 rgba(255, 255, 255, 0.06);
+  background: linear-gradient(96deg, #3a3d45 0%, #54585f 22%, #70747d 50%, #54585f 78%, #3a3d45 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12), inset 0 2px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -10px 24px rgba(0, 0, 0, 0.38);
   transition: transform 1.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 1.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
+/* Vertical brushed grain + a recessed freezer seam near the top. */
 .ctrla-fridge-door::before {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 20px;
-  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 3px);
+  border-radius: 16px 16px 10px 10px;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.045) 0 1px, rgba(0, 0, 0, 0.06) 1px 2px, transparent 2px 4px);
+  pointer-events: none;
+}
+.ctrla-fridge-door::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 26%;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.32), rgba(255, 255, 255, 0.14));
   pointer-events: none;
 }
 .ctrla-fridge-scene.opening .ctrla-fridge-door {
@@ -1305,25 +1342,39 @@ input[type="range"]::-webkit-slider-thumb {
   pointer-events: none;
   transition: opacity 0.3s, visibility 0s 0.3s;
 }
+/* Recipe cards pinned to the steel door, each with a little magnet dot. */
 .ctrla-fridge-magnet {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
   width: 100%;
   padding: 9px 11px;
-  border: 1px solid rgba(240, 230, 224, 0.14);
+  border: 1px solid rgba(15, 8, 32, 0.1);
   border-left: 3px solid var(--accent);
   border-radius: 7px;
-  background: linear-gradient(180deg, rgba(240, 230, 224, 0.1), rgba(240, 230, 224, 0.03));
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
-  color: #f0e6e0;
+  background: linear-gradient(180deg, #fbf7f1, #ece5db);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  color: #1c1430;
   text-align: left;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
 }
+.ctrla-fridge-magnet::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff, var(--accent) 70%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
 .ctrla-fridge-magnet:hover {
   transform: translateY(-2px) rotate(-0.4deg);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
 }
 .ctrla-fridge-magnet-glyph { width: 22px; height: 22px; flex: none; color: var(--accent); }
 .ctrla-fridge-magnet-text { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
@@ -1351,29 +1402,68 @@ input[type="range"]::-webkit-slider-thumb {
   align-items: flex-end;
   font-family: "Neue Montreal", sans-serif;
   font-size: 9px;
-  color: rgba(240, 230, 224, 0.62);
+  color: rgba(28, 20, 48, 0.6);
 }
+/* Long vertical bar handle, standing off the door on two brackets. */
 .ctrla-fridge-handle {
   position: absolute;
-  top: 50%;
-  right: 6px;
-  transform: translateY(-50%);
+  top: 36%;
+  right: 9px;
+  bottom: 9%;
   z-index: 4;
-  width: 14px;
-  height: 30%;
+  width: 9px;
   border: 0;
-  border-radius: 7px;
-  background: linear-gradient(90deg, #4a4566, #2b2740);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  border-radius: 5px;
+  background: linear-gradient(90deg, #9aa0ab 0%, #6f7480 45%, #4a4e57 100%);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.4);
   cursor: pointer;
 }
+/* The two standoff brackets joining handle to door. */
+.ctrla-fridge-handle::before,
+.ctrla-fridge-handle::after {
+  content: "";
+  position: absolute;
+  right: 2px;
+  width: 6px;
+  height: 8px;
+  background: linear-gradient(90deg, #80858f, #4a4e57);
+  border-radius: 1px;
+}
+.ctrla-fridge-handle::before { top: 14%; }
+.ctrla-fridge-handle::after { bottom: 14%; }
 .ctrla-fridge-handle span {
   position: absolute;
-  inset: 4px;
+  inset: 1px 3px auto 2px;
+  height: 40%;
   border-radius: 4px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.12), transparent);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.5), transparent);
 }
-.ctrla-fridge-handle:hover { background: linear-gradient(90deg, #574f78, #332e4d); }
+.ctrla-fridge-handle:hover { background: linear-gradient(90deg, #aab0bb 0%, #7c818d 45%, #565a63 100%); }
+.ctrla-fridge-close {
+  position: absolute;
+  top: -14px;
+  right: 0;
+  z-index: 8;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 13px;
+  border: 1px solid rgba(227, 194, 74, 0.4);
+  border-radius: 999px;
+  background: rgba(15, 8, 32, 0.82);
+  backdrop-filter: blur(4px);
+  color: #f0e6e0;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  animation: ctrla-fridge-fade 0.3s ease both;
+}
+.ctrla-fridge-close span { color: #e3c24a; }
+.ctrla-fridge-close:hover { background: rgba(36, 18, 58, 0.92); border-color: #e3c24a; transform: translateY(-1px); }
 .ctrla-fridge-hint {
   margin: 18px 0 0;
   text-align: center;
@@ -1634,6 +1724,115 @@ input[type="range"]::-webkit-slider-thumb {
   display: flex;
   gap: clamp(16px, 3vw, 32px);
   flex-wrap: wrap;
+}
+
+/* ── Element picker chips ── */
+.ctrla-mixglobe-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 18px; }
+.ctrla-mixglobe-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 11px 6px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(22, 12, 40, 0.16);
+  background: rgba(22, 12, 40, 0.02);
+  color: rgba(22, 12, 40, 0.62);
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 12px;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.ctrla-mixglobe-chip:hover { color: rgba(22, 12, 40, 0.9); }
+.ctrla-mixglobe-chip[data-on="true"] {
+  border-color: var(--c);
+  background: color-mix(in srgb, var(--c) 12%, transparent);
+  color: rgba(22, 12, 40, 0.95);
+}
+.ctrla-mixglobe-chip-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--c); flex: none; }
+
+/* ── Effects rack (per selected element) ── */
+.ctrla-fx { display: grid; gap: 15px; margin-top: 20px; }
+.ctrla-fx-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 2px;
+}
+.ctrla-fx-title {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(22, 12, 40, 0.5);
+}
+.ctrla-fx-reset {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--accent, #a56a67);
+  cursor: pointer;
+}
+.ctrla-fx-reset:hover { text-decoration: underline; }
+.ctrla-fx-row { display: grid; gap: 6px; }
+.ctrla-fx-rowhead { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.ctrla-fx-name {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(22, 12, 40, 0.82);
+}
+.ctrla-fx-val {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent, #a56a67);
+  text-align: right;
+}
+.ctrla-fx-note {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: 13px;
+  line-height: 1.35;
+  color: rgba(22, 12, 40, 0.5);
+  margin: 0;
+}
+.ctrla-fx-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(22, 12, 40, 0.14);
+  outline: none;
+  cursor: pointer;
+  margin: 2px 0;
+}
+.ctrla-fx-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent, #a56a67);
+  border: 2px solid #f5efe8;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  cursor: grab;
+}
+.ctrla-fx-range::-webkit-slider-thumb:active { cursor: grabbing; }
+.ctrla-fx-range::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent, #a56a67);
+  border: 2px solid #f5efe8;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  cursor: grab;
 }
 
 /* ── Defend every decision (interactive poster) ── */
@@ -2514,4 +2713,425 @@ input[type="range"]::-webkit-slider-thumb {
   .fold__door,
   .fold__door--gone,
   .fold__hint { transition: none; }
+}
+
+/* ── The Fold — work-session focus panel (fold__focus / timer / tasks) ── */
+.fold__topnav { display: flex; align-items: center; gap: clamp(10px, 2vw, 18px); }
+.fold__focusbtn {
+  border: 1px solid rgba(227, 194, 74, 0.5);
+  border-radius: 999px;
+  background: rgba(227, 194, 74, 0.1);
+  color: #e3c24a;
+  padding: 8px 15px;
+  cursor: pointer;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transition: background 0.2s, transform 0.2s;
+}
+.fold__focusbtn:hover { background: rgba(227, 194, 74, 0.18); transform: translateY(-1px); }
+.fold__focusbtn[aria-pressed="true"] { background: #e3c24a; color: #0f0820; }
+
+/* Browse chrome recedes when a session takes over the whole screen */
+.fold--session .fold__stage { opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
+
+/* Immersive session overlay, tinted to the room's accent.
+   Pulls the admin dashboard's gradient system (the DreamAsia palette):
+   a polished accent gradient + plum-depth backdrop + hairline card edges,
+   all derived from --accent so each room keeps its hue. */
+.fold__session {
+  /* light → accent → deep, the admin "japanese gold" gradient, accent-aware */
+  --accent-grad: linear-gradient(135deg, color-mix(in srgb, var(--accent, #e3c24a) 70%, #fff) 0%, var(--accent, #e3c24a) 50%, color-mix(in srgb, var(--accent, #e3c24a) 78%, #000) 100%);
+  --accent-line: color-mix(in srgb, var(--accent, #e3c24a) 40%, transparent);
+  /* admin card treatment: gold-tinted hairline + soft plum drop */
+  --card-edge: 0 0 0 1px color-mix(in srgb, var(--accent, #e3c24a) 12%, transparent), 0 8px 30px rgba(78, 61, 115, 0.24);
+  --pill-shadow: 0 2px 12px rgba(78, 61, 115, 0.45);
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(18px, 3vw, 40px) clamp(18px, 4vw, 64px);
+  color: #f0e6e0;
+  background:
+    radial-gradient(120% 90% at 50% 22%, color-mix(in srgb, var(--accent, #e3c24a) 20%, transparent), transparent 56%),
+    linear-gradient(135deg, rgba(15, 8, 32, 0.93) 0%, rgba(36, 18, 58, 0.9) 52%, rgba(78, 61, 115, 0.86) 100%);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+.fold__session--open { opacity: 1; pointer-events: auto; }
+
+.fold__session-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.fold__session-brand {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(15px, 2vw, 21px);
+  color: rgba(240, 230, 224, 0.82);
+}
+.fold__session-brand b { font-style: normal; font-weight: 500; color: var(--accent, #e3c24a); }
+.fold__session-exit {
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(240, 230, 224, 0.6);
+  transition: color 0.2s;
+}
+.fold__session-exit:hover { color: #f0e6e0; }
+
+.fold__session-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 80px);
+  align-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(16px, 3vh, 40px) 0;
+}
+.fold__session-main { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.fold__session-mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent, #e3c24a);
+}
+.fold__session-mode::before {
+  content: "";
+  width: 22px;
+  height: 2px;
+  background: var(--accent, #e3c24a);
+}
+.fold__session-purpose {
+  margin: 0;
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(20px, 2.8vw, 32px);
+  line-height: 1.25;
+  color: rgba(240, 230, 224, 0.9);
+}
+.fold__session-prompt {
+  margin: 8px 0 0;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(240, 230, 224, 0.64);
+}
+.fold__session-intent {
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid color-mix(in srgb, var(--accent, #e3c24a) 38%, transparent);
+  background: transparent;
+  color: #f6efe8;
+  caret-color: var(--accent, #e3c24a);
+  padding: 8px 2px;
+  font-family: "Neue Montreal", sans-serif;
+  font-weight: 700;
+  font-size: clamp(22px, 3vw, 34px);
+  letter-spacing: -0.02em;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.fold__session-intent::placeholder { color: rgba(240, 230, 224, 0.42); font-weight: 400; }
+.fold__session-intent:hover { border-bottom-color: color-mix(in srgb, var(--accent, #e3c24a) 55%, transparent); }
+.fold__session-intent:focus { border-bottom-color: var(--accent, #e3c24a); }
+.fold__session-cue {
+  margin: 2px 0 6px;
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(15px, 1.8vw, 19px);
+  color: rgba(240, 230, 224, 0.76);
+}
+.fold__session-side { display: flex; flex-direction: column; min-width: 0; }
+.fold__session-side .fold__tasks {
+  gap: 14px;
+  padding: 22px;
+  min-height: 300px;
+  max-height: min(52vh, 460px);
+  border: 1px solid color-mix(in srgb, var(--accent, #e3c24a) 16%, rgba(240, 230, 224, 0.1));
+  border-radius: 16px;
+  background: linear-gradient(160deg, rgba(36, 18, 58, 0.5), rgba(15, 8, 32, 0.4));
+  box-shadow: var(--card-edge, 0 8px 30px rgba(0, 0, 0, 0.3)), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.fold__session-side .fold__tasks-head { padding-bottom: 12px; border-bottom: 1px solid color-mix(in srgb, var(--accent, #e3c24a) 14%, rgba(240, 230, 224, 0.08)); }
+.fold__session-side .fold__tasks-list { overflow-y: auto; }
+
+.fold__session-vibes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: clamp(16px, 2.4vh, 24px);
+  margin-top: clamp(8px, 2vh, 16px);
+  border-top: 1px solid rgba(240, 230, 224, 0.1);
+}
+.fold__session-vibes-lead {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(240, 230, 224, 0.58);
+  margin-right: 6px;
+}
+.fold__session-vibe {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  border: 1px solid rgba(240, 230, 224, 0.16);
+  border-radius: 999px;
+  background: rgba(240, 230, 224, 0.04);
+  color: rgba(240, 230, 224, 0.74);
+  padding: 7px 13px;
+  cursor: pointer;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 12px;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+}
+.fold__session-vibe:hover { background-color: rgba(240, 230, 224, 0.09); color: #f0e6e0; transform: translateY(-1px); }
+.fold__session-vibe.is-on {
+  background-color: var(--accent, #e3c24a);
+  background-image: var(--accent-grad, none);
+  border-color: transparent;
+  color: #0f0820;
+  box-shadow: var(--pill-shadow, 0 2px 10px rgba(0, 0, 0, 0.4));
+}
+.fold__session-vibe.is-on .fold__session-vibe-state { color: rgba(15, 8, 32, 0.72); }
+.fold__session-vibe-state {
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent, #e3c24a);
+}
+
+/* small-caps label, reused in the tasks header */
+.fold__focus-label {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(240, 230, 224, 0.5);
+}
+
+@media (max-width: 760px) {
+  .fold__session-body { grid-template-columns: 1fr; align-content: start; gap: 22px; overflow-y: auto; }
+}
+
+/* Timer */
+.fold__timer { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+.fold__timer-modes { display: flex; gap: 6px; align-self: stretch; }
+.fold__timer-mode {
+  flex: 1;
+  border: 1px solid rgba(240, 230, 224, 0.16);
+  border-radius: 7px;
+  background: rgba(240, 230, 224, 0.04);
+  color: rgba(240, 230, 224, 0.66);
+  padding: 7px;
+  cursor: pointer;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.fold__timer-mode.is-on { background: color-mix(in srgb, var(--accent, #e3c24a) 16%, transparent); border-color: var(--accent, #e3c24a); color: var(--accent, #e3c24a); }
+.fold__timer-ring {
+  --frac: 0;
+  width: 152px;
+  height: 152px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  position: relative;
+  background:
+    radial-gradient(closest-side, #160c28 76%, transparent 77% 100%),
+    conic-gradient(var(--accent, #e3c24a) calc(var(--frac) * 360deg), rgba(240, 230, 224, 0.18) 0);
+  transition: background 0.25s linear;
+}
+.fold__timer-time {
+  font-family: "Neue Montreal", sans-serif;
+  font-weight: 700;
+  font-size: 38px;
+  letter-spacing: -0.02em;
+  color: #f0e6e0;
+  font-variant-numeric: tabular-nums;
+}
+.fold__timer-controls { display: flex; gap: 8px; align-self: stretch; }
+.fold__timer-btn {
+  flex: 1;
+  border: 1px solid rgba(240, 230, 224, 0.2);
+  border-radius: 8px;
+  background: transparent;
+  color: #f0e6e0;
+  padding: 10px;
+  cursor: pointer;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background-color 0.2s, transform 0.2s;
+}
+.fold__timer-btn:hover { background-color: rgba(240, 230, 224, 0.08); }
+.fold__timer-btn--primary {
+  background-color: var(--accent, #e3c24a);
+  background-image: var(--accent-grad, none);
+  border-color: transparent;
+  color: #0f0820;
+  font-weight: 700;
+  box-shadow: var(--pill-shadow, 0 2px 10px rgba(0, 0, 0, 0.4));
+  transition: filter 0.2s, transform 0.2s;
+}
+.fold__timer-btn--primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
+.fold__timer-meta { display: flex; align-items: center; justify-content: space-between; align-self: stretch; gap: 10px; }
+.fold__timer-presets { display: flex; gap: 5px; }
+.fold__timer-preset {
+  border: 1px solid rgba(240, 230, 224, 0.16);
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(240, 230, 224, 0.6);
+  padding: 5px 8px;
+  cursor: pointer;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  transition: color 0.2s, border-color 0.2s;
+}
+.fold__timer-preset.is-on { color: var(--accent, #e3c24a); border-color: color-mix(in srgb, var(--accent, #e3c24a) 55%, transparent); }
+.fold__timer-preset:disabled { opacity: 0.4; cursor: default; }
+.fold__timer-sessions {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(240, 230, 224, 0.46);
+  white-space: nowrap;
+}
+
+/* Tasks */
+.fold__tasks { display: flex; flex-direction: column; gap: 10px; }
+.fold__tasks-head { display: flex; align-items: center; justify-content: space-between; }
+.fold__tasks-clear {
+  border: 0; background: none; cursor: pointer;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(240, 230, 224, 0.5);
+}
+.fold__tasks-clear:hover { color: #a56a67; }
+.fold__tasks-add { display: flex; gap: 8px; }
+.fold__tasks-input {
+  flex: 1;
+  border: 1px solid rgba(240, 230, 224, 0.16);
+  border-radius: 8px;
+  background: rgba(240, 230, 224, 0.04);
+  color: #f0e6e0;
+  padding: 9px 11px;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 13px;
+  outline: none;
+}
+.fold__tasks-input::placeholder { color: rgba(240, 230, 224, 0.34); }
+.fold__tasks-input:focus { border-color: var(--accent, #e3c24a); }
+.fold__tasks-addbtn {
+  width: 40px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: var(--accent-grad, var(--accent, #e3c24a));
+  color: #0f0820;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  box-shadow: var(--pill-shadow, 0 2px 8px rgba(0, 0, 0, 0.35));
+}
+.fold__tasks-addbtn:hover { filter: brightness(1.06); }
+.fold__tasks-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.fold__tasks-empty {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-size: 14px;
+  color: rgba(240, 230, 224, 0.4);
+  padding: 4px 0;
+}
+.fold__task {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid rgba(240, 230, 224, 0.1);
+  border-radius: 8px;
+  background: rgba(240, 230, 224, 0.03);
+}
+.fold__task-check {
+  width: 20px; height: 20px; flex: none;
+  border: 1px solid rgba(240, 230, 224, 0.3);
+  border-radius: 6px;
+  background: transparent;
+  color: #0f0820;
+  cursor: pointer;
+  font-size: 11px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+}
+.fold__task.is-done .fold__task-check { background: var(--accent, #e3c24a); border-color: var(--accent, #e3c24a); }
+.fold__task-text {
+  flex: 1;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 13px;
+  color: #f0e6e0;
+  word-break: break-word;
+}
+.fold__task.is-done .fold__task-text { color: rgba(240, 230, 224, 0.42); text-decoration: line-through; }
+.fold__task-del {
+  border: 0; background: none; cursor: pointer; flex: none;
+  color: rgba(240, 230, 224, 0.4);
+  font-size: 11px;
+}
+.fold__task-del:hover { color: #a56a67; }
+
+/* The timer is the centerpiece in the immersive session: scale it up + glow */
+.fold__session .fold__timer-ring {
+  width: 236px;
+  height: 236px;
+  flex-direction: column;
+  gap: 2px;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent, #e3c24a) 22%, transparent),
+    inset 0 0 0 1px rgba(240, 230, 224, 0.05),
+    0 24px 60px rgba(0, 0, 0, 0.45),
+    0 0 54px -10px color-mix(in srgb, var(--accent, #e3c24a) 50%, transparent);
+}
+.fold__session .fold__timer-ring.is-running { animation: fold-breathe 4.5s ease-in-out infinite; }
+@keyframes fold-breathe {
+  0%, 100% { box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent, #e3c24a) 22%, transparent), inset 0 0 0 1px rgba(240, 230, 224, 0.05), 0 24px 60px rgba(0, 0, 0, 0.45), 0 0 48px -12px color-mix(in srgb, var(--accent, #e3c24a) 42%, transparent); }
+  50% { box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent, #e3c24a) 38%, transparent), inset 0 0 0 1px rgba(240, 230, 224, 0.08), 0 24px 60px rgba(0, 0, 0, 0.45), 0 0 78px 2px color-mix(in srgb, var(--accent, #e3c24a) 62%, transparent); }
+}
+.fold__timer-phase {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--accent, #e3c24a) 80%, #f0e6e0);
+  opacity: 0.85;
+}
+.fold__session .fold__timer-time { font-size: 56px; }
+.fold__tasks-empty { color: rgba(240, 230, 224, 0.52); }
+
+@media (prefers-reduced-motion: reduce) {
+  .fold__session { transition: opacity 0.2s ease; }
+  .fold--session .fold__stage { transition: none; }
+  .fold__timer-ring,
+  .fold__session .fold__timer-ring.is-running { transition: none; animation: none; }
 }

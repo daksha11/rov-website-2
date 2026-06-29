@@ -21,6 +21,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ed } from "../../_components/editorial";
+import FoldSession from "./FoldSession";
 
 type CamState = { dist: number; spreadY: number; drift: number; tumble: number; dens: number; warm: number };
 type Room = { id: string; name: string; floor: string; state: string; line: string; sound: string; cam: CamState };
@@ -256,6 +257,7 @@ export default function TheFoldBelt() {
   const [sound, setSound] = useState("murmur");
   const [doorOpen, setDoorOpen] = useState(true);
   const [hintGone, setHintGone] = useState(false);
+  const [sessionMode, setSessionMode] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current!;
@@ -318,7 +320,7 @@ export default function TheFoldBelt() {
   const room = ROOMS.find((r) => r.id === activeId)!;
 
   return (
-    <div className="fold">
+    <div className={`fold${sessionMode ? " fold--session" : ""}`}>
       <canvas ref={canvasRef} className="fold__belt" aria-hidden />
       <div className="fold__vignette" aria-hidden />
 
@@ -334,7 +336,12 @@ export default function TheFoldBelt() {
       <div className="fold__stage">
         <header className="fold__top">
           <div className="fold__brand">The Fold · <b>{room.name}</b></div>
-          <button className="fold__stepout" onClick={() => router.push("/ctrla")}>Step out →</button>
+          <div className="fold__topnav">
+            <button className="fold__focusbtn" onClick={() => setSessionMode(true)}>
+              Open session
+            </button>
+            <button className="fold__stepout" onClick={() => router.push("/ctrla")}>Step out →</button>
+          </div>
         </header>
 
         <div className="fold__title">
@@ -368,6 +375,14 @@ export default function TheFoldBelt() {
           </div>
         </footer>
       </div>
+
+      <FoldSession
+        open={sessionMode}
+        roomId={activeId}
+        rooms={ROOMS.map((r) => ({ id: r.id, name: r.name, state: r.state }))}
+        onPickRoom={pickRoom}
+        onExit={() => setSessionMode(false)}
+      />
     </div>
   );
 }

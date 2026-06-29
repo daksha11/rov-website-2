@@ -239,6 +239,11 @@ export default function GalleyFridge() {
       </div>
 
       <div className={`ctrla-fridge-scene ${state}`}>
+        {isOpen && (
+          <button type="button" className="ctrla-fridge-close" onClick={closeFridge} aria-label="Close the fridge">
+            Close the door <span aria-hidden>✕</span>
+          </button>
+        )}
         <div className="ctrla-fridge-body">
           {/* Hinges + badge + plinth, decorative */}
           <span aria-hidden className="ctrla-fridge-hinge top" />
