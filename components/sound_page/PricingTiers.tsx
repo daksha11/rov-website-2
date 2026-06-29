@@ -169,7 +169,7 @@ export default function PricingTiers() {
         </div>
 
         {/* Fine print */}
-        <div className="text-white/20 text-[clamp(0.7rem,1.5vw,0.75rem)] leading-relaxed space-y-1" style={{ fontFamily: BODY }}>
+        <div className="text-white/55 text-[clamp(0.7rem,1.5vw,0.75rem)] leading-relaxed space-y-1" style={{ fontFamily: BODY }}>
           <p>Overages beyond your tier cap: $65/song. Unused songs don&apos;t roll over.</p>
           <p>Cancel anytime, effective end of billing cycle. Same rate guaranteed if you reactivate within 90 days.</p>
           <p>Payments via Stripe.</p>

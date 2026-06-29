@@ -147,7 +147,7 @@ export default function SavingsCalculator() {
                 }}
               />
               <div
-                className="flex justify-between text-[clamp(0.7rem,1.5vw,0.75rem)] text-white/20 mt-1.5 px-0.5"
+                className="flex justify-between text-[clamp(0.7rem,1.5vw,0.75rem)] text-white/45 mt-1.5 px-0.5"
                 style={{ fontFamily: BODY }}
               >
                 <span>1</span>
@@ -186,7 +186,7 @@ export default function SavingsCalculator() {
                 }}
               />
               <div
-                className="flex justify-between text-[clamp(0.7rem,1.5vw,0.75rem)] text-white/20 mt-1.5 px-0.5"
+                className="flex justify-between text-[clamp(0.7rem,1.5vw,0.75rem)] text-white/45 mt-1.5 px-0.5"
                 style={{ fontFamily: BODY }}
               >
                 <span>$50</span>
@@ -321,9 +321,9 @@ export default function SavingsCalculator() {
               >
                 {fmt(calc.currentMonthly)}
               </motion.span>
-              <span className="text-white/20 text-sm" style={{ fontFamily: BODY }}>/mo</span>
+              <span className="text-white/45 text-sm" style={{ fontFamily: BODY }}>/mo</span>
             </div>
-            <p className="text-white/20 text-xs mt-2" style={{ fontFamily: BODY }}>
+            <p className="text-white/50 text-xs mt-2" style={{ fontFamily: BODY }}>
               {songs} songs &times; {fmt(costPerSong)} each
               {showAddOns && (coverCost > 0 || vizCost > 0 || merchCost > 0) ? " + add-ons" : ""}
             </p>
