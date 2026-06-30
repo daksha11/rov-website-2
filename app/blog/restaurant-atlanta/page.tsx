@@ -104,11 +104,17 @@ export default function RestaurantAtlantaPage() {
               background: "rgba(255,244,227,0.12)",
               border: "1px solid rgba(255,244,227,0.2)",
               borderRadius: 100,
-              padding: "6px 14px",
+              padding: "5px 14px 5px 5px",
               fontSize: 13,
               color: "rgba(255,244,227,0.75)",
               fontFamily: "'Neue Montreal', sans-serif",
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
             }}>
+              <div style={{ position: "relative", width: 32, height: 32, borderRadius: "50%", overflow: "hidden", flexShrink: 0 }}>
+                <Image src="/teammembers/suchettm.webp" alt="Suchet Konda" fill style={{ objectFit: "cover" }} />
+              </div>
               Suchet Konda · Co-Founder, <Link href="/about" style={{ color: "rgba(255,244,227,0.75)", textDecoration: "underline" }}>ROV Studios</Link>
             </div>
             <div style={{ color: "rgba(255,244,227,0.45)", fontSize: 13 }}>June 2026 · 7 min read</div>
