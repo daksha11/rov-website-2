@@ -1711,6 +1711,108 @@ input[type="range"]::-webkit-slider-thumb {
   border-radius: 16px;
   overflow: hidden;
 }
+.ctrla-mixglobe-canvas { cursor: grab; }
+.ctrla-mixglobe-canvas:active { cursor: grabbing; }
+
+/* ── Classroom layer: toolbar, challenge, present, contrast ── */
+.ctrla-mixglobe-wrap { position: relative; display: flex; flex-direction: column; gap: 16px; }
+.ctrla-mixglobe-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.ctrla-mixglobe-toolgroup { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.ctrla-mixglobe-tool {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: rgba(22, 12, 40, 0.78);
+  background: rgba(22, 12, 40, 0.03);
+  border: 1px solid rgba(22, 12, 40, 0.18);
+  border-radius: 999px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.ctrla-mixglobe-tool:hover { background: rgba(22, 12, 40, 0.07); color: rgba(22, 12, 40, 0.95); }
+.ctrla-mixglobe-tool[data-on="true"] { background: rgba(22, 12, 40, 0.9); color: #f5efe8; border-color: transparent; }
+.ctrla-mixglobe-tool.is-primary {
+  background: #4e3d73;
+  color: #f5efe8;
+  border-color: transparent;
+}
+.ctrla-mixglobe-tool.is-primary:hover { background: #5c4986; color: #fff; }
+.ctrla-mixglobe-tag {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #4e3d73;
+  font-weight: 600;
+}
+.ctrla-mixglobe-challenge {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(78, 61, 115, 0.28);
+  background: linear-gradient(180deg, rgba(78, 61, 115, 0.08), rgba(78, 61, 115, 0.02));
+}
+.ctrla-mixglobe-challenge-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.ctrla-mixglobe-challenge-copy { font-family: "Instrument Serif", Georgia, serif; font-size: 16px; line-height: 1.4; color: rgba(22, 12, 40, 0.82); margin: 0; }
+.ctrla-mixglobe-challenge-copy strong { font-family: "Neue Montreal", sans-serif; font-weight: 700; font-size: 14px; }
+.ctrla-mixglobe-challenge-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ctrla-mixglobe-score { font-family: "Neue Montreal", sans-serif; font-weight: 800; font-size: 16px; letter-spacing: -0.01em; }
+.ctrla-mixglobe-score[data-tier="a"] { color: #2e7d52; }
+.ctrla-mixglobe-score[data-tier="b"] { color: #a56a67; }
+.ctrla-mixglobe-score[data-tier="c"] { color: #9a4a3a; }
+.ctrla-mixglobe-scorelist { display: flex; flex-wrap: wrap; gap: 8px; }
+.ctrla-mixglobe-scoreitem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 11px;
+  color: rgba(22, 12, 40, 0.7);
+  background: rgba(22, 12, 40, 0.04);
+  border: 1px solid rgba(22, 12, 40, 0.12);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+.ctrla-mixglobe-toast {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  z-index: 30;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 13px;
+  color: #f5efe8;
+  background: rgba(15, 8, 28, 0.92);
+  border: 1px solid rgba(240, 230, 224, 0.16);
+  border-radius: 999px;
+  padding: 9px 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  animation: ctrla-fridge-fade 0.2s ease both;
+}
+/* Present mode: fill the screen, center the tool. */
+.ctrla-mixglobe-wrap.is-full {
+  background: #07040f;
+  padding: clamp(16px, 3vw, 40px);
+  justify-content: center;
+}
+.ctrla-mixglobe-wrap.is-full .ctrla-mixglobe { align-content: center; }
+.ctrla-mixglobe-wrap.is-full .ctrla-mixglobe-stage { max-height: min(82vh, 720px); }
+/* High-contrast / large mode: lift panel type for projector legibility. */
+.ctrla-mixglobe-wrap.is-hc .ctrla-mixglobe-legend { color: #160c28; }
+.ctrla-mixglobe-wrap.is-hc .ctrla-fx-name { font-size: 13px; color: rgba(22, 12, 40, 0.95); }
+.ctrla-mixglobe-wrap.is-hc .ctrla-fx-note { font-size: 15px; color: rgba(22, 12, 40, 0.74); }
+.ctrla-mixglobe-wrap.is-hc .ctrla-fx-val { font-size: 14px; }
+.ctrla-mixglobe-wrap.is-hc .ctrla-mixglobe-chip { font-size: 13px; }
+.ctrla-mixglobe-wrap.is-hc .ctrla-mixglobe-tool { font-size: 13px; }
 .ctrla-mixglobe-hint {
   position: absolute;
   left: 14px;
