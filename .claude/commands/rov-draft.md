@@ -61,15 +61,28 @@ published: true
 - "paradigm shift"
 - "best-in-class"
 
+### Banned Punctuation & Constructions:
+- **NO em dashes** (—) anywhere in the post. Use a period or comma instead.
+- **NO "If X, then Y" sentence structure.** This sounds like a robot. Rewrite as a story, an observation, or a direct statement.
+  - DON'T: "If your website isn't mobile-friendly, then you'll lose customers."
+  - DO: "Most people searching for a restaurant in Atlanta are doing it on their phone. If your site makes them pinch and zoom, they're already gone."
+  - Actually: drop the "If" entirely. "Most people searching for a restaurant in Atlanta are doing it on their phone. A site that makes them pinch and zoom loses them before they ever order."
+
+### Voice Rules (MANDATORY):
+- **Lead with a story or a person, not a principle.** The first paragraph should put the reader in a scene or introduce a real situation. Not "many businesses struggle with X" — that's a textbook. Start with "Terry had a great restaurant."
+- **Conversational.** Write like you're explaining this to someone at a coffee shop who asked you a real question. Not formal. Not academic. Not corporate.
+- **Welcoming.** The reader should feel like ROV is on their side, not lecturing them. The tone is: sharp friend who happens to know this stuff, not consultant presenting findings.
+- **Informative.** Every paragraph should leave the reader knowing something they didn't before. No filler sentences. No "this is an important question."
+
 ### Required Elements — EVERY post must have ALL of these:
 - At least one specific number, date, or measurable result
 - At least one Atlanta or Georgia geographic reference
-- At least one real example (not hypothetical)
-- Direct, conversational tone — write like talking to a smart business owner
+- At least one real person or real client situation (not hypothetical)
+- A story or scene in the opening — not a stat, not a principle
 
 ### Voice Guide:
-- DO: "We rebuilt their checkout flow. Bounce rate dropped 40% in three weeks."
-- DON'T: "Our team leveraged cutting-edge technologies to deliver a seamless digital transformation."
+- DO: "Terry and Darius had a great restaurant. Real food, real history. The problem was their website. People couldn't figure out how to order. 132 people found their ordering page in six months. We moved the button and restructured the site. 91,000 people found it in the next five months."
+- DON'T: "If a restaurant doesn't optimize its online ordering flow, it will miss out on significant digital revenue potential."
 - DO: "Atlanta restaurants need mobile-first menus. Here's what works."
 - DON'T: "In today's digital landscape, the hospitality industry faces unprecedented challenges."
 
@@ -79,6 +92,7 @@ published: true
 - H2/H3 hierarchy (no skipping heading levels)
 - Target 800-1200 words
 - Write in first person plural ("we") from ROV Studios' perspective
+- H2s should feel like natural conversation topics, not report sections
 
 ## After Generation
 

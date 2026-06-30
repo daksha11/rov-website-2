@@ -1,12 +1,13 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/utils/supabase/middleware";
 
 export async function middleware(request: NextRequest) {
-  const { supabaseResponse } = createClient(request);
-
-  // Refreshing the auth token is handled inside createClient via cookies.
-  // Just return the response so cookies are forwarded correctly.
-  return supabaseResponse;
+  try {
+    const { createClient } = await import("@/utils/supabase/middleware");
+    const { supabaseResponse } = createClient(request);
+    return supabaseResponse;
+  } catch {
+    return NextResponse.next();
+  }
 }
 
 export const config = {

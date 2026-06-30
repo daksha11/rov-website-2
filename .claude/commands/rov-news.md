@@ -62,13 +62,19 @@ published: true
 **Banned phrases — DO NOT USE:**
 "in today's digital landscape", "leverage", "cutting-edge", "seamless", "elevate your brand", "digital transformation journey", "unlock the potential", "game-changer", "next-level", "revolutionize", "synergy", "holistic approach", "robust solution", "paradigm shift", "best-in-class"
 
+**Banned punctuation & constructions:**
+- NO em dashes (—) anywhere. Use a period or comma instead.
+- NO "If X, then Y" sentence structures. Rewrite as a direct observation or story.
+  - DON'T: "If you don't adapt to this trend, your business will fall behind."
+  - DO: "Most Atlanta businesses haven't heard of this yet. The ones that move first will own the search results."
+
 **Required elements:**
 - At least one specific number, date, or statistic
 - At least one Atlanta/Georgia reference
-- Direct, conversational tone
-- Real examples, not hypothetical
+- A real person, real situation, or real example — not hypothetical
+- Open with a scene or a situation, not a principle
 
-**Voice:** Write like a sharp, knowledgeable friend giving advice — not like a press release.
+**Voice:** Write like a sharp, knowledgeable friend giving advice. Welcoming and conversational — not a press release, not a lecture. The reader should feel informed and capable after reading, not overwhelmed.
 
 ### Word Count: 600-900 words (shorter than case studies — news should be quick reads)
 
