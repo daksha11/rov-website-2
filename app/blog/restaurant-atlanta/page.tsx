@@ -1,4 +1,7 @@
-import type { Metadata } from "next";
+"use client";
+
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -9,16 +12,6 @@ const NavigationDock = dynamic(
 );
 const Footer = dynamic(() => import("@/components/Footer"), { ssr: false });
 
-export const metadata: Metadata = {
-  title: "Every Restaurant Is Bleeding Revenue Online | ROV Studios Atlanta",
-  description: "Most Atlanta restaurants lose customers before they ever place an order. ROV Studios fixed one restaurant's website and grew online ordering 689x in 139 days. Here's what we changed.",
-  alternates: { canonical: "https://www.rovstudios.com/blog/restaurant-atlanta" },
-  openGraph: {
-    title: "Every Restaurant Is Bleeding Revenue Online | ROV Studios Atlanta",
-    description: "Most Atlanta restaurants lose customers before they ever place an order. ROV Studios fixed one restaurant's website and grew online ordering 689x in 139 days.",
-    images: [{ url: "/casestudy/bando/bandocrackpic.webp", width: 1200, height: 630 }],
-  },
-};
 
 const TOC = [
   { id: "the-problem", label: "The problem nobody talks about" },
@@ -59,9 +52,55 @@ const FAQS = [
   },
 ];
 
+function FaqAccordion() {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  return (
+    <section id="faq" style={{ background: "#FFF4E3", padding: "0 24px 64px" }}>
+      <div style={{ maxWidth: 760, margin: "0 auto" }}>
+        <div style={{ paddingTop: 48, borderTop: "1px solid rgba(59,33,20,0.12)" }}>
+          <p style={{ fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: "#B16937", marginBottom: 32, fontFamily: "'Neue Montreal', sans-serif", fontWeight: 700 }}>
+            Frequently asked
+          </p>
+          <dl style={{ margin: 0 }}>
+            {FAQS.map((f, i) => {
+              const isOpen = openIndex === i;
+              return (
+                <div key={f.q} style={{ borderBottom: "1px solid rgba(59,33,20,0.1)" }}>
+                  <dt>
+                    <button
+                      type="button"
+                      onClick={() => setOpenIndex(isOpen ? null : i)}
+                      aria-expanded={isOpen}
+                      style={{ display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between", gap: 24, padding: "20px 0", background: "none", border: "none", cursor: "pointer", textAlign: "left" }}
+                    >
+                      <span style={{ fontFamily: "Norwige, sans-serif", fontSize: "clamp(17px, 2.5vw, 22px)", lineHeight: 1.3, color: isOpen ? "#90422C" : "#3B2114", transition: "color 0.15s", fontWeight: 700 }}>
+                        {f.q}
+                      </span>
+                      <ChevronDown
+                        style={{ width: 20, height: 20, flexShrink: 0, color: "#EA9A61", transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}
+                      />
+                    </button>
+                  </dt>
+                  <dd style={{ margin: 0, display: "grid", gridTemplateRows: isOpen ? "1fr" : "0fr", transition: "grid-template-rows 0.3s ease-out" }}>
+                    <div style={{ overflow: "hidden" }}>
+                      <p style={{ paddingBottom: 20, paddingRight: 32, fontSize: 16, lineHeight: 1.75, color: "rgba(59,33,20,0.7)", fontFamily: "Inter, -apple-system, sans-serif", margin: 0 }}>
+                        {f.a}
+                      </p>
+                    </div>
+                  </dd>
+                </div>
+              );
+            })}
+          </dl>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function RestaurantAtlantaPage() {
   return (
-    <main style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: "#FFF4E3", color: "#3B2114" }}>
+    <main style={{ fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", background: "#FFF4E3", color: "#3B2114" }}>
 
       {/* ── HERO ── */}
       <section style={{
@@ -70,6 +109,13 @@ export default function RestaurantAtlantaPage() {
         color: "#FFF4E3",
       }}>
         <div style={{ maxWidth: 760, margin: "0 auto" }}>
+
+          {/* Logo */}
+          <div style={{ marginBottom: 32 }}>
+            <Link href="/">
+              <Image src="/rov-logo.webp" alt="ROV Studios" width={48} height={48} style={{ objectFit: "contain" }} />
+            </Link>
+          </div>
 
           {/* Breadcrumb */}
           <p style={{ fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,244,227,0.55)", marginBottom: 28, fontFamily: "'Neue Montreal', sans-serif" }}>
@@ -81,15 +127,12 @@ export default function RestaurantAtlantaPage() {
 
           {/* Headline */}
           <h1 style={{
-            fontFamily: "'Instrument Serif', Georgia, serif",
+            fontFamily: "Norwige, sans-serif",
             fontSize: "clamp(36px, 6vw, 64px)",
             fontWeight: 400,
             lineHeight: 1.1,
             marginBottom: 24,
-            background: "linear-gradient(135deg, #FFF4E3 0%, #EA9A61 60%, #B16937 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
+            color: "#FFFFFF",
           }}>
             Every Restaurant Is Bleeding Revenue Online. Here Is What Fixing It Looks Like.
           </h1>
@@ -101,12 +144,12 @@ export default function RestaurantAtlantaPage() {
           {/* Author + meta */}
           <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
             <div style={{
-              background: "rgba(255,244,227,0.12)",
-              border: "1px solid rgba(255,244,227,0.2)",
+              background: "#FFF4E3",
+              border: "1px solid rgba(59,33,20,0.15)",
               borderRadius: 100,
               padding: "5px 14px 5px 5px",
               fontSize: 13,
-              color: "rgba(255,244,227,0.75)",
+              color: "#3B2114",
               fontFamily: "'Neue Montreal', sans-serif",
               display: "flex",
               alignItems: "center",
@@ -115,7 +158,7 @@ export default function RestaurantAtlantaPage() {
               <div style={{ position: "relative", width: 32, height: 32, borderRadius: "50%", overflow: "hidden", flexShrink: 0 }}>
                 <Image src="/teammembers/suchettm.webp" alt="Suchet Konda" fill style={{ objectFit: "cover" }} />
               </div>
-              Suchet Konda · Co-Founder, <Link href="/about" style={{ color: "rgba(255,244,227,0.75)", textDecoration: "underline" }}>ROV Studios</Link>
+              Suchet Konda · Co-Founder, <Link href="/about" style={{ color: "#90422C", textDecoration: "underline" }}>ROV Studios</Link>
             </div>
             <div style={{ color: "rgba(255,244,227,0.45)", fontSize: 13 }}>June 2026 · 7 min read</div>
           </div>
@@ -128,7 +171,7 @@ export default function RestaurantAtlantaPage() {
           {STATS.map((s) => (
             <div key={s.number} style={{ padding: "28px 20px", textAlign: "center" }}>
               <div style={{
-                fontFamily: "'Instrument Serif', Georgia, serif",
+                fontFamily: "Norwige, sans-serif",
                 fontSize: "clamp(32px, 5vw, 48px)",
                 background: "linear-gradient(135deg, #EA9A61 0%, #90422C 100%)",
                 WebkitBackgroundClip: "text",
@@ -138,7 +181,7 @@ export default function RestaurantAtlantaPage() {
                 marginBottom: 8,
               }}>{s.number}</div>
               <div style={{ color: "#FFF4E3", fontSize: 14, fontWeight: 600, marginBottom: 4 }}>{s.label}</div>
-              <div style={{ color: "rgba(255,244,227,0.5)", fontSize: 12 }}>{s.sub}</div>
+              <div style={{ color: "rgba(255,244,227,0.85)", fontSize: 12 }}>{s.sub}</div>
             </div>
           ))}
         </div>
@@ -172,7 +215,7 @@ export default function RestaurantAtlantaPage() {
 
         {/* ── SECTION 1: The Problem ── */}
         <section id="the-problem" style={{ marginBottom: 64 }}>
-          <h2 style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 400, color: "#90422C", marginBottom: 20, lineHeight: 1.2 }}>
+          <h2 style={{ fontFamily: "Norwige, sans-serif", fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 400, color: "#90422C", marginBottom: 20, lineHeight: 1.2 }}>
             The problem nobody talks about
           </h2>
 
@@ -191,7 +234,7 @@ export default function RestaurantAtlantaPage() {
             background: "rgba(234,154,97,0.08)",
             borderRadius: "0 8px 8px 0",
           }}>
-            <p style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: 22, lineHeight: 1.5, color: "#3B2114", margin: 0, fontStyle: "italic" }}>
+            <p style={{ fontFamily: "Norwige, sans-serif", fontSize: 22, lineHeight: 1.5, color: "#3B2114", margin: 0, fontStyle: "italic" }}>
               &ldquo;Not 132 a day. 132 total. For a restaurant in one of the most competitive food cities in the country.&rdquo;
             </p>
           </blockquote>
@@ -214,7 +257,7 @@ export default function RestaurantAtlantaPage() {
 
         {/* ── SECTION 2: The 3-Second Rule ── */}
         <section id="three-seconds" style={{ marginBottom: 64 }}>
-          <h2 style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 400, color: "#90422C", marginBottom: 20, lineHeight: 1.2 }}>
+          <h2 style={{ fontFamily: "Norwige, sans-serif", fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 400, color: "#90422C", marginBottom: 20, lineHeight: 1.2 }}>
             The 3-second rule
           </h2>
 
@@ -237,7 +280,7 @@ export default function RestaurantAtlantaPage() {
             alignItems: "center",
           }}>
             <div style={{
-              fontFamily: "'Instrument Serif', Georgia, serif",
+              fontFamily: "Norwige, sans-serif",
               fontSize: 56,
               background: "linear-gradient(135deg, #EA9A61, #90422C)",
               WebkitBackgroundClip: "text",
@@ -249,7 +292,7 @@ export default function RestaurantAtlantaPage() {
               <p style={{ color: "#FFF4E3", fontSize: 16, lineHeight: 1.6, margin: 0 }}>
                 of people who search for a local business on their phone visit that business within 24 hours. Lose them in three seconds and you lost the visit, the order, and the return customer.
               </p>
-              <p style={{ color: "rgba(255,244,227,0.45)", fontSize: 12, marginTop: 8, marginBottom: 0 }}>Source: <a href="https://www.thinkwithgoogle.com" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,244,227,0.45)" }}>Think with Google</a></p>
+              <p style={{ color: "rgba(255,244,227,0.8)", fontSize: 12, marginTop: 8, marginBottom: 0 }}>Source: <a href="https://www.thinkwithgoogle.com" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,244,227,0.8)" }}>Think with Google</a></p>
             </div>
           </div>
 
@@ -260,7 +303,7 @@ export default function RestaurantAtlantaPage() {
 
         {/* ── SECTION 3: What We Changed ── */}
         <section id="what-we-changed" style={{ marginBottom: 64 }}>
-          <h2 style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 400, color: "#90422C", marginBottom: 12, lineHeight: 1.2 }}>
+          <h2 style={{ fontFamily: "Norwige, sans-serif", fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 400, color: "#90422C", marginBottom: 12, lineHeight: 1.2 }}>
             What we actually changed
           </h2>
           <p style={{ fontSize: 15, color: "#B16937", marginBottom: 36, fontFamily: "'Neue Montreal', sans-serif" }}>
@@ -301,7 +344,7 @@ export default function RestaurantAtlantaPage() {
                 letterSpacing: "0.05em",
               }}>{item.n}</div>
               <div>
-                <h3 style={{ fontFamily: "'Neue Montreal', sans-serif", fontSize: 18, fontWeight: 700, color: "#B16937", marginBottom: 12 }}>
+                <h3 style={{ fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: 18, fontWeight: 700, color: "#B16937", marginBottom: 12 }}>
                   {item.title}
                 </h3>
                 <p style={{ fontSize: 16, lineHeight: 1.75, color: "#3B2114", margin: 0 }}>{item.body}</p>
@@ -317,7 +360,7 @@ export default function RestaurantAtlantaPage() {
 
         {/* ── SECTION 4: The Numbers ── */}
         <section id="the-results" style={{ marginBottom: 64 }}>
-          <h2 style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 400, color: "#90422C", marginBottom: 12, lineHeight: 1.2 }}>
+          <h2 style={{ fontFamily: "Norwige, sans-serif", fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 400, color: "#90422C", marginBottom: 12, lineHeight: 1.2 }}>
             The numbers
           </h2>
           <p style={{ fontSize: 15, color: "#B16937", marginBottom: 32, fontFamily: "'Neue Montreal', sans-serif" }}>
@@ -364,7 +407,7 @@ export default function RestaurantAtlantaPage() {
 
         {/* ── SECTION 5: Six Months Later ── */}
         <section id="ongoing-growth" style={{ marginBottom: 64 }}>
-          <h2 style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 400, color: "#90422C", marginBottom: 20, lineHeight: 1.2 }}>
+          <h2 style={{ fontFamily: "Norwige, sans-serif", fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 400, color: "#90422C", marginBottom: 20, lineHeight: 1.2 }}>
             Six months later
           </h2>
 
@@ -384,13 +427,13 @@ export default function RestaurantAtlantaPage() {
                 padding: "24px 20px",
                 color: "#FFF4E3",
               }}>
-                <div style={{ fontSize: 13, color: "rgba(255,244,227,0.5)", marginBottom: 8, fontFamily: "'Neue Montreal', sans-serif" }}>{item.then}</div>
+                <div style={{ fontSize: 13, color: "rgba(255,244,227,0.85)", marginBottom: 8, fontFamily: "'Neue Montreal', sans-serif" }}>{item.then}</div>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
                   <span style={{ fontSize: 20, fontWeight: 700, textDecoration: "line-through", color: "rgba(255,244,227,0.35)" }}>{item.stat}</span>
                   <span style={{ color: "#EA9A61", fontSize: 12, fontFamily: "'Neue Montreal', sans-serif" }}>{item.arrow}</span>
-                  <span style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: 26, color: "#EA9A61" }}>{item.now}</span>
+                  <span style={{ fontFamily: "Norwige, sans-serif", fontSize: 26, color: "#EA9A61" }}>{item.now}</span>
                 </div>
-                <div style={{ fontSize: 13, color: "rgba(255,244,227,0.65)", fontWeight: 600 }}>{item.nowLabel}</div>
+                <div style={{ fontSize: 13, color: "#FFF4E3", fontWeight: 600 }}>{item.nowLabel}</div>
               </div>
             ))}
           </div>
@@ -413,7 +456,7 @@ export default function RestaurantAtlantaPage() {
 
         {/* ── SECTION 6: What This Means ── */}
         <section id="what-this-means" style={{ marginBottom: 64 }}>
-          <h2 style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 400, color: "#90422C", marginBottom: 20, lineHeight: 1.2 }}>
+          <h2 style={{ fontFamily: "Norwige, sans-serif", fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 400, color: "#90422C", marginBottom: 20, lineHeight: 1.2 }}>
             What this means for Atlanta restaurants
           </h2>
 
@@ -457,22 +500,12 @@ export default function RestaurantAtlantaPage() {
           </div>
         </section>
 
-        {/* ── FAQ ── */}
-        <section id="faq" style={{ marginBottom: 64 }}>
-          <h2 style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 400, color: "#90422C", marginBottom: 32, lineHeight: 1.2 }}>
-            Frequently asked questions
-          </h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-            {FAQS.map((faq, i) => (
-              <div key={i} style={{ paddingBottom: 28, marginBottom: 28, borderBottom: "1px solid rgba(59,33,20,0.1)" }}>
-                <h3 style={{ fontFamily: "'Neue Montreal', sans-serif", fontSize: 17, fontWeight: 700, color: "#B16937", marginBottom: 12, lineHeight: 1.4 }}>
-                  {faq.q}
-                </h3>
-                <p style={{ fontSize: 16, lineHeight: 1.75, color: "#3B2114", margin: 0 }}>{faq.a}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+      </div>
+
+      {/* ── FAQ ── */}
+      <FaqAccordion />
+
+      <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 24px 80px" }}>
 
         {/* ── AUTHOR ── */}
         <section style={{ marginBottom: 64, padding: "28px 32px", background: "#3B2114", borderRadius: 16, color: "#FFF4E3" }}>
@@ -489,7 +522,7 @@ export default function RestaurantAtlantaPage() {
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 16, paddingTop: 16, borderTop: "1px solid rgba(255,244,227,0.1)" }}>
             <span style={{ display: "inline-block", width: 24, height: 2, background: "#EA9A61", flexShrink: 0 }} />
-            <p style={{ fontSize: 12, color: "rgba(255,244,227,0.45)", margin: 0, fontFamily: "'Neue Montreal', sans-serif" }}>
+            <p style={{ fontSize: 12, color: "#FFF4E3", margin: 0, fontFamily: "'Neue Montreal', sans-serif" }}>
               Last updated &nbsp; June 30, 2026
             </p>
           </div>
@@ -497,16 +530,16 @@ export default function RestaurantAtlantaPage() {
 
         {/* ── CTA ── */}
         <section style={{
-          background: "linear-gradient(135deg, #EA9A61 0%, #90422C 100%)",
+          background: "#FFF4E3",
+          border: "1.5px solid rgba(59,33,20,0.15)",
           borderRadius: 16,
           padding: "48px 36px",
           textAlign: "center",
-          color: "#FFF4E3",
         }}>
-          <h2 style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: "clamp(24px, 4vw, 36px)", fontWeight: 400, marginBottom: 16, lineHeight: 1.2 }}>
+          <h2 style={{ fontFamily: "Norwige, sans-serif", fontSize: "clamp(24px, 4vw, 36px)", fontWeight: 400, marginBottom: 16, lineHeight: 1.2, color: "#3B2114" }}>
             Want to know where your restaurant is leaking revenue?
           </h2>
-          <p style={{ fontSize: 16, lineHeight: 1.65, color: "rgba(255,244,227,0.85)", marginBottom: 32, maxWidth: 480, margin: "0 auto 32px" }}>
+          <p style={{ fontSize: 16, lineHeight: 1.65, color: "rgba(59,33,20,0.7)", marginBottom: 32, maxWidth: 480, margin: "0 auto 32px" }}>
             We run free audits for Atlanta restaurants. We look at your site, your ordering flow, your search visibility. We find the gap. We show you exactly what to fix.
           </p>
           <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
@@ -515,8 +548,8 @@ export default function RestaurantAtlantaPage() {
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                background: "#FFF4E3",
-                color: "#3B2114",
+                background: "#90422C",
+                color: "#FFF4E3",
                 padding: "14px 28px",
                 borderRadius: 100,
                 fontFamily: "'Neue Montreal', sans-serif",
@@ -531,8 +564,8 @@ export default function RestaurantAtlantaPage() {
             <Link
               href="/web"
               style={{
-                background: "rgba(255,244,227,0.15)",
-                color: "#FFF4E3",
+                background: "transparent",
+                color: "#3B2114",
                 padding: "14px 28px",
                 borderRadius: 100,
                 fontFamily: "'Neue Montreal', sans-serif",
@@ -540,7 +573,7 @@ export default function RestaurantAtlantaPage() {
                 fontSize: 15,
                 textDecoration: "none",
                 display: "inline-block",
-                border: "1px solid rgba(255,244,227,0.3)",
+                border: "1.5px solid rgba(59,33,20,0.25)",
               }}
             >
               See our web services

@@ -2,6 +2,17 @@
 
 You are generating a publish-ready blog post from a project brief for ROV Studios, a creative agency in Atlanta, Georgia.
 
+## Before Writing Anything — Read These First
+
+Run in parallel before generating a single line:
+
+1. Read `ROV-BRAIN.md` — proof points, ICP, voice context, what ROV is known for
+2. Read `content/seo-geo/01-what-makes-a-good-geo-page.md` — GEO rules: structure AI engines prefer, what gets cited, what to avoid
+3. Read `content/seo-geo/02-rov-keyword-strategy.md` — which keywords to target, what tier they're in, gaps to fill
+4. Read `.claude/blog-design-standard.md` — design system for custom page.tsx builds (fonts, colors, section order)
+
+These four docs are non-negotiable context. Do not generate content without reading them.
+
 ## Input
 
 Read the project brief file provided as argument: `$ARGUMENTS`
@@ -41,6 +52,17 @@ published: true
 4. **## The Results** (measurable outcomes with numbers — this is the most important section)
 5. **## Key Takeaways** (2-3 bullet points, actionable insights)
 6. **## Frequently Asked Questions** (3-4 questions using ### for each, with detailed answers — this is critical for GEO/AI search optimization)
+
+## Design Density (break up the text)
+
+A wall of paragraphs fails the standard. Even in a markdown post, use the visual elements markdown supports. Aim for, per post:
+
+- **1+ pull quote** — lift the most surprising line into a `> blockquote`. It renders as an ember-bordered pull quote.
+- **1+ table** — any before/after or comparison data goes in a `|` markdown table. It renders with the dark header / cream rows automatically.
+- **An image every 2-3 sections** — never more than ~3 short paragraphs without a visual break.
+- **Bold callout lines** — lead key sentences with `**bold**` so they pop on the cream background.
+
+The richer elements (dark stat callout cards, numbered step cards, then→now growth cards, stats row) require a custom `page.tsx` build. If the case study has strong numbers and photos and deserves that treatment, build it custom per the "Custom Page vs. Markdown" section below instead of plain markdown.
 
 ## Anti-Slop Rules (MANDATORY)
 
@@ -94,9 +116,27 @@ published: true
 - Write in first person plural ("we") from ROV Studios' perspective
 - H2s should feel like natural conversation topics, not report sections
 
+## Custom Page vs. Markdown
+
+If the brief is for a **case study or feature article** that needs rich layout (stats row, data tables, full-bleed images, FAQ accordion, numbered steps) — generate a custom `app/blog/{slug}/page.tsx` instead of a markdown file.
+
+**When to use custom page.tsx:**
+- Case studies with key metrics to highlight (use stats row)
+- Pages with multiple sections that need different backgrounds
+- Any post that needs the full restaurant-atlanta design treatment
+
+**When custom, follow the design system in `.claude/blog-design-standard.md` exactly.**
+Key rules:
+- Cream `#FFF4E3` page bg, dark `#3B2114` for stats/cards, rust `#90422C` for section H2s
+- Norwige for all headings, Inter for body, Neue Montreal for labels
+- Structure: Hero → Stats Row → Main Content → FAQ Accordion → Author Card → CTA
+- Mark as `"use client"` (needed for FAQ useState) — do NOT include `export const metadata`
+- Logo `<Image>` must be wrapped in `<Link href="/">`
+- CTA section: beige bg `#FFF4E3` with dark text, never dark/gradient
+
 ## After Generation
 
-1. Save the post to `content/review-queue/{slug}.md`
+1. Save the post to `content/review-queue/{slug}.md` (or `app/blog/{slug}/page.tsx` for custom pages)
 2. Run a self-check: scan the generated content for banned phrases. If any are found, rewrite those sentences.
 3. Verify all required elements are present
 4. Tell the user: "Post saved to content/review-queue/{slug}.md — review it and run `/rov-publish --approve {slug}` when ready."

@@ -21,8 +21,10 @@ Run these in parallel before generating anything:
 
 1. Read `ROV-BRAIN.md` — proof points, ICP, what ROV is currently working on
 2. Read `content/seo-geo/02-rov-keyword-strategy.md` — Tier 1/2/3 keyword targets
-3. Run `git log --oneline -8` — what has been built or updated recently
-4. Search the web for: `"Atlanta small business" OR "Atlanta HVAC OR restaurant OR roofing" 2026 news`
+3. Read `content/seo-geo/01-what-makes-a-good-geo-page.md` — GEO rules: what Perplexity/ChatGPT look for, structure rules, what gets cited
+4. Read `.claude/blog-design-standard.md` — design system (fonts, colors, component patterns, page structure)
+5. Run `git log --oneline -8` — what has been built or updated recently
+6. Search the web for: `"Atlanta small business" OR "Atlanta HVAC OR restaurant OR roofing" 2026 news`
    Look for: local events, industry shifts, regulation changes, anything the ICP cares about right now
 
 ### Generate 5 ideas
@@ -153,27 +155,44 @@ Dark ink card. Gradient avatar. Suchet Konda, Co-Founder and Systems Architect.
 Link `/about` in the title. 2 specific sentences about the work.
 
 **16 — CTA**
-Gradient bg (`#EA9A61` to `#90422C`). "Want to know where your [type] is leaking revenue?"
-Two buttons: "Book a free audit" (Calendly) + "See our web services" (/web)
+Cream bg `#FFF4E3`, border `1.5px solid rgba(59,33,20,0.15)`, borderRadius 16. "Want to know where your [type] is leaking revenue?"
+Primary button: `#90422C` bg, cream text. Secondary button: transparent, dark border.
+Do NOT use a dark or gradient background on the CTA.
 
 ---
 
 ### Design quick reference
 
+**Full spec:** `.claude/blog-design-standard.md` — read it at the start of every build.
+Canonical implementation: `app/blog/restaurant-atlanta/page.tsx`
+
 | Element | Value |
 |---|---|
-| H1 | Instrument Serif, gradient `#FFF4E3 → #EA9A61 → #B16937` |
-| H2 | Instrument Serif, `#90422C` |
-| H3 / labels | Neue Montreal 700, `#B16937` |
-| Accent | `#EA9A61` |
-| Body | DM Sans, `#3B2114` |
-| Page bg | `#FFF4E3` |
+| H1 (hero) | Norwige, solid white `#FFFFFF`, NOT gradient |
+| H2 (sections) | Norwige, `#90422C` |
+| H3 / card titles | Inter 700, `#B16937` |
+| Labels / eyebrows | Neue Montreal 700, `#B16937`, 11px uppercase |
+| Body | Inter, `#3B2114` |
+| Page bg | `#FFF4E3` (cream) |
 | Hero bg | `linear-gradient(160deg, #3B2114 0%, #603E25 55%, #90422C 100%)` |
-| Dark sections | `#3B2114` |
+| Stats bar / dark cards | `#3B2114` |
 | Pull quote border | `4px solid #EA9A61` |
-| CTA bg | `linear-gradient(135deg, #EA9A61 0%, #90422C 100%)` |
+| CTA bg | `#FFF4E3` (cream), NOT gradient — dark button `#90422C` |
+| Author pill (hero) | `#FFF4E3` bg, `#3B2114` text — NOT dark/transparent |
 
 All colors are inline styles — Tailwind does not have brand colors mapped.
+
+### Design density (required — do not ship a wall of text)
+
+Read the "Design Element Library" and "Density Rule" in `.claude/blog-design-standard.md` and use them liberally. Minimum per page:
+- 1+ pull quote (lift out the most surprising line)
+- 1+ dark stat callout card or stats row
+- 1+ data table when there is before/after or comparison data
+- 1+ info/summary box ("The short version")
+- Numbered step cards for any process section
+- An image with caption every 2-3 sections
+
+Test: someone scrolling fast with the sound off should get the whole story from the bubbles, quotes, numbers, tables, and images. Two H2 sections in a row with no visual element between them = add one.
 
 ---
 
