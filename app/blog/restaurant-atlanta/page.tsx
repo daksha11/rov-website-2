@@ -469,16 +469,23 @@ export default function RestaurantAtlantaPage() {
         </section>
 
         {/* ── AUTHOR ── */}
-        <section style={{ marginBottom: 64, padding: "28px", background: "#3B2114", borderRadius: 16, color: "#FFF4E3" }}>
-          <div style={{ display: "flex", alignItems: "flex-start", gap: 20, flexWrap: "wrap" }}>
-            <div style={{ width: 56, height: 56, borderRadius: "50%", background: "linear-gradient(135deg, #EA9A61, #90422C)", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Instrument Serif', Georgia, serif", fontSize: 22, color: "#FFF4E3" }}>S</div>
-            <div style={{ flex: 1, minWidth: 200 }}>
-              <p style={{ fontWeight: 700, fontSize: 16, marginBottom: 4 }}>Suchet Konda</p>
-              <p style={{ color: "#EA9A61", fontSize: 13, marginBottom: 12, fontFamily: "'Neue Montreal', sans-serif" }}>Co-Founder and Systems Architect, <Link href="/about" style={{ color: "#EA9A61" }}>ROV Studios</Link></p>
-              <p style={{ fontSize: 14, lineHeight: 1.7, color: "rgba(255,244,227,0.7)", margin: 0 }}>
-                Suchet builds the systems behind ROV&apos;s client work. AI automations, analytics infrastructure, and the digital architecture that turns websites into revenue engines. Based in Atlanta. Thinks in money flows.
+        <section style={{ marginBottom: 64, padding: "28px 32px", background: "#3B2114", borderRadius: 16, color: "#FFF4E3" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+            <div style={{ position: "relative", width: 64, height: 64, borderRadius: "50%", overflow: "hidden", flexShrink: 0, border: "2px solid rgba(234,154,97,0.4)" }}>
+              <Image src="/teammembers/suchettm.webp" alt="Suchet Konda, Co-Founder ROV Studios" fill style={{ objectFit: "cover" }} />
+            </div>
+            <div>
+              <p style={{ fontWeight: 700, fontSize: 16, marginBottom: 2, color: "#FFF4E3" }}>Suchet Konda</p>
+              <p style={{ color: "#EA9A61", fontSize: 13, margin: 0, fontFamily: "'Neue Montreal', sans-serif" }}>
+                Co-Founder and Systems Architect, <Link href="/about" style={{ color: "#EA9A61" }}>ROV Studios</Link>
               </p>
             </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 16, paddingTop: 16, borderTop: "1px solid rgba(255,244,227,0.1)" }}>
+            <span style={{ display: "inline-block", width: 24, height: 2, background: "#EA9A61", flexShrink: 0 }} />
+            <p style={{ fontSize: 12, color: "rgba(255,244,227,0.45)", margin: 0, fontFamily: "'Neue Montreal', sans-serif" }}>
+              Last updated &nbsp; June 30, 2026
+            </p>
           </div>
         </section>
 
