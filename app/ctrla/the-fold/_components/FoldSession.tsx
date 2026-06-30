@@ -240,7 +240,7 @@ export default function FoldSession({
       </div>
 
       <div className="fold__session-body">
-        <div className="fold__session-main">
+        <div className="fold__session-col fold__session-why">
           <span className="fold__session-mode">{profile.mode}</span>
           <p className="fold__session-purpose">{profile.purpose}</p>
 
@@ -254,7 +254,9 @@ export default function FoldSession({
             maxLength={120}
           />
           <p className="fold__session-cue">{profile.cue}</p>
+        </div>
 
+        <div className="fold__session-col fold__session-rhythm">
           <div className="fold__timer">
             <div className="fold__timer-modes">
               <button type="button" className={`fold__timer-mode${mode === "focus" ? " is-on" : ""}`} onClick={() => switchMode("focus")}>Focus</button>

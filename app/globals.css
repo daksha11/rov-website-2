@@ -2889,16 +2889,20 @@ input[type="range"]::-webkit-slider-thumb {
 
 .fold__session-body {
   flex: 1;
+  min-height: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-  gap: clamp(28px, 5vw, 80px);
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.92fr) minmax(0, 0.92fr);
+  gap: clamp(24px, 4vw, 56px);
   align-content: center;
   align-items: center;
   width: 100%;
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: clamp(16px, 3vh, 40px) 0;
+  padding: clamp(12px, 2.4vh, 28px) 0;
 }
+.fold__session-col { display: flex; flex-direction: column; min-width: 0; }
+.fold__session-why { gap: 12px; }
+.fold__session-rhythm { align-items: center; }
 .fold__session-main { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
 .fold__session-mode {
   display: inline-flex;
@@ -2960,10 +2964,13 @@ input[type="range"]::-webkit-slider-thumb {
 }
 .fold__session-side { display: flex; flex-direction: column; min-width: 0; }
 .fold__session-side .fold__tasks {
+  display: flex;
+  flex-direction: column;
   gap: 14px;
-  padding: 22px;
-  min-height: 300px;
-  max-height: min(52vh, 460px);
+  padding: 20px;
+  width: 100%;
+  min-height: 240px;
+  max-height: min(48vh, 420px);
   border: 1px solid color-mix(in srgb, var(--accent, #e3c24a) 16%, rgba(240, 230, 224, 0.1));
   border-radius: 16px;
   background: linear-gradient(160deg, rgba(36, 18, 58, 0.5), rgba(15, 8, 32, 0.4));
@@ -3028,7 +3035,14 @@ input[type="range"]::-webkit-slider-thumb {
   color: rgba(240, 230, 224, 0.5);
 }
 
-@media (max-width: 760px) {
+/* Tablet: intention + timer on top, tasks span full width below. */
+@media (max-width: 1024px) {
+  .fold__session-body { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 40px); }
+  .fold__session-side { grid-column: 1 / -1; }
+  .fold__session-side .fold__tasks { max-height: 300px; }
+}
+/* Phone: single column, scroll inside the session. */
+@media (max-width: 640px) {
   .fold__session-body { grid-template-columns: 1fr; align-content: start; gap: 22px; overflow-y: auto; }
 }
 
@@ -3055,21 +3069,26 @@ input[type="range"]::-webkit-slider-thumb {
   width: 152px;
   height: 152px;
   border-radius: 50%;
-  display: grid;
-  place-items: center;
   position: relative;
   background:
     radial-gradient(closest-side, #160c28 76%, transparent 77% 100%),
     conic-gradient(var(--accent, #e3c24a) calc(var(--frac) * 360deg), rgba(240, 230, 224, 0.18) 0);
   transition: background 0.25s linear;
 }
+/* The time is the hero: pinned dead-center in the ring. */
 .fold__timer-time {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: "Neue Montreal", sans-serif;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 38px;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   color: #f0e6e0;
   font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
 }
 .fold__timer-controls { display: flex; gap: 8px; align-self: stretch; }
 .fold__timer-btn {
@@ -3221,6 +3240,11 @@ input[type="range"]::-webkit-slider-thumb {
   50% { box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent, #e3c24a) 38%, transparent), inset 0 0 0 1px rgba(240, 230, 224, 0.08), 0 24px 60px rgba(0, 0, 0, 0.45), 0 0 78px 2px color-mix(in srgb, var(--accent, #e3c24a) 62%, transparent); }
 }
 .fold__timer-phase {
+  position: absolute;
+  top: 27%;
+  left: 0;
+  right: 0;
+  text-align: center;
   font-family: "Neue Montreal", sans-serif;
   font-size: 10px;
   letter-spacing: 0.3em;
@@ -3228,7 +3252,7 @@ input[type="range"]::-webkit-slider-thumb {
   color: color-mix(in srgb, var(--accent, #e3c24a) 80%, #f0e6e0);
   opacity: 0.85;
 }
-.fold__session .fold__timer-time { font-size: 56px; }
+.fold__session .fold__timer-time { font-size: 50px; }
 .fold__tasks-empty { color: rgba(240, 230, 224, 0.52); }
 
 @media (prefers-reduced-motion: reduce) {
