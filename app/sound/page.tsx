@@ -120,7 +120,7 @@ export default function Page() {
                 description="Stars Collide official music video, mixed and mastered by Range of View Studios sound engineering team."
                 thumbnailUrl="/thumbnails/soundhero.webp"
                 uploadDate="2025-01-10"
-                contentUrl="/soundpage/Scollidemv.mp4"
+                contentUrl="/soundpage/starscollidemv.mp4"
                 duration="PT3M30S"
                 pageUrl="/sound"
             />

@@ -48,7 +48,7 @@ const DigiMag = () => {
             {/* 1. Item 1: 2 columns, 1 row -> wide, fills height of row 1 */}
             <div className="col-span-2 row-span-1">
               <TiltedCard
-                imageSrc="/video/starscollidemv.mp4"
+                imageSrc="/soundpage/starscollidemv.mp4"
                 altText="Stars Collide MV"
                 containerHeight="100%"
                 containerWidth="100%"

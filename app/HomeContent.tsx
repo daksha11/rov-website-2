@@ -44,8 +44,8 @@ export default function HomeContent() {
     }
   }, []);
 
+  // Lock scrolling only while the cosmetic loading overlay is visible.
   useEffect(() => {
-    // Prevent scrolling during loading
     if (isLoading) {
       document.body.style.overflow = 'hidden';
       document.body.style.height = '100vh';
@@ -68,23 +68,29 @@ export default function HomeContent() {
       }, 100);
     }
 
-    const handleLoad = () => {
-      setIsLoading(false);
-    };
-
-    if (document.readyState === "complete") {
-      // Page already loaded — show content after brief transition
-      setTimeout(() => setIsLoading(false), 500);
-    } else {
-      window.addEventListener("load", handleLoad);
-    }
-
     return () => {
-      window.removeEventListener("load", handleLoad);
       document.body.style.overflow = '';
       document.body.style.height = '';
     };
   }, [isLoading]);
+
+  // Dismiss the overlay once the window has loaded. A hard cap guarantees
+  // it can never trap the view (or a crawler) if a resource hangs.
+  useEffect(() => {
+    const dismiss = () => setIsLoading(false);
+    const cap = setTimeout(dismiss, 5000);
+
+    if (document.readyState === "complete") {
+      const t = setTimeout(dismiss, 500);
+      return () => { clearTimeout(cap); clearTimeout(t); };
+    }
+    const onLoad = () => setTimeout(dismiss, 300);
+    window.addEventListener("load", onLoad);
+    return () => {
+      clearTimeout(cap);
+      window.removeEventListener("load", onLoad);
+    };
+  }, []);
 
   useEffect(() => {
     if (!isLoading) {
@@ -92,10 +98,9 @@ export default function HomeContent() {
     }
   }, [isLoading]);
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
+  // The real page is ALWAYS rendered into the DOM so crawlers and AI
+  // engines get the full content and every internal link. The loading
+  // screen is a fixed overlay on top, removed once loading completes.
   return (
     <main className="min-h-screen bg-black text-white overflow-x-hidden">
         <h2 className="sr-only">Range of View Studios — Creative Production Agency in Atlanta</h2>
@@ -130,6 +135,8 @@ export default function HomeContent() {
         <Footer />
 
         <NavigationDock />
+
+        {isLoading && <Loading onLoadingComplete={() => setIsLoading(false)} />}
       </main>
   );
 }

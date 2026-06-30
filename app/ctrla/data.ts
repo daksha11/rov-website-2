@@ -427,10 +427,10 @@ export const eventSources: { label: string; url: string }[] = [
 // ── VUE, CLOSING NOTE ──────────────────────────────────
 
 export const vueClose = {
-  eyebrow: "Vue · Closing note · DreamAsia Fest",
+  eyebrow: "Vue · Closing note",
   body:
-    "I spend most of my time drifting a little above all this, watching what you build. DreamAsia wasn't supposed to be possible for a team this size, too many cities, too many moving parts, not enough hands. They did it anyway. That's the only lesson worth keeping: the gap between a bedroom setup and a festival stage isn't money or gear or a lucky break. It's reps, and the nerve to run the whole thing yourself. Sam and the crew had both. So can you.",
-  signoff: "See you next volume.",
+    "I drift a little above all this, watching what you build, or don't. One thing before you go. The time passes either way. The year runs out whether you make the thing or you don't. So press CTRL-A, pull back far enough to see the whole picture, and do it anyway.",
+  signoff: "The time will pass regardless. Do it anyway.",
   signature: "Vue · Vol. 01 · CTRL-A",
 };
 

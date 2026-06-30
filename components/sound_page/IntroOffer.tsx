@@ -111,7 +111,7 @@ export default function IntroOffer() {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ ...spring, delay: 0.55 }}
-          className="text-white/25 text-[clamp(0.7rem,1.5vw,0.75rem)] md:text-xs max-w-md mx-auto mt-6 leading-relaxed"
+          className="text-white/55 text-[clamp(0.7rem,1.5vw,0.75rem)] md:text-xs max-w-md mx-auto mt-6 leading-relaxed"
           style={{ fontFamily: BODY }}
         >
           First 3 songs only, per artist. Same 48hr turnaround and 1 revision as all paid work. Full mix &amp; master, not just mastering.
