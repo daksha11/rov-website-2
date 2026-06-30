@@ -192,7 +192,7 @@ export default function RestaurantAtlantaPage() {
             borderRadius: "0 8px 8px 0",
           }}>
             <p style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: 22, lineHeight: 1.5, color: "#3B2114", margin: 0, fontStyle: "italic" }}>
-              "Not 132 a day. 132 total. For a restaurant in one of the most competitive food cities in the country."
+              &ldquo;Not 132 a day. 132 total. For a restaurant in one of the most competitive food cities in the country.&rdquo;
             </p>
           </blockquote>
 
