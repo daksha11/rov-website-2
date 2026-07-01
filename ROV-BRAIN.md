@@ -138,7 +138,7 @@ Always have at least one of these ready. These are your credibility anchors.
 
 | Client | Problem | Result |
 |--------|---------|--------|
-| TheBando (Atlanta restaurant) | Ordering page buried, invisible to mobile users | 132 → 91,000 ordering page views in 139 days (689x, no ads) |
+| TheBando (Atlanta restaurant) | Ordering page buried, invisible to mobile users | 132 → 91,000 ordering page views in 139 days (689x, no ads); bounce rate 94% → 46%, avg session 4:38, +33.5% page views, +87% revenue |
 | Aysegul Ikna (fashion, Ponce City Market) | Zero online presence, 100% in-person sales only | 20% total sales increase from new online channels |
 | DKM Corp (professional services, global) | Website undermined credibility, looked dated | Full brand rebuild, now matches the caliber of their actual work |
 

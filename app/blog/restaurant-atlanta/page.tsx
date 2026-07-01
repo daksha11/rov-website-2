@@ -44,7 +44,7 @@ const FAQS = [
   },
   {
     q: "Does my Atlanta restaurant need SEO or just a better website?",
-    a: "Both work together. A better website converts the people who already find you. SEO and GEO bring more people to find you in the first place. TheBando's redesign focused on conversion first, making the existing traffic count. Once that was working, traffic grew on its own because Google started surfacing a site that people were actually engaging with. Bounce rate dropped to 46% and session time hit 4 minutes 38 seconds.",
+    a: "Both work together. A better website converts the people who already find you. SEO and GEO bring more people to find you in the first place. TheBando's redesign focused on conversion first, making the existing traffic count. Once that was working, traffic grew on its own because Google started surfacing a site that people were actually engaging with. Bounce rate dropped from 94% to 46% and session time hit 4 minutes 38 seconds.",
   },
   {
     q: "What is GEO and why does it matter for my restaurant?",
@@ -439,7 +439,7 @@ export default function RestaurantAtlantaPage() {
           </div>
 
           <p style={{ fontSize: 17, lineHeight: 1.75, marginBottom: 20 }}>
-            Revenue grew 87% in five months. Orders nearly doubled. Visitors are staying longer too. Bounce rate dropped to 46% and average session time sits at 4 minutes 38 seconds.
+            Revenue grew 87% in five months. Orders nearly doubled. Visitors are staying longer too. Bounce rate dropped from 94% to 46% and average session time sits at 4 minutes 38 seconds.
           </p>
           <p style={{ fontSize: 17, lineHeight: 1.75 }}>
             A <Link href="/web" style={{ color: "#90422C", textDecoration: "underline" }}>website that works</Link> keeps working. The redesign did not just create a launch spike. It built a foundation that compounds.
