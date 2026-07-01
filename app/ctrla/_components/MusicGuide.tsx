@@ -13,10 +13,17 @@
 // Part 02 The Tools (the stations below).
 // ═══════════════════════════════════════════════════════
 
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { edLight as ed, Bleed, Kicker, Label, Rule } from "./editorial";
 import MixGlobe from "./MixGlobe";
+
+// Legibility tokens for this guide. The shared inkSoft (0.66 alpha) reads as a
+// dim grey on the cream gradient, so body copy and meta labels are darkened
+// here for real contrast without touching the rest of the editorial system.
+const READABLE = "rgba(22,12,40,0.88)"; // body paragraphs
+const META_INK = "rgba(22,12,40,0.58)"; // small caps labels
 
 function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
   return (
@@ -50,16 +57,16 @@ const TRUTHS = [
 ];
 
 const CHAIN = [
-  { n: "00", name: "Clean input", level: "the one everyone skips", body: "the room is handled, now the take. pop filter up, about a fist back from the mic, and sing slightly off axis so plosives do not thump the capsule. kill the fan and anything sharp. record with headroom, peaks around -12 to -18, so nothing clips on the way in. more than half the work is here." },
-  { n: "01", name: "Manual tuning", level: "by hand, graphical", body: "open melodyne or your daw's pitch editor and fix the notes that drift, by eye and by ear. you are correcting a real performance, not leaning on a crutch." },
-  { n: "02", name: "The tuner", level: "auto-tune on top", body: "now a real-time tuner rides over honest manual work. set it light when you want it invisible, hard when the locked sound is the whole point." },
-  { n: "03", name: "De-esser", level: "tame the harshness", body: "the sharp sss and t sounds stab through a mix. pull them down here. compression later can wake them back up, so do not be surprised if you de-ess again near the end." },
-  { n: "04", name: "EQ, subtractive", level: "carve the space first", body: "start by taking away. high-pass the rumble, cut what muddies. this corrective pass goes before the compressor so the comp is not reacting to mud. save the bright tonal lifts for after it." },
-  { n: "05", name: "Compressor", level: "even it out", body: "control the gap between the loud words and the quiet ones so every word lands up front. two gentle compressors in series beat one working hard." },
-  { n: "06", name: "Multiband compressor", level: "the surgical pass", body: "the same control, split by frequency band. calm one trouble spot, a boomy low or a harsh upper mid, without squashing the whole vocal." },
-  { n: "07", name: "Saturation", level: "the analog warmth", body: "this is the sound those expensive rooms get for free. a touch of harmonic saturation adds presence and glue, and helps the vocal sit forward without just turning it up." },
-  { n: "08", name: "Wet effects on a bus", level: "reverb · delay · chorus", body: "depth and width go on last, and they go on a bus, a send, not straight onto the track. that separation is the whole point. it is what keeps every effect under your control." },
-  { n: "09", name: "Automation", level: "ride it home", body: "the move that does more than any compressor. ride the vocal volume line by line so every single word sits. this is where a good mix quietly becomes a finished one." },
+  { n: "00", name: "Clean input", level: "the one everyone skips", tool: "", body: "the room is handled, now the take. pop filter up, about a fist back from the mic, and sing slightly off axis so plosives do not thump the capsule. kill the fan and anything sharp. record with headroom, peaks around -12 to -18, so nothing clips on the way in. more than half the work is here." },
+  { n: "01", name: "Manual tuning", level: "by hand, graphical", tool: "Antares Auto-Tune (Graph)", body: "open the graph editor and fix the notes that drift, by eye and by ear. you are correcting a real performance, not leaning on a crutch." },
+  { n: "02", name: "The tuner", level: "auto-tune on top", tool: "Antares Auto-Tune", body: "now a real-time tuner rides over honest manual work. set retune speed light when you want it invisible, near zero when the locked sound is the whole point." },
+  { n: "03", name: "De-esser", level: "tame the harshness", tool: "FabFilter Pro-DS", body: "the sharp sss and t sounds stab through a mix. pull them down here. compression later can wake them back up, so do not be surprised if you de-ess again near the end." },
+  { n: "04", name: "EQ, subtractive", level: "carve the space first", tool: "FabFilter Pro-Q 3", body: "start by taking away. high-pass the rumble, cut what muddies. this corrective pass goes before the compressor so the comp is not reacting to mud. save the bright tonal lifts for after it." },
+  { n: "05", name: "Compressor", level: "even it out", tool: "Waves CLA-2A", body: "control the gap between the loud words and the quiet ones so every word lands up front. two gentle compressors in series beat one working hard." },
+  { n: "06", name: "Multiband compressor", level: "the surgical pass", tool: "FabFilter Pro-Q 3 (dynamic)", body: "the same control, split by frequency band. calm one trouble spot, a boomy low or a harsh upper mid, without squashing the whole vocal. pro-q's dynamic bands do this without a separate plugin." },
+  { n: "07", name: "Saturation", level: "the analog warmth", tool: "CamelCrusher", body: "this is the sound those expensive rooms get for free. a touch of harmonic saturation adds presence and glue, and helps the vocal sit forward without just turning it up." },
+  { n: "08", name: "Wet effects on a bus", level: "reverb · delay · doubling", tool: "Pro-R · EchoBoy · Doubler", body: "depth and width go on last, and they go on a bus, a send, not straight onto the track. reverb for space, delay for throws, a doubler for width. that separation is the whole point, it keeps every effect under your control." },
+  { n: "09", name: "Automation", level: "ride it home", tool: "", body: "the move that does more than any compressor. ride the vocal volume line by line so every single word sits. this is where a good mix quietly becomes a finished one." },
 ];
 
 const MASTER = [
@@ -69,6 +76,33 @@ const MASTER = [
 ];
 
 export default function MusicGuide({ accent = ed.amber }: { accent?: string }) {
+  // Scroll-spy for the vocal chain: the step crossing the middle band of the
+  // viewport becomes active. Replaces the old hardcoded "step 00 is always lit"
+  // that read as a stuck highlight. IntersectionObserver works under Lenis
+  // smooth-scroll since it is layout based, not scroll-event based.
+  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const visible = useRef<Set<number>>(new Set());
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    const els = stepRefs.current.filter(Boolean) as HTMLElement[];
+    if (!els.length) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          const idx = Number((e.target as HTMLElement).dataset.idx);
+          if (e.isIntersecting) visible.current.add(idx);
+          else visible.current.delete(idx);
+        }
+        if (visible.current.size) setActive(Math.min(...Array.from(visible.current)));
+      },
+      // Thin detection band ~centered vertically, so one step is active at a time.
+      { rootMargin: "-42% 0px -45% 0px", threshold: 0 }
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
   return (
     <section style={{ background: "transparent", padding: "clamp(40px,6vw,80px) 0 0" }}>
       <Bleed>
@@ -95,8 +129,8 @@ export default function MusicGuide({ accent = ed.amber }: { accent?: string }) {
         <div className="ctrla-guide-split" style={{ margin: "clamp(28px,4vw,48px) 0 0" }}>
           <Reveal>
             <div style={{ borderTop: `2px solid ${ed.hair}`, paddingTop: 18 }}>
-              <Label color={ed.inkFaint} style={{ display: "block", marginBottom: 12 }}>the hundred thousand dollar room</Label>
-              <p style={{ fontFamily: ed.body, fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0 }}>
+              <Label color={META_INK} style={{ display: "block", marginBottom: 12 }}>the hundred thousand dollar room</Label>
+              <p style={{ fontFamily: ed.body, fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.6, color: READABLE, margin: 0 }}>
                 what separates a sony studio downtown from your setup is mostly one thing, and it is not a magic plugin. it is a treated room and the gear that colors a clean signal. the analog compressors, the saturation, the limiters. that part is true, and worth being honest about.
               </p>
             </div>
@@ -104,7 +138,7 @@ export default function MusicGuide({ accent = ed.amber }: { accent?: string }) {
           <Reveal delay={0.08}>
             <div style={{ borderTop: `2px solid ${accent}`, paddingTop: 18 }}>
               <Label color={accent} style={{ display: "block", marginBottom: 12 }}>your room</Label>
-              <p style={{ fontFamily: ed.body, fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0 }}>
+              <p style={{ fontFamily: ed.body, fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.6, color: READABLE, margin: 0 }}>
                 but a fancy camera does not take a great photo, and fancy gear does not make great music. the artist does. we can recreate almost all of that quality at home. the process is simple, it is just hard to master. that is what we are here for.
               </p>
             </div>
@@ -122,7 +156,7 @@ export default function MusicGuide({ accent = ed.amber }: { accent?: string }) {
                 <div style={{ borderTop: `2px solid ${ed.ink}`, paddingTop: 18, height: "100%" }}>
                   <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,4vw,46px)", letterSpacing: "-0.03em", color: accent, display: "block", marginBottom: 10 }}>{t.n}</span>
                   <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.3vw,26px)", letterSpacing: "-0.02em", color: ed.ink, margin: "0 0 12px" }}>{t.title}</h3>
-                  <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,16px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0 }}>{t.body}</p>
+                  <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,16px)", lineHeight: 1.6, color: READABLE, margin: 0 }}>{t.body}</p>
                 </div>
               </Reveal>
             ))}
@@ -140,8 +174,8 @@ export default function MusicGuide({ accent = ed.amber }: { accent?: string }) {
           <div className="ctrla-guide-split" style={{ marginTop: "clamp(24px,3vw,36px)" }}>
             <Reveal>
               <div style={{ borderTop: `2px solid ${ed.hair}`, paddingTop: 18 }}>
-                <Label color={ed.inkFaint} style={{ display: "block", marginBottom: 12 }}>why it matters most</Label>
-                <p style={{ fontFamily: ed.body, fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0 }}>
+                <Label color={META_INK} style={{ display: "block", marginBottom: 12 }}>why it matters most</Label>
+                <p style={{ fontFamily: ed.body, fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.6, color: READABLE, margin: 0 }}>
                   the single biggest gap between your setup and a hundred thousand dollar room is the room itself. an untreated space bounces sound back into the mic and bakes reverb into your take before you have done anything. you cannot eq your way out of a bad room, so you fix it at the source.
                 </p>
               </div>
@@ -149,7 +183,7 @@ export default function MusicGuide({ accent = ed.amber }: { accent?: string }) {
             <Reveal delay={0.08}>
               <div style={{ borderTop: `2px solid ${accent}`, paddingTop: 18 }}>
                 <Label color={accent} style={{ display: "block", marginBottom: 12 }}>the cheap fix</Label>
-                <p style={{ fontFamily: ed.body, fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0 }}>
+                <p style={{ fontFamily: ed.body, fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.6, color: READABLE, margin: 0 }}>
                   sing into the dead end of the room, never a corner, never a window or a glass table. hang a thick blanket behind you and to the sides to kill the first reflections. a closet full of clothes beats a big empty bedroom every time. it costs almost nothing and it closes most of the gap.
                 </p>
               </div>
@@ -164,26 +198,44 @@ export default function MusicGuide({ accent = ed.amber }: { accent?: string }) {
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 10px" }}>
               The chain, start to finish
             </h3>
-            <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0, maxWidth: 640 }}>
+            <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: READABLE, margin: 0, maxWidth: 640 }}>
               free or paid, bandlab or garageband, the order does not change. run it top to bottom and the voice that comes out the other side sounds like a record.
             </p>
           </Reveal>
 
           <div className="ctrla-chain">
-            {CHAIN.map((s, i) => (
+            {CHAIN.map((s, i) => {
+              const isActive = i === active;
+              return (
               <Reveal key={s.n} delay={Math.min(i * 0.04, 0.2)}>
-                <div className="ctrla-chain-step" style={{ borderLeft: `2px solid ${i === 0 ? accent : ed.hair}` }}>
-                  <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,3.4vw,42px)", letterSpacing: "-0.03em", lineHeight: 0.9, color: i === 0 ? accent : `${ed.ink}`, opacity: i === 0 ? 1 : 0.32 }}>{s.n}</span>
+                <div
+                  ref={(el) => { stepRefs.current[i] = el; }}
+                  data-idx={i}
+                  className="ctrla-chain-step"
+                  style={{
+                    borderLeft: `3px solid ${isActive ? accent : ed.hair}`,
+                    opacity: isActive ? 1 : 0.92,
+                    transition: "border-color 0.35s ease, opacity 0.35s ease",
+                  }}
+                >
+                  <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,3.4vw,42px)", letterSpacing: "-0.03em", lineHeight: 0.9, color: isActive ? accent : ed.ink, opacity: isActive ? 1 : 0.5, transition: "color 0.35s ease, opacity 0.35s ease" }}>{s.n}</span>
                   <div>
                     <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap", marginBottom: 8 }}>
                       <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.4vw,30px)", letterSpacing: "-0.02em", color: ed.ink, margin: 0 }}>{s.name}</h4>
-                      <Label color={i === 0 ? accent : ed.inkFaint}>{s.level}</Label>
+                      <Label color={isActive ? accent : META_INK}>{s.level}</Label>
                     </div>
-                    <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,17px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0, maxWidth: 640 }}>{s.body}</p>
+                    <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,17px)", lineHeight: 1.6, color: READABLE, margin: 0, maxWidth: 640 }}>{s.body}</p>
+                    {s.tool && (
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 12, fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.04em", color: isActive ? accent : META_INK, background: isActive ? "rgba(165,106,103,0.1)" : "transparent", border: `1px solid ${isActive ? accent : ed.hair}`, borderRadius: 999, padding: "5px 12px", transition: "color 0.35s ease, border-color 0.35s ease, background 0.35s ease" }}>
+                        <span style={{ width: 5, height: 5, borderRadius: "50%", background: isActive ? accent : META_INK, transition: "background 0.35s ease" }} aria-hidden />
+                        we reach for {s.tool}
+                      </span>
+                    )}
                   </div>
                 </div>
               </Reveal>
-            ))}
+              );
+            })}
           </div>
 
           {/* Bus explainer */}
@@ -193,7 +245,7 @@ export default function MusicGuide({ accent = ed.amber }: { accent?: string }) {
                 <Label color={accent} style={{ display: "block", marginBottom: 12 }}>Plain language</Label>
                 <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(24px,3.4vw,40px)", letterSpacing: "-0.02em", color: ed.ink, margin: 0 }}>So what is a bus, actually?</h4>
               </div>
-              <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.62, color: ed.inkSoft, margin: 0 }}>
+              <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.62, color: READABLE, margin: 0 }}>
                 a bus is just a separate mixer track you send sound to. instead of dropping reverb straight onto your vocal, you send a copy of it to a reverb bus. now you control the wet and the dry apart, you can run many things through one shared space, and your main track stays clean. pro touch: high-pass that reverb bus so it does not muddy the low end, and duck it under the dry vocal so depth never costs you clarity. it is most of the gap between a mix that sounds like a hobby and one that sounds like a release.
               </p>
             </div>
@@ -207,7 +259,7 @@ export default function MusicGuide({ accent = ed.amber }: { accent?: string }) {
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 10px" }}>
               Your song is a 3D globe
             </h3>
-            <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: "0 0 clamp(28px,4vw,44px)", maxWidth: 640 }}>
+            <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: READABLE, margin: "0 0 clamp(28px,4vw,44px)", maxWidth: 640 }}>
               the lesson i teach every artist. the front sounds are dry and in your face. wet effects like reverb and delay send things to the back. panning moves them left and right. spin it, tap a sound, and watch every element claim its own pocket of space.
             </p>
           </Reveal>
@@ -220,7 +272,7 @@ export default function MusicGuide({ accent = ed.amber }: { accent?: string }) {
         <div style={{ marginTop: "clamp(56px,8vw,112px)" }}>
           <Reveal>
             <Kicker color={accent}>Mastering, the basics</Kicker>
-            <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.6vw,18px)", lineHeight: 1.6, color: ed.inkSoft, margin: "12px 0 0", maxWidth: 620 }}>
+            <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.6vw,18px)", lineHeight: 1.6, color: READABLE, margin: "12px 0 0", maxWidth: 620 }}>
               master from a mix with headroom, around -6 db on the master, then three things matter.
             </p>
           </Reveal>
@@ -228,9 +280,9 @@ export default function MusicGuide({ accent = ed.amber }: { accent?: string }) {
             {MASTER.map((m, i) => (
               <Reveal key={m.title} delay={i * 0.06}>
                 <div style={{ borderTop: `2px solid ${accent}`, paddingTop: 18, height: "100%" }}>
-                  <Label color={ed.inkFaint} style={{ display: "block", marginBottom: 10 }}>{m.k}</Label>
+                  <Label color={META_INK} style={{ display: "block", marginBottom: 10 }}>{m.k}</Label>
                   <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.4vw,28px)", letterSpacing: "-0.02em", color: ed.ink, margin: "0 0 12px" }}>{m.title}</h3>
-                  <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,16px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0 }}>{m.body}</p>
+                  <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,16px)", lineHeight: 1.6, color: READABLE, margin: 0 }}>{m.body}</p>
                 </div>
               </Reveal>
             ))}
@@ -243,7 +295,7 @@ export default function MusicGuide({ accent = ed.amber }: { accent?: string }) {
           <Reveal>
             <div style={{ paddingTop: "clamp(22px,3vw,32px)", display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
               <Kicker color={accent}>Part 02 · The Tools</Kicker>
-              <span style={{ fontFamily: ed.body, fontStyle: "italic", fontSize: "clamp(14px,1.6vw,18px)", lineHeight: 1.4, color: ed.inkSoft }}>
+              <span style={{ fontFamily: ed.body, fontStyle: "italic", fontSize: "clamp(14px,1.6vw,18px)", lineHeight: 1.4, color: READABLE }}>
                 now the gear. the picks our engineers actually run.
               </span>
             </div>
