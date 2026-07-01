@@ -31,73 +31,63 @@ type Profile = {
   accent: string;
 };
 
-// Each room = a posture for the work. Same fundamentals, different framing.
+// Each world = a chakra flown as a spaceflight state. Same fundamentals,
+// different framing, accent tuned to the chakra. Keys match ROOMS ids.
 const PROFILES: Record<string, Profile> = {
-  commons: {
-    mode: "Showing up",
-    purpose: "Just start. Presence is most of the trick.",
+  root: {
+    mode: "Launchpad",
+    purpose: "Ignition, not perfection. Just start.",
     intentPrompt: "What are you sitting down to do?",
     intentPlaceholder: "one thing, in your words",
-    taskLead: "On the floor",
-    taskPlaceholder: "add a task",
-    cue: "You don't have to feel ready. You just have to begin.",
+    taskLead: "Pre-flight",
+    taskPlaceholder: "the smallest first move",
+    cue: "You don't have to feel ready. You have to start the count.",
     preset: 0,
-    accent: "#E3C24A",
+    accent: "#C8564A",
   },
-  window: {
-    mode: "Thinking wide",
-    purpose: "Step back. Let the idea breathe.",
-    intentPrompt: "What are you trying to figure out?",
+  sacral: {
+    mode: "The Drift",
+    purpose: "Go wide. No wrong turns yet.",
+    intentPrompt: "What are you exploring?",
     intentPlaceholder: "the question, not the answer",
     taskLead: "Threads to pull",
     taskPlaceholder: "a possibility, an angle",
-    cue: "No wrong notes yet. Go wide before you go deep.",
+    cue: "No wrong notes yet. Drift before you dive.",
     preset: 1,
-    accent: "#8E76B8",
+    accent: "#E0894A",
   },
-  back: {
-    mode: "Heads down",
+  solar: {
+    mode: "Full Burn",
+    purpose: "One target. Full thrust.",
+    intentPrompt: "What are you shipping?",
+    intentPlaceholder: "name the deliverable",
+    taskLead: "On the burn",
+    taskPlaceholder: "keep it concrete",
+    cue: "Momentum beats mood. Light it and go.",
+    preset: 1,
+    accent: "#E6C24A",
+  },
+  heart: {
+    mode: "Slow Orbit",
+    purpose: "Coast. Close the loops.",
+    intentPrompt: "What are you wrapping up?",
+    intentPlaceholder: "the loose ends",
+    taskLead: "Loose ends",
+    taskPlaceholder: "a small thing to close",
+    cue: "The hard push is behind you. Let it circle.",
+    preset: 0,
+    accent: "#5FAE86",
+  },
+  deep: {
+    mode: "Deep Field",
     purpose: "One hard thing. The rest can wait.",
     intentPrompt: "The one thing you're going deep on?",
     intentPlaceholder: "name the hard thing",
     taskLead: "Just this",
     taskPlaceholder: "keep it to one",
-    cue: "Close the tabs in your head. There is only this.",
+    cue: "Seal the doors. There is only this.",
     preset: 1,
-    accent: "#A56A67",
-  },
-  quiet: {
-    mode: "Unstuck",
-    purpose: "Stuck is allowed. Make it small.",
-    intentPrompt: "What's the smallest step from here?",
-    intentPlaceholder: "something tiny",
-    taskLead: "One inch",
-    taskPlaceholder: "the two-minute version",
-    cue: "You don't have to finish. You just have to move an inch.",
-    preset: 2,
-    accent: "#7E89A6",
-  },
-  veranda: {
-    mode: "Winding down",
-    purpose: "Lower the stakes. Close the loops.",
-    intentPrompt: "What are you wrapping up?",
-    intentPlaceholder: "the loose ends",
-    taskLead: "Loose ends",
-    taskPlaceholder: "a small thing to close",
-    cue: "The hard work is behind you. This is the easy mile.",
-    preset: 0,
-    accent: "#C98A4A",
-  },
-  golden: {
-    mode: "Locked in",
-    purpose: "You're in it. Protect the flow.",
-    intentPrompt: "What are you riding right now?",
-    intentPlaceholder: "stay with it",
-    taskLead: "In the flow",
-    taskPlaceholder: "don't break stride",
-    cue: "Don't break the chain. Stay exactly here.",
-    preset: 1,
-    accent: "#E3C24A",
+    accent: "#7A6AD0",
   },
 };
 
@@ -140,8 +130,8 @@ export default function FoldSession({
   onPickRoom: (id: string) => void;
   onExit: () => void;
 }) {
-  const profile = PROFILES[roomId] ?? PROFILES.commons;
-  const roomName = rooms.find((r) => r.id === roomId)?.name ?? "The Fold";
+  const profile = PROFILES[roomId] ?? PROFILES.root;
+  const roomName = rooms.find((r) => r.id === roomId)?.name ?? "Vantage";
 
   // ── Persisted state ──
   const [intention, setIntention] = useState("");
@@ -235,7 +225,7 @@ export default function FoldSession({
       aria-hidden={!open}
     >
       <div className="fold__session-bar">
-        <span className="fold__session-brand">The Fold · <b>{roomName}</b></span>
+        <span className="fold__session-brand">Vantage · <b>{roomName}</b></span>
         <button type="button" className="fold__session-exit" onClick={onExit}>Exit session →</button>
       </div>
 

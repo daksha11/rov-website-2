@@ -1,12 +1,12 @@
 "use client";
 
 // ═══════════════════════════════════════════════════════
-// TEAM — CTRL-A dark cosmic editorial
-// The people are the page. No filters, no view toggles, no
-// marquee: just a clean grid of portraits on the deep plum
-// ground, set in the house type (Neue Montreal + Instrument
-// Serif) with the rose accent. Tap a face to open the full
-// bio inline.
+// TEAM — ROV house editorial (home design system)
+// The people are the page. A clean grid of portraits on the
+// warm near-black ground, set in the ROV house type (Norwige
+// display + Inter body) with the ember gradient as the single
+// accent. Tap a face to open the full bio inline. Shared by the
+// home page and /about, so it wears the studio brand, not CTRL-A.
 // ═══════════════════════════════════════════════════════
 
 import React, { useState } from "react";
@@ -228,20 +228,23 @@ const teamMembers: TeamMember[] = [
     },
 ];
 
-// ── CTRL-A dark cosmic tokens ──
+// ── ROV brand tokens (warm-earth / ember) ──
+// Key names kept stable; values are the studio palette. `rose`/`gold` now
+// hold the ember accent tones so existing references pick up the brand.
 const T = {
-    ground: "#0F0820",
-    panel: "#24123A",
-    panelDeep: "#160C28",
-    ink: "#F0E6E0",
-    inkSoft: "rgba(240,230,224,0.76)",
-    inkFaint: "rgba(240,230,224,0.5)",
-    hair: "rgba(240,230,224,0.14)",
-    rose: "#A56A67",
-    gold: "#E3C24A",
-    grotesque: "'Neue Montreal', 'Helvetica Neue', Arial, sans-serif",
-    serif: "'Instrument Serif', Georgia, 'Times New Roman', serif",
-    mono: "'Neue Montreal', 'Helvetica Neue', Arial, sans-serif",
+    ground: "#0A0604",
+    panel: "#1A120B",
+    panelDeep: "#140C06",
+    ink: "#FFF4E3",
+    inkSoft: "rgba(255,244,227,0.74)",
+    inkFaint: "rgba(255,244,227,0.5)",
+    hair: "rgba(255,244,227,0.16)",
+    rose: "#EA9A61", // ember accent — legible on the dark ground
+    gold: "#B16937", // deeper ember, for secondary emphasis
+    emberGrad: "linear-gradient(112deg, #EA9A61 6.46%, #B16937 34.96%, #A64D2B 63.88%, #42201C 97.63%)",
+    grotesque: "'Norwige', 'Playfair Display', Georgia, serif", // display + names
+    serif: "'Inter', 'Helvetica Neue', Arial, sans-serif", // body / bio
+    mono: "'Inter', 'Helvetica Neue', Arial, sans-serif", // labels / roles
 } as const;
 
 // Unique people (the data carries duplicate entries for category grouping we no
@@ -251,7 +254,7 @@ const PEOPLE = teamMembers.filter((m, i, arr) => arr.findIndex((t) => t.name ===
 function Kicker({ children }: { children: React.ReactNode }) {
     return (
         <span style={{ display: "inline-flex", alignItems: "center", gap: 9 }}>
-            <span aria-hidden style={{ width: 18, height: 2, background: T.rose, flexShrink: 0 }} />
+            <span aria-hidden style={{ width: 18, height: 2, background: T.emberGrad, flexShrink: 0 }} />
             <span style={{ fontFamily: T.mono, fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: T.rose }}>{children}</span>
         </span>
     );
@@ -275,11 +278,11 @@ function PersonTile({ m, onClick }: { m: TeamMember; onClick: () => void }) {
                 loading="lazy"
                 className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.06]"
             />
-            <span aria-hidden style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 38%, rgba(15,8,32,0.35) 60%, rgba(15,8,32,0.94) 100%)" }} />
+            <span aria-hidden style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 38%, rgba(10,6,4,0.4) 60%, rgba(10,6,4,0.95) 100%)" }} />
             <span style={{ position: "absolute", left: 16, right: 16, bottom: 15 }}>
-                <span style={{ display: "block", fontFamily: T.grotesque, fontWeight: 800, fontSize: "clamp(15px,1.5vw,21px)", letterSpacing: "-0.02em", lineHeight: 1.04, color: T.ink }}>{m.name}</span>
+                <span style={{ display: "block", fontFamily: T.grotesque, fontWeight: 700, fontSize: "clamp(16px,1.6vw,22px)", letterSpacing: "-0.01em", lineHeight: 1.06, color: T.ink }}>{m.name}</span>
                 <span style={{ display: "block", marginTop: 5, fontFamily: T.mono, fontSize: 10, letterSpacing: "0.13em", textTransform: "uppercase", color: T.rose, lineHeight: 1.35 }}>{m.role}</span>
-                <span aria-hidden className="block h-[2px] mt-2.5 w-6 transition-all duration-500 ease-out group-hover:w-14" style={{ background: T.rose }} />
+                <span aria-hidden className="block h-[2px] mt-2.5 w-6 transition-all duration-500 ease-out group-hover:w-14" style={{ background: T.emberGrad }} />
             </span>
         </motion.button>
     );
@@ -313,7 +316,7 @@ function ExpandedMemberView({ m, onClose }: { m: TeamMember; onClose: () => void
                     </div>
 
                     <div className="flex-1 min-w-0">
-                        <h3 style={{ fontFamily: T.grotesque, fontWeight: 800, fontSize: "clamp(30px,4.6vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.96, color: T.ink, margin: 0 }}>{m.name}</h3>
+                        <h3 style={{ fontFamily: T.grotesque, fontWeight: 700, fontSize: "clamp(30px,4.6vw,56px)", letterSpacing: "-0.02em", lineHeight: 1.0, color: T.ink, margin: 0 }}>{m.name}</h3>
                         <p style={{ fontFamily: T.mono, fontSize: 12, letterSpacing: "0.16em", textTransform: "uppercase", color: T.rose, margin: "12px 0 0" }}>{m.role} · {m.location}</p>
 
                         {m.specialties && (
@@ -327,8 +330,8 @@ function ExpandedMemberView({ m, onClose }: { m: TeamMember; onClose: () => void
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-2 transition-colors"
                                 style={{ marginTop: 22, padding: "10px 20px", borderRadius: 999, border: `1px solid ${T.rose}`, color: T.ink, fontFamily: T.mono, fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase" }}
-                                onMouseEnter={(e) => { e.currentTarget.style.background = T.rose; }}
-                                onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+                                onMouseEnter={(e) => { e.currentTarget.style.background = T.emberGrad; e.currentTarget.style.borderColor = "transparent"; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = T.rose; }}
                             >
                                 View portfolio
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7" /></svg>

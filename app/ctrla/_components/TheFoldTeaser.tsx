@@ -24,8 +24,8 @@ export function TheFoldTeaser() {
             marginBottom: "clamp(18px,2.4vw,28px)",
           }}
         >
-          <Kicker color={ed.gold}>New · Ambient room</Kicker>
-          <Label color={ed.gold}>The Fold</Label>
+          <Kicker color={ed.gold}>New · Focus space</Kicker>
+          <Label color={ed.gold}>Vantage</Label>
         </div>
         <Rule style={{ marginBottom: "clamp(24px,3vw,36px)" }} />
 
@@ -73,7 +73,7 @@ export function TheFoldTeaser() {
               color: ed.gold,
             }}
           >
-            You belong somewhere
+            A cosmos of working states
           </span>
 
           <div
@@ -100,7 +100,7 @@ export function TheFoldTeaser() {
                 margin: 0,
               }}
             >
-              The Fold
+              Vantage
             </h2>
             <p
               style={{
@@ -112,8 +112,8 @@ export function TheFoldTeaser() {
                 maxWidth: 560,
               }}
             >
-              An ambient room for creatives. Soft presence, a living stream of sound, and a rhythm
-              that reads the hour. Not a focus tool, a place to not work alone.
+              A focus space for creatives. Fly between five worlds, each with its own light, sound,
+              and pace. Land where your head is, and work.
             </p>
             <span
               className="ctrla-feature-cta"
@@ -129,7 +129,7 @@ export function TheFoldTeaser() {
                 marginTop: 4,
               }}
             >
-              Step inside{" "}
+              Find your vantage{" "}
               <span aria-hidden className="ctrla-feature-arrow" style={{ transition: "transform .25s" }}>
                 →
               </span>

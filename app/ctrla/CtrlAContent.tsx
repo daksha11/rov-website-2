@@ -323,7 +323,7 @@ const CONTENTS = [
   { n: "01", title: "The Toolkits", meta: "Music · Web Dev · Design", href: "#toolkits", note: "Immersive and level by level. Learn the tool without the overwhelm." },
   { n: "02", title: "Brand Kit Generator", meta: "Standing feature", href: "/ctrla/brand-kit", note: "Your colours, type, and tone, exported to a working system in minutes." },
   { n: "03", title: "The Feature: DreamAsia Fest", meta: "The process, deep", href: "/ctrla/dreamasia", note: "From the bedroom to the stage, with none of the ugly steps skipped." },
-  { n: "04", title: "The Fold", meta: "Ambient room", href: "/ctrla/the-fold", note: "A room to work in, not alone. Soft presence and a living stream of sound." },
+  { n: "04", title: "Vantage", meta: "Focus space", href: "/ctrla/the-fold", note: "Five worlds to work in. Fly to the one your head is in, and stay as long as the work takes." },
   { n: "05", title: "The Cookbook", meta: "Fuel for the work", href: "#cookbook", note: "Easy recipes for creatives short on time and money." },
   { n: "06", title: "The City", meta: "World Cup, Atlanta", href: "#events", note: "Our hometown stage, and the summer the whole world arrives." },
 ];
