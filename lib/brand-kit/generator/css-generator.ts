@@ -250,6 +250,22 @@ body::after {
 .cover-logo-mark:hover { transform: scale(1.04) rotate(-2deg); }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* Uploaded cover logo (generateCover emits a plain <img>, no mark class) */
+.cover-logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px 0;
+}
+.cover-logo-wrap img {
+  width: auto;
+  max-width: 172px;
+  max-height: 116px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
 .cover-toc {
   list-style: none;
   margin-top: auto;
@@ -441,6 +457,17 @@ body::after {
   transition: background 0.35s;
   overflow: hidden;
 }
+/* Uploaded logo variant (generateLogoSection emits a plain <img>, no mark class) */
+.logo-cell img {
+  width: auto;
+  max-width: 132px;
+  max-height: 92px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.logo-cell:hover img { transform: scale(1.03); }
 .logo-cell.dark-cell { background: var(--ink); }
 .logo-cell.ember-cell { background: var(--ember); }
 .logo-cell.moss-cell  { background: var(--moss); }
@@ -1930,8 +1957,10 @@ body {
   padding: 40px 0;
 }
 .cover-logo-wrap img {
-  width: 60%;
-  max-width: 260px;
+  width: 48%;
+  max-width: 184px;
+  max-height: 128px;
+  object-fit: contain;
 }
 .cover-title {
   font-family: var(--font-display);
@@ -2087,8 +2116,9 @@ body {
   transition: background 0.4s ease;
 }
 .logo-cell img {
-  width: 55%;
-  max-width: 200px;
+  width: 42%;
+  max-width: 132px;
+  max-height: 96px;
   object-fit: contain;
   transition: transform 0.3s;
 }
