@@ -53,17 +53,21 @@ export default function AboutPage() {
       <PeopleSchema />
       <NavigationDock />
 
-      <main className="bg-black text-white">
+      <main style={{ background: "#0F0820", color: "#F0E6E0" }}>
         {/* Server-rendered intro — single H1 for the page, plus crawlable copy
-            establishing who runs the studio (E-E-A-T / GEO entity signals). */}
-        <section className="max-w-5xl mx-auto px-6 pt-28 pb-12 md:pt-36">
-          <p className="uppercase tracking-[0.2em] text-xs text-white/60 mb-4">
-            About · Range of View Studios
-          </p>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
-            The people behind the work.
+            establishing who runs the studio (E-E-A-T / GEO entity signals).
+            Set in the CTRL-A house type on the dark cosmic ground. */}
+        <section className="max-w-6xl mx-auto px-6 pt-28 pb-10 md:pt-36 md:pb-14">
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 9 }}>
+            <span aria-hidden style={{ width: 18, height: 2, background: "#A56A67", flexShrink: 0 }} />
+            <span style={{ fontFamily: "'Neue Montreal', 'Helvetica Neue', Arial, sans-serif", fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: "#A56A67" }}>
+              About · Range of View Studios
+            </span>
+          </span>
+          <h1 style={{ fontFamily: "'Neue Montreal', 'Helvetica Neue', Arial, sans-serif", fontWeight: 800, fontSize: "clamp(40px,7vw,84px)", lineHeight: 0.94, letterSpacing: "-0.03em", color: "#F0E6E0", margin: "18px 0 0", maxWidth: 900 }}>
+            The people behind the work<span style={{ color: "#A56A67" }}>.</span>
           </h1>
-          <p className="text-lg md:text-xl text-white/80 leading-relaxed max-w-3xl">
+          <p style={{ fontFamily: "'Instrument Serif', Georgia, 'Times New Roman', serif", fontSize: "clamp(18px,2.1vw,25px)", lineHeight: 1.55, color: "rgba(240,230,224,0.78)", margin: "22px 0 0", maxWidth: 760 }}>
             Range of View Studios is an Atlanta-based creative production agency. We are a team of
             founders, designers, developers, video producers, and strategists who build brands,
             websites, films, and AI systems end to end. Every project is led by named people with

@@ -1,21 +1,19 @@
 "use client";
 
 // ═══════════════════════════════════════════════════════
-// THE FOLD — asteroid-belt landing
-// A full-bleed canvas renders a slow ambient asteroid belt drifting
-// in perspective: the "window" of an all-night focus cafe. Six rooms
-// are camera VANTAGES on the same belt (not separate scenes). Picking
-// a room eases the camera over ~1.5s; scroll adds a temporary forward
-// lean that decays back to the room's ambient drift.
+// THE FOLD — a scroll voyage between planets
+// A full-bleed canvas is a slow journey through space. Six rooms are
+// six distinct PLANETS (lit orbs, styled after the CTRL-A mix globe)
+// strung along a zigzag track receding into depth. Scrolling advances
+// the camera down the track; it eases and LANDS centered on each planet
+// in turn, and landing sets that room active. The old asteroid belt
+// lives on as dim parallax dust drifting behind the planets.
 //
 // PERFORMANCE: the whole engine lives outside React (refs/module
-// scope). The RAF loop never calls setState. Rock silhouettes are
-// precomputed once into Float32Arrays; the draw loop does one cos/sin
-// per rock. Background gradient is cached. Rocks recycle in place.
-// Pauses on document.hidden, caps DPR at 2, honors reduced-motion.
-//
-// This belt is the Fold's landing page itself: the doorway is a
-// first-visit intro that dissolves into the drifting belt behind it.
+// scope). The RAF loop never calls setState except through a single
+// onRoom callback that only fires when the landed room changes. Rock
+// silhouettes and planet wireframes are precomputed once. Pauses on
+// document.hidden, caps DPR at 2, honors reduced-motion.
 // ═══════════════════════════════════════════════════════
 
 import { useEffect, useRef, useState } from "react";
@@ -23,50 +21,78 @@ import { useRouter } from "next/navigation";
 import { ed } from "../../_components/editorial";
 import FoldSession from "./FoldSession";
 
-type CamState = { dist: number; spreadY: number; drift: number; tumble: number; dens: number; warm: number };
-type Room = { id: string; name: string; floor: string; state: string; line: string; sound: string; cam: CamState };
+type Planet = {
+  light: string; // lit cap (upper-left)
+  mid: string; // body
+  dark: string; // shaded underside / terminator
+  halo: string; // "r,g,b" for the atmosphere glow
+  ring?: boolean; // a thin planetary ring
+  warm: number; // 0 cool .. 1 gold, drives the background wash
+};
+type Room = { id: string; name: string; floor: string; state: string; line: string; sound: string; planet: Planet };
 
 const ROOMS: Room[] = [
   { id: "commons", name: "The Commons", floor: "the floor", state: "",
     line: "Find your seat. An all-night cafe, out past the map.",
-    sound: "murmur", cam: { dist: 1.0, spreadY: 0.30, drift: 0.32, tumble: 1.0, dens: 1.0, warm: 0.5 } },
+    sound: "murmur",
+    planet: { light: "#5a4a6e", mid: "#2f2247", dark: "#120a22", halo: "150,120,168", warm: 0.5 } },
   { id: "window", name: "The Window Seat", floor: "wide open", state: "wide open",
-    line: "Wide open. The belt held at arm's length, all air and distance.",
-    sound: "music", cam: { dist: 1.6, spreadY: 0.22, drift: 0.22, tumble: 0.8, dens: 0.7, warm: 0.35 } },
+    line: "Wide open. Held at arm's length, all air and distance.",
+    sound: "music",
+    planet: { light: "#3f5a78", mid: "#243a54", dark: "#0c1626", halo: "110,150,190", warm: 0.32 } },
   { id: "back", name: "The Back Room", floor: "in it", state: "in it",
-    line: "In it. Rocks close enough to feel, the room dim around you.",
-    sound: "hum", cam: { dist: 0.55, spreadY: 0.42, drift: 0.40, tumble: 1.3, dens: 1.5, warm: 0.55 } },
+    line: "In it. Close enough to feel, the room dim around you.",
+    sound: "hum",
+    planet: { light: "#4a2f5e", mid: "#2a1740", dark: "#0c0518", halo: "120,80,160", warm: 0.55 } },
   { id: "quiet", name: "The Quiet Corner", floor: "stuck", state: "stuck",
-    line: "Stuck, and that's allowed. The field nearly still, the room sparse.",
-    sound: "rain", cam: { dist: 1.2, spreadY: 0.18, drift: 0.10, tumble: 0.4, dens: 0.5, warm: 0.4 } },
+    line: "Stuck, and that's allowed. Nearly still, the room sparse.",
+    sound: "rain",
+    planet: { light: "#5c5a6a", mid: "#343542", dark: "#15151c", halo: "150,150,170", warm: 0.4 } },
   { id: "veranda", name: "The Veranda", floor: "last light", state: "last light",
-    line: "Last light. The belt low on the horizon, warm and going gold.",
-    sound: "rain", cam: { dist: 1.3, spreadY: 0.16, drift: 0.26, tumble: 0.9, dens: 0.9, warm: 0.85 } },
+    line: "Last light. Low on the horizon, warm and going gold.",
+    sound: "rain",
+    planet: { light: "#8a5a44", mid: "#5a3324", dark: "#1e0f0a", halo: "200,130,80", ring: true, warm: 0.85 } },
   { id: "golden", name: "Golden Hour", floor: "locked", state: "locked",
-    line: "Locked. The held moment, the belt suspended, the color richest.",
-    sound: "music", cam: { dist: 0.9, spreadY: 0.28, drift: 0.14, tumble: 0.6, dens: 1.2, warm: 1.0 } },
+    line: "Locked. The held moment, the color richest.",
+    sound: "music",
+    planet: { light: "#b08a3a", mid: "#6e5020", dark: "#241705", halo: "227,194,74", ring: true, warm: 1.0 } },
 ];
 
-// ── Canvas palette, sourced from our CTRL-A design tokens ──
-// Stops blend from cool void → rose → warm gold as the room's `warm`
-// rises, so each vantage carries its own light without baking in a look.
+// ── Canvas palette for the asteroid dust behind the planets ──
 const mix = (a: number[], b: number[], t: number) =>
   `rgb(${Math.round(a[0] + (b[0] - a[0]) * t)},${Math.round(a[1] + (b[1] - a[1]) * t)},${Math.round(a[2] + (b[2] - a[2]) * t)})`;
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
 
 const PALETTE = {
-  rockFar: "#241436", // deep plum stone (far)
-  rockMid: "#5B4880", // lifted plum (mid)
-  rockNear: "#BC7E6A", // warm rose-stone (near), reads as lit
+  rockFar: "#241436",
+  rockMid: "#5B4880",
+  rockNear: "#BC7E6A",
   accent: ed.gold,
   bgTop: ed.void,
   bgMid: (w: number) => mix([26, 16, 40], [90, 46, 58], clamp01(w)),
   bgBot: (w: number) => mix([42, 22, 53], [138, 90, 42], clamp01(w)),
 };
 
-const CONFIG = {
-  count: 300, farZ: 1000, nearZ: 1, fov: 340, spreadX: 1500,
-  accentChance: 0.05, vMin: 7, vMax: 12, pushMax: 6.0, pushDecay: 0.9, easeRate: 0.045,
+// Asteroid backdrop config (kept from the belt, now dimmer parallax dust).
+const DUST = {
+  count: 150, farZ: 1000, nearZ: 90, fov: 340, spreadX: 1500, spreadY: 0.34,
+  accentChance: 0.045, drift: 0.28, parallax: 0.22,
+} as const;
+
+// Voyage config: how the camera rides the zigzag and lands on planets.
+const VOY = {
+  focal: 1.0, // perspective focal in "planet spacing" units
+  spacing: 1.9, // depth between planets — higher = further apart down the track
+  ampX: 0.6, // zigzag horizontal swing (world units)
+  ampY: 0.15, // gentle vertical sway
+  xScale: 0.72, // world-x → screen fraction of width
+  yScale: 0.55, // world-y → screen fraction of height
+  baseR: 0.27, // centered planet radius as a fraction of min(w,h)
+  ease: 0.085, // camera easing toward the target stop
+  spin: 0.0016, // planet wireframe spin per frame
+  wheelRate: 0.0022, // wheel delta → progress
+  touchRate: 0.006, // touch delta → progress
+  maxScale: 1.55, // clamp for a planet flying past the camera
 } as const;
 
 const SOUNDS = ["mute", "murmur", "music", "rain", "hum"] as const;
@@ -75,11 +101,13 @@ type Rock = { x: number; y: number; z: number; size: number; spin: number; spinR
 const TAU = 6.2831853;
 const rnd = (a: number, b: number) => a + Math.random() * (b - a);
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-const CAM_KEYS = ["dist", "spreadY", "drift", "tumble", "dens", "warm"] as const;
+
+// The zigzag: planets alternate sides going into depth.
+const sideX = (i: number) => (i % 2 === 0 ? -1 : 1) * VOY.ampX;
+const sideY = (i: number) => (i % 2 === 0 ? 1 : -1) * VOY.ampY;
 
 function makeVerts(): Float32Array {
-  const C = CONFIG,
-    n = Math.floor(rnd(C.vMin, C.vMax + 1)),
+  const n = Math.floor(rnd(6, 12)),
     p = new Float32Array(n * 2);
   for (let i = 0; i < n; i++) {
     const ang = (i / n) * TAU,
@@ -90,111 +118,314 @@ function makeVerts(): Float32Array {
   return p;
 }
 
-function createBeltEngine(canvas: HTMLCanvasElement) {
-  const C = CONFIG,
-    ctx = canvas.getContext("2d")!;
-  let w = 0, h = 0, raf = 0, running = true, reduced = false, push = 0;
-  const cam: CamState = { ...ROOMS[0].cam },
-    camT: CamState = { ...ROOMS[0].cam };
-  const rocks: Rock[] = [];
+// ── Planet wireframe (unit sphere lat/lon), generated once ──
+const LATS: number[][][] = [];
+const LONS: number[][][] = [];
+for (let lat = -60; lat <= 60; lat += 30) {
+  const r = Math.cos((lat * Math.PI) / 180);
+  const yv = Math.sin((lat * Math.PI) / 180);
+  const ring: number[][] = [];
+  for (let a = 0; a <= 360; a += 12) {
+    const t = (a * Math.PI) / 180;
+    ring.push([r * Math.cos(t), yv, r * Math.sin(t)]);
+  }
+  LATS.push(ring);
+}
+for (let lon = 0; lon < 180; lon += 30) {
+  const t = (lon * Math.PI) / 180;
+  const arc: number[][] = [];
+  for (let a = -90; a <= 90; a += 12) {
+    const p = (a * Math.PI) / 180;
+    arc.push([Math.cos(p) * Math.sin(t), Math.sin(p), Math.cos(p) * Math.cos(t)]);
+  }
+  LONS.push(arc);
+}
+// Rotate a unit point by yaw (around Y) then a fixed pitch (around X).
+function rot(px: number, py: number, pz: number, y: number, p: number) {
+  const cy = Math.cos(y), sy = Math.sin(y);
+  const x = px * cy + pz * sy;
+  const z = -px * sy + pz * cy;
+  const cx = Math.cos(p), sx = Math.sin(p);
+  return { x, y: py * cx - z * sx, z: py * sx + z * cx };
+}
 
-  function fill(r: Rock, atZ: number | null) {
-    r.x = (rnd(-1, 1) * C.spreadX) / 2;
-    r.y = rnd(-1, 1) * C.spreadX * cam.spreadY;
-    r.z = atZ ?? Math.random() * C.farZ;
-    r.size = rnd(5, 38);
+function createVoyageEngine(canvas: HTMLCanvasElement, onRoom: (i: number) => void) {
+  const ctx = canvas.getContext("2d")!;
+  let w = 0, h = 0, raf = 0, running = true, reduced = false;
+
+  // Camera position along the track (float planet-index). progress eases to target.
+  let progress = 0, target = 0;
+  let landed = -1;
+  let warm = ROOMS[0].planet.warm; // eased background wash
+  let warmTarget = ROOMS[0].planet.warm; // target wash for the landed room
+  const spins = ROOMS.map((_, i) => i * 1.3); // per-planet wireframe phase
+
+  // Interaction: hover + drag to turn the planets, click to travel.
+  let hoverIndex = -1;
+  let yawOffset = 0; // manual rotation added to every planet's spin
+  let dragging = false;
+  const projected: { i: number; x: number; y: number; R: number }[] = [];
+
+  // Asteroid dust.
+  const rocks: Rock[] = [];
+  function fillRock(r: Rock, atZ: number | null) {
+    r.x = (rnd(-1, 1) * DUST.spreadX) / 2;
+    r.y = rnd(-1, 1) * DUST.spreadX * DUST.spreadY;
+    r.z = atZ ?? DUST.nearZ + Math.random() * (DUST.farZ - DUST.nearZ);
+    r.size = rnd(4, 18);
     r.spin = rnd(0, TAU);
     r.spinRate = rnd(-1, 1) * 0.012;
     r.verts = makeVerts();
-    r.accent = Math.random() < C.accentChance;
+    r.accent = Math.random() < DUST.accentChance;
   }
-  const blank = (): Rock => ({ x: 0, y: 0, z: 0, size: 0, spin: 0, spinRate: 0, verts: makeVerts(), accent: false });
-  for (let i = 0; i < C.count; i++) {
-    const r = blank();
-    fill(r, null);
+  for (let i = 0; i < DUST.count; i++) {
+    const r: Rock = { x: 0, y: 0, z: 0, size: 0, spin: 0, spinRate: 0, verts: makeVerts(), accent: false };
+    fillRock(r, null);
     rocks.push(r);
   }
 
-  let bgGrad: CanvasGradient | null = null,
-    bgWarm = -1,
-    bgH = -1;
-  function bg() {
-    const wq = Math.round(cam.warm * 100) / 100;
-    if (bgGrad && wq === bgWarm && h === bgH) return bgGrad;
-    const wv = cam.warm,
-      g = ctx.createLinearGradient(0, 0, 0, h);
-    g.addColorStop(0, PALETTE.bgTop);
-    g.addColorStop(0.55, PALETTE.bgMid(wv));
-    g.addColorStop(1, PALETTE.bgBot(wv));
-    bgGrad = g;
-    bgWarm = wq;
-    bgH = h;
-    return g;
+  // Camera x/y interpolated along the zigzag at a fractional progress.
+  function camAt(prog: number, axis: (i: number) => number) {
+    const i0 = Math.floor(prog);
+    const i1 = Math.min(ROOMS.length - 1, i0 + 1);
+    const f = prog - i0;
+    const a = axis(Math.max(0, Math.min(ROOMS.length - 1, i0)));
+    const b = axis(i1);
+    return a + (b - a) * f;
   }
 
-  function draw(a: Rock) {
-    const z = a.z * cam.dist,
-      k = C.fov / z,
-      sx = w * 0.5 + a.x * k,
-      sy = h * 0.46 + a.y * k,
-      r = a.size * k;
-    if (r < 0.4 || sx < -60 || sx > w + 60 || sy < -60 || sy > h + 60) return;
-    const depth = 1 - a.z / C.farZ,
-      alpha = depth * 1.7;
-    ctx.globalAlpha = alpha < 1 ? alpha : 1;
-    let fillC = PALETTE.rockFar;
-    if (depth > 0.66) fillC = PALETTE.rockNear;
-    else if (depth > 0.33) fillC = PALETTE.rockMid;
-    const co = Math.cos(a.spin) * r,
-      si = Math.sin(a.spin) * r,
-      p = a.verts,
-      n = p.length;
+  function drawDust(camX: number) {
+    ctx.save();
+    for (let i = 0; i < rocks.length; i++) {
+      const a = rocks[i];
+      a.z -= DUST.drift;
+      a.spin += a.spinRate;
+      if (a.z <= DUST.nearZ) fillRock(a, DUST.farZ);
+    }
+    rocks.sort((p, q) => q.z - p.z);
+    const par = camX * DUST.parallax * w;
+    for (let i = 0; i < rocks.length; i++) {
+      const a = rocks[i];
+      const k = DUST.fov / a.z;
+      const sx = w * 0.5 + a.x * k - par;
+      const sy = h * 0.46 + a.y * k;
+      const r = a.size * k;
+      if (r < 0.4 || sx < -60 || sx > w + 60 || sy < -60 || sy > h + 60) continue;
+      const depth = 1 - a.z / DUST.farZ;
+      ctx.globalAlpha = Math.min(1, depth * 1.7) * 0.6; // dimmer than the planets
+      let fillC = PALETTE.rockFar;
+      if (depth > 0.66) fillC = PALETTE.rockNear;
+      else if (depth > 0.33) fillC = PALETTE.rockMid;
+      const co = Math.cos(a.spin) * r, si = Math.sin(a.spin) * r, p = a.verts, n = p.length;
+      ctx.beginPath();
+      ctx.moveTo(sx + p[0] * co - p[1] * si, sy + p[0] * si + p[1] * co);
+      for (let j = 2; j < n; j += 2) ctx.lineTo(sx + p[j] * co - p[j + 1] * si, sy + p[j] * si + p[j + 1] * co);
+      ctx.closePath();
+      if (a.accent) {
+        ctx.save();
+        ctx.shadowColor = PALETTE.accent;
+        ctx.shadowBlur = r * 1.1;
+        ctx.fillStyle = PALETTE.accent;
+        ctx.fill();
+        ctx.restore();
+      } else {
+        ctx.fillStyle = fillC;
+        ctx.fill();
+      }
+    }
+    ctx.restore();
+  }
+
+  // A single lit planet, styled after the mix globe: halo, lit body,
+  // rotating wireframe, rim, optional ring.
+  function drawPlanet(px: number, py: number, R: number, pal: Planet, spin: number, alpha: number) {
+    if (R < 2 || alpha <= 0.01) return;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+
+    // Atmosphere halo just outside the rim.
+    const halo = ctx.createRadialGradient(px, py, R * 0.92, px, py, R * 1.35);
+    halo.addColorStop(0, `rgba(${pal.halo},0)`);
+    halo.addColorStop(0.55, `rgba(${pal.halo},0.14)`);
+    halo.addColorStop(1, `rgba(${pal.halo},0)`);
+    ctx.fillStyle = halo;
     ctx.beginPath();
-    let ux = p[0],
-      uy = p[1];
-    ctx.moveTo(sx + ux * co - uy * si, sy + ux * si + uy * co);
-    for (let i = 2; i < n; i += 2) {
-      ux = p[i];
-      uy = p[i + 1];
-      ctx.lineTo(sx + ux * co - uy * si, sy + ux * si + uy * co);
-    }
-    ctx.closePath();
-    if (a.accent) {
+    ctx.arc(px, py, R * 1.35, 0, TAU);
+    ctx.fill();
+
+    // Optional ring behind the body (back half).
+    if (pal.ring) {
       ctx.save();
-      ctx.shadowColor = PALETTE.accent;
-      ctx.shadowBlur = r * 1.1;
-      ctx.fillStyle = PALETTE.accent;
-      ctx.fill();
+      ctx.translate(px, py);
+      ctx.rotate(-0.42);
+      ctx.scale(1, 0.32);
+      ctx.beginPath();
+      ctx.arc(0, 0, R * 1.5, Math.PI, TAU);
+      ctx.strokeStyle = `rgba(${pal.halo},${0.5 * alpha})`;
+      ctx.lineWidth = R * 0.1;
+      ctx.stroke();
       ctx.restore();
-    } else {
-      ctx.fillStyle = fillC;
-      ctx.fill();
     }
+
+    // Lit sphere body — light from upper-left into shadow lower-right.
+    const g = ctx.createRadialGradient(px - R * 0.34, py - R * 0.4, R * 0.06, px - R * 0.05, py - R * 0.05, R * 1.28);
+    g.addColorStop(0, pal.light);
+    g.addColorStop(0.5, pal.mid);
+    g.addColorStop(1, pal.dark);
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(px, py, R, 0, TAU);
+    ctx.fill();
+
+    // Glassy dome highlight, clipped to the shell.
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(px, py, R, 0, TAU);
+    ctx.clip();
+    const dome = ctx.createRadialGradient(px - R * 0.5, py - R * 0.58, R * 0.04, px - R * 0.15, py - R * 0.25, R * 1.15);
+    dome.addColorStop(0, "rgba(255,255,255,0.2)");
+    dome.addColorStop(0.4, "rgba(255,255,255,0.03)");
+    dome.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.fillStyle = dome;
+    ctx.fillRect(px - R, py - R, R * 2, R * 2);
+
+    // Wireframe inside the shell — alpha keyed to facing so the back recedes.
+    const P = -0.34;
+    const drawLine = (pts: number[][]) => {
+      ctx.beginPath();
+      let zsum = 0;
+      const proj = pts.map(([a, b, c]) => {
+        const r = rot(a, b, c, spin, P);
+        zsum += r.z;
+        return r;
+      });
+      let started = false;
+      proj.forEach((r) => {
+        const sx = px + r.x * R, sy = py - r.y * R;
+        if (!started) { ctx.moveTo(sx, sy); started = true; }
+        else ctx.lineTo(sx, sy);
+      });
+      const za = zsum / proj.length;
+      const a = 0.05 + Math.max(0, (za + 1) / 2) * 0.2;
+      ctx.strokeStyle = `rgba(224,210,232,${a.toFixed(3)})`;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    };
+    LATS.forEach(drawLine);
+    LONS.forEach(drawLine);
+    ctx.restore(); // un-clip
+
+    // Rim hairline.
+    ctx.beginPath();
+    ctx.arc(px, py, R, 0, TAU);
+    ctx.strokeStyle = "rgba(240,230,224,0.22)";
+    ctx.lineWidth = 1.4;
+    ctx.stroke();
+
+    // Ring front half over the body.
+    if (pal.ring) {
+      ctx.save();
+      ctx.translate(px, py);
+      ctx.rotate(-0.42);
+      ctx.scale(1, 0.32);
+      ctx.beginPath();
+      ctx.arc(0, 0, R * 1.5, 0, Math.PI);
+      ctx.strokeStyle = `rgba(${pal.halo},${0.62 * alpha})`;
+      ctx.lineWidth = R * 0.1;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    ctx.restore();
   }
 
   function frame() {
     if (!running) return;
-    if (w <= 0 || h <= 0) {
-      raf = requestAnimationFrame(frame);
-      return;
+    if (w <= 0 || h <= 0) { raf = requestAnimationFrame(frame); return; }
+
+    // Ease the camera toward its target stop.
+    progress += (target - progress) * (reduced ? 1 : VOY.ease);
+    if (Math.abs(target - progress) < 0.0005) progress = target;
+
+    // Landed room = nearest planet; fire the callback only on change.
+    const near = Math.round(progress);
+    if (near !== landed && Math.abs(progress - near) < 0.5) {
+      landed = near;
+      warmTarget = ROOMS[near].planet.warm;
+      onRoom(near);
     }
-    const t = reduced ? 1 : C.easeRate;
-    for (const kk of CAM_KEYS) cam[kk] = lerp(cam[kk], camT[kk], t);
-    ctx.fillStyle = bg();
+    warm += (warmTarget - warm) * 0.05;
+
+    // Background wash, blended by the landed room's warmth.
+    const bg = ctx.createLinearGradient(0, 0, 0, h);
+    bg.addColorStop(0, PALETTE.bgTop);
+    bg.addColorStop(0.55, PALETTE.bgMid(warm));
+    bg.addColorStop(1, PALETTE.bgBot(warm));
+    ctx.fillStyle = bg;
     ctx.fillRect(0, 0, w, h);
-    const speed = cam.drift + push;
-    if (!reduced) push *= C.pushDecay;
-    if (push < 0.002 && push > -0.002) push = 0;
-    const tumble = cam.tumble;
-    for (let i = 0; i < rocks.length; i++) {
-      const a = rocks[i];
-      a.z -= speed;
-      a.spin += a.spinRate * tumble;
-      if (a.z <= C.nearZ) fill(a, C.farZ);
-      else if (a.z > C.farZ) fill(a, C.nearZ + 1);
+
+    const camX = camAt(progress, sideX);
+    const camY = camAt(progress, sideY);
+
+    drawDust(camX);
+
+    // Auto-spin the wireframes, but hold still while a hand is on them.
+    if (!reduced && hoverIndex < 0 && !dragging) for (let i = 0; i < spins.length; i++) spins[i] += VOY.spin;
+
+    const cx = w / 2, cy = h * 0.5;
+    const R0 = Math.min(w, h) * VOY.baseR;
+
+    // Project every planet; draw far → near.
+    type P = { i: number; x: number; y: number; R: number; a: number; z: number };
+    const items: P[] = [];
+    for (let i = 0; i < ROOMS.length; i++) {
+      const relZ = i - progress;
+      if (relZ < -0.9 || relZ > 4.6) continue;
+      const dz = relZ * VOY.spacing; // wider spacing pushes neighbours further down the track
+      const s = Math.min(VOY.maxScale, VOY.focal / (dz + VOY.focal));
+      if (s <= 0) continue;
+      const sx = cx + (sideX(i) - camX) * s * VOY.xScale * w;
+      const sy = cy + (sideY(i) - camY) * s * VOY.yScale * h + h * 0.02;
+      const R = R0 * s;
+      // Fade in far ahead, fade out as it slips past the camera.
+      let a = 1;
+      if (relZ > 3) a = clamp01(1 - (relZ - 3) / 1.4);
+      if (relZ < 0) a = clamp01(1 + relZ / 0.9);
+      items.push({ i, x: sx, y: sy, R, a, z: relZ });
     }
-    rocks.sort((p, q) => q.z - p.z);
-    for (let i = 0; i < rocks.length; i++) draw(rocks[i]);
+    items.sort((p, q) => q.z - p.z);
+
+    // Publish screen positions for pointer hit-testing.
+    projected.length = 0;
+    for (const p of items) projected.push({ i: p.i, x: p.x, y: p.y, R: p.R });
+
+    // Faint zigzag track connecting the visible planet centers.
+    if (items.length > 1) {
+      ctx.save();
+      ctx.beginPath();
+      items.forEach((p, idx) => (idx === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y)));
+      ctx.setLineDash([2, 9]);
+      ctx.strokeStyle = "rgba(240,230,224,0.14)";
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    for (const p of items) drawPlanet(p.x, p.y, p.R, ROOMS[p.i].planet, spins[p.i] + yawOffset, p.a);
+
+    // Hover cue — a bright accent ring on the planet under the pointer.
+    const hov = items.find((p) => p.i === hoverIndex);
+    if (hov) {
+      ctx.save();
+      ctx.globalAlpha = hov.a;
+      ctx.beginPath();
+      ctx.arc(hov.x, hov.y, hov.R + 7, 0, TAU);
+      ctx.strokeStyle = `rgba(${ROOMS[hov.i].planet.halo},0.9)`;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.restore();
+    }
+
     raf = requestAnimationFrame(frame);
   }
 
@@ -206,33 +437,31 @@ function createBeltEngine(canvas: HTMLCanvasElement) {
     canvas.width = Math.floor(w * dpr);
     canvas.height = Math.floor(h * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    bgGrad = null; // height may have changed; rebuild gradient
   }
 
-  function setRoom(id: string) {
-    const room = ROOMS.find((r) => r.id === id);
-    if (!room) return;
-    for (const kk of CAM_KEYS) camT[kk] = room.cam[kk];
-    const target = Math.round(C.count * room.cam.dens);
-    while (rocks.length < target) {
-      const r = blank();
-      fill(r, C.farZ);
-      rocks.push(r);
+  // ── Controls ──
+  const clampT = (v: number) => Math.max(0, Math.min(ROOMS.length - 1, v));
+  const scrollBy = (d: number) => { target = clampT(target + d); };
+  const endScroll = () => { target = clampT(Math.round(target)); };
+  const goTo = (i: number) => { target = clampT(i); };
+  const setReducedMotion = (v: boolean) => { reduced = v; };
+
+  // Pointer hit-test: nearest drawn planet under (px,py), preferring the one
+  // closest to the camera (drawn last / largest). Returns -1 if none.
+  const pickAt = (px: number, py: number) => {
+    let hit = -1;
+    for (const p of projected) {
+      const d = Math.hypot(px - p.x, py - p.y);
+      if (d < p.R * 1.02) hit = p.i; // projected is far→near, so last match wins
     }
-    if (rocks.length > target) rocks.length = target;
-  }
-  const addPush = (d: number) => {
-    push = Math.max(-C.pushMax, Math.min(C.pushMax, push + d));
+    return hit;
   };
-  const setReducedMotion = (v: boolean) => {
-    reduced = v;
-  };
+  const setHover = (i: number) => { hoverIndex = i; };
+  const setDragging = (v: boolean) => { dragging = v; };
+  const rotateBy = (dx: number) => { yawOffset += dx * 0.008; };
   const onVis = () => {
     if (document.hidden) running = false;
-    else if (!running) {
-      running = true;
-      raf = requestAnimationFrame(frame);
-    }
+    else if (!running) { running = true; raf = requestAnimationFrame(frame); }
   };
 
   resize();
@@ -246,22 +475,30 @@ function createBeltEngine(canvas: HTMLCanvasElement) {
     window.removeEventListener("resize", resize);
     document.removeEventListener("visibilitychange", onVis);
   }
-  return { setRoom, addPush, setReducedMotion, destroy };
+  return { scrollBy, endScroll, goTo, setReducedMotion, pickAt, setHover, setDragging, rotateBy, destroy };
 }
 
 export default function TheFoldBelt() {
   const router = useRouter();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const engineRef = useRef<ReturnType<typeof createBeltEngine> | null>(null);
+  const engineRef = useRef<ReturnType<typeof createVoyageEngine> | null>(null);
   const [activeId, setActiveId] = useState("commons");
   const [sound, setSound] = useState("murmur");
   const [doorOpen, setDoorOpen] = useState(true);
   const [hintGone, setHintGone] = useState(false);
   const [sessionMode, setSessionMode] = useState(false);
 
+  // Latest room-change handler, so the engine callback never goes stale.
+  const onRoomRef = useRef<(i: number) => void>(() => {});
+  onRoomRef.current = (i: number) => {
+    const room = ROOMS[i];
+    setActiveId(room.id);
+    setSound(room.sound);
+  };
+
   useEffect(() => {
     const canvas = canvasRef.current!;
-    const engine = createBeltEngine(canvas);
+    const engine = createVoyageEngine(canvas, (i) => onRoomRef.current(i));
     engineRef.current = engine;
 
     try {
@@ -273,43 +510,106 @@ export default function TheFoldBelt() {
     const onMq = (e: MediaQueryListEvent) => engine.setReducedMotion(e.matches);
     mq.addEventListener("change", onMq);
 
+    // Debounced scroll → snap-land on the nearest planet once scrolling stops.
+    let idle: ReturnType<typeof setTimeout> | null = null;
+    const settle = () => {
+      if (idle) clearTimeout(idle);
+      idle = setTimeout(() => engine.endScroll(), 150);
+    };
     const onWheel = (e: WheelEvent) => {
-      engine.addPush(e.deltaY * 0.012);
+      engine.scrollBy(e.deltaY * VOY.wheelRate);
       setHintGone(true);
+      settle();
     };
     let touchY: number | null = null;
-    const onTS = (e: TouchEvent) => {
-      touchY = e.touches[0].clientY;
-    };
+    const onTS = (e: TouchEvent) => { touchY = e.touches[0].clientY; };
     const onTM = (e: TouchEvent) => {
       if (touchY == null) return;
       const y = e.touches[0].clientY;
-      engine.addPush((touchY - y) * 0.03);
+      engine.scrollBy((touchY - y) * VOY.touchRate);
       touchY = y;
       setHintGone(true);
+      settle();
     };
+    const onTE = () => { touchY = null; settle(); };
     window.addEventListener("wheel", onWheel, { passive: true });
     window.addEventListener("touchstart", onTS, { passive: true });
     window.addEventListener("touchmove", onTM, { passive: true });
+    window.addEventListener("touchend", onTE, { passive: true });
 
     return () => {
+      if (idle) clearTimeout(idle);
       mq.removeEventListener("change", onMq);
       window.removeEventListener("wheel", onWheel);
       window.removeEventListener("touchstart", onTS);
       window.removeEventListener("touchmove", onTM);
+      window.removeEventListener("touchend", onTE);
       engine.destroy();
       engineRef.current = null;
     };
   }, []);
 
   const pickRoom = (id: string) => {
-    const room = ROOMS.find((r) => r.id === id)!;
-    engineRef.current?.setRoom(id);
+    const idx = ROOMS.findIndex((r) => r.id === id);
+    if (idx < 0) return;
+    engineRef.current?.goTo(idx);
     setActiveId(id);
-    setSound(room.sound);
+    setSound(ROOMS[idx].sound);
   };
-  // Dismiss the first-visit doorway into the belt. `toCommons` settles
-  // the camera onto the Commons; otherwise we leave the current vantage.
+
+  // ── Pointer on the planets: hover to highlight, drag to turn, click to travel ──
+  const drag = useRef({ down: false, moved: 0, lastX: 0, lastY: 0, mouse: false });
+  const [hovering, setHovering] = useState(false);
+  const [grabbing, setGrabbing] = useState(false);
+
+  const onPtrMove = (e: React.PointerEvent) => {
+    const eng = engineRef.current;
+    if (!eng) return;
+    const d = drag.current;
+    if (d.down) {
+      const dx = e.clientX - d.lastX;
+      d.moved += Math.abs(dx) + Math.abs(e.clientY - d.lastY);
+      if (d.mouse) eng.rotateBy(dx); // turn the planets (mouse only; touch scrolls)
+      d.lastX = e.clientX;
+      d.lastY = e.clientY;
+    } else {
+      const idx = eng.pickAt(e.clientX, e.clientY);
+      eng.setHover(idx);
+      setHovering(idx >= 0);
+    }
+  };
+  const onPtrDown = (e: React.PointerEvent) => {
+    const eng = engineRef.current;
+    if (!eng) return;
+    drag.current = { down: true, moved: 0, lastX: e.clientX, lastY: e.clientY, mouse: e.pointerType === "mouse" };
+    if (e.pointerType === "mouse") {
+      eng.setDragging(true);
+      setGrabbing(true);
+      (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+    }
+  };
+  const onPtrUp = (e: React.PointerEvent) => {
+    const eng = engineRef.current;
+    if (!eng) return;
+    const d = drag.current;
+    eng.setDragging(false);
+    setGrabbing(false);
+    if (d.down && d.moved < 6) {
+      const idx = eng.pickAt(e.clientX, e.clientY);
+      if (idx >= 0) pickRoom(ROOMS[idx].id);
+    }
+    d.down = false;
+  };
+  const onPtrLeave = () => {
+    const eng = engineRef.current;
+    if (!eng) return;
+    eng.setHover(-1);
+    eng.setDragging(false);
+    setHovering(false);
+    setGrabbing(false);
+    drag.current.down = false;
+  };
+  // Dismiss the first-visit doorway into the voyage.
   const enterBelt = (toCommons: boolean) => {
     setDoorOpen(false);
     try {
@@ -321,7 +621,16 @@ export default function TheFoldBelt() {
 
   return (
     <div className={`fold${sessionMode ? " fold--session" : ""}`}>
-      <canvas ref={canvasRef} className="fold__belt" aria-hidden />
+      <canvas
+        ref={canvasRef}
+        className="fold__belt"
+        aria-hidden
+        onPointerMove={onPtrMove}
+        onPointerDown={onPtrDown}
+        onPointerUp={onPtrUp}
+        onPointerLeave={onPtrLeave}
+        style={{ cursor: grabbing ? "grabbing" : hovering ? "pointer" : "grab", touchAction: "none" }}
+      />
       <div className="fold__vignette" aria-hidden />
 
       <div className={`fold__door${doorOpen ? "" : " fold__door--gone"}`}>
@@ -348,7 +657,7 @@ export default function TheFoldBelt() {
           <div className="fold__floor">{room.floor}</div>
           <h1 className="fold__name">{room.name}</h1>
           <p className="fold__line">{room.line}</p>
-          <p className={`fold__hint${hintGone ? " fold__hint--hide" : ""}`}>Scroll to drift through · or pick a room below</p>
+          <p className={`fold__hint${hintGone ? " fold__hint--hide" : ""}`}>Scroll to travel · land on each room · or pick one below</p>
         </div>
 
         <footer className="fold__footer">

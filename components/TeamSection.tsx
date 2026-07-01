@@ -1,11 +1,18 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+// ═══════════════════════════════════════════════════════
+// TEAM — CTRL-A dark cosmic editorial
+// The people are the page. No filters, no view toggles, no
+// marquee: just a clean grid of portraits on the deep plum
+// ground, set in the house type (Neue Montreal + Instrument
+// Serif) with the rose accent. Tap a face to open the full
+// bio inline.
+// ═══════════════════════════════════════════════════════
+
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import Image from "next/image";
-import GradientBlob from "./GradientBlob";
-import TeamGlobeView from "./TeamGlobeView";
 
 type Category = "All" | "Creative" | "Tech" | "Systems";
 type CreativeSubcategory = "UI/UX" | "Motion" | "Illustrative" | "Sound";
@@ -221,161 +228,119 @@ const teamMembers: TeamMember[] = [
     },
 ];
 
-const categories: Category[] = ["Creative", "Tech", "Systems"];
-const creativeSubcategories: CreativeSubcategory[] = ["UI/UX", "Motion", "Illustrative", "Sound"];
+// ── CTRL-A dark cosmic tokens ──
+const T = {
+    ground: "#0F0820",
+    panel: "#24123A",
+    panelDeep: "#160C28",
+    ink: "#F0E6E0",
+    inkSoft: "rgba(240,230,224,0.76)",
+    inkFaint: "rgba(240,230,224,0.5)",
+    hair: "rgba(240,230,224,0.14)",
+    rose: "#A56A67",
+    gold: "#E3C24A",
+    grotesque: "'Neue Montreal', 'Helvetica Neue', Arial, sans-serif",
+    serif: "'Instrument Serif', Georgia, 'Times New Roman', serif",
+    mono: "'Neue Montreal', 'Helvetica Neue', Arial, sans-serif",
+} as const;
 
-const ImageCardInner = ({ src, alt, onClick, name, role, rotation = 0 }: { src: string; alt: string, onClick?: () => void, name?: string, role?: string, rotation?: number }) => {
-    const [isHovered, setIsHovered] = useState(false);
+// Unique people (the data carries duplicate entries for category grouping we no
+// longer use), in a reading order that leads with the founders.
+const PEOPLE = teamMembers.filter((m, i, arr) => arr.findIndex((t) => t.name === m.name) === i);
 
+function Kicker({ children }: { children: React.ReactNode }) {
     return (
-        <motion.div
-            className="image-card md:w-[450px] md:h-[253px] w-[240px] h-[135px] rounded-[10px] overflow-hidden shrink-0 relative cursor-pointer"
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 9 }}>
+            <span aria-hidden style={{ width: 18, height: 2, background: T.rose, flexShrink: 0 }} />
+            <span style={{ fontFamily: T.mono, fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: T.rose }}>{children}</span>
+        </span>
+    );
+}
+
+function PersonTile({ m, onClick }: { m: TeamMember; onClick: () => void }) {
+    return (
+        <motion.button
+            layout
+            type="button"
             onClick={onClick}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            className="group relative block w-full overflow-hidden text-left"
+            style={{ aspectRatio: "4 / 5", borderRadius: 14, border: `1px solid ${T.hair}`, background: T.panel }}
+            aria-label={`Open ${m.name}'s bio`}
         >
             <Image
-                src={src}
-                alt={alt}
+                src={m.image}
+                alt={m.name}
                 fill
-                sizes="(max-width: 768px) 240px, 450px"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 loading="lazy"
-                className="object-cover object-center"
-                style={{
-                    transform: rotation !== 0 ? `rotate(${rotation}deg)` : undefined
-                }}
+                className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.06]"
             />
-            <AnimatePresence>
-                {name && isHovered && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        style={{
-                            position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-                            background: 'linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%)',
-                            backdropFilter: 'blur(4px)', display: 'flex', flexDirection: 'column',
-                            alignItems: 'center', justifyContent: 'center', gap: '10px', zIndex: 10
-                        }}
-                    >
-                        <h3 className="text-[clamp(2.5rem,5vw,3.5rem)] font-black text-white uppercase tracking-widest m-0" style={{ fontFamily: 'Norwige, sans-serif' }}>
-                            {name}
-                        </h3>
-                        {role && (
-                            <p className="text-[clamp(0.8rem,1.5vw,1rem)] font-normal text-white/90 uppercase tracking-widest m-0" style={{ fontFamily: 'Roboto, sans-serif' }}>
-                                {role}
-                            </p>
-                        )}
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </motion.div>
+            <span aria-hidden style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 38%, rgba(15,8,32,0.35) 60%, rgba(15,8,32,0.94) 100%)" }} />
+            <span style={{ position: "absolute", left: 16, right: 16, bottom: 15 }}>
+                <span style={{ display: "block", fontFamily: T.grotesque, fontWeight: 800, fontSize: "clamp(15px,1.5vw,21px)", letterSpacing: "-0.02em", lineHeight: 1.04, color: T.ink }}>{m.name}</span>
+                <span style={{ display: "block", marginTop: 5, fontFamily: T.mono, fontSize: 10, letterSpacing: "0.13em", textTransform: "uppercase", color: T.rose, lineHeight: 1.35 }}>{m.role}</span>
+                <span aria-hidden className="block h-[2px] mt-2.5 w-6 transition-all duration-500 ease-out group-hover:w-14" style={{ background: T.rose }} />
+            </span>
+        </motion.button>
     );
-};
+}
 
-const TeamSection: React.FC = () => {
-    const [activeCategory, setActiveCategory] = useState<Category>("All");
-    const [activeCreativeSub, setActiveCreativeSub] = useState<CreativeSubcategory | "All">("All");
-    const [expandedMemberId, setExpandedMemberId] = useState<number | null>(null);
-    const [view, setView] = useState<"grid" | "globe">("grid");
-
-    const handleMarqueeMemberClick = (member: TeamMember) => {
-        setExpandedMemberId(member.id);
-    };
-
-    const ImageCard = useCallback(({ src, alt, onClick, name, role, rotation = 0 }: { src: string; alt: string, onClick?: () => void, name?: string, role?: string, rotation?: number }) => {
-        return (
-            <ImageCardInner src={src} alt={alt} onClick={onClick} name={name} role={role} rotation={rotation} />
-        );
-    }, []);
-
-    const filteredMembers = activeCategory === "All"
-        ? teamMembers.filter((m, i, arr) => arr.findIndex(t => t.name === m.name) === i)
-        : teamMembers.filter(m =>
-            m.category === activeCategory ||
-            (m.additionalCategories?.includes(activeCategory))
-          );
-
-    const ExpandedMemberView = ({ expandedMember }: { expandedMember: TeamMember }) => (
+function ExpandedMemberView({ m, onClose }: { m: TeamMember; onClose: () => void }) {
+    return (
         <motion.div
             key="expanded-view"
             initial={{ opacity: 0, height: 0, marginBottom: 0 }}
-            animate={{ opacity: 1, height: 'auto', marginBottom: 48 }}
+            animate={{ opacity: 1, height: "auto", marginBottom: 40 }}
             exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-            className="w-full"
+            className="w-full overflow-hidden"
         >
-            <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-white/10 to-white/5 p-8 border border-white/20"
-                style={{ boxShadow: `0 25px 50px -12px rgba(${expandedMember.shadowColor || '101, 67, 33'}, 0.5)` }}>
-
+            <div style={{ position: "relative", borderRadius: 20, border: `1px solid ${T.hair}`, background: T.panelDeep, overflow: "hidden" }}>
                 <button
-                    onClick={() => setExpandedMemberId(null)}
-                    className="absolute top-6 right-6 z-20 text-white/60 hover:text-white transition-colors"
+                    type="button"
+                    onClick={onClose}
+                    aria-label="Close bio"
+                    className="absolute z-10 transition-opacity hover:opacity-70"
+                    style={{ top: 18, right: 18, color: T.inkFaint }}
                 >
                     <X className="w-6 h-6" />
                 </button>
 
-                <div className="absolute inset-0 z-0">
-                    <Image src={expandedMember.image} alt={`${expandedMember.name} - ${expandedMember.role}`} fill sizes="100vw" className="object-cover opacity-20 blur-sm" loading="lazy" />
-                    <div className="absolute inset-0 bg-black/60" />
-                </div>
-
-                <div className="relative z-10">
-                    <div className="flex flex-col lg:flex-row gap-12">
-                        <div className="w-full lg:w-1/3">
-                            <div className="relative w-full aspect-[4/5]">
-                                <Image src={expandedMember.image} alt={expandedMember.name} fill sizes="(max-width: 1024px) 100vw, 33vw" className="object-cover rounded-2xl shadow-2xl" loading="lazy" />
-                            </div>
+                <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 p-6 md:p-10">
+                    <div className="w-full lg:w-[38%] lg:shrink-0">
+                        <div style={{ position: "relative", width: "100%", aspectRatio: "4 / 5", borderRadius: 14, overflow: "hidden", border: `1px solid ${T.hair}` }}>
+                            <Image src={m.image} alt={m.name} fill sizes="(max-width: 1024px) 100vw, 38vw" className="object-cover" loading="lazy" />
                         </div>
-                        <div className="flex-1">
-                            <h3 className="text-[clamp(2.5rem,5vw,4rem)] font-black text-[#F7F2E4] uppercase leading-none mb-4" style={{ fontFamily: 'Norwige, sans-serif' }}>
-                                {expandedMember.name}
-                            </h3>
-                            <p className="text-sm tracking-[0.2em] uppercase text-[#DAA520] mb-4" style={{ fontFamily: 'Roboto, sans-serif' }}>
-                                {expandedMember.role} • {expandedMember.location}
-                            </p>
-                            {expandedMember.additionalCategories && expandedMember.additionalCategories.length > 0 && (
-                                <div className="flex flex-wrap gap-2 mb-8">
-                                    {[expandedMember.category, ...expandedMember.additionalCategories].filter(c => c !== "All").map(cat => (
-                                        <span key={cat} className="px-3 py-1 rounded-full text-[10px] uppercase tracking-[0.18em]"
-                                            style={{ fontFamily: 'Roboto, sans-serif', background: 'rgba(101,67,33,0.5)', color: '#FFF4E3', border: '1px solid rgba(255,244,227,0.15)' }}>
-                                            {cat}
-                                        </span>
-                                    ))}
-                                    {expandedMember.creativeSubcategory && [expandedMember.creativeSubcategory, ...(expandedMember.additionalSubcategories ?? [])].map(sub => (
-                                        <span key={sub} className="px-3 py-1 rounded-full text-[10px] uppercase tracking-[0.18em]"
-                                            style={{ fontFamily: 'Roboto, sans-serif', background: 'rgba(255,244,227,0.06)', color: 'rgba(255,244,227,0.5)', border: '1px solid rgba(255,244,227,0.1)' }}>
-                                            {sub}
-                                        </span>
-                                    ))}
-                                </div>
-                            )}
+                    </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                {expandedMember.specialties && (
-                                    <div>
-                                        <h4 className="text-lg font-black uppercase text-[#F7F2E4] mb-4" style={{ fontFamily: 'Norwige, sans-serif' }}>Specialties</h4>
-                                        <p className="text-sm text-[#F7F2E4]/80 leading-relaxed" style={{ fontFamily: 'Roboto, sans-serif' }}>{expandedMember.specialties}</p>
-                                        {expandedMember.portfolioLink && (
-                                            <a
-                                                href={expandedMember.portfolioLink}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full text-white text-xs font-bold uppercase tracking-widest transition-all hover:scale-105"
-                                            >
-                                                View Portfolio
-                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7" /></svg>
-                                            </a>
-                                        )}
-                                    </div>
-                                )}
-                                <div>
-                                    <h4 className="text-lg font-black uppercase text-[#F7F2E4] mb-4" style={{ fontFamily: 'Norwige, sans-serif' }}>Skills</h4>
-                                    <div className="flex flex-wrap gap-2">
-                                        {expandedMember.skills.map((s, i) => (
-                                            <span key={i} className="px-3 py-1 bg-white/10 border border-white/10 rounded-full text-[clamp(0.7rem,1.5vw,0.75rem)] text-white uppercase tracking-widest">{s}</span>
-                                        ))}
-                                    </div>
-                                </div>
+                    <div className="flex-1 min-w-0">
+                        <h3 style={{ fontFamily: T.grotesque, fontWeight: 800, fontSize: "clamp(30px,4.6vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.96, color: T.ink, margin: 0 }}>{m.name}</h3>
+                        <p style={{ fontFamily: T.mono, fontSize: 12, letterSpacing: "0.16em", textTransform: "uppercase", color: T.rose, margin: "12px 0 0" }}>{m.role} · {m.location}</p>
+
+                        {m.specialties && (
+                            <p style={{ fontFamily: T.serif, fontSize: "clamp(17px,1.9vw,22px)", lineHeight: 1.6, color: T.inkSoft, margin: "22px 0 0", maxWidth: 640 }}>{m.specialties}</p>
+                        )}
+
+                        {m.portfolioLink && (
+                            <a
+                                href={m.portfolioLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 transition-colors"
+                                style={{ marginTop: 22, padding: "10px 20px", borderRadius: 999, border: `1px solid ${T.rose}`, color: T.ink, fontFamily: T.mono, fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase" }}
+                                onMouseEnter={(e) => { e.currentTarget.style.background = T.rose; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+                            >
+                                View portfolio
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7" /></svg>
+                            </a>
+                        )}
+
+                        <div style={{ marginTop: 26, paddingTop: 22, borderTop: `1px solid ${T.hair}` }}>
+                            <Kicker>What I do</Kicker>
+                            <div className="flex flex-wrap gap-2" style={{ marginTop: 14 }}>
+                                {m.skills.map((s, i) => (
+                                    <span key={i} style={{ fontFamily: T.mono, fontSize: 11, letterSpacing: "0.06em", color: T.inkSoft, border: `1px solid ${T.hair}`, borderRadius: 999, padding: "5px 12px" }}>{s}</span>
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -383,307 +348,32 @@ const TeamSection: React.FC = () => {
             </div>
         </motion.div>
     );
+}
 
-    const MemberGrid = ({ members }: { members: TeamMember[] }) => (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {members.map((member) => (
-                    <motion.div
-                        layout
-                        key={member.id}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="relative h-[300px] rounded-2xl overflow-hidden cursor-pointer group border border-white/10"
-                        onClick={() => setExpandedMemberId(member.id)}
-                    >
-                        <Image src={member.image} alt={member.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-                        <div className="absolute bottom-6 left-6 right-6">
-                            <h4 className="text-2xl font-black text-white uppercase" style={{ fontFamily: 'Norwige, sans-serif' }}>{member.name}</h4>
-                            <p className="text-[clamp(0.7rem,1.5vw,0.75rem)] tracking-[0.2em] text-[#DAA520] uppercase" style={{ fontFamily: 'Roboto, sans-serif' }}>{member.role}</p>
-                        </div>
-                    </motion.div>
-            ))}
-        </div>
-    );
-
-    const CategorySection = ({ members }: { category: Category, members: TeamMember[] }) => {
-        const expandedMember = members.find(m => m.id === expandedMemberId);
-        const gridMembers = members.filter(m => m.id !== expandedMemberId);
-
-        return (
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="w-full max-w-7xl mx-auto px-4"
-            >
-                <AnimatePresence mode="wait">
-                    {expandedMember && <ExpandedMemberView expandedMember={expandedMember} />}
-                </AnimatePresence>
-                <MemberGrid members={gridMembers} />
-            </motion.div>
-        );
-    };
-
-    const CreativeSection = ({ members }: { members: TeamMember[] }) => {
-        const expandedMember = members.find(m => m.id === expandedMemberId);
-
-        const inSub = (m: TeamMember, sub: CreativeSubcategory) =>
-            m.creativeSubcategory === sub || m.additionalSubcategories?.includes(sub);
-
-        // Get members for the active sub-filter
-        const getSubMembers = () => {
-            if (activeCreativeSub === "All") {
-                return members.filter(m => m.id !== expandedMemberId);
-            }
-            return members.filter(m => inSub(m, activeCreativeSub) && m.id !== expandedMemberId);
-        };
-
-        const subMembers = getSubMembers();
-
-        // Group by subcategory for "All" view
-        const groupedBySubcategory = activeCreativeSub === "All"
-            ? creativeSubcategories.map(sub => ({
-                label: sub,
-                members: members.filter(m => inSub(m, sub) && m.id !== expandedMemberId),
-            })).filter(g => g.members.length > 0)
-            : [];
-
-        return (
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="w-full max-w-7xl mx-auto px-4"
-            >
-                {/* Sub-filter pills */}
-                <div className="flex items-center gap-3 mb-8 justify-center flex-wrap">
-                    {(["All", ...creativeSubcategories] as const).map((sub) => (
-                        <button
-                            key={sub}
-                            onClick={() => { setActiveCreativeSub(sub); setExpandedMemberId(null); }}
-                            className={`px-4 py-1.5 rounded-full text-xs uppercase tracking-[0.15em] border transition-all duration-300 ${
-                                activeCreativeSub === sub
-                                    ? "bg-white/15 border-white/30 text-white"
-                                    : "bg-transparent border-white/10 text-white/40 hover:text-white/70 hover:border-white/20"
-                            }`}
-                            style={{ fontFamily: 'Roboto, sans-serif' }}
-                        >
-                            {sub}
-                        </button>
-                    ))}
-                </div>
-
-                <AnimatePresence mode="wait">
-                    {expandedMember && <ExpandedMemberView expandedMember={expandedMember} />}
-                </AnimatePresence>
-
-                {/* Grouped view when "All" sub is active */}
-                {activeCreativeSub === "All" ? (
-                    groupedBySubcategory.map((group) => (
-                        <div key={group.label} className="mb-10">
-                            <h3 className="text-xs tracking-[0.3em] uppercase text-white/30 mb-4 pl-1" style={{ fontFamily: 'Roboto, sans-serif' }}>
-                                {group.label}
-                            </h3>
-                            <MemberGrid members={group.members} />
-                        </div>
-                    ))
-                ) : (
-                    <MemberGrid members={subMembers} />
-                )}
-            </motion.div>
-        );
-    };
+const TeamSection: React.FC = () => {
+    const [expandedId, setExpandedId] = useState<number | null>(null);
+    const expanded = PEOPLE.find((m) => m.id === expandedId) ?? null;
 
     return (
         <>
-        <div id="team-members" style={{ marginTop: '-200px', paddingTop: '200px', pointerEvents: 'none' }} />
-        <section
-            id="team"
-            style={{
-                borderRadius: "20px",
-                background: 'rgba(255, 255, 255, 0.05)',
-                backdropFilter: "blur(20px)",
-                border: "1px solid rgba(255, 255, 255, 0.1)",
-                minHeight: "100vh", padding: "40px 0", position: "relative",
-                display: "flex", flexDirection: "column", alignItems: "center",
-                overflow: "hidden"
-            }}
-        >
-            <GradientBlob position="top-left" opacity={0.45} size="600px" blur="150px" />
-            <GradientBlob position="bottom-right" opacity={0.45} size="600px" blur="150px" />
-            <div className="z-50 mb-8 md:mb-12 flex flex-wrap items-center gap-3 md:gap-6 justify-between w-full px-2 md:px-8">
-                {/* View toggle — Grid vs Globe */}
-                <div
-                    className="flex items-center rounded-full p-1"
-                    style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)" }}
-                >
-                    {(["grid", "globe"] as const).map((v) => (
-                        <button
-                            key={v}
-                            onClick={() => setView(v)}
-                            className="text-xs md:text-sm font-normal transition-all duration-300 rounded-full px-3 md:px-4 py-1.5"
-                            style={{
-                                fontFamily: 'Roboto, sans-serif',
-                                letterSpacing: '0.08em',
-                                background: view === v ? 'rgba(224,164,74,0.18)' : 'transparent',
-                                color: view === v ? '#FFF4E3' : 'rgba(255,255,255,0.5)',
-                            }}
-                        >
-                            {v === "grid" ? "GRID" : "GLOBE"}
-                        </button>
-                    ))}
-                </div>
-
-                {/* Category filters — grid view only */}
-                {view === "grid" && (
-                    <div className="flex flex-wrap items-center gap-2 md:gap-6 justify-center md:justify-end">
-                        <button
-                            onClick={() => { setActiveCategory("All"); setActiveCreativeSub("All"); setExpandedMemberId(null); }}
-                            className={`text-sm md:text-xl font-normal transition-all duration-300 ${activeCategory === "All" ? "text-white" : "text-white/50 hover:text-white/80"}`}
-                            style={{ fontFamily: 'Roboto, sans-serif' }}
-                        > ALL </button>
-                        <span className="text-white/30 text-xs md:text-base">|</span>
-                        {categories.map((cat, index) => (
-                            <React.Fragment key={cat}>
-                                <button
-                                    onClick={() => { setActiveCategory(cat); setActiveCreativeSub("All"); setExpandedMemberId(null); }}
-                                    className={`text-sm md:text-xl font-normal transition-all duration-300 ${activeCategory === cat ? "text-white" : "text-white/50 hover:text-white/80"}`}
-                                    style={{ fontFamily: 'Roboto, sans-serif' }}
-                                > {cat.toUpperCase()} </button>
-                                {index < categories.length - 1 && <span className="text-white/30 text-xs md:text-base">|</span>}
-                            </React.Fragment>
-                        ))}
+            <div id="team-members" style={{ marginTop: "-160px", paddingTop: "160px", pointerEvents: "none" }} />
+            <section id="team" style={{ background: "transparent", padding: "clamp(8px,2vw,24px) 0 clamp(48px,7vw,96px)" }}>
+                <div className="max-w-6xl mx-auto px-6">
+                    <div style={{ marginBottom: "clamp(24px,4vw,40px)" }}>
+                        <Kicker>The studio · {PEOPLE.length} people</Kicker>
                     </div>
-                )}
-            </div>
 
-            <div className="w-full flex-1 flex items-center justify-center">
-                {view === "globe" ? (
-                    <motion.div
-                        key="globe-view"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="w-full"
-                    >
-                        <TeamGlobeView />
+                    <AnimatePresence mode="wait">
+                        {expanded && <ExpandedMemberView key={expanded.id} m={expanded} onClose={() => setExpandedId(null)} />}
+                    </AnimatePresence>
+
+                    <motion.div layout className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                        {PEOPLE.filter((m) => m.id !== expandedId).map((m) => (
+                            <PersonTile key={m.id} m={m} onClick={() => setExpandedId(m.id)} />
+                        ))}
                     </motion.div>
-                ) : activeCategory === "All" && expandedMemberId ? (
-                    <motion.div
-                        key="all-expanded"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        className="w-full max-w-7xl mx-auto px-4"
-                    >
-                        {(() => {
-                            const member = teamMembers.find(m => m.id === expandedMemberId);
-                            if (!member) return null;
-                            return (
-                                <>
-                                    <AnimatePresence mode="wait">
-                                        <ExpandedMemberView expandedMember={member} />
-                                    </AnimatePresence>
-                                    <MemberGrid members={filteredMembers.filter(m => m.id !== expandedMemberId)} />
-                                </>
-                            );
-                        })()}
-                    </motion.div>
-                ) : activeCategory === "All" ? (
-                    <motion.div key="marquee" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full">
-                        {(() => {
-                            // Resolve by id so array order changes never break the marquee
-                            const byId = (id: number) => teamMembers.find(m => m.id === id)!;
-                            const ayush     = byId(1);
-                            const kavya     = byId(13);
-                            const jiwon     = byId(14);
-                            const anish     = byId(16);
-                            const samSuen   = byId(15);
-                            const suchet    = byId(10);
-                            const daksha    = byId(7);
-                            const vaishnavi = byId(3);
-                            const tanvi     = byId(4);
-                            const david     = byId(6);
-                            const chaman    = byId(5);
-                            const krina     = byId(20);
-                            const chandra   = byId(21);
-                            const eshaal    = byId(17);
-                            const mk = (m: TeamMember) => (
-                                <ImageCard key={m.id} src={m.image} alt={m.name} name={m.name} role={m.role} onClick={() => handleMarqueeMemberClick(m)} rotation={m.imageRotation} />
-                            );
-                            return (
-                                <>
-                                <div className="marquee-row">
-                                    <div className="marquee-track scroll-left">
-                                        {[...Array(2)].map((_, i) => (
-                                            <React.Fragment key={`r1-${i}`}>
-                                                <div className="text-block"><h2>MEET</h2></div>
-                                                {mk(ayush)}
-                                                {mk(kavya)}
-                                                <button className="category-button" onClick={() => setActiveCategory("Creative")}>CREATIVE</button>
-                                                {mk(jiwon)}
-                                                {mk(anish)}
-                                                {mk(samSuen)}
-                                            </React.Fragment>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <div className="marquee-row">
-                                    <div className="marquee-track scroll-right">
-                                        {[...Array(2)].map((_, i) => (
-                                            <React.Fragment key={`r2-${i}`}>
-                                                <button className="category-button" onClick={() => setActiveCategory("Tech")}>TECH</button>
-                                                {mk(suchet)}
-                                                {mk(daksha)}
-                                                <div className="text-block"><h2>THE</h2></div>
-                                                {mk(vaishnavi)}
-                                                {mk(tanvi)}
-                                            </React.Fragment>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <div className="marquee-row">
-                                    <div className="marquee-track scroll-left">
-                                        {[...Array(2)].map((_, i) => (
-                                            <React.Fragment key={`r3-${i}`}>
-                                                {mk(david)}
-                                                {mk(chaman)}
-                                                <div className="text-block"><h2>TEAM</h2></div>
-                                                {mk(krina)}
-                                                {mk(chandra)}
-                                                <button className="category-button" onClick={() => setActiveCategory("Systems")}>SYSTEMS</button>
-                                                {mk(eshaal)}
-                                            </React.Fragment>
-                                        ))}
-                                    </div>
-                                </div>
-                                </>
-                            );
-                        })()}
-                    </motion.div>
-                ) : activeCategory === "Creative" ? (
-                    <CreativeSection members={filteredMembers} />
-                ) : (
-                    <CategorySection category={activeCategory} members={filteredMembers} />
-                )}
-            </div>
-
-            <style jsx>{`
-                .marquee-row { display: flex; overflow: hidden; width: 100%; margin-bottom: 60px; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
-                .marquee-track { display: flex; align-items: center; gap: 20px; width: max-content; padding-right: 20px; }
-                .scroll-left { animation: scrollLeft 60s linear infinite; }
-                .scroll-right { animation: scrollRight 60s linear infinite; }
-                .text-block { padding: 0 40px; }
-                h2 { font-family: 'Roboto', sans-serif; font-size: clamp(2rem, 5vw, 4.5rem); font-weight: 400; color: #F7F2E4; letter-spacing: 0.05em; white-space: nowrap; }
-                .category-button { writing-mode: vertical-rl; text-orientation: mixed; background: #3B2114; color: #FFF4E3; padding: 40px 35px; border-radius: 10px; border: none; font-size: clamp(1rem, 2.5vw, 1.8rem); font-weight: 400; font-family: 'Roboto', sans-serif; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); white-space: nowrap; height: 253px; display: flex; align-items: center; justify-content: center; letter-spacing: 0.1em; }
-                @keyframes scrollLeft { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-                @keyframes scrollRight { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
-                @media (max-width: 768px) { .image-card { width: 240px !important; height: 135px !important; } .category-button { height: 135px; padding: 20px 10px; } }
-            `}</style>
-        </section>
+                </div>
+            </section>
         </>
     );
 };
