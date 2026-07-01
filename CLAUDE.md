@@ -11,3 +11,17 @@
 ## Team Data
 - Team member images must use `.webp` format only (not `.png`). Images live in `public/teammembers/`.
 - Team member descriptions (specialties) must be written in **first person** ("I design..." not "Designs...").
+
+## Blog Page Design Standard
+All custom blog `page.tsx` files must match the design system defined in `.claude/blog-design-standard.md`.
+Canonical reference: `app/blog/restaurant-atlanta/page.tsx`.
+
+**The non-negotiables:**
+- Colors: cream `#FFF4E3` bg, dark espresso `#3B2114`, rust `#90422C`, orange `#EA9A61`
+- Fonts: Norwige (headings) / Inter (body) / Neue Montreal (labels only)
+- Structure: Hero → Stats Row → Main Content → FAQ Accordion → Author Card → CTA
+- Hero H1: solid white, not gradient
+- Author pill in hero: beige background, dark text
+- CTA: beige background, dark text — never dark/gradient CTA background
+- Logo always links to `/`
+- FAQ: cream background, Norwige bold questions, chevron accordion

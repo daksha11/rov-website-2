@@ -5,7 +5,7 @@ import { getPostBySlug, getPostSlugs, getRelatedPosts } from "@/lib/blog";
 import { BlogPostHeader } from "@/components/blog/BlogPostHeader";
 import { BlogPostBody } from "@/components/blog/BlogPostBody";
 import { BlogPostCTA } from "@/components/blog/BlogPostCTA";
-import { RelatedPosts } from "@/components/blog/RelatedPosts";
+// import { RelatedPosts } from "@/components/blog/RelatedPosts";
 import { BlogPostingSchema } from "@/components/blog/BlogPostingSchema";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { FAQPageSchema } from "@/components/FAQPageSchema";
@@ -93,12 +93,13 @@ export default async function BlogPostPage({
         <FAQPageSchema faqs={post.faqs} />
       )}
 
-      <article className="min-h-screen bg-black">
+      <article className="min-h-screen" style={{ background: "#FFF4E3" }}>
         <BlogPostHeader post={post} />
         <BlogPostBody htmlContent={post.htmlContent ?? ""} />
         {post.faqs && post.faqs.length > 0 && <BlogFAQ faqs={post.faqs} />}
         <BlogPostCTA />
-        <RelatedPosts posts={related} />
+        {/* TODO: Re-enable RelatedPosts when blog has 20+ posts */}
+        {/* <RelatedPosts posts={related} /> */}
       </article>
 
       <NavigationDock />

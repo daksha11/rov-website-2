@@ -1,39 +1,79 @@
-"use client";
-
-import { motion } from "framer-motion";
+import Link from "next/link";
 
 export function BlogPostCTA() {
   return (
-    <section className="py-16 md:py-24 px-4 bg-black">
-      <div className="flex flex-col items-center gap-4">
-        <p
-          className="text-white/40 text-sm uppercase tracking-[0.2em]"
-          style={{ fontFamily: "'Roboto', sans-serif" }}
-        >
-          Have questions?
-        </p>
-        <motion.a
-          href="https://calendly.com/rangeofviewmusic/30min"
-          target="_blank"
-          rel="noopener noreferrer"
-          whileHover={{ scale: 1.04 }}
-          whileTap={{ scale: 0.97 }}
-          className="cta-shine inline-flex items-center gap-3 text-white font-semibold cursor-pointer uppercase tracking-wide"
+    <section style={{ background: "#FFF4E3", padding: "16px 24px 80px" }}>
+      <div style={{ maxWidth: 720, margin: "0 auto" }}>
+        <div
           style={{
-            fontFamily: "Norwige, sans-serif",
-            borderRadius: "41.444px",
-            background: "linear-gradient(112deg, #42201C 6.46%, #A64D2B 34.96%, #B16937 63.88%, #EA9A61 97.63%)",
-            boxShadow: "3px 4px 4px 0 rgba(255, 244, 227, 0.15) inset, 0 4.385px 4.385px 0 rgba(0, 0, 0, 0.25)",
-            padding: "clamp(1rem, 1.5vw, 1.25rem) clamp(2rem, 3vw, 3rem)",
-            fontSize: "clamp(0.875rem, 1.2vw, 1rem)",
-            letterSpacing: "0.08em",
+            background: "#FFF4E3",
+            border: "1.5px solid rgba(59,33,20,0.15)",
+            borderRadius: 16,
+            padding: "48px 36px",
+            textAlign: "center",
           }}
         >
-          Book a Call
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M7 17L17 7M17 7H7M17 7v10" />
-          </svg>
-        </motion.a>
+          <h2
+            style={{
+              fontFamily: "Norwige, sans-serif",
+              fontSize: "clamp(24px, 4vw, 36px)",
+              fontWeight: 400,
+              marginBottom: 16,
+              lineHeight: 1.2,
+              color: "#3B2114",
+            }}
+          >
+            Want to know where your business is leaking revenue?
+          </h2>
+          <p
+            style={{
+              fontSize: 16,
+              lineHeight: 1.65,
+              color: "rgba(59,33,20,0.7)",
+              maxWidth: 480,
+              margin: "0 auto 32px",
+            }}
+          >
+            We run free audits for Atlanta businesses. We look at your site, your funnel, your search visibility. We find the gap. We show you exactly what to fix.
+          </p>
+          <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
+            <a
+              href="https://calendly.com/rangeofviewmusic/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                background: "#90422C",
+                color: "#FFF4E3",
+                padding: "14px 28px",
+                borderRadius: 100,
+                fontFamily: "'Neue Montreal', sans-serif",
+                fontWeight: 700,
+                fontSize: 15,
+                textDecoration: "none",
+                display: "inline-block",
+              }}
+            >
+              Book a free audit
+            </a>
+            <Link
+              href="/web"
+              style={{
+                background: "transparent",
+                color: "#3B2114",
+                padding: "14px 28px",
+                borderRadius: 100,
+                fontFamily: "'Neue Montreal', sans-serif",
+                fontWeight: 600,
+                fontSize: 15,
+                textDecoration: "none",
+                display: "inline-block",
+                border: "1.5px solid rgba(59,33,20,0.25)",
+              }}
+            >
+              See our web services
+            </Link>
+          </div>
+        </div>
       </div>
     </section>
   );
