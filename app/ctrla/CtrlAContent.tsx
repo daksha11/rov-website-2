@@ -9,10 +9,9 @@ import GooeyLogoMorph from "./_components/GooeyLogoMorph";
 import EditorialFooter from "./_components/EditorialFooter";
 import ShootingStars from "@/components/ui/shooting-stars";
 import { ThreeToolkits } from "./_components/Toolkits";
-import Cookbook from "./_components/Cookbook";
 import { DreamAsiaTeaser } from "./_components/DreamAsiaSections";
 import { TheFoldTeaser } from "./_components/TheFoldTeaser";
-import { OnRepeat, ArtForm, BrandKitFeature, CondensedEvents, VueClose } from "./_components/IssueSections";
+import { VolumeBento, BrandKitFeature, CondensedEvents, VueClose } from "./_components/IssueSections";
 import { ed, Bleed, Rule, Label, Kicker } from "./_components/editorial";
 import { issueMeta } from "./data";
 
@@ -57,7 +56,7 @@ function Masthead() {
 
 function Cover() {
   return (
-    <section style={{ background: "transparent", padding: "clamp(24px,4vw,44px) 0 clamp(40px,6vw,72px)" }}>
+    <section style={{ background: "transparent", padding: "clamp(24px,4vw,44px) 0 clamp(20px,3vw,36px)" }}>
       <Bleed>
         {/* Cover art block — finalized 3D CTRL-A logo on a framed panel */}
         <div
@@ -108,23 +107,29 @@ function Cover() {
           />
         </div>
 
-        {/* Headline row */}
+        {/* Eyebrow — sits above the headline, full width */}
+        <div style={{ marginTop: "clamp(20px,3vw,36px)" }}>
+          <Kicker color={ed.gold}>{issueMeta.coverEyebrow}</Kicker>
+        </div>
+
+        {/* Masthead — title + CTA on the left; issue number and this volume's
+            feature stacked on the right, so the whole cover reads in one frame. */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "minmax(0, 2.4fr) minmax(0, 1fr)",
-            gap: "clamp(16px,3vw,40px)",
+            gridTemplateColumns: "minmax(0, 2.1fr) minmax(0, 1fr)",
+            gap: "clamp(16px,3vw,44px)",
             alignItems: "start",
-            marginTop: "clamp(24px,4vw,44px)",
+            marginTop: "clamp(12px,1.6vw,20px)",
           }}
         >
+          {/* Left — headline, primary CTA, tagline */}
           <div>
-            <Kicker color={ed.gold} style={{ marginBottom: 18 }}>{issueMeta.coverEyebrow}</Kicker>
             <h1
               style={{
                 fontFamily: ed.grotesque,
                 fontWeight: 800,
-                fontSize: "clamp(40px, 8vw, 116px)",
+                fontSize: "clamp(40px, 7.4vw, 104px)",
                 lineHeight: 0.9,
                 letterSpacing: "-0.03em",
                 color: ed.ink,
@@ -133,52 +138,27 @@ function Cover() {
             >
               {issueMeta.coverHeadline}
             </h1>
-            <p
-              style={{
-                fontFamily: ed.body,
-                fontSize: "clamp(15px, 1.9vw, 22px)",
-                lineHeight: 1.5,
-                color: ed.inkSoft,
-                margin: "clamp(16px,2vw,24px) 0 0",
-                maxWidth: 640,
-              }}
-            >
-              {issueMeta.coverDeck}
-            </p>
 
-            {/* Concrete value — what you actually get, and that it's free */}
-            <p
-              style={{
-                fontFamily: ed.grotesque,
-                fontWeight: 500,
-                fontSize: "clamp(14px,1.5vw,17px)",
-                lineHeight: 1.55,
-                color: ed.ink,
-                margin: "clamp(16px,2vw,22px) 0 0",
-                maxWidth: 600,
-              }}
-            >
-              <span style={{ color: ed.gold, fontWeight: 800 }}>Every volume, free:</span> a deep-dive toolkit for
-              music, web, and design, the real process behind the work, and a brand-kit generator you can use today.
-            </p>
-
-            {/* Utility-first CTAs — point a cold visitor at the value */}
-            <div style={{ display: "flex", alignItems: "center", gap: "clamp(12px,2vw,22px)", flexWrap: "wrap", marginTop: "clamp(20px,2.6vw,30px)" }}>
+            {/* Emphasized primary CTA — send a cold visitor straight to the toolkits */}
+            <div style={{ display: "flex", alignItems: "center", gap: "clamp(16px,2.6vw,30px)", flexWrap: "wrap", marginTop: "clamp(22px,2.8vw,36px)" }}>
               <a
                 href="#toolkits"
                 className="ctrla-cover-cta"
                 style={{
                   fontFamily: ed.mono,
-                  fontSize: "clamp(11px,1.2vw,13px)",
-                  letterSpacing: "0.16em",
+                  fontSize: "clamp(13px,1.5vw,17px)",
+                  fontWeight: 700,
+                  letterSpacing: "0.14em",
                   textTransform: "uppercase",
                   color: ed.ground,
                   background: ed.gold,
-                  padding: "14px 26px",
+                  padding: "18px 38px",
+                  borderRadius: 4,
                   textDecoration: "none",
                   display: "inline-flex",
                   alignItems: "center",
-                  gap: 10,
+                  gap: 12,
+                  boxShadow: "0 14px 38px -10px rgba(227,194,74,0.55)",
                 }}
               >
                 Explore the toolkits <span aria-hidden>→</span>
@@ -191,7 +171,7 @@ function Cover() {
                   fontSize: "clamp(11px,1.2vw,13px)",
                   letterSpacing: "0.16em",
                   textTransform: "uppercase",
-                  color: ed.ink,
+                  color: ed.inkSoft,
                   textDecoration: "none",
                   display: "inline-flex",
                   alignItems: "center",
@@ -201,60 +181,56 @@ function Cover() {
                 Try the Brand Kit Generator <span aria-hidden>→</span>
               </a>
             </div>
+
+            <div style={{ marginTop: "clamp(18px,2.4vw,30px)" }}>
+              <Label color={ed.gold}>Always free · New volume monthly</Label>
+            </div>
           </div>
-          {/* This volume's feature, teased on the cover */}
-          <a
-            href="/ctrla/dreamasia"
-            className="ctrla-feature-card"
-            style={{ paddingTop: 8, textDecoration: "none", display: "block" }}
-          >
-            <Kicker color={ed.gold} style={{ marginBottom: 12 }}>This volume&apos;s feature</Kicker>
-            <p
+
+          {/* Right — issue number (big, bold, inline) above this volume's feature */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "clamp(18px,2.6vw,36px)" }}>
+            <span
               style={{
                 fontFamily: ed.grotesque,
                 fontWeight: 800,
-                fontSize: "clamp(20px,2.4vw,30px)",
-                letterSpacing: "-0.02em",
-                lineHeight: 1.02,
+                fontSize: "clamp(46px,6.2vw,104px)",
+                lineHeight: 0.82,
+                letterSpacing: "-0.03em",
                 color: ed.ink,
-                margin: "0 0 10px",
+                whiteSpace: "nowrap",
+                textAlign: "right",
               }}
             >
-              {issueMeta.featureHeadline}
-            </p>
-            <p style={{ fontFamily: ed.body, fontSize: "clamp(13px,1.4vw,15px)", lineHeight: 1.5, color: ed.inkSoft, margin: "0 0 12px" }}>
-              Inside DreamAsia Fest.
-            </p>
-            <span className="ctrla-feature-cta" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.16em", textTransform: "uppercase", color: ed.gold }}>
-              Read the feature <span aria-hidden className="ctrla-feature-arrow" style={{ transition: "transform .25s" }}>→</span>
+              Vol. <span style={{ color: ed.gold }}>01</span>
             </span>
-          </a>
-        </div>
 
-        {/* Issue line */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "flex-end",
-            justifyContent: "space-between",
-            gap: 16,
-            marginTop: "clamp(20px,3vw,36px)",
-            flexWrap: "wrap",
-          }}
-        >
-          <Label color={ed.gold}>Always free · New volume monthly</Label>
-          <span
-            style={{
-              fontFamily: ed.grotesque,
-              fontWeight: 800,
-              fontSize: "clamp(48px, 10vw, 150px)",
-              lineHeight: 0.8,
-              letterSpacing: "-0.04em",
-              color: ed.ink,
-            }}
-          >
-            Vol. <span style={{ color: ed.gold }}>01</span>
-          </span>
+            <a
+              href="/ctrla/dreamasia"
+              className="ctrla-feature-card"
+              style={{ textDecoration: "none", display: "block", textAlign: "right", maxWidth: 420 }}
+            >
+              <Kicker color={ed.gold} style={{ marginBottom: 10 }}>This volume&apos;s feature</Kicker>
+              <p
+                style={{
+                  fontFamily: ed.grotesque,
+                  fontWeight: 800,
+                  fontSize: "clamp(20px,2.2vw,30px)",
+                  letterSpacing: "-0.02em",
+                  lineHeight: 1.02,
+                  color: ed.ink,
+                  margin: "0 0 8px",
+                }}
+              >
+                {issueMeta.featureHeadline}
+              </p>
+              <p style={{ fontFamily: ed.body, fontSize: "clamp(13px,1.4vw,15px)", lineHeight: 1.5, color: ed.inkSoft, margin: "0 0 10px" }}>
+                Inside DreamAsia Fest.
+              </p>
+              <span className="ctrla-feature-cta" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.16em", textTransform: "uppercase", color: ed.gold }}>
+                Read the feature <span aria-hidden className="ctrla-feature-arrow" style={{ transition: "transform .25s" }}>→</span>
+              </span>
+            </a>
+          </div>
         </div>
       </Bleed>
     </section>
@@ -328,65 +304,141 @@ const CONTENTS = [
   { n: "06", title: "The City", meta: "World Cup, Atlanta", href: "#events", note: "Our hometown stage, and the summer the whole world arrives." },
 ];
 
-function Contents() {
+function ContentsChevron({ open }: { open: boolean }) {
   return (
-    <section style={{ background: "transparent", padding: "clamp(48px,7vw,96px) 0" }}>
-      <Bleed>
-        {/* The thesis — what CTRL-A is, stated plainly */}
-        <Kicker color={ed.gold}>What CTRL-A is</Kicker>
-        <p
-          style={{
-            fontFamily: ed.serif,
-            fontStyle: "normal",
-            fontWeight: 400,
-            fontSize: "clamp(22px,3.4vw,46px)",
-            lineHeight: 1.28,
-            letterSpacing: "-0.01em",
-            color: ed.ink,
-            margin: "clamp(18px,2.4vw,28px) 0 clamp(40px,5vw,64px)",
-            maxWidth: 1080,
-          }}
-        >
-          CTRL-A is how Range Of View plays <em style={{ fontStyle: "italic" }}>digital muse</em> to creatives
-          everywhere, helping you <em style={{ fontStyle: "italic" }}>see the bigger picture</em>. We go deep on
-          the tools worth your time, walk the whole process with{" "}
-          <em style={{ fontStyle: "italic" }}>none of the ugly steps skipped</em>, and feature the art we cannot
-          stop thinking about. Because nothing matters more in creative work than taste.{" "}
-          <em style={{ fontStyle: "italic", color: ed.gold }}>Taste is the sky you set as your limit.</em>
-        </p>
+    <span
+      aria-hidden
+      style={{ display: "inline-flex", flexShrink: 0, transition: "transform .3s ease", transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
+    </span>
+  );
+}
 
-        {/* The map */}
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, marginBottom: "clamp(16px,2vw,24px)" }}>
-          <Kicker color={ed.gold}>In this volume</Kicker>
-          <Label color={ed.gold}>{issueMeta.volume} · {issueMeta.edition}</Label>
-        </div>
-        <Rule color={ed.hair} />
-        <div>
-          {CONTENTS.map((c) => (
-            <a
-              key={c.n}
-              href={c.href}
-              className="ctrla-toc-row"
-              style={{
-                display: "grid",
-                gridTemplateColumns: "auto minmax(0, 1.1fr) minmax(0, 1.4fr) auto",
-                alignItems: "center",
-                gap: "clamp(12px,2.5vw,32px)",
-                padding: "clamp(18px,2.4vw,26px) clamp(6px,1vw,12px)",
-                borderBottom: `1px solid ${ed.hair}`,
-                textDecoration: "none",
-              }}
-            >
-              <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.4vw,34px)", letterSpacing: "-0.02em", color: ed.gold }}>{c.n}</span>
-              <span>
-                <span style={{ display: "block", fontFamily: ed.grotesque, fontWeight: 700, fontSize: "clamp(18px,2.1vw,28px)", letterSpacing: "-0.01em", color: ed.ink }}>{c.title}</span>
-                <Label color={ed.gold} style={{ display: "block", marginTop: 6 }}>{c.meta}</Label>
+// The mission — a spoken thesis. Lives near the foot of the volume as a
+// closing statement. Editorial voice: serif teaser, a quiet underlined text
+// link, generous air. Its own collapsible, distinct from the index.
+function Mission() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <section style={{ background: "transparent", padding: "clamp(32px,5vw,72px) 0" }}>
+      <Bleed>
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          className="ctrla-mission-header"
+          style={{ display: "block", width: "100%", background: "none", border: "none", borderTop: `1px solid ${ed.hair}`, cursor: "pointer", textAlign: "left", padding: "clamp(22px,3vw,40px) clamp(4px,1vw,14px) clamp(20px,2.6vw,32px)" }}
+        >
+          <span style={{ display: "block" }}>
+            <Kicker color={ed.gold}>What CTRL-A is</Kicker>
+          </span>
+          {!open && (
+            <span style={{ display: "block", fontFamily: ed.serif, fontStyle: "italic", fontWeight: 400, fontSize: "clamp(26px,3.6vw,48px)", lineHeight: 1.18, letterSpacing: "-0.01em", color: ed.ink, margin: "clamp(14px,1.8vw,22px) 0 clamp(18px,2vw,26px)", maxWidth: 820 }}>
+              The one idea behind everything we make.
+            </span>
+          )}
+          <span className="ctrla-mission-cta" style={{ display: "inline-flex", alignItems: "center", gap: 10, marginTop: open ? "clamp(14px,1.8vw,20px)" : 0, fontFamily: ed.mono, fontSize: "clamp(11px,1.2vw,13px)", letterSpacing: "0.18em", textTransform: "uppercase", color: ed.gold, paddingBottom: 4, borderBottom: `1px solid rgba(227,194,74,0.45)` }}>
+            {open ? "Close the thesis" : "Read the thesis"}
+            <span aria-hidden className="ctrla-mission-arrow" style={{ display: "inline-flex", transition: "transform .25s ease", transform: open ? "rotate(90deg)" : "none" }}>→</span>
+          </span>
+        </button>
+        {open && (
+          <p
+            style={{
+              fontFamily: ed.serif,
+              fontStyle: "normal",
+              fontWeight: 400,
+              fontSize: "clamp(24px,3.6vw,50px)",
+              lineHeight: 1.26,
+              letterSpacing: "-0.01em",
+              color: ed.ink,
+              margin: "clamp(18px,2.4vw,30px) 0 0",
+              maxWidth: 1080,
+              paddingLeft: "clamp(4px,1vw,14px)",
+            }}
+          >
+            CTRL-A is how Range Of View plays <em style={{ fontStyle: "italic", color: ed.gold }}>digital muse</em> to creatives
+            everywhere, helping you <em style={{ fontStyle: "italic", color: ed.gold }}>see the bigger picture</em>. We go deep on
+            the tools worth your time, walk the whole process with{" "}
+            <em style={{ fontStyle: "italic", color: ed.gold }}>none of the ugly steps skipped</em>, and feature the art we cannot
+            stop thinking about. Because nothing matters more in creative work than taste.{" "}
+            <em style={{ fontStyle: "italic", color: ed.gold }}>Taste is the sky you set as your limit.</em>
+          </p>
+        )}
+      </Bleed>
+    </section>
+  );
+}
+
+function Contents() {
+  const [indexOpen, setIndexOpen] = useState(false);
+
+  return (
+    <section style={{ background: "transparent", padding: "clamp(24px,3.5vw,48px) 0 clamp(48px,7vw,96px)" }}>
+      <Bleed>
+        {/* ── The index — a functional table of contents. Systematic: a running
+            mono index line, a piece count, a squared Expand button. ── */}
+        <button
+          type="button"
+          onClick={() => setIndexOpen((v) => !v)}
+          aria-expanded={indexOpen}
+          className="ctrla-acc-header"
+          style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: "clamp(16px,3vw,32px)", width: "100%", background: "none", borderTop: `1px solid ${ed.hair}`, borderBottom: `1px solid ${ed.hair}`, cursor: "pointer", textAlign: "left", padding: "clamp(16px,2vw,24px) clamp(4px,1vw,14px)" }}
+        >
+          <span style={{ minWidth: 0 }}>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
+              <Kicker color={ed.gold}>Table of contents</Kicker>
+              <span style={{ fontFamily: ed.mono, fontSize: "clamp(9px,1vw,11px)", letterSpacing: "0.2em", textTransform: "uppercase", color: ed.inkFaint }}>In this volume · {CONTENTS.length} pieces</span>
+            </span>
+            {!indexOpen && (
+              <span className="ctrla-index-list" style={{ display: "block", marginTop: 12, fontFamily: ed.mono, fontSize: "clamp(11px,1.15vw,13px)", letterSpacing: "0.1em", textTransform: "uppercase", color: ed.inkSoft, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "100%" }}>
+                {CONTENTS.map((c, i) => (
+                  <span key={c.n}>
+                    {i > 0 && <span style={{ color: ed.inkFaint, margin: "0 10px" }}>·</span>}
+                    <span style={{ color: ed.gold, fontWeight: 700 }}>{c.n}</span> {c.title}
+                  </span>
+                ))}
               </span>
-              <span className="ctrla-toc-note" style={{ fontFamily: ed.body, fontSize: "clamp(13px,1.4vw,15px)", lineHeight: 1.5, color: ed.inkSoft }}>{c.note}</span>
-              <span aria-hidden className="ctrla-toc-arrow" style={{ justifySelf: "end", color: ed.gold, fontSize: 18, transition: "transform .25s" }}>→</span>
-            </a>
-          ))}
-        </div>
+            )}
+          </span>
+          <span style={{ display: "inline-flex", alignItems: "flex-end", gap: "clamp(10px,1.6vw,18px)", flexShrink: 0 }}>
+            <Label color={ed.gold}>{issueMeta.volume} · {issueMeta.edition}</Label>
+            <span className="ctrla-acc-toggle" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.16em", textTransform: "uppercase", color: ed.gold, border: `1px solid ${ed.gold}`, borderRadius: 6, padding: "9px 16px", whiteSpace: "nowrap" }}>
+              {indexOpen ? "Collapse" : "Expand"}
+              <ContentsChevron open={indexOpen} />
+            </span>
+          </span>
+        </button>
+        {indexOpen && (
+          <div>
+            {CONTENTS.map((c) => (
+              <a
+                key={c.n}
+                href={c.href}
+                className="ctrla-toc-row"
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "auto minmax(0, 1.1fr) minmax(0, 1.4fr) auto",
+                  alignItems: "center",
+                  gap: "clamp(12px,2.5vw,32px)",
+                  padding: "clamp(18px,2.4vw,26px) clamp(6px,1vw,12px)",
+                  borderBottom: `1px solid ${ed.hair}`,
+                  textDecoration: "none",
+                }}
+              >
+                <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.4vw,34px)", letterSpacing: "-0.02em", color: ed.gold }}>{c.n}</span>
+                <span>
+                  <span style={{ display: "block", fontFamily: ed.grotesque, fontWeight: 700, fontSize: "clamp(18px,2.1vw,28px)", letterSpacing: "-0.01em", color: ed.ink }}>{c.title}</span>
+                  <Label color={ed.gold} style={{ display: "block", marginTop: 6 }}>{c.meta}</Label>
+                </span>
+                <span className="ctrla-toc-note" style={{ fontFamily: ed.body, fontSize: "clamp(13px,1.4vw,15px)", lineHeight: 1.5, color: ed.inkSoft }}>{c.note}</span>
+                <span aria-hidden className="ctrla-toc-arrow" style={{ justifySelf: "end", color: ed.gold, fontSize: 18, transition: "transform .25s" }}>→</span>
+              </a>
+            ))}
+          </div>
+        )}
       </Bleed>
     </section>
   );
@@ -573,17 +625,14 @@ export default function CtrlAContent() {
       {/* The Fold — ambient creative room; full experience at /ctrla/the-fold */}
       <TheFoldTeaser />
 
-      {/* On Repeat — what's soundtracking the studio this volume */}
-      <OnRepeat />
-
-      {/* Form of the Volume — a rotating craft (Vol.01: kintsugi) */}
-      <ArtForm />
-
-      {/* The Cookbook — feeding the maker, on no time or budget */}
-      <Cookbook />
+      {/* Off the clock — music, craft, and fuel condensed into one bento */}
+      <VolumeBento />
 
       {/* The city — World Cup 26, Atlanta */}
       <CondensedEvents />
+
+      {/* The mission — a closing thesis on what CTRL-A is */}
+      <Mission />
 
       <VueClose />
 

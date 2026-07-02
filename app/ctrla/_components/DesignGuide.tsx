@@ -17,8 +17,8 @@
 // slot is marked below; we choose the concept last.
 // ═══════════════════════════════════════════════════════
 
-import type { ReactNode } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { edLight as ed, Bleed, Kicker, Label, Rule } from "./editorial";
 import DefendDecision from "./DefendDecision";
 
@@ -35,23 +35,39 @@ function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }
   );
 }
 
+// Each question carries its meaning plus how the two example briefs answer
+// it, so selecting a question tells a small story instead of listing facts.
 const BRIEF = [
   {
     n: "01",
     title: "Purpose",
-    body: "what is this trying to do. every color, every typeface, every gap is an answer to this question. the work comes from the brief, not from what looks cool right now.",
+    prompt: "what is this trying to do",
+    body: "every color, every typeface, every gap is an answer to this. the work comes from the brief, not from what looks cool right now.",
+    jazz: "sell out a friday night. make someone stop on the street and feel the noise before they read the date.",
+    saas: "earn a busy buyer's demo. remove doubt, don't add flourish.",
   },
   {
     n: "02",
     title: "Audience",
-    body: "who is it for. a downtown jazz crowd and a saas buyer want completely different things. you are designing for them, not for yourself.",
+    prompt: "who is it for",
+    body: "a downtown jazz crowd and a saas buyer want completely different things. you are designing for them, not for yourself.",
+    jazz: "night people walking past, half-distracted. they answer to energy and mood, not bullet points.",
+    saas: "a decision-maker with a budget and no time. they answer to clarity, proof, and restraint.",
   },
   {
     n: "03",
     title: "Context",
-    body: "where does it live. a poster on a wall and a landing page on a phone exist in different worlds. the environment decides as much as the idea does.",
+    prompt: "where does it live",
+    body: "a poster on a wall and a landing page on a phone exist in different worlds. the environment decides as much as the idea does.",
+    jazz: "printed, pasted on a wall, seen from six feet away at night. it can shout.",
+    saas: "a phone screen at a desk, one tab of many. it has to be calm and instantly legible.",
   },
 ];
+
+const BRIEF_EXAMPLES = {
+  jazz: { label: "A jazz poster, downtown", tone: "loud · texture · ink" },
+  saas: { label: "A SaaS landing page", tone: "clarity · system · restraint" },
+};
 
 const MOODBOARD = [
   { n: "01", name: "Typography direction", level: "the voice before the words", body: "serif or sans, sharp or soft, loud or quiet. you are choosing how it speaks before you write a line." },
@@ -67,6 +83,128 @@ const TOOLS = [
   { k: "systems", title: "Figma", body: "teaches you why components exist, why constraints matter, and how a thing stays consistent as it scales across screens." },
   { k: "texture and light", title: "Photoshop", body: "teaches you why blending modes exist, and how light, surface, and depth actually behave. the craft underneath the comp." },
 ];
+
+// The brief, made interactive: the three questions become a selector.
+// Hover to preview, click to hold. Choosing one reveals what it means and
+// shows the two example briefs answering that same question differently, so
+// the reader feels the thesis (one goal, different answers) instead of reading it.
+function InteractiveBrief({ accent }: { accent: string }) {
+  const [selected, setSelected] = useState(0);
+  const [hover, setHover] = useState<number | null>(null);
+  const active = hover ?? selected;
+  const q = BRIEF[active];
+
+  return (
+    <div>
+      {/* Selector — three questions */}
+      <div className="ctrla-guide-grid" onMouseLeave={() => setHover(null)}>
+        {BRIEF.map((b, i) => {
+          const on = active === i;
+          return (
+            <button
+              key={b.n}
+              type="button"
+              onClick={() => setSelected(i)}
+              onMouseEnter={() => setHover(i)}
+              onFocus={() => setHover(i)}
+              onBlur={() => setHover(null)}
+              aria-pressed={on}
+              style={{ textAlign: "left", background: "none", border: "none", borderTop: `2px solid ${on ? accent : ed.hair}`, padding: "16px 0 0", cursor: "pointer", width: "100%", transition: "border-color .3s ease" }}
+            >
+              <span style={{ display: "block", fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,4vw,46px)", letterSpacing: "-0.03em", color: on ? accent : ed.ink, opacity: on ? 1 : 0.26, transition: "color .3s ease, opacity .3s ease", marginBottom: 8 }}>{b.n}</span>
+              <span style={{ display: "block", fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.3vw,26px)", letterSpacing: "-0.02em", color: ed.ink, marginBottom: 6 }}>{b.title}</span>
+              <span style={{ display: "block", fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.14em", textTransform: "uppercase", color: on ? accent : ed.inkFaint, transition: "color .3s ease" }}>{b.prompt}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Stage — the active question's meaning + the two briefs answering it */}
+      <div style={{ marginTop: "clamp(28px,4vw,44px)", minHeight: 200 }}>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={q.n}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <p style={{ fontFamily: ed.grotesque, fontWeight: 700, fontSize: "clamp(18px,2.2vw,26px)", lineHeight: 1.4, letterSpacing: "-0.01em", color: ed.ink, margin: "0 0 clamp(22px,3vw,34px)", maxWidth: 760 }}>
+              {q.body}
+            </p>
+            <div className="ctrla-guide-split">
+              <div style={{ borderTop: `2px solid ${ed.hair}`, paddingTop: 18 }}>
+                <Label color={ed.inkFaint} style={{ display: "block", marginBottom: 6 }}>{BRIEF_EXAMPLES.jazz.label}</Label>
+                <Label color={ed.inkFaint} style={{ display: "block", marginBottom: 14, opacity: 0.65 }}>{BRIEF_EXAMPLES.jazz.tone}</Label>
+                <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0 }}>{q.jazz}</p>
+              </div>
+              <div style={{ borderTop: `2px solid ${accent}`, paddingTop: 18 }}>
+                <Label color={accent} style={{ display: "block", marginBottom: 6 }}>{BRIEF_EXAMPLES.saas.label}</Label>
+                <Label color={accent} style={{ display: "block", marginBottom: 14, opacity: 0.7 }}>{BRIEF_EXAMPLES.saas.tone}</Label>
+                <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0 }}>{q.saas}</p>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      <p style={{ fontFamily: ed.mono, fontSize: "clamp(9px,1vw,11px)", letterSpacing: "0.18em", textTransform: "uppercase", color: ed.inkFaint, margin: "clamp(18px,2.4vw,28px) 0 0" }}>
+        Hover or tap a question · one goal, two briefs, two answers
+      </p>
+    </div>
+  );
+}
+
+// The moodboard chain lights up as you scroll: the step crossing the center
+// of the viewport becomes active (accent number, border, and label; full
+// opacity), the rest recede. Driven by an IntersectionObserver on a thin
+// center band so exactly one step reads as "current" at a time.
+function MoodboardChain({ accent }: { accent: string }) {
+  const [active, setActive] = useState(0);
+  const refs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset.idx));
+        });
+      },
+      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
+    );
+    refs.current.forEach((el) => el && obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <div className="ctrla-chain">
+      {MOODBOARD.map((m, i) => {
+        const on = i === active;
+        return (
+          <Reveal key={m.n} delay={Math.min(i * 0.04, 0.2)}>
+            <div
+              ref={(el) => {
+                refs.current[i] = el;
+              }}
+              data-idx={i}
+              className="ctrla-chain-step"
+              style={{ borderLeft: `2px solid ${on ? accent : ed.hair}`, transition: "border-color .45s ease" }}
+            >
+              <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,3.4vw,42px)", letterSpacing: "-0.03em", lineHeight: 0.9, color: on ? accent : ed.ink, opacity: on ? 1 : 0.3, transition: "color .45s ease, opacity .45s ease" }}>{m.n}</span>
+              <div>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap", marginBottom: 8 }}>
+                  <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.4vw,30px)", letterSpacing: "-0.02em", color: ed.ink, margin: 0, opacity: on ? 1 : 0.6, transition: "opacity .45s ease" }}>{m.name}</h4>
+                  <Label color={on ? accent : ed.inkFaint}>{m.level}</Label>
+                </div>
+                <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,17px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0, maxWidth: 640, opacity: on ? 1 : 0.72, transition: "opacity .45s ease" }}>{m.body}</p>
+              </div>
+            </div>
+          </Reveal>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
   return (
@@ -122,37 +260,9 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
               before my friends at scad ever touch a pen or open figma, they answer three things. not a checklist. a way of thinking.
             </p>
           </Reveal>
-          <div className="ctrla-guide-grid">
-            {BRIEF.map((b, i) => (
-              <Reveal key={b.n} delay={i * 0.06}>
-                <div style={{ borderTop: `2px solid ${ed.ink}`, paddingTop: 18, height: "100%" }}>
-                  <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,4vw,46px)", letterSpacing: "-0.03em", color: accent, display: "block", marginBottom: 10 }}>{b.n}</span>
-                  <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.3vw,26px)", letterSpacing: "-0.02em", color: ed.ink, margin: "0 0 12px" }}>{b.title}</h4>
-                  <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,16px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0 }}>{b.body}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-
-          {/* The proof: same word "good", two different problems */}
-          <div className="ctrla-guide-split" style={{ marginTop: "clamp(32px,4vw,52px)" }}>
-            <Reveal>
-              <div style={{ borderTop: `2px solid ${ed.hair}`, paddingTop: 18 }}>
-                <Label color={ed.inkFaint} style={{ display: "block", marginBottom: 12 }}>a jazz poster downtown</Label>
-                <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0 }}>
-                  a club, a friday night, printed and stuck on a wall. loud type, texture, ink. it can look incredible and break every rule a product page lives by.
-                </p>
-              </div>
-            </Reveal>
-            <Reveal delay={0.08}>
-              <div style={{ borderTop: `2px solid ${accent}`, paddingTop: 18 }}>
-                <Label color={accent} style={{ display: "block", marginBottom: 12 }}>a saas landing page</Label>
-                <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0 }}>
-                  a startup, a buyer with a budget, read on a screen. clarity, system, restraint. both can look good and share almost nothing, because they solve different problems for different people in different places.
-                </p>
-              </div>
-            </Reveal>
-          </div>
+          <Reveal>
+            <InteractiveBrief accent={accent} />
+          </Reveal>
         </div>
 
         {/* ── The moodboard: lock the language ── */}
@@ -167,22 +277,7 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
             </p>
           </Reveal>
 
-          <div className="ctrla-chain">
-            {MOODBOARD.map((m, i) => (
-              <Reveal key={m.n} delay={Math.min(i * 0.04, 0.2)}>
-                <div className="ctrla-chain-step" style={{ borderLeft: `2px solid ${i === 0 ? accent : ed.hair}` }}>
-                  <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,3.4vw,42px)", letterSpacing: "-0.03em", lineHeight: 0.9, color: i === 0 ? accent : `${ed.ink}`, opacity: i === 0 ? 1 : 0.32 }}>{m.n}</span>
-                  <div>
-                    <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap", marginBottom: 8 }}>
-                      <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.4vw,30px)", letterSpacing: "-0.02em", color: ed.ink, margin: 0 }}>{m.name}</h4>
-                      <Label color={i === 0 ? accent : ed.inkFaint}>{m.level}</Label>
-                    </div>
-                    <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,17px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0, maxWidth: 640 }}>{m.body}</p>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          <MoodboardChain accent={accent} />
         </div>
 
         {/* ── Interactive centerpiece: defend every decision ── */}

@@ -5,9 +5,10 @@
 // Artist Showcase · ROV Spotlight · Events (condensed) · Vue Close
 // ═══════════════════════════════════════════════════════
 
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import { ed, Bleed, Rule, Label, Kicker } from "./editorial";
-import { taste, onRepeat, artForm, spotlight, events, eventSources, eventsCover, vueClose } from "../data";
+import { taste, onRepeat, artForm, cookbook, spotlight, events, eventSources, eventsCover, vueClose } from "../data";
 
 // ── Taste — the throughline manifesto ──────────────────
 
@@ -174,6 +175,111 @@ export function ArtForm() {
             </p>
             <Label color={ed.gold} style={{ display: "block", maxWidth: 480, lineHeight: 1.7 }}>{artForm.note}</Label>
           </div>
+        </div>
+      </Bleed>
+    </section>
+  );
+}
+
+// ── Volume bento — three softer features condensed into one asymmetric
+//    3x3 grid: the craft (large hero, 2x2), two songs on repeat (right
+//    column squares), and the cookbook pick (full-width foot). ──
+
+function BentoStat({ label, value }: { label: string; value: string }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+      <Label color={ed.inkFaint}>{label}</Label>
+      <span style={{ fontFamily: ed.grotesque, fontWeight: 700, fontSize: "clamp(15px,1.6vw,20px)", letterSpacing: "-0.01em", color: ed.gold }}>{value}</span>
+    </div>
+  );
+}
+
+export function VolumeBento() {
+  const [t1, t2] = onRepeat.tracks;
+  const dish = cookbook.recipes.find((r) => r.featured) ?? cookbook.recipes[0];
+  const tile: CSSProperties = { position: "relative", overflow: "hidden", border: `1px solid ${ed.hair}`, background: ed.panel, textDecoration: "none", display: "block" };
+  const scrim = "linear-gradient(to top, rgba(15,8,32,0.92) 0%, rgba(15,8,32,0.32) 44%, transparent 72%)";
+  const tracks = [
+    { t: t1, n: 1, cls: "ctrla-bento-track1" },
+    { t: t2, n: 2, cls: "ctrla-bento-track2" },
+  ];
+
+  return (
+    <section id="cookbook" style={{ background: "transparent", padding: "clamp(40px,6vw,88px) 0", scrollMarginTop: 0 }}>
+      <Bleed>
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginBottom: "clamp(18px,2.4vw,30px)" }}>
+          <Kicker color={ed.gold}>Off the clock · this volume</Kicker>
+          <Label color={ed.gold}>Sound · Craft · Fuel</Label>
+        </div>
+        <Rule color={ed.hair} style={{ marginBottom: "clamp(18px,2.4vw,28px)" }} />
+
+        <div className="ctrla-bento">
+          {/* CRAFT — the hero, 2x2 */}
+          <div className="ctrla-bento-art" style={tile}>
+            {artForm.image ? (
+              <Image src={artForm.image} alt={`${artForm.form} — ${artForm.origin}`} fill sizes="(max-width: 820px) 92vw, 720px" style={{ objectFit: "cover" }} />
+            ) : (
+              <span aria-hidden style={{ position: "absolute", inset: 0, background: `radial-gradient(130% 120% at 32% 26%, ${ed.plum} 0%, ${ed.panel} 46%, ${ed.void} 100%)` }} />
+            )}
+            <span aria-hidden style={{ position: "absolute", inset: 0, background: scrim }} />
+            <div style={{ position: "absolute", left: "clamp(18px,2.4vw,34px)", right: "clamp(18px,2.4vw,34px)", bottom: "clamp(18px,2.4vw,32px)" }}>
+              <Label color={ed.gold} style={{ display: "block", marginBottom: 12 }}>{artForm.eyebrow}</Label>
+              <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(34px,4.4vw,72px)", letterSpacing: "-0.03em", lineHeight: 0.9, color: ed.ink, margin: 0 }}>
+                {artForm.form}<span style={{ color: ed.gold }}>.</span>
+              </h3>
+              <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(16px,1.9vw,26px)", lineHeight: 1.28, color: ed.gold, margin: "10px 0 0", maxWidth: 460 }}>
+                {artForm.headline}
+              </p>
+              <p style={{ fontFamily: ed.body, fontSize: "clamp(13px,1.3vw,16px)", lineHeight: 1.55, color: ed.inkSoft, margin: "14px 0 0", maxWidth: 540 }}>
+                &ldquo;{artForm.pullquote}&rdquo;
+              </p>
+            </div>
+          </div>
+
+          {/* SOUND — two songs on repeat, right-column squares */}
+          {tracks.map(({ t, n, cls }) => (
+            <a key={t.url} href={t.url} target="_blank" rel="noopener noreferrer" className={`ctrla-track ${cls}`} style={{ ...tile, aspectRatio: "1 / 1" }}>
+              <Image src={t.image} alt={`${t.title} — ${t.artist}`} fill sizes="(max-width: 820px) 46vw, 360px" className="ctrla-track-img" style={{ objectFit: "cover" }} />
+              <span aria-hidden style={{ position: "absolute", inset: 0, background: scrim }} />
+              <span style={{ position: "absolute", top: 12, left: 12, fontFamily: ed.mono, fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: ed.gold }}>On repeat · {String(n).padStart(2, "0")}</span>
+              <span className="ctrla-track-play" aria-hidden>
+                <span style={{ width: 0, height: 0, borderTop: "9px solid transparent", borderBottom: "9px solid transparent", borderLeft: `15px solid ${ed.void}`, marginLeft: 4 }} />
+              </span>
+              <div style={{ position: "absolute", left: 14, right: 14, bottom: 12 }}>
+                <span style={{ display: "block", fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(16px,1.5vw,22px)", letterSpacing: "-0.02em", lineHeight: 1.04, color: ed.ink }}>{t.title}</span>
+                <span style={{ display: "block", marginTop: 4, fontFamily: ed.mono, fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: ed.gold }}>{t.artist}</span>
+              </div>
+            </a>
+          ))}
+
+          {/* FUEL — cookbook pick, full-width foot */}
+          <a href="/ctrla/cookbook" className="ctrla-bento-food ctrla-feature-card" style={tile} aria-label="Open the galley fridge">
+            <div className="ctrla-bento-food-grid">
+              <div style={{ position: "relative", background: ed.panel }}>
+                {dish.image ? (
+                  <Image src={dish.image} alt={dish.name} fill sizes="(max-width: 820px) 92vw, 300px" style={{ objectFit: "cover" }} />
+                ) : (
+                  <span aria-hidden style={{ position: "absolute", inset: 0, background: `radial-gradient(120% 130% at 30% 25%, ${ed.gold}2E 0%, ${ed.panel} 52%, ${ed.ground} 100%)` }} />
+                )}
+              </div>
+              <div style={{ padding: "clamp(18px,2.6vw,34px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                <Label color={ed.gold} style={{ display: "block", marginBottom: 10 }}>This volume&apos;s pick · Fuel</Label>
+                <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,3.2vw,48px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "0 0 8px" }}>
+                  {dish.name}
+                </h3>
+                <Label color={ed.inkFaint} style={{ display: "block", marginBottom: 14 }}>{dish.origin}{dish.by ? ` · ${dish.by}` : ""}</Label>
+                <p style={{ fontFamily: ed.body, fontSize: "clamp(13px,1.4vw,16px)", lineHeight: 1.55, color: ed.inkSoft, margin: "0 0 18px", maxWidth: 540 }}>{dish.blurb}</p>
+                <div style={{ display: "flex", gap: "clamp(18px,3vw,40px)", alignItems: "flex-end", flexWrap: "wrap" }}>
+                  <BentoStat label="Time" value={dish.time} />
+                  <BentoStat label="Cost" value={dish.cost} />
+                  <BentoStat label="Serves" value={dish.serves} />
+                  <span className="ctrla-feature-cta" style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 8, fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.16em", textTransform: "uppercase", color: ed.gold }}>
+                    Open the galley <span aria-hidden className="ctrla-feature-arrow" style={{ transition: "transform .25s" }}>→</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </a>
         </div>
       </Bleed>
     </section>
