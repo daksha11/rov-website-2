@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import Loading from "@/components/Loading";
 import HeroWithAnimation from "@/components/HeroWithAnimation";
 import Services from "@/components/Services";
@@ -116,15 +115,6 @@ export default function HomeContent() {
         </section>
 
         <ProjectStrip />
-
-        <div className="flex justify-center pb-16 -mt-4">
-          <Link
-            href="/works"
-            className="inline-flex items-center gap-2 text-sm uppercase tracking-[0.22em] text-white/70 hover:text-white transition-colors duration-300 border-b border-white/20 hover:border-white/60 pb-1"
-          >
-            View all our work
-          </Link>
-        </div>
 
         <DigiMag />
 

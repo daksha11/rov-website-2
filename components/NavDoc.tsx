@@ -15,7 +15,6 @@ export function NavigationDock({ className }: NavigationDockProps) {
 
   const links = [
     { title: "home", to: "/", isLink: true },
-    { title: "work", to: "/works", isLink: true },
     { title: "services", to: null, isLink: false },
     { title: "contact us", to: "https://calendly.com/rangeofviewmusic/30min", isLink: true, external: true },
   ];
