@@ -30,6 +30,16 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/home',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/ai',
+        destination: '/ai-automation',
+        permanent: true,
+      },
+      {
         source: '/services/sound',
         destination: '/sound',
         permanent: true,
