@@ -32,7 +32,7 @@ export function BlogCard({ post }: { post: BlogPost }) {
 
   return (
     <Link
-      href={`/blog/${post.slug}`}
+      href={post.externalUrl ?? `/blog/${post.slug}`}
       className="group block rounded-xl border border-white/10 bg-white/[0.02] p-6 transition-all duration-300 hover:scale-[1.02] hover:border-white/20 hover:bg-white/[0.04]"
     >
       <span

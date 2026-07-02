@@ -38,6 +38,10 @@ export interface BlogPost {
   readingTime: number;
   atlantaAngle: string;
   published: boolean;
+  /** When set, this post is a listing stub for a page that lives elsewhere
+   *  (e.g. a /web GEO landing page). The blog card links here and /blog/[slug]
+   *  redirects here, so the card surfaces the page without duplicating it. */
+  externalUrl?: string;
   coverImage?: string;
   content: string;
   htmlContent?: string;

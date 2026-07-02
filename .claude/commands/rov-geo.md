@@ -241,6 +241,39 @@ Test: someone scrolling fast with the sound off should get the whole story from 
 
 ---
 
+### Add the blog listing card (REQUIRED — do this for every GEO page)
+
+Every `/web` GEO page must also surface as a card on `/blog`. Do NOT skip this.
+Create a frontmatter-only stub at `content/blog/[slug].md` using the SAME slug as the
+page, and set `externalUrl: "/web/[slug]"`. The blog card links to `externalUrl` and
+`/blog/[slug]` redirects there, so the page shows in the listing with no duplicate
+thin page and no SEO cannibalization.
+
+Required frontmatter (body is one throwaway line — the route redirects before it renders):
+```yaml
+---
+title: "[hooky card title, usually the H1]"
+slug: "[slug]"
+seoTitle: "[the page's <title>]"
+description: "[the page's meta description — this is the card excerpt]"
+author: "Suchet Konda"
+authorRole: "Co-Founder & Systems Architect"
+authorUrl: "https://www.rovstudios.com/about"
+date: "[YYYY-MM-DD]"
+dateModified: "[YYYY-MM-DD]"
+category: "Web Design"   # or Marketing / Branding & Web Design — must match categoryColors in BlogCard.tsx
+tags: ["...", "GEO"]
+featured: false
+readingTime: [n]
+atlantaAngle: "[one line]"
+published: true
+externalUrl: "/web/[slug]"
+coverImage: "[/public path to a matching image]"
+---
+```
+The plumbing already exists: `BlogPost.externalUrl` (lib/types.ts), parsed in lib/blog.ts,
+honored by components/blog/BlogCard.tsx and redirected in app/blog/[slug]/page.tsx.
+
 ### Done? Run this before calling it finished
 
 ```bash

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
-import { notFound } from "next/navigation";
-import { getPostBySlug, getPostSlugs, getRelatedPosts } from "@/lib/blog";
+import { notFound, redirect } from "next/navigation";
+import { getPostBySlug, getRelatedPosts, getAllPosts } from "@/lib/blog";
 import { BlogPostHeader } from "@/components/blog/BlogPostHeader";
 import { BlogPostBody } from "@/components/blog/BlogPostBody";
 import { BlogPostCTA } from "@/components/blog/BlogPostCTA";
@@ -22,8 +22,10 @@ const NavigationDock = dynamic(
 const Footer = dynamic(() => import("@/components/Footer"), { ssr: false });
 
 export async function generateStaticParams() {
-  const slugs = getPostSlugs();
-  return slugs.map((slug) => ({ slug }));
+  // Skip stub posts that only redirect to a /web page — no static page needed.
+  return getAllPosts()
+    .filter((post) => !post.externalUrl)
+    .map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({
@@ -33,6 +35,15 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const post = await getPostBySlug(params.slug);
   if (!post) return { title: "Post Not Found" };
+
+  // Stub posts point their canonical at the real /web page they redirect to.
+  if (post.externalUrl) {
+    return {
+      title: post.seoTitle ?? post.title,
+      description: post.description,
+      alternates: { canonical: `https://www.rovstudios.com${post.externalUrl}` },
+    };
+  }
 
   return {
     // seoTitle (if set) keeps the <title> short so it doesn't truncate in SERPs;
@@ -75,6 +86,9 @@ export default async function BlogPostPage({
 }) {
   const post = await getPostBySlug(params.slug);
   if (!post) notFound();
+
+  // Listing stubs for /web pages send the visitor to the real page.
+  if (post.externalUrl) redirect(post.externalUrl);
 
   const related = getRelatedPosts(post.category, post.slug, 3);
 

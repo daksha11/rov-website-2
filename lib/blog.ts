@@ -50,6 +50,7 @@ function parseFrontmatter(slug: string, fileContent: string): BlogPost {
     readingTime: data.readingTime ?? 0,
     atlantaAngle: data.atlantaAngle ?? "",
     published: data.published ?? true,
+    externalUrl: data.externalUrl ?? undefined,
     coverImage: data.coverImage ?? undefined,
     content,
   };
