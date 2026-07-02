@@ -120,6 +120,9 @@ const Footer = () => {
               <a href="/ai-automation" className="hover:text-gray-400 transition-colors duration-300">AI Solutions</a>
             </li>
             <li>
+              <a href="/works" className="hover:text-gray-400 transition-colors duration-300">Work</a>
+            </li>
+            <li>
               <a href="/casestudy" className="hover:text-gray-400 transition-colors duration-300">Case Studies</a>
             </li>
             <li>
