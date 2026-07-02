@@ -8,7 +8,7 @@ import Services from "@/components/Services";
 import ElevateSection from "@/components/ElevateSection";
 import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
-import TeamSection from "@/components/TeamSection";
+import HomeTeamSection from "@/components/HomeTeamSection";
 import { NavigationDock } from "@/components/NavDoc";
 import ProjectStrip from "@/components/ProjectStrip";
 
@@ -120,7 +120,7 @@ export default function HomeContent() {
 
         <ElevateSection />
 
-        <TeamSection />
+        <HomeTeamSection />
 
         {/* <div className="py-20">
           <AlbumCoverLoop

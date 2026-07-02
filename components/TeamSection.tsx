@@ -203,6 +203,18 @@ const teamMembers: TeamMember[] = [
         shadowColor: "160, 110, 130"
     },
     {
+        id: 22,
+        image: "/teammembers/karinateampic.webp",
+        category: "Creative",
+        creativeSubcategory: "Illustrative",
+        name: "Karina",
+        role: "BRAND DESIGNER & ILLUSTRATOR",
+        skills: ["Brand Design", "Illustration", "Visual Identity", "Logo Design", "Creative Concepting", "Editorial Design"],
+        location: "Atlanta",
+        specialties: "I'm a GSU-trained brand designer and illustrator from the Dominican Republic, now based in Atlanta. I build visual identities from the ground up and bring a hand-drawn, illustrative sensibility to every brand I touch, so each system feels crafted, warm, and unmistakably its own.",
+        shadowColor: "170, 110, 120"
+    },
+    {
         id: 20,
         image: "/teammembers/krinapic.jpg",
         category: "Creative",

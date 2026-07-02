@@ -26,6 +26,7 @@ interface GlobeProps {
   locations?: GlobeLocation[];
   focusedLocation?: { lat: number; lng: number } | null;
   onInteract?: () => void;
+  onLocationClick?: (loc: GlobeLocation) => void;
   // Legacy props (used if locations is not provided)
   dotColor?: string;
   arcColor?: string;
@@ -118,6 +119,7 @@ export function Component({
   locations,
   focusedLocation,
   onInteract,
+  onLocationClick,
   dotColor = "rgba(78, 205, 196, ALPHA)",
   arcColor = "rgba(45, 212, 191, 0.5)",
   markerColor = "rgba(78, 205, 196, 1)",
@@ -140,6 +142,10 @@ export function Component({
   const hoveredRef = useRef<GlobeLocation | null>(null);
   const pointerOverRef = useRef(false);
   const targetRotYRef = useRef<number | null>(null);
+  // Latest projected screen positions of visible markers, for click hit-testing.
+  const markerPositionsRef = useRef<{ loc: GlobeLocation; sx: number; sy: number }[]>([]);
+  // Whether the current pointer gesture moved far enough to count as a drag (vs a click).
+  const draggedRef = useRef(false);
 
   // Pre-computed dot arrays
   const oceanDotsRef = useRef<[number, number, number][]>([]);
@@ -220,15 +226,17 @@ export function Component({
     const radius = Math.min(w, h) * 0.38;
     const fov = 600;
 
-    // Auto rotate (pause on hover and drag)
-    if (!dragRef.current.active && !pointerOverRef.current) {
+    // Rotation. A focus target always animates (even while hovering) so a
+    // clicked marker glides front-and-center; free auto-spin only runs when the
+    // pointer isn't over the globe. Drag suspends both.
+    if (!dragRef.current.active) {
       if (targetRotYRef.current !== null) {
         // Lerp toward focused city — shortest arc
         let diff = targetRotYRef.current - rotYRef.current;
         while (diff > Math.PI) diff -= 2 * Math.PI;
         while (diff < -Math.PI) diff += 2 * Math.PI;
         rotYRef.current += diff * 0.055;
-      } else {
+      } else if (!pointerOverRef.current) {
         // Correct west-to-east spin: decreasing rotY brings eastern locations into view from right
         rotYRef.current -= autoRotateSpeed;
       }
@@ -319,6 +327,10 @@ export function Component({
     // --- Use new locations system or legacy ---
     if (locations) {
       drawLocationsSystem(ctx, locations, derivedConnections.current, cx, cy, radius, fov, rx, ry, time);
+      // Signal clickability: pointer over a marker → pointer cursor.
+      if (!dragRef.current.active) {
+        canvas.style.cursor = hoveredRef.current ? "pointer" : "grab";
+      }
     } else {
       drawLegacySystem(ctx, legacyMarkers || [], legacyConnections || [], cx, cy, radius, fov, rx, ry, time, dotColor, arcColor, markerColor);
     }
@@ -489,6 +501,7 @@ export function Component({
     }
 
     hoveredRef.current = newHovered;
+    markerPositionsRef.current = markerPositions;
 
     // --- Tooltip ---
     if (newHovered) {
@@ -654,8 +667,9 @@ export function Component({
 
   // --- Pointer handlers ---
   const onPointerDown = useCallback((e: React.PointerEvent) => {
-    targetRotYRef.current = null; // let drag override any focus
-    onInteract?.();
+    // Don't clear focus yet — a stationary press is a click (focus a marker),
+    // only a real drag should release the focus and take manual control.
+    draggedRef.current = false;
     dragRef.current = {
       active: true,
       startX: e.clientX,
@@ -664,7 +678,7 @@ export function Component({
       startRotX: rotXRef.current,
     };
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
-  }, [onInteract]);
+  }, []);
 
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     // Track mouse for hover tooltips
@@ -680,13 +694,38 @@ export function Component({
     if (!dragRef.current.active) return;
     const dx = e.clientX - dragRef.current.startX;
     const dy = e.clientY - dragRef.current.startY;
+    // Once the gesture crosses the drag threshold, it's a drag: release any
+    // focus lerp and let the pointer steer the globe directly.
+    if (!draggedRef.current && Math.hypot(dx, dy) > 5) {
+      draggedRef.current = true;
+      targetRotYRef.current = null;
+      onInteract?.();
+    }
     rotYRef.current = dragRef.current.startRotY + dx * 0.005;
     rotXRef.current = Math.max(-1, Math.min(1, dragRef.current.startRotX + dy * 0.005));
-  }, []);
+  }, [onInteract]);
 
-  const onPointerUp = useCallback(() => {
+  const onPointerUp = useCallback((e: React.PointerEvent) => {
     dragRef.current.active = false;
-  }, []);
+    if (draggedRef.current) return; // a drag, not a click — nothing to select
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const px = e.clientX - rect.left;
+    const py = e.clientY - rect.top;
+
+    // Hit-test the click against the nearest visible marker.
+    let hit: GlobeLocation | null = null;
+    let best = 22; // px radius
+    for (const m of markerPositionsRef.current) {
+      const d = Math.hypot(px - m.sx, py - m.sy);
+      if (d < best) { best = d; hit = m.loc; }
+    }
+
+    if (hit) onLocationClick?.(hit);
+    else onInteract?.(); // clicking empty space clears the focus
+  }, [onLocationClick, onInteract]);
 
   const onPointerEnter = useCallback(() => {
     pointerOverRef.current = true;

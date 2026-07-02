@@ -102,6 +102,7 @@ export default function TeamGlobeView() {
           locations={LOCATIONS}
           autoRotateSpeed={0.002}
           focusedLocation={selectedLoc ? { lat: selectedLoc.lat, lng: selectedLoc.lng } : null}
+          onLocationClick={(loc) => handleCityClick(loc.city)}
           onInteract={() => setSelectedCity(null)}
         />
       </div>
