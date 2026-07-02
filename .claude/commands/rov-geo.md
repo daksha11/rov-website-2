@@ -60,7 +60,7 @@ Then ask:
 | Keyword | exact phrase someone types into Google or Perplexity |
 | Client proof | which result, which client |
 | Stats | percentages + traffic counts only — no client revenue dollars ever |
-| Images | list .webp files in `public/casestudy/[client]/` — must have at least 1 |
+| Images | inventory ALL of `public/` (see Image sourcing below), pick 2-3 that MATCH the sections — must have at least 1 |
 | Real-time hook | one current event or trend to weave into "What This Means" section |
 | Route | `app/web/[keyword-slug]/page.tsx` |
 
@@ -101,10 +101,10 @@ End: "That is a revenue leak. Most [type] have one."
 First link to case study page goes here.
 
 **05 — Image (required)**
-Real photo from `public/casestudy/[client]/`. Full-bleed.
+Real asset from `public/` (see Image sourcing below). Full-bleed.
 Container: `height: clamp(240px, 40vw, 440px)`, `position: relative`, `overflow: hidden`.
 Caption overlay: dark bg, paper text, bottom-left.
-No stock. No placeholders. If no photos exist, stop and ask Suchet.
+No stock. No placeholders. If no matching asset exists, stop and ask Suchet.
 
 **06 — Psychology hook**
 One surprising human behavior stat (3-second rule, mobile search, first impressions).
@@ -115,7 +115,7 @@ Three numbered changes (01/02/03). Each with a specific reason it worked.
 Link to `/web` here: "this is standard in our web design process at ROV."
 
 **08 — Image 2**
-Second client photo. Different angle or moment.
+A DIFFERENT asset from Image 1 (different source folder or client). Do not reuse the same client's photos for the whole page. Match it to this section (e.g. an automation screenshot near the automation copy, a client site near the "a website that works" copy).
 
 **09 — Results table**
 Before / After / Change columns. Change column in ember (#90422C).
@@ -128,7 +128,7 @@ Link to full case study after the table.
 Natural link to `/web` here.
 
 **11 — Image 3**
-Third client photo if available. Caption only if it adds something.
+A third distinct asset if it earns its place. Caption only if it adds something.
 
 **12 — What This Means for [Atlanta / Industry]**
 Local angle. Specific neighborhoods, events, stats.
@@ -160,6 +160,26 @@ Primary button: `#90422C` bg, cream text. Secondary button: transparent, dark bo
 Do NOT use a dark or gradient background on the CTA.
 
 ---
+
+### Image sourcing (do this, do not default to bando)
+
+The page needs 2-3 real images and they should NOT all be from the same client. Restaurant photos on a plumbing page reads as a stock-photo lie. Pull the right asset for each section.
+
+1. **Inventory everything first.** List every image folder, not just casestudy:
+   ```bash
+   for d in public/*/; do n=$(find "$d" -maxdepth 2 \( -name '*.webp' -o -name '*.png' -o -name '*.jpg' \) | wc -l); echo "$d: $n"; done
+   ```
+   Known-useful folders: `casestudy/{bando,ikna,atm,Pursue}` (client photos), `heroassets/` (coding, analytics, n8n automation, event frames), `webdev/` (real client site homepages), `aipage/` (AI workflow visuals), `clients/` (client headshots), `og/` (share cards).
+
+2. **LOOK at the candidates before you use them.** Read the actual image files with the Read tool. Caption what is really in the frame. Never caption from the filename alone.
+
+3. **Match asset to section.** Automation copy gets an automation screenshot (`heroassets/n8nframe.webp`). "A website that works" copy gets a real client site (`webdev/ayseiknawebhome.webp`). The client-proof section gets that client's photo. Pick on meaning, not convenience.
+
+4. **Vary the source across the page.** Use at most one image from any single client unless the whole page is that client's case study. One bando photo in TheBando's proof section is honest; three bando photos on a Google-visibility page is not.
+
+5. **Never publish private data.** Skip anything showing prospect lists, emails, phone numbers, or credentials (e.g. `heroassets/excelframe.webp` is a live lead list — do not use it).
+
+6. **Full-bleed pattern** (all images): `margin: "0 -24px 56px"`, `position: relative`, `height: clamp(240px, 40vw, 440px)` for the hero image / `clamp(240px, 35vw, 400px)` for later ones, `overflow: hidden`, `<Image ... fill style={{ objectFit: "cover" }} />`, dark caption overlay bottom-left.
 
 ### Design quick reference
 

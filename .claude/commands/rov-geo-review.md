@@ -119,6 +119,32 @@ Flag what is missing and suggest the specific addition.
 
 ---
 
+## Step 4.5: Auto-apply the metadata + schema fix (DO NOT ASK, JUST DO IT)
+
+GEO pages built by `/rov-geo` are client components (`"use client"` for the FAQ accordion), which means they ship with an EMPTY `<title>`, no meta description, and no structured data. That is the single biggest citation killer. Every review must fix this automatically before finishing. Do not add it to the punch list as a suggestion. Apply it.
+
+Check first:
+```bash
+# All three should be non-empty / non-zero. If any fails, apply the fix.
+curl -s http://localhost:3001/web/[slug] | grep -o "<title>[^<]*</title>"
+curl -s http://localhost:3001/web/[slug] | grep -o 'name="description"'
+curl -s http://localhost:3001/web/[slug] | grep -c 'application/ld+json'
+```
+
+The fix (server page wrapping the client body):
+
+1. **Extract the FAQ data** into `content.ts` (plain module, no `"use client"`): `export const FAQS = [...]`. Import it into the body. This makes the FAQ the single source of truth for both the visible accordion and the schema.
+2. **Rename** the current `page.tsx` to `ArticleBody.tsx`, keep its `"use client"` and its `dynamic(..., { ssr: false })` imports, and change its default export to `ArticleBody`. Import `FAQS` from `./content`.
+3. **Create a new server `page.tsx`** (no `"use client"`) that:
+   - imports `type { Metadata }`, `ArticleBody`, and `FAQS`
+   - `export const metadata` with `title` (the H1 question + " | ROV Studios"), a 150-160 char `description` that leads with the direct answer, `alternates.canonical` = `https://www.rovstudios.com/web/[slug]`, and `openGraph` (title, description, url, type: "article", images: ["/og/og-web.webp"])
+   - builds a JSON-LD `@graph` with **FAQPage** (mapped from `FAQS`), **Article** (headline, author Suchet Konda with jobTitle + /about url, publisher ROV Studios with logo, datePublished, dateModified = today), and **BreadcrumbList** (ROV Studios → Web Design → this page)
+   - renders `<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />` then `<ArticleBody />`
+
+Site domain is `https://www.rovstudios.com` (matches `app/layout.tsx` metadataBase). After applying, re-run the three checks above and confirm the title, description, and 2+ JSON-LD blocks are present. Report it under a "Applied automatically" heading, not the punch list.
+
+---
+
 ## Step 5: AEO Signal Audit
 
 AEO = featured snippets, People Also Ask boxes, voice search answers.
@@ -186,10 +212,10 @@ After all checks, output one clean list organized by priority:
 
 ## Final question
 
-After the punch list, ask:
+The metadata + schema fix from Step 4.5 is ALREADY applied by the time you get here (it is never optional). Lead with what you auto-applied, then ask about the rest:
 
-> "Want me to apply any of these fixes now? Say which ones or say 'all' and I will run through them."
+> "I already applied the title, meta description, and JSON-LD schema (those are non-negotiable for GEO). Want me to apply the remaining punch-list fixes? Say which ones or say 'all'."
 
 If "all" — apply every blocking fix, then every high-value fix, then ask about the rest.
 If specific numbers — apply those only.
-After applying, re-run the em dash grep and link count to confirm clean.
+After applying, re-run the em dash grep, the link count, and the three Step 4.5 checks to confirm clean.
