@@ -36,4 +36,15 @@ export const resourceEntries: ResourceEntry[] = [
     readingTime: 9,
     featured: true,
   },
+  {
+    id: "playbook-real-estate-agents",
+    category: "Playbook",
+    title: "What Real Estate Agents Actually Take Home (And Why)",
+    excerpt:
+      "Drag the sliders on a live commission calculator, map the industry ecosystem, and read what agents actually say about leads, money, and burnout.",
+    href: "/resources/playbooks/real-estate-agents",
+    date: "2026-07-03",
+    readingTime: 12,
+    featured: true,
+  },
 ];

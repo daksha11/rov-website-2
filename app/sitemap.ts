@@ -146,6 +146,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'monthly',
             priority: 0.7,
         },
+        {
+            url: `${baseUrl}/resources/playbooks/real-estate-agents`,
+            lastModified: '2026-07-03',
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
         ...blogPosts,
     ];
 }
