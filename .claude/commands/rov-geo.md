@@ -241,6 +241,25 @@ Test: someone scrolling fast with the sound off should get the whole story from 
 
 ---
 
+### Technical SEO / indexability checklist (required for every new page, not just `/web`)
+
+This applies to ANY new indexable page in this repo (`/web/*`, `/resources/*`, `/blog/*`, etc.), not just pages built through this command.
+
+- **Never hardcode the brand name in `metadata.title`.** The root layout (`app/layout.tsx`) already applies a title template: `"%s | Range of View Studios"`. If a page sets `title: "My Page | ROV Studios"`, the rendered `<title>` becomes `"My Page | ROV Studios | Range of View Studios"` — a broken double-suffixed title that truncates in search results. Page titles should be the bare descriptive title only (e.g. `"What Software Builds a Website That Converts?"`), under ~60 characters. This bug already exists on some older `/web` pages — when touching one, fix it while you're there.
+  - Exception: `openGraph.title` and `twitter.title` are NOT run through the template, so those CAN and should include the full brand suffix for standalone social-card context (e.g. `"My Page | Range Of View Studios"`).
+- **`metadata.description` under ~155 characters.** Longer gets truncated in the SERP snippet. Same limit for `openGraph.description`/`twitter.description` is looser but keep it tight anyway.
+- **`alternates.canonical` set to the exact final URL** (`https://www.rovstudios.com/...`), matching what's registered in the sitemap. No trailing-slash mismatches.
+- **Exactly one `<h1>` per page.** Verify: `curl -s URL | grep -oE '<h1' | wc -l` should print `1`.
+- **Every `<img>`/`next/image` has real, descriptive `alt` text.** Verify: `curl -s URL | grep -oE '<img[^>]*>' | grep -cv 'alt='` should print `0`.
+- **Register the page in `app/sitemap.ts`.** New static routes need a manual entry (priority ~0.7, monthly changefreq unless it changes more often). Dynamic `[slug]`/`[id]` routes are usually covered by an existing loop (check first) or need one added.
+- **Confirm `app/robots.ts` doesn't disallow the new path.** It currently only blocks `/api/`, `/admin`, `/portal`, `/ctrla/brand-kit/builder` — new sections should NOT be added to that disallow list unless there's a specific reason to keep them out of search.
+- **Add JSON-LD structured data** (minimum `Article` + `BreadcrumbList`; add `FAQPage` if there's an FAQ section, `HowTo` for step-by-step content, `ItemList`/`SoftwareApplication` for tool/product rosters). Validate it actually parses:
+  ```bash
+  curl -s URL | grep -oE '<script type="application/ld\+json"[^>]*>(.*?)</script>'
+  ```
+  then confirm each block is valid JSON (a broken template string ships invalid schema silently — Next does not error on it).
+- **No `noindex` unless intentional.** Don't add a `robots: { index: false }` override without a specific reason; verify with `curl -s URL | grep -oE '<meta name="robots"[^>]*>'` — should read `index, follow` for anything meant to be found.
+
 ### Add the blog listing card (REQUIRED — do this for every GEO page)
 
 Every `/web` GEO page must also surface as a card on `/blog`. Do NOT skip this.
@@ -278,9 +297,18 @@ honored by components/blog/BlogCard.tsx and redirected in app/blog/[slug]/page.t
 
 ```bash
 npx tsc --noEmit
-curl -s -o /dev/null -w "%{http_code}" http://localhost:3001/web/[slug]
+curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/web/[slug]
 grep -n "—" app/web/[slug]/page.tsx
 grep -c "href=\"/" app/web/[slug]/page.tsx
+
+# Technical SEO checklist (see section above) — run against the live URL:
+curl -s http://localhost:3000/web/[slug] | grep -oE '<title>[^<]*</title>'                          # no double brand suffix
+curl -s http://localhost:3000/web/[slug] | grep -oE '<meta name="description"[^>]*>'                 # under ~155 chars
+curl -s http://localhost:3000/web/[slug] | grep -oE '<link rel="canonical"[^>]*>'                    # exact final URL
+curl -s http://localhost:3000/web/[slug] | grep -oE '<h1' | wc -l                                    # must print 1
+curl -s http://localhost:3000/web/[slug] | grep -oE '<img[^>]*>' | grep -cv 'alt='                   # must print 0
+curl -s http://localhost:3000/web/[slug] | grep -oE '<meta name="robots"[^>]*>'                      # index, follow
+grep -n "/web/[slug]" app/sitemap.ts                                                                  # registered
 ```
 
 Then hand off to `/rov-geo-review` for final polish.

@@ -125,10 +125,13 @@ GEO pages built by `/rov-geo` are client components (`"use client"` for the FAQ 
 
 Check first:
 ```bash
-# All three should be non-empty / non-zero. If any fails, apply the fix.
-curl -s http://localhost:3001/web/[slug] | grep -o "<title>[^<]*</title>"
-curl -s http://localhost:3001/web/[slug] | grep -o 'name="description"'
-curl -s http://localhost:3001/web/[slug] | grep -c 'application/ld+json'
+# All should be non-empty / non-zero, and the title must NOT contain the brand name twice.
+curl -s http://localhost:3000/web/[slug] | grep -o "<title>[^<]*</title>"
+curl -s http://localhost:3000/web/[slug] | grep -o 'name="description"'
+curl -s http://localhost:3000/web/[slug] | grep -c 'application/ld+json'
+curl -s http://localhost:3000/web/[slug] | grep -oE '<h1' | wc -l              # must be 1
+curl -s http://localhost:3000/web/[slug] | grep -oE '<img[^>]*>' | grep -cv 'alt='  # must be 0
+grep -n "/web/[slug]" app/sitemap.ts                                            # must match
 ```
 
 The fix (server page wrapping the client body):
@@ -137,11 +140,11 @@ The fix (server page wrapping the client body):
 2. **Rename** the current `page.tsx` to `ArticleBody.tsx`, keep its `"use client"` and its `dynamic(..., { ssr: false })` imports, and change its default export to `ArticleBody`. Import `FAQS` from `./content`.
 3. **Create a new server `page.tsx`** (no `"use client"`) that:
    - imports `type { Metadata }`, `ArticleBody`, and `FAQS`
-   - `export const metadata` with `title` (the H1 question + " | ROV Studios"), a 150-160 char `description` that leads with the direct answer, `alternates.canonical` = `https://www.rovstudios.com/web/[slug]`, and `openGraph` (title, description, url, type: "article", images: ["/og/og-web.webp"])
+   - `export const metadata` with `title` (the bare H1 question, under ~60 chars, NO brand suffix — the root layout's title template `"%s | Range of View Studios"` already appends it; hardcoding a suffix here produces a broken double-suffixed `<title>`), a 150-160 char `description` that leads with the direct answer, `alternates.canonical` = `https://www.rovstudios.com/web/[slug]`, and `openGraph` (title WITH the brand suffix since OG/Twitter titles are NOT run through the template, description, url, type: "article", images: ["/og/og-web.webp"])
    - builds a JSON-LD `@graph` with **FAQPage** (mapped from `FAQS`), **Article** (headline, author Suchet Konda with jobTitle + /about url, publisher ROV Studios with logo, datePublished, dateModified = today), and **BreadcrumbList** (ROV Studios → Web Design → this page)
    - renders `<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />` then `<ArticleBody />`
 
-Site domain is `https://www.rovstudios.com` (matches `app/layout.tsx` metadataBase). After applying, re-run the three checks above and confirm the title, description, and 2+ JSON-LD blocks are present. Report it under a "Applied automatically" heading, not the punch list.
+Site domain is `https://www.rovstudios.com` (matches `app/layout.tsx` metadataBase). After applying, re-run the checks above and confirm: title has no double brand suffix, description is present, 2+ JSON-LD blocks parse, exactly 1 `<h1>`, 0 images missing `alt`, and the route is registered in `app/sitemap.ts`. Report it under an "Applied automatically" heading, not the punch list.
 
 ---
 

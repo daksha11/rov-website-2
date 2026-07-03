@@ -18,7 +18,7 @@ export const designContent: ToolkitArticleContent = {
   id: "design",
 
   seo: {
-    title: "Why Does My Brand Look Homemade? | ROV Studios",
+    title: "Why Does My Brand Look Homemade?",
     description:
       "The 8 tools behind every brand ROV builds, and the signs your Canva logo is costing you customers in Atlanta.",
     ogTitle: "Why Does My Brand Look Homemade?",

@@ -17,7 +17,7 @@ export const webDevContent: ToolkitArticleContent = {
   id: "web-dev",
 
   seo: {
-    title: "What Software Builds a Website That Converts? | ROV",
+    title: "What Software Builds a Website That Converts?",
     description:
       "The 8 tools behind every site ROV ships, what each does, and what to ask before you pay for a website.",
     ogTitle: "What Software Actually Builds a Website That Converts?",

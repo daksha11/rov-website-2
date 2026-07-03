@@ -15,14 +15,14 @@ const NavigationDock = dynamic(() =>
 const Footer = dynamic(() => import("@/components/Footer"));
 
 export const metadata: Metadata = {
-  title: "Resources | Range Of View Studios",
+  title: "Resources",
   description:
-    "Toolkits, playbooks, and guides from ROV Studios — the tools, process, and thinking behind the brands and websites we ship.",
+    "Toolkits, playbooks, and guides from ROV Studios: the tools, process, and thinking behind the brands and websites we ship.",
   alternates: { canonical: "https://www.rovstudios.com/resources" },
   openGraph: {
     title: "Resources | Range Of View Studios",
     description:
-      "Toolkits, playbooks, and guides from ROV Studios — the tools, process, and thinking behind the brands and websites we ship.",
+      "Toolkits, playbooks, and guides from ROV Studios: the tools, process, and thinking behind the brands and websites we ship.",
     url: "https://www.rovstudios.com/resources",
     images: [
       {
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Resources | Range Of View Studios",
     description:
-      "Toolkits, playbooks, and guides from ROV Studios — the tools, process, and thinking behind the brands and websites we ship.",
+      "Toolkits, playbooks, and guides from ROV Studios: the tools, process, and thinking behind the brands and websites we ship.",
     images: ["/og/og-default.webp"],
   },
 };

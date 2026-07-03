@@ -9,13 +9,13 @@ import type { PlaybookContent } from "./types";
 export const realEstateAgentsPlaybook: PlaybookContent = {
   slug: "real-estate-agents",
   seo: {
-    title: "What Real Estate Agents Actually Take Home (And Why) | ROV Studios",
+    title: "What Real Estate Agents Actually Take Home (And Why)",
     description:
-      "An interactive breakdown of real estate commissions, the industry ecosystem, real agent pain points, the glossary, and an Atlanta agent teardown. Plug in your own numbers.",
+      "An interactive breakdown of real estate commissions, the industry ecosystem, and real agent pain points. Plug in your own numbers.",
     ogTitle: "What Real Estate Agents Actually Take Home (And Why)",
     ogDescription:
       "Drag the sliders and see what an agent really keeps after brokerage splits, team splits, and taxes. Plus the ecosystem, the vocabulary, and an Atlanta competitive teardown.",
-    ogImage: "/heroassets/codingframe.webp",
+    ogImage: "/og/og-default.webp",
   },
   breadcrumb: "Resources · Playbook · Real Estate",
   kicker: "ROV Studios · Real Estate Playbook",
