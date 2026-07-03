@@ -62,7 +62,7 @@ const DigiMag = () => {
             {/* 2. Item 2: 1 column, 1 row -> aspect square */}
             <div className="col-span-1 row-span-1 aspect-square">
               <TiltedCard
-                imageSrc="/chain.webp"
+                imageSrc="/misc/chain.webp"
                 altText="ROV Chain"
                 containerHeight="100%"
                 containerWidth="100%"
@@ -76,7 +76,7 @@ const DigiMag = () => {
             {/* 3. Item 3: 1 column, 2 rows (spans both) -> fills both rows + gap */}
             <div className="col-span-1 row-span-2">
               <TiltedCard
-                imageSrc="/woman2.webp"
+                imageSrc="/misc/woman2.webp"
                 altText="Vices"
                 containerHeight="100%"
                 containerWidth="100%"
@@ -90,7 +90,7 @@ const DigiMag = () => {
             {/* 4. Item 4: 1 column, 1 row -> aspect square */}
             <div className="col-span-1 row-span-1 aspect-square">
               <TiltedCard
-                imageSrc="/ddk_1.webp"
+                imageSrc="/misc/ddk_1.webp"
                 altText="DDK Album"
                 containerHeight="100%"
                 containerWidth="100%"

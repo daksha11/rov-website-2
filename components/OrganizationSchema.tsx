@@ -6,7 +6,7 @@ export function OrganizationSchema() {
     name: "Range of View Studios",
     alternateName: "ROV Studios",
     url: "https://www.rovstudios.com",
-    logo: "https://www.rovstudios.com/rov-logo.webp",
+    logo: "https://www.rovstudios.com/brand/rov-logo.webp",
     description:
       "Creative production agency specializing in sound engineering, web development, video production, and AI automation.",
     address: {

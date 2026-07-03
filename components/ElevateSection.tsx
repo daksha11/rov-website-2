@@ -137,13 +137,13 @@ const ElevateSection: React.FC = () => {
           <div className="flex-1 flex justify-center items-center relative min-h-[450px] w-full max-[968px]:mt-8 max-[968px]:min-h-[350px]">
             <CardSwap width={380} height={280} delay={4000}>
                <Card>
-                <Image src="/rov_album_1.webp" alt="ROV Album 1" fill sizes="380px" className="object-cover rounded-xl" loading="lazy" />
+                <Image src="/albums/rov_album_1.webp" alt="ROV Album 1" fill sizes="380px" className="object-cover rounded-xl" loading="lazy" />
               </Card>
               <Card>
-                <Image src="/rov_album_2.webp" alt="ROV Album 2" fill sizes="380px" className="object-cover rounded-xl" loading="lazy" />
+                <Image src="/albums/rov_album_2.webp" alt="ROV Album 2" fill sizes="380px" className="object-cover rounded-xl" loading="lazy" />
               </Card>
               <Card>
-                <Image src="/rov_album_3.webp" alt="ROV Album 3" fill sizes="380px" className="object-cover rounded-xl" loading="lazy" />
+                <Image src="/albums/rov_album_3.webp" alt="ROV Album 3" fill sizes="380px" className="object-cover rounded-xl" loading="lazy" />
               </Card>
             </CardSwap>
           </div>

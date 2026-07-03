@@ -10,7 +10,7 @@ const authorAvatars: Record<string, string> = {
 };
 
 function getAuthorAvatar(author: string): string {
-  return authorAvatars[author] ?? "/rov-logo.webp";
+  return authorAvatars[author] ?? "/brand/rov-logo.webp";
 }
 
 function formatDate(dateString: string): string {
@@ -35,7 +35,7 @@ export function BlogPostHeader({ post }: { post: BlogPost }) {
         {/* Logo */}
         <div style={{ marginBottom: 32 }}>
           <Link href="/">
-            <Image src="/rov-logo.webp" alt="ROV Studios" width={48} height={48} style={{ objectFit: "contain" }} />
+            <Image src="/brand/rov-logo.webp" alt="ROV Studios" width={48} height={48} style={{ objectFit: "contain" }} />
           </Link>
         </div>
 

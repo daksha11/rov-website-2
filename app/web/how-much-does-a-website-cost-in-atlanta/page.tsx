@@ -48,7 +48,7 @@ const jsonLd = {
         name: "ROV Studios",
         logo: {
           "@type": "ImageObject",
-          url: "https://www.rovstudios.com/rov-logo.webp",
+          url: "https://www.rovstudios.com/brand/rov-logo.webp",
         },
       },
       datePublished: "2026-07-02",

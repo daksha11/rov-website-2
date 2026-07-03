@@ -10,14 +10,14 @@ interface CarouselItem {
 }
 
 const items: CarouselItem[] = [
-  { id: 1, image: "/changeit.webp" },
-  { id: 2, image: "/cover2.webp" },
-  { id: 3, image: "/catchthelight.webp" },
-  { id: 4, image: "/domcover.webp" },
-  { id: 5, image: "/faithretrologothing.webp" },
-  { id: 6, image: "/miliy1.webp" },
-  { id: 7, image: "/miliy2.webp" },
-  { id: 8, image: "/one_at_a_time.webp" }
+  { id: 1, image: "/misc/changeit.webp" },
+  { id: 2, image: "/albums/cover2.webp" },
+  { id: 3, image: "/misc/catchthelight.webp" },
+  { id: 4, image: "/misc/domcover.webp" },
+  { id: 5, image: "/misc/faithretrologothing.webp" },
+  { id: 6, image: "/misc/miliy1.webp" },
+  { id: 7, image: "/misc/miliy2.webp" },
+  { id: 8, image: "/misc/one_at_a_time.webp" }
 ];
 
 function Gallery() {

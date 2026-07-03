@@ -120,7 +120,7 @@ export default function ArticleBody() {
           {/* Logo */}
           <div style={{ marginBottom: 32 }}>
             <Link href="/">
-              <Image src="/rov-logo.webp" alt="ROV Studios" width={48} height={48} style={{ objectFit: "contain" }} />
+              <Image src="/brand/rov-logo.webp" alt="ROV Studios" width={48} height={48} style={{ objectFit: "contain" }} />
             </Link>
           </div>
 

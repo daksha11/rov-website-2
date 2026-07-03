@@ -24,13 +24,13 @@ const AlbumCoverLoop = dynamic(() => import("@/components/AlbumCoverLoop"), {
 });
 
 const albumCovers = [
-  { src: "/rov_album_4.webp", alt: "Album Cover 4" },
-  { src: "/rov_album_1.webp", alt: "Album Cover 1" },
-  { src: "/rov_album_2.webp", alt: "Album Cover 2" },
-  { src: "/rov_album_3.webp", alt: "Album Cover 3" },
-  { src: "/cover1.webp", alt: "Cover 1" },
-  { src: "/cover2.webp", alt: "Cover 2" },
-  { src: "/cover3.webp", alt: "Cover 3" },
+  { src: "/albums/rov_album_4.webp", alt: "Album Cover 4" },
+  { src: "/albums/rov_album_1.webp", alt: "Album Cover 1" },
+  { src: "/albums/rov_album_2.webp", alt: "Album Cover 2" },
+  { src: "/albums/rov_album_3.webp", alt: "Album Cover 3" },
+  { src: "/albums/cover1.webp", alt: "Cover 1" },
+  { src: "/albums/cover2.webp", alt: "Cover 2" },
+  { src: "/albums/cover3.webp", alt: "Cover 3" },
 ];
 
 export default function HomeContent() {

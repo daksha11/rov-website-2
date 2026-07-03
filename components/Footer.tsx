@@ -68,7 +68,7 @@ const Footer = () => {
             className="cursor-pointer"
           >
             <Image
-              src="/rov-logo.webp"
+              src="/brand/rov-logo.webp"
               alt="ROV Studios Logo"
               width={120}
               height={60}
@@ -233,7 +233,7 @@ const Footer = () => {
           className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${isIndia ? 'opacity-0' : 'opacity-100'}`}
         >
           <Image
-            src="/atlskylinefooter.webp"
+            src="/misc/atlskylinefooter.webp"
             alt="Atlanta Skyline"
             fill
             sizes="100vw"
@@ -251,7 +251,7 @@ const Footer = () => {
           className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${isIndia ? 'opacity-100' : 'opacity-0'}`}
         >
           <Image
-            src="/hydskyline.webp"
+            src="/misc/hydskyline.webp"
             alt="Hyderabad Skyline"
             fill
             sizes="100vw"

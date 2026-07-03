@@ -43,7 +43,7 @@ export function BlogPostingSchema({ post }: { post: BlogPost }) {
       url: "https://www.rovstudios.com",
       logo: {
         "@type": "ImageObject",
-        url: "https://www.rovstudios.com/rov-logo.webp",
+        url: "https://www.rovstudios.com/brand/rov-logo.webp",
       },
     },
     mainEntityOfPage: {

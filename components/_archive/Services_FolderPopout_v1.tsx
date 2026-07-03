@@ -33,7 +33,7 @@ const InteractiveFolderIcon: React.FC<{ folderImages?: string[]; transparent?: b
   );
   const rafRef = useRef<number | null>(null);
 
-  const defaultImages = ['/rov_album_1.webp', '/rov_album_2.webp', '/rov_album_3.webp'];
+  const defaultImages = ['/albums/rov_album_1.webp', '/albums/rov_album_2.webp', '/albums/rov_album_3.webp'];
   const sourceImages = folderImages || defaultImages;
 
   // State to hold the currently displayed (shuffled) images

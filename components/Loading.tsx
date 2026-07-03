@@ -73,7 +73,7 @@ export default function Loading({ onLoadingComplete }: LoadingProps) {
         aria-label="Range of View Studios loading animation"
         title="ROV Studios"
       >
-        <source src="/loading.mp4" type="video/mp4" />
+        <source src="/video/loading.mp4" type="video/mp4" />
       </video>
 
       {/* Loading Overlay */}

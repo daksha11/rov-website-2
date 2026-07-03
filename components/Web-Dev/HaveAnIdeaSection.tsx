@@ -30,7 +30,7 @@ export default function HaveAnIdeaSection() {
                                 height: 'clamp(4.5rem, 7vw, 6rem)',
                             }}
                         >
-                            <Image src="/rov-logo.webp" alt="ROV Logo" width={60} height={60} className="w-[60%] h-auto" />
+                            <Image src="/brand/rov-logo.webp" alt="ROV Logo" width={60} height={60} className="w-[60%] h-auto" />
                         </div>
                         <div className="flex flex-col gap-1.5 max-[968px]:items-center">
                             <h2

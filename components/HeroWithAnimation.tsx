@@ -552,7 +552,7 @@ const HeroWithAnimation: React.FC = () => {
       <StickyContainer ref={stickyRef}>
         <CanvasElement ref={canvasRef} />
         <VideoElement
-          src="/SpiralShotHorizontal.mp4"
+          src="/video/SpiralShotHorizontal.mp4"
           autoPlay
           muted
           loop
@@ -563,7 +563,7 @@ const HeroWithAnimation: React.FC = () => {
         <HeroOverlay $isVisible={showHero}>
           <Logo>
             <img
-              src="rov-logo.webp"
+              src="/brand/rov-logo.webp"
               alt="ROV Logo"
             />
           </Logo>
