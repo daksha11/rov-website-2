@@ -78,6 +78,17 @@ export function NavigationDock({ className }: NavigationDockProps) {
             </div>
           ))}
 
+          {/* Resources Link */}
+          <div className="flex items-center">
+            <span className="text-white/30 text-[10px] md:text-base mx-0.5">|</span>
+            <Link
+              href="/resources"
+              className="px-1.5 py-1.5 text-white/80 hover:text-white transition-colors cursor-pointer text-[10px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
+            >
+              Resources
+            </Link>
+          </div>
+
           {/* CTRL A Link */}
           <div className="flex items-center">
             <span className="text-white/30 text-[10px] md:text-base mx-0.5">|</span>

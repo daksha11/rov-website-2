@@ -4,12 +4,14 @@ import { getAllPosts } from '@/lib/blog';
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = 'https://www.rovstudios.com';
 
-    const blogPosts = getAllPosts().map((post) => ({
-        url: `${baseUrl}/blog/${post.slug}`,
-        lastModified: post.dateModified,
-        changeFrequency: 'monthly' as const,
-        priority: 0.7,
-    }));
+    const blogPosts = getAllPosts()
+        .filter((post) => !post.externalUrl)
+        .map((post) => ({
+            url: `${baseUrl}/blog/${post.slug}`,
+            lastModified: post.dateModified,
+            changeFrequency: 'monthly' as const,
+            priority: 0.7,
+        }));
 
     return [
         {
@@ -125,6 +127,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
             lastModified: '2026-03-30',
             changeFrequency: 'weekly',
             priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/resources`,
+            lastModified: '2026-07-03',
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/resources/toolkits/web-dev`,
+            lastModified: '2026-07-03',
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/resources/toolkits/design`,
+            lastModified: '2026-07-03',
+            changeFrequency: 'monthly',
+            priority: 0.7,
         },
         ...blogPosts,
     ];
