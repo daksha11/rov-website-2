@@ -47,4 +47,15 @@ export const resourceEntries: ResourceEntry[] = [
     readingTime: 12,
     featured: true,
   },
+  {
+    id: "blog-missed-call-text-back-hvac",
+    category: "Blog",
+    title: "Missed-Call Text-Back for Atlanta HVAC (+ Website)",
+    excerpt:
+      "The call you miss on a job goes to the next truck. See how a text back in under 30 seconds keeps it yours, with a live demo and what it costs.",
+    href: "/web/missed-call-text-back-atlanta-hvac",
+    date: "2026-07-05",
+    readingTime: 7,
+    featured: true,
+  },
 ];

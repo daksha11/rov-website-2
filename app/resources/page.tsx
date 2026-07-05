@@ -63,7 +63,10 @@ export default function ResourcesPage() {
   const toolkits = resourceEntries.filter((entry) => entry.category === "Toolkit");
   const playbooks = resourceEntries.filter((entry) => entry.category === "Playbook");
   const guides = resourceEntries.filter((entry) => entry.category === "Guide");
-  const blogEntries = getFeaturedBlogEntries();
+  // Manual "Blog" entries in resources.ts (e.g. GEO /web pages we treat as blogs)
+  // render in the same row as the real blog posts from getAllPosts().
+  const manualBlogEntries = resourceEntries.filter((entry) => entry.category === "Blog");
+  const blogEntries = [...manualBlogEntries, ...getFeaturedBlogEntries()];
 
   const hasAnyContent =
     toolkits.length > 0 || playbooks.length > 0 || guides.length > 0 || blogEntries.length > 0;
