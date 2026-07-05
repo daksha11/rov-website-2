@@ -58,4 +58,26 @@ export const resourceEntries: ResourceEntry[] = [
     readingTime: 7,
     featured: true,
   },
+  {
+    id: "blog-website-cost-atlanta",
+    category: "Blog",
+    title: "How Much Does a Website Cost in Atlanta?",
+    excerpt:
+      "Most Atlanta small business sites run $2,000 to $5,000. What actually drives the price, and why the cheapest site is the one you pay for twice.",
+    href: "/web/how-much-does-a-website-cost-in-atlanta",
+    date: "2026-07-02",
+    readingTime: 9,
+    featured: true,
+  },
+  {
+    id: "blog-why-not-showing-on-google",
+    category: "Blog",
+    title: "Why Isn't My Business Showing Up on Google?",
+    excerpt:
+      "Nine times out of ten it is not the competition. The six reasons Atlanta businesses stay invisible on Google, and how to fix each one.",
+    href: "/web/why-isnt-my-business-showing-up-on-google",
+    date: "2026-07-01",
+    readingTime: 8,
+    featured: true,
+  },
 ];
