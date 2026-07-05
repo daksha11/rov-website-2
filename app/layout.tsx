@@ -117,6 +117,13 @@ export default function RootLayout({
         {/* Metricool */}
         <Script id="metricool" strategy="afterInteractive">{`function loadScript(a){var b=document.getElementsByTagName("head")[0],c=document.createElement("script");c.type="text/javascript",c.src="https://tracker.metricool.com/resources/be.js",c.onreadystatechange=a,c.onload=a,b.appendChild(c)}loadScript(function(){beTracker.t({hash:"a9bced47944591515e59a5bc4dc55e4d"})});`}</Script>
 
+        {/* Klaviyo onsite tracking (public site ID) */}
+        <Script
+          id="klaviyo-onsite"
+          src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=U3jthw"
+          strategy="afterInteractive"
+        />
+
         <StyledComponentsRegistry>
           {children}
         </StyledComponentsRegistry>
