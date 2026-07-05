@@ -15,7 +15,7 @@ const SERVICES = [
     subtitle: "Built to perform, designed to feel right.",
     link: "/web",
     accent: "#4C2D16",
-    images: ["/heroassets/webfolder1.png", "/heroassets/webfolder2.png", "/heroassets/webfolder3.webp"],
+    images: ["/heroassets/webfolder1.png", "/heroassets/samwebfolder2.webp", "/heroassets/webfolder3.webp"],
     transparent: false,
     cta: "See Our Work",
     icon: Globe,
@@ -408,6 +408,7 @@ export default function Services() {
                   style={{ gridArea: slot }}
                   onMouseEnter={() => handleCardEnter(service.id)}
                   onMouseLeave={handleCardLeave}
+                  onClick={() => activate(service.id)}
                 >
                   {isFeatured ? (
                     <FeaturedCard service={service} onDotClick={activate} />

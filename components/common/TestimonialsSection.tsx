@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Testimonial, ServiceVariant } from "@/data/testimonials";
 
@@ -229,12 +230,14 @@ export default function TestimonialsSection({ testimonials, variant }: Props) {
                   {/* Avatar or accent line */}
                   {current.image ? (
                     <div
-                      className="w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#EA9A61]/30"
+                      className="relative w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#EA9A61]/30"
                     >
-                      <img
+                      <Image
                         src={current.image}
                         alt={current.name}
-                        className="w-full h-full object-cover"
+                        fill
+                        sizes="56px"
+                        className="object-cover"
                       />
                     </div>
                   ) : (

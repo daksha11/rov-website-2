@@ -354,7 +354,8 @@ export default function MusicPlayer() {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: 20 }}
-                                    className="absolute bottom-32 md:bottom-28 w-[20rem] bg-[#1A1A1A]/90 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl z-[150]"
+                                    className="absolute bottom-32 md:bottom-28 bg-[#1A1A1A]/90 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl z-[150]"
+                                    style={{ width: "20rem", maxWidth: "min(20rem, calc(100vw - 32px))" }}
                                 >
                                     <h4 className="text-white/60 text-xs font-bold uppercase tracking-widest mb-3 ml-1">Up Next</h4>
                                     <div className="flex flex-col gap-2 max-h-[15rem] overflow-y-auto custom-scrollbar">
@@ -389,7 +390,7 @@ export default function MusicPlayer() {
                                     {/* Glowing Head */}
                                     <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)] opacity-0 group-hover/dashboard:opacity-100 transition-opacity" />
                                 </div>
-                                {/* Interactive Input */}
+                                {/* Interactive Input — thin visual, tall (44px) hit area for touch */}
                                 <input
                                     type="range"
                                     min="0"
@@ -397,7 +398,8 @@ export default function MusicPlayer() {
                                     step="0.1"
                                     value={currentTime}
                                     onChange={handleSeek}
-                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                    aria-label="Seek"
+                                    className="absolute left-0 right-0 top-0 w-full h-11 opacity-0 cursor-pointer"
                                 />
                             </div>
 
@@ -427,7 +429,7 @@ export default function MusicPlayer() {
 
                                 {/* Center: Playback Controls */}
                                 <div className="flex items-center justify-center w-full md:w-1/3 gap-8 order-3 md:order-2 pt-6 md:pt-0 border-t border-white/10 md:border-none">
-                                    <button onClick={prevSong} className="text-white/70 hover:text-white hover:scale-110 transition-all active:scale-95" aria-label="Previous song">
+                                    <button onClick={prevSong} className="text-white/70 hover:text-white hover:scale-110 transition-all active:scale-95 p-2.5 -m-2.5 flex items-center justify-center" aria-label="Previous song">
                                         <SkipBack size={24} fill="currentColor" />
                                     </button>
 
@@ -439,7 +441,7 @@ export default function MusicPlayer() {
                                         {isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" className="ml-1" />}
                                     </button>
 
-                                    <button onClick={nextSong} className="text-white/70 hover:text-white hover:scale-110 transition-all active:scale-95" aria-label="Next song">
+                                    <button onClick={nextSong} className="text-white/70 hover:text-white hover:scale-110 transition-all active:scale-95 p-2.5 -m-2.5 flex items-center justify-center" aria-label="Next song">
                                         <SkipForward size={24} fill="currentColor" />
                                     </button>
                                 </div>
@@ -456,7 +458,7 @@ export default function MusicPlayer() {
                                         <button
                                             ref={playlistBtnRef}
                                             onClick={() => setShowPlaylist(!showPlaylist)}
-                                            className={`hover:text-white transition-colors ${showPlaylist ? "text-[#EA9A61]" : ""}`}
+                                            className={`hover:text-white transition-colors p-3 -m-3 flex items-center justify-center ${showPlaylist ? "text-[#EA9A61]" : ""}`}
                                             aria-label="Toggle playlist"
                                         >
                                             <ListMusic size={20} className="stroke-[2.5]" />
@@ -465,7 +467,7 @@ export default function MusicPlayer() {
                                         {/* Mute/Unmute Toggle */}
                                         <button
                                             onClick={toggleMute}
-                                            className="hover:text-white transition-colors flex justify-center w-6"
+                                            className="hover:text-white transition-colors flex items-center justify-center p-3 -m-3"
                                             aria-label={volume === 0 ? "Unmute" : "Mute"}
                                         >
                                             {volume === 0 ? <Volume2 size={20} className="stroke-[2.5] opacity-50" /> : <Volume2 size={20} className="stroke-[2.5]" />}

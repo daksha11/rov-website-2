@@ -36,102 +36,124 @@ export function ThreeToolkits() {
       <Bleed>
         <Kicker color={ed.gold} style={{ marginBottom: 16 }}>The Libraries</Kicker>
         <SectionHeader
-          title="Three Toolkits."
+          title="Four Toolkits."
           meta="Living libraries. Growing with each week's pick."
         />
         {/* Drawn cosmic divider in place of the plain rule */}
         <DrawLine color={ed.gold} style={{ margin: "clamp(18px, 2.6vw, 32px) 0" }} />
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-            gap: "clamp(20px, 3vw, 40px)",
-          }}
-        >
-          {toolkitSections.map((s, i) => (
-            <motion.a
-              key={s.id}
-              href={`/ctrla/toolkit/${s.id}`}
-              initial={{ opacity: 0, y: 24 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ ...spring, delay: i * 0.1 }}
-              style={{ display: "flex", flexDirection: "column", textDecoration: "none" }}
-            >
-              {/* Cover block with oversized page number, washed in the
-                  toolkit's signature accent and capped with a colour bar */}
-              <div
+        {/* Stepped lines — each toolkit is a full-width accent line, with a
+            compact copy node resting on it, offset further right each step.
+            Lots of negative space, small vertical footprint. */}
+        <div>
+          {toolkitSections.map((s, i) => {
+            const n = toolkitSections.length;
+            const frac = n > 1 ? i / (n - 1) : 0;         // 0 = hard left, 1 = hard right
+            const alignRight = frac > 0.5;                 // right-half nodes hug the right
+            // Node's left edge slides from container-left (frac 0) to
+            // container-right-minus-node-width (frac 1), evenly spaced.
+            const offset = `calc(${frac} * (100% - min(460px, 100%)))`;
+            return (
+              <motion.a
+                key={s.id}
+                href={`/ctrla/toolkit/${s.id}`}
+                initial={{ opacity: 0, y: 14 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ ...spring, delay: i * 0.08 }}
+                className="ctrla-toolkit-step"
                 style={{
+                  display: "block",
                   position: "relative",
-                  width: "100%",
-                  aspectRatio: "3 / 4",
-                  background: `linear-gradient(160deg, ${s.accentColor}24 0%, ${ed.panel} 58%)`,
-                  borderBottom: `3px solid ${s.accentColor}`,
-                  overflow: "hidden",
-                  display: "flex",
-                  alignItems: "flex-end",
-                  padding: 18,
+                  textDecoration: "none",
+                  padding: "clamp(20px, 3vw, 34px) 0",
                 }}
               >
-                <span
+                {/* The line = the toolkit */}
+                <div style={{ height: 1.5, background: s.accentColor, width: "100%", opacity: 0.85 }} />
+
+                {/* The copy node = the circle, resting on the line, spread
+                    evenly from the left edge (first) to the right edge (last) */}
+                <div
+                  className="ctrla-toolkit-node"
                   style={{
-                    fontFamily: ed.grotesque,
-                    fontWeight: 800,
-                    fontSize: "clamp(72px, 12vw, 132px)",
-                    lineHeight: 0.8,
-                    color: `${s.accentColor}4D`,
-                    letterSpacing: "-0.04em",
+                    marginLeft: offset,
+                    marginTop: "clamp(14px, 1.8vw, 22px)",
+                    width: "min(460px, 100%)",
+                    textAlign: alignRight ? "right" : "left",
                   }}
                 >
-                  {s.pageNumber}
-                </span>
-              </div>
-
-              {/* Title */}
-              <h3
-                style={{
-                  fontFamily: ed.grotesque,
-                  fontWeight: 800,
-                  fontSize: "clamp(28px, 3.5vw, 40px)",
-                  letterSpacing: "-0.02em",
-                  color: ed.ink,
-                  margin: "18px 0 8px",
-                }}
-              >
-                {s.title}.
-              </h3>
-
-              {/* Blurb */}
-              <p
-                style={{
-                  fontFamily: ed.serif,
-                  fontStyle: "italic",
-                  fontSize: "clamp(13px, 1.4vw, 15px)",
-                  lineHeight: 1.5,
-                  color: ed.inkSoft,
-                  margin: "0 0 18px",
-                  flex: 1,
-                }}
-              >
-                {s.blurb}
-              </p>
-
-              <Rule color={`${s.accentColor}40`} />
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  paddingTop: 12,
-                }}
-              >
-                <Label color={ed.gold}>
-                  {s.pickCount} · {s.cadence}
-                </Label>
-                <span style={{ color: s.accentColor, fontSize: 16, lineHeight: 1 }}>→</span>
-              </div>
-            </motion.a>
-          ))}
+                  {/* Number sits above, on the same edge as the name + blurb */}
+                  <span
+                    style={{
+                      display: "block",
+                      fontFamily: ed.mono,
+                      fontWeight: 400,
+                      fontSize: "clamp(11px, 1.1vw, 13px)",
+                      letterSpacing: "0.12em",
+                      color: ed.gold,
+                      marginBottom: 8,
+                    }}
+                  >
+                    {s.pageNumber}
+                  </span>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "baseline",
+                      gap: "clamp(10px, 1.4vw, 16px)",
+                      justifyContent: alignRight ? "flex-end" : "flex-start",
+                    }}
+                  >
+                    {alignRight && (
+                      <span
+                        className="ctrla-toolkit-arrow ctrla-toolkit-arrow-left"
+                        style={{ color: s.accentColor, fontSize: 15, lineHeight: 1, marginRight: 2 }}
+                      >
+                        ←
+                      </span>
+                    )}
+                    <h3
+                      style={{
+                        fontFamily: ed.grotesque,
+                        fontWeight: 800,
+                        fontSize: "clamp(22px, 2.8vw, 38px)",
+                        letterSpacing: "-0.02em",
+                        lineHeight: 1,
+                        color: ed.ink,
+                        margin: 0,
+                      }}
+                    >
+                      {s.title}
+                    </h3>
+                    {!alignRight && (
+                      <span
+                        className="ctrla-toolkit-arrow"
+                        style={{ color: s.accentColor, fontSize: 15, lineHeight: 1, marginLeft: 2 }}
+                      >
+                        →
+                      </span>
+                    )}
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: ed.grotesque,
+                      fontStyle: "normal",
+                      fontWeight: 400,
+                      fontSize: "clamp(12px, 1.3vw, 15px)",
+                      lineHeight: 1.5,
+                      color: ed.gold,
+                      margin: "7px 0 0",
+                    }}
+                  >
+                    {s.blurb}
+                  </p>
+                  <Label color={ed.gold} style={{ display: "block", marginTop: 8 }}>
+                    {s.pickCount} · {s.cadence}
+                  </Label>
+                </div>
+              </motion.a>
+            );
+          })}
         </div>
       </Bleed>
     </section>

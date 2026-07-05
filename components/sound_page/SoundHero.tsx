@@ -3,24 +3,46 @@
 import React from 'react';
 
 const SoundHero: React.FC = () => {
+    // Only mount/autoplay the heavy hero video on >=768px. On mobile we render
+    // the poster image only, so phones never download the 10 MB mp4.
+    const [isDesktop, setIsDesktop] = React.useState(false);
+
+    React.useEffect(() => {
+        if (typeof window === "undefined" || !window.matchMedia) return;
+        const mq = window.matchMedia("(min-width: 768px)");
+        const update = () => setIsDesktop(mq.matches);
+        update();
+        mq.addEventListener("change", update);
+        return () => mq.removeEventListener("change", update);
+    }, []);
+
     return (
         <section className="flex flex-col items-center justify-center relative px-6 md:px-12 py-8 bg-black min-h-[90vh]">
             <div className="w-full max-w-[95%] md:max-w-7xl relative z-10 rounded-[2.5rem] overflow-hidden shadow-2xl h-[80vh] flex flex-col justify-start pt-10 md:pt-16">
                 {/* Background Image */}
-                {/* Background Video */}
-                <video
-                    className="absolute inset-0 w-full h-full object-cover"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    poster="/thumbnails/soundhero.webp"
-                    aria-label="Stars Collide music video by ROV Studios"
-                    title="Stars Collide - ROV Studios Sound Engineering"
-                >
-                    <source src="/soundpage/starscollidemv.mp4" type="video/mp4" />
-                </video>
+                {/* Background Video (desktop) / poster image (mobile) */}
+                {isDesktop ? (
+                    <video
+                        className="absolute inset-0 w-full h-full object-cover"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
+                        poster="/thumbnails/soundhero.webp"
+                        aria-label="Stars Collide music video by ROV Studios"
+                        title="Stars Collide - ROV Studios Sound Engineering"
+                    >
+                        <source src="/soundpage/starscollidemv.mp4" type="video/mp4" />
+                    </video>
+                ) : (
+                    <img
+                        src="/thumbnails/soundhero.webp"
+                        alt="Stars Collide music video by ROV Studios"
+                        className="absolute inset-0 w-full h-full object-cover"
+                        loading="eager"
+                    />
+                )}
 
                 {/* Dark & Blurred Overlay */}
                 <div className="absolute inset-0 bg-black/40" />

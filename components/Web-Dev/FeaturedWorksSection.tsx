@@ -14,6 +14,7 @@ interface Project {
   tags: string[];
   description: string;
   media: string;
+  poster?: string;
   link?: string;
   liveUrl?: string;
   bgTint: string;
@@ -41,22 +42,11 @@ const projects: Project[] = [
     tags: ["Shopify", "Brand Identity", "Photography"],
     description: "Built a sustainable fashion brand's entire digital presence from scratch. E-commerce, brand identity, and social media drove a 20% sales increase.",
     media: "/webdev/ikna.mp4",
+    poster: "/webdev/ayseiknawebhome.webp",
     link: "/casestudy/ikna",
     liveUrl: "https://www.aysegulikna.com/",
     bgTint: "#2a2520",
     glowColor: "120, 140, 80",
-  },
-  {
-    id: 3,
-    title: "Atlanta Tech Meetup",
-    category: "Community Platform",
-    tags: ["Next.js", "Brand Design", "Community"],
-    description: "Hand-built community site for Atlanta's tech meetup — 500+ members, 50+ events, and a philosophy that the vibe is the product.",
-    media: "/webdev/atm.mp4",
-    link: "/casestudy/atlanta-tech-meetup",
-    liveUrl: "https://www.atltechmeetup.com/",
-    bgTint: "#1e1a2a",
-    glowColor: "140, 100, 200",
   },
   {
     id: 4,
@@ -156,12 +146,14 @@ function ProjectSlide({
               {/* Prev arrow */}
               <button
                 onClick={onPrev}
-                className="w-9 h-9 rounded-full border border-white/20 hover:border-white/40 flex items-center justify-center transition-all duration-200 hover:bg-white/[0.06] cursor-pointer"
+                className="min-w-[44px] min-h-[44px] flex items-center justify-center transition-all duration-200 cursor-pointer group/arrow"
                 aria-label="Previous project"
               >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50">
-                  <path d="M15 18l-6-6 6-6" />
-                </svg>
+                <span className="w-9 h-9 rounded-full border border-white/20 group-hover/arrow:border-white/40 flex items-center justify-center transition-all duration-200 group-hover/arrow:bg-white/[0.06]">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50">
+                    <path d="M15 18l-6-6 6-6" />
+                  </svg>
+                </span>
               </button>
 
               {/* Progress bar segments */}
@@ -171,20 +163,24 @@ function ProjectSlide({
                     key={i}
                     onClick={() => onGoTo(i)}
                     aria-label={`Go to project ${i + 1}`}
-                    className="group relative h-[3px] rounded-full overflow-hidden transition-all duration-300 cursor-pointer"
-                    style={{ width: i === index ? 36 : 16, background: "rgba(255,255,255,0.12)" }}
+                    className="group relative flex items-center justify-center min-h-[44px] px-1 cursor-pointer"
                   >
-                    {i === index && (
-                      <motion.div
-                        className="absolute inset-0 rounded-full"
-                        style={{ background: "#EA9A61" }}
-                        layoutId="progress-fill"
-                        transition={{ duration: 0.25 }}
-                      />
-                    )}
-                    {i !== index && (
-                      <div className="absolute inset-0 rounded-full bg-white/0 group-hover:bg-white/30 transition-colors duration-200" />
-                    )}
+                    <span
+                      className="relative block h-[3px] rounded-full overflow-hidden transition-all duration-300"
+                      style={{ width: i === index ? 36 : 16, background: "rgba(255,255,255,0.12)" }}
+                    >
+                      {i === index && (
+                        <motion.div
+                          className="absolute inset-0 rounded-full"
+                          style={{ background: "#EA9A61" }}
+                          layoutId="progress-fill"
+                          transition={{ duration: 0.25 }}
+                        />
+                      )}
+                      {i !== index && (
+                        <div className="absolute inset-0 rounded-full bg-white/0 group-hover:bg-white/30 transition-colors duration-200" />
+                      )}
+                    </span>
                   </button>
                 ))}
               </div>
@@ -197,12 +193,14 @@ function ProjectSlide({
               {/* Next arrow */}
               <button
                 onClick={onNext}
-                className="w-9 h-9 rounded-full border border-white/20 hover:border-white/40 flex items-center justify-center transition-all duration-200 hover:bg-white/[0.06] cursor-pointer"
+                className="min-w-[44px] min-h-[44px] flex items-center justify-center transition-all duration-200 cursor-pointer group/arrow"
                 aria-label="Next project"
               >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50">
-                  <path d="M9 18l6-6-6-6" />
-                </svg>
+                <span className="w-9 h-9 rounded-full border border-white/20 group-hover/arrow:border-white/40 flex items-center justify-center transition-all duration-200 group-hover/arrow:bg-white/[0.06]">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50">
+                    <path d="M9 18l6-6-6-6" />
+                  </svg>
+                </span>
               </button>
             </div>
           </div>
@@ -314,6 +312,7 @@ function ProjectSlide({
                 ref={videoRef}
                 key={currentMedia}
                 src={currentMedia}
+                poster={project.poster}
                 autoPlay
                 loop
                 muted

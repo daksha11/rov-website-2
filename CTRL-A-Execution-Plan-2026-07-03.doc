@@ -1,0 +1,173 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<title>CTRL-A Execution Plan · July 2026</title>
+<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]-->
+<style>
+  @page { size: 8.5in 11in; margin: 1in; }
+  body { font-family: Georgia, "Times New Roman", serif; font-size: 11pt; line-height: 1.5; color: #22201b; }
+  h1 { font-size: 22pt; line-height: 1.15; margin: 0 0 4pt; }
+  h2 { font-size: 15pt; margin: 26pt 0 6pt; border-bottom: 1.5pt solid #3B2114; padding-bottom: 4pt; }
+  h3 { font-size: 12pt; margin: 15pt 0 4pt; color: #90422C; }
+  p { margin: 0 0 9pt; }
+  ul, ol { margin: 0 0 9pt 18pt; }
+  li { margin-bottom: 4pt; }
+  .kicker { font-family: Consolas, monospace; font-size: 9pt; letter-spacing: 2pt; text-transform: uppercase; color: #90422C; margin-bottom: 8pt; }
+  .meta { font-size: 9.5pt; color: #6f685c; margin-bottom: 18pt; }
+  .tier { background: #efe9dd; border-left: 5pt solid #3B2114; padding: 8pt 12pt; margin: 22pt 0 10pt; }
+  .tier .t-label { font-family: Consolas, monospace; font-size: 9pt; letter-spacing: 1.5pt; text-transform: uppercase; color: #90422C; }
+  .tier .t-name { font-size: 14pt; font-weight: bold; }
+  .tier .t-when { font-size: 9.5pt; color: #6f685c; }
+  .principle { background: #f6ecd7; border-left: 4pt solid #b6852a; padding: 8pt 12pt; margin: 0 0 12pt; }
+  .critical { background: #f4e3dd; border-left: 4pt solid #a9432f; padding: 8pt 12pt; margin: 0 0 12pt; }
+  table { border-collapse: collapse; width: 100%; margin: 0 0 12pt; font-size: 10pt; }
+  th { background: #efe9dd; text-align: left; padding: 6pt 8pt; border: 0.75pt solid #c9c1b0; font-size: 8.5pt; text-transform: uppercase; letter-spacing: 0.5pt; }
+  td { padding: 6pt 8pt; border: 0.75pt solid #c9c1b0; vertical-align: top; }
+  .eff-s { color: #1f6b4f; font-weight: bold; }
+  .eff-m { color: #b6852a; font-weight: bold; }
+  .eff-l { color: #a9432f; font-weight: bold; }
+  .rank { font-family: Consolas, monospace; font-size: 9pt; color: #6f685c; }
+  .flag { font-weight: bold; color: #90422C; }
+</style>
+</head>
+<body>
+
+<p class="kicker">ROV Studios · Internal Planning Document</p>
+<h1>CTRL-A Execution Plan</h1>
+<p class="meta">Sequenced from the CTRL-A Full Site Audit (July 3, 2026). This orders the audit's findings into a build sequence. Planning only, no implementation. Effort is relative: <span class="eff-s">S</span> = hours to a day, <span class="eff-m">M</span> = a few days, <span class="eff-l">L</span> = a week-plus or needs an external dependency.</p>
+
+<div class="critical">
+<p><b>The one thing to understand before reading:</b> importance order and execution order are not the same list. The audit ranked findings by <i>how much they matter</i>. This plan ranks them by <i>what to build first</i>, which also has to respect two things importance alone ignores: <b>dependencies</b> (Klaviyo must be wired before any capture win is possible) and <b>file-locality</b> (do the data-layer refactor before the content work that sits on top of it, so <code>data.ts</code> is not rebuilt twice). Where this plan deviates from the audit's pure importance rank, it says so and why.</p>
+</div>
+
+<h2>The three sequencing principles</h2>
+
+<div class="principle">
+<p><b>1. Truth before features.</b> Anything currently lying to a user (silent forms, a dead link, a mixer that plays nothing) or destroying their work (a brand kit that dies on refresh) is embarrassing the moment a prospect finds it, and most of these are cheap. They go first regardless of build ambition.</p>
+</div>
+<div class="principle">
+<p><b>2. Plumbing before the things that plug into it.</b> Three separate high-value wins (brand-kit capture, prompt-vault capture, Fold "keep your progress") all depend on Klaviyo existing. Two cookbook features and the whole toolkit content refresh all depend on the data layer being sane. Build the trunk before the branches.</p>
+</div>
+<div class="principle">
+<p><b>3. Refactor the foundation before Vol. 02 content lands on it.</b> This is the one real reorder from the audit. The audit ranked the volume abstraction #5. Execution pulls it forward into Tier 2, ahead of most content work, because cookbook data unification, toolkit centerpieces, and the feature template all edit <code>data.ts</code> and the volume literals. Do the structural refactor first and that content work lands on the new structure once, not twice.</p>
+</div>
+
+<h2>Critical path (the spine of the schedule)</h2>
+<p>Everything else can flex around this chain. These items block the most downstream work and should never be the thing you are waiting on:</p>
+<p style="font-family: Consolas, monospace; font-size: 10pt; background: #efe9dd; padding: 10pt 12pt; line-height: 1.7;">
+Klaviyo wired&nbsp; →&nbsp; brand-kit + prompt-vault + Fold capture<br>
+Data-layer refactor (volume abstraction + one recipe model)&nbsp; →&nbsp; Vol. 02 authoring + cookbook features + toolkit refresh<br>
+Fold audio engine wired&nbsp; →&nbsp; the entire Fold premium build-out<br>
+Brand-kit persistence&nbsp; →&nbsp; brand-kit being trustworthy enough to promote at all
+</p>
+
+<div class="tier">
+<span class="t-label">Tier 0 · this week</span><br>
+<span class="t-name">Truth &amp; Trust</span> &nbsp; <span class="t-when">Stop the active lies and the work-destroyer. Low effort, high embarrassment-reduction. Do all of it before anything ambitious.</span>
+</div>
+
+<table>
+<tr><th>Do</th><th>Why now</th><th>Effort</th><th>Depends on</th><th>Audit</th></tr>
+<tr><td><b>Fix the dead <code>#cookbook</code> TOC anchor</b> (point it at the real cookbook entry, or drop the row until the section lands in Tier 4)</td><td>The contents page of a magazine called "select all, see the whole picture" currently links to nothing. Any visitor testing the TOC finds it.</td><td class="eff-s">S</td><td>—</td><td class="rank">#4</td></tr>
+<tr><td><b>Brand Kit local persistence + autosave indicator</b></td><td>A refresh destroys 20 minutes of work in the flagship tool with no warning. Worst user-facing failure on the site. Store already uses zustand; the change is small and contained.</td><td class="eff-s">S</td><td>—</td><td class="rank">#3</td></tr>
+<tr><td><b>Remove <code>noindex</code> from the Brand Kit builder</b></td><td>One line. The flagship utility is invisible to search, and "brand kit generator" queries are exactly ROV's ICP.</td><td class="eff-s">S</td><td>—</td><td class="rank">#3</td></tr>
+<tr><td><b>Strip all placeholder tiles from the DreamAsia feature</b> (cut the mosaic to real assets, reduce Two Cities to one annotated panel)</td><td>The flagship story visibly ships unfinished ("EARLY PREP," empty city panels) in the section that carries the magazine's credibility. Rule zero: a placeholder never ships.</td><td class="eff-s">S</td><td>—</td><td class="rank">#7</td></tr>
+</table>
+<p><span class="flag">Exit criteria:</span> no dead links, the brand kit survives a refresh and is indexable, and the feature contains only finished media. A prospect can now click anything without finding a seam.</p>
+
+<div class="tier">
+<span class="t-label">Tier 1 · sprint 1 (weeks 1–3)</span><br>
+<span class="t-name">Make the Promises Real</span> &nbsp; <span class="t-when">The core product claims become true. This is the highest-leverage tier on the whole plan.</span>
+</div>
+
+<table>
+<tr><th>Do</th><th>Why here</th><th>Effort</th><th>Depends on</th><th>Audit</th></tr>
+<tr><td><b>Wire Klaviyo; connect the two existing forms</b> (footer subscribe + Prompt Vault "full library") to real lists with source + volume-cohort tags</td><td>Capture is structurally zero today; both forms discard input. This is the trunk three capture wins branch from, so it is the first real build after Tier 0.</td><td class="eff-m">M</td><td>—</td><td class="rank">#2</td></tr>
+<tr><td><b>Wire the dormant synthesized audio engine into the live Fold</b>; map each world's <code>sound</code> field to a preset, make the five pads actually blend layers, persist the last mix</td><td>The single highest-leverage engineering move on the site. The premium product's core claim ("blend the sound") is currently false, and the fix is mostly relocating working code that already exists in the same folder.</td><td class="eff-m">M</td><td>—</td><td class="rank">#1</td></tr>
+<tr><td><b>Brand Kit: email-for-export in place of the points wall (v1)</b></td><td>Export delivers files and emails the kit; capture the highest-intent moment on the site with <code>export_format</code> segmentation (designers vs developers). Retire the points/OAuth wall to a future paid tier.</td><td class="eff-m">M</td><td>Klaviyo</td><td class="rank">#2 / #8</td></tr>
+</table>
+<p><span class="flag">Exit criteria:</span> tapping "rain" in the Fold plays rain; subscribing anywhere lands a real contact in a tagged Klaviyo list; exporting a brand kit captures a segmented lead. Every promise the product makes is now true.</p>
+
+<div class="tier">
+<span class="t-label">Tier 2 · sprint 1–2, overlaps Tier 1 (weeks 2–4)</span><br>
+<span class="t-name">Foundation Before Vol. 02</span> &nbsp; <span class="t-when">The scale gate. Pulled ahead of its audit rank so content work lands on the new structure once. Every month of delay multiplies the migration cost.</span>
+</div>
+
+<table>
+<tr><th>Do</th><th>Why here</th><th>Effort</th><th>Depends on</th><th>Audit</th></tr>
+<tr><td><b>Volume abstraction</b>: a <code>_volumes/vol-01.ts</code> file for everything volume-specific + a single <code>currentVolume</code> pointer; kill the hardcoded "Vol. 01" / "June 2026" literals in the cover, footer, feature back-nav, and feature metadata</td><td>Publishing Vol. 02 today means coordinated edits across 6+ files with copy duplicated in four places. This must exist before Vol. 02 is authored, and before the data-heavy content tiers below, or that content gets migrated twice.</td><td class="eff-m">M–L</td><td>—</td><td class="rank">#5</td></tr>
+<tr><td><b>Decide the archive URL strategy in the same stroke</b>: <code>/ctrla</code> = current, <code>/ctrla/vol/[n]</code> = back issues (even a condensed digest template is fine for v1)</td><td>"A monthly magazine" with no back issues by Vol. 12. The URL and data separation must exist from Vol. 02 even if the archive UI is minimal.</td><td class="eff-m">M</td><td>Volume abstraction</td><td class="rank">#5</td></tr>
+<tr><td><b>Unify the two cookbook recipe models</b> into one <code>GalleyRecipe</code> with optional <code>steps</code> / <code>by</code> / <code>image</code></td><td>Prerequisite plumbing for the cookbook features in Tier 4, and it belongs in the data-layer pass so <code>data.ts</code> is touched once. Currently the interactive fridge shows less than the data already contains.</td><td class="eff-s">S–M</td><td>—</td><td class="rank">#4</td></tr>
+<tr><td><b>Asset &amp; performance pass</b>: dynamic-import (or replace) the three.js loader shader, compress <code>concert1.mp4</code>, delete the unreferenced font families, gate the 6.6MB brand-guide PDF behind lead capture</td><td>Largest mobile first-load wins, and it turns dead weight (the PDF) into a capture asset. Independent of the refactors, so it can run in parallel by whoever is free.</td><td class="eff-m">M</td><td>Klaviyo (for the PDF gate)</td><td class="rank">#10</td></tr>
+<tr><td><b>Write the two-page "publishing a volume" runbook</b> (edit vol file, compress media, refresh toolshots, update signals, QA checklist incl. anchor-link verification)</td><td>The runbook is what actually makes 12 volumes a year survivable, and its QA step is what would have caught the dead <code>#cookbook</code> link. Write it alongside the abstraction it documents.</td><td class="eff-s">S</td><td>Volume abstraction</td><td class="rank">#9</td></tr>
+</table>
+<p><span class="flag">Exit criteria:</span> publishing Vol. 02 is "add one file, flip one pointer, drop one media folder, run the checklist." The data layer is clean enough that every tier below edits it once.</p>
+
+<div class="tier">
+<span class="t-label">Tier 3 · sprint 2–3 (weeks 4–7)</span><br>
+<span class="t-name">The Premium Object (The Fold)</span> &nbsp; <span class="t-when">Now that its audio is real, convert the Fold from "a good tool" into the bookmarkable premium product the brief demands. Batched because it all touches the same surface.</span>
+</div>
+
+<table>
+<tr><th>Do</th><th>Why here</th><th>Effort</th><th>Depends on</th><th>Audit</th></tr>
+<tr><td><b>Resolve the Vantage-vs-Fold naming</b> (recommend: The Fold is the place; Vantage becomes the Vol. 01 theme label)</td><td>Do this first in the tier because it touches the same files as everything below; resolving the identity seam before the polish work avoids reworking labels twice.</td><td class="eff-s">S</td><td>—</td><td class="rank">#6</td></tr>
+<tr><td><b>Choreograph arrival, session-entry, and departure</b> (one easing family, timing not decoration)</td><td>Luxury products spend their budget on thresholds. This is the largest single "feels expensive" lever now that sound exists.</td><td class="eff-m">M</td><td>Fold audio (Tier 1)</td><td class="rank">#6</td></tr>
+<tr><td><b>Surface memory</b>: return greeting, remember + preselect last room, weekly streak line. Data already lives in localStorage</td><td>Nobody bookmarks a bare "{n} done." People return for a place that remembers them. Low effort, high retention.</td><td class="eff-s">S–M</td><td>—</td><td class="rank">#6</td></tr>
+<tr><td><b>Rebuild Golden Hour as an earned, persistent sixth world</b> (unlock on completed sessions, persist, make it materially distinct) + the "keep your progress across devices" email capture</td><td>The brief's scarcity mechanic, done right, and the natural third capture moment. Depends on both persistence patterns and Klaviyo being in place.</td><td class="eff-m">M</td><td>Klaviyo, memory work above</td><td class="rank">#6 / #10</td></tr>
+<tr><td><b>"Leave it running" affordances</b>: live timer in the tab title, soft synthesized phase-end chime, favicon dot</td><td>These are the actual retention behaviors for the "ambient company while I work" category. Cheap once audio and the timer exist.</td><td class="eff-s">S</td><td>Fold audio</td><td class="rank">#6</td></tr>
+</table>
+<p><span class="flag">Exit criteria:</span> someone can enter the Fold, feel a designed moment, leave it running in a tab, come back next week to a place that remembers them, and hit an unlock worth an email. It is now a product, not a page section.</p>
+
+<div class="tier">
+<span class="t-label">Tier 4 · sprint 3–4 (weeks 6–10)</span><br>
+<span class="t-name">Editorial &amp; Toolkit Systems</span> &nbsp; <span class="t-when">Systematize the content engine so every future volume is cheaper and the toolkits reach the Music bar. Lands on the clean data layer from Tier 2.</span>
+</div>
+
+<table>
+<tr><th>Do</th><th>Why here</th><th>Effort</th><th>Depends on</th><th>Audit</th></tr>
+<tr><td><b>Codify the feature template</b> (4 fixed beats + optional modules, incl. the new "The Turn" narrative beat) and publish it as the Vol. 02 feature brief</td><td>Blocks Vol. 02's story from being authored ad hoc. Mostly a documented pattern plus a light refactor.</td><td class="eff-s">S–M</td><td>—</td><td class="rank">#7</td></tr>
+<tr><td><b>Land the cookbook on the landing page</b> (mini-fridge teaser at <code>#cookbook</code>) + the real pull gesture + two synthesized sounds + credit line / chef-of-the-volume / submission form link</td><td>The best-crafted object on the site finally gets a front door, community mechanics, and a passive capture (submissions). Sits on the unified recipe model from Tier 2.</td><td class="eff-m">M–L</td><td>Recipe unification, Klaviyo</td><td class="rank">#2 / #4</td></tr>
+<tr><td><b>Bring Dev + Design toolkits to the "instrument standard"</b>: the Prompt Mixer and the Poster Bench (each: teaches one model by manipulation, serializes to a shareable URL, speaks words)</td><td>Closes the visible quality gap against Music. Two focused component builds; independent of each other so they can parallelize.</td><td class="eff-l">L each</td><td>—</td><td class="rank">#9</td></tr>
+<tr><td><b>Replace mShots</b> with self-captured screenshots in <code>public/ctrla/toolshots/</code>, refreshed on the monthly pass</td><td>Removes a third-party dependency that will show broken frames by Vol. 06. Add the capture step to the runbook.</td><td class="eff-m">M</td><td>Runbook (Tier 2)</td><td class="rank">#9</td></tr>
+<tr><td><b>"Also in the kit" cross-references</b> (hand-authored, hard cap of 3 per toolkit, one italic line each)</td><td>Small editorial touch that ties the toolkits together. Cheap; do it while the toolkit files are already open.</td><td class="eff-s">S</td><td>—</td><td class="rank">#9</td></tr>
+</table>
+<p><span class="flag">Exit criteria:</span> Vol. 02's feature and cookbook author themselves against a template; all three shipped toolkits meet the instrument bar; no third-party screenshot dependency remains.</p>
+
+<div class="tier">
+<span class="t-label">Tier 5 · continuous, from Vol. 02 onward</span><br>
+<span class="t-name">Signature &amp; Polish</span> &nbsp; <span class="t-when">Cohesion motifs and the fourth toolkit. Real value, but none of it is urgent and none blocks anything. Fold into volume cadence.</span>
+</div>
+
+<table>
+<tr><th>Do</th><th>Why last</th><th>Effort</th><th>Audit</th></tr>
+<tr><td><b>Landing re-weighting</b>: thesis line on the cover, the left-rail "spine" (TOC visible by default on desktop), middle-third hierarchy, horizontal Off-the-Clock shelf</td><td>Comprehension polish, not a silent failure. A coordinated layout pass is better done once, after the sections it reorders (cookbook, Fold) are final.</td><td class="eff-l">L</td><td class="rank">#8</td></tr>
+<tr><td><b>The "selection" heading motif + the Plate numbering system</b></td><td>The most brandable ideas available, but pure cohesion. Cheap, high identity payoff, zero dependency, no urgency.</td><td class="eff-s">S–M</td><td class="rank">#1 (audit §1)</td></tr>
+<tr><td><b>Vue mascot commission + mid-scroll marginalia</b></td><td>Turns Vue from a credit into a character. Gated on an external illustration dependency, which is why it cannot be early.</td><td class="eff-m">M</td><td class="rank">audit §1</td></tr>
+<tr><td><b>Video/Film toolkit with the "Light Bench" centerpiece</b></td><td>A whole new toolkit at Music fidelity. High value but a genuine L build; realistic for Vol. 02–03, not a v1 scramble.</td><td class="eff-l">L</td><td class="rank">#9 (audit §7)</td></tr>
+<tr><td><b>Brand Kit "reveal" preview (reskin a live product) + shareable/remixable kit links</b></td><td>The two signature moments that make the tool epic. Meaningful build, and the tool is already functional without them, so they wait.</td><td class="eff-l">L</td><td class="rank">audit §8</td></tr>
+</table>
+
+<h2>How a small team should run this</h2>
+<ul>
+<li><b>Two lanes can run in parallel from day one.</b> Lane A (front-of-house): Tier 0 fixes, then Klaviyo + capture, then the Fold build. Lane B (infrastructure): the Tier 2 data-layer refactor + asset pass + runbook. They only need to sync when capture touches the brand kit and when content work needs the new volume structure.</li>
+<li><b>Do not start Tier 4 content work until Tier 2's data-layer refactor has landed.</b> This is the one hard ordering constraint in the plan. Authoring cookbook and toolkit content on the old structure means migrating it again, which is exactly the waste principle 3 exists to prevent.</li>
+<li><b>The dormant Fold cafe code:</b> extract its audio engine in Tier 1, then delete or clearly quarantine the rest so a future contributor cannot edit the wrong implementation. Do the deletion once the live route's audio is confirmed working, not before.</li>
+<li><b>Vue's illustration is the only external dependency on the critical spine of anything.</b> Commission it now, in parallel, even though its use (Tier 5) is late, so it is not the thing you are waiting on later.</li>
+</ul>
+
+<div class="critical">
+<p><b>If you only ship five things this month, ship these:</b></p>
+<ol>
+<li>Tier 0 in full (a day of work that removes every current lie and the work-destroyer).</li>
+<li>Klaviyo wired + the two existing forms connected (capture stops being zero).</li>
+<li>The Fold's audio engine wired in (the premium product's claim becomes true).</li>
+<li>Brand-kit email-for-export (captures the highest-intent moment on the site).</li>
+<li>The volume abstraction + one recipe model (so Vol. 02 and everything after is cheap, and nothing gets built twice).</li>
+</ol>
+<p>That is the entire critical path. Everything in Tiers 3–5 is genuinely better work, but it all rests on these five, and none of it should start until these are done.</p>
+</div>
+
+<p class="meta">Companion to: CTRL-A-Full-Site-Audit-2026-07-03.doc. Both are planning documents; no code has been written or changed. Audit rank references (#1–#10) map to that document's Prioritized Punch List; "audit §" references map to its numbered sections.</p>
+
+</body>
+</html>

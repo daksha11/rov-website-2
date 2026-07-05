@@ -37,6 +37,14 @@ export default function OurApproachSection({
   const initDoneRef = useRef(false);
 
   useEffect(() => {
+    // Mobile / reduced-motion gate: never hijack native touch scrolling.
+    if (typeof window === "undefined") return;
+    const isSmallScreen = window.innerWidth < 768;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (isSmallScreen || prefersReducedMotion) return;
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -61,6 +69,21 @@ export default function OurApproachSection({
   useGSAP(
     () => {
       if (!containerRef.current) return;
+
+      // Mobile / reduced-motion gate: skip pinned/scrubbed timelines and
+      // normalizeScroll so cards render as normal stacked sections and native
+      // touch scrolling is untouched.
+      if (typeof window !== "undefined") {
+        const isSmallScreen = window.innerWidth < 768;
+        const prefersReducedMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        ).matches;
+        if (isSmallScreen || prefersReducedMotion) {
+          return () => {
+            ScrollTrigger.getAll().forEach((t) => t.kill());
+          };
+        }
+      }
 
       const initAnimations = () => {
         ScrollTrigger.getAll().forEach((t) => t.kill());

@@ -283,12 +283,12 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
         {/* ── Interactive centerpiece: defend every decision ── */}
         <div style={{ marginTop: "clamp(56px,8vw,112px)" }}>
           <Reveal>
-            <Kicker color={accent}>The proof · nothing is an accident</Kicker>
+            <Kicker color={accent}>The proof · a poster you can play</Kicker>
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 10px" }}>
               A poster, defended
             </h3>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: "0 0 clamp(28px,4vw,44px)", maxWidth: 640 }}>
-              here is a real piece, built the way we build, no stock art. tap any part of it and it tells you why it is the size it is, the color it is, where it is. that is the whole job. a junior makes it look nice. a senior can defend every choice on the page.
+              here is a real piece, built the way we build, no stock art. play the bench, change the scale contrast, reveal the grid, swap the palette, and watch the reasons change with it. tap any part to hear why it is the size it is, the color it is, where it is. a junior makes it look nice. a senior can defend every choice on the page, and name the trade of each one.
             </p>
           </Reveal>
           <Reveal delay={0.06}>

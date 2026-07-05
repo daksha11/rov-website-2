@@ -1,15 +1,36 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect } from "react";
 import WizardShell from "@/components/brand-kit/builder/WizardShell";
+import AutosaveIndicator from "@/components/brand-kit/builder/AutosaveIndicator";
 import PreviewFrame from "@/components/brand-kit/preview/PreviewFrame";
 import Toaster from "@/components/brand-kit/Toaster";
+import { useBrandKitStore } from "@/lib/brand-kit/store";
+import { KIT_SHARE_PARAM, decodeKit } from "@/lib/brand-kit/share";
 
 export default function BrandKitBuilderLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // The store persists to localStorage but skips automatic hydration to keep
+  // the first client render matching the SSR defaults. Rehydrate after mount
+  // so a mid-wizard refresh restores the user's work. Then, if the URL carries
+  // a shared kit token, drop that kit in so the link opens ready to remix.
+  useEffect(() => {
+    const token = new URLSearchParams(window.location.search).get(
+      KIT_SHARE_PARAM
+    );
+    // Rehydrate first, then apply the shared kit so localStorage cannot race in
+    // and overwrite it. rehydrate() may return void, so normalize to a promise.
+    void Promise.resolve(useBrandKitStore.persist.rehydrate()).then(() => {
+      if (!token) return;
+      const kit = decodeKit(token);
+      if (kit) useBrandKitStore.getState().loadKit(kit);
+    });
+  }, []);
+
   return (
     <div className="brandkit-cosmic dash-ground min-h-[100dvh] flex flex-col text-[#F0E6E0]">
       {/* CTRL-A masthead */}
@@ -36,9 +57,13 @@ export default function BrandKitBuilderLayout({
               Brand Kit
             </span>
           </div>
-          <span style={{ fontFamily: "'Neue Montreal', 'Roboto', sans-serif", fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase", color: "#E3C24A", fontWeight: 600 }}>
-            A ROV Creative Platform
-          </span>
+          <div className="flex items-center gap-3">
+            <AutosaveIndicator />
+            <span aria-hidden className="hidden sm:block" style={{ width: 1, height: 16, background: "rgba(240,230,224,0.2)" }} />
+            <span style={{ fontFamily: "'Neue Montreal', 'Roboto', sans-serif", fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase", color: "#E3C24A", fontWeight: 600 }}>
+              A ROV Creative Platform
+            </span>
+          </div>
         </div>
         {/* sunset horizon accent — the magazine gradient drawn as a rule */}
         <div

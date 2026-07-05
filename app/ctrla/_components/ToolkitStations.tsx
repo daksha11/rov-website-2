@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ed as edBase, edLight, Bleed, Label, Kicker, legibleAccent, legibleAccentDeep } from "./editorial";
 import ToolPreview from "./ToolPreview";
+import { toolkitSections } from "../data";
 import type { ToolkitSection, ToolLevel, SignalKind } from "../data";
 
 const LEVELS: (ToolLevel | "All")[] = ["All", "Beginner", "Intermediate", "Pro"];
@@ -287,6 +288,44 @@ export default function ToolkitStations({ section, theme, hideKicker = false }: 
             )}
           </div>
         </div>
+
+        {/* ── Also in the kit: quiet editorial cross-refs to the sibling toolkits ── */}
+        {section.crossRefs && section.crossRefs.length > 0 && (
+          <div style={{ marginTop: "clamp(48px,7vw,88px)", maxWidth: 720 }}>
+            <Label color={ed.inkFaint} style={{ display: "block", marginBottom: "clamp(16px,2vw,24px)" }}>
+              Also in the kit
+            </Label>
+            <div style={{ display: "flex", flexDirection: "column", gap: "clamp(14px,1.8vw,20px)" }}>
+              {section.crossRefs.slice(0, 3).map((ref) => {
+                const dest = toolkitSections.find((s) => s.id === ref.toolkit);
+                const destTitle = dest ? dest.title : ref.toolkit;
+                return (
+                  <a
+                    key={`${ref.toolkit}-${ref.toolName}`}
+                    href={`/ctrla/toolkit/${ref.toolkit}`}
+                    className="ctrla-crossref"
+                    style={{
+                      display: "flex",
+                      alignItems: "baseline",
+                      gap: 12,
+                      textDecoration: "none",
+                    }}
+                  >
+                    <span aria-hidden style={{ color: accent, fontFamily: ed.mono, fontSize: "clamp(15px,1.7vw,20px)", lineHeight: 1.4, flexShrink: 0 }}>
+                      →
+                    </span>
+                    <span style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(16px,1.9vw,22px)", lineHeight: 1.45, color: ed.inkSoft }}>
+                      {ref.line}
+                      <span style={{ fontFamily: ed.mono, fontStyle: "normal", fontSize: "clamp(9px,1vw,11px)", letterSpacing: "0.12em", textTransform: "uppercase", color: accent, marginLeft: 10, whiteSpace: "nowrap" }}>
+                        {destTitle} kit
+                      </span>
+                    </span>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </Bleed>
     </section>
   );

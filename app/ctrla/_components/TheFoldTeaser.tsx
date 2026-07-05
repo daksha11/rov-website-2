@@ -25,7 +25,7 @@ export function TheFoldTeaser() {
           }}
         >
           <Kicker color={ed.gold}>New · Focus space</Kicker>
-          <Label color={ed.gold}>Vantage</Label>
+          <Label color={ed.gold}>Vol. 01 · Vantage</Label>
         </div>
         <Rule style={{ marginBottom: "clamp(24px,3vw,36px)" }} />
 
@@ -100,7 +100,7 @@ export function TheFoldTeaser() {
                 margin: 0,
               }}
             >
-              Vantage
+              The Fold
             </h2>
             <p
               style={{

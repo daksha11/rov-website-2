@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import CtrlAContent from "./CtrlAContent";
+import { currentVolume } from "./_volumes";
 
 export const metadata: Metadata = {
-    title: "CTRL A Vol. 01 — A Digital Muse for Creatives | Range of View",
+    title: `CTRL A ${currentVolume.issueMeta.volume} — A Digital Muse for Creatives | Range of View`,
     description:
         "CTRL A by Range of View Studios is a monthly digital muse for creatives: immersive toolkits for music, web development, and design, the full process with none of the ugly steps skipped, and the art we can't stop thinking about. Plus Atlanta events including the FIFA World Cup 26™ at Mercedes-Benz Stadium.",
     keywords: [

@@ -17,7 +17,7 @@ export function BlogFAQ({ faqs }: BlogFAQProps) {
         <div style={{ paddingTop: 48, borderTop: "1px solid rgba(59,33,20,0.12)" }}>
           <p
             style={{
-              fontSize: 11,
+              fontSize: 12,
               letterSpacing: "0.22em",
               textTransform: "uppercase",
               color: "#B16937",

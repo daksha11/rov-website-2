@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 
 const HEADING = "Norwige, sans-serif";
@@ -99,7 +100,7 @@ export default function DDKFeatureTestimonial() {
             style={{ backgroundColor: "rgba(234,154,97,0.4)" }}
           />
           <span
-            className="text-[11px] uppercase tracking-[0.3em]"
+            className="text-[12px] uppercase tracking-[0.3em]"
             style={{
               fontFamily: MONO,
               color: "rgba(234,154,97,0.55)",
@@ -149,7 +150,7 @@ export default function DDKFeatureTestimonial() {
               >
                 <MusicNoteIcon />
                 <span
-                  className="text-[10px] uppercase tracking-[0.22em]"
+                  className="text-[12px] uppercase tracking-[0.22em]"
                   style={{ fontFamily: MONO, color: "#EA9A61" }}
                 >
                   On The Radar
@@ -172,7 +173,7 @@ export default function DDKFeatureTestimonial() {
             {/* Below-video meta */}
             <div className="flex items-center justify-between mt-3.5 px-0.5">
               <span
-                className="text-[10px] uppercase tracking-[0.2em]"
+                className="text-[12px] uppercase tracking-[0.2em]"
                 style={{
                   fontFamily: MONO,
                   color: "rgba(255,255,255,0.2)",
@@ -181,7 +182,7 @@ export default function DDKFeatureTestimonial() {
                 Mixed &amp; Mastered · ROV Studios
               </span>
               <span
-                className="text-[10px] uppercase tracking-[0.18em]"
+                className="text-[12px] uppercase tracking-[0.18em]"
                 style={{
                   fontFamily: MONO,
                   color: "rgba(255,255,255,0.15)",
@@ -205,9 +206,11 @@ export default function DDKFeatureTestimonial() {
                 className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0"
                 style={{ border: "2px solid rgba(234,154,97,0.22)" }}
               >
-                <img
+                <Image
                   src="/clients/ddk.webp"
                   alt="DDK"
+                  width={56}
+                  height={56}
                   className="w-full h-full object-cover"
                   draggable={false}
                 />
@@ -220,7 +223,7 @@ export default function DDKFeatureTestimonial() {
                   DDK
                 </p>
                 <p
-                  className="text-[11px] uppercase tracking-[0.2em] mt-0.5"
+                  className="text-[12px] uppercase tracking-[0.2em] mt-0.5"
                   style={{
                     fontFamily: MONO,
                     color: "rgba(255,255,255,0.35)",
@@ -266,7 +269,7 @@ export default function DDKFeatureTestimonial() {
               {BADGES.map((badge) => (
                 <span
                   key={badge}
-                  className="text-[10px] uppercase tracking-[0.16em] px-3 py-1 rounded-full"
+                  className="text-[12px] uppercase tracking-[0.16em] px-3 py-1 rounded-full"
                   style={{
                     fontFamily: MONO,
                     border: "1px solid rgba(234,154,97,0.18)",
@@ -288,7 +291,7 @@ export default function DDKFeatureTestimonial() {
             {/* Work delivered */}
             <div className="flex flex-col gap-4">
               <p
-                className="text-[10px] uppercase tracking-[0.3em]"
+                className="text-[12px] uppercase tracking-[0.3em]"
                 style={{
                   fontFamily: MONO,
                   color: "rgba(255,255,255,0.25)",

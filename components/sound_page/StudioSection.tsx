@@ -142,7 +142,17 @@ function ValueAccordion() {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ ...spring, delay: i * 0.08 }}
               onMouseEnter={() => setActive(i)}
-              className="cursor-default border-t border-white/[0.07] last:border-b"
+              onClick={() => setActive((prev) => (prev === i ? -1 : i))}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  setActive((prev) => (prev === i ? -1 : i));
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              aria-expanded={isActive}
+              className="cursor-pointer border-t border-white/[0.07] last:border-b focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EA9A61]/40 rounded-sm"
             >
               <div className="py-6 md:py-8 flex items-start md:items-center gap-4 md:gap-8">
                 {/* Index number */}

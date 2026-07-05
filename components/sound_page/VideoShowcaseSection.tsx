@@ -9,7 +9,7 @@ const BODY_FONT = "'Roboto', sans-serif";
 
 const videos = [
   {
-    src: "/soundpage/Scollidemv.mp4",
+    src: "/soundpage/starscollidemv.mp4",
     title: "Stars Collide",
     poster: "/thumbnails/soundhero.webp",
     credit: "Basu & Sam Suen",
@@ -43,17 +43,30 @@ function VideoCard({
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [hovering, setHovering] = useState(false);
+  const [inView, setInView] = useState(false);
+
+  // Only play when the card is actually visible on screen (saves bandwidth/decoder on mobile)
+  useEffect(() => {
+    const vid = videoRef.current;
+    if (!vid) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.25 }
+    );
+    observer.observe(vid);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const vid = videoRef.current;
     if (!vid) return;
-    if (isActive || hovering) {
+    if ((isActive || hovering) && inView) {
       vid.play().catch(() => {});
     } else {
       vid.pause();
-      vid.currentTime = 0;
+      if (!inView) vid.currentTime = 0;
     }
-  }, [isActive, hovering]);
+  }, [isActive, hovering, inView]);
 
   return (
     <motion.div
@@ -79,6 +92,7 @@ function VideoCard({
           loop
           muted
           playsInline
+          preload="metadata"
           poster={video.poster}
           className="w-full h-full object-cover"
         >

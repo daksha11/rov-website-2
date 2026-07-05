@@ -9,9 +9,11 @@ import ToolkitStations from "../../_components/ToolkitStations";
 import MusicGuide from "../../_components/MusicGuide";
 import DesignGuide from "../../_components/DesignGuide";
 import DevGuide from "../../_components/DevGuide";
+import VideoGuide from "../../_components/VideoGuide";
 // Toolkit pages run the LIGHT theme — the airy, cream reveal from the loader.
 import { edLight as ed, Bleed, Rule, Label, legibleAccent } from "../../_components/editorial";
 import { toolkitSections } from "../../data";
+import { currentVolume } from "../../_volumes";
 
 export default function ToolkitPageContent({ id }: { id: string }) {
   const index = toolkitSections.findIndex((s) => s.id === id);
@@ -51,7 +53,7 @@ export default function ToolkitPageContent({ id }: { id: string }) {
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
             <a href="/ctrla" className="ctrla-back" style={{ display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
               <span style={{ color: pageAccent }}>←</span>
-              <Label color={ed.ink}>CTRL-A · Vol. 01</Label>
+              <Label color={ed.ink}>CTRL-A · {currentVolume.issueMeta.volume}</Label>
             </a>
             <Label color={pageAccent}>Toolkit {section.pageNumber}</Label>
           </div>
@@ -64,10 +66,11 @@ export default function ToolkitPageContent({ id }: { id: string }) {
       {id === "music" && <MusicGuide accent={pageAccent} />}
       {id === "design" && <DesignGuide accent={pageAccent} />}
       {id === "web-dev" && <DevGuide accent={pageAccent} />}
+      {id === "video" && <VideoGuide accent={pageAccent} />}
 
       {/* Flagship sectors with curated Signals get the immersive Stations
           experience; the rest fall back to the editorial detail for now. */}
-      {section.signals ? <ToolkitStations section={section} theme={ed} hideKicker={id === "music" || id === "design" || id === "web-dev"} /> : <ToolkitDetail section={section} />}
+      {section.signals ? <ToolkitStations section={section} theme={ed} hideKicker={id === "music" || id === "design" || id === "web-dev" || id === "video"} /> : <ToolkitDetail section={section} />}
 
       {/* Prev / next toolkit */}
       <section style={{ background: "transparent", padding: "0 0 clamp(56px,8vw,104px)" }}>

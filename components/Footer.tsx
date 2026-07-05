@@ -94,6 +94,7 @@ const Footer = () => {
             loop
             muted
             playsInline
+            preload="none"
             aria-hidden="true"
             className="absolute right-0 -top-6 h-[80px] w-auto object-contain md:hidden"
           />
@@ -223,6 +224,7 @@ const Footer = () => {
             loop
             muted
             playsInline
+            preload="none"
             aria-hidden="true"
             className="hidden md:block md:h-[140px] w-auto object-contain md:ml-auto md:mr-36 md:-mt-4"
           />

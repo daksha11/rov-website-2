@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { BlogFAQ } from "@/components/blog/BlogFAQ";
 
 const NavigationDock = dynamic(
   () => import("@/components/NavDoc").then((mod) => ({ default: mod.NavigationDock })),
@@ -52,52 +51,6 @@ const FAQS = [
   },
 ];
 
-function FaqAccordion() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
-  return (
-    <section id="faq" style={{ background: "#FFF4E3", padding: "0 24px 64px" }}>
-      <div style={{ maxWidth: 760, margin: "0 auto" }}>
-        <div style={{ paddingTop: 48, borderTop: "1px solid rgba(59,33,20,0.12)" }}>
-          <p style={{ fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: "#B16937", marginBottom: 32, fontFamily: "'Neue Montreal', sans-serif", fontWeight: 700 }}>
-            Frequently asked
-          </p>
-          <dl style={{ margin: 0 }}>
-            {FAQS.map((f, i) => {
-              const isOpen = openIndex === i;
-              return (
-                <div key={f.q} style={{ borderBottom: "1px solid rgba(59,33,20,0.1)" }}>
-                  <dt>
-                    <button
-                      type="button"
-                      onClick={() => setOpenIndex(isOpen ? null : i)}
-                      aria-expanded={isOpen}
-                      style={{ display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between", gap: 24, padding: "20px 0", background: "none", border: "none", cursor: "pointer", textAlign: "left" }}
-                    >
-                      <span style={{ fontFamily: "Norwige, sans-serif", fontSize: "clamp(17px, 2.5vw, 22px)", lineHeight: 1.3, color: isOpen ? "#90422C" : "#3B2114", transition: "color 0.15s", fontWeight: 700 }}>
-                        {f.q}
-                      </span>
-                      <ChevronDown
-                        style={{ width: 20, height: 20, flexShrink: 0, color: "#EA9A61", transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}
-                      />
-                    </button>
-                  </dt>
-                  <dd style={{ margin: 0, display: "grid", gridTemplateRows: isOpen ? "1fr" : "0fr", transition: "grid-template-rows 0.3s ease-out" }}>
-                    <div style={{ overflow: "hidden" }}>
-                      <p style={{ paddingBottom: 20, paddingRight: 32, fontSize: 16, lineHeight: 1.75, color: "rgba(59,33,20,0.7)", fontFamily: "Inter, -apple-system, sans-serif", margin: 0 }}>
-                        {f.a}
-                      </p>
-                    </div>
-                  </dd>
-                </div>
-              );
-            })}
-          </dl>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 export default function RestaurantAtlantaPage() {
   return (
     <main style={{ fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", background: "#FFF4E3", color: "#3B2114" }}>
@@ -108,7 +61,7 @@ export default function RestaurantAtlantaPage() {
         padding: "80px 24px 64px",
         color: "#FFF4E3",
       }}>
-        <div style={{ maxWidth: 760, margin: "0 auto" }}>
+        <div style={{ maxWidth: 720, margin: "0 auto" }}>
 
           {/* Logo */}
           <div style={{ marginBottom: 32 }}>
@@ -156,7 +109,7 @@ export default function RestaurantAtlantaPage() {
               gap: 10,
             }}>
               <div style={{ position: "relative", width: 32, height: 32, borderRadius: "50%", overflow: "hidden", flexShrink: 0 }}>
-                <Image src="/teammembers/suchettm.webp" alt="Suchet Konda" fill style={{ objectFit: "cover" }} />
+                <Image src="/teammembers/suchettm.webp" alt="Suchet Konda" fill sizes="32px" style={{ objectFit: "cover" }} />
               </div>
               Suchet Konda · Co-Founder, <Link href="/about" style={{ color: "#90422C", textDecoration: "underline" }}>ROV Studios</Link>
             </div>
@@ -167,7 +120,7 @@ export default function RestaurantAtlantaPage() {
 
       {/* ── STATS ROW ── */}
       <section style={{ background: "#3B2114", padding: "0 24px" }}>
-        <div style={{ maxWidth: 760, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 1, borderTop: "1px solid rgba(255,244,227,0.08)" }}>
+        <div style={{ maxWidth: 720, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 1, borderTop: "1px solid rgba(255,244,227,0.08)" }}>
           {STATS.map((s) => (
             <div key={s.number} style={{ padding: "28px 20px", textAlign: "center" }}>
               <div style={{
@@ -188,7 +141,7 @@ export default function RestaurantAtlantaPage() {
       </section>
 
       {/* ── MAIN CONTENT ── */}
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "48px 24px 80px" }}>
+      <div style={{ maxWidth: 720, margin: "0 auto", padding: "48px 24px 80px" }}>
 
         {/* Table of Contents */}
         <nav style={{
@@ -198,7 +151,7 @@ export default function RestaurantAtlantaPage() {
           padding: "24px 28px",
           marginBottom: 56,
         }}>
-          <p style={{ fontFamily: "'Neue Montreal', sans-serif", fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "#90422C", fontWeight: 700, marginBottom: 16 }}>
+          <p style={{ fontFamily: "'Neue Montreal', sans-serif", fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase", color: "#90422C", fontWeight: 700, marginBottom: 16 }}>
             In this article
           </p>
           <ol style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>
@@ -249,7 +202,7 @@ export default function RestaurantAtlantaPage() {
 
         {/* ── IMAGE 1 ── */}
         <div style={{ margin: "0 -24px 56px", position: "relative", height: "clamp(240px, 40vw, 440px)", overflow: "hidden" }}>
-          <Image src="/casestudy/bando/bando2.webp" alt="TheBando interior, Atlanta Black history museum and restaurant on the Westside" fill style={{ objectFit: "cover" }} />
+          <Image src="/casestudy/bando/bando2.webp" alt="TheBando interior, Atlanta Black history museum and restaurant on the Westside" fill sizes="(max-width: 768px) 100vw, 720px" style={{ objectFit: "cover" }} />
           <div style={{ position: "absolute", bottom: 16, left: 24, background: "rgba(59,33,20,0.75)", color: "#FFF4E3", fontSize: 12, padding: "6px 12px", borderRadius: 6, backdropFilter: "blur(4px)" }}>
             TheBando, Atlanta&apos;s Westside. Black history museum and fried chicken restaurant.
           </div>
@@ -281,7 +234,7 @@ export default function RestaurantAtlantaPage() {
           }}>
             <div style={{
               fontFamily: "Norwige, sans-serif",
-              fontSize: 56,
+              fontSize: "clamp(40px, 10vw, 56px)",
               background: "linear-gradient(135deg, #EA9A61, #90422C)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
@@ -355,7 +308,7 @@ export default function RestaurantAtlantaPage() {
 
         {/* ── IMAGE 2 ── */}
         <div style={{ margin: "0 -24px 56px", position: "relative", height: "clamp(240px, 35vw, 400px)", overflow: "hidden" }}>
-          <Image src="/casestudy/bando/bando1.webp" alt="TheBando signature wall, bold white lettering against patterned Atlanta restaurant wallpaper" fill style={{ objectFit: "cover" }} />
+          <Image src="/casestudy/bando/bando1.webp" alt="TheBando signature wall, bold white lettering against patterned Atlanta restaurant wallpaper" fill sizes="(max-width: 768px) 100vw, 720px" style={{ objectFit: "cover" }} />
         </div>
 
         {/* ── SECTION 4: The Numbers ── */}
@@ -448,7 +401,7 @@ export default function RestaurantAtlantaPage() {
 
         {/* ── IMAGE 3 ── */}
         <div style={{ margin: "0 -24px 56px", position: "relative", height: "clamp(240px, 35vw, 400px)", overflow: "hidden" }}>
-          <Image src="/casestudy/bando/bandocrackpic.webp" alt="TheBando signature crack chicken dish, the No Cap bestseller" fill style={{ objectFit: "cover" }} />
+          <Image src="/casestudy/bando/bandocrackpic.webp" alt="TheBando signature crack chicken dish, the No Cap bestseller" fill sizes="(max-width: 768px) 100vw, 720px" style={{ objectFit: "cover" }} />
           <div style={{ position: "absolute", bottom: 16, left: 24, background: "rgba(59,33,20,0.75)", color: "#FFF4E3", fontSize: 12, padding: "6px 12px", borderRadius: 6, backdropFilter: "blur(4px)" }}>
             The &ldquo;No Cap&rdquo;, TheBando&apos;s best-selling item.
           </div>
@@ -503,15 +456,15 @@ export default function RestaurantAtlantaPage() {
       </div>
 
       {/* ── FAQ ── */}
-      <FaqAccordion />
+      <BlogFAQ faqs={FAQS.map((f) => ({ question: f.q, answer: f.a }))} />
 
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 24px 80px" }}>
+      <div style={{ maxWidth: 720, margin: "0 auto", padding: "0 24px 80px" }}>
 
         {/* ── AUTHOR ── */}
         <section style={{ marginBottom: 64, padding: "28px 32px", background: "#3B2114", borderRadius: 16, color: "#FFF4E3" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
             <div style={{ position: "relative", width: 64, height: 64, borderRadius: "50%", overflow: "hidden", flexShrink: 0, border: "2px solid rgba(234,154,97,0.4)" }}>
-              <Image src="/teammembers/suchettm.webp" alt="Suchet Konda, Co-Founder ROV Studios" fill style={{ objectFit: "cover" }} />
+              <Image src="/teammembers/suchettm.webp" alt="Suchet Konda, Co-Founder ROV Studios" fill sizes="64px" style={{ objectFit: "cover" }} />
             </div>
             <div>
               <p style={{ fontWeight: 700, fontSize: 16, marginBottom: 2, color: "#FFF4E3" }}>Suchet Konda</p>

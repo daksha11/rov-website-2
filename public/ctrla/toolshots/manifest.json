@@ -1,0 +1,5 @@
+{
+  "$comment": "Generated/maintained by scripts/capture-toolshots.mjs. `shots` lists the tool ids (see toolShotId) that have a self-hosted screenshot at /ctrla/toolshots/{id}.webp. Empty = every tool falls back to mShots.",
+  "updated": null,
+  "shots": []
+}

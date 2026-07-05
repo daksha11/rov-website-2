@@ -93,7 +93,7 @@ export function BlogPostHeader({ post }: { post: BlogPost }) {
             }}
           >
             <div style={{ position: "relative", width: 32, height: 32, borderRadius: "50%", overflow: "hidden", flexShrink: 0 }}>
-              <Image src={getAuthorAvatar(post.author)} alt={post.author} fill style={{ objectFit: "cover" }} />
+              <Image src={getAuthorAvatar(post.author)} alt={post.author} fill sizes="32px" style={{ objectFit: "cover" }} />
             </div>
             <span>
               <a href="/about" style={{ color: "#3B2114", textDecoration: "none" }}>{post.author}</a>

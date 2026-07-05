@@ -5,10 +5,10 @@
 // Artist Showcase · ROV Spotlight · Events (condensed) · Vue Close
 // ═══════════════════════════════════════════════════════
 
-import type { CSSProperties } from "react";
+import { type CSSProperties } from "react";
 import Image from "next/image";
-import { ed, Bleed, Rule, Label, Kicker } from "./editorial";
-import { taste, onRepeat, artForm, cookbook, spotlight, events, eventSources, eventsCover, vueClose } from "../data";
+import { ed, Bleed, Rule, Label, Kicker, SweepText } from "./editorial";
+import { taste, onRepeat, artForm, spotlight, events, eventSources, eventsCover, vueClose } from "../data";
 
 // ── Taste — the throughline manifesto ──────────────────
 
@@ -181,22 +181,11 @@ export function ArtForm() {
   );
 }
 
-// ── Volume bento — three softer features condensed into one asymmetric
-//    3x3 grid: the craft (large hero, 2x2), two songs on repeat (right
-//    column squares), and the cookbook pick (full-width foot). ──
-
-function BentoStat({ label, value }: { label: string; value: string }) {
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-      <Label color={ed.inkFaint}>{label}</Label>
-      <span style={{ fontFamily: ed.grotesque, fontWeight: 700, fontSize: "clamp(15px,1.6vw,20px)", letterSpacing: "-0.01em", color: ed.gold }}>{value}</span>
-    </div>
-  );
-}
+// ── Volume bento — two softer features in one asymmetric grid: the craft
+//    (large hero, 2x2) and two songs on repeat (right-column squares). ──
 
 export function VolumeBento() {
   const [t1, t2] = onRepeat.tracks;
-  const dish = cookbook.recipes.find((r) => r.featured) ?? cookbook.recipes[0];
   const tile: CSSProperties = { position: "relative", overflow: "hidden", border: `1px solid ${ed.hair}`, background: ed.panel, textDecoration: "none", display: "block" };
   const scrim = "linear-gradient(to top, rgba(15,8,32,0.92) 0%, rgba(15,8,32,0.32) 44%, transparent 72%)";
   const tracks = [
@@ -205,7 +194,7 @@ export function VolumeBento() {
   ];
 
   return (
-    <section id="cookbook" style={{ background: "transparent", padding: "clamp(40px,6vw,88px) 0", scrollMarginTop: 0 }}>
+    <section id="off-the-clock" style={{ background: "transparent", padding: "clamp(40px,6vw,88px) 0", scrollMarginTop: 0 }}>
       <Bleed>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginBottom: "clamp(18px,2.4vw,30px)" }}>
           <Kicker color={ed.gold}>Off the clock · this volume</Kicker>
@@ -251,35 +240,6 @@ export function VolumeBento() {
               </div>
             </a>
           ))}
-
-          {/* FUEL — cookbook pick, full-width foot */}
-          <a href="/ctrla/cookbook" className="ctrla-bento-food ctrla-feature-card" style={tile} aria-label="Open the galley fridge">
-            <div className="ctrla-bento-food-grid">
-              <div style={{ position: "relative", background: ed.panel }}>
-                {dish.image ? (
-                  <Image src={dish.image} alt={dish.name} fill sizes="(max-width: 820px) 92vw, 300px" style={{ objectFit: "cover" }} />
-                ) : (
-                  <span aria-hidden style={{ position: "absolute", inset: 0, background: `radial-gradient(120% 130% at 30% 25%, ${ed.gold}2E 0%, ${ed.panel} 52%, ${ed.ground} 100%)` }} />
-                )}
-              </div>
-              <div style={{ padding: "clamp(18px,2.6vw,34px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                <Label color={ed.gold} style={{ display: "block", marginBottom: 10 }}>This volume&apos;s pick · Fuel</Label>
-                <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,3.2vw,48px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "0 0 8px" }}>
-                  {dish.name}
-                </h3>
-                <Label color={ed.inkFaint} style={{ display: "block", marginBottom: 14 }}>{dish.origin}{dish.by ? ` · ${dish.by}` : ""}</Label>
-                <p style={{ fontFamily: ed.body, fontSize: "clamp(13px,1.4vw,16px)", lineHeight: 1.55, color: ed.inkSoft, margin: "0 0 18px", maxWidth: 540 }}>{dish.blurb}</p>
-                <div style={{ display: "flex", gap: "clamp(18px,3vw,40px)", alignItems: "flex-end", flexWrap: "wrap" }}>
-                  <BentoStat label="Time" value={dish.time} />
-                  <BentoStat label="Cost" value={dish.cost} />
-                  <BentoStat label="Serves" value={dish.serves} />
-                  <span className="ctrla-feature-cta" style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 8, fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.16em", textTransform: "uppercase", color: ed.gold }}>
-                    Open the galley <span aria-hidden className="ctrla-feature-arrow" style={{ transition: "transform .25s" }}>→</span>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </a>
         </div>
       </Bleed>
     </section>
@@ -301,101 +261,115 @@ const BK_FEATURES = ["Colour tokens", "Typography scale", "Voice & tone", "Expor
 
 export function BrandKitFeature() {
   return (
-    <section style={{ background: "transparent", padding: "clamp(56px,8vw,104px) 0" }}>
-      <Bleed>
+    // Full-bleed dark flagship band — the standing tool gets dressed as
+    // the dominant element of the middle third, edge to edge.
+    <section
+      id="brandkit"
+      style={{
+        background: `linear-gradient(180deg, ${ed.ground} 0%, ${ed.panel} 42%, ${ed.panel} 58%, ${ed.ground} 100%)`,
+        borderTop: `1px solid ${ed.hair}`,
+        borderBottom: `1px solid ${ed.hair}`,
+        padding: "clamp(56px,8vw,112px) 0",
+        position: "relative",
+        overflow: "hidden",
+        scrollMarginTop: 80,
+      }}
+    >
+      {/* Gold signature edge — the flagship tell */}
+      <div aria-hidden style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: ed.gold, zIndex: 2 }} />
+      <Bleed style={{ position: "relative", zIndex: 1 }}>
         {/* Standing-feature header — recurs every volume of CTRL-A */}
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginBottom: "clamp(20px,2.6vw,32px)" }}>
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginBottom: "clamp(24px,3vw,40px)" }}>
           <Kicker color={ed.gold}>The Toolbox · A CTRL-A Standing Feature</Kicker>
           <Label color={ed.gold}>In every volume</Label>
         </div>
-        <Rule style={{ marginBottom: "clamp(28px,4vw,48px)" }} />
 
-        {/* Framed feature panel — emphasized as its own product */}
-        <div style={{ border: `1px solid ${ed.hair}`, borderTop: `5px solid ${ed.amber}`, background: "rgba(240,230,224,0.05)" }}>
-          <div className="ctrla-brandkit">
-            {/* Left — copy */}
-            <div style={{ padding: "clamp(28px,4vw,52px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-              <Label color={ed.gold} style={{ display: "block", marginBottom: 14 }}>
-                ROV Tool · Always On
-              </Label>
-              <h2
-                style={{
-                  fontFamily: ed.grotesque,
-                  fontWeight: 800,
-                  fontSize: "clamp(34px,5vw,68px)",
-                  letterSpacing: "-0.03em",
-                  lineHeight: 0.92,
-                  color: ed.ink,
-                  margin: "0 0 18px",
-                }}
-              >
-                Brand Kit
-                <br />
-                Generator
-              </h2>
-              <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.6vw,18px)", lineHeight: 1.6, color: ed.inkSoft, margin: "0 0 24px", maxWidth: 460 }}>
-                Drop in your colours, type, and tone. Walk away with a complete, structured
-                system, exported to Markdown, ready to drop into any build or AI prompt.
-              </p>
+        <div className="ctrla-brandkit" style={{ alignItems: "center", gap: "clamp(28px,5vw,72px)" }}>
+          {/* Left — copy */}
+          <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <Label color={ed.gold} style={{ display: "block", marginBottom: 14 }}>
+              ROV Tool · Always On
+            </Label>
+            <h2
+              style={{
+                fontFamily: ed.grotesque,
+                fontWeight: 800,
+                fontSize: "clamp(40px,6.4vw,92px)",
+                letterSpacing: "-0.03em",
+                lineHeight: 0.9,
+                color: ed.ink,
+                margin: "0 0 20px",
+              }}
+            >
+              <SweepText>Brand Kit</SweepText>
+              <br />
+              <SweepText>Generator</SweepText>
+            </h2>
+            <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,20px)", lineHeight: 1.6, color: ed.inkSoft, margin: "0 0 26px", maxWidth: 480 }}>
+              Drop in your colours, type, and tone. Walk away with a complete, structured
+              system, exported to Markdown, ready to drop into any build or AI prompt.
+            </p>
 
-              {/* Feature chips */}
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 28 }}>
-                {BK_FEATURES.map((f) => (
-                  <span
-                    key={f}
-                    style={{
-                      fontFamily: ed.mono,
-                      fontSize: 10,
-                      letterSpacing: "0.12em",
-                      textTransform: "uppercase",
-                      color: ed.ink,
-                      border: `1px solid ${ed.hair}`,
-                      padding: "5px 12px",
-                    }}
-                  >
-                    {f}
-                  </span>
-                ))}
-              </div>
-
-              {/* CTA */}
-              <a
-                href="/ctrla/brand-kit"
-                className="ctrla-bk-cta"
-                style={{
-                  alignSelf: "flex-start",
-                  fontFamily: ed.mono,
-                  fontSize: "clamp(11px,1.2vw,13px)",
-                  letterSpacing: "0.16em",
-                  textTransform: "uppercase",
-                  color: ed.paper,
-                  background: ed.amber,
-                  padding: "14px 28px",
-                  textDecoration: "none",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 10,
-                }}
-              >
-                Try the Generator <span aria-hidden>→</span>
-              </a>
+            {/* Feature chips */}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 30 }}>
+              {BK_FEATURES.map((f) => (
+                <span
+                  key={f}
+                  style={{
+                    fontFamily: ed.mono,
+                    fontSize: 10,
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    color: ed.ink,
+                    border: `1px solid ${ed.hair}`,
+                    padding: "5px 12px",
+                  }}
+                >
+                  {f}
+                </span>
+              ))}
             </div>
 
-            {/* Right — palette visual (on the ink panel) */}
-            <div style={{ background: ed.panel, padding: "clamp(28px,4vw,52px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-              <span style={{ fontFamily: ed.mono, fontSize: 11, letterSpacing: "0.1em", color: "rgba(240,230,224,0.5)", marginBottom: 18 }}>
-                ## Colour Tokens
-              </span>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
-                {BK_SWATCHES.map((s) => (
-                  <div key={s.label} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                    <div style={{ width: "100%", aspectRatio: "1 / 1", background: s.c, border: "1px solid rgba(240,230,224,0.14)" }} />
-                    <span style={{ fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(240,230,224,0.55)" }}>
-                      {s.label}
-                    </span>
-                  </div>
-                ))}
-              </div>
+            {/* CTA — dressed up for the flagship band */}
+            <a
+              href="/ctrla/brand-kit"
+              className="ctrla-cover-cta"
+              style={{
+                alignSelf: "flex-start",
+                fontFamily: ed.mono,
+                fontSize: "clamp(12px,1.4vw,15px)",
+                fontWeight: 700,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: ed.ground,
+                background: ed.gold,
+                padding: "16px 34px",
+                borderRadius: 4,
+                textDecoration: "none",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 10,
+                boxShadow: "0 14px 38px -12px rgba(227,194,74,0.5)",
+              }}
+            >
+              Try the Generator <span aria-hidden>→</span>
+            </a>
+          </div>
+
+          {/* Right — palette visual on a lifted panel */}
+          <div style={{ background: ed.ground, border: `1px solid ${ed.hair}`, padding: "clamp(28px,4vw,48px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <span style={{ fontFamily: ed.mono, fontSize: 11, letterSpacing: "0.1em", color: "rgba(240,230,224,0.5)", marginBottom: 18 }}>
+              ## Colour Tokens
+            </span>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
+              {BK_SWATCHES.map((s) => (
+                <div key={s.label} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  <div style={{ width: "100%", aspectRatio: "1 / 1", background: s.c, border: "1px solid rgba(240,230,224,0.14)" }} />
+                  <span style={{ fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(240,230,224,0.55)" }}>
+                    {s.label}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -501,129 +475,135 @@ export function CondensedEvents() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(eventsJsonLd) }}
       />
       <Bleed>
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-          <div>
-            <Kicker color={ed.gold} style={{ marginBottom: 14 }}>FIFA World Cup 26</Kicker>
-            <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,5vw,64px)", letterSpacing: "-0.02em", color: ed.ink, margin: 0 }}>
-              ATL Events
-            </h2>
-            <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(13px,1.5vw,16px)", color: ed.inkSoft, margin: "8px 0 0", maxWidth: 540 }}>
-              We are an Atlanta studio, so we cover our city&apos;s biggest stages. This summer the whole world arrives: the FIFA World Cup 26™ comes to Mercedes-Benz Stadium.
-            </p>
-          </div>
-          <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026" target="_blank" rel="noopener" className="ctrla-seeall" style={{ fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.18em", textTransform: "uppercase", color: ed.gold, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
-            Full match schedule <span aria-hidden>→</span>
-          </a>
-        </div>
-        {/* Section cover image */}
-        <div
-          style={{
-            position: "relative",
-            width: "100%",
-            aspectRatio: "16 / 7",
-            minHeight: 200,
-            background: ed.panel,
-            overflow: "hidden",
-            margin: "clamp(24px,3vw,40px) 0 0",
-            backgroundImage: `url('${eventsCover.src}')`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
+        {/* Split layout: image left (full height), copy + schedule right */}
+        <div className="ctrla-events-split" style={{ display: "grid", gridTemplateColumns: "0.9fr 1.1fr", gap: "clamp(24px,3.5vw,56px)", alignItems: "stretch" }}>
+          {/* Cover image — stretches to match the right column */}
           <div
-            aria-hidden
+            className="ctrla-events-cover"
             style={{
-              position: "absolute",
-              inset: 0,
-              background: "linear-gradient(to top, rgba(15,8,32,0.66) 0%, transparent 52%)",
-            }}
-          />
-          <span
-            style={{
-              position: "absolute",
-              left: 16,
-              bottom: 12,
-              fontFamily: ed.mono,
-              fontSize: "clamp(8px,0.9vw,10px)",
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              color: "rgba(240,230,224,0.88)",
+              position: "relative",
+              width: "100%",
+              minHeight: "clamp(280px,40vw,540px)",
+              background: ed.panel,
+              overflow: "hidden",
+              backgroundImage: `url('${eventsCover.src}')`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
             }}
           >
-            {eventsCover.label}
-          </span>
-        </div>
-
-        <Rule style={{ margin: "clamp(24px,3vw,40px) 0 0" }} />
-
-        <div>
-          {events.map((e) => {
-            const isFree = e.badge === "Free";
-            return (
-              <a
-                key={e.name}
-                href={e.url}
-                target="_blank"
-                rel="noopener"
-                className="ctrla-event-row"
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "minmax(72px, 0.6fr) minmax(0, 2.4fr) minmax(0, 1.6fr) auto",
-                  alignItems: "center",
-                  gap: "clamp(12px,2vw,28px)",
-                  padding: "clamp(18px,2.4vw,26px) clamp(12px,1.5vw,18px)",
-                  borderBottom: `1px solid ${ed.hair}`,
-                  borderLeft: `3px solid ${isFree ? ed.amber : "transparent"}`,
-                  background: isFree ? "rgba(165,106,103,0.06)" : "transparent",
-                  textDecoration: "none",
-                }}
-              >
-                <span style={{ fontFamily: ed.mono, fontSize: "clamp(11px,1.2vw,13px)", letterSpacing: "0.08em", textTransform: "uppercase", color: ed.gold }}>
-                  {e.date}
-                </span>
-                <span className="ctrla-event-name" style={{ fontFamily: ed.grotesque, fontWeight: isFree ? 800 : 700, fontSize: "clamp(18px,2.2vw,28px)", letterSpacing: "-0.01em", color: ed.ink }}>
-                  {e.name}
-                </span>
-                <span style={{ fontFamily: ed.body, fontSize: "clamp(12px,1.3vw,14px)", color: ed.inkSoft }}>
-                  {e.location}
-                </span>
-                <span
-                  style={{
-                    justifySelf: "end",
-                    fontFamily: ed.mono,
-                    fontWeight: isFree ? 700 : 400,
-                    fontSize: isFree ? 10 : 9,
-                    letterSpacing: "0.14em",
-                    textTransform: "uppercase",
-                    color: isFree ? ed.paper : ed.inkFaint,
-                    background: isFree ? ed.amber : "transparent",
-                    border: `1px solid ${isFree ? ed.amber : ed.hair}`,
-                    padding: isFree ? "5px 12px" : "4px 10px",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {isFree ? "Free Entry" : "Ticketed"}
-                </span>
-              </a>
-            );
-          })}
-        </div>
-
-        {/* Official sources — outbound authority links (SEO / GEO) */}
-        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "10px 18px", marginTop: "clamp(24px,3vw,36px)" }}>
-          <Label color={ed.gold}>Official sources:</Label>
-          {eventSources.map((s) => (
-            <a
-              key={s.url}
-              href={s.url}
-              target="_blank"
-              rel="noopener"
-              className="ctrla-seeall"
-              style={{ fontFamily: ed.body, fontSize: "clamp(12px,1.3vw,14px)", color: ed.gold, textDecoration: "underline", textUnderlineOffset: 3 }}
+            <div
+              aria-hidden
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: "linear-gradient(to top, rgba(15,8,32,0.66) 0%, transparent 52%)",
+              }}
+            />
+            <span
+              style={{
+                position: "absolute",
+                left: 16,
+                bottom: 12,
+                fontFamily: ed.mono,
+                fontSize: "clamp(8px,0.9vw,10px)",
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "rgba(240,230,224,0.88)",
+              }}
             >
-              {s.label}
-            </a>
-          ))}
+              {eventsCover.label}
+            </span>
+          </div>
+
+          {/* Right column — copy header, then the schedule rows */}
+          <div>
+            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
+              <div>
+                <Kicker color={ed.gold} style={{ marginBottom: 14 }}>FIFA World Cup 26</Kicker>
+                <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4vw,52px)", letterSpacing: "-0.02em", color: ed.ink, margin: 0 }}>
+                  <SweepText>ATL Events</SweepText>
+                </h2>
+                <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(13px,1.5vw,16px)", color: ed.inkSoft, margin: "10px 0 0", maxWidth: 540 }}>
+                  We are an Atlanta studio, so we cover our city&apos;s biggest stages. This summer the whole world arrives: the FIFA World Cup 26™ comes to Mercedes-Benz Stadium.
+                </p>
+              </div>
+              <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026" target="_blank" rel="noopener" className="ctrla-seeall" style={{ fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.18em", textTransform: "uppercase", color: ed.gold, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
+                Full match schedule <span aria-hidden>→</span>
+              </a>
+            </div>
+
+            <Rule style={{ margin: "clamp(20px,2.5vw,32px) 0 0" }} />
+
+            <div>
+              {events.map((e) => {
+                const isFree = e.badge === "Free";
+                return (
+                  <a
+                    key={e.name}
+                    href={e.url}
+                    target="_blank"
+                    rel="noopener"
+                    className="ctrla-event-row"
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "minmax(64px, 0.55fr) minmax(0, 2.2fr) minmax(0, 1.5fr) auto",
+                      alignItems: "center",
+                      gap: "clamp(10px,1.6vw,22px)",
+                      padding: "clamp(14px,1.8vw,20px) clamp(10px,1.2vw,14px)",
+                      borderBottom: `1px solid ${ed.hair}`,
+                      borderLeft: `3px solid ${isFree ? ed.amber : "transparent"}`,
+                      background: isFree ? "rgba(165,106,103,0.06)" : "transparent",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <span style={{ fontFamily: ed.mono, fontSize: "clamp(11px,1.2vw,13px)", letterSpacing: "0.08em", textTransform: "uppercase", color: ed.gold }}>
+                      {e.date}
+                    </span>
+                    <span className="ctrla-event-name" style={{ fontFamily: ed.grotesque, fontWeight: isFree ? 800 : 700, fontSize: "clamp(16px,1.9vw,24px)", letterSpacing: "-0.01em", color: ed.ink }}>
+                      {e.name}
+                    </span>
+                    <span style={{ fontFamily: ed.body, fontSize: "clamp(12px,1.3vw,14px)", color: ed.inkSoft }}>
+                      {e.location}
+                    </span>
+                    <span
+                      style={{
+                        justifySelf: "end",
+                        fontFamily: ed.mono,
+                        fontWeight: isFree ? 700 : 400,
+                        fontSize: isFree ? 10 : 9,
+                        letterSpacing: "0.14em",
+                        textTransform: "uppercase",
+                        color: isFree ? ed.paper : ed.inkFaint,
+                        background: isFree ? ed.amber : "transparent",
+                        border: `1px solid ${isFree ? ed.amber : ed.hair}`,
+                        padding: isFree ? "5px 12px" : "4px 10px",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {isFree ? "Free Entry" : "Ticketed"}
+                    </span>
+                  </a>
+                );
+              })}
+            </div>
+
+            {/* Official sources — outbound authority links (SEO / GEO) */}
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "10px 18px", marginTop: "clamp(20px,2.5vw,28px)" }}>
+              <Label color={ed.gold}>Official sources:</Label>
+              {eventSources.map((s) => (
+                <a
+                  key={s.url}
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener"
+                  className="ctrla-seeall"
+                  style={{ fontFamily: ed.body, fontSize: "clamp(12px,1.3vw,14px)", color: ed.gold, textDecoration: "underline", textUnderlineOffset: 3 }}
+                >
+                  {s.label}
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
       </Bleed>
     </section>

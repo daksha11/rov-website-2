@@ -11,8 +11,9 @@ import { useEffect } from "react";
 import { NavigationDock } from "@/components/NavDoc";
 import EditorialFooter from "../_components/EditorialFooter";
 import CosmicBackdrop from "../_components/CosmicBackdrop";
-import { IssueOpen, BehindTheScenes, TwoCities, ProductionToolkit } from "../_components/DreamAsiaSections";
+import { FeatureStory } from "../_components/DreamAsiaSections";
 import { ed, Bleed, Rule, Label } from "../_components/editorial";
+import { currentVolume } from "../_volumes";
 
 export default function DreamAsiaFeatureContent() {
   useEffect(() => {
@@ -39,7 +40,7 @@ export default function DreamAsiaFeatureContent() {
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
             <a href="/ctrla" className="ctrla-back" style={{ display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
               <span style={{ color: ed.amber }}>←</span>
-              <Label color={ed.ink}>CTRL-A · Vol. 01</Label>
+              <Label color={ed.ink}>CTRL-A · {currentVolume.issueMeta.volume}</Label>
             </a>
             <Label color={ed.inkFaint}>Issue Feature</Label>
           </div>
@@ -47,10 +48,8 @@ export default function DreamAsiaFeatureContent() {
         <Rule />
       </div>
 
-      <IssueOpen />
-      <BehindTheScenes />
-      <TwoCities />
-      <ProductionToolkit />
+      {/* The whole feature composes itself from the current volume's beats. */}
+      <FeatureStory volume={currentVolume} />
 
       <EditorialFooter />
     </div>

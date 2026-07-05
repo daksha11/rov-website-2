@@ -6,6 +6,7 @@ import EditorialFooter from "../_components/EditorialFooter";
 import GalleyFridge from "../_components/GalleyFridge";
 import { ed, Bleed, Rule, Label, Kicker } from "../_components/editorial";
 import { cookbook } from "../data";
+import { currentVolume } from "../_volumes";
 
 // The Cookbook lives in the void, so it runs the DARK editorial theme
 // (unlike the cream toolkit pages). The galley fridge is the centerpiece.
@@ -38,7 +39,7 @@ export default function CookbookPageContent() {
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
             <a href="/ctrla" className="ctrla-back" style={{ display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
               <span style={{ color: accent }}>←</span>
-              <Label color={ed.ink}>CTRL-A · Vol. 01</Label>
+              <Label color={ed.ink}>CTRL-A · {currentVolume.issueMeta.volume}</Label>
             </a>
             <Label color={accent}>The Cookbook</Label>
           </div>
@@ -61,6 +62,11 @@ export default function CookbookPageContent() {
           <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: "clamp(18px,2.4vw,28px) 0 0", maxWidth: 640 }}>
             On a ship the kitchen is the galley. This is the fridge that keeps the crew fueled: always three things, one meal, one snack, one drink. Pull the handle and pick one.
           </p>
+          {cookbook.chef && (
+            <p className="ctrla-fridge-credit ctrla-fridge-credit-lg" style={{ margin: "clamp(16px,2vw,22px) 0 0", maxWidth: 640 }}>
+              Chef of the volume: {cookbook.chef.name}, {cookbook.chef.city}. {cookbook.chef.bio}
+            </p>
+          )}
         </Bleed>
       </section>
 

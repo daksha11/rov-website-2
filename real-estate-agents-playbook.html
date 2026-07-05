@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROV · Real Estate Agents — Vertical Playbook</title>
+<style>
+  :root{
+    --bg:#f7f3ec; --panel:#fffdf8; --ink:#22201b; --muted:#6f685c;
+    --line:#e5ddcf; --green:#1f6b4f; --green-soft:#e6f0ea; --amber:#b6852a;
+    --amber-soft:#f6ecd7; --red:#a9432f; --red-soft:#f4e3dd; --accent:#1f6b4f;
+    --shadow:0 1px 2px rgba(34,32,27,.05),0 8px 24px rgba(34,32,27,.06);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.15;font-weight:600;letter-spacing:-.01em}
+  a{color:var(--green)}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 20px}
+
+  /* HERO */
+  header.hero{background:linear-gradient(160deg,#1f6b4f,#154d39);color:#f3efe6;padding:54px 0 42px}
+  .hero .wrap{max-width:1060px}
+  .kicker{text-transform:uppercase;letter-spacing:.22em;font-size:12px;color:#bcd6c9;margin:0 0 14px}
+  header.hero h1{font-size:clamp(30px,5vw,50px);margin:0 0 12px;color:#fff}
+  header.hero p{font-size:clamp(15px,2vw,19px);max-width:660px;color:#d9e6df;margin:0}
+  .hero-stats{display:flex;flex-wrap:wrap;gap:26px;margin-top:30px}
+  .hero-stats .s{min-width:120px}
+  .hero-stats .n{font-family:Georgia,serif;font-size:30px;color:#fff}
+  .hero-stats .l{font-size:12.5px;color:#a9c6ba;text-transform:uppercase;letter-spacing:.08em}
+
+  /* NAV */
+  nav.tabs{position:sticky;top:0;z-index:50;background:rgba(247,243,236,.92);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .tabs-inner{max-width:1060px;margin:0 auto;padding:0 12px;display:flex;gap:2px;overflow-x:auto}
+  .tabs button{flex:0 0 auto;background:none;border:none;padding:15px 15px 12px;
+    font-size:14px;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;
+    font-weight:600;white-space:nowrap;font-family:inherit}
+  .tabs button:hover{color:var(--ink)}
+  .tabs button.active{color:var(--green);border-bottom-color:var(--green)}
+
+  main{padding:38px 0 90px}
+  section.tab{display:none;animation:fade .35s ease}
+  section.tab.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .sec-h{font-size:13px;text-transform:uppercase;letter-spacing:.16em;color:var(--amber);margin:0 0 6px;font-family:inherit;font-weight:700}
+  h2.big{font-size:clamp(24px,3.6vw,34px);margin:0 0 8px}
+  .lead{font-size:17px;color:var(--muted);max-width:720px;margin:0 0 28px}
+
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:24px;box-shadow:var(--shadow);margin-bottom:20px}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:760px){.g2,.g3{grid-template-columns:1fr}}
+
+  .tag{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:20px;
+    letter-spacing:.03em;text-transform:uppercase}
+  .t-green{background:var(--green-soft);color:var(--green)}
+  .t-amber{background:var(--amber-soft);color:var(--amber)}
+  .t-red{background:var(--red-soft);color:var(--red)}
+  .t-gray{background:#eeeae0;color:#75705f}
+
+  /* CALCULATOR */
+  .calc{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+  @media(max-width:760px){.calc{grid-template-columns:1fr}}
+  .ctrl{margin-bottom:18px}
+  .ctrl label{display:flex;justify-content:space-between;font-size:14px;font-weight:600;margin-bottom:7px}
+  .ctrl label span{color:var(--green);font-variant-numeric:tabular-nums}
+  input[type=range]{width:100%;accent-color:var(--green);height:4px}
+  select,.seg{width:100%;font-family:inherit;font-size:14px}
+  select{padding:9px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+  .seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .seg button{flex:1;background:#fff;border:none;padding:9px;cursor:pointer;font-weight:600;color:var(--muted);font-family:inherit;font-size:13.5px}
+  .seg button.on{background:var(--green);color:#fff}
+  .toggle-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .switch{position:relative;width:44px;height:24px;flex:0 0 auto}
+  .switch input{opacity:0;width:0;height:0}
+  .slider-sw{position:absolute;inset:0;background:#d9d2c4;border-radius:20px;transition:.2s;cursor:pointer}
+  .slider-sw:before{content:"";position:absolute;height:18px;width:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
+  .switch input:checked+.slider-sw{background:var(--green)}
+  .switch input:checked+.slider-sw:before{transform:translateX(20px)}
+
+  .cascade .row{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px}
+  .cascade .row .v{font-variant-numeric:tabular-nums;font-weight:600}
+  .cascade .row.minus .v{color:var(--red)}
+  .cascade .bar{height:10px;border-radius:6px;background:var(--green);margin-top:4px;transition:width .3s}
+  .final{background:var(--green);color:#fff;border-radius:12px;padding:18px 20px;margin-top:16px;text-align:center}
+  .final .amt{font-family:Georgia,serif;font-size:40px;line-height:1}
+  .final .sub{font-size:13px;color:#cfe3d9;margin-top:4px}
+  .keep-note{font-size:13.5px;color:var(--muted);margin-top:12px;text-align:center;font-style:italic}
+
+  /* PAIN */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+  .filters button{background:#fff;border:1px solid var(--line);border-radius:20px;padding:7px 14px;
+    font-size:13px;font-weight:600;cursor:pointer;color:var(--muted);font-family:inherit}
+  .filters button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .quote{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--green);
+    border-radius:10px;padding:16px 18px;margin-bottom:14px;box-shadow:var(--shadow)}
+  .quote.hide{display:none}
+  .quote p{margin:0 0 8px;font-size:16px;font-style:italic}
+  .quote .meta{font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .quote .who{font-weight:600;font-style:normal;color:var(--ink)}
+
+  /* VOCAB */
+  .vocab-tools{display:flex;gap:12px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+  table.voc{width:100%;border-collapse:collapse;background:var(--panel);border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+  table.voc th{background:#efe9dd;text-align:left;padding:12px 14px;font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;color:#6f685c}
+  table.voc td{padding:11px 14px;border-top:1px solid var(--line);font-size:14.5px;vertical-align:top;width:50%}
+  table.voc td.say{font-weight:600;color:var(--green)}
+  table.voc td.dont{color:var(--red)}
+  body.study td.dont{filter:blur(5px);cursor:pointer;transition:filter .15s;user-select:none}
+  body.study td.dont.reveal{filter:none}
+
+  /* TEARDOWN */
+  .acc{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow)}
+  .acc-head{padding:16px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .acc-head h3{margin:0;font-size:18px}
+  .acc-head .sub{font-size:13px;color:var(--muted);margin-top:2px}
+  .acc-head .chev{transition:.2s;color:var(--muted);font-size:20px}
+  .acc.open .chev{transform:rotate(90deg)}
+  .acc-body{display:none;padding:0 18px 18px}
+  .acc.open .acc-body{display:block}
+  .wr{margin:10px 0}
+  .wr .lbl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+  .wr.work .lbl{color:var(--green)}
+  .wr.wedge .lbl{color:var(--amber)}
+  .wr ul{margin:0;padding-left:18px;font-size:14.5px}
+  .wr li{margin-bottom:4px}
+
+  /* LISTS / CHANNELS */
+  .rankcard{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:12px;display:flex;gap:16px;box-shadow:var(--shadow)}
+  .rankcard .rk{font-family:Georgia,serif;font-size:26px;color:var(--green);flex:0 0 auto;width:34px;text-align:center}
+  .rankcard h3{margin:0 0 3px;font-size:16.5px}
+  .rankcard p{margin:0;font-size:14px;color:var(--muted)}
+  .rankcard .price{font-size:12.5px;font-weight:700;color:var(--amber);margin-top:5px}
+
+  /* HEATMAP */
+  .heat{width:100%;border-collapse:collapse;margin-top:8px;font-size:12.5px}
+  .heat th{padding:6px;color:var(--muted);font-weight:600}
+  .heat td{padding:0;text-align:center;border:2px solid var(--bg)}
+  .heat .cell{padding:10px 4px;border-radius:5px;font-size:11px;font-weight:600}
+  .h-best{background:var(--green);color:#fff}
+  .h-good{background:#bcd9cb;color:#1f4d3a}
+  .h-ok{background:#eeeae0;color:#8a8474}
+  .h-bad{background:var(--red-soft);color:var(--red)}
+
+  /* players / referral web */
+  .role{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+  .role h3{margin:0 0 4px;font-size:16px}
+  .role p{margin:0;font-size:13.5px;color:var(--muted)}
+  .role .money{display:inline-block;margin-top:8px;font-size:12.5px;font-weight:700;color:var(--green);background:var(--green-soft);padding:3px 9px;border-radius:16px}
+  .callout{background:var(--amber-soft);border:1px solid #e6d3a6;border-radius:12px;padding:16px 18px;margin:18px 0}
+  .callout b{color:var(--amber)}
+
+  /* money-flow diagram */
+  .flowbox{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-bottom:22px}
+  .flow-toggle{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+  .flow-toggle button{background:#fff;border:1px solid var(--line);border-radius:20px;padding:8px 16px;font-size:13.5px;font-weight:700;cursor:pointer;color:var(--muted);font-family:inherit}
+  .flow-toggle button.on{background:var(--green);color:#fff;border-color:var(--green)}
+  .flow-scroll{overflow-x:auto}
+  .flow-scroll svg{display:block;min-width:720px;width:100%;height:auto}
+  .fnode .ntitle{font:600 13px Georgia,serif;fill:var(--ink)}
+  .fnode .nsub{font:400 10.5px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:var(--muted)}
+  .flink{fill:none}
+  .flabel{font:700 11px -apple-system,BlinkMacSystemFont,sans-serif}
+  .flabel-bg{fill:#fffdf8;opacity:.94}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:12px}
+  .legend .k{display:inline-block;width:22px;border-top:3px solid;vertical-align:middle;margin-right:6px}
+  .flownote{font-size:12.5px;color:var(--muted);margin-top:8px;font-style:italic}
+
+  /* tactics */
+  .las{margin-bottom:18px}
+  .las h3{font-size:16px;margin:0 0 4px;color:var(--green)}
+  .las .comp{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+  .tactic{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:8px;font-size:14px}
+  .tactic b{color:var(--ink)}
+  .tactic .maps{display:block;font-size:12.5px;color:var(--muted);margin-top:3px}
+
+  /* PLAN */
+  .phase{display:flex;gap:18px;margin-bottom:6px}
+  .phase .line{display:flex;flex-direction:column;align-items:center;flex:0 0 auto}
+  .phase .dot{width:34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:flex;
+    align-items:center;justify-content:center;font-weight:700;font-family:Georgia,serif;flex:0 0 auto}
+  .phase.done .dot{background:var(--amber)}
+  .phase .stem{width:2px;flex:1;background:var(--line);margin:4px 0}
+  .phase:last-child .stem{display:none}
+  .phase .body{padding-bottom:22px}
+  .phase .body h3{margin:0 0 3px;font-size:18px}
+  .phase .body .when{font-size:12.5px;color:var(--amber);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+  .phase .body p{margin:6px 0 0;font-size:14.5px;color:var(--muted)}
+  .phase .body ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--muted)}
+
+  .foot{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:18px;margin-top:20px}
+  .pill-src{font-size:11px;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">ROV Studios · Sales Vertical Research</p>
+    <h1>Real Estate Agents</h1>
+    <p>Everything you need to understand before you sell to them: how the money moves, what actually hurts, the exact words they use, who's winning, how to reach them — and the plan to land your first client.</p>
+    <div class="hero-stats">
+      <div class="s"><div class="n">~$25K</div><div class="l">Median agent net / yr</div></div>
+      <div class="s"><div class="n">2.4</div><div class="l">Agents per home sale</div></div>
+      <div class="s"><div class="n">~50%</div><div class="l">Inquiries never answered</div></div>
+      <div class="s"><div class="n">$49/mo</div><div class="l">Cost of an ATL list</div></div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="tabs-inner" id="tabbar">
+    <button class="active" data-t="overview">Overview</button>
+    <button data-t="money">Money Flow</button>
+    <button data-t="players">The Players</button>
+    <button data-t="pain">Their Pain</button>
+    <button data-t="vocab">Their Words</button>
+    <button data-t="comp">The Competition</button>
+    <button data-t="reach">How to Reach Them</button>
+    <button data-t="offer">The Offer Angle</button>
+    <button data-t="plan">The Plan</button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- OVERVIEW -->
+  <section class="tab active" id="overview">
+    <p class="sec-h">The one-paragraph truth</p>
+    <h2 class="big">Agents are their own marketing department — and almost none of them are good at it.</h2>
+    <p class="lead">Every agent is a 1099 small-business owner who only eats when a deal closes. The brokerage gives them less every year, the portals sell them shared leads at a brutal cost-per-close, and a 2024 law now forces them to sell their own value in writing before they do any work. Their best lead source — their own past clients — is almost never systematized. That gap is the whole business.</p>
+
+    <div class="grid g3">
+      <div class="panel"><span class="tag t-green">The wedge</span><h3 style="margin:10px 0 6px;font-size:17px">Front-end brand, leaky back-end</h3><p style="margin:0;color:var(--muted);font-size:14.5px">Even Atlanta's top agents win on brand but fumble the funnel — dead websites, unanswered inquiries, no follow-up system. You don't just help beginners; you can improve the market leaders.</p></div>
+      <div class="panel"><span class="tag t-amber">The language</span><h3 style="margin:10px 0 6px;font-size:17px">Listings, not "leads"</h3><p style="margin:0;color:var(--muted);font-size:14.5px">They buy listing appointments and closings. Say "lead generation," "funnel," or "brand awareness" and you're instantly another vendor who doesn't get it.</p></div>
+      <div class="panel"><span class="tag t-red">The emotion</span><h3 style="margin:10px 0 6px;font-size:17px">"Maybe it just isn't for me"</h3><p style="margin:0;color:var(--muted);font-size:14.5px">The pain isn't "I want more leads." It's bleeding money on fees and questioning the whole career. Sell relief from that, in their words.</p></div>
+    </div>
+
+    <div class="callout">
+      <b>How to use this page:</b> Click through the tabs top to bottom. The <b>Money Flow</b> tab has a live calculator — drag the sliders and watch what an agent actually takes home. <b>Their Words</b> has a study mode to drill the vocabulary. The last tab is the plan.
+    </div>
+  </section>
+
+  <!-- MONEY FLOW -->
+  <section class="tab" id="money">
+    <p class="sec-h">Follow the money</p>
+    <h2 class="big">What an agent actually takes home</h2>
+    <p class="lead">The seller pays ~5.5% commission. It splits four times before it reaches the agent's pocket. Drag the sliders — this is why a junior agent closing a $1M deal "walks away with enough to buy a sandwich."</p>
+
+    <div class="panel">
+      <div class="calc">
+        <div class="controls">
+          <div class="ctrl">
+            <label>Sale price <span id="v-price">$400,000</span></label>
+            <input type="range" id="price" min="150000" max="2000000" step="10000" value="400000">
+          </div>
+          <div class="ctrl">
+            <label>Total commission <span id="v-comm">5.5%</span></label>
+            <input type="range" id="comm" min="4" max="6" step="0.1" value="5.5">
+          </div>
+          <div class="ctrl">
+            <label>Your side</label>
+            <div class="seg" id="side">
+              <button class="on" data-side="1">One side (listing OR buyer)</button>
+              <button data-side="2">Both sides (dual)</button>
+            </div>
+          </div>
+          <div class="ctrl">
+            <label>Brokerage split (agent keeps)</label>
+            <select id="broker">
+              <option value="70">KW pre-cap — 70% to agent</option>
+              <option value="80">eXp pre-cap — 80% to agent</option>
+              <option value="95">RE/MAX — 95% (after desk fee)</option>
+              <option value="100" selected>100% model (Real/ONE) — flat fee</option>
+              <option value="50">Rookie / high-split — 50%</option>
+            </select>
+          </div>
+          <div class="ctrl">
+            <div class="toggle-row">
+              <label class="switch"><input type="checkbox" id="onteam"><span class="slider-sw"></span></label>
+              <label style="margin:0">On a team? (lead takes a cut)</label>
+            </div>
+            <div id="teamwrap" style="display:none">
+              <label style="font-size:13px;color:var(--muted);display:flex;justify-content:space-between">Team keeps <span id="v-team">50%</span></label>
+              <input type="range" id="team" min="30" max="60" step="5" value="50">
+            </div>
+          </div>
+          <div class="ctrl">
+            <label>Tax set-aside <span id="v-tax">28%</span></label>
+            <input type="range" id="tax" min="0" max="40" step="1" value="28">
+          </div>
+        </div>
+
+        <div class="output">
+          <div class="cascade" id="cascade"></div>
+          <div class="final">
+            <div class="amt" id="takehome">$0</div>
+            <div class="sub">real take-home on this one deal</div>
+          </div>
+          <div class="keep-note" id="keepnote"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <b>Why this sells:</b> On a normal Atlanta deal the agent keeps a fraction of what the sign out front implies — and they front all the marketing cost themselves. Every deal <b>you</b> help them source directly is worth 2–3× a team-fed deal. That's the ROI math you put in front of them.
+    </div>
+    <p class="pill-src">Sources: US Realty Training (commissions), Colibri (broker splits), Jamil Academy (agent income), Inman.</p>
+  </section>
+
+  <!-- PLAYERS -->
+  <section class="tab" id="players">
+    <p class="sec-h">The ecosystem</p>
+    <h2 class="big">Who's who, and how money moves between them</h2>
+    <p class="lead">Real estate is a web of independent contractors orchestrated around one transaction. Understanding who depends on whom tells you who to sell, and who will help pay for it.</p>
+
+    <div class="flowbox">
+      <div class="flow-toggle">
+        <button class="on" data-flow="money">💵 Money at the closing table</button>
+        <button data-flow="leads">🔗 Leads &amp; referrals</button>
+      </div>
+      <div class="flow-scroll"><svg id="flowsvg" viewBox="0 0 1000 720" preserveAspectRatio="xMidYMin meet"></svg></div>
+      <div class="legend" id="flowlegend"></div>
+      <div class="flownote" id="flownote"></div>
+    </div>
+
+    <div class="grid g3">
+      <div class="role"><h3>Solo agent</h3><p>1099 salesperson under a broker's license. Prospects, shows, negotiates, closes. Your core buyer.</p><span class="money">nets 35–55% of gross</span></div>
+      <div class="role"><h3>Team lead</h3><p>Top producer who hires junior agents + a coordinator and feeds them leads for a split. Heavy marketing buyer.</p><span class="money">takes 40–50% of team deals</span></div>
+      <div class="role"><h3>Managing broker</h3><p>Holds the license agents hang under; provides compliance, MLS, E&amp;O insurance. Takes a cut of every deal.</p><span class="money">split or cap per deal</span></div>
+      <div class="role"><h3>Loan officer</h3><p>The buyer's mortgage contact. <b>Lives on agent referrals</b> and co-markets constantly.</p><span class="money">co-funds agent marketing ⭑</span></div>
+      <div class="role"><h3>Transaction coordinator</h3><p>Runs paperwork contract-to-close so the agent can sell. Signals an agent doing real volume.</p><span class="money">~$300–500 / file</span></div>
+      <div class="role"><h3>Title / escrow</h3><p>Runs closing, verifies title, holds funds. Courts agents to stay on the preferred-vendor list.</p><span class="money">paid at closing</span></div>
+      <div class="role"><h3>Closing attorney (GA)</h3><p>Georgia is an attorney-closing state — a real estate lawyer runs the closing, handles docs and escrow, disburses funds.</p><span class="money">~$1,000+ / closing</span></div>
+      <div class="role"><h3>Title insurance</h3><p>Insures buyer + lender against title defects. Sold through the attorney/title company at closing.</p><span class="money">~$1,000–1,800 one-time</span></div>
+      <div class="role"><h3>Hazard insurance</h3><p>Homeowner's policy the lender requires before funding. An insurance agent writes it — a co-marketing referral partner.</p><span class="money">~$1,500/yr · buyer pays</span></div>
+      <div class="role"><h3>Appraiser</h3><p>Independent value opinion so the lender doesn't over-lend. Ordered by the lender, paid by the buyer.</p><span class="money">~$500–600 · buyer pays</span></div>
+      <div class="role"><h3>Home inspector</h3><p>Evaluates physical condition during due diligence. Hired and paid by the buyer.</p><span class="money">~$400–500 · buyer pays</span></div>
+      <div class="role"><h3>Developer / builder</h3><p>Land → entitlement → build → sell. Uses agents to move inventory. Treats marketing as a soft cost.</p><span class="money">project-based budgets (Vertical #2)</span></div>
+      <div class="role"><h3>Wholesaler / investor</h3><p>The off-market cash economy. Runs big direct-outreach engines to find motivated sellers.</p><span class="money">$5K–$30K assignment fees</span></div>
+      <div class="role"><h3>The sphere</h3><p>Past clients + network. The <b>highest-ROI lead source</b> (4–6× internet leads) — and almost never systematized.</p><span class="money">free · un-systematized</span></div>
+    </div>
+
+    <div class="callout">
+      <b>The referral web:</b> an agent must keep three parties happy — their <b>sphere</b> (referrals), their <b>loan officer</b> (borrower flow + co-marketing money), and their <b>broker/team lead</b> (license home + leads). The loan-officer relationship is a co-funding angle: they will literally help pay for an agent's marketing.
+    </div>
+  </section>
+
+  <!-- PAIN -->
+  <section class="tab" id="pain">
+    <p class="sec-h">In their own words</p>
+    <h2 class="big">What actually hurts</h2>
+    <p class="lead">Verbatim, from forums, reviews, and industry press. Filter by theme. Green border = a real agent talking; grey = article/editorial voice.</p>
+    <div class="filters" id="painfilters">
+      <button class="on" data-f="all">All</button>
+      <button data-f="leads">Portal leads</button>
+      <button data-f="money">Money / income</button>
+      <button data-f="time">No time</button>
+      <button data-f="sat">Saturation</button>
+      <button data-f="follow">Follow-up</button>
+    </div>
+    <div id="painlist"></div>
+  </section>
+
+  <!-- VOCAB -->
+  <section class="tab" id="vocab">
+    <p class="sec-h">Speak native</p>
+    <h2 class="big">Their words vs. outsider jargon</h2>
+    <p class="lead">Say the left column. The right column instantly flags you as "another vendor." Turn on Study Mode to blur the jargon and test yourself.</p>
+    <div class="vocab-tools">
+      <div class="toggle-row" style="margin:0">
+        <label class="switch"><input type="checkbox" id="studytoggle"><span class="slider-sw"></span></label>
+        <label style="margin:0">Study mode (click a blurred cell to reveal)</label>
+      </div>
+    </div>
+    <table class="voc" id="voctable">
+      <thead><tr><th>✅ Say this (their language)</th><th>🚫 Never say (outsider jargon)</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <div class="callout" style="margin-top:20px">
+      <b>The one rule that matters most:</b> outsiders sell <i>leads, traffic, impressions, brand awareness</i>. Agents buy <i>listing appointments → signed listings → closings</i>. Frame every sentence in that chain.
+    </div>
+  </section>
+
+  <!-- COMPETITION -->
+  <section class="tab" id="comp">
+    <p class="sec-h">Atlanta teardown</p>
+    <h2 class="big">Who's winning — and what even they fumble</h2>
+    <p class="lead">The winners win on front-end brand and consistently drop the back-end funnel. What they do well is your proof. What they fumble is your wedge. Click to expand.</p>
+    <div id="teardown"></div>
+    <div class="panel" style="border-left:4px solid var(--amber)">
+      <h3 style="margin:0 0 8px">The pattern across all of them</h3>
+      <div class="wr work"><div class="lbl">Table stakes (sell the average agent)</div><ul><li>Visible review volume as hero proof</li><li>A defined face or team brand</li><li>Consistent social at scale</li><li>Multi-path website lead capture</li><li>Neighborhood / local-SEO content</li></ul></div>
+      <div class="wr wedge"><div class="lbl">The wedge (sell everyone — even the top 1%)</div><ul><li>Websites that under-convert the audience — the biggest, most repeatable gap</li><li>Broken follow-up (~50% of inquiries never answered)</li><li>No automated review engine</li><li>Video ignored (only 38% use it — 403% more inquiries)</li></ul></div>
+    </div>
+  </section>
+
+  <!-- REACH -->
+  <section class="tab" id="reach">
+    <p class="sec-h">Get in front of them</p>
+    <h2 class="big">Where to find them &amp; how to reach them</h2>
+    <p class="lead">A campaign-ready Atlanta list costs about $49/month. Then it's about channel and timing — agents get pitched constantly, so you win on specificity, not volume.</p>
+
+    <h3 style="font-size:18px;margin:0 0 10px">🗂️ Where to build the list (ranked for your Puppeteer scraper)</h3>
+    <div id="sources"></div>
+
+    <h3 style="font-size:18px;margin:26px 0 10px">📣 Channels, ranked</h3>
+    <div id="channels"></div>
+
+    <h3 style="font-size:18px;margin:26px 0 6px">📅 When to call</h3>
+    <p style="color:var(--muted);font-size:14.5px;margin:0 0 4px">Best windows are early morning and late afternoon on Wed/Thu. Never Sunday afternoon — that's open houses.</p>
+    <div class="panel" style="padding:16px;overflow-x:auto">
+      <table class="heat" id="heat"></table>
+    </div>
+    <div class="callout"><b>The hook that cuts through:</b> lead with their world, not your service — "I saw your listing on [street] in [neighborhood]…", then offer <i>more listing appointments / less follow-up you have to do yourself</i>. A warm/shared-connection mention lifts response ~70%.</div>
+  </section>
+
+  <!-- OFFER ANGLE -->
+  <section class="tab" id="offer">
+    <p class="sec-h">The offer</p>
+    <h2 class="big">Three angles you can lead with</h2>
+    <p class="lead">One system, three doors in. Don't pitch all three cold. Diagnose the agent from their online presence, lead with the ONE angle that hits their pain, then expand once you've earned trust.</p>
+
+    <div class="grid g3" style="margin-bottom:26px">
+      <div class="panel" style="border-top:4px solid var(--green)">
+        <span class="tag t-green">Angle 1</span>
+        <h3 style="margin:10px 0 4px;font-size:19px">Build the Platform</h3>
+        <p style="color:var(--muted);font-size:13.5px;margin:0 0 10px;font-style:italic">How you look before a client ever calls.</p>
+        <ul style="margin:0;padding-left:18px;font-size:14px"><li>Branded, converting website</li><li>Personal brand identity</li><li>Brand kit + media package</li></ul>
+        <p style="font-size:12.5px;color:var(--amber);font-weight:700;margin:12px 0 0">Lead here for: weak/template site, no brand, invisible online.</p>
+      </div>
+      <div class="panel" style="border-top:4px solid var(--green)">
+        <span class="tag t-green">Angle 2</span>
+        <h3 style="margin:10px 0 4px;font-size:19px">More Eyes, More Deals</h3>
+        <p style="color:var(--muted);font-size:13.5px;margin:0 0 10px;font-style:italic">How you get found and turn attention into listings.</p>
+        <ul style="margin:0;padding-left:18px;font-size:14px"><li>SEO content → more traffic &amp; eyes</li><li>Aerial footage + home walkthroughs → more sells &amp; buys</li><li>The outcome: more listings</li></ul>
+        <p style="font-size:12.5px;color:var(--amber);font-weight:700;margin:12px 0 0">Lead here for: wants more listings, more volume, to be the local name.</p>
+      </div>
+      <div class="panel" style="border-top:4px solid var(--green)">
+        <span class="tag t-green">Angle 3</span>
+        <h3 style="margin:10px 0 4px;font-size:19px">Scalable Systems</h3>
+        <p style="color:var(--muted);font-size:13.5px;margin:0 0 10px;font-style:italic">How you keep every deal and buy back time.</p>
+        <ul style="margin:0;padding-left:18px;font-size:14px"><li>CRM so no lead goes missing (referral + follow-up)</li><li>Automations that save time and make money</li></ul>
+        <p style="font-size:12.5px;color:var(--amber);font-weight:700;margin:12px 0 0">Lead here for: drowning in leads, bad follow-up, no time, feast-or-famine.</p>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-bottom:26px">
+      <b>The trust play across all three:</b> homework in the first line, value before the ask, and your <b>first 30 days on us</b> as the risk-killer. Land one angle in the free month, prove it, then expand into the other two. Never sell the whole system cold.
+    </div>
+
+    <h3 style="font-size:18px;margin:0 0 4px">The full menu (13 tactics under the angles)</h3>
+    <p style="color:var(--muted);font-size:14px;margin:0 0 16px">Each ties to a real pain point. This is what the three angles are built from.</p>
+    <div id="tactics"></div>
+    <div class="callout">
+      <b>How to package it (three tiers):</b><br>
+      <b>Solo agent — ~$1K/mo:</b> converting site + missed-call text-back + post-close review automation + sphere nurture.<br>
+      <b>Team lead — higher:</b> add ISA-style speed-to-lead + content system + recruiting brand.<br>
+      <b>Developer — project fee:</b> project site + pre-sale lead capture + renderings/marketing (Vertical #2).
+    </div>
+  </section>
+
+  <!-- PLAN -->
+  <section class="tab" id="plan">
+    <p class="sec-h">Go-to-market</p>
+    <h2 class="big">The plan to land your first agent</h2>
+    <p class="lead">One thing at a time. Research is done — now build the offer while it's hot, then the list, then send. Prove it on one Atlanta agent before you scale.</p>
+
+    <div class="phase done">
+      <div class="line"><div class="dot">✓</div><div class="stem"></div></div>
+      <div class="body"><div class="when">Done</div><h3>Phase 0 — Research the space</h3><p>Ecosystem, money flow, verbatim pain, vocabulary, Atlanta teardown, list sources, channels. Saved as the source-of-truth brief this page is built from.</p></div>
+    </div>
+    <div class="phase">
+      <div class="line"><div class="dot">1</div><div class="stem"></div></div>
+      <div class="body"><div class="when">This week · start here</div><h3>Phase 1 — Build the offer</h3><p>Productize the wedge into one clear offer in agent language. Run the <b>offer-copy</b> skill against the brief.</p>
+        <ul><li>Headline outcome: "more listing appointments + a pipeline you own," not "leads"</li><li>Three tiers: solo $1K/mo · team lead · developer project</li><li>Anchor the pitch on the take-home math and the leaky-funnel proof (Glennda Baker)</li></ul></div>
+    </div>
+    <div class="phase">
+      <div class="line"><div class="dot">2</div><div class="stem"></div></div>
+      <div class="body"><div class="when">This week · parallel</div><h3>Phase 2 — Build the Atlanta list</h3><p>Point your existing scraper (merge3.js) at the free sources, enrich to email, segment.</p>
+        <ul><li>Scrape GAMLS directory + KW/Compass rosters (free spine)</li><li>Enrich to verified email in Apollo Basic ($49/mo)</li><li>Google Maps pass for team leads · tag solo vs team</li></ul></div>
+    </div>
+    <div class="phase">
+      <div class="line"><div class="dot">3</div><div class="stem"></div></div>
+      <div class="body"><div class="when">Next 2 weeks</div><h3>Phase 3 — Run the campaign</h3><p>Send through Instantly (warm domains already). Layer manual IG DMs and targeted calls.</p>
+        <ul><li>Subject names their neighborhood/brokerage; opener references their listing</li><li>IG DM the content-active agents · cold-call top-fit team leads Wed/Thu 8:30–11am</li><li>Refine with the <b>instantly-copy</b> skill — never say "leads/website/funnel"</li></ul></div>
+    </div>
+    <div class="phase">
+      <div class="line"><div class="dot">4</div><div class="stem"></div></div>
+      <div class="body"><div class="when">30 days</div><h3>Phase 4 — Prove it on one agent</h3><p>Land 1–2 agents. Build the system in n8n: converting site + missed-call text-back + review automation + sphere nurture. Document the result as your proof story.</p></div>
+    </div>
+    <div class="phase">
+      <div class="line"><div class="dot">5</div><div class="stem"></div></div>
+      <div class="body"><div class="when">After first win</div><h3>Phase 5 — Expand</h3><p>Build the <b>Developers/Developments</b> brief (Vertical #2) and pitch it using agent wins as proof. Same research engine, bigger checks.</p></div>
+    </div>
+
+    <div class="foot">
+      Full source-of-truth brief: <code>ROV/RESEARCH/Real Estate Agents/research_brief.md</code> · Reddit was fetch-blocked this pass, so the rawest quotes came from ActiveRain, Quora, G2 and industry press — provenance is labeled on every quote.
+    </div>
+  </section>
+
+</main>
+
+<script>
+// ---------- DATA ----------
+const PAIN = [
+  {q:"If StreetEasy shuts off tomorrow, do you still have a business?",who:"Corey Cohen · Compass",f:["leads"],real:true},
+  {q:"Stack that on a brokerage split and a team split, and a junior agent closing a $1 million deal walks away with enough money to buy a sandwich.",who:"Corey Cohen · Compass",f:["money"],real:true},
+  {q:"I been licensed for 2 years now and I have not sold anything. I'm throwing more money away on fees, mls, etc, than I am getting anything. Maybe it just isn't for me.",who:"Agent · Quora (verbatim)",f:["money"],real:true},
+  {q:"I spent $2,000 in realtor.com and closed 0 leads from them.",who:"Francisco Peot · ActiveRain",f:["leads","money"],real:true},
+  {q:"I'd been with Zillow for eight years… my lead count was cut in half since July, and the quality went down to the vacant cheapest units on the market.",who:"Terry McDonald · eXp (NC)",f:["leads"],real:true},
+  {q:"The leads are terrible. Most are not loyal to the agent they talk to, and will just call to get anyone to show a house.",who:"G2 reviewer · Zillow Premier Agent",f:["leads"],real:true},
+  {q:"I never had one call, one actual client from a Zillow lead.",who:"Stacy Williams · Memphis Luxury Group",f:["leads"],real:true},
+  {q:"The fact that no $$$ immediate $$$ is coming in, so 'How do I pay the bills?'",who:"New agent · Quora",f:["money"],real:true},
+  {q:"When things are moving fast, you can get away with a lot. As the market cooled even a little, you could see people start to fall off.",who:"Alex Wright · 307 Real Estate",f:["money"],real:true},
+  {q:"most agents who tell me 'I don't have time for marketing' are spending 45 minutes a day consuming other people's content and calling it research. It's avoidance.",who:"Coach Krista Mashore",f:["time"],real:false},
+  {q:"A client texts at 8am and suddenly your planned recording session turns into two hours of back-and-forth… marketing gets pushed to 'later.' Later never comes.",who:"Krista Mashore",f:["time"],real:false},
+  {q:"What makes you so different from all the other agents? Nothing. And everything… When it comes to tools, we're all pretty much on the same page.",who:"Tish Lloyd · ActiveRain",f:["sat"],real:true},
+  {q:"In my market, there are more licensed agents than homes on the market.",who:"NC agent · Miami Herald",f:["sat"],real:true},
+  {q:"approximately 2.4 licensed real estate agents are competing for every single home sale… that statistic probably just made your stomach drop.",who:"Referral Chime",f:["sat"],real:false},
+  {q:"hot leads go cold because no one reached out at the right moment with the right message.",who:"HousingWire",f:["follow"],real:false},
+  {q:"leads slip through the cracks because they were saved in three different places — phone contacts, a spreadsheet, a sticky note.",who:"HousingWire",f:["follow"],real:false},
+  {q:"Statistics show the industry average is around 1% of converting internet leads to closings… sometimes as low as 1/2%.",who:"Christopher Lotte · ActiveRain",f:["follow","leads"],real:true},
+];
+const VOCAB = [
+  ["GCI / \"production\" / \"what you closed last year\"","\"revenue,\" \"top-line,\" \"your numbers\""],
+  ["Listings / \"get you more listings\"","\"seller leads,\" \"inventory acquisition\""],
+  ["Buyers / \"buyer side\"","\"demand-side clients\""],
+  ["Sphere / SOI / \"your database\"","\"your network,\" \"contact list,\" \"audience\""],
+  ["Farming a neighborhood / circle prospecting","\"geo-targeted marketing,\" \"local brand awareness\""],
+  ["Lead gen / \"more at-bats\"","\"top-of-funnel acquisition,\" \"demand generation\""],
+  ["Listing appointments → closings","\"conversions,\" \"deal completions\""],
+  ["Pipeline / \"what's in your pipeline\"","\"sales funnel,\" \"prospect management\""],
+  ["Follow-up / \"stay in touch with the database\"","\"nurture sequences,\" \"drip campaigns\""],
+  ["ISA (inside sales agent)","\"SDR,\" \"appointment setter,\" \"BDR\""],
+  ["CRM — name it: Follow Up Boss, kvCORE, Sierra, Chime","\"customer relationship platform\""],
+  ["IDX website / IDX feed","\"MLS-integrated web portal,\" \"property search widget\""],
+  ["DOM / comps / CMA","\"listing velocity,\" \"pricing analytics\""],
+  ["Expired / FSBO","\"aged inventory,\" \"unrepresented sellers\""],
+  ["\"List to last\" / \"the grind\" / \"stay top of mind\"","\"brand equity,\" \"always-on marketing\""],
+  ["Split / cap","\"margin,\" \"take rate,\" \"unit economics\""],
+];
+const TEARDOWN = [
+  {n:"Justin Landis Group",s:"#1 ATL team · 4,500+ five-star reviews",work:["4,500+ reviews — a moat no average agent can touch","Full capture stack: valuation tool, IDX search, newsletter, scheduling","Relocation + neighborhood SEO content","B-Corp mission as a \"why-us\" story"],wedge:["Brand is the team, no breakout human face","YouTube / video underleveraged vs. their review dominance"]},
+  {n:"Glennda Baker",s:"Video queen · ~1M+ followers across platforms",work:["Video-first everything; six figures earned directly on TikTok","Personality IS the product — people follow her, not listings","Real capture on-site: newsletter, interest modal"],wedge:["Website badly under-converts a ~1M audience — dated design, no real IDX, competing CTAs, no clear conversion","No education/coaching product despite an audience that would buy one","➜ The textbook ROV proof point: attention without a system = unconverted money"]},
+  {n:"Duffy Realty",s:"Discount + volume · 1,112 Zillow reviews",work:["Sharp quantified positioning: 1% fee, \"saves ~$8,297\"","Named marketing methodology (productized their process)","Massive review + transaction volume"],wedge:["#1 complaint is communication / follow-up — leaky middle","Low social / personal-brand investment; invisible where young buyers live"]},
+  {n:"Altenbach & Meko Fountain",s:"Ansley/Christie's & Compass · brand under a brokerage",work:["Niche neighborhood farming + lifestyle brand","Polished IG at scale (Meko 102K, $520M+ sold)"],wedge:["Both lean on the brokerage halo — no owned funnel or audience","IG-heavy, thin everywhere else; even the award-winner has no documented system to buy"]},
+  {n:"Ryan Serhant (national bar)",s:"1.5M+ YouTube · the ceiling",work:["Closed the full loop: content → owned audience → productized education → AI software"],wedge:["No Atlanta agent has closed that loop — the whole opportunity in one sentence"]},
+];
+const SOURCES = [
+  {r:1,n:"GAMLS public directory",d:"georgiamls.com — free, no login, Atlanta-native. Name + cell + brokerage. The sleeper win (no email though).",p:"FREE"},
+  {r:2,n:"Brokerage roster pages",d:"KW *.yourkwoffice.com, Compass's 422-agent ATL page, RE/MAX offices. Plain HTML, ~no anti-bot. Links to personal sites that expose email.",p:"FREE"},
+  {r:3,n:"Google Maps pass",d:"\"real estate agent Atlanta\" — the one free source that nets email + phone together. Over-indexes team leads (fine — they're your buyers).",p:"FREE"},
+  {r:4,n:"Apollo.io Basic",d:"The enrichment layer — resolve scraped names to verified email at scale. Filter: real estate agent, Atlanta.",p:"$49/mo"},
+  {r:5,n:"Skip these",d:"Zillow / Realtor.com (hard anti-bot), FMLS (members-only), GREC license DB (mailing address only), ZoomInfo (~$15K+/yr).",p:"AVOID"},
+];
+const CHANNELS = [
+  {r:1,n:"Cold call",d:"Strongest — IF the open is a pattern-interrupt, not a pitch. Agents are phone people. Under-8-sec opener, permission ask, ONE question, listen. Never lead with your name/company."},
+  {r:2,n:"Cold email (your Instantly stack)",d:"Agents read email — 25–35% opens, 3–6% reply when relevant. Win on a subject that reads like a colleague + an opener about their listing/farm."},
+  {r:3,n:"Instagram DM",d:"Highest response (70–80% open) for the marketing-minded segment — the ones who'll actually buy a website. Comment on their content first, then DM."},
+  {r:4,n:"Text",d:"Follow-up touch only, never the cold opener. Fits a call→text→email cadence."},
+  {r:5,n:"LinkedIn",d:"Weakest for this ICP. Agents run their business on their phone and Instagram, not LinkedIn. Deprioritize."},
+];
+const HEAT = {
+  cols:["","Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+  rows:[
+    ["8:30–11a",["ok","good","best","best","good","good","bad"]],
+    ["11a–1p",["ok","ok","ok","ok","ok","ok","bad"]],
+    ["1–4p",["ok","ok","good","good","ok","bad","bad"]],
+    ["4–6p",["good","good","best","best","good","ok","bad"]],
+  ]
+};
+const HEATLBL={best:"BEST",good:"good",ok:"ok",bad:"open house"};
+const TACTICS = [
+  {c:"Outreach — lead generation",items:[
+    ["Sphere reactivation campaign","builds the owned database + a systematic touch plan — replaces the un-systematized referral engine","\"do you still have a business if the portal shuts off?\""],
+    ["Neighborhood farming system","content + mail + digital to own a ZIP and become the go-to agent","\"become the go-to agent in your neighborhood\""],
+    ["Expired / FSBO outreach automation","a low-cost listing-lead source vs. renting portal leads","the Zillow-cost pain"]]},
+  {c:"Lead Follow-Up — nurture & conversion",items:[
+    ["5-minute speed-to-lead auto-response","responding within 5 min lifts conversion 5–10×","\"hot leads go cold…\""],
+    ["Automated long-term nurture (6–12mo)","most leads convert in 6–12 months","\"CRM full of abandoned conversations\""],
+    ["Missed-call text-back","the ISA they keep getting pitched — automated and cheaper","~50% of inquiries never answered"]]},
+  {c:"Branded Website — conversion rebuild",items:[
+    ["Converting IDX site w/ multi-path capture","valuation tool + search + newsletter + scheduling (the JLG stack for a solo agent)","Glennda's leaky-funnel wedge"],
+    ["Review-forward trust design","surface review count as hero proof","reviews = #1 trust currency"]]},
+  {c:"Automations — post-job, response, ops",items:[
+    ["Post-close Google review automation","winners have thousands of reviews, the average agent a handful","the reviews moat"],
+    ["Loan-officer co-marketing automation","a co-funded partner-touch program","the LO co-funding angle"],
+    ["Transaction milestone updates","auto client comms contract-to-close","Duffy's #1 communication complaint"]]},
+  {c:"Content / Media Production",items:[
+    ["Short-form video system","only 38% of agents use video (403% more inquiries) — productize the cadence","\"later never comes\""],
+    ["Listing-marketing content package","reels / walkthroughs / neighborhood guides an agent can't produce alone","no-time + saturation pain"]]},
+];
+
+// ---------- TABS ----------
+const bar=document.getElementById('tabbar');
+bar.addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b)return;
+  document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('section.tab').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  document.getElementById(b.dataset.t).classList.add('active');
+  window.scrollTo({top:0,behavior:'instant'});
+});
+
+// ---------- CALCULATOR ----------
+const el=id=>document.getElementById(id);
+const money=n=>'$'+Math.round(n).toLocaleString('en-US');
+let sideMul=1;
+el('side').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  el('side').querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  sideMul=+b.dataset.side;calc();});
+el('onteam').addEventListener('change',e=>{el('teamwrap').style.display=e.target.checked?'block':'none';calc();});
+['price','comm','broker','team','tax'].forEach(id=>el(id).addEventListener('input',calc));
+function calc(){
+  const price=+el('price').value, comm=+el('comm').value/100, brokerKeep=+el('broker').value/100,
+        onteam=el('onteam').checked, teamTake=+el('team').value/100, tax=+el('tax').value/100;
+  el('v-price').textContent=money(price);
+  el('v-comm').textContent=comm*100+'%';
+  el('v-team').textContent=teamTake*100+'%';
+  el('v-tax').textContent=tax*100+'%';
+  const total=price*comm;
+  const sideGross= sideMul===2 ? total : total/2;
+  const afterBroker=sideGross*brokerKeep;
+  const afterTeam= onteam ? afterBroker*(1-teamTake) : afterBroker;
+  const afterTax=afterTeam*(1-tax);
+  const rows=[
+    ['Total commission ('+(comm*100).toFixed(1)+'%)',total,false,total],
+    [sideMul===2?'Both sides (dual agency)':'Your one side',sideGross,false,total],
+    ['− Brokerage keeps '+((1-brokerKeep)*100).toFixed(0)+'%',afterBroker,true,total],
+  ];
+  if(onteam)rows.push(['− Team lead keeps '+(teamTake*100).toFixed(0)+'%',afterTeam,true,total]);
+  rows.push(['− Taxes set aside '+(tax*100).toFixed(0)+'%',afterTax,true,total]);
+  const c=el('cascade');c.innerHTML='';
+  rows.forEach(r=>{
+    const w=Math.max(4,(r[1]/r[3])*100);
+    const div=document.createElement('div');div.className='row'+(r[2]?' minus':'');
+    div.innerHTML=`<span>${r[0]}</span><span class="v">${money(r[1])}</span>`;
+    const wrap=document.createElement('div');wrap.appendChild(div);
+    const bar=document.createElement('div');bar.className='bar';bar.style.width=w+'%';
+    wrap.appendChild(bar);c.appendChild(wrap);
+  });
+  el('takehome').textContent=money(afterTax);
+  const pct=Math.round((afterTax/total)*100);
+  el('keepnote').textContent=`The agent keeps ~${pct}% of the ${money(total)} the seller paid. The rest went to the broker${onteam?', the team lead':''} and taxes.`;
+}
+
+// ---------- PAIN ----------
+function renderPain(filter='all'){
+  const box=el('painlist');box.innerHTML='';
+  PAIN.filter(p=>filter==='all'||p.f.includes(filter)).forEach(p=>{
+    const d=document.createElement('div');d.className='quote';
+    if(!p.real)d.style.borderLeftColor='#c9c1b0';
+    d.innerHTML=`<p>“${p.q}”</p><div class="meta"><span class="who">${p.who}</span>
+      <span class="tag ${p.real?'t-green':'t-gray'}">${p.real?'real agent':'article voice'}</span></div>`;
+    box.appendChild(d);
+  });
+}
+el('painfilters').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  el('painfilters').querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  renderPain(b.dataset.f);});
+renderPain();
+
+// ---------- VOCAB ----------
+const vb=document.querySelector('#voctable tbody');
+VOCAB.forEach(v=>{const tr=document.createElement('tr');
+  tr.innerHTML=`<td class="say">${v[0]}</td><td class="dont">${v[1]}</td>`;vb.appendChild(tr);});
+el('studytoggle').addEventListener('change',e=>{
+  document.body.classList.toggle('study',e.target.checked);
+  document.querySelectorAll('td.dont').forEach(t=>t.classList.remove('reveal'));});
+vb.addEventListener('click',e=>{if(document.body.classList.contains('study')&&e.target.classList.contains('dont'))e.target.classList.toggle('reveal');});
+
+// ---------- TEARDOWN ----------
+const td=el('teardown');
+TEARDOWN.forEach(t=>{
+  const a=document.createElement('div');a.className='acc';
+  a.innerHTML=`<div class="acc-head"><div><h3>${t.n}</h3><div class="sub">${t.s}</div></div><div class="chev">›</div></div>
+    <div class="acc-body">
+      <div class="wr work"><div class="lbl">✅ Working (your proof)</div><ul>${t.work.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+      <div class="wr wedge"><div class="lbl">⚑ Can improve (your wedge)</div><ul>${t.wedge.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+    </div>`;
+  a.querySelector('.acc-head').addEventListener('click',()=>a.classList.toggle('open'));
+  td.appendChild(a);
+});
+
+// ---------- SOURCES / CHANNELS ----------
+const sc=el('sources');
+SOURCES.forEach(s=>{const cls=s.p==='AVOID'?'t-red':(s.p==='FREE'?'t-green':'t-amber');
+  const d=document.createElement('div');d.className='rankcard';
+  d.innerHTML=`<div class="rk">${s.r}</div><div><h3>${s.n}</h3><p>${s.d}</p><span class="tag ${cls}" style="margin-top:6px">${s.p}</span></div>`;
+  sc.appendChild(d);});
+const ch=el('channels');
+CHANNELS.forEach(c=>{const d=document.createElement('div');d.className='rankcard';
+  d.innerHTML=`<div class="rk">${c.r}</div><div><h3>${c.n}</h3><p>${c.d}</p></div>`;ch.appendChild(d);});
+
+// ---------- HEATMAP ----------
+const ht=el('heat');
+let head='<tr>'+HEAT.cols.map(c=>`<th>${c}</th>`).join('')+'</tr>';
+let body=HEAT.rows.map(r=>{
+  return '<tr><th style="text-align:right">'+r[0]+'</th>'+r[1].map(v=>`<td><div class="cell h-${v}">${HEATLBL[v]}</div></td>`).join('')+'</tr>';
+}).join('');
+ht.innerHTML=head+body;
+
+// ---------- TACTICS ----------
+const tc=el('tactics');
+TACTICS.forEach(g=>{
+  const d=document.createElement('div');d.className='las';
+  d.innerHTML=`<div class="comp">Lead Authority System</div><h3>${g.c}</h3>`+
+    g.items.map(i=>`<div class="tactic"><b>${i[0]}</b> — ${i[1]}<span class="maps">↳ maps to: ${i[2]}</span></div>`).join('');
+  tc.appendChild(d);
+});
+
+calc();
+
+// ---------- MONEY / LEADS FLOW DIAGRAM ----------
+const FLOW={
+ money:{
+  vb:[0,0,1000,720],
+  note:"Illustrative: a $400,000 Atlanta sale at 5.5% commission, 20% down, a 70/30 broker split, agent on a team. The sign out front says $22,000 of commission; the agent walks with under $4,000.",
+  legend:[["#1f6b4f","money flowing at closing"],["#a9432f","money the agent pays out"]],
+  nodes:{
+   buyer:{x:60,y:24,w:180,h:54,t:"Buyer",s:"down payment + closing costs",c:"in"},
+   lender:{x:760,y:24,w:190,h:54,t:"Lender",s:"funds the mortgage",c:"in"},
+   appr:{x:24,y:150,w:158,h:46,t:"Appraiser",s:"~$550 · buyer pays"},
+   insp:{x:24,y:212,w:158,h:46,t:"Home inspector",s:"~$450 · buyer pays"},
+   haz:{x:24,y:274,w:158,h:46,t:"Hazard insurance",s:"~$1,500/yr · buyer"},
+   sale:{x:365,y:128,w:280,h:64,t:"The sale · $400,000",s:"closing attorney (GA) runs it",c:"hub"},
+   seller:{x:790,y:150,w:186,h:56,t:"Seller (net)",s:"≈ $366,000 proceeds"},
+   atty:{x:230,y:250,w:158,h:46,t:"Closing attorney",s:"~$1,000"},
+   title:{x:410,y:250,w:150,h:46,t:"Title insurance",s:"~$1,400"},
+   govt:{x:600,y:250,w:180,h:46,t:"Transfer tax (GA)",s:"~$400"},
+   pool:{x:360,y:342,w:250,h:56,t:"Commission pool",s:"$22,000 (5.5%)",c:"hub"},
+   lbroker:{x:246,y:444,w:186,h:50,t:"Listing broker",s:"$11,000 · list side"},
+   bbroker:{x:560,y:444,w:186,h:50,t:"Buyer broker",s:"$11,000 · buyer side"},
+   lagent:{x:246,y:536,w:186,h:50,t:"Listing agent",s:"$7,700 after split"},
+   bagent:{x:560,y:536,w:186,h:50,t:"Buyer agent",s:"$7,700 after split"},
+   team:{x:560,y:628,w:240,h:56,t:"Team lead keeps 50%",s:"agent walks with ≈ $3,850",c:"warn"}
+  },
+  links:[
+   ["buyer","sale","$80k down","in"],
+   ["lender","sale","$320k loan","in"],
+   ["buyer","appr","","pay"],
+   ["buyer","insp","","pay"],
+   ["buyer","haz","","pay"],
+   ["sale","seller","net ≈ $366k","in"],
+   ["sale","pool","$22,000","in"],
+   ["sale","atty","","in"],
+   ["sale","title","","in"],
+   ["sale","govt","","in"],
+   ["pool","lbroker","$11,000","in"],
+   ["pool","bbroker","$11,000","in"],
+   ["lbroker","lagent","$7,700","in"],
+   ["bbroker","bagent","$7,700","in"],
+   ["bagent","team","−$3,850","pay"]
+  ]
+ },
+ leads:{
+  vb:[0,0,1000,660],
+  note:"How business (not closing money) reaches an agent. Green = business coming in. Red = what the agent pays for it. The sphere is free and the best source, yet almost no agent systematizes it — that is the wedge.",
+  legend:[["#1f6b4f","leads / referrals in"],["#a9432f","what the agent pays out"]],
+  nodes:{
+   sphere:{x:40,y:40,w:210,h:56,t:"Sphere / past clients",s:"referrals · free · best source",c:"in"},
+   lo:{x:750,y:40,w:210,h:56,t:"Loan officer",s:"trades clients · co-funds marketing",c:"in"},
+   other:{x:40,y:300,w:210,h:56,t:"Another agent",s:"referral · 25% fee"},
+   portal:{x:750,y:300,w:210,h:56,t:"Zillow / portals",s:"shared, low-convert leads",c:"warn"},
+   dev:{x:40,y:556,w:210,h:56,t:"Developer / builder",s:"inventory to list"},
+   vend:{x:750,y:556,w:210,h:56,t:"Title / insurance vendors",s:"court you for the list"},
+   agent:{x:388,y:296,w:224,h:74,t:"THE AGENT",s:"the hub everyone feeds",c:"hub"},
+   client:{x:398,y:556,w:204,h:56,t:"Buyer / seller",s:"pays the commission"}
+  },
+  links:[
+   ["sphere","agent","referrals (free)","in"],
+   ["lo","agent","sends buyers","in"],
+   ["agent","lo","sends borrowers","in"],
+   ["other","agent","referral","in"],
+   ["agent","other","25% fee","pay"],
+   ["portal","agent","shared leads","in"],
+   ["agent","portal","$$ you pay","pay"],
+   ["dev","agent","listings","in"],
+   ["vend","agent","perks + referrals","in"],
+   ["client","agent","commission","in"]
+  ]
+ }
+};
+function edgeAnchor(n,side){const cx=n.x+n.w/2,cy=n.y+n.h/2;
+ if(side==='top')return[cx,n.y];if(side==='bottom')return[cx,n.y+n.h];
+ if(side==='left')return[n.x,cy];return[n.x+n.w,cy];}
+function renderFlow(mode){
+ const F=FLOW[mode],N=F.nodes,svg=el('flowsvg');
+ svg.setAttribute('viewBox',F.vb.join(' '));
+ let defs='<defs>'+
+  '<marker id="ah-in" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#1f6b4f"/></marker>'+
+  '<marker id="ah-pay" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#a9432f"/></marker></defs>';
+ let L='';
+ F.links.forEach(lk=>{
+  const a=N[lk[0]],b=N[lk[1]],pay=lk[3]==='pay',col=pay?'#a9432f':'#1f6b4f';
+  const ac=[a.x+a.w/2,a.y+a.h/2],bc=[b.x+b.w/2,b.y+b.h/2];
+  const dy=bc[1]-ac[1],dx=bc[0]-ac[0];let p1,p2,path,vert=Math.abs(dy)>=Math.abs(dx);
+  if(vert){if(dy>0){p1=edgeAnchor(a,'bottom');p2=edgeAnchor(b,'top');}else{p1=edgeAnchor(a,'top');p2=edgeAnchor(b,'bottom');}}
+  else{if(dx>0){p1=edgeAnchor(a,'right');p2=edgeAnchor(b,'left');}else{p1=edgeAnchor(a,'left');p2=edgeAnchor(b,'right');}}
+  const mx=(p1[0]+p2[0])/2,my=(p1[1]+p2[1])/2;
+  if(vert)path=`M${p1[0]},${p1[1]} C${p1[0]},${my} ${p2[0]},${my} ${p2[0]},${p2[1]}`;
+  else path=`M${p1[0]},${p1[1]} C${mx},${p1[1]} ${mx},${p2[1]} ${p2[0]},${p2[1]}`;
+  L+=`<path class="flink" d="${path}" stroke="${col}" stroke-width="2" ${pay?'stroke-dasharray="5,4"':''} marker-end="url(#${pay?'ah-pay':'ah-in'})"/>`;
+  if(lk[2]){const lw=lk[2].length*6.4+12;
+   L+=`<rect class="flabel-bg" x="${mx-lw/2}" y="${my-9}" width="${lw}" height="17" rx="4"/>`+
+      `<text class="flabel" x="${mx}" y="${my+3.5}" text-anchor="middle" fill="${col}">${lk[2]}</text>`;}
+ });
+ let NS='';
+ for(const k in N){const n=N[k];
+  const fill=n.c==='hub'?'#e6f0ea':(n.c==='warn'?'#f4e3dd':'#fffdf8');
+  const stroke=n.c==='hub'?'#1f6b4f':(n.c==='warn'?'#a9432f':'#e5ddcf');
+  const sw=n.c==='hub'?2:1.5;
+  NS+=`<g class="fnode"><rect x="${n.x}" y="${n.y}" width="${n.w}" height="${n.h}" rx="11" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`+
+    `<text class="ntitle" x="${n.x+n.w/2}" y="${n.y+22}" text-anchor="middle">${n.t}</text>`+
+    (n.s?`<text class="nsub" x="${n.x+n.w/2}" y="${n.y+39}" text-anchor="middle">${n.s}</text>`:'')+`</g>`;
+ }
+ svg.innerHTML=defs+L+NS;
+ el('flownote').textContent=F.note;
+ el('flowlegend').innerHTML=F.legend.map(x=>`<span><span class="k" style="border-color:${x[0]}"></span>${x[1]}</span>`).join('');
+}
+document.querySelector('.flow-toggle').addEventListener('click',e=>{
+ const b=e.target.closest('button');if(!b)return;
+ document.querySelectorAll('.flow-toggle button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+ renderFlow(b.dataset.flow);
+});
+renderFlow('money');
+</script>
+</body>
+</html>

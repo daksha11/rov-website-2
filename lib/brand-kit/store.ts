@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
+import { persist, createJSONStorage, type StateStorage } from 'zustand/middleware';
 import type {
   BrandKitData,
   BrandInfo,
@@ -12,6 +13,65 @@ import type {
   SectionId,
   TemplateId,
 } from './types';
+
+/**
+ * localStorage key for the working brand kit. Bump `version` in the persist
+ * config (not this string) if the persisted shape ever changes incompatibly.
+ */
+export const BRAND_KIT_STORAGE_KEY = 'ctrl-a-brand-kit';
+
+/**
+ * Quota-safe localStorage adapter.
+ *
+ * The kit can hold large base64 data URLs (uploaded logos in
+ * `logos.variants[].file`, and embedded custom fonts in
+ * `typography.*.customFontData`). localStorage caps around ~5MB, so a full
+ * write can throw QuotaExceededError. Rather than let that crash the app — or
+ * lose ALL of the user's work — we catch the failure and retry with just the
+ * heavy binary blobs stripped. That guarantees the lightweight, high-value
+ * work (brand info, colors, typography config, gradients, voice, sections,
+ * current step) always survives a refresh; only the oversized images get
+ * dropped when they genuinely can't fit.
+ */
+const quotaSafeStorage: StateStorage = {
+  getItem: (name) => {
+    try {
+      return typeof window === 'undefined' ? null : window.localStorage.getItem(name);
+    } catch {
+      return null;
+    }
+  },
+  setItem: (name, value) => {
+    if (typeof window === 'undefined') return;
+    try {
+      window.localStorage.setItem(name, value);
+    } catch {
+      // Almost certainly a quota error. Retry with the binary blobs stripped
+      // so everything else is still saved.
+      try {
+        const parsed = JSON.parse(value);
+        const d = parsed?.state?.data as BrandKitData | undefined;
+        if (d) {
+          if (d.logos?.variants) {
+            d.logos.variants = d.logos.variants.map((v) => ({ ...v, file: '' }));
+          }
+          if (d.typography?.displayFont) delete d.typography.displayFont.customFontData;
+          if (d.typography?.bodyFont) delete d.typography.bodyFont.customFontData;
+        }
+        window.localStorage.setItem(name, JSON.stringify(parsed));
+      } catch {
+        // Persistence is best-effort — never throw out of a store write.
+      }
+    }
+  },
+  removeItem: (name) => {
+    try {
+      if (typeof window !== 'undefined') window.localStorage.removeItem(name);
+    } catch {
+      /* no-op */
+    }
+  },
+};
 
 const DEFAULT_SECTIONS: SectionConfig[] = [
   { id: 'logo', label: 'Logo & Mark', enabled: true, order: 0 },
@@ -154,10 +214,17 @@ interface BrandKitStore {
   loadSample: (
     partial: Partial<Pick<BrandKitData, "brandInfo" | "logos" | "colors" | "gradients" | "voice">>
   ) => void;
+  loadKit: (
+    kit: Pick<
+      BrandKitData,
+      "brandInfo" | "colors" | "typography" | "gradients" | "voice" | "sections" | "template"
+    >
+  ) => void;
 }
 
 export const useBrandKitStore = create<BrandKitStore>()(
-  immer((set) => ({
+  persist(
+    immer((set) => ({
     data: DEFAULT_DATA,
     currentStep: 0,
 
@@ -279,5 +346,32 @@ export const useBrandKitStore = create<BrandKitStore>()(
         if (partial.gradients) state.data.gradients = partial.gradients;
         if (partial.voice) state.data.voice = partial.voice;
       }),
-  }))
+
+    // Drop a shared kit into the builder so "Remix this kit" works. Shared
+    // links never carry logos or embedded fonts, so those are cleared here.
+    loadKit: (kit) =>
+      set((state) => {
+        Object.assign(state.data.brandInfo, kit.brandInfo);
+        state.data.colors = kit.colors;
+        state.data.typography = kit.typography;
+        state.data.gradients = kit.gradients;
+        state.data.voice = kit.voice;
+        state.data.sections = kit.sections;
+        state.data.template = kit.template;
+        state.data.logos = { variants: [] };
+      }),
+  })),
+    {
+      name: BRAND_KIT_STORAGE_KEY,
+      version: 1,
+      storage: createJSONStorage(() => quotaSafeStorage),
+      // Only persist the user's working data + position. Ephemeral action
+      // functions are recreated by the store on every load.
+      partialize: (state) => ({ data: state.data, currentStep: state.currentStep }),
+      // Client-only tool. Skip automatic hydration so the first client render
+      // matches the server-rendered defaults (no SSR mismatch), then rehydrate
+      // explicitly after mount — see the builder layout's useEffect.
+      skipHydration: true,
+    }
+  )
 );

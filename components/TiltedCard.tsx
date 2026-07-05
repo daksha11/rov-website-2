@@ -1,11 +1,13 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 import type { SpringOptions } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 interface TiltedCardProps {
   imageSrc: React.ComponentProps<"img">["src"];
+  posterSrc?: string;
   altText?: string;
   captionText?: string;
   containerHeight?: React.CSSProperties["height"];
@@ -28,6 +30,7 @@ const springValues: SpringOptions = {
 
 export default function TiltedCard({
   imageSrc,
+  posterSrc,
   altText = "Tilted card image",
   captionText = "",
   containerHeight = "300px",
@@ -42,6 +45,7 @@ export default function TiltedCard({
   displayOverlayContent = false,
 }: TiltedCardProps) {
   const ref = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const rotateX = useSpring(useMotionValue(0), springValues);
@@ -124,6 +128,31 @@ export default function TiltedCard({
 
   const isVideo = typeof imageSrc === "string" && imageSrc.endsWith(".mp4");
 
+  // Only play the (potentially heavy) video while it is in the viewport.
+  // Below-the-fold videos stay paused and, with preload="none", are not
+  // eagerly downloaded until the user scrolls them into view.
+  useEffect(() => {
+    if (!isVideo) return;
+    const node = videoRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry) return;
+        if (entry.isIntersecting) {
+          node.play().catch(() => {});
+        } else {
+          node.pause();
+        }
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [isVideo]);
+
   return (
     <figure
       ref={ref}
@@ -159,19 +188,23 @@ export default function TiltedCard({
       >
         {isVideo ? (
           <motion.video
-            autoPlay
+            ref={videoRef}
             loop
             muted
             playsInline
+            preload="none"
+            poster={posterSrc}
             className="absolute top-0 left-0 object-cover rounded-[15px] [transform:translateZ(0)] w-full h-full"
           >
-            <source src={imageSrc} type="video/mp4" />
+            <source src={imageSrc as string} type="video/mp4" />
           </motion.video>
         ) : (
-          <motion.img
-            src={imageSrc}
+          <Image
+            src={imageSrc as string}
             alt={altText}
-            className="absolute top-0 left-0 object-cover rounded-[15px] [transform:translateZ(0)] w-full h-full"
+            fill
+            sizes="(max-width: 768px) 50vw, 25vw"
+            className="object-cover rounded-[15px] [transform:translateZ(0)]"
           />
         )}
 

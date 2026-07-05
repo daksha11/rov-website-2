@@ -49,6 +49,7 @@ const DigiMag = () => {
             <div className="col-span-2 row-span-1">
               <TiltedCard
                 imageSrc="/soundpage/starscollidemv.mp4"
+                posterSrc="/soundpage/pedromvimg.webp"
                 altText="Stars Collide MV"
                 containerHeight="100%"
                 containerWidth="100%"
@@ -104,7 +105,7 @@ const DigiMag = () => {
             {/* 5. Item 5: 2 columns, 1 row -> wide, fills height of row 2 */}
             <div className="col-span-2 row-span-1">
               <TiltedCard
-                imageSrc="/james.mp4"
+                imageSrc="/heroassets/deepimagechild.jpg"
                 altText="Open Verse"
                 containerHeight="100%"
                 containerWidth="100%"

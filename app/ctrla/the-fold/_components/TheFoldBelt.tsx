@@ -20,10 +20,24 @@
 // document.hidden, caps DPR at 2, honors reduced-motion.
 // ═══════════════════════════════════════════════════════
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ed } from "../../_components/editorial";
+import { currentVolume } from "../../_volumes";
 import FoldSession from "./FoldSession";
+import { useFoldAudio } from "../_audio/useFoldAudio";
+import type { LayerId, LayerLevels } from "../_state/types";
+
+// The Fold is the place (URL, wordmark, CSS all keep the equity). "Vantage"
+// is this issue's volume THEME, shown as a secondary masthead label. The
+// volume number is pulled live from the current CTRL-A volume, never hardcoded.
+const VOLUME_LABEL = currentVolume.issueMeta.volume; // e.g. "Vol. 01"
+const VOLUME_THEME = "Vantage";
+
+// Golden Hour is a sixth, earned world: it opens only after this many
+// finished focus sessions (persisted in localStorage as fold.sessions).
+const GOLDEN_ID = "golden";
+const GOLDEN_UNLOCK = 3;
 
 type Planet = {
   light: string; // lit cap (upper-left)
@@ -31,6 +45,7 @@ type Planet = {
   dark: string; // shaded underside / terminator
   halo: string; // "r,g,b" for the atmosphere glow
   ring?: boolean; // a thin planetary ring
+  sun?: boolean; // a warm corona (Golden Hour only) — its differentiating touch
   warm: number; // 0 cool .. 1 gold, drives the background wash
 };
 type Room = { id: string; name: string; floor: string; state: string; line: string; sound: string; planet: Planet };
@@ -59,6 +74,13 @@ const ROOMS: Room[] = [
     line: "Doors sealed, the world muted. One hard thing, seen whole. Go all the way in.",
     sound: "hum",
     planet: { light: "#7a6ad0", mid: "#3a2f7a", dark: "#120a2a", halo: "130,110,210", warm: 0.22 } },
+  // Golden Hour — the earned sixth world. Warmest light of the set, a sun
+  // corona all its own. Locked (unreachable, shown ahead as a promise) until
+  // three focus sessions are finished. See GOLDEN_UNLOCK.
+  { id: GOLDEN_ID, name: "Golden Hour", floor: "Crown", state: "earned",
+    line: "The back patio. Rare and electric. The light you get to after the work.",
+    sound: "music",
+    planet: { light: "#ffdf9a", mid: "#d98a2b", dark: "#3a1e05", halo: "255,201,110", ring: true, sun: true, warm: 1.0 } },
 ];
 
 // ── Canvas palette for the asteroid dust behind the planets ──
@@ -102,9 +124,52 @@ const VOY = {
 
 const SOUNDS = ["mute", "murmur", "music", "rain", "hum"] as const;
 
+// Per-world ambient beds. Each world's dominant layer echoes its `sound`
+// field; the others sit low as gentle support. Landing on a world
+// crossfades toward its bed (the visitor can still override with the pads).
+// Levels stay gentle so nothing ever blasts.
+const ROOM_AUDIO: Record<string, LayerLevels> = {
+  root: { murmur: 0, music: 0, rain: 0, hum: 0.5 },
+  sacral: { murmur: 0.18, music: 0.42, rain: 0, hum: 0.12 },
+  solar: { murmur: 0.1, music: 0.5, rain: 0, hum: 0.16 },
+  heart: { murmur: 0, music: 0.22, rain: 0.48, hum: 0.1 },
+  deep: { murmur: 0, music: 0, rain: 0.14, hum: 0.46 },
+  // Golden Hour: the warmest, fullest bed — a distinct wash of music over a
+  // soft murmur, so unlocking it is audibly its own place, not a re-skin.
+  golden: { murmur: 0.24, music: 0.62, rain: 0, hum: 0.2 },
+};
+
 type Rock = { x: number; y: number; z: number; size: number; spin: number; spinRate: number; verts: Float32Array; accent: boolean };
 const TAU = 6.2831853;
 const rnd = (a: number, b: number) => a + Math.random() * (b - a);
+
+// ── Day math for the visit streak (client-only; never called at module load) ──
+// dayKey is the visitor's local calendar day; dayDiff counts whole days between
+// two keys (both parse to the same UTC midnight, so the difference is integral).
+const dayKey = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+const dayDiff = (a: string, b: string) => Math.round((Date.parse(b) - Date.parse(a)) / 86_400_000);
+
+// Record today's visit and return the running consecutive-day streak.
+// +1 when yesterday was the last visit, hold on a same-day revisit, reset to 1
+// on any gap. All reads/writes are guarded; a storage failure just yields 0.
+function bumpStreak(): number {
+  try {
+    const today = dayKey(new Date());
+    const last = localStorage.getItem("fold.lastDay");
+    let s = Number(localStorage.getItem("fold.streak")) || 0;
+    if (last === today) {
+      s = Math.max(1, s);
+    } else {
+      s = last && dayDiff(last, today) === 1 ? s + 1 : 1;
+      localStorage.setItem("fold.lastDay", today);
+    }
+    localStorage.setItem("fold.streak", String(s));
+    return s;
+  } catch {
+    return 0;
+  }
+}
 
 // The zigzag: planets alternate sides going into depth.
 const sideX = (i: number) => (i % 2 === 0 ? -1 : 1) * VOY.ampX;
@@ -171,6 +236,19 @@ function buildPlanetSprite(pal: Planet): Sprite {
   c.height = half * 2;
   const g2 = c.getContext("2d")!;
   const px = half, py = half, R = SPRITE_R;
+
+  // Golden Hour only: a warm sun corona behind the body, its differentiating
+  // touch. Soft light, not rays or particles — the restraint brief holds.
+  if (pal.sun) {
+    const corona = g2.createRadialGradient(px, py, R * 0.9, px, py, R * SPRITE_MARG);
+    corona.addColorStop(0, `rgba(${pal.halo},0.42)`);
+    corona.addColorStop(0.5, `rgba(${pal.halo},0.16)`);
+    corona.addColorStop(1, `rgba(${pal.halo},0)`);
+    g2.fillStyle = corona;
+    g2.beginPath();
+    g2.arc(px, py, R * SPRITE_MARG, 0, TAU);
+    g2.fill();
+  }
 
   // Atmosphere halo just outside the rim.
   const halo = g2.createRadialGradient(px, py, R * 0.92, px, py, R * 1.35);
@@ -253,6 +331,14 @@ function createVoyageEngine(canvas: HTMLCanvasElement, onRoom: (i: number) => vo
   let warm = ROOMS[0].planet.warm; // eased background wash
   let warmTarget = ROOMS[0].planet.warm; // target wash for the landed room
   const spins = ROOMS.map((_, i) => i * 1.3); // per-planet wireframe phase
+
+  // The furthest world the camera may reach. Golden Hour (last index) stays
+  // unreachable while locked, yet still renders ahead as a visible promise.
+  let maxIndex = ROOMS.length - 1;
+
+  // Landing swell: on arrival a world breathes out once, ~700ms, eased.
+  let landIdx = -1, landAt = 0;
+  const LAND_MS = 720, LAND_AMP = 0.07;
 
   // Interaction: hover + drag to turn the planets, click to travel.
   let hoverIndex = -1;
@@ -401,6 +487,7 @@ function createVoyageEngine(canvas: HTMLCanvasElement, onRoom: (i: number) => vo
     if (near !== landed && Math.abs(progress - near) < 0.5) {
       landed = near;
       warmTarget = ROOMS[near].planet.warm;
+      if (!reduced) { landIdx = near; landAt = performance.now(); } // trigger the swell
       onRoom(near);
     }
     warm += (warmTarget - warm) * 0.05;
@@ -430,7 +517,13 @@ function createVoyageEngine(canvas: HTMLCanvasElement, onRoom: (i: number) => vo
       if (s <= 0) continue;
       const sx = cx + (sideX(i) - camX) * s * VOY.xScale * w;
       const sy = cy + (sideY(i) - camY) * s * VOY.yScale * h + h * 0.02;
-      const R = R0 * s;
+      let R = R0 * s;
+      // A single soft swell on the just-landed world, easing back to rest.
+      if (i === landIdx) {
+        const t = (performance.now() - landAt) / LAND_MS;
+        if (t < 1) R *= 1 + LAND_AMP * Math.sin(Math.PI * (t < 0 ? 0 : t));
+        else landIdx = -1;
+      }
       // Fade in far ahead, fade out as it slips past the camera.
       let a = 1;
       if (relZ > 3) a = clamp01(1 - (relZ - 3) / 1.4);
@@ -494,11 +587,14 @@ function createVoyageEngine(canvas: HTMLCanvasElement, onRoom: (i: number) => vo
   }
 
   // ── Controls ──
-  const clampT = (v: number) => Math.max(0, Math.min(ROOMS.length - 1, v));
+  const clampT = (v: number) => Math.max(0, Math.min(maxIndex, v));
   const scrollBy = (d: number) => { target = clampT(target + d); };
   const endScroll = () => { target = clampT(Math.round(target)); };
   const goTo = (i: number) => { target = clampT(i); };
   const setReducedMotion = (v: boolean) => { reduced = v; };
+  // Raise/lower the reachable horizon (Golden Hour lock). Never rewinds the
+  // camera; only widens where scroll and goTo may travel.
+  const setMaxRoom = (i: number) => { maxIndex = Math.max(0, Math.min(ROOMS.length - 1, i)); target = clampT(target); };
 
   // Pointer hit-test: nearest drawn planet under (px,py), preferring the one
   // closest to the camera (drawn last / largest). Returns -1 if none.
@@ -529,7 +625,7 @@ function createVoyageEngine(canvas: HTMLCanvasElement, onRoom: (i: number) => vo
     window.removeEventListener("resize", resize);
     document.removeEventListener("visibilitychange", onVis);
   }
-  return { scrollBy, endScroll, goTo, setReducedMotion, pickAt, setHover, setDragging, rotateBy, destroy };
+  return { scrollBy, endScroll, goTo, setReducedMotion, setMaxRoom, pickAt, setHover, setDragging, rotateBy, destroy };
 }
 
 export default function TheFoldBelt() {
@@ -537,32 +633,98 @@ export default function TheFoldBelt() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<ReturnType<typeof createVoyageEngine> | null>(null);
   const [activeId, setActiveId] = useState("root");
-  const [sound, setSound] = useState("hum");
-  const [doorOpen, setDoorOpen] = useState(true);
   const [hintGone, setHintGone] = useState(false);
-  const [sessionMode, setSessionMode] = useState(false);
+  // The session is the default view now: you land inside your workspace, and
+  // flying between worlds (scroll) just re-themes it. `locked` freezes the
+  // voyage so an errant scroll can't fly you off the world you're working in.
+  const [sessionMode, setSessionMode] = useState(true);
+  const [locked, setLocked] = useState(false);
+  // Read inside the once-bound wheel/touch handlers without re-subscribing.
+  const lockedRef = useRef(false);
+  lockedRef.current = locked;
+
+  // Earned-world + memory state. `sessions` mirrors fold.sessions so the lock
+  // is computed the same everywhere; greeting/streak are filled after mount.
+  const [sessions, setSessions] = useState(0);
+  const [greeting, setGreeting] = useState<string | null>(null);
+  const [streak, setStreak] = useState(0);
+  const [showGoldenLock, setShowGoldenLock] = useState(false);
+  const goldenUnlocked = sessions >= GOLDEN_UNLOCK;
+
+  // Audio is gesture-gated: the context is only created once `audioStarted`
+  // flips true, which happens on the first real user gesture (see below).
+  const [audioStarted, setAudioStarted] = useState(false);
+  const audio = useFoldAudio(audioStarted);
+  const startAudio = useCallback(() => setAudioStarted(true), []);
+  const toggleLock = useCallback(() => setLocked((v) => !v), []);
 
   // Latest room-change handler, so the engine callback never goes stale.
   const onRoomRef = useRef<(i: number) => void>(() => {});
   onRoomRef.current = (i: number) => {
     const room = ROOMS[i];
     setActiveId(room.id);
-    setSound(room.sound);
+    // Remember where they were, so the next visit restores this world.
+    try { localStorage.setItem("fold.lastRoom", room.id); } catch {}
+    // Auto-crossfade to the landed world's bed — but only once the visitor
+    // has started audio, so the restored mix is never clobbered on the
+    // initial (mount) landing before any gesture.
+    if (audioStarted) audio.applyPreset(ROOM_AUDIO[room.id]);
   };
+
+  // Sessions completed inside the focus panel flow back up here so the lock,
+  // the greeting, and the reachable horizon all agree on one count.
+  const handleSessions = useCallback((n: number) => {
+    setSessions(n);
+    engineRef.current?.setMaxRoom(n >= GOLDEN_UNLOCK ? ROOMS.length - 1 : ROOMS.length - 2);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current!;
     const engine = createVoyageEngine(canvas, (i) => onRoomRef.current(i));
     engineRef.current = engine;
 
-    try {
-      if (localStorage.getItem("fold.seen") === "1") setDoorOpen(false);
-    } catch {}
-
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     engine.setReducedMotion(mq.matches);
     const onMq = (e: MediaQueryListEvent) => engine.setReducedMotion(e.matches);
     mq.addEventListener("change", onMq);
+
+    // ── Memory: greet the return, restore the last world, keep the streak ──
+    try {
+      const seen = localStorage.getItem("fold.seen") === "1";
+      localStorage.setItem("fold.seen", "1");
+
+      const rawSess = localStorage.getItem("fold.sessions");
+      const sess = rawSess == null ? 0 : Number(JSON.parse(rawSess)) || 0;
+      setSessions(sess);
+      const unlocked = sess >= GOLDEN_UNLOCK;
+      // Golden Hour stays unreachable (but visible ahead) until it is earned.
+      engine.setMaxRoom(unlocked ? ROOMS.length - 1 : ROOMS.length - 2);
+
+      // Restore the last world without starting audio (no gesture yet).
+      const lastRoom = localStorage.getItem("fold.lastRoom");
+      const savedIdx = ROOMS.findIndex((r) => r.id === lastRoom);
+      const savedReachable = savedIdx > 0 && !(ROOMS[savedIdx].id === GOLDEN_ID && !unlocked);
+      if (savedReachable) {
+        engine.goTo(savedIdx);
+        setActiveId(ROOMS[savedIdx].id);
+      }
+
+      // Returning visitors get a quiet line of what they've done here.
+      if (seen) {
+        const rm = ROOMS.find((r) => r.id === lastRoom);
+        const bits: string[] = [];
+        if (rm) bits.push(rm.name);
+        if (sess > 0) bits.push(`session ${sess}`);
+        const tail = bits.join(", ");
+        setGreeting(tail ? `Back again. ${tail}.` : "Back again.");
+      }
+
+      // Record today's visit and surface the running streak.
+      setStreak(bumpStreak());
+    } catch {}
+
+    // The greeting is a whisper, not a banner: let it fade on its own.
+    const greetTimer = window.setTimeout(() => setGreeting(null), 11_000);
 
     // Debounced scroll → snap-land on the nearest planet once scrolling stops.
     let idle: ReturnType<typeof setTimeout> | null = null;
@@ -571,14 +733,16 @@ export default function TheFoldBelt() {
       idle = setTimeout(() => engine.endScroll(), 150);
     };
     const onWheel = (e: WheelEvent) => {
+      if (lockedRef.current) return; // session locked in place — no travel
       engine.scrollBy(e.deltaY * VOY.wheelRate);
       setHintGone(true);
+      setAudioStarted(true); // scrolling the voyage is a valid audio gesture
       settle();
     };
     let touchY: number | null = null;
-    const onTS = (e: TouchEvent) => { touchY = e.touches[0].clientY; };
+    const onTS = (e: TouchEvent) => { if (lockedRef.current) return; touchY = e.touches[0].clientY; setAudioStarted(true); };
     const onTM = (e: TouchEvent) => {
-      if (touchY == null) return;
+      if (lockedRef.current || touchY == null) return;
       const y = e.touches[0].clientY;
       engine.scrollBy((touchY - y) * VOY.touchRate);
       touchY = y;
@@ -593,6 +757,7 @@ export default function TheFoldBelt() {
 
     return () => {
       if (idle) clearTimeout(idle);
+      window.clearTimeout(greetTimer);
       mq.removeEventListener("change", onMq);
       window.removeEventListener("wheel", onWheel);
       window.removeEventListener("touchstart", onTS);
@@ -604,11 +769,18 @@ export default function TheFoldBelt() {
   }, []);
 
   const pickRoom = (id: string) => {
+    if (lockedRef.current) return; // frozen in place — ignore travel
     const idx = ROOMS.findIndex((r) => r.id === id);
     if (idx < 0) return;
+    // Golden Hour is a locked door until it is earned: show the price, don't travel.
+    if (id === GOLDEN_ID && !goldenUnlocked) { setShowGoldenLock(true); return; }
+    setShowGoldenLock(false);
+    setGreeting(null);
     engineRef.current?.goTo(idx);
     setActiveId(id);
-    setSound(ROOMS[idx].sound);
+    // Explicitly picking a world is a gesture: start audio and ride its bed.
+    startAudio();
+    audio.applyPreset(ROOM_AUDIO[id]);
   };
 
   // ── Pointer on the planets: hover to highlight, drag to turn, click to travel ──
@@ -663,14 +835,6 @@ export default function TheFoldBelt() {
     setGrabbing(false);
     drag.current.down = false;
   };
-  // Dismiss the first-visit doorway into the voyage.
-  const enterBelt = (toFirst: boolean) => {
-    setDoorOpen(false);
-    try {
-      localStorage.setItem("fold.seen", "1");
-    } catch {}
-    if (toFirst) pickRoom("root");
-  };
   const room = ROOMS.find((r) => r.id === activeId)!;
 
   return (
@@ -690,18 +854,12 @@ export default function TheFoldBelt() {
       />
       <div className="fold__vignette" aria-hidden />
 
-      <div className={`fold__door${doorOpen ? "" : " fold__door--gone"}`}>
-        <div className="fold__kicker">CTRL-A · Vantage</div>
-        <h2 className="fold__doorh">Fly to where the work fits.</h2>
-        <p className="fold__what">Vantage is a small cosmos of working states. Each world sets its own light, sound, and pace. Pick one, or drift the belt and let it find you.</p>
-        <p className="fold__how">No sign-up, no clock. Scroll to travel, land on a world, stay as long as the work takes.</p>
-        <button className="fold__enter" onClick={() => enterBelt(true)}>Find your vantage →</button>
-        <button className="fold__skip" onClick={() => enterBelt(false)}>Just let me drift</button>
-      </div>
-
       <div className="fold__stage">
         <header className="fold__top">
-          <div className="fold__brand">Vantage · <b>{room.name}</b></div>
+          <div className="fold__brand">
+            <span className="fold__wordmark">The Fold</span>
+            <span className="fold__volume">{VOLUME_LABEL} · {VOLUME_THEME}</span>
+          </div>
           <div className="fold__topnav">
             <button className="fold__focusbtn" onClick={() => setSessionMode(true)}>
               Open session
@@ -710,44 +868,94 @@ export default function TheFoldBelt() {
           </div>
         </header>
 
-        <div className="fold__title">
+        {greeting && <p className="fold__greet">{greeting}</p>}
+
+        <div className="fold__title" key={room.id}>
           <div className="fold__floor">{room.floor}</div>
           <h1 className="fold__name">{room.name}</h1>
           <p className="fold__line">{room.line}</p>
           <p className={`fold__hint${hintGone ? " fold__hint--hide" : ""}`}>Scroll to travel between worlds · or pick one below</p>
         </div>
 
+        {showGoldenLock && !goldenUnlocked && (
+          <div className="fold__lock" role="status">
+            <div className="fold__lock-name">Golden Hour</div>
+            <p className="fold__lock-copy">The back patio. Rare and electric.</p>
+            <p className="fold__lock-cond">
+              Opens after three finished sessions. <b>{sessions} of {GOLDEN_UNLOCK}</b>
+            </p>
+            <button className="fold__lock-close" onClick={() => setShowGoldenLock(false)}>Close</button>
+          </div>
+        )}
+
         <footer className="fold__footer">
           <div className="fold__rooms">
             <span className="fold__lead fold__lead--cue">Pick a world</span>
-            {ROOMS.map((r) => (
-              <button
-                key={r.id}
-                className={`fold__room${r.id === activeId ? " fold__room--active" : ""}`}
-                onClick={() => pickRoom(r.id)}
-              >
-                {r.name}
-                {r.state && <span className="fold__state">{r.state}</span>}
-              </button>
-            ))}
+            {ROOMS.map((r) => {
+              const locked = r.id === GOLDEN_ID && !goldenUnlocked;
+              return (
+                <button
+                  key={r.id}
+                  className={`fold__room${r.id === activeId ? " fold__room--active" : ""}${locked ? " fold__room--locked" : ""}`}
+                  onClick={() => pickRoom(r.id)}
+                  aria-disabled={locked || undefined}
+                  title={locked ? `Opens after ${GOLDEN_UNLOCK} finished sessions` : undefined}
+                >
+                  {locked && <span className="fold__room-lock" aria-hidden>◍</span>}
+                  {r.name}
+                  {locked ? (
+                    <span className="fold__state">{sessions} / {GOLDEN_UNLOCK}</span>
+                  ) : (
+                    r.state && <span className="fold__state">{r.state}</span>
+                  )}
+                </button>
+              );
+            })}
           </div>
-          <div className="fold__mixer">
+          <div className="fold__mixer" data-muted={audio.muted ? "true" : "false"}>
             <span className="fold__lead">Blend the sound</span>
-            {SOUNDS.map((s) => (
-              <button key={s} className="fold__pad" aria-pressed={s === sound} onClick={() => setSound(s)}>
-                {s}
-              </button>
-            ))}
+            {SOUNDS.map((s) => {
+              if (s === "mute") {
+                return (
+                  <button
+                    key={s}
+                    className="fold__pad fold__pad--mute"
+                    aria-pressed={audio.muted}
+                    onClick={() => { startAudio(); audio.toggleMute(); }}
+                  >
+                    {s}
+                  </button>
+                );
+              }
+              const id = s as LayerId;
+              return (
+                <button
+                  key={s}
+                  className="fold__pad"
+                  aria-pressed={audio.isAudible(id)}
+                  onClick={() => { startAudio(); audio.toggleLayer(id); }}
+                >
+                  {s}
+                </button>
+              );
+            })}
           </div>
         </footer>
       </div>
 
       <FoldSession
         open={sessionMode}
+        locked={locked}
         roomId={activeId}
         rooms={ROOMS.map((r) => ({ id: r.id, name: r.name, state: r.state }))}
+        streak={streak}
+        goldenId={GOLDEN_ID}
+        goldenUnlock={GOLDEN_UNLOCK}
+        chime={audio.chime}
+        onSessions={handleSessions}
         onPickRoom={pickRoom}
-        onExit={() => setSessionMode(false)}
+        onToggleLock={toggleLock}
+        onExit={() => { setLocked(false); setSessionMode(false); }}
       />
     </div>
   );

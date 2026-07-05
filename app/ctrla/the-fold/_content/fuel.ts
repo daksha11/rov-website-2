@@ -5,6 +5,12 @@
 // come from the volume's editorial data.
 // ═══════════════════════════════════════════════════════
 
+import { currentVolume } from "../../_volumes";
+
+// The live volume's display label (e.g. "Vol. 01"), so nothing here
+// hardcodes the issue number: publishing a new volume updates it.
+const VOL = currentVolume.issueMeta.volume;
+
 export const DESIGN_PROMPTS: string[] = [
   "Cut the most impressive thing you made today. What is left without it?",
   "Designers earn trust in the first 50 milliseconds. What does yours promise?",
@@ -26,7 +32,7 @@ export interface FuelTrack {
 
 export const VOLUME_TRACK: FuelTrack = {
   title: "Kintsugi (Slowed)",
-  artist: "On the Vol. 01 playlist",
+  artist: `On the ${VOL} playlist`,
   note: "The volume's closing track. Repair as a finish, not a flaw.",
 };
 
@@ -37,7 +43,7 @@ export interface TasteCard {
 }
 
 export const TASTE_CARDS: TasteCard[] = [
-  { title: "Mended Bowl, No. 4", artist: "Featured · Vol. 01", medium: "Kintsugi, gold lacquer" },
-  { title: "Westside, 6am", artist: "Featured · Vol. 01", medium: "35mm, Atlanta" },
-  { title: "Study in Light", artist: "Featured · Vol. 01", medium: "Risograph, two passes" },
+  { title: "Mended Bowl, No. 4", artist: `Featured · ${VOL}`, medium: "Kintsugi, gold lacquer" },
+  { title: "Westside, 6am", artist: `Featured · ${VOL}`, medium: "35mm, Atlanta" },
+  { title: "Study in Light", artist: `Featured · ${VOL}`, medium: "Risograph, two passes" },
 ];

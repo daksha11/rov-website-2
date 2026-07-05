@@ -8,6 +8,7 @@ import { Label } from "@/components/brand-kit/ui/label";
 import { Button } from "@/components/brand-kit/ui/button";
 import { Download, Check, Loader2 } from "lucide-react";
 import ExportSpecButton from "@/components/brand-kit/ExportSpecButton";
+import ShareKitButton from "@/components/brand-kit/ShareKitButton";
 import ExportTokensButton from "@/components/brand-kit/ExportTokensButton";
 import ExportTailwindButton from "@/components/brand-kit/ExportTailwindButton";
 import { useToast } from "@/hooks/brand-kit/useToast";
@@ -139,6 +140,13 @@ export default function ExportStep() {
         </Button>
 
         <ExportSpecButton data={data} filename={fileName} className="w-full" />
+
+        <div className="pt-2">
+          <p className="text-[10px] tracking-[0.2em] uppercase text-[#F0E6E0]/50 mb-2 font-medium">
+            Share
+          </p>
+          <ShareKitButton data={data} />
+        </div>
 
         <div className="pt-2">
           <p className="text-[10px] tracking-[0.2em] uppercase text-[#F0E6E0]/50 mb-2 font-medium">

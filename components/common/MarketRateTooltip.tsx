@@ -32,45 +32,92 @@ export default function MarketRateTooltip({
     timeoutRef.current = setTimeout(() => setOpen(false), 200);
   };
 
+  const toggle = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setOpen((o) => !o);
+  };
+
   useEffect(() => {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
   }, []);
 
+  // Close on outside click/tap and on Escape while open
+  useEffect(() => {
+    if (!open) return;
+
+    const handlePointer = (e: PointerEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target as Node)
+      ) {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        setOpen(false);
+      }
+    };
+
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", handlePointer);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("pointerdown", handlePointer);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [open]);
+
   return (
     <span
       ref={wrapperRef}
-      className="relative inline-flex items-center gap-1 cursor-help"
+      className="relative inline-flex items-center gap-1"
       onMouseEnter={show}
       onMouseLeave={hide}
     >
       {children}
-      <svg
-        width="12"
-        height="12"
-        viewBox="0 0 16 16"
-        fill="none"
-        className="text-white/25 hover:text-white/50 transition-colors shrink-0"
+      <button
+        type="button"
+        aria-label="Show sources"
+        aria-expanded={open}
+        onClick={toggle}
+        onFocus={show}
+        className="inline-flex items-center justify-center cursor-help text-white/25 hover:text-white/50 focus-visible:text-white/60 focus:outline-none transition-colors shrink-0"
       >
-        <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" />
-        <text
-          x="8"
-          y="12"
-          textAnchor="middle"
-          fill="currentColor"
-          fontSize="10"
-          fontFamily={BODY}
-          fontWeight="600"
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 16 16"
+          fill="none"
+          aria-hidden="true"
         >
-          i
-        </text>
-      </svg>
+          <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" />
+          <text
+            x="8"
+            y="12"
+            textAnchor="middle"
+            fill="currentColor"
+            fontSize="10"
+            fontFamily={BODY}
+            fontWeight="600"
+          >
+            i
+          </text>
+        </svg>
+      </button>
 
       {open && (
         <span
-          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 z-50 w-[320px] rounded-xl border border-white/10 bg-[#141414] shadow-2xl p-4"
-          style={{ fontFamily: BODY }}
+          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 z-50 rounded-xl border border-white/10 bg-[#141414] shadow-2xl p-4"
+          style={{
+            fontFamily: BODY,
+            width: "min(320px, calc(100vw - 32px))",
+            maxWidth: "calc(100vw - 32px)",
+          }}
           onMouseEnter={show}
           onMouseLeave={hide}
         >

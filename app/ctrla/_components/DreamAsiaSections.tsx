@@ -1,67 +1,39 @@
 "use client";
 
 // ═══════════════════════════════════════════════════════
-// CTRL-A — DREAMASIA FEST FEATURE
-// The behind-the-scenes issue. Story open · BTS mosaic
-// (hero) · two-city split · production toolkit. Editorial
-// and human — the small team is the star, not the gear.
-// Real media lives in /ctrla/VOL1; the rest are labelled
-// placeholder blocks at locked sizes for photo drop-in.
+// CTRL-A — FEATURE STORY (beat / module system)
+// ───────────────────────────────────────────────────────
+// A CTRL-A feature is not hand-built per volume. It is
+// COMPOSED from named beats that read their content from the
+// volume's `feature` data (see _volumes/types.ts):
+//
+//   FIXED   The Open · The Work · The Turn · The Toolkit
+//   OPTION  The Scale · The Interview · The Sound
+//
+// `FeatureStory` renders the fixed beats in order and drops in
+// each optional module only when the volume supplies it. Every
+// beat below is a pure, prop-driven component — swap the data
+// in `vol-NN.ts` and the story re-composes. Real media lives in
+// /public/ctrla/VOLn; videos use the LazyVideo pattern so only
+// on-screen clips decode. Inline styles + existing .ctrla-*
+// classes only.
 // ═══════════════════════════════════════════════════════
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { ed, Bleed, Rule, Label, Kicker } from "./editorial";
-import { issueMeta, coverShot, issueOpen, bts, twoCities, productionToolkit, type BtsTile } from "../data";
-
-// ── Feature teaser — compact, clickable cover on the front page ──
-
-export function DreamAsiaTeaser() {
-  return (
-    <section style={{ background: "transparent", padding: "clamp(48px,7vw,88px) 0" }}>
-      <Bleed>
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginBottom: "clamp(18px,2.4vw,28px)" }}>
-          <Kicker color={ed.gold}>Issue Feature</Kicker>
-          <Label color={ed.gold}>DreamAsia Fest</Label>
-        </div>
-        <Rule style={{ marginBottom: "clamp(24px,3vw,36px)" }} />
-
-        <a href="/ctrla/dreamasia" className="ctrla-feature-card" style={{ position: "relative", display: "block", width: "100%", aspectRatio: "16 / 7", minHeight: 260, background: ed.panel, overflow: "hidden", textDecoration: "none" }}>
-          <Image
-            src={coverShot.src}
-            alt={coverShot.alt}
-            fill
-            sizes="(max-width: 768px) 92vw, 1180px"
-            className="ctrla-feature-img"
-            style={{ objectFit: "cover" }}
-          />
-          <div
-            aria-hidden
-            style={{
-              position: "absolute",
-              inset: 0,
-              background: "linear-gradient(to top, rgba(15,8,32,0.82) 0%, rgba(15,8,32,0.28) 46%, transparent 72%)",
-            }}
-          />
-          <span style={{ position: "absolute", top: 18, left: 20, fontFamily: ed.mono, fontSize: "clamp(9px,1vw,11px)", letterSpacing: "0.2em", textTransform: "uppercase", color: ed.gold }}>
-            Behind the scenes
-          </span>
-          <div style={{ position: "absolute", left: 20, right: 20, bottom: 18, display: "flex", flexDirection: "column", gap: 12 }}>
-            <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,5vw,68px)", letterSpacing: "-0.03em", lineHeight: 0.92, color: ed.paper, margin: 0, maxWidth: 760 }}>
-              {issueMeta.featureHeadline}
-            </h2>
-            <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.6vw,18px)", lineHeight: 1.5, color: "rgba(240,230,224,0.86)", margin: 0, maxWidth: 560 }}>
-              {issueMeta.featureDeck}
-            </p>
-            <span className="ctrla-feature-cta" style={{ display: "inline-flex", alignItems: "center", gap: 9, fontFamily: ed.mono, fontSize: "clamp(11px,1.2vw,13px)", letterSpacing: "0.16em", textTransform: "uppercase", color: ed.paper, marginTop: 4 }}>
-              Read the feature <span aria-hidden className="ctrla-feature-arrow" style={{ transition: "transform .25s" }}>→</span>
-            </span>
-          </div>
-        </a>
-      </Bleed>
-    </section>
-  );
-}
+import { currentVolume, type Volume } from "../_volumes";
+import type {
+  Bts,
+  BtsTile,
+  CoverShot,
+  FeatureInterview,
+  FeatureSound,
+  FeatureTurn,
+  IssueOpen,
+  ProductionToolkit,
+  TwoCities,
+} from "../_volumes/types";
 
 // ── Media block — image / video / labelled placeholder ──
 
@@ -237,17 +209,80 @@ function VueNote({ children, dark = false }: { children: React.ReactNode; dark?:
   );
 }
 
-// ── 1. The story, how it started ───────────────────────
+// ── Shared beat header — eyebrow + big headline + right meta ──
+// Every beat opens the same way, so the header is one component.
+// `meta` is optional right-aligned serif italic; `note` is the same slot
+// but plainer. Pass one or the other.
+function BeatHeader({
+  eyebrow,
+  headline,
+  meta,
+  dark = false,
+  goldEyebrow = false,
+}: {
+  eyebrow: string;
+  headline: string;
+  meta?: React.ReactNode;
+  dark?: boolean;
+  goldEyebrow?: boolean;
+}) {
+  const ink = dark ? ed.paper : ed.ink;
+  return (
+    <>
+      <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
+        <div style={{ maxWidth: 720 }}>
+          <Label color={goldEyebrow ? ed.gold : ed.amber} style={{ display: "block", marginBottom: 16 }}>
+            {eyebrow}
+          </Label>
+          <h2
+            style={{
+              fontFamily: ed.grotesque,
+              fontWeight: 800,
+              fontSize: "clamp(30px,5.4vw,74px)",
+              letterSpacing: "-0.03em",
+              lineHeight: 0.92,
+              color: ink,
+              margin: 0,
+            }}
+          >
+            {headline}
+          </h2>
+        </div>
+        {meta && (
+          <p
+            style={{
+              fontFamily: ed.serif,
+              fontStyle: "italic",
+              fontSize: "clamp(13px,1.5vw,16px)",
+              lineHeight: 1.5,
+              color: dark ? "rgba(240,230,224,0.6)" : ed.inkSoft,
+              textAlign: "right",
+              maxWidth: 340,
+              margin: 0,
+            }}
+          >
+            {meta}
+          </p>
+        )}
+      </div>
+      <Rule color={dark ? "rgba(240,230,224,0.2)" : ed.ink} style={{ margin: "clamp(28px,4vw,48px) 0" }} />
+    </>
+  );
+}
 
-export function IssueOpen() {
+// ════════════════════════════════════════════════════════
+// FIXED BEAT 1 · The Open — hero + lead + one Vue pull-quote
+// ════════════════════════════════════════════════════════
+
+function TheOpen({ data, cover, featureHeadline }: { data: IssueOpen; cover: CoverShot; featureHeadline: string }) {
   return (
     <section style={{ background: "transparent", padding: "clamp(56px,8vw,104px) 0" }}>
       <Bleed>
         {/* Feature lead — the issue's hero performance frame */}
         <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 7", minHeight: 220, background: ed.panel, overflow: "hidden", marginBottom: "clamp(40px,5vw,72px)" }}>
           <Image
-            src={coverShot.src}
-            alt={coverShot.alt}
+            src={cover.src}
+            alt={cover.alt}
             fill
             sizes="(max-width: 768px) 92vw, 1180px"
             style={{ objectFit: "cover" }}
@@ -265,15 +300,15 @@ export function IssueOpen() {
           </span>
           <div style={{ position: "absolute", left: 18, right: 18, bottom: 16, display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
             <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.6vw,60px)", letterSpacing: "-0.03em", lineHeight: 0.9, color: ed.paper, margin: 0, maxWidth: 760 }}>
-              {issueMeta.featureHeadline}
+              {featureHeadline}
             </h2>
             <span style={{ fontFamily: ed.mono, fontSize: "clamp(8px,0.9vw,10px)", letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(240,230,224,0.7)" }}>
-              {coverShot.label}
+              {cover.label}
             </span>
           </div>
         </div>
 
-        <Label style={{ display: "block", marginBottom: 18 }}>{issueOpen.eyebrow}</Label>
+        <Label style={{ display: "block", marginBottom: 18 }}>{data.eyebrow}</Label>
         <div className="ctrla-open-grid">
           {/* Copy */}
           <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 28 }}>
@@ -289,9 +324,9 @@ export function IssueOpen() {
                   margin: "0 0 22px",
                 }}
               >
-                {issueOpen.headline}
+                {data.headline}
               </h2>
-              {issueOpen.body.map((p, i) => (
+              {data.body.map((paragraph, i) => (
                 <p
                   key={i}
                   style={{
@@ -303,25 +338,24 @@ export function IssueOpen() {
                     maxWidth: 540,
                   }}
                 >
-                  {p}
+                  {paragraph}
                 </p>
               ))}
             </div>
-            <VueNote>{issueOpen.vueNote}</VueNote>
+            <VueNote>{data.vueNote}</VueNote>
           </div>
 
-          {/* Contrast pair — quiet prep vs the stage */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "clamp(12px,2vw,20px)" }}>
-            <MediaBlock label={issueOpen.prep.label} ratio={issueOpen.prep.ratio} />
-            <MediaBlock img={issueOpen.stage.src} label={issueOpen.stage.label} ratio={issueOpen.stage.ratio} />
-          </div>
+          {/* The stage — first load-in */}
+          <MediaBlock img={data.stage.src} label={data.stage.label} ratio={data.stage.ratio} />
         </div>
       </Bleed>
     </section>
   );
 }
 
-// ── 2. Behind the scenes — the hero mosaic ─────────────
+// ════════════════════════════════════════════════════════
+// FIXED BEAT 2 · The Work — the hero mosaic of real media
+// ════════════════════════════════════════════════════════
 
 function BtsCell({ tile }: { tile: BtsTile }) {
   return (
@@ -334,126 +368,100 @@ function BtsCell({ tile }: { tile: BtsTile }) {
   );
 }
 
-export function BehindTheScenes() {
+function TheWork({ data }: { data: Bts }) {
   return (
     <section style={{ background: ed.panel, padding: "clamp(64px,9vw,120px) 0" }}>
       <Bleed>
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
-          <div style={{ maxWidth: 720 }}>
-            <Label color={ed.gold} style={{ display: "block", marginBottom: 16 }}>{bts.eyebrow}</Label>
-            <h2
+        <BeatHeader eyebrow={data.eyebrow} headline={data.headline} meta={data.note} dark goldEyebrow />
+        <div className="ctrla-bts-grid">
+          {data.tiles.map((tile, i) => (
+            <BtsCell key={i} tile={tile} />
+          ))}
+        </div>
+      </Bleed>
+    </section>
+  );
+}
+
+// ════════════════════════════════════════════════════════
+// FIXED BEAT 3 · The Turn — the decision that nearly broke it
+// The narrative pivot. Body on the left, one line pulled large
+// on the right so the obstacle lands as the story's centre.
+// ════════════════════════════════════════════════════════
+
+function TheTurn({ data }: { data: FeatureTurn }) {
+  return (
+    <section style={{ background: "transparent", padding: "clamp(56px,8vw,104px) 0" }}>
+      <Bleed>
+        <BeatHeader eyebrow={data.eyebrow} headline={data.headline} />
+        <div className="ctrla-open-grid">
+          {/* The prose */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            {data.body.map((paragraph, i) => (
+              <p
+                key={i}
+                style={{
+                  fontFamily: ed.body,
+                  fontSize: "clamp(15px,1.7vw,19px)",
+                  lineHeight: 1.65,
+                  color: ed.inkSoft,
+                  margin: 0,
+                  maxWidth: 560,
+                }}
+              >
+                {paragraph}
+              </p>
+            ))}
+          </div>
+
+          {/* The pull-quote — the turn in one line, set large */}
+          <blockquote
+            style={{
+              margin: 0,
+              alignSelf: "stretch",
+              background: ed.panel,
+              borderLeft: `2px solid ${ed.gold}`,
+              padding: "clamp(28px,4vw,44px)",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              gap: 18,
+            }}
+          >
+            <Label color={ed.gold}>The decision</Label>
+            <p
               style={{
-                fontFamily: ed.grotesque,
-                fontWeight: 800,
-                fontSize: "clamp(34px,6vw,84px)",
-                letterSpacing: "-0.03em",
-                lineHeight: 0.9,
+                fontFamily: ed.serif,
+                fontStyle: "italic",
+                fontSize: "clamp(24px,3.4vw,42px)",
+                lineHeight: 1.12,
+                letterSpacing: "-0.01em",
                 color: ed.paper,
                 margin: 0,
               }}
             >
-              {bts.headline}
-            </h2>
-          </div>
-          <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(13px,1.5vw,16px)", lineHeight: 1.5, color: "rgba(240,230,224,0.6)", textAlign: "right", maxWidth: 320, margin: 0 }}>
-            {bts.note}
-          </p>
-        </div>
-        <Rule color="rgba(240,230,224,0.2)" style={{ margin: "clamp(28px,4vw,48px) 0" }} />
-
-        <div className="ctrla-bts-grid">
-          {bts.tiles.map((t, i) => (
-            <BtsCell key={i} tile={t} />
-          ))}
+              {data.pullquote}
+            </p>
+          </blockquote>
         </div>
       </Bleed>
     </section>
   );
 }
 
-// ── 3. Two cities, the scale ───────────────────────────
+// ════════════════════════════════════════════════════════
+// FIXED BEAT 4 · The Toolkit — how it was made, so you can too
+// ════════════════════════════════════════════════════════
 
-export function TwoCities() {
+function TheToolkit({ data }: { data: ProductionToolkit }) {
   return (
     <section style={{ background: "transparent", padding: "clamp(56px,8vw,104px) 0" }}>
       <Bleed>
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
-          <div style={{ maxWidth: 640 }}>
-            <Label style={{ display: "block", marginBottom: 16 }}>{twoCities.eyebrow}</Label>
-            <h2
-              style={{
-                fontFamily: ed.grotesque,
-                fontWeight: 800,
-                fontSize: "clamp(30px,5vw,68px)",
-                letterSpacing: "-0.025em",
-                lineHeight: 0.94,
-                color: ed.ink,
-                margin: 0,
-              }}
-            >
-              {twoCities.headline}
-            </h2>
-          </div>
-          <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.6vw,17px)", lineHeight: 1.6, color: ed.inkSoft, maxWidth: 360, margin: 0 }}>
-            {twoCities.body}
-          </p>
-        </div>
-        <Rule style={{ margin: "clamp(28px,4vw,48px) 0" }} />
-
-        <div className="ctrla-cities">
-          {twoCities.cities.map((c) => (
-            <div key={c.state} style={{ display: "flex", flexDirection: "column" }}>
-              <MediaBlock label={c.label} ratio={c.ratio} />
-              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12, marginTop: 16 }}>
-                <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(22px,3vw,38px)", letterSpacing: "-0.02em", color: ed.ink, margin: 0 }}>
-                  {c.state}
-                </h3>
-                <Label color={ed.inkFaint}>{c.state === "North Carolina" ? "Show 01" : "Show 02"}</Label>
-              </div>
-              <p style={{ fontFamily: ed.body, fontSize: "clamp(13px,1.4vw,15px)", lineHeight: 1.6, color: ed.inkSoft, margin: "8px 0 0", maxWidth: 460 }}>
-                {c.note}
-              </p>
-            </div>
-          ))}
-        </div>
-      </Bleed>
-    </section>
-  );
-}
-
-// ── 4. The toolkit, what you can use ───────────────────
-
-export function ProductionToolkit() {
-  return (
-    <section style={{ background: "transparent", padding: "clamp(56px,8vw,104px) 0" }}>
-      <Bleed>
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
-          <div style={{ maxWidth: 640 }}>
-            <Label style={{ display: "block", marginBottom: 16 }}>{productionToolkit.eyebrow}</Label>
-            <h2
-              style={{
-                fontFamily: ed.grotesque,
-                fontWeight: 800,
-                fontSize: "clamp(30px,5vw,68px)",
-                letterSpacing: "-0.025em",
-                lineHeight: 0.94,
-                color: ed.ink,
-                margin: 0,
-              }}
-            >
-              {productionToolkit.headline}
-            </h2>
-          </div>
-          <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(13px,1.5vw,16px)", color: ed.inkSoft, textAlign: "right", maxWidth: 300, margin: 0 }}>
-            {productionToolkit.note}
-          </p>
-        </div>
-        <Rule style={{ margin: "clamp(28px,4vw,48px) 0" }} />
-
+        <BeatHeader eyebrow={data.eyebrow} headline={data.headline} meta={data.note} />
         <div className="ctrla-toolgrid">
-          {productionToolkit.tools.map((t, i) => (
+          {data.tools.map((tool, i) => (
             <div
-              key={t.name}
+              key={tool.name}
               style={{
                 borderTop: `2px solid ${ed.ink}`,
                 paddingTop: 16,
@@ -464,7 +472,7 @@ export function ProductionToolkit() {
             >
               <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10 }}>
                 <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(18px,2.2vw,26px)", letterSpacing: "-0.01em", color: ed.ink }}>
-                  {t.name}
+                  {tool.name}
                 </span>
                 <Label color={ed.inkFaint}>{String(i + 1).padStart(2, "0")}</Label>
               </div>
@@ -480,14 +488,219 @@ export function ProductionToolkit() {
                   alignSelf: "flex-start",
                 }}
               >
-                {t.role}
+                {tool.role}
               </span>
               <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,16px)", lineHeight: 1.55, color: ed.inkSoft, margin: 0 }}>
-                {t.line}
+                {tool.line}
               </p>
             </div>
           ))}
         </div>
+      </Bleed>
+    </section>
+  );
+}
+
+// ════════════════════════════════════════════════════════
+// OPTIONAL MODULE · The Scale — multi-location / multi-show
+// ════════════════════════════════════════════════════════
+
+function TheScale({ data }: { data: TwoCities }) {
+  return (
+    <section style={{ background: "transparent", padding: "clamp(56px,8vw,104px) 0" }}>
+      <Bleed>
+        <BeatHeader eyebrow={data.eyebrow} headline={data.headline} meta={data.body} />
+        {/* One crew, one operation, two states — a single honest panel with the
+            two-state point carried in the annotation row beneath it. */}
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <MediaBlock img={data.panel.src} label={data.panel.label} ratio={data.panel.ratio} />
+          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 16, marginTop: 20, flexWrap: "wrap" }}>
+            <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(22px,3vw,38px)", letterSpacing: "-0.02em", color: ed.ink, margin: 0 }}>
+              North Carolina <span style={{ color: ed.inkFaint }}>→</span> Georgia
+            </h3>
+            <Label color={ed.inkFaint}>Two shows · Two states</Label>
+          </div>
+        </div>
+      </Bleed>
+    </section>
+  );
+}
+
+// ════════════════════════════════════════════════════════
+// OPTIONAL MODULE · The Interview — three Q&A
+// ════════════════════════════════════════════════════════
+
+function TheInterview({ data }: { data: FeatureInterview }) {
+  return (
+    <section style={{ background: ed.panel, padding: "clamp(64px,9vw,120px) 0" }}>
+      <Bleed>
+        <BeatHeader
+          eyebrow={data.eyebrow}
+          headline={data.headline}
+          meta={`In conversation with ${data.subject}`}
+          dark
+          goldEyebrow
+        />
+        <div style={{ display: "flex", flexDirection: "column", gap: "clamp(28px,4vw,44px)" }}>
+          {data.qa.map((item, i) => (
+            <div key={i} style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 820 }}>
+              <div style={{ display: "flex", gap: 14, alignItems: "baseline" }}>
+                <Label color={ed.gold}>Q{String(i + 1).padStart(2, "0")}</Label>
+                <h3
+                  style={{
+                    fontFamily: ed.grotesque,
+                    fontWeight: 800,
+                    fontSize: "clamp(19px,2.4vw,30px)",
+                    letterSpacing: "-0.02em",
+                    lineHeight: 1.05,
+                    color: ed.paper,
+                    margin: 0,
+                  }}
+                >
+                  {item.question}
+                </h3>
+              </div>
+              <p
+                style={{
+                  fontFamily: ed.body,
+                  fontSize: "clamp(15px,1.7vw,19px)",
+                  lineHeight: 1.6,
+                  color: "rgba(240,230,224,0.86)",
+                  margin: 0,
+                  paddingLeft: "clamp(0px,3vw,52px)",
+                }}
+              >
+                {item.answer}
+              </p>
+            </div>
+          ))}
+        </div>
+      </Bleed>
+    </section>
+  );
+}
+
+// ════════════════════════════════════════════════════════
+// OPTIONAL MODULE · The Sound — one embedded track
+// A link-out card (streaming), matching the on-repeat pattern.
+// ════════════════════════════════════════════════════════
+
+function TheSound({ data }: { data: FeatureSound }) {
+  const { track } = data;
+  return (
+    <section style={{ background: "transparent", padding: "clamp(56px,8vw,104px) 0" }}>
+      <Bleed>
+        <BeatHeader eyebrow={data.eyebrow} headline={data.headline} meta={data.note} />
+        <a
+          href={track.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ctrla-feature-card"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "clamp(16px,3vw,32px)",
+            background: ed.panel,
+            padding: "clamp(16px,2.4vw,24px)",
+            textDecoration: "none",
+          }}
+        >
+          <span style={{ position: "relative", flexShrink: 0, width: "clamp(84px,14vw,132px)", aspectRatio: "1 / 1", overflow: "hidden", background: ed.ground }}>
+            <Image src={track.image} alt={`${track.title} by ${track.artist}`} fill sizes="132px" style={{ objectFit: "cover" }} />
+          </span>
+          <span style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 0 }}>
+            <Label color={ed.gold}>Now playing</Label>
+            <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(22px,3.4vw,42px)", letterSpacing: "-0.02em", lineHeight: 0.98, color: ed.paper }}>
+              {track.title}
+            </span>
+            <span style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.6vw,18px)", color: "rgba(240,230,224,0.72)" }}>
+              {track.artist}
+            </span>
+          </span>
+          <span className="ctrla-feature-cta" style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 9, fontFamily: ed.mono, fontSize: "clamp(11px,1.2vw,13px)", letterSpacing: "0.16em", textTransform: "uppercase", color: ed.paper, whiteSpace: "nowrap" }}>
+            Listen <span aria-hidden className="ctrla-feature-arrow" style={{ transition: "transform .25s" }}>→</span>
+          </span>
+        </a>
+      </Bleed>
+    </section>
+  );
+}
+
+// ════════════════════════════════════════════════════════
+// THE COMPOSER · FeatureStory
+// Renders the four fixed beats in order and drops in each
+// optional module only when the volume supplies it. This is the
+// whole feature: point it at a volume and it composes itself.
+// ════════════════════════════════════════════════════════
+
+export function FeatureStory({ volume = currentVolume }: { volume?: Volume }) {
+  const { feature, issueMeta } = volume;
+  return (
+    <>
+      {/* Fixed beats */}
+      <TheOpen data={feature.issueOpen} cover={feature.coverShot} featureHeadline={issueMeta.featureHeadline} />
+      <TheWork data={feature.bts} />
+      <TheTurn data={feature.turn} />
+
+      {/* Optional modules — render only when present */}
+      {feature.twoCities && <TheScale data={feature.twoCities} />}
+      {feature.interview && <TheInterview data={feature.interview} />}
+      {feature.sound && <TheSound data={feature.sound} />}
+
+      {/* Fixed closing beat */}
+      <TheToolkit data={feature.productionToolkit} />
+    </>
+  );
+}
+
+// ── Feature teaser — compact, clickable cover on the front page ──
+// Standalone (rendered by CtrlAContent). Reads the current volume so
+// the front page and the full feature route never drift.
+
+export function DreamAsiaTeaser() {
+  const { feature, issueMeta } = currentVolume;
+  const { coverShot } = feature;
+  return (
+    <section style={{ background: "transparent", padding: "clamp(48px,7vw,88px) 0" }}>
+      <Bleed>
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginBottom: "clamp(18px,2.4vw,28px)" }}>
+          <Kicker color={ed.gold}>Issue Feature</Kicker>
+          <Label color={ed.gold}>DreamAsia Fest</Label>
+        </div>
+        <Rule style={{ marginBottom: "clamp(24px,3vw,36px)" }} />
+
+        <a href={feature.href} className="ctrla-feature-card" style={{ position: "relative", display: "block", width: "100%", aspectRatio: "16 / 7", minHeight: 260, background: ed.panel, overflow: "hidden", textDecoration: "none" }}>
+          <Image
+            src={coverShot.src}
+            alt={coverShot.alt}
+            fill
+            sizes="(max-width: 768px) 92vw, 1180px"
+            className="ctrla-feature-img"
+            style={{ objectFit: "cover" }}
+          />
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "linear-gradient(to top, rgba(15,8,32,0.82) 0%, rgba(15,8,32,0.28) 46%, transparent 72%)",
+            }}
+          />
+          <span style={{ position: "absolute", top: 18, left: 20, fontFamily: ed.mono, fontSize: "clamp(9px,1vw,11px)", letterSpacing: "0.2em", textTransform: "uppercase", color: ed.gold }}>
+            Behind the scenes
+          </span>
+          <div style={{ position: "absolute", left: 20, right: 20, bottom: 18, display: "flex", flexDirection: "column", gap: 12 }}>
+            <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,5vw,68px)", letterSpacing: "-0.03em", lineHeight: 0.92, color: ed.paper, margin: 0, maxWidth: 760 }}>
+              {issueMeta.featureHeadline}
+            </h2>
+            <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.6vw,18px)", lineHeight: 1.5, color: "rgba(240,230,224,0.86)", margin: 0, maxWidth: 560 }}>
+              {issueMeta.featureDeck}
+            </p>
+            <span className="ctrla-feature-cta" style={{ display: "inline-flex", alignItems: "center", gap: 9, fontFamily: ed.mono, fontSize: "clamp(11px,1.2vw,13px)", letterSpacing: "0.16em", textTransform: "uppercase", color: ed.paper, marginTop: 4 }}>
+              Read the feature <span aria-hidden className="ctrla-feature-arrow" style={{ transition: "transform .25s" }}>→</span>
+            </span>
+          </div>
+        </a>
       </Bleed>
     </section>
   );

@@ -95,14 +95,12 @@ const ElevateSection: React.FC = () => {
                       id="hover-preview-container"
                     >
                       <div className="w-full h-full bg-black rounded-xl border border-white/20 overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.5)] relative">
-                        <div className="absolute inset-0 flex items-center justify-center text-white/20 text-xs font-mono">
-                          LOADING PREVIEW...
-                        </div>
-                        <iframe
-                          src="/casestudy"
-                          title="Case Study Preview"
-                          loading="lazy"
-                          className="relative w-[200%] h-[200%] origin-top-left scale-50 border-none bg-white"
+                        <Image
+                          src="/casestudy/iknacasestudy.webp"
+                          alt="Case study preview"
+                          fill
+                          sizes="320px"
+                          className="object-cover object-top"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
                       </div>

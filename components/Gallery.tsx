@@ -89,24 +89,24 @@ function Gallery() {
 
       {/* Carousel container */}
       <div
-        className="relative w-full h-[60vh] sm:h-[70vh] md:h-[80vh] overflow-hidden flex items-center justify-center"
+        className="relative w-full max-w-[1920px] mx-auto h-[60vh] sm:h-[70vh] md:h-[80vh] overflow-hidden flex items-center justify-center"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
-        {/* Navigation Buttons */}
+        {/* Navigation Buttons — sides on desktop, bottom corners (inset) on mobile so they don't cover the artwork */}
         <button
           onClick={handlePrev}
-          className="absolute left-8 md:left-16 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full p-4 cursor-pointer z-50 transition-all duration-300 hover:bg-white/20 hover:scale-110 active:scale-95 group"
+          className="absolute left-3 bottom-4 md:left-16 md:top-1/2 md:bottom-auto md:-translate-y-1/2 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full p-3 md:p-4 cursor-pointer z-50 transition-all duration-300 hover:bg-white/20 hover:scale-110 active:scale-95 group"
           aria-label="Previous image"
         >
-          <ArrowLeft className="w-8 h-8 transition-transform group-hover:-translate-x-1" />
+          <ArrowLeft className="w-6 h-6 md:w-8 md:h-8 transition-transform group-hover:-translate-x-1" />
         </button>
         <button
           onClick={handleNext}
-          className="absolute right-8 md:right-16 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full p-4 cursor-pointer z-50 transition-all duration-300 hover:bg-white/20 hover:scale-110 active:scale-95 group"
+          className="absolute right-3 bottom-4 md:right-16 md:top-1/2 md:bottom-auto md:-translate-y-1/2 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full p-3 md:p-4 cursor-pointer z-50 transition-all duration-300 hover:bg-white/20 hover:scale-110 active:scale-95 group"
           aria-label="Next image"
         >
-          <ArrowRight className="w-8 h-8 transition-transform group-hover:translate-x-1" />
+          <ArrowRight className="w-6 h-6 md:w-8 md:h-8 transition-transform group-hover:translate-x-1" />
         </button>
 
         {/* Carousel */}
@@ -114,8 +114,14 @@ function Gallery() {
           {items.map((item, index) => (
             <div
               key={item.id}
-              className="absolute w-[320px] h-[320px] left-1/2 top-1/2 -ml-[160px] -mt-[160px] transition-all duration-700 [transition-timing-function:cubic-bezier(0.23,1,0.32,1)]"
-              style={getItemStyle(index)}
+              className="absolute left-1/2 top-1/2 transition-all duration-700 [transition-timing-function:cubic-bezier(0.23,1,0.32,1)]"
+              style={{
+                width: "min(320px, 80vw)",
+                height: "min(320px, 80vw)",
+                marginLeft: "calc(min(320px, 80vw) / -2)",
+                marginTop: "calc(min(320px, 80vw) / -2)",
+                ...getItemStyle(index),
+              }}
             >
               <div
                 className={`relative w-full h-full rounded-[5px] overflow-hidden cursor-pointer shadow-lg transition-transform duration-300 hover:scale-[1.02] ${index === activeIndex ? "scale-105 z-[100]" : "scale-95"

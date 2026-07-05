@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+/* DM Sans is loaded via next/font in app/layout.tsx (exposed as
+   --font-dm-sans), replacing the previous render-blocking Google Fonts @import. */
 
 /* --- FONT DECLARATIONS --- */
 /* CTRL-A magazine faces, registered app-wide so the dashboards can share the
@@ -335,6 +336,21 @@ body {
   }
 }
 
+/* Global reduced-motion safety net: neutralize infinite/decorative CSS
+   animations (marquees, shine sweeps, shimmer) and long transitions while
+   letting entrance animations finish instantly so nothing gets stuck in a
+   pre-animation (e.g. opacity:0) state. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 @keyframes float-x {
   0% {
     transform: translateX(0);
@@ -460,6 +476,9 @@ body {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
+  /* 44px-tall interactive row for comfortable touch dragging; the visual
+     track stays 6px and is centered vertically within it. */
+  height: 44px;
   background: transparent;
   cursor: pointer;
 }
@@ -728,6 +747,32 @@ input[type="range"]::-webkit-slider-thumb {
 .ctrla-event-row .ctrla-event-name { transition: color 0.2s; }
 .ctrla-event-row:hover .ctrla-event-name { color: #A56A67; }
 
+/* ATL Events split — stack image over copy+schedule on small screens */
+@media (max-width: 760px) {
+  .ctrla-events-split { grid-template-columns: 1fr !important; }
+  .ctrla-events-cover { min-height: clamp(200px, 42vw, 300px) !important; }
+}
+
+/* CTRL-A — Toolkits stepped lines */
+.ctrla-toolkit-arrow {
+  display: inline-block;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ctrla-toolkit-step:hover .ctrla-toolkit-arrow {
+  transform: translateX(6px);
+}
+.ctrla-toolkit-step:hover .ctrla-toolkit-arrow-left {
+  transform: translateX(-6px);
+}
+@media (max-width: 640px) {
+  .ctrla-toolkit-node {
+    margin-left: 0 !important;
+    width: 100% !important;
+    text-align: left !important;
+  }
+  .ctrla-toolkit-node > div:first-child { justify-content: flex-start !important; }
+}
+
 /* CTRL-A — DreamAsia feature ───────────────────────────── */
 
 /* Toolkit Stations — immersive edutainment layout */
@@ -837,7 +882,7 @@ input[type="range"]::-webkit-slider-thumb {
 .ctrla-acc-header:hover { background: rgba(227,194,74,0.05); }
 .ctrla-index-list { transition: color 0.25s ease; }
 .ctrla-acc-header:hover .ctrla-index-list { color: #F0E6E0; }
-.ctrla-acc-toggle { transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease; }
+.ctrla-acc-toggle { color: #E3C24A; border: 1px solid #E3C24A; transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease; }
 .ctrla-acc-header:hover .ctrla-acc-toggle { background: #E3C24A; color: #0F0820; border-color: #E3C24A; }
 
 /* Contents — the mission (thesis), editorial bar with a quiet text link */
@@ -911,8 +956,41 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 /* Cover primary CTA — gentle lift on hover */
-.ctrla-cover-cta { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.ctrla-cover-cta { transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease; }
 .ctrla-cover-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(227,194,74,0.28); }
+
+/* Cover secondary CTA — outlined ghost that fills gold on hover */
+.ctrla-cover-cta-ghost {
+  color: #E3C24A;
+  background: transparent;
+  border: 1.5px solid #E3C24A;
+}
+.ctrla-cover-cta-ghost:hover { background: #E3C24A; color: #0F0820; }
+
+/* Typewriter caret — blinks while typing, holds a soft pulse when done */
+.ctrla-type-caret {
+  display: inline-block;
+  width: 0.06em;
+  height: 0.82em;
+  margin-left: 0.06em;
+  vertical-align: baseline;
+  transform: translateY(0.04em);
+  animation: ctrlaCaretBlink 1s steps(1) infinite;
+}
+.ctrla-type-caret[data-done="true"] {
+  animation: ctrlaCaretFade 1.4s ease-in-out infinite;
+}
+@keyframes ctrlaCaretBlink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+@keyframes ctrlaCaretFade {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 0.25; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ctrla-type-caret { display: none; }
+}
 
 /* ──────────────────────────────────────────────────────────────
    DASHBOARD SKIN — the CTRL-A magazine palette + Japanese twilight
@@ -1647,6 +1725,482 @@ input[type="range"]::-webkit-slider-thumb {
   .ctrla-fridge-scene.open .ctrla-fridge-shelf li { opacity: 1; transform: none; }
 }
 
+/* While the handle is being dragged, the door tracks the pointer with no
+   easing so it feels physically attached; the inline angle drives it. */
+.ctrla-fridge-door.dragging {
+  transition: none;
+  will-change: transform;
+}
+.ctrla-fridge-handle { touch-action: none; }
+
+/* Handwritten-style contributor credit — a marker label on the magnet. */
+.ctrla-fridge-credit {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-size: 10px;
+  line-height: 1.2;
+  color: #90422c;
+  transform: rotate(-1.4deg);
+  transform-origin: left center;
+}
+.ctrla-fridge-credit-lg {
+  font-size: clamp(14px, 1.6vw, 17px);
+  color: rgba(240, 230, 224, 0.72);
+  transform: rotate(-0.6deg);
+}
+
+/* Chef of the volume — a photo/monogram magnet pinned to the door. */
+.ctrla-fridge-chef-magnet {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid rgba(15, 8, 32, 0.1);
+  border-left: 3px solid #e3c24a;
+  border-radius: 7px;
+  background: linear-gradient(180deg, #fbf7f1, #ece5db);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  color: #1c1430;
+}
+.ctrla-fridge-chef-photo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: radial-gradient(circle at 35% 30%, #f3d979, #b8912c);
+  color: #241206;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.ctrla-fridge-chef-photo img { width: 100%; height: 100%; object-fit: cover; }
+.ctrla-fridge-chef-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ctrla-fridge-chef-role {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #90422c;
+}
+.ctrla-fridge-chef-name {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* "Leave something in the fridge" — the deferred community hook. */
+.ctrla-fridge-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 14px 0 0;
+  font-family: "Neue Montreal", "Helvetica Neue", Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #e3c24a;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(227, 194, 74, 0.4);
+  padding-bottom: 3px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.ctrla-fridge-submit:hover { color: #f0e6e0; border-color: #f0e6e0; }
+
+/* ── Cookbook landing teaser — a closed mini-fridge ────────
+   Static brushed-steel door with the three picks as magnet chips
+   plus the chef; the whole thing links into the full galley. */
+.ctrla-fridge-mini {
+  position: relative;
+  display: block;
+  align-self: center;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  padding: 12px;
+  border-radius: 16px 16px 10px 10px;
+  text-decoration: none;
+  background: linear-gradient(96deg, #34373f 0%, #4c505a 22%, #686d78 50%, #4c505a 78%, #34373f 100%);
+  box-shadow: 0 40px 88px rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 2px 0 rgba(255, 255, 255, 0.14);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s;
+}
+.ctrla-fridge-mini:hover,
+.ctrla-fridge-mini:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: 0 52px 104px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(227, 194, 74, 0.35);
+  outline: none;
+}
+.ctrla-fridge-mini-badge {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 7px;
+  letter-spacing: 0.22em;
+  white-space: nowrap;
+  color: rgba(15, 8, 32, 0.5);
+}
+.ctrla-fridge-mini-door {
+  position: relative;
+  display: block;
+  border-radius: 11px 11px 8px 8px;
+  padding: 18px 30px 40px 16px;
+  background: linear-gradient(96deg, #3a3d45 0%, #54585f 22%, #70747d 50%, #54585f 78%, #3a3d45 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12), inset 0 2px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -10px 24px rgba(0, 0, 0, 0.34);
+}
+.ctrla-fridge-mini-magnets { display: flex; flex-direction: column; gap: 9px; }
+.ctrla-fridge-mini-magnet {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 9px 11px;
+  border: 1px solid rgba(15, 8, 32, 0.1);
+  border-left: 3px solid var(--accent);
+  border-radius: 7px;
+  background: linear-gradient(180deg, #fbf7f1, #ece5db);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  color: #1c1430;
+}
+.ctrla-fridge-mini-cat {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.ctrla-fridge-mini-name {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.ctrla-fridge-mini-chef {
+  display: flex;
+  align-items: center;
+  padding: 7px 11px;
+  border: 1px solid rgba(15, 8, 32, 0.1);
+  border-left: 3px solid #e3c24a;
+  border-radius: 7px;
+  background: linear-gradient(180deg, #fbf7f1, #ece5db);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+.ctrla-fridge-mini-chef-role {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #90422c;
+}
+.ctrla-fridge-mini-handle {
+  position: absolute;
+  top: 34%;
+  right: 8px;
+  bottom: 12%;
+  width: 8px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, #9aa0ab 0%, #6f7480 45%, #4a4e57 100%);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+.ctrla-fridge-mini-cta {
+  position: absolute;
+  left: 50%;
+  bottom: -14px;
+  transform: translateX(-50%);
+  z-index: 4;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #0f0820;
+  background: #e3c24a;
+  padding: 7px 15px;
+  border-radius: 999px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.35s, transform 0.35s;
+}
+.ctrla-fridge-mini:hover .ctrla-fridge-mini-cta,
+.ctrla-fridge-mini:focus-visible .ctrla-fridge-mini-cta {
+  opacity: 1;
+  transform: translate(-50%, -4px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ctrla-fridge-mini,
+  .ctrla-fridge-mini-cta { transition: none !important; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   CTRL-A — THE GALLEY SWIPE DECK
+   Full-screen Tinder-style card stack the fridge opens into.
+   Dark cosmic surface + a paper-dark recipe card, matching the
+   drawer it replaced. ═══════════════════════════════════════ */
+.ctrla-swipe-overlay {
+  position: fixed;
+  inset: 0;
+  /* Above the site-wide floating nav dock (z-index: 999). */
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(16px, 4vw, 40px) 16px clamp(24px, 5vw, 56px);
+  background: radial-gradient(120% 90% at 50% -10%, rgba(78, 61, 115, 0.45), transparent 55%),
+    linear-gradient(180deg, #160c28 0%, #0f0820 100%);
+  opacity: 0;
+  transform: scale(0.94);
+  transition: opacity 0.36s cubic-bezier(0.16, 1, 0.3, 1), transform 0.36s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ctrla-swipe-overlay.idle { opacity: 1; transform: scale(1); }
+.ctrla-swipe-overlay.exit { opacity: 0; transform: scale(0.96); }
+
+.ctrla-swipe-top {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: clamp(14px, 3vw, 24px);
+  flex: none;
+}
+.ctrla-swipe-progress {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(240, 230, 224, 0.6);
+}
+.ctrla-swipe-close {
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid rgba(240, 230, 224, 0.2);
+  background: rgba(240, 230, 224, 0.04);
+  color: #f0e6e0;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.ctrla-swipe-close:hover { background: rgba(240, 230, 224, 0.1); border-color: #e3c24a; transform: translateY(-1px); }
+
+.ctrla-swipe-stack {
+  position: relative;
+  width: min(360px, 92vw);
+  height: min(560px, 66vh);
+  flex: none;
+}
+.ctrla-swipe-card {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  touch-action: none;
+  cursor: grab;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
+}
+.ctrla-swipe-card:active { cursor: grabbing; }
+.ctrla-swipe-card-next { transform: translateY(10px) scale(0.96); opacity: 0.7; pointer-events: none; z-index: 1; }
+.ctrla-swipe-card:not(.ctrla-swipe-card-next) { z-index: 2; }
+
+.ctrla-swipe-card-inner {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: clamp(20px, 4vw, 28px);
+  border: 1px solid rgba(240, 230, 224, 0.16);
+  border-top: 3px solid var(--accent);
+  background: linear-gradient(180deg, #24123a, #160c28);
+  color: #f0e6e0;
+}
+.ctrla-swipe-card-glyph { width: 24px; height: 24px; color: var(--accent); margin-bottom: 10px; }
+.ctrla-swipe-card-cat {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.ctrla-swipe-card-name {
+  margin: 8px 0 4px;
+  font-family: "Neue Montreal", sans-serif;
+  font-weight: 800;
+  font-size: clamp(24px, 4.5vw, 32px);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #f0e6e0;
+}
+.ctrla-swipe-card-cuisine {
+  margin: 0 0 12px;
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--accent);
+}
+.ctrla-swipe-card-blurb {
+  margin: 0 0 18px;
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: rgba(240, 230, 224, 0.86);
+}
+.ctrla-swipe-card-ing { margin-top: auto; }
+.ctrla-swipe-card-ing ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 7px; }
+.ctrla-swipe-card-ing li {
+  padding: 6px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(240, 230, 224, 0.16);
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 12px;
+  color: rgba(240, 230, 224, 0.86);
+}
+
+.ctrla-swipe-stamp {
+  position: absolute;
+  top: 24px;
+  z-index: 3;
+  font-family: "Neue Montreal", sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: 0.1em;
+  padding: 5px 14px;
+  border-radius: 8px;
+  border: 3px solid currentColor;
+  pointer-events: none;
+  transition: opacity 0.05s linear;
+}
+.ctrla-swipe-stamp.like { right: 18px; color: #e3c24a; transform: rotate(-12deg); }
+.ctrla-swipe-stamp.pass { left: 18px; color: #a56a67; transform: rotate(12deg); }
+
+.ctrla-swipe-actions {
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 4vw, 30px);
+  margin-top: clamp(20px, 4vw, 32px);
+  flex: none;
+}
+.ctrla-swipe-actions button {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 1px solid rgba(240, 230, 224, 0.22);
+  background: rgba(240, 230, 224, 0.05);
+  color: #f0e6e0;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s, color 0.2s;
+}
+.ctrla-swipe-actions button:hover { transform: translateY(-2px); }
+.ctrla-swipe-actions button[aria-label="Pass"]:hover { border-color: #a56a67; color: #a56a67; }
+.ctrla-swipe-actions button[aria-label="Like"]:hover { border-color: #e3c24a; color: #e3c24a; }
+.ctrla-swipe-actions button[aria-label="Suggest a mod"] { width: 44px; height: 44px; font-size: 16px; }
+.ctrla-swipe-actions button[aria-label="Suggest a mod"]:hover { border-color: #8e76b8; color: #8e76b8; }
+
+.ctrla-swipe-mod-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(18px, 4vw, 26px);
+  background: linear-gradient(180deg, rgba(15, 8, 32, 0) 0%, rgba(15, 8, 32, 0.94) 40%);
+}
+.ctrla-swipe-mod-panel textarea {
+  width: 100%;
+  min-height: 90px;
+  resize: vertical;
+  border-radius: 10px;
+  border: 1px solid rgba(240, 230, 224, 0.22);
+  background: rgba(240, 230, 224, 0.06);
+  color: #f0e6e0;
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: 15px;
+  padding: 10px 12px;
+}
+.ctrla-swipe-mod-panel textarea::placeholder { color: rgba(240, 230, 224, 0.4); }
+.ctrla-swipe-mod-actions { display: flex; gap: 10px; margin-top: 10px; }
+.ctrla-swipe-mod-actions button {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.ctrla-swipe-mod-send { background: #8e76b8; color: #0f0820; }
+.ctrla-swipe-mod-cancel { background: transparent; border-color: rgba(240, 230, 224, 0.22); color: #f0e6e0; }
+
+.ctrla-swipe-end {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  margin: auto;
+  max-width: 380px;
+}
+.ctrla-swipe-end h3 {
+  font-family: "Neue Montreal", sans-serif;
+  font-weight: 800;
+  font-size: clamp(24px, 5vw, 34px);
+  letter-spacing: -0.02em;
+  color: #f0e6e0;
+  margin: 0;
+}
+.ctrla-swipe-end p {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-size: 15px;
+  color: rgba(240, 230, 224, 0.7);
+  margin: 0;
+}
+.ctrla-swipe-end a {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0f0820;
+  background: #e3c24a;
+  padding: 13px 24px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+.ctrla-swipe-end button {
+  background: none;
+  border: none;
+  color: rgba(240, 230, 224, 0.6);
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+@media (max-width: 400px) {
+  .ctrla-swipe-actions { gap: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ctrla-swipe-overlay,
+  .ctrla-swipe-card { transition: none !important; }
+}
+
 /* On Repeat — two Spotify players side by side */
 .ctrla-onrepeat {
   display: grid;
@@ -2374,6 +2928,276 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 /* ══════════════════════════════════════════════════════════════
+   CTRL-A LANDING REDESIGN PASS
+   Spine (left rail TOC), selection-sweep motif, half-width teaser
+   peers, thin stat strip, horizontal Off-the-clock shelf.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── The "selection" motif — a gold CTRL-A highlight sweep behind a
+   heading, fired once when it enters view. A highlighter band sits low
+   behind the type (so light text stays legible) and grows L→R. ── */
+.ctrla-sweep {
+  background-image: linear-gradient(transparent 60%, rgba(227, 194, 74, 0.30) 60%);
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 0% 100%;
+}
+.ctrla-sweep.is-selected {
+  animation: ctrla-sweep-in 0.42s ease-out forwards;
+}
+@keyframes ctrla-sweep-in {
+  from { background-size: 0% 100%; }
+  to { background-size: 100% 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ctrla-sweep.is-selected { animation: none; background-size: 100% 100%; }
+}
+
+/* ── The Spine — fixed left rail: zero-padded numerals, a hairline gold
+   progress stroke that fills on scroll, active numeral filled gold.
+   Desktop (>=1024px) only; engages after the cover, disengages at the
+   footer. ── */
+.ctrla-spine {
+  position: fixed;
+  top: 50%;
+  left: clamp(14px, 2.4vw, 30px);
+  transform: translateY(-50%);
+  z-index: 40;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.ctrla-spine[data-engaged="true"] { opacity: 1; pointer-events: auto; }
+.ctrla-spine-track {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+  background: rgba(240, 230, 224, 0.16);
+  overflow: hidden;
+}
+.ctrla-spine-fill {
+  position: absolute;
+  inset: 0;
+  background: #e3c24a;
+  transform-origin: top center;
+  transform: scaleY(0);
+  transition: transform 0.14s linear;
+}
+.ctrla-spine-list {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2vw, 26px);
+}
+.ctrla-spine-num {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: rgba(240, 230, 224, 0.5);
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+.ctrla-spine-num::before {
+  content: "";
+  position: absolute;
+  inset: -3px -6px;
+  background: #0f0820;
+  z-index: -1;
+}
+.ctrla-spine-num:hover { color: #f0e6e0; }
+.ctrla-spine-num[data-active="true"] { color: #e3c24a; font-weight: 700; }
+.ctrla-spine-label {
+  position: absolute;
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%) translateX(-4px);
+  white-space: nowrap;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #f0e6e0;
+  background: rgba(15, 8, 32, 0.92);
+  border: 1px solid rgba(240, 230, 224, 0.16);
+  padding: 5px 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.ctrla-spine-num:hover .ctrla-spine-label,
+.ctrla-spine-num:focus-visible .ctrla-spine-label {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+@media (min-width: 1024px) {
+  .ctrla-spine { display: flex; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ctrla-spine, .ctrla-spine-fill, .ctrla-spine-num { transition: none; }
+}
+
+/* Mobile progress hairline — 2px gold bar pinned at the very top. */
+.ctrla-spine-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: #e3c24a;
+  z-index: 60;
+  transform-origin: left center;
+  transform: scaleX(0);
+  width: 100%;
+  transition: transform 0.14s linear;
+}
+@media (min-width: 1024px) { .ctrla-spine-top { display: none; } }
+@media (prefers-reduced-motion: reduce) { .ctrla-spine-top { transition: none; } }
+
+/* ── Half-width teaser peers — DreamAsia + The Fold as honest equals.
+   Neutralizes each teaser's own <section>/<Bleed> padding (inline, so
+   !important is required) and lays them out in one shared grid. ── */
+.ctrla-peers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(20px, 3vw, 44px);
+  align-items: start;
+}
+.ctrla-peers > div > section { padding: 0 !important; }
+.ctrla-peers > div > section > div {
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+@media (max-width: 900px) {
+  .ctrla-peers { grid-template-columns: 1fr; gap: clamp(28px, 6vw, 48px); }
+}
+
+/* ── Thin stat strip — the four mono numerals as a single hairline row. */
+.ctrla-statstrip {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(227, 194, 74, 0.4);
+  border-bottom: 1px solid rgba(227, 194, 74, 0.4);
+}
+.ctrla-statstrip-cell {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: clamp(12px, 1.6vw, 18px) clamp(16px, 2.4vw, 30px);
+  flex: 1 1 auto;
+}
+.ctrla-statstrip-cell + .ctrla-statstrip-cell { border-left: 1px solid rgba(240, 230, 224, 0.16); }
+.ctrla-statstrip-lead {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(240, 230, 224, 0.64);
+  align-self: center;
+}
+@media (max-width: 720px) {
+  .ctrla-statstrip-cell { flex-basis: 50%; }
+  .ctrla-statstrip-cell:nth-child(odd) { border-left: none; }
+}
+
+/* ── Off-the-clock shelf — native horizontal scroll-snap strip that
+   bleeds off the right edge. Drag-to-scroll, staggered entry, a gold
+   scroll-thumb affordance, and a fading "drag" hint. ── */
+.ctrla-shelf-wrap { position: relative; width: 100%; }
+.ctrla-shelf {
+  display: flex;
+  gap: clamp(14px, 1.8vw, 22px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
+  /* Align the first card with the Bleed content edge; run off the right. */
+  padding-left: calc(max(0px, (100vw - 1280px) / 2) + clamp(18px, 5vw, 64px));
+  padding-right: clamp(24px, 6vw, 72px);
+  padding-bottom: 4px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  cursor: grab;
+}
+.ctrla-shelf::-webkit-scrollbar { display: none; }
+.ctrla-shelf.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+.ctrla-shelf.is-dragging * { pointer-events: none; }
+.ctrla-shelf-item {
+  position: relative;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  opacity: 1;
+}
+.ctrla-shelf-art { width: clamp(300px, 46vw, 560px); }
+.ctrla-shelf-track { width: clamp(220px, 30vw, 320px); }
+.ctrla-shelf-fuel { width: clamp(320px, 52vw, 620px); }
+/* Staggered entry from the right — one-shot, added when in view. */
+.ctrla-shelf.is-in .ctrla-shelf-item { animation: ctrla-shelf-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.ctrla-shelf:not(.is-in) .ctrla-shelf-item { opacity: 0; transform: translateX(40px); }
+@keyframes ctrla-shelf-in {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ctrla-shelf:not(.is-in) .ctrla-shelf-item { opacity: 1; transform: none; }
+  .ctrla-shelf.is-in .ctrla-shelf-item { animation: none; }
+}
+/* Gold scroll-thumb affordance line. */
+.ctrla-shelf-scroll {
+  position: relative;
+  height: 2px;
+  margin: 14px calc(max(0px, (100vw - 1280px) / 2) + clamp(18px, 5vw, 64px)) 0;
+  background: rgba(240, 230, 224, 0.14);
+}
+.ctrla-shelf-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #e3c24a;
+  border-radius: 2px;
+  transition: width 0.12s linear, transform 0.12s linear;
+}
+.ctrla-shelf-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding-left: calc(max(0px, (100vw - 1280px) / 2) + clamp(18px, 5vw, 64px));
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(240, 230, 224, 0.55);
+  transition: opacity 0.4s ease;
+}
+.ctrla-shelf-hint.is-hidden { opacity: 0; }
+.ctrla-shelf-hint span[aria-hidden] { animation: ctrla-shelf-nudge 1.6s ease-in-out infinite; }
+@keyframes ctrla-shelf-nudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ctrla-shelf-hint span[aria-hidden] { animation: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════
    THE FOLD — the cafe (CTRL-A feature)
    A warm room adrift past the edge of the map. Extraterrestrial
    and cozy at once: a cosmic-sunset window, warm interior light,
@@ -2607,6 +3431,14 @@ input[type="range"]::-webkit-slider-thumb {
   display: block;
   width: 100%;
   height: 100%;
+  /* Leaving a session: the cosmos returns, a touch quicker than it left. */
+  transition: filter 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+/* In session (now the default view): the cosmos stays gently behind the panel
+   so flying between worlds by scrolling is still visible, just softened. */
+.fold--session .fold__belt {
+  filter: blur(3px) brightness(0.72);
+  transition: filter 0.34s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .fold__vignette {
   position: absolute;
@@ -2636,15 +3468,44 @@ input[type="range"]::-webkit-slider-thumb {
   justify-content: space-between;
   gap: 16px;
 }
+/* Masthead: The Fold is the product; the volume/theme rides beneath it. */
 .fold__brand {
-  font-family: "Instrument Serif", Georgia, serif;
-  font-style: italic;
-  font-size: clamp(15px, 2vw, 21px);
-  color: rgba(240, 230, 224, 0.9);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
   text-shadow: 0 1px 18px rgba(15, 8, 32, 0.7);
 }
-/* Bold room name carries the current workspace's chakra accent. */
-.fold__brand b { font-style: normal; color: var(--accent, #e3c24a); font-weight: 600; transition: color 0.5s ease; }
+.fold__wordmark {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(16px, 2.2vw, 23px);
+  line-height: 1;
+  color: rgba(240, 230, 224, 0.92);
+}
+.fold__volume {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent, #e3c24a);
+  opacity: 0.92;
+  transition: color 0.5s ease;
+}
+
+/* Return greeting: a whisper of what they've done here, not a banner. */
+.fold__greet {
+  margin: 10px 0 0;
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(15px, 1.9vw, 20px);
+  color: rgba(240, 230, 224, 0.6);
+  text-shadow: 0 1px 14px rgba(15, 8, 32, 0.7);
+  animation: fold-greet-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes fold-greet-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
 .fold__stepout {
   border: 0;
   background: none;
@@ -2660,9 +3521,15 @@ input[type="range"]::-webkit-slider-thumb {
 .fold__stepout:hover { color: #f0e6e0; }
 
 /* ── Title block (the room you're vantaged on) ── */
+/* Re-keyed on each landing, so the world name settles in on arrival. */
 .fold__title {
   max-width: 640px;
   margin: auto 0;
+  animation: fold-arrive 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes fold-arrive {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 .fold__floor {
   font-family: "Neue Montreal", sans-serif;
@@ -2684,12 +3551,18 @@ input[type="range"]::-webkit-slider-thumb {
   color: #f0e6e0;
   margin: 0;
   text-shadow: 0 2px 44px rgba(15, 8, 32, 0.6), 0 1px 4px rgba(15, 8, 32, 0.4);
+  animation: fold-name-in 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+/* The name eases open: a hair of tracking + lift resolving to rest. */
+@keyframes fold-name-in {
+  from { opacity: 0; letter-spacing: 0.05em; transform: translateY(6px); }
+  to { opacity: 1; letter-spacing: -0.035em; transform: none; }
 }
 .fold__line {
   font-family: "Instrument Serif", Georgia, serif;
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(18px, 2.6vw, 30px);
-  line-height: 1.35;
+  line-height: 1.4;
   color: rgba(240, 230, 224, 0.85);
   margin: clamp(16px, 2vw, 24px) 0 0;
   max-width: 560px;
@@ -2761,6 +3634,50 @@ input[type="range"]::-webkit-slider-thumb {
   opacity: 0.6;
 }
 .fold__room--active .fold__state { color: var(--accent, #e3c24a); opacity: 0.95; }
+/* Earned world, still locked: reads as a closed door with a visible price. */
+.fold__room--locked {
+  opacity: 0.6;
+  border-style: dashed;
+  cursor: help;
+}
+.fold__room--locked:hover { opacity: 0.85; transform: none; background: rgba(15, 8, 32, 0.4); color: rgba(240, 230, 224, 0.86); }
+.fold__room-lock { font-size: 10px; line-height: 1; opacity: 0.75; margin-right: 1px; color: #e7a33a; }
+
+/* Golden Hour's locked callout: name, one line, and the honest condition. */
+.fold__lock {
+  pointer-events: auto;
+  align-self: center;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 18px 22px;
+  text-align: center;
+  border: 1px solid color-mix(in srgb, #e7a33a 40%, transparent);
+  border-radius: 16px;
+  background: linear-gradient(160deg, rgba(36, 18, 58, 0.72), rgba(15, 8, 32, 0.66));
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 18px 50px -20px rgba(231, 163, 58, 0.5);
+  animation: fold-greet-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.fold__lock-name { font-family: "Neue Montreal", sans-serif; font-weight: 800; font-size: 20px; letter-spacing: -0.02em; color: #ffdf9a; }
+.fold__lock-copy { font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-size: 16px; color: rgba(240, 230, 224, 0.82); margin: 6px 0 10px; }
+.fold__lock-cond { font-family: "Neue Montreal", sans-serif; font-size: 12px; letter-spacing: 0.02em; color: rgba(240, 230, 224, 0.62); margin: 0; }
+.fold__lock-cond b { color: #e7a33a; font-weight: 600; }
+.fold__lock-close {
+  margin-top: 12px;
+  border: 1px solid rgba(240, 230, 224, 0.3);
+  border-radius: 999px;
+  background: none;
+  color: rgba(240, 230, 224, 0.8);
+  padding: 6px 16px;
+  cursor: pointer;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: color 0.2s, border-color 0.2s;
+}
+.fold__lock-close:hover { color: #fff; border-color: rgba(240, 230, 224, 0.5); }
 .fold__pad {
   border: 1px solid rgba(240, 230, 224, 0.2);
   border-radius: 7px;
@@ -2783,95 +3700,19 @@ input[type="range"]::-webkit-slider-thumb {
   color: var(--accent, #e3c24a);
   box-shadow: inset 0 0 0 1px var(--accent, #e3c24a);
 }
-
-/* ── Doorway intro (first visit) ── */
-.fold__door {
-  position: fixed;
-  inset: 0;
-  z-index: 6;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 4px;
-  padding: 24px;
-  background: radial-gradient(120% 100% at 50% 40%, rgba(36, 18, 58, 0.72), rgba(15, 8, 32, 0.92));
-  backdrop-filter: blur(6px);
-  transition: opacity 0.9s ease, visibility 0s 0s;
+/* Mute reads as a quieting, not an accent: neutral highlight when active. */
+.fold__pad--mute[aria-pressed="true"] {
+  border-color: rgba(240, 230, 224, 0.5);
+  color: rgba(240, 230, 224, 0.92);
+  box-shadow: inset 0 0 0 1px rgba(240, 230, 224, 0.3);
 }
-.fold__door--gone {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity 0.9s ease, visibility 0s 0.9s;
+/* While muted, the layer pads read as inaudible (dimmed, not active). */
+.fold__mixer[data-muted="true"] .fold__pad:not(.fold__pad--mute) {
+  opacity: 0.45;
 }
-.fold__kicker {
-  font-family: "Neue Montreal", sans-serif;
-  font-size: 12px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: #e3c24a;
-  margin-bottom: 18px;
-}
-.fold__doorh {
-  font-family: "Neue Montreal", sans-serif;
-  font-weight: 800;
-  font-size: clamp(30px, 6vw, 68px);
-  letter-spacing: -0.03em;
-  line-height: 0.96;
-  color: #f0e6e0;
-  margin: 0 0 18px;
-  max-width: 16ch;
-}
-.fold__what {
-  font-family: "Instrument Serif", Georgia, serif;
-  font-style: italic;
-  font-size: clamp(17px, 2.4vw, 24px);
-  line-height: 1.4;
-  color: rgba(240, 230, 224, 0.86);
-  margin: 0 0 6px;
-  max-width: 46ch;
-}
-.fold__how {
-  font-family: "Neue Montreal", sans-serif;
-  font-size: clamp(13px, 1.6vw, 15px);
-  line-height: 1.5;
-  color: rgba(240, 230, 224, 0.56);
-  margin: 0 0 30px;
-  max-width: 44ch;
-}
-.fold__enter {
-  border: 0;
-  border-radius: 999px;
-  background: #e3c24a;
-  color: #0f0820;
-  padding: 14px 30px;
-  cursor: pointer;
-  font-family: "Neue Montreal", sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.fold__enter:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(227, 194, 74, 0.35); }
-.fold__skip {
-  margin-top: 14px;
-  border: 0;
-  background: none;
-  color: rgba(240, 230, 224, 0.5);
-  cursor: pointer;
-  font-family: "Neue Montreal", sans-serif;
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  transition: color 0.2s;
-}
-.fold__skip:hover { color: #f0e6e0; }
 
 /* Keyboard focus: a clear accent ring on every interactive control. */
 .fold__stage button:focus-visible,
-.fold__door button:focus-visible,
 .fold__session button:focus-visible,
 .fold__session input:focus-visible {
   outline: 2px solid var(--accent, #e3c24a);
@@ -2883,9 +3724,16 @@ input[type="range"]::-webkit-slider-thumb {
   .fold__footer { flex-direction: column; align-items: flex-start; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .fold__door,
-  .fold__door--gone,
   .fold__hint { transition: none; }
+  /* Choreography collapses to instant/opacity-only. */
+  .fold__title,
+  .fold__name,
+  .fold__greet,
+  .fold__lock { animation: none; }
+  .fold__belt,
+  .fold--session .fold__belt { transition: none; }
+  .fold__session,
+  .fold__session--open { transition: opacity 0.2s ease; transition-delay: 0s; }
 }
 
 /* ── The Fold — work-session focus panel (fold__focus / timer / tasks) ── */
@@ -2929,13 +3777,15 @@ input[type="range"]::-webkit-slider-thumb {
   color: #f0e6e0;
   background:
     radial-gradient(120% 90% at 50% 22%, color-mix(in srgb, var(--accent, #e3c24a) 20%, transparent), transparent 56%),
-    linear-gradient(135deg, rgba(15, 8, 32, 0.93) 0%, rgba(36, 18, 58, 0.9) 52%, rgba(78, 61, 115, 0.86) 100%);
-  backdrop-filter: blur(2px);
+    linear-gradient(135deg, rgba(15, 8, 32, 0.88) 0%, rgba(36, 18, 58, 0.85) 52%, rgba(78, 61, 115, 0.8) 100%);
+  backdrop-filter: blur(3px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.5s ease;
+  /* Leaving: fade out promptly as the cosmos returns. */
+  transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.fold__session--open { opacity: 1; pointer-events: auto; }
+/* Entering: wait a beat so the cosmos dims first, then the panel arrives. */
+.fold__session--open { opacity: 1; pointer-events: auto; transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.12s; }
 
 .fold__session-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .fold__session-brand {
@@ -2957,24 +3807,70 @@ input[type="range"]::-webkit-slider-thumb {
   transition: color 0.2s;
 }
 .fold__session-exit:hover { color: #f0e6e0; }
+.fold__session-exit:disabled { opacity: 0.35; cursor: not-allowed; }
+.fold__session-exit:disabled:hover { color: rgba(240, 230, 224, 0.6); }
+
+/* Bar actions: lock toggle + exit sit together on the right. */
+.fold__session-baractions { display: flex; align-items: center; gap: clamp(12px, 2vw, 22px); }
+
+/* Lock toggle — freeze the world so scrolling can't fly you off it. */
+.fold__session-lock {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(240, 230, 224, 0.22);
+  border-radius: 999px;
+  background: rgba(15, 8, 32, 0.34);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  color: rgba(240, 230, 224, 0.72);
+  padding: 7px 14px;
+  cursor: pointer;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.3s;
+}
+.fold__session-lock:hover { color: #f0e6e0; border-color: rgba(240, 230, 224, 0.4); background: rgba(15, 8, 32, 0.5); }
+.fold__session-lock-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  transition: background 0.2s, box-shadow 0.3s;
+}
+.fold__session-lock.is-locked {
+  border-color: var(--accent, #e3c24a);
+  color: var(--accent, #e3c24a);
+  box-shadow: inset 0 0 0 1px var(--accent, #e3c24a);
+}
+.fold__session-lock.is-locked .fold__session-lock-dot {
+  background: var(--accent, #e3c24a);
+  box-shadow: 0 0 8px var(--accent, #e3c24a);
+}
 
 .fold__session-body {
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.92fr) minmax(0, 0.92fr);
-  gap: clamp(24px, 4vw, 56px);
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.72fr);
+  gap: clamp(32px, 6vw, 96px);
   align-content: center;
   align-items: center;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1120px;
   margin: 0 auto;
   padding: clamp(12px, 2.4vh, 28px) 0;
 }
-.fold__session-col { display: flex; flex-direction: column; min-width: 0; }
-.fold__session-why { gap: 12px; }
-.fold__session-rhythm { align-items: center; }
-.fold__session-main { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+/* Intention hero — the calm centerpiece, given room to breathe. */
+.fold__session-focus {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2.2vh, 24px);
+  min-width: 0;
+}
+.fold__session-intentwrap { display: flex; flex-direction: column; gap: 12px; margin: clamp(4px, 1vh, 10px) 0; }
 .fold__session-mode {
   display: inline-flex;
   align-items: center;
@@ -2994,11 +3890,15 @@ input[type="range"]::-webkit-slider-thumb {
 }
 .fold__session-purpose {
   margin: 0;
+  /* Upright, not italic — the large italic serif was hard to read. */
   font-family: "Instrument Serif", Georgia, serif;
-  font-style: italic;
-  font-size: clamp(20px, 2.8vw, 32px);
-  line-height: 1.25;
-  color: rgba(240, 230, 224, 0.9);
+  font-style: normal;
+  font-size: clamp(28px, 4vw, 48px);
+  line-height: 1.14;
+  letter-spacing: -0.005em;
+  color: #f6efe8;
+  max-width: 17ch;
+  text-shadow: 0 1px 30px rgba(15, 8, 32, 0.5);
 }
 .fold__session-prompt {
   margin: 8px 0 0;
@@ -3027,12 +3927,161 @@ input[type="range"]::-webkit-slider-thumb {
 .fold__session-intent:hover { border-bottom-color: color-mix(in srgb, var(--accent, #e3c24a) 55%, transparent); }
 .fold__session-intent:focus { border-bottom-color: var(--accent, #e3c24a); }
 .fold__session-cue {
-  margin: 2px 0 6px;
-  font-family: "Instrument Serif", Georgia, serif;
-  font-style: italic;
-  font-size: clamp(15px, 1.8vw, 19px);
-  color: rgba(240, 230, 224, 0.76);
+  margin: 2px 0 4px;
+  font-family: "Neue Montreal", sans-serif;
+  font-style: normal;
+  font-size: clamp(14px, 1.6vw, 17px);
+  line-height: 1.5;
+  color: rgba(240, 230, 224, 0.62);
+  max-width: 40ch;
 }
+
+/* ── Rhythm CTA — the calm way into the focus timer ── */
+.fold__session-rhythmcta {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: clamp(6px, 1.4vh, 14px);
+  border: 1px solid color-mix(in srgb, var(--accent, #e3c24a) 34%, rgba(240, 230, 224, 0.14));
+  border-radius: 999px;
+  background: rgba(15, 8, 32, 0.28);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: rgba(240, 230, 224, 0.9);
+  padding: 12px 20px;
+  cursor: pointer;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: border-color 0.25s, background-color 0.25s, transform 0.25s, box-shadow 0.35s;
+}
+.fold__session-rhythmcta:hover {
+  border-color: var(--accent, #e3c24a);
+  background: rgba(15, 8, 32, 0.42);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px -14px color-mix(in srgb, var(--accent, #e3c24a) 70%, transparent);
+}
+.fold__session-rhythmcta-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--accent, #e3c24a);
+  transition: background 0.25s, box-shadow 0.35s;
+}
+.fold__session-rhythmcta-arrow { color: var(--accent, #e3c24a); transition: transform 0.25s; }
+.fold__session-rhythmcta:hover .fold__session-rhythmcta-arrow { transform: translateX(3px); }
+.fold__session-rhythmcta.is-running {
+  border-color: var(--accent, #e3c24a);
+  color: #f6efe8;
+  font-variant-numeric: tabular-nums;
+}
+.fold__session-rhythmcta.is-running .fold__session-rhythmcta-dot {
+  background: var(--accent, #e3c24a);
+  box-shadow: 0 0 10px var(--accent, #e3c24a);
+  animation: fold-pulse 2.4s ease-in-out infinite;
+}
+@keyframes fold-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* ── Bar timer chip — live countdown that opens the pop-up ── */
+.fold__session-timerchip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(240, 230, 224, 0.2);
+  border-radius: 999px;
+  background: rgba(15, 8, 32, 0.34);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  color: rgba(240, 230, 224, 0.82);
+  padding: 6px 13px 6px 11px;
+  cursor: pointer;
+  font-family: "Neue Montreal", sans-serif;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+.fold__session-timerchip:hover { border-color: rgba(240, 230, 224, 0.4); background: rgba(15, 8, 32, 0.5); color: #f0e6e0; }
+.fold__session-timerchip-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  border: 1px solid currentColor; opacity: 0.6;
+  transition: background 0.2s, box-shadow 0.3s, opacity 0.2s;
+}
+.fold__session-timerchip-time { font-size: 13px; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+.fold__session-timerchip-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.6; }
+.fold__session-timerchip.is-running {
+  border-color: var(--accent, #e3c24a);
+  color: var(--accent, #e3c24a);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent, #e3c24a) 30%, transparent);
+}
+.fold__session-timerchip.is-running .fold__session-timerchip-dot {
+  background: var(--accent, #e3c24a); opacity: 1;
+  box-shadow: 0 0 8px var(--accent, #e3c24a);
+  animation: fold-pulse 2.4s ease-in-out infinite;
+}
+
+/* ── Timer pop-up — a centered dialog over a soft scrim ── */
+.fold__timerpop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fold__timerpop.is-open { opacity: 1; pointer-events: auto; }
+.fold__timerpop-scrim {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  cursor: pointer;
+  background: rgba(9, 5, 20, 0.62);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+.fold__timerpop-card {
+  position: relative;
+  width: min(420px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2.4vh, 24px);
+  padding: clamp(24px, 3.4vw, 38px);
+  border: 1px solid color-mix(in srgb, var(--accent, #e3c24a) 24%, rgba(240, 230, 224, 0.12));
+  border-radius: 24px;
+  background:
+    radial-gradient(120% 100% at 50% -10%, color-mix(in srgb, var(--accent, #e3c24a) 16%, transparent), transparent 62%),
+    linear-gradient(160deg, rgba(36, 18, 58, 0.96), rgba(15, 8, 32, 0.96));
+  box-shadow:
+    var(--card-edge, 0 8px 30px rgba(0, 0, 0, 0.3)),
+    0 40px 90px -30px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transform: translateY(10px) scale(0.98);
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fold__timerpop.is-open .fold__timerpop-card { transform: none; }
+.fold__timerpop-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.fold__timerpop-title {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent, #e3c24a);
+}
+.fold__timerpop-close {
+  border: 1px solid rgba(240, 230, 224, 0.2);
+  border-radius: 50%;
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  background: transparent;
+  color: rgba(240, 230, 224, 0.66);
+  cursor: pointer;
+  font-size: 13px; line-height: 1;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.fold__timerpop-close:hover { color: #f0e6e0; border-color: rgba(240, 230, 224, 0.44); background: rgba(240, 230, 224, 0.06); }
+
 .fold__session-side { display: flex; flex-direction: column; min-width: 0; }
 .fold__session-side .fold__tasks {
   display: flex;
@@ -3090,6 +4139,13 @@ input[type="range"]::-webkit-slider-thumb {
   box-shadow: var(--pill-shadow, 0 2px 10px rgba(0, 0, 0, 0.4));
 }
 .fold__session-vibe.is-on .fold__session-vibe-state { color: rgba(15, 8, 32, 0.72); }
+.fold__session-vibe.is-locked { opacity: 0.55; border-style: dashed; cursor: help; }
+.fold__session-vibe.is-locked:hover { opacity: 0.72; transform: none; background-color: rgba(240, 230, 224, 0.04); color: rgba(240, 230, 224, 0.74); }
+/* Session locked: the whole vibe row dims and stops responding (the active
+   world stays lit via .is-on), so you can't fly off the world you're in. */
+.fold__session-vibes.is-frozen .fold__session-vibes-lead { color: var(--accent, #e3c24a); opacity: 0.8; }
+.fold__session-vibe.is-frozen { opacity: 0.4; cursor: not-allowed; }
+.fold__session-vibe.is-frozen:hover { transform: none; background-color: transparent; color: rgba(240, 230, 224, 0.72); }
 .fold__session-vibe-state {
   font-size: 8px;
   letter-spacing: 0.14em;
@@ -3106,35 +4162,59 @@ input[type="range"]::-webkit-slider-thumb {
   color: rgba(240, 230, 224, 0.5);
 }
 
-/* Tablet: intention + timer on top, tasks span full width below. */
+/* Tablet & below: intention hero first, tasks stacked beneath, page scrolls. */
 @media (max-width: 1024px) {
-  .fold__session-body { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 40px); }
-  .fold__session-side { grid-column: 1 / -1; }
-  .fold__session-side .fold__tasks { max-height: 300px; }
+  .fold__session-body {
+    grid-template-columns: 1fr;
+    align-content: start;
+    gap: clamp(22px, 3.4vh, 36px);
+    overflow-y: auto;
+  }
+  .fold__session-purpose { max-width: none; }
+  .fold__session-side .fold__tasks { max-height: 320px; }
 }
-/* Phone: single column, scroll inside the session. */
 @media (max-width: 640px) {
-  .fold__session-body { grid-template-columns: 1fr; align-content: start; gap: 22px; overflow-y: auto; }
+  .fold__session-body { gap: 20px; }
+  .fold__session-timerchip-label { display: none; }
 }
 
-/* Timer */
-.fold__timer { display: flex; flex-direction: column; gap: 12px; align-items: center; }
-.fold__timer-modes { display: flex; gap: 6px; align-self: stretch; }
+/* ── Timer (lives only inside the pop-up card) ── */
+.fold__timer { display: flex; flex-direction: column; gap: clamp(16px, 2.4vh, 22px); align-items: center; }
+
+/* Focus / Break as one segmented control, not two heavy buttons. */
+.fold__timer-modes {
+  display: flex;
+  gap: 4px;
+  align-self: stretch;
+  padding: 4px;
+  border: 1px solid rgba(240, 230, 224, 0.08);
+  border-radius: 999px;
+  background: rgba(9, 5, 20, 0.42);
+}
 .fold__timer-mode {
   flex: 1;
-  border: 1px solid rgba(240, 230, 224, 0.16);
-  border-radius: 7px;
-  background: rgba(240, 230, 224, 0.04);
-  color: rgba(240, 230, 224, 0.66);
-  padding: 7px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(240, 230, 224, 0.5);
+  padding: 9px;
   cursor: pointer;
   font-family: "Neue Montreal", sans-serif;
   font-size: 11px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  transition: background 0.25s, color 0.25s, box-shadow 0.25s;
 }
-.fold__timer-mode.is-on { background: color-mix(in srgb, var(--accent, #e3c24a) 16%, transparent); border-color: var(--accent, #e3c24a); color: var(--accent, #e3c24a); }
+.fold__timer-mode:hover { color: rgba(240, 230, 224, 0.82); }
+.fold__timer-mode.is-on {
+  background: color-mix(in srgb, var(--accent, #e3c24a) 18%, transparent);
+  color: color-mix(in srgb, var(--accent, #e3c24a) 70%, #f6efe8);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--accent, #e3c24a) 34%, transparent),
+    0 1px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* The dial — a recessed disc inside a thin accent progress ring. */
 .fold__timer-ring {
   --frac: 0;
   width: 152px;
@@ -3142,14 +4222,26 @@ input[type="range"]::-webkit-slider-thumb {
   border-radius: 50%;
   position: relative;
   background:
-    radial-gradient(closest-side, #160c28 76%, transparent 77% 100%),
-    conic-gradient(var(--accent, #e3c24a) calc(var(--frac) * 360deg), rgba(240, 230, 224, 0.18) 0);
-  transition: background 0.25s linear;
+    radial-gradient(closest-side, #150b26 73%, transparent 74% 100%),
+    conic-gradient(var(--accent, #e3c24a) calc(var(--frac) * 360deg), color-mix(in srgb, var(--accent, #e3c24a) 16%, rgba(240, 230, 224, 0.05)) 0);
+  transition: background 0.4s linear;
+}
+/* Recessed inner well for depth — sits under the text (z-index below). */
+.fold__timer-ring::after {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 3px 12px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 1px rgba(240, 230, 224, 0.045);
+  pointer-events: none;
 }
 /* The time is the hero: pinned dead-center in the ring. */
 .fold__timer-time {
   position: absolute;
   inset: 0;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3157,59 +4249,89 @@ input[type="range"]::-webkit-slider-thumb {
   font-weight: 800;
   font-size: 38px;
   letter-spacing: -0.03em;
-  color: #f0e6e0;
+  color: #f6efe8;
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;
 }
-.fold__timer-controls { display: flex; gap: 8px; align-self: stretch; }
+.fold__timer-controls { display: flex; gap: 10px; align-self: stretch; }
 .fold__timer-btn {
   flex: 1;
-  border: 1px solid rgba(240, 230, 224, 0.2);
-  border-radius: 8px;
+  border: 1px solid rgba(240, 230, 224, 0.16);
+  border-radius: 12px;
   background: transparent;
-  color: #f0e6e0;
-  padding: 10px;
+  color: rgba(240, 230, 224, 0.82);
+  padding: 13px;
   cursor: pointer;
   font-family: "Neue Montreal", sans-serif;
   font-size: 12px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  transition: background-color 0.2s, transform 0.2s;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
 }
-.fold__timer-btn:hover { background-color: rgba(240, 230, 224, 0.08); }
+.fold__timer-btn:hover { background-color: rgba(240, 230, 224, 0.06); border-color: rgba(240, 230, 224, 0.28); color: #f6efe8; }
+/* Start is the primary action: wider, filled, lifted. Reset stays a ghost. */
 .fold__timer-btn--primary {
+  flex: 1.5;
+  border-color: transparent;
   background-color: var(--accent, #e3c24a);
   background-image: var(--accent-grad, none);
-  border-color: transparent;
-  color: #0f0820;
+  color: #16091f;
   font-weight: 700;
-  box-shadow: var(--pill-shadow, 0 2px 10px rgba(0, 0, 0, 0.4));
-  transition: filter 0.2s, transform 0.2s;
+  box-shadow:
+    0 10px 26px -12px color-mix(in srgb, var(--accent, #e3c24a) 80%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  transition: filter 0.2s, transform 0.2s, box-shadow 0.3s;
 }
-.fold__timer-btn--primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
+.fold__timer-btn--primary:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow:
+    0 14px 34px -12px color-mix(in srgb, var(--accent, #e3c24a) 92%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
 .fold__timer-meta { display: flex; align-items: center; justify-content: space-between; align-self: stretch; gap: 10px; }
-.fold__timer-presets { display: flex; gap: 5px; }
+.fold__timer-presets { display: flex; gap: 6px; }
 .fold__timer-preset {
-  border: 1px solid rgba(240, 230, 224, 0.16);
-  border-radius: 6px;
+  border: 1px solid rgba(240, 230, 224, 0.14);
+  border-radius: 9px;
   background: transparent;
-  color: rgba(240, 230, 224, 0.6);
-  padding: 5px 8px;
+  color: rgba(240, 230, 224, 0.55);
+  padding: 6px 11px;
   cursor: pointer;
   font-family: "Neue Montreal", sans-serif;
   font-size: 10px;
-  letter-spacing: 0.04em;
-  transition: color 0.2s, border-color 0.2s;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
 }
-.fold__timer-preset.is-on { color: var(--accent, #e3c24a); border-color: color-mix(in srgb, var(--accent, #e3c24a) 55%, transparent); }
+.fold__timer-preset:hover { color: rgba(240, 230, 224, 0.85); border-color: rgba(240, 230, 224, 0.26); }
+.fold__timer-preset.is-on {
+  color: color-mix(in srgb, var(--accent, #e3c24a) 78%, #f6efe8);
+  border-color: color-mix(in srgb, var(--accent, #e3c24a) 48%, transparent);
+  background: color-mix(in srgb, var(--accent, #e3c24a) 12%, transparent);
+}
 .fold__timer-preset:disabled { opacity: 0.4; cursor: default; }
 .fold__timer-sessions {
   font-family: "Neue Montreal", sans-serif;
   font-size: 10px;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(240, 230, 224, 0.46);
+  color: rgba(240, 230, 224, 0.4);
   white-space: nowrap;
+}
+/* Streak as a quiet, upright footer set off by a hairline. */
+.fold__timer-streak {
+  margin: 0;
+  padding-top: clamp(12px, 1.8vh, 16px);
+  align-self: stretch;
+  border-top: 1px solid rgba(240, 230, 224, 0.08);
+  font-family: "Neue Montreal", sans-serif;
+  font-style: normal;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(240, 230, 224, 0.5);
+  text-align: center;
 }
 
 /* Tasks */
@@ -3293,37 +4415,38 @@ input[type="range"]::-webkit-slider-thumb {
 }
 .fold__task-del:hover { color: #a56a67; }
 
-/* The timer is the centerpiece in the immersive session: scale it up + glow */
+/* Inside the pop-up, the ring is the hero of the card: sized + a restrained glow. */
 .fold__session .fold__timer-ring {
-  width: 236px;
-  height: 236px;
+  width: 190px;
+  height: 190px;
   flex-direction: column;
   gap: 2px;
   box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--accent, #e3c24a) 22%, transparent),
     inset 0 0 0 1px rgba(240, 230, 224, 0.05),
-    0 24px 60px rgba(0, 0, 0, 0.45),
-    0 0 54px -10px color-mix(in srgb, var(--accent, #e3c24a) 50%, transparent);
+    0 1px 0 rgba(255, 255, 255, 0.04),
+    0 18px 42px -18px rgba(0, 0, 0, 0.6),
+    0 0 38px -16px color-mix(in srgb, var(--accent, #e3c24a) 52%, transparent);
 }
-.fold__session .fold__timer-ring.is-running { animation: fold-breathe 4.5s ease-in-out infinite; }
+.fold__session .fold__timer-ring.is-running { animation: fold-breathe 4.8s ease-in-out infinite; }
 @keyframes fold-breathe {
-  0%, 100% { box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent, #e3c24a) 22%, transparent), inset 0 0 0 1px rgba(240, 230, 224, 0.05), 0 24px 60px rgba(0, 0, 0, 0.45), 0 0 48px -12px color-mix(in srgb, var(--accent, #e3c24a) 42%, transparent); }
-  50% { box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent, #e3c24a) 38%, transparent), inset 0 0 0 1px rgba(240, 230, 224, 0.08), 0 24px 60px rgba(0, 0, 0, 0.45), 0 0 78px 2px color-mix(in srgb, var(--accent, #e3c24a) 62%, transparent); }
+  0%, 100% { box-shadow: inset 0 0 0 1px rgba(240, 230, 224, 0.05), 0 1px 0 rgba(255, 255, 255, 0.04), 0 18px 42px -18px rgba(0, 0, 0, 0.6), 0 0 36px -16px color-mix(in srgb, var(--accent, #e3c24a) 46%, transparent); }
+  50% { box-shadow: inset 0 0 0 1px rgba(240, 230, 224, 0.08), 0 1px 0 rgba(255, 255, 255, 0.04), 0 18px 42px -18px rgba(0, 0, 0, 0.6), 0 0 58px -8px color-mix(in srgb, var(--accent, #e3c24a) 66%, transparent); }
 }
 .fold__timer-phase {
   position: absolute;
-  top: 27%;
+  top: 26%;
   left: 0;
   right: 0;
+  z-index: 2;
   text-align: center;
   font-family: "Neue Montreal", sans-serif;
   font-size: 10px;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.34em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--accent, #e3c24a) 80%, #f0e6e0);
-  opacity: 0.85;
+  color: color-mix(in srgb, var(--accent, #e3c24a) 78%, #f0e6e0);
+  opacity: 0.8;
 }
-.fold__session .fold__timer-time { font-size: 50px; }
+.fold__session .fold__timer-time { font-size: 44px; }
 .fold__tasks-empty { color: rgba(240, 230, 224, 0.52); }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3331,4 +4454,7 @@ input[type="range"]::-webkit-slider-thumb {
   .fold--session .fold__stage { transition: none; }
   .fold__timer-ring,
   .fold__session .fold__timer-ring.is-running { transition: none; animation: none; }
+  .fold__timerpop-card { transform: none; transition: opacity 0.2s ease; }
+  .fold__session-rhythmcta.is-running .fold__session-rhythmcta-dot,
+  .fold__session-timerchip.is-running .fold__session-timerchip-dot { animation: none; }
 }

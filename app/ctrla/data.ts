@@ -1,5 +1,66 @@
 // ═══════════════════════════════════════════════════════
 // CTRL A MAGAZINE, CONTENT DATA
+//
+// Volume-specific editorial content now lives in
+// `./_volumes/*`. This module is TWO things:
+//   1. The home of the evergreen TOOLKIT subsystem (music /
+//      web-dev / design) — reworked in a later wave, so it
+//      stays here for now.
+//   2. A thin compatibility layer that re-exports the CURRENT
+//      volume's content (and the volume types) so existing
+//      imports keep working. Flip the pointer in
+//      `./_volumes/index.ts` to publish a new issue.
+// ═══════════════════════════════════════════════════════
+
+import { currentVolume } from "./_volumes";
+import type { GalleyCategory } from "./_volumes/types";
+
+// ── Current-volume re-exports (compatibility layer) ─────
+// Prefer importing `currentVolume` from "./_volumes" in new code.
+export const issueMeta = currentVolume.issueMeta;
+export const taste = currentVolume.taste;
+export const onRepeat = currentVolume.onRepeat;
+export const artForm = currentVolume.artForm;
+export const galley = currentVolume.galley;
+export const cookbook = currentVolume.cookbook;
+export const artists = currentVolume.artists;
+export const spotlight = currentVolume.spotlight;
+export const events = currentVolume.events;
+export const eventSources = currentVolume.eventSources;
+export const eventsCover = currentVolume.eventsCover;
+export const vueClose = currentVolume.vueClose;
+// The deep feature — flattened for the existing feature components.
+export const coverShot = currentVolume.feature.coverShot;
+export const issueOpen = currentVolume.feature.issueOpen;
+export const bts = currentVolume.feature.bts;
+export const twoCities = currentVolume.feature.twoCities;
+export const productionToolkit = currentVolume.feature.productionToolkit;
+
+// Volume types re-exported so `import { type X } from "../data"` keeps working.
+export type {
+  IssueStat,
+  IssueMeta,
+  RepeatTrack,
+  GalleyRecipe,
+  GalleyCategory,
+  Artist,
+  IssueEvent,
+  BtsTile,
+  ProdTool,
+  Volume,
+} from "./_volumes/types";
+
+// ── Galley category accents ─────────────────────────────
+// Evergreen (not volume-specific): the fridge's meal / snack / drink
+// tints stay inside the house palette: gold / rose / lifted plum.
+export const galleyMeta: Record<GalleyCategory, { label: string; accent: string }> = {
+  meal: { label: "Meal", accent: "#E3C24A" },
+  snack: { label: "Snack", accent: "#A56A67" },
+  drink: { label: "Drink", accent: "#8E76B8" },
+};
+
+// ═══════════════════════════════════════════════════════
+// TOOLKIT SUBSYSTEM (evergreen — reworked in a later wave)
 // ═══════════════════════════════════════════════════════
 
 export type ToolLevel = "Beginner" | "Intermediate" | "Pro";
@@ -68,462 +129,11 @@ export interface ToolkitSection {
   guide: { title: string; steps: GuideStep[] };
   /** Hand-curated industry shifts for the Signals feed (flagship: web-dev). */
   signals?: Signal[];
+  /** Subtle, hand-authored editorial nods to the sibling toolkits. Optional and
+   *  capped at 3. `toolkit` is another section id, `toolName` names a real tool
+   *  in that section, `line` is a single Instrument Serif sentence in ROV voice. */
+  crossRefs?: { toolkit: string; toolName: string; line: string }[];
 }
-
-// ── ISSUE MASTHEAD / STATS ──────────────────────────────
-
-export interface IssueStat {
-  value: string;
-  label: string;
-}
-
-export const issueMeta = {
-  volume: "Vol. 01",
-  edition: "June 2026",
-  cadence: "Monthly",
-  tagline: "A digital muse for creatives everywhere.",
-  // The thesis: what CTRL-A is, and why these sections belong together.
-  thesis:
-    "CTRL-A is how Range Of View plays digital muse to creatives everywhere, helping you see the bigger picture. We go deep on the tools worth your time, walk the whole process with none of the ugly steps skipped, and feature the art we cannot stop thinking about. Because nothing matters more in creative work than taste. Taste is the sky you set as your limit.",
-  coverEyebrow: "ROV's monthly field guide for creatives",
-  coverHeadline: "See the bigger picture.",
-  coverDeck:
-    "CTRL-A is ROV's digital muse for creatives everywhere: immersive toolkits, the whole process with none of the ugly steps skipped, and the art we cannot stop thinking about. Because taste is the sky you set as your limit.",
-  // Concrete value, so a cold visitor gets the function, not just the feeling.
-  coverValue:
-    "Every volume, free: a deep-dive toolkit for music, web, and design, the real process behind the work, and a brand-kit generator you can use today.",
-  // The volume's deep feature, kept separate from the cover thesis.
-  featureHeadline: "From the bedroom to the stage.",
-  featureDeck:
-    "How a small team produced a multi-city festival headline. Sam Suen headlines DreamAsia Fest across two states. Everything that happened before the lights came up.",
-  stats: [
-    { value: "24", label: "Tools in rotation" },
-    { value: "03", label: "Toolkits" },
-    { value: "01", label: "Deep feature" },
-    { value: "12", label: "Volumes a year" },
-  ] as IssueStat[],
-};
-
-// ── TASTE / FEATURED ART ────────────────────────────────
-// "We feature the art we can't stop thinking about." One feature per
-// volume, any discipline. Taste is the throughline.
-export const taste = {
-  eyebrow: "Featured art · Taste",
-  headline: "Taste.",
-  lede: "Taste is the sky you set as your limit.",
-  note: "Every volume we feature one artist whose work we cannot stop thinking about. Not the loudest. The truest.",
-  openCall: {
-    title: "Featured next volume?",
-    body: "One artist a volume, across any discipline. If you are making something true, show us.",
-    cta: "Send us the work",
-    email: "admin@pursuenetworking.com",
-  },
-};
-
-// ── ON REPEAT ───────────────────────────────────────────
-// Two songs the studio cannot stop playing this volume. Shown
-// as full square cover art; each tile links out to Spotify.
-export interface RepeatTrack {
-  title: string;
-  artist: string;
-  image: string;
-  url: string;
-}
-
-export const onRepeat = {
-  eyebrow: "On repeat · Sound",
-  headline: "Two on repeat.",
-  note: "What is soundtracking the studio this volume. Hit play, then go make something.",
-  tracks: [
-    {
-      title: "Stars Collide",
-      artist: "SAM SUEN, Basu",
-      image: "/ctrla/onrepeat/stars-collide.jpg",
-      url: "https://open.spotify.com/track/2jAoNrw7bhzNTDoMNJSQz9",
-    },
-    {
-      title: "you could be my woman",
-      artist: "Basu",
-      image: "/ctrla/onrepeat/you-could-be-my-woman.jpg",
-      url: "https://open.spotify.com/track/78bezRj4TvB0XJhpsfOi48",
-    },
-  ] as RepeatTrack[],
-};
-
-// ── FORM OF THE VOLUME ──────────────────────────────────
-// A different art form each volume: pottery, graffiti, weaving,
-// glass. The crafts that teach us how makers actually think.
-// Vol. 01 — kintsugi, repair in gold (on-theme: nothing hidden).
-export const artForm = {
-  eyebrow: "Form of the volume · Craft",
-  form: "Kintsugi",
-  origin: "Japan · since the 15th century",
-  headline: "Repair, in gold.",
-  blurb:
-    "Kintsugi mends broken ceramics with lacquer and powdered gold, so the seams become the most beautiful part of the piece. The break is not hidden. It is the point. That is the whole CTRL-A thesis in a bowl: none of the ugly steps skipped, the process worn proudly on the surface.",
-  note: "Each volume we sit with one craft, pottery, graffiti, weaving, glass, for what it teaches about taste and patience.",
-  pullquote: "The crack is where the gold goes.",
-  // Placeholder stock photo until we shoot/source the real piece.
-  image: "/ctrla/placeholder/artform-kintsugi.jpg",
-};
-
-// ── THE COOKBOOK ────────────────────────────────────────
-// A digital muse feeds the maker too. Easy recipes from the
-// cultures we work with, built for creatives short on time
-// and money. Recurring standing feature, refreshed per volume.
-
-export interface Recipe {
-  name: string;
-  origin: string;
-  /** the collaborator / culture it comes by way of */
-  by?: string;
-  time: string;
-  cost: string;
-  serves: string;
-  blurb: string;
-  ingredients: string[];
-  steps: string[];
-  /** the volume's sneak-peek dish, the most appetising one */
-  featured?: boolean;
-  /** optional hero food photo for the sneak peek */
-  image?: string;
-}
-
-// ── THE GALLEY FRIDGE ───────────────────────────────────
-// The cookbook's interactive heart: a fridge drifting in the void
-// that holds exactly three things, one Meal, one Snack, one Drink.
-// One source of truth. Swapping a dish is a one-line edit here.
-
-export type GalleyCategory = "meal" | "snack" | "drink";
-
-export interface GalleyRecipe {
-  id: string;
-  category: GalleyCategory;
-  name: string;
-  cuisine: string;
-  blurb: string;
-  timeMins: number;
-  costUsd: number;
-  serves: number;
-  ingredients: string[];
-}
-
-export const galley: GalleyRecipe[] = [
-  {
-    id: "gyeran-bap",
-    category: "meal",
-    name: "Gyeran Bap",
-    cuisine: "Korean",
-    blurb:
-      "The 2am edit-session staple. Hot rice, a glossy fried egg, sesame and soy. A real meal in one bowl.",
-    timeMins: 10,
-    costUsd: 3,
-    serves: 1,
-    ingredients: ["rice", "egg", "soy sauce", "sesame oil", "scallion"],
-  },
-  {
-    id: "miso-toast",
-    category: "snack",
-    name: "Miso Butter Toast",
-    cuisine: "Japanese-ish",
-    blurb:
-      "Bread, butter, a smear of miso under the grill. Salt and umami to bridge the gap between renders.",
-    timeMins: 4,
-    costUsd: 2,
-    serves: 1,
-    ingredients: ["bread", "butter", "miso paste"],
-  },
-  {
-    id: "focus-tea",
-    category: "drink",
-    name: "Slow-Brew Focus Tea",
-    cuisine: "House blend",
-    blurb:
-      "Green tea, ginger, a little honey. The warm reset that settles the mind without the crash.",
-    timeMins: 6,
-    costUsd: 1,
-    serves: 1,
-    ingredients: ["green tea", "ginger", "honey", "lemon"],
-  },
-];
-
-// Category accents stay inside the house palette: gold / rose / lifted plum.
-export const galleyMeta: Record<GalleyCategory, { label: string; accent: string }> = {
-  meal: { label: "Meal", accent: "#E3C24A" },
-  snack: { label: "Snack", accent: "#A56A67" },
-  drink: { label: "Drink", accent: "#8E76B8" },
-};
-
-export const cookbook = {
-  eyebrow: "The Cookbook · Fuel for the work",
-  headline: "The Cookbook.",
-  lede: "A digital muse feeds the maker, too.",
-  note: "Easy recipes from the cultures we work with, built for creatives short on time and money. Real food, few ingredients, done before your render finishes.",
-  recipes: [
-    {
-      name: "Gyeran Bap",
-      origin: "Korean",
-      by: "by way of DreamAsia",
-      time: "10 min",
-      cost: "About $3",
-      serves: "1",
-      featured: true,
-      image: "/ctrla/placeholder/cookbook-dish.jpg",
-      blurb: "The 2am edit-session staple. Hot rice, a glossy fried egg, sesame and soy. Comfort with almost nothing in the fridge.",
-      ingredients: ["1 bowl hot cooked rice", "1 to 2 eggs", "Toasted sesame oil", "Soy sauce", "Sesame seeds", "Optional: seaweed, green onion"],
-      steps: [
-        "Fry the egg in a little oil, keep the yolk runny.",
-        "Tip the hot rice into a bowl, add a small spoon of sesame oil and a splash of soy.",
-        "Slide the egg on top, break the yolk, and mix it through.",
-        "Finish with sesame seeds and torn seaweed.",
-      ],
-    },
-    {
-      name: "Menemen",
-      origin: "Turkish",
-      by: "by way of Aysegul",
-      time: "15 min",
-      cost: "About $4",
-      serves: "2",
-      blurb: "Soft eggs cooked down with tomato and pepper. One pan, scoop it with bread, nothing to plate.",
-      ingredients: ["3 eggs", "2 tomatoes, or a small tin", "1 green pepper", "Olive oil", "Salt, pepper, pinch of chili", "Bread, to serve"],
-      steps: [
-        "Soften chopped pepper in olive oil for 3 to 4 minutes.",
-        "Add chopped tomato and cook down to a loose sauce.",
-        "Lower the heat, pour in beaten eggs, and fold gently until just set.",
-        "Season, then scoop straight from the pan with bread.",
-      ],
-    },
-    {
-      name: "Egg Bhurji",
-      origin: "Indian",
-      by: "by way of DKM",
-      time: "12 min",
-      cost: "About $4",
-      serves: "2",
-      blurb: "A spiced scramble that turns three eggs and an onion into a real meal. Roll it in roti or pile it on toast.",
-      ingredients: ["3 eggs", "1 onion", "1 tomato", "Green chili, optional", "Turmeric, chili powder, salt", "Oil, fresh coriander"],
-      steps: [
-        "Fry chopped onion until soft, then add tomato and chili.",
-        "Stir in a pinch of turmeric and chili powder.",
-        "Pour in the beaten eggs and scramble until just set.",
-        "Top with coriander and serve with roti or toast.",
-      ],
-    },
-    {
-      name: "Cheese Grits",
-      origin: "Southern · ATL",
-      time: "15 min",
-      cost: "About $3",
-      serves: "2",
-      blurb: "Hometown comfort in one pot. Creamy, warm, cheap. The bowl you make when the budget is gone but the deadline isn't.",
-      ingredients: ["1/2 cup quick grits", "2 cups water, or half milk", "Butter", "Sharp cheddar", "Salt, black pepper", "Hot sauce, to finish"],
-      steps: [
-        "Bring the water to a boil, whisk in the grits, and lower the heat.",
-        "Stir often for 5 to 7 minutes, until creamy.",
-        "Off the heat, stir in butter and a handful of cheddar.",
-        "Season well and finish with hot sauce.",
-      ],
-    },
-  ] as Recipe[],
-};
-
-// ── ATL ARTIST SHOWCASE ─────────────────────────────────
-
-export interface Artist {
-  name: string;
-  discipline: string;
-  blurb: string;
-  quote: string;
-  feature?: boolean; // larger card
-  image?: string;
-}
-
-export const artists: Artist[] = [
-  {
-    name: "Sam Suen",
-    discipline: "Korean-American R&B",
-    feature: true,
-    blurb:
-      "A bedroom producer turned festival headliner. Sam writes the kind of R&B that sounds like 2am in a city that never quite sleeps: intimate, patient, and built to fill a room the moment it needs to.",
-    quote: "The stage at DreamAsia wasn't a destination. It was just the next logical step.",
-  },
-];
-
-// ── ROV SPOTLIGHT ───────────────────────────────────────
-
-export const spotlight = {
-  eyebrow: "ROV Spotlight · Vol. 01",
-  headline: "Producing DreamAsia Fest, end to end.",
-  body:
-    "When Sam Suen needed a set ready for DreamAsia, ROV ran the whole pipeline, demos to mix, stage to screen. The records were built and mixed in-house, the visuals shot and cut in-house, and the whole thing pulled together on a deadline that didn't move. No outsourcing, no hand-offs. The work below is the proof.",
-  tools: ["FL Studio", "DaVinci Resolve", "Premiere Pro", "BMPCC 6K", "Canon", "Claude"],
-  image: undefined as string | undefined,
-};
-
-// ── ATL EVENTS, FIFA World Cup 26, Atlanta ─────────────
-// Atlanta (Mercedes-Benz Stadium) is a host city for the FIFA World
-// Cup 2026. Each event links out to an authoritative source, these
-// outbound citations + the structured data below aid SEO/GEO.
-
-export interface IssueEvent {
-  date: string;
-  /** ISO date for schema.org structured data. */
-  isoDate: string;
-  name: string;
-  location: string;
-  /** Full venue address for structured data. */
-  venue: string;
-  badge: "Free" | "Ticketed";
-  /** Authoritative outbound link (official source), backlink for SEO/GEO. */
-  url: string;
-}
-
-export const events: IssueEvent[] = [
-  {
-    date: "Jun 15",
-    isoDate: "2026-06-15",
-    name: "FIFA World Cup 26™, Atlanta Group Stage",
-    location: "Mercedes-Benz Stadium, ATL",
-    venue: "Mercedes-Benz Stadium, 1 AMB Dr NW, Atlanta, GA 30313",
-    badge: "Ticketed",
-    url: "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026",
-  },
-  {
-    date: "Jun 20",
-    isoDate: "2026-06-20",
-    name: "FIFA Fan Festival™ Atlanta",
-    location: "Centennial Olympic Park, ATL",
-    venue: "Centennial Olympic Park, 265 Park Ave W NW, Atlanta, GA 30313",
-    badge: "Free",
-    url: "https://discoveratlanta.com/fifa-world-cup-2026/",
-  },
-  {
-    date: "Jul 07",
-    isoDate: "2026-07-07",
-    name: "FIFA World Cup 26™, Atlanta Round of 16",
-    location: "Mercedes-Benz Stadium, ATL",
-    venue: "Mercedes-Benz Stadium, 1 AMB Dr NW, Atlanta, GA 30313",
-    badge: "Ticketed",
-    url: "https://www.mercedesbenzstadium.com/fifa-world-cup-2026",
-  },
-];
-
-/** Section cover image for the FIFA events block. */
-export const eventsCover = {
-  src: "/ctrla/VOL1/fanfestatl.webp",
-  alt: "FIFA Fan Festival crowd in Atlanta",
-  label: "FIFA Fan Festival · Atlanta",
-};
-
-/** Authoritative outbound references shown under the events list. */
-export const eventSources: { label: string; url: string }[] = [
-  { label: "FIFA World Cup 26™", url: "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026" },
-  { label: "Mercedes-Benz Stadium", url: "https://www.mercedesbenzstadium.com/" },
-  { label: "Atlanta Sports Council", url: "https://www.atlsports.org/" },
-  { label: "Discover Atlanta, World Cup 2026", url: "https://discoveratlanta.com/fifa-world-cup-2026/" },
-];
-
-// ── VUE, CLOSING NOTE ──────────────────────────────────
-
-export const vueClose = {
-  eyebrow: "Vue · Closing note",
-  body:
-    "I drift a little above all this, watching what you build, or don't. One thing before you go. The time passes either way. The year runs out whether you make the thing or you don't. So press CTRL-A, pull back far enough to see the whole picture, and do it anyway.",
-  signoff: "The time will pass regardless. Do it anyway.",
-  signature: "Vue · Vol. 01 · CTRL-A",
-};
-
-// ═══════════════════════════════════════════════════════
-// DREAMASIA FEST, FEATURE ISSUE CONTENT
-// Real media drops into /ctrla/VOL1; everything else is a
-// labelled placeholder block at locked size + aspect ratio.
-// ═══════════════════════════════════════════════════════
-
-// ── Cover ──────────────────────────────────────────────
-export const coverShot = {
-  src: "/ctrla/VOL1/dreamasiacover.webp",
-  alt: "Sam Suen mid-set at DreamAsia Fest, stage visuals and crowd behind him",
-  label: "HERO: peak performance frame",
-};
-
-// ── 1. The story, how it started ───────────────────────
-export const issueOpen = {
-  eyebrow: "The story · How it started",
-  headline: "Two friends, one deadline, a festival stage.",
-  body: [
-    "Sam Suen and the ROV team have made music together since high school: bedroom sessions, borrowed gear, songs nobody had asked for yet. DreamAsia Fest is the same two friends, years on, headlining a national celebration of Asian entertainment, food, and culture across two states.",
-    "Nothing about the setup got bigger overnight. The crew stayed small. What changed was the reps, and the nerve to run the whole thing themselves, from the first demo to the last light cue.",
-  ],
-  vueNote:
-    "Underdog math: a small crew, a big room, and nobody coming to save the show. They built it anyway.",
-  prep: { label: "EARLY PREP: bedroom / studio setup", ratio: "4 / 5" as const },
-  stage: {
-    src: "/ctrla/VOL1/dreamasiafestpic2.webp",
-    label: "THE BIG STAGE: first load-in",
-    ratio: "4 / 5" as const,
-  },
-};
-
-// ── 2. Behind the scenes (HERO gallery) ────────────────
-export interface BtsTile {
-  label: string;
-  ratio: string;
-  /** column span on the 12-col mosaic (desktop). */
-  span: number;
-  /** full-bleed row on mobile. */
-  wide?: boolean;
-  img?: string;
-  video?: string;
-}
-
-export const bts = {
-  eyebrow: "Behind the scenes · The real work",
-  headline: "Everything before the lights came up.",
-  note: "Fan experience, stage visuals, soundcheck, load-in. The part the audience never sees, and the reason the show worked.",
-  tiles: [
-    { label: "BTS: crew load-in & stage build", ratio: "16 / 9", span: 8, wide: true, video: "/ctrla/VOL1/Dreamasiafest.mp4" },
-    { label: "BTS: stage visuals on the wall", ratio: "4 / 5", span: 4, img: "/ctrla/VOL1/dreamasiafestpic2.webp" },
-    { label: "BTS: the sound board, mid-soundcheck", ratio: "1 / 1", span: 4 },
-    { label: "BTS: fan experience setup", ratio: "1 / 1", span: 4 },
-    { label: "BTS: Sam at soundcheck", ratio: "1 / 1", span: 4 },
-    { label: "BTS: front of house & lighting", ratio: "16 / 9", span: 6, video: "/ctrla/VOL1/concert1.mp4" },
-    { label: "BTS: backstage, pre-show", ratio: "16 / 9", span: 6, video: "/ctrla/VOL1/Dreamasiacirc.mp4" },
-    { label: "BTS: doors open, the room fills", ratio: "21 / 9", span: 12, wide: true },
-  ] as BtsTile[],
-};
-
-// ── 3. Two cities, the scale ───────────────────────────
-export const twoCities = {
-  eyebrow: "Two cities · The scale",
-  headline: "The same headline show. Twice. Two states.",
-  body: "DreamAsia ran in North Carolina and Georgia: the same production, rebuilt on a new stage, for a new crowd, days apart. Delivering it once is a show. Delivering it twice is an operation.",
-  cities: [
-    { state: "North Carolina", label: "NC: crowd at peak", note: "Where it opened. New venue, a new room to read.", ratio: "4 / 5" as const },
-    { state: "Georgia", label: "GA: the headline set", note: "Where it closed. Same show, dialled in and bigger.", ratio: "4 / 5" as const },
-  ],
-};
-
-// ── 4. The toolkit, what you can use ───────────────────
-export interface ProdTool {
-  name: string;
-  role: string;
-  line: string;
-}
-
-export const productionToolkit = {
-  eyebrow: "The toolkit · What you can use",
-  headline: "How it was made, so you can too.",
-  note: "The exact stack behind the records, the visuals, and the cut. Steal the workflow.",
-  tools: [
-    { name: "FL Studio", role: "Records & demos", line: "Where the songs started: beats and demos built in the box." },
-    { name: "DaVinci Resolve", role: "Color & finish", line: "The final cut and the color. The recap's whole look lives here." },
-    { name: "Premiere Pro", role: "Edit & social", line: "Fast turnarounds and social cut-downs while the tour moved." },
-    { name: "BMPCC 6K Pro", role: "A-cam", line: "Our cinema camera for the set and the crowd in full frame." },
-    { name: "Canon", role: "B-cam & stills", line: "Run-and-gun coverage and stills, backstage to front of house." },
-    { name: "Claude", role: "Run-of-show", line: "Show notes, run-of-show, and copy, all drafted fast so the team could move." },
-  ] as ProdTool[],
-};
 
 // ── MUSIC TOOLKIT ──────────────────────────────────────
 
@@ -1121,6 +731,199 @@ const designGuide: { title: string; steps: GuideStep[] } = {
   ],
 };
 
+// ── VIDEO / FILM TOOLKIT ───────────────────────────────
+// ⚠️ DRAFT FOR ANDI TO VERIFY. The tool picks, prices, quotes, dated
+// Signals, and myth/reality pairs below are a plausible, ROV-voice
+// reconstruction of the film stack, not a confirmed list. Confirm the
+// exact bodies, lenses, and attributions the team actually runs, and
+// re-check every Signal date and source link, before this ships.
+
+const videoTools: Tool[] = [
+  {
+    name: "Blackmagic Pocket Cinema Camera 6K Pro",
+    category: "Camera body",
+    description: "A Super35 cinema camera that shoots 6K in Blackmagic RAW to a card you can afford. Built-in ND filters, a tilting screen, and a real cine image for the price of a mid photo body. The A-cam behind our set and crowd coverage.",
+    url: "https://www.blackmagicdesign.com/products/blackmagicpocketcinemacamera",
+    tags: ["Cinema", "6K RAW", "Super35"],
+    favoriteBy: "ROV film team",
+    favoriteQuote: "Internal RAW and built-in NDs on a body this cheap is the reason our run-and-gun footage grades like a bigger production.",
+    level: "Intermediate",
+    oneLiner: "A true cinema image with internal RAW, for the price of a photo body.",
+    whenToUse: "When you want a gradeable, cinematic file and you are willing to light and expose it with care.",
+    pairsWith: ["Sigma 18-35mm f/1.8 Art", "DaVinci Resolve Studio"],
+  },
+  {
+    name: "Sigma 18-35mm f/1.8 Art",
+    category: "Lens",
+    description: "The fast zoom that behaves like a bag of primes. A constant f/1.8 across the range on Super35, sharp wide open, with the shallow depth and low-light room that make a shot feel filmic. One lens covers most of a run-and-gun day.",
+    url: "https://www.sigma-global.com/en/lenses/a013_18_35_18/",
+    tags: ["Zoom", "Fast", "Super35"],
+    level: "Intermediate",
+    oneLiner: "One fast zoom that covers the range of three primes.",
+    whenToUse: "When the day moves too fast to swap primes but you still want prime-grade depth and light.",
+    pairsWith: ["Blackmagic Pocket Cinema Camera 6K Pro"],
+  },
+  {
+    name: "Aputure LS 600d Pro",
+    category: "Key light",
+    description: "A daylight point-source LED with the punch of a small HMI and none of the noise. Bowens mount for any modifier, app control, and enough output to bounce, diffuse, or push through a window. The dependable key on most of our sets.",
+    url: "https://www.aputure.com/products/ls-600d-pro/",
+    tags: ["LED", "Daylight", "Key"],
+    favoriteBy: "ROV film team",
+    favoriteQuote: "One strong, controllable source you can shape beats a pile of little panels every single time.",
+    level: "Intermediate",
+    oneLiner: "One controllable key with real output, ready for any modifier.",
+    whenToUse: "When you need a dependable main light you can shape, dim, and match to daylight.",
+    pairsWith: ["Matthews C-Stand", "Blackmagic Pocket Cinema Camera 6K Pro"],
+  },
+  {
+    name: "Matthews C-Stand",
+    category: "Grip / modifier",
+    description: "The grip workhorse. A heavy, stable stand with a grip head and arm that flags, nets, bounces, and blocks light exactly where you want it. Most of lighting is subtraction, and this is the tool that takes light away as precisely as a fixture adds it.",
+    url: "https://msegrip.com/",
+    tags: ["Grip", "Flag", "Control"],
+    level: "Beginner",
+    oneLiner: "The stand that shapes light by taking it away, not adding it.",
+    whenToUse: "The moment a source is lit but uncontrolled: flag the spill, net the hotspot, add negative fill.",
+    pairsWith: ["Aputure LS 600d Pro"],
+  },
+  {
+    name: "Adobe Premiere Pro",
+    category: "Edit suite",
+    description: "The editing room for fast turnarounds. Strong multicam, tight integration with the rest of Adobe, and the social cut-downs the team ships while a shoot is still moving. Where the story gets cut before it gets colored.",
+    url: "https://www.adobe.com/products/premiere.html",
+    tags: ["Editing", "Multicam", "Social"],
+    favoriteBy: "ROV film team",
+    favoriteQuote: "For quick social cut-downs on the road, Premiere is still the fastest place to get from cards to posted.",
+    level: "Intermediate",
+    oneLiner: "The fast edit room for cutting story and shipping social same-day.",
+    whenToUse: "When the priority is a fast, organized cut and quick social versions, not the final color.",
+    pairsWith: ["DaVinci Resolve Studio"],
+  },
+  {
+    name: "DaVinci Resolve Studio",
+    category: "Color",
+    description: "The industry color suite, and a full edit and finish room around it. Node-based grading, real scopes, and the tools to match shots and build a look with intent. The final cut and the color of our recaps live here.",
+    url: "https://www.blackmagicdesign.com/products/davinciresolve",
+    tags: ["Color", "Finish", "Grading"],
+    favoriteBy: "ROV film team",
+    favoriteQuote: "Grade with the scopes, not just your eyes. The waveform tells you the truth your tired eyes stop telling you after an hour.",
+    level: "Pro",
+    oneLiner: "The color and finish suite where the whole look gets built.",
+    whenToUse: "The finishing step, when the edit is locked and you want the shots to match and the mood to land.",
+    pairsWith: ["Adobe Premiere Pro", "Blackmagic Pocket Cinema Camera 6K Pro"],
+  },
+  {
+    name: "Zoom F3",
+    category: "Location sound",
+    description: "A tiny two-input field recorder with 32-bit float and preamps that stay clean. In practice it ends the level panic: record now, set the gain in post, and stop losing a take to a clipped or too-quiet input. Pairs with a shotgun or a lav for real location dialogue.",
+    url: "https://zoomcorp.com/en/us/field-recorders/field-recorders/f3/",
+    tags: ["Audio", "32-bit float", "Field"],
+    level: "Intermediate",
+    oneLiner: "32-bit float field recording that makes clipped or quiet takes a thing of the past.",
+    whenToUse: "Any time dialogue or real location sound matters and you cannot babysit a level meter.",
+    pairsWith: ["Blackmagic Pocket Cinema Camera 6K Pro"],
+  },
+  {
+    name: "HandBrake",
+    category: "Delivery / compression",
+    description: "Free, open-source video transcoding. Turn a heavy master into a clean, right-sized H.264 or H.265 file for the web without guesswork. Sensible presets to start, real control over bitrate and codec when you need the file smaller without looking worse.",
+    url: "https://handbrake.fr/",
+    tags: ["Encoding", "Free", "Delivery"],
+    level: "Beginner",
+    oneLiner: "Free transcoding that gets your master small and clean for the web.",
+    whenToUse: "The last step before upload, when the master is done and the file needs to travel light.",
+    pairsWith: ["DaVinci Resolve Studio"],
+  },
+];
+
+// Hand-curated industry shifts for the Video / Film sector.
+// ⚠️ DRAFT: verify each date and source link before publishing.
+const videoSignals: Signal[] = [
+  {
+    date: "Jun 2026",
+    kind: "Trend",
+    title: "32-bit float ended the level panic",
+    note: "Float recorders mean you set dialogue gain in post, not on set. Missing a take to a clipped or too-quiet input is fast becoming a solved problem.",
+    url: "https://zoomcorp.com/en/us/field-recorders/field-recorders/f3/",
+  },
+  {
+    date: "May 2026",
+    kind: "Shift",
+    title: "AV1 is the new delivery default",
+    note: "Platforms keep leaning on AV1 for better quality at a smaller size. Master clean, then let your delivery encode ride the newer codec.",
+    url: "https://aomedia.org/",
+  },
+  {
+    date: "Apr 2026",
+    kind: "Release",
+    title: "Internal RAW reached every tier",
+    note: "Gradeable RAW is no longer a high-end-only feature. The gap now is lighting and exposure discipline, not the codec your body records.",
+    url: "https://www.blackmagicdesign.com/products/blackmagicpocketcinemacamera",
+  },
+  {
+    date: "Mar 2026",
+    kind: "Trend",
+    title: "AI relight and roto moved into the timeline",
+    note: "Relighting, tracking, and rotoscoping assists now live inside the grade. They speed the grunt work, but the look is still yours to call.",
+    url: "https://www.blackmagicdesign.com/products/davinciresolve",
+  },
+];
+
+// ⚠️ DRAFT myth/reality pairs for Video / Film. Confirm the ROV take.
+const videoMisconceptions: Misconception[] = [
+  {
+    myth: "A cinema camera makes it cinematic",
+    reality: "Cinematic is lighting, lens choice, and motion, not the body. A phone shot in beautiful, controlled light will beat a cinema camera in a flat, uncontrolled room every time.",
+  },
+  {
+    myth: "More lights means better lighting",
+    reality: "Control beats count. One good source, shaped with a flag and some negative fill, reads better than three fixtures blasting flat, shadowless light from every side. Most of lighting is subtraction.",
+  },
+  {
+    myth: "Always shoot flat or log",
+    reality: "Log only pays off with exposure discipline and a real grade. If you cannot expose it right and color it later, a well-set picture profile will look better than mangled, muddy log footage.",
+  },
+  {
+    myth: "Fix it in post",
+    reality: "Post amplifies what you captured, it does not invent it. Blown highlights, soft focus, and bad location audio do not come back. Get exposure, focus, and sound right in the room.",
+  },
+];
+
+// ⚠️ DRAFT quick-start for Video / Film. Verify before publishing.
+const videoGuide: { title: string; steps: GuideStep[] } = {
+  title: "Lighting Your First Cinematic Setup",
+  steps: [
+    {
+      number: 1,
+      title: "Motivate the light before you place it",
+      body: "Decide where the light in this scene is supposed to come from: a window, a lamp, the sun. Every fixture you add should sell that source. Unmotivated light is what makes a shot read as filmed, not felt.",
+      tip: "One believable direction beats four fixtures pointing everywhere.",
+    },
+    {
+      number: 2,
+      title: "Set the key first, alone",
+      body: "Kill every other light and place your key. Move it around the subject and watch the shadow it carves. The key decides the whole mood before anything else touches the scene, so get it right in the dark.",
+    },
+    {
+      number: 3,
+      title: "Expose for the highlights",
+      body: "Protect the bright end. Use false color or zebras and hold your highlights just under clipping. Shadows can be lifted in the grade, but a blown highlight is gone for good. Set white balance on purpose while you are there.",
+      tip: "When in doubt, expose a touch under and lift it later.",
+    },
+    {
+      number: 4,
+      title: "Separate the subject from the background",
+      body: "Add a back or rim light to lift the subject off the backdrop, then use negative fill, a flag or a black flag, to deepen the shadow side. Separation and contrast are what give a flat scene depth.",
+    },
+    {
+      number: 5,
+      title: "Record clean sound, it is half the picture",
+      body: "Get a mic close, off-axis to the noise, and record with headroom or on 32-bit float. Audiences forgive a rough image far sooner than they forgive dialogue they cannot hear. Sound is half of cinematic.",
+    },
+  ],
+};
+
 // ── EXPORT ──────────────────────────────────────────────
 
 export const toolkitSections: ToolkitSection[] = [
@@ -1137,6 +940,18 @@ export const toolkitSections: ToolkitSection[] = [
     misconceptions: musicMisconceptions,
     guide: musicGuide,
     signals: musicSignals,
+    crossRefs: [
+      {
+        toolkit: "design",
+        toolName: "Photoshop",
+        line: "DistroKid puts the song on streaming, but the cover art sitting beside it is built over in the design kit with Photoshop.",
+      },
+      {
+        toolkit: "design",
+        toolName: "Coolors",
+        line: "A release needs a visual world, and the palette behind the artwork usually starts with Coolors in the design kit.",
+      },
+    ],
   },
   {
     id: "web-dev",
@@ -1151,6 +966,18 @@ export const toolkitSections: ToolkitSection[] = [
     misconceptions: webDevMisconceptions,
     guide: webDevGuide,
     signals: webDevSignals,
+    crossRefs: [
+      {
+        toolkit: "design",
+        toolName: "Figma",
+        line: "Figma lives in the design kit too, where the screen gets settled before a single line of Next.js is written.",
+      },
+      {
+        toolkit: "design",
+        toolName: "Spline",
+        line: "The 3D hero moments Framer Motion brings to life are modelled first with Spline over in the design kit.",
+      },
+    ],
   },
   {
     id: "design",
@@ -1165,5 +992,55 @@ export const toolkitSections: ToolkitSection[] = [
     misconceptions: designMisconceptions,
     guide: designGuide,
     signals: designSignals,
+    crossRefs: [
+      {
+        toolkit: "web-dev",
+        toolName: "Next.js",
+        line: "A design only counts once it ships, and the screens drawn here get handed to Next.js in the web dev kit.",
+      },
+      {
+        toolkit: "web-dev",
+        toolName: "Spline",
+        line: "The interactive 3D built in Spline leaves as React components, which the web dev kit picks up and mounts.",
+      },
+      {
+        toolkit: "music",
+        toolName: "Antares Auto-Tune",
+        line: "Cover art and artist branding shaped here dress the records mixed with Auto-Tune in the music kit.",
+      },
+    ],
+  },
+  {
+    id: "video",
+    title: "Video / Film",
+    pageNumber: "04",
+    // Lifted plum, the "projection beam" accent. Distinct from design's deeper
+    // plum, and legible on both the dark landing and the cream toolkit page.
+    accentColor: "#8E76B8",
+    intro: "The bodies, glass, lights, and grip our film team actually runs, plus the edit and finish room behind the cut. Cinematic is a craft, not a purchase. These are the picks that reward lighting and exposure done right.",
+    blurb: "Camera, glass, light, and finish for cinematic work. The stack behind our set and recaps.",
+    pickCount: "8 Picks",
+    cadence: "Updated monthly",
+    tools: videoTools,
+    misconceptions: videoMisconceptions,
+    guide: videoGuide,
+    signals: videoSignals,
+    crossRefs: [
+      {
+        toolkit: "music",
+        toolName: "Soundtoys EchoBoy",
+        line: "The location sound captured here gets sweetened next door, where the music kit's EchoBoy and reverbs sit the dialogue in space.",
+      },
+      {
+        toolkit: "design",
+        toolName: "Figma",
+        line: "Title cards and lower thirds get laid out first in the design kit's Figma before they ever hit the timeline.",
+      },
+      {
+        toolkit: "web-dev",
+        toolName: "Next.js",
+        line: "The finished recap needs a home, and the web dev kit mounts it in a Next.js page that loads fast.",
+      },
+    ],
   },
 ];

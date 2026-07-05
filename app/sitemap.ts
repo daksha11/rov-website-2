@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { getAllPosts } from '@/lib/blog';
+import { volumeNumbers } from './ctrla/_volumes';
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = 'https://www.rovstudios.com';
@@ -116,11 +117,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'monthly',
             priority: 0.6,
         },
-        ...['music', 'web-dev', 'design'].map((id) => ({
+        ...['music', 'web-dev', 'design', 'video'].map((id) => ({
             url: `${baseUrl}/ctrla/toolkit/${id}`,
             lastModified: '2026-06-15',
             changeFrequency: 'weekly' as const,
             priority: 0.6,
+        })),
+        // CTRL-A back-issue archive — one entry per known volume.
+        ...volumeNumbers.map((n) => ({
+            url: `${baseUrl}/ctrla/vol/${n}`,
+            lastModified: '2026-06-15',
+            changeFrequency: 'monthly' as const,
+            priority: 0.5,
         })),
         {
             url: `${baseUrl}/blog`,

@@ -12,9 +12,9 @@
 // Part 02 The Tools (the stations below). Reuses the music and
 // design guide layout classes so all three toolkits share a system.
 //
-// NOTE: the interactive centerpiece (the dev analog to the music
-// globe and the design poster) is intentionally not built yet.
-// Its slot is marked below; we choose the concept last.
+// The interactive centerpiece (the dev analog to the music globe)
+// is the Prompt Mixer, embedded under "the foundation" below: an
+// instrument that assembles, scores live, and shares to a URL.
 // ═══════════════════════════════════════════════════════
 
 import type { ReactNode } from "react";

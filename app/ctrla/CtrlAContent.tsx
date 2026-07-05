@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { NavigationDock } from "@/components/NavDoc";
-import CtrlALoader from "./_components/CtrlALoader";
 import CosmicBackdrop from "./_components/CosmicBackdrop";
 import GooeyLogoMorph from "./_components/GooeyLogoMorph";
 import EditorialFooter from "./_components/EditorialFooter";
@@ -11,9 +11,32 @@ import ShootingStars from "@/components/ui/shooting-stars";
 import { ThreeToolkits } from "./_components/Toolkits";
 import { DreamAsiaTeaser } from "./_components/DreamAsiaSections";
 import { TheFoldTeaser } from "./_components/TheFoldTeaser";
+import Cookbook from "./_components/Cookbook";
 import { VolumeBento, BrandKitFeature, CondensedEvents, VueClose } from "./_components/IssueSections";
-import { ed, Bleed, Rule, Label, Kicker } from "./_components/editorial";
-import { issueMeta } from "./data";
+import { ed, Bleed, Rule, Label, Kicker, SweepText, Typewriter } from "./_components/editorial";
+import { currentVolume } from "./_volumes";
+
+// The live issue. Everything volume-specific reads from here, so
+// publishing a new volume is a one-line pointer flip in ./_volumes.
+const { issueMeta } = currentVolume;
+// Zero-padded numeric volume for the cover's split "Vol. 01" display.
+const volumeNo = String(currentVolume.number).padStart(2, "0");
+
+// The first-visit loader pulls in three.js (WebGL aurora shader) via
+// AnimatedShaderBackground — the single heaviest dependency on this route,
+// and one shown at most once per session. Code-split it out of the initial
+// landing bundle with a dynamic, client-only import. The loading fallback is
+// a plain dark screen matching the loader's ground so a genuine first visit
+// never flashes white before the loader mounts.
+const CtrlALoader = dynamic(() => import("./_components/CtrlALoader"), {
+  ssr: false,
+  loading: () => (
+    <div
+      aria-hidden
+      style={{ position: "fixed", inset: 0, zIndex: 9999, background: ed.void }}
+    />
+  ),
+});
 
 // ═══════════════════════════════════════════════════════
 // SHARED
@@ -136,11 +159,28 @@ function Cover() {
                 margin: 0,
               }}
             >
-              {issueMeta.coverHeadline}
+              <Typewriter text={issueMeta.coverHeadline} />
             </h1>
 
+            {/* Thesis line — a single serif italic register-setter under the H1 */}
+            <p
+              style={{
+                fontFamily: ed.serif,
+                fontStyle: "italic",
+                fontWeight: 400,
+                fontSize: "clamp(19px,2.6vw,34px)",
+                lineHeight: 1.22,
+                letterSpacing: "-0.005em",
+                color: ed.gold,
+                margin: "clamp(14px,1.8vw,22px) 0 0",
+                maxWidth: 620,
+              }}
+            >
+              Taste is the sky you set as your limit.
+            </p>
+
             {/* Emphasized primary CTA — send a cold visitor straight to the toolkits */}
-            <div style={{ display: "flex", alignItems: "center", gap: "clamp(16px,2.6vw,30px)", flexWrap: "wrap", marginTop: "clamp(22px,2.8vw,36px)" }}>
+            <div style={{ marginTop: "clamp(22px,2.8vw,36px)" }}>
               <a
                 href="#toolkits"
                 className="ctrla-cover-cta"
@@ -163,27 +203,39 @@ function Cover() {
               >
                 Explore the toolkits <span aria-hidden>→</span>
               </a>
-              <a
-                href="/ctrla/brand-kit"
-                className="ctrla-seeall"
-                style={{
-                  fontFamily: ed.mono,
-                  fontSize: "clamp(11px,1.2vw,13px)",
-                  letterSpacing: "0.16em",
-                  textTransform: "uppercase",
-                  color: ed.inkSoft,
-                  textDecoration: "none",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-                }}
-              >
-                Try the Brand Kit Generator <span aria-hidden>→</span>
-              </a>
+
+              {/* Secondary — an outlined button, emphasized but subordinate to the solid primary */}
+              <div style={{ marginTop: "clamp(14px,1.8vw,20px)" }}>
+                <a
+                  href="/ctrla/brand-kit"
+                  className="ctrla-cover-cta ctrla-cover-cta-ghost"
+                  style={{
+                    fontFamily: ed.mono,
+                    fontSize: "clamp(12px,1.35vw,15px)",
+                    fontWeight: 700,
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                    padding: "15px 32px",
+                    borderRadius: 4,
+                    textDecoration: "none",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 10,
+                  }}
+                >
+                  Or try the Brand Kit Generator <span aria-hidden>→</span>
+                </a>
+              </div>
             </div>
 
             <div style={{ marginTop: "clamp(18px,2.4vw,30px)" }}>
-              <Label color={ed.gold}>Always free · New volume monthly</Label>
+              <Label color={ed.inkFaint}>
+                Always{" "}
+                <span style={{ color: ed.gold, fontWeight: 700, fontSize: "1.35em", letterSpacing: "0.14em" }}>
+                  free
+                </span>{" "}
+                · New volume monthly
+              </Label>
             </div>
           </div>
 
@@ -201,7 +253,7 @@ function Cover() {
                 textAlign: "right",
               }}
             >
-              Vol. <span style={{ color: ed.gold }}>01</span>
+              Vol. <span style={{ color: ed.gold }}>{volumeNo}</span>
             </span>
 
             <a
@@ -272,7 +324,8 @@ function StickerBelt() {
           margin: "0 0 18px",
         }}
       >
-        Plate I · Custom hand-drawn illustrations
+        <span style={{ color: ed.gold, fontWeight: 700, letterSpacing: "0.3em" }}>hand-drawn</span>{" "}
+        illustrations
       </p>
       <div className="ctrla-belt-track" style={{ display: "flex", alignItems: "center", gap: 104, width: "max-content", animation: "ctrlaBelt 36s linear infinite" }}>
         {track.map((s, i) => (
@@ -303,6 +356,104 @@ const CONTENTS = [
   { n: "05", title: "The Cookbook", meta: "Fuel for the work", href: "#cookbook", note: "Easy recipes for creatives short on time and money." },
   { n: "06", title: "The City", meta: "World Cup, Atlanta", href: "#events", note: "Our hometown stage, and the summer the whole world arrives." },
 ];
+
+// On-page anchor targets that each CONTENTS row maps to. Half the TOC
+// hrefs point at standalone routes (brand-kit, dreamasia, the-fold), but
+// every one of those has a teaser section on the landing page, so the
+// Spine jumps to the on-page presence instead of navigating away.
+const SPINE_TARGETS = ["toolkits", "brandkit", "ctrla-dreamasia", "ctrla-fold", "cookbook", "events"];
+
+// ═══════════════════════════════════════════════════════
+// THE SPINE — fixed left-rail progress + TOC (desktop),
+// top progress hairline (mobile). Engages once the Cover has
+// scrolled out (cover sentinel) and disengages as the footer
+// enters (footer sentinel). All scroll work is rAF-batched and
+// passive, matching the house LazyVideo/ShootingStars pattern.
+// ═══════════════════════════════════════════════════════
+
+function Spine() {
+  const [engaged, setEngaged] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [active, setActive] = useState(0);
+  const raf = useRef(0);
+
+  useEffect(() => {
+    const measure = () => {
+      raf.current = 0;
+      const vh = window.innerHeight || 1;
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+      const cover = document.getElementById("ctrla-cover-end");
+      const footer = document.getElementById("ctrla-footer-start");
+
+      const coverTop = cover ? cover.getBoundingClientRect().top : -1;
+      const footerTop = footer ? footer.getBoundingClientRect().top : vh * 2;
+      setEngaged(coverTop < 120 && footerTop > vh * 0.5);
+
+      const startDoc = cover ? cover.getBoundingClientRect().top + scrollY : 0;
+      const endDoc = footer
+        ? footer.getBoundingClientRect().top + scrollY
+        : document.documentElement.scrollHeight;
+      const p = (scrollY + vh * 0.45 - startDoc) / Math.max(1, endDoc - startDoc);
+      setProgress(Math.min(1, Math.max(0, p)));
+
+      let idx = 0;
+      SPINE_TARGETS.forEach((id, i) => {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= vh * 0.4) idx = i;
+      });
+      setActive(idx);
+    };
+    const onScroll = () => {
+      if (!raf.current) raf.current = requestAnimationFrame(measure);
+    };
+    measure();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf.current) cancelAnimationFrame(raf.current);
+    };
+  }, []);
+
+  const jump = (id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+  };
+
+  return (
+    <>
+      {/* Desktop rail */}
+      <nav className="ctrla-spine" data-engaged={engaged} aria-label="Volume contents">
+        <div className="ctrla-spine-track" aria-hidden>
+          <div className="ctrla-spine-fill" style={{ transform: `scaleY(${progress})` }} />
+        </div>
+        <ol className="ctrla-spine-list">
+          {CONTENTS.map((c, i) => (
+            <li key={c.n}>
+              <button
+                type="button"
+                className="ctrla-spine-num"
+                data-active={i === active}
+                aria-current={i === active ? "true" : undefined}
+                onClick={() => jump(SPINE_TARGETS[i])}
+              >
+                {c.n}
+                <span className="ctrla-spine-label">{c.title}</span>
+              </button>
+            </li>
+          ))}
+        </ol>
+      </nav>
+      {/* Mobile top progress hairline */}
+      <div className="ctrla-spine-top" style={{ transform: `scaleX(${progress})` }} aria-hidden />
+    </>
+  );
+}
 
 function ContentsChevron({ open }: { open: boolean }) {
   return (
@@ -385,9 +536,9 @@ function Contents() {
           onClick={() => setIndexOpen((v) => !v)}
           aria-expanded={indexOpen}
           className="ctrla-acc-header"
-          style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: "clamp(16px,3vw,32px)", width: "100%", background: "none", borderTop: `1px solid ${ed.hair}`, borderBottom: `1px solid ${ed.hair}`, cursor: "pointer", textAlign: "left", padding: "clamp(16px,2vw,24px) clamp(4px,1vw,14px)" }}
+          style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "clamp(12px,1.6vw,18px)", width: "100%", background: "none", borderTop: `1px solid ${ed.hair}`, borderBottom: `1px solid ${ed.hair}`, cursor: "pointer", textAlign: "left", padding: "clamp(16px,2vw,24px) clamp(4px,1vw,14px)" }}
         >
-          <span style={{ minWidth: 0 }}>
+          <span style={{ minWidth: 0, width: "100%" }}>
             <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
               <Kicker color={ed.gold}>Table of contents</Kicker>
               <span style={{ fontFamily: ed.mono, fontSize: "clamp(9px,1vw,11px)", letterSpacing: "0.2em", textTransform: "uppercase", color: ed.inkFaint }}>In this volume · {CONTENTS.length} pieces</span>
@@ -403,12 +554,12 @@ function Contents() {
               </span>
             )}
           </span>
-          <span style={{ display: "inline-flex", alignItems: "flex-end", gap: "clamp(10px,1.6vw,18px)", flexShrink: 0 }}>
-            <Label color={ed.gold}>{issueMeta.volume} · {issueMeta.edition}</Label>
-            <span className="ctrla-acc-toggle" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.16em", textTransform: "uppercase", color: ed.gold, border: `1px solid ${ed.gold}`, borderRadius: 6, padding: "9px 16px", whiteSpace: "nowrap" }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: "clamp(10px,1.6vw,18px)", flexShrink: 0 }}>
+            <span className="ctrla-acc-toggle" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.16em", textTransform: "uppercase", borderRadius: 6, padding: "9px 16px", whiteSpace: "nowrap" }}>
               {indexOpen ? "Collapse" : "Expand"}
               <ContentsChevron open={indexOpen} />
             </span>
+            <Label color={ed.gold}>{issueMeta.volume} · {issueMeta.edition}</Label>
           </span>
         </button>
         {indexOpen && (
@@ -448,44 +599,6 @@ function Contents() {
 // STATS BAND
 // ═══════════════════════════════════════════════════════
 
-function StatBand() {
-  return (
-    <section style={{ background: `linear-gradient(180deg, ${ed.ground} 0%, ${ed.plum} 30%, ${ed.plum} 70%, ${ed.ground} 100%)`, padding: "clamp(48px,7vw,88px) 0", position: "relative", overflow: "hidden" }}>
-      {/* Real-sky shooting stars, same as the cover */}
-      <ShootingStars style={{ zIndex: 0 }} />
-
-      <Bleed style={{ position: "relative", zIndex: 1 }}>
-        <Rule color="rgba(227,194,74,0.4)" />
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "minmax(0,1.4fr) repeat(4, minmax(0,1fr))",
-            gap: "clamp(16px,3vw,32px)",
-            alignItems: "center",
-            padding: "clamp(28px,3.5vw,44px) 0",
-          }}
-          className="ctrla-statband"
-        >
-          <p style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.6vw,30px)", letterSpacing: "-0.02em", color: ed.paper, margin: 0 }}>
-            What a volume holds. <span style={{ color: ed.gold }}>+</span>
-          </p>
-          {issueMeta.stats.map((s) => (
-            <div key={s.label}>
-              <div style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,4vw,52px)", letterSpacing: "-0.03em", color: ed.gold, lineHeight: 1 }}>
-                {s.value}
-              </div>
-              <Label color={ed.gold} style={{ display: "block", marginTop: 6 }}>
-                {s.label}
-              </Label>
-            </div>
-          ))}
-        </div>
-        <Rule color="rgba(227,194,74,0.4)" />
-      </Bleed>
-    </section>
-  );
-}
-
 // ═══════════════════════════════════════════════════════
 // SUBSCRIBE FOOTER (visual email capture, monthly drop)
 // ═══════════════════════════════════════════════════════
@@ -501,7 +614,7 @@ function SubscribeFooter() {
       <Bleed>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 28, flexWrap: "wrap" }}>
           <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(34px,6vw,84px)", letterSpacing: "-0.03em", lineHeight: 0.9, color: ed.paper, margin: 0 }}>
-            One volume,
+            <SweepText>One volume,</SweepText>
             <br />
             every{" "}
             <span style={{ fontFamily: ed.serif, fontStyle: "italic", fontWeight: 400, color: ed.gold }}>month</span>.
@@ -595,8 +708,14 @@ export default function CtrlAContent() {
       {loading && <CtrlALoader onDone={dismissLoader} />}
       <NavigationDock />
 
+      {/* Left-rail progress + TOC (desktop) / top hairline (mobile) */}
+      <Spine />
+
       <Masthead />
       <Cover />
+
+      {/* Cover sentinel — the Spine engages once this scrolls out */}
+      <div id="ctrla-cover-end" aria-hidden style={{ position: "relative", height: 0 }} />
 
       {/* The thesis + a map of the volume */}
       <Contents />
@@ -613,17 +732,37 @@ export default function CtrlAContent() {
       {/* Standing feature — recurs every volume */}
       <BrandKitFeature />
 
-      <StatBand />
-
       {/* ─────────────────────────────────────────────
           THE STORY HALF — process, taste, the city
           ───────────────────────────────────────────── */}
 
-      {/* The deep feature — compact teaser; full story at /ctrla/dreamasia */}
-      <DreamAsiaTeaser />
+      {/* Honest peers — the deep feature teaser and the focus-space teaser
+          sit side by side at equal half-width. Their own section/Bleed
+          padding is neutralized by .ctrla-peers so this shared grid owns
+          the layout. */}
+      <section style={{ background: "transparent", padding: "clamp(48px,7vw,88px) 0" }}>
+        <Bleed>
+          <div className="ctrla-peers">
+            <div id="ctrla-dreamasia" style={{ scrollMarginTop: 80 }}>
+              <DreamAsiaTeaser />
+              <Label color={ed.inkFaint} style={{ display: "block", marginTop: 14 }}>
+                Plate II · DreamAsia Fest, behind the scenes
+              </Label>
+            </div>
+            <div id="ctrla-fold" style={{ scrollMarginTop: 80 }}>
+              <TheFoldTeaser />
+            </div>
+          </div>
+        </Bleed>
+      </section>
 
-      {/* The Fold — ambient creative room; full experience at /ctrla/the-fold */}
-      <TheFoldTeaser />
+      {/* The Cookbook — landing anchor (#cookbook), a closed mini-fridge that
+          steps into the full galley at /ctrla/cookbook. Mounted before the
+          bento so the TOC jump resolves here. */}
+      <Cookbook />
+      <Bleed style={{ paddingBottom: "clamp(20px,3vw,40px)" }}>
+        <Label color={ed.inkFaint}>Plate III · The galley, this volume&apos;s spread</Label>
+      </Bleed>
 
       {/* Off the clock — music, craft, and fuel condensed into one bento */}
       <VolumeBento />
@@ -635,6 +774,9 @@ export default function CtrlAContent() {
       <Mission />
 
       <VueClose />
+
+      {/* Footer sentinel — the Spine disengages once this enters */}
+      <div id="ctrla-footer-start" aria-hidden style={{ position: "relative", height: 0 }} />
 
       <SubscribeFooter />
       <EditorialFooter />

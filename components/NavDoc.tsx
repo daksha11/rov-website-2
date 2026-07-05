@@ -46,20 +46,20 @@ export function NavigationDock({ className }: NavigationDockProps) {
   return (
     <>
       <div
-        className={`nav-dock-font fixed bottom-6 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-md px-8 py-2.5 rounded-full border border-white/10 z-[999] max-w-[90%] md:max-w-none transition-opacity duration-500 group ${className || ""}`}
+        className={`nav-dock-font fixed bottom-6 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-md px-3 sm:px-6 md:px-8 py-1 md:py-2.5 rounded-full border border-white/10 z-[999] max-w-[95%] md:max-w-none transition-opacity duration-500 group ${className || ""}`}
       >
         {/* Shimmer effect covering entire nav container */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-300 overflow-hidden rounded-full">
           <div className="shimmer-effect"></div>
         </div>
 
-        <nav className="flex items-center space-x-0.5 md:space-x-2.5 justify-center relative z-10 w-full">
+        <nav className="flex items-center gap-1 md:gap-2.5 justify-start md:justify-center relative z-10 w-full flex-nowrap overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {links.map((link, index) => (
             <div key={link.title} className="flex items-center">
               {link.isLink ? (
                 <Link
                   href={link.to || "#"}
-                  className="px-1.5 py-1.5 text-white/80 hover:text-white transition-colors cursor-pointer text-[10px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
+                  className="px-2 min-h-[44px] flex items-center text-white/80 hover:text-white transition-colors cursor-pointer text-[12px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
                   {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 >
                   {link.title}
@@ -67,34 +67,23 @@ export function NavigationDock({ className }: NavigationDockProps) {
               ) : (
                 <button
                   onClick={() => link.title === "services" ? setMenuOpen(true) : (link.to ? scrollToSection(link.to) : setModalOpen(true))}
-                  className="px-1.5 py-1.5 text-white/80 hover:text-white transition-colors cursor-pointer text-[10px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
+                  className="px-2 min-h-[44px] flex items-center text-white/80 hover:text-white transition-colors cursor-pointer text-[12px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
                 >
                   {link.title}
                 </button>
               )}
               {index < links.length - 1 && (
-                <span className="text-white/30 text-[10px] md:text-base mx-0.5">|</span>
+                <span className="hidden sm:inline text-white/30 text-[10px] md:text-base mx-0.5">|</span>
               )}
             </div>
           ))}
 
-          {/* Resources Link */}
-          <div className="flex items-center">
-            <span className="text-white/30 text-[10px] md:text-base mx-0.5">|</span>
-            <Link
-              href="/resources"
-              className="px-1.5 py-1.5 text-white/80 hover:text-white transition-colors cursor-pointer text-[10px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
-            >
-              Resources
-            </Link>
-          </div>
-
           {/* CTRL A Link */}
           <div className="flex items-center">
-            <span className="text-white/30 text-[10px] md:text-base mx-0.5">|</span>
+            <span className="hidden sm:inline text-white/30 text-[10px] md:text-base mx-0.5">|</span>
             <Link
               href="/ctrla"
-              className="px-1.5 py-1.5 text-white/80 hover:text-white transition-colors cursor-pointer text-[10px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
+              className="px-2 min-h-[44px] flex items-center text-white/80 hover:text-white transition-colors cursor-pointer text-[12px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
             >
               CTRL A
             </Link>
@@ -102,7 +91,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
 
           {/* Login */}
           <div className="flex items-center">
-            <span className="text-white/30 text-[10px] md:text-base mx-0.5">|</span>
+            <span className="hidden sm:inline text-white/30 text-[10px] md:text-base mx-0.5">|</span>
             <GoogleLoginButton />
           </div>
         </nav>
@@ -112,7 +101,7 @@ export function NavigationDock({ className }: NavigationDockProps) {
       {/* Expanded Menu Glass Pane */}
       <div
         className={`nav-dock-font fixed bottom-20 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-md rounded-3xl border border-white/10 z-[998] overflow-hidden transition-all duration-500 ease-in-out ${menuOpen
-          ? "w-[90%] md:w-[600px] h-[400px] opacity-100 scale-100"
+          ? "w-[90%] md:w-[600px] h-[400px] max-h-[70vh] opacity-100 scale-100"
           : "w-0 h-0 opacity-0 scale-95"
           }`}
       >

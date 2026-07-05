@@ -1,0 +1,334 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<title>CTRL-A Full Site Audit · July 2026</title>
+<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]-->
+<style>
+  @page { size: 8.5in 11in; margin: 1in; }
+  body { font-family: Georgia, "Times New Roman", serif; font-size: 11pt; line-height: 1.5; color: #22201b; }
+  h1 { font-size: 22pt; line-height: 1.15; margin: 0 0 4pt; }
+  h2 { font-size: 15pt; margin: 28pt 0 6pt; border-bottom: 1.5pt solid #3B2114; padding-bottom: 4pt; }
+  h3 { font-size: 12pt; margin: 16pt 0 4pt; color: #90422C; }
+  p { margin: 0 0 9pt; }
+  ul, ol { margin: 0 0 9pt 18pt; }
+  li { margin-bottom: 4pt; }
+  .kicker { font-family: Consolas, monospace; font-size: 9pt; letter-spacing: 2pt; text-transform: uppercase; color: #90422C; margin-bottom: 8pt; }
+  .meta { font-size: 9.5pt; color: #6f685c; margin-bottom: 18pt; }
+  .verdict { background: #f6ecd7; border-left: 4pt solid #b6852a; padding: 8pt 12pt; margin: 0 0 12pt; }
+  .critical { background: #f4e3dd; border-left: 4pt solid #a9432f; padding: 8pt 12pt; margin: 0 0 12pt; }
+  .working { color: #1f6b4f; font-weight: bold; }
+  .notworking { color: #a9432f; font-weight: bold; }
+  .fix { color: #22201b; font-weight: bold; }
+  table { border-collapse: collapse; width: 100%; margin: 0 0 12pt; font-size: 10pt; }
+  th { background: #efe9dd; text-align: left; padding: 6pt 8pt; border: 0.75pt solid #c9c1b0; font-size: 9pt; text-transform: uppercase; letter-spacing: 0.5pt; }
+  td { padding: 6pt 8pt; border: 0.75pt solid #c9c1b0; vertical-align: top; }
+  code { font-family: Consolas, monospace; font-size: 9.5pt; background: #efe9dd; padding: 0 3pt; }
+  .rank { font-weight: bold; color: #90422C; }
+</style>
+</head>
+<body>
+
+<p class="kicker">ROV Studios · Internal Planning Document</p>
+<h1>CTRL-A Full Site Audit</h1>
+<p class="meta">Vol. 01 (June 2026) · Audited July 3, 2026 · Editorial, design, and technical review against a 12-volume-per-year target. Planning document only. Every finding below is grounded in the actual shipped code, not the intended spec. No implementation included.</p>
+
+<div class="critical">
+<p><b>Read this first: the three findings that reframe everything else.</b></p>
+<ol>
+<li><b>The Fold ships two products, and the wrong one is silent.</b> The live route renders "Vantage," a canvas space voyage whose sound mixer is a visual label. It produces no audio at all. Sitting unwired in the same folder is a complete, synthesized Web Audio cafe (four mixable ambient layers, a Commons hub, the Golden Hour lock, presence dots, a sitting timer) that nothing imports. The premium product this audit was asked to evaluate is 80 percent built and disconnected.</li>
+<li><b>Every email capture on the site is fake.</b> The footer subscribe form calls preventDefault and discards the input. The Prompt Vault "full library" form stores the email in local state and throws it away. There is no Klaviyo, no endpoint, nothing. CTRL-A has captured zero leads since launch.</li>
+<li><b>The landing page's own table of contents contains a dead link.</b> Row 05, "The Cookbook," points to <code>#cookbook</code>, and no element with that id exists on the page. The cookbook teaser component exists in the repo and is rendered nowhere. For a magazine whose name means "select all, see the whole picture," the contents page not matching the contents is a thesis-level bug.</li>
+</ol>
+</div>
+
+<h2>1. Mission &amp; Cohesiveness</h2>
+
+<h3><span class="working">What's working</span></h3>
+<ul>
+<li>The editorial system is real: one accent (gold #E3C24A), two typefaces (Neue Montreal, Instrument Serif), mono zero-padded indices (01 through 06, Track 01, Show 01) used consistently. The page has a typographic identity most magazines never reach.</li>
+<li>The five Fold room lines, the Vue signoff ("The time will pass regardless. Do it anyway."), and the kintsugi pull-quote ("The crack is where the gold goes.") are genuinely authored copy. The voice exists.</li>
+<li>Most content flows from a single <code>data.ts</code>, which keeps the voice from fragmenting across components.</li>
+</ul>
+
+<h3><span class="notworking">What's not</span></h3>
+<ul>
+<li><b>The thesis is buried in a closed accordion at position 12 of 15.</b> "What CTRL-A is" sits below the events section, collapsed by default. A first-time reader can complete the entire scroll without ever encountering the one idea that explains the page.</li>
+<li><b>The middle third reads as a feature list.</b> Brand Kit panel, stat band, DreamAsia teaser, Fold teaser: four contained cards of near-identical visual weight, in a row. Nothing tells the reader which is the flagship and which is a footnote.</li>
+<li><b>The "select all" idea appears nowhere in the experience.</b> The name's meaning lives in metadata and the closed Mission accordion only. There is no interaction, motif, or visual that ever performs "selection."</li>
+<li><b>"Plate I" is a system of one.</b> The sticker belt caption promises a plate-numbering convention (like a printed folio's tipped-in plates) that no other visual set participates in. A motif used once is a typo; used four times it is a signature.</li>
+<li><b>Vue appears only at the open of the feature and the close of the page.</b> A narrator who speaks twice is a credit, not a character. The mascot illustration is a placeholder in both spots.</li>
+</ul>
+
+<h3><span class="fix">Fix</span></h3>
+<ul>
+<li><b>Promote one thesis line into the Cover.</b> A single Instrument Serif italic line under "See the bigger picture." (candidate, from existing copy: "Taste is the sky you set as your limit."). Keep the full thesis accordion where it is as the long-form version, but the idea must be met in the first viewport.</li>
+<li><b>Make "Plates" the official numbering for every visual set:</b> Plate I, the sticker belt. Plate II, the DreamAsia BTS mosaic. Plate III, the cookbook's monthly spread. Plate IV, the volume's featured art. One mono caption line each, already matching the existing Label primitive. Zero build cost, large cohesion gain, and it gives each volume a countable visual inventory ("Vol. 02 ships four new plates").</li>
+<li><b>Own a "selection" micro-motif.</b> When a section heading enters the viewport, sweep a gold text-selection highlight across it once (a CSS background-size animation, 400ms, ease-out, honors reduced-motion). It literally performs CTRL-A on the page's own headlines. This is the single most brandable motion idea available to this product, it costs almost nothing, and no other magazine can copy it without copying the name.</li>
+<li><b>Give Vue two mid-scroll marginalia.</b> One italic aside beside the toolkits ("Vue: I only endorse the ones I'd steal."), one beside events. Same VueNote primitive that already exists in the feature. Commission the mascot art once and reuse it at three sizes; stop shipping the placeholder circle.</li>
+<li><b>Fix the dead TOC link</b> (see section 2) so the contents accordion is telling the truth before any of the above ships.</li>
+</ul>
+
+<h2>2. The Cookbook (The Galley)</h2>
+
+<h3><span class="working">What's working</span></h3>
+<ul>
+<li>The fridge is the best-crafted small object on the site: door swing on rotateY, an interior light that ramps via a CSS variable tracked by requestAnimationFrame so the glow follows the door, magnets that become shelf items, reduced-motion handled. This is the level of physicality the rest of the site should be held to.</li>
+<li>Monthly swap is genuinely a one-line edit in <code>data.ts</code>. It will survive 12 volumes.</li>
+</ul>
+
+<h3><span class="notworking">What's not</span></h3>
+<ul>
+<li><b>It is invisible.</b> The teaser component is orphaned (imported by nothing), the landing TOC points at an anchor that does not exist, and the only route in is a small bento tile. The most charming interaction on the site has no front door.</li>
+<li><b>"Pull the handle" is actually "click the handle."</b> The state machine is click-driven. There is no pull, no resistance, no weight. The metaphor writes a check the interaction doesn't cash.</li>
+<li><b>Two divergent data models.</b> The fridge uses <code>GalleyRecipe</code> (no steps); the orphaned teaser uses a richer <code>Recipe</code> with full steps and images. The fridge drawer shows ingredients only, while complete step-by-step recipes sit unused in the other structure. The interactive surface shows less than the data already contains.</li>
+<li><b>Silent and single-player.</b> No sound on a fridge (the one appliance everyone knows the sound of), and no community mechanics of any kind: no credits, no submissions, no "who else made this."</li>
+</ul>
+
+<h3><span class="fix">Fix</span></h3>
+<ul>
+<li><b>Unify the data model first.</b> One <code>GalleyRecipe</code> type with optional <code>steps</code>, <code>by</code> (contributor), and <code>image</code>. The teaser and fridge both read from it. Show steps in the drawer. This is prerequisite plumbing for everything below.</li>
+<li><b>Land it on the landing page.</b> Either mount the (currently orphaned) teaser at <code>#cookbook</code>, or better: a "mini fridge" teaser, the closed fridge at small scale with the three magnets visible, opening on click into the full <code>/ctrla/cookbook</code> page. The TOC link then works and the fridge gets discovered.</li>
+<li><b>Make the pull real.</b> Pointer-down on the handle, drag past a small threshold with visible door resistance (door follows the pointer through the first ~20 degrees, then commits and swings). Click remains the fallback and the mobile behavior. One gesture, one component, worth it because this is a monthly ritual object.</li>
+<li><b>Sound, synthesized, not sampled.</b> The dormant Fold cafe already contains the house pattern for zero-asset Web Audio synthesis. Two sounds only: a low door thunk on open (filtered noise burst) and a barely-audible 50Hz fridge hum while open, gated behind the first user gesture. Restraint is the point; a fridge that hums is immersive, a fridge with a soundtrack is a toy.</li>
+<li><b>Community, kept survivable:</b>
+  <ul>
+  <li><b>Credit line on every pick:</b> "brought by [name, city]," rendered as a handwritten-style magnet label. Data field only.</li>
+  <li><b>"Chef of the volume":</b> one rotating slot per month, photo magnet on the door, one-line bio in the drawer. It is one more entry in <code>data.ts</code>.</li>
+  <li><b>Submissions via a form link, not a build:</b> "Leave something in the fridge →" opens a Tally/Typeform (name, recipe, city, email). Submissions are curated by hand into next volume's data. This captures emails naturally (see section 10) and costs zero engineering.</li>
+  <li>Do <b>not</b> build voting, accounts, or a recipe database. The fridge holds three things; scarcity is the format.</li>
+  </ul>
+</li>
+</ul>
+
+<h2>3. Vantage / The Fold</h2>
+
+<div class="verdict"><p><b>Verdict up front:</b> the product insight is excellent and already built: five named working states ("start, go wide, ship it, wind down, heads down") with a session timer, tasks, and persistence. The luxury execution is undermined by one fatal gap and one identity problem. The fatal gap: <b>the sound mixer is silent</b>. The identity problem: the route is two products with two names ("Vantage" on screen, "The Fold" in the URL, teaser, and CSS), one live and one dormant, sharing a folder.</p></div>
+
+<h3><span class="working">What's working</span></h3>
+<ul>
+<li>The engine is craftsmanlike: camera travel on a 0.085 lerp, planets baked to offscreen canvases, 90-rock parallax dust, auto-spin that yields on hover, DPR capped, pauses when the tab hides, honors reduced-motion. Zero bytes of assets loaded; the whole cosmos is drawn.</li>
+<li>The session layer quietly does the right things: timer counts to an absolute timestamp so background tabs can't drift it; intention, tasks, and completed-session count persist in localStorage; Escape exits.</li>
+<li>The copy is the best on the site. "Doors sealed, the world muted. One hard thing, seen whole. Go all the way in." That is a product voice worth protecting.</li>
+<li>Typography (Neue Montreal 800 at clamp 44 to 128px against Instrument Serif italic) reads premium already.</li>
+</ul>
+
+<h3><span class="notworking">What's not</span></h3>
+<p><b>Purpose test.</b> What is this hired for? The shipped build answers: "a pomodoro timer with a beautiful room picker." The dormant cafe answers: "ambient company while you work." The honest product is the union: <b>match the room to your working state, then stay because it sounds and feels like somewhere.</b> Right now the staying half is missing, because:</p>
+<ul>
+<li><b>The mixer produces silence.</b> Five pads labeled mute/murmur/music/rain/hum set a React string. Nothing plays. To a first-time visitor who taps "rain" and hears nothing, the entire product recategorizes from "premium object" to "unfinished demo" in one second. No amount of visual polish recovers from a control that lies.</li>
+<li><b>Arrival is a snap, not a moment.</b> Landing on a planet sets state when the lerp crosses a threshold. Entering a session is a 0.5s opacity fade. Leaving is instant. Luxury products spend their budget exactly here, on thresholds: the moment you enter a room is the product.</li>
+<li><b>Persistence exists but is never surfaced.</b> The code counts completed sessions per user and shows a bare "{n} done." Nobody bookmarks a number; people bookmark a streak, a place that remembers them ("Back again. Deep Field, session 15.").</li>
+<li><b>Golden Hour does not exist in the live build.</b> The lock mechanic (3 visits, in-memory, resets on reload) belongs to the dormant cafe. So the one scarcity mechanic the brief asks about is currently unreachable, and even in the dormant version it forgets your progress on refresh, which makes "earned" meaningless.</li>
+<li><b>Wayfinding passes, barely.</b> "Scroll to travel between worlds, or pick one below" plus footer pills is learnable in under 10 seconds on desktop. But the dual naming (Vantage vs. The Fold) means the teaser, the URL, and the on-screen brand disagree, which is exactly the kind of seam a premium product never shows.</li>
+<li><b>Mobile is functional, not considered:</b> touch scrolls the belt but cannot rotate planets (acceptable), yet nothing replaces that lost interactivity, and the session grid merely stacks.</li>
+</ul>
+
+<h3><span class="fix">Fix, in priority order</span></h3>
+<ol>
+<li><b>Wire the dormant audio engine into Vantage. This is the highest-leverage engineering hour available anywhere on this site.</b> The synthesized four-layer engine (murmur, music, rain, hum, all generated, zero files, gesture-gated, gain-ramped) is complete and tested in the same folder. Map each world's existing <code>sound</code> field to a preset, let the five pads actually blend layers, persist the last mix in localStorage. The product's core claim becomes true.</li>
+<li><b>Resolve the name.</b> Recommendation: <b>The Fold</b> is the place (keeps the URL, the teaser, the wordmark equity); retire "Vantage" or demote it to the volume label of the space theme ("The Fold · Vol. 01: Vantage"), which incidentally gives each volume a reason to re-skin the rooms. One product, one name, twelve seasons.</li>
+<li><b>Choreograph arrival and departure.</b> Landing: a 700ms sequence where the planet swells slightly, the room's audio preset crossfades in, and the room name settles in with a letter-spacing ease. Entering a session: the cosmos dims and blurs 300ms before the panel fades in. Exiting: reverse, shorter. Three transitions, one easing family (the cafe's existing <code>cubic-bezier(0.16, 1, 0.3, 1)</code> is right), and the object suddenly feels expensive. Restraint note: do not add particles, lens flares, or more decoration anywhere in this sequence; timing is the luxury, not garnish.</li>
+<li><b>Surface memory.</b> On return: "Welcome back. 14 sessions, mostly in Deep Field." Remember and preselect the last room. Weekly streak line under the timer. All the data already exists in localStorage.</li>
+<li><b>Rebuild Golden Hour as the live build's sixth world, done right.</b> Locked state shows the name, one line ("The back patio. Rare and electric."), and the honest condition: "opens after three finished sessions." Unlock on <i>completed sessions</i> (not visits), persist in localStorage, and make the room genuinely different (warmest palette, a unique audio layer, maybe the only room with a visible horizon). Scarcity with a visible price is premium; a mystery padlock is friction. This is also the natural email-capture moment (see section 10): "keep Golden Hour on all your devices."</li>
+<li><b>"Leave it running" affordances:</b> live timer in <code>document.title</code>, a soft synthesized chime at phase end, a favicon dot while a session runs. These three make the tab worth pinning, which is the actual retention behavior for this category.</li>
+<li><b>Material distinction per room</b> (kept cheap): each world already has a palette and warmth value. Add per-room dust density and drift speed, one line-quality change (Deep Field's track solid and thin, The Drift's loose and dashed), and per-room audio preset. Light, motion, and sound differ; the template stays one template.</li>
+<li>Nice-to-have polish, only after the above: time-of-day accent warmth (the dormant <code>timeOfDay.ts</code> logic exists), hover states on sound pads showing a tiny live waveform glyph, a "share your room" link that deep-links a world.</li>
+</ol>
+
+<h2>4. Layout, Readability, First-Time Comprehension</h2>
+
+<h3><span class="working">What's working</span></h3>
+<ul>
+<li>Cover and masthead establish the object immediately: volume, month, cadence, one headline, two CTAs. Nobody is confused about what this is at viewport one.</li>
+<li>Full-bleed punctuation (sticker belt, stat band) against contained sections gives the scroll a rhythm most template sites lack.</li>
+<li>Fluid clamp() sizing throughout; no fixed-width breakage found.</li>
+</ul>
+
+<h3><span class="notworking">What's not</span></h3>
+<ul>
+<li><b>The map is hidden by default.</b> The TOC accordion ships closed, showing a one-line mono index. The Mission ships closed. For a magazine, the contents are content; two closed accordions pattern-match to an FAQ page, not a folio.</li>
+<li><b>Sections 6 through 9 are flat.</b> Brand Kit (a flagship tool), stat band (decor), DreamAsia teaser (the feature), Fold teaser (a product): four consecutive contained cards with near-equal visual weight. The reader cannot tell the hierarchy because there isn't one.</li>
+<li><b>The cover splits attention:</b> two CTAs plus the feature card compete inside the same viewport, and the feature card visually loses despite being the volume's centerpiece.</li>
+<li>Dead <code>#cookbook</code> anchor (again, because it breaks scanning: a reader who clicks row 05 goes nowhere).</li>
+</ul>
+
+<h3><span class="fix">Fix</span></h3>
+<ul>
+<li><b>Scan pattern to design for: a layered Z per viewport inside a single-column scroll,</b> with one dominant element per screen. The current build violates this exactly twice (cover CTA cluster; the flat middle third). Do not introduce multi-column magazine layouts; the column is right, the weighting is wrong.</li>
+<li><b>TOC open by default on desktop, closed on mobile.</b> Better: replace the accordion with the left-rail spine from section 5, and let the accordion become the mobile-only presentation.</li>
+<li><b>Re-weight the middle third:</b> Brand Kit becomes a full-bleed dark band (it is a flagship, dress it like one), the stat band shrinks to a single hairline strip of four mono numbers, the two teasers pair side by side at equal half-width (they are honestly peers). One viewport, clear hierarchy: tool, then stories.</li>
+<li><b>On the cover, demote the second CTA</b> ("Try the Brand Kit Generator") to a text link under the primary. The feature card gains the freed weight.</li>
+</ul>
+
+<h2>5. Scroll Interactions</h2>
+
+<h3><span class="working">What's working</span></h3>
+<ul>
+<li>The existing motion inventory is disciplined: marquee, inView fades, one GSAP draw-line, canvas stars that pause off-screen. Nothing currently scroll-jacks. That restraint is worth keeping as policy.</li>
+</ul>
+
+<h3><span class="notworking">What's not</span></h3>
+<ul>
+<li>No persistent sense of place: at section 9 of 15 the reader has no idea how deep they are in the volume or what remains.</li>
+<li>Off the Clock (art, two tracks, fuel tile) is a static bento; content designed for browsing is presented as a grid to be glanced at.</li>
+</ul>
+
+<h3><span class="fix">Fix</span></h3>
+<ul>
+<li><b>Left rail: "the spine."</b> A thin fixed rail on the left edge (desktop only, ≥1024px): six zero-padded mono numerals matching the TOC entries, a hairline gold progress stroke connecting them, the active section's numeral filled gold. Click jumps to section. Engages after the Cover scrolls out (IntersectionObserver on the cover's bottom sentinel), disengages when the subscribe footer enters. It reuses the existing mono-index motif, doubles as the always-visible TOC, and solves section 4's hidden-map problem. <b>Mobile degradation:</b> the rail becomes a 2px gold progress hairline fixed at the top of the viewport; no numerals, no interaction.</li>
+<li><b>Horizontal shelf for Off the Clock: native scroll, never jacked.</b> A right-edge-bleeding horizontal strip (art plate, Track 01, Track 02, fuel card) using CSS scroll-snap with drag; on section entry, items stagger in from the right (translateX 40px to 0, 80ms stagger, once). A thin gold scrollbar-line beneath as the affordance, plus a "drag →" mono hint that fades after first interaction. Explicitly rejected: pinned scroll-jacking sections. They cost more every volume, they break deep-linking, and reader-controlled motion ages better across 12 issues than author-controlled motion. <b>Mobile degradation:</b> the same strip is simply a native swipe carousel, which is the one place horizontal scrolling is already an idiom.</li>
+<li><b>Guardrail for both:</b> honor <code>prefers-reduced-motion</code> (rail progress still updates, entrance staggers become fades) and gate everything behind IntersectionObserver so nothing computes off-screen, matching the house pattern already set by ShootingStars and LazyVideo.</li>
+</ul>
+
+<h2>6. The Feature (DreamAsia Fest)</h2>
+
+<h3><span class="working">What's working</span></h3>
+<ul>
+<li>The narrative arc is right and repeatable: How it started, the real work, the scale, the toolkit "so you can too." That last beat is the whole CTRL-A mission in miniature and should be contractual for every feature.</li>
+<li>LazyVideo (preload none, play on enter, pause on exit) is exactly how a media-heavy story should be built. Keep it as the house standard.</li>
+</ul>
+
+<h3><span class="notworking">What's not</span></h3>
+<ul>
+<li><b>Placeholder tiles shipped to production.</b> Four-plus mosaic slots render literal placeholder blocks ("EARLY PREP," "sound board," "doors open"), and the Two Cities section, whose entire claim is "the same show, twice, two states," is evidenced by two empty panels. The flagship story visibly isn't finished, in the one section that carries the magazine's credibility.</li>
+<li><b>Media-heavy, voice-light.</b> Roughly two short paragraphs plus one pull-quote carry the whole narrative. The scroll rhythm is: text beat, then five consecutive media beats, then a tool grid. There is no mid-story turn, no obstacle, no decision. It reads as a gallery with captions, not "from the bedroom to the stage."</li>
+</ul>
+
+<h3><span class="fix">Fix</span></h3>
+<ul>
+<li><b>Rule zero: a placeholder never ships.</b> Cut the mosaic to the five real assets (a five-tile mosaic is compositionally fine) and cut Two Cities to a single annotated panel until the second city's photography exists. An honest smaller story beats an aspirational incomplete one, every time, in a taste publication above all.</li>
+<li><b>Add one narrative beat between the mosaic and the toolkit:</b> 150 to 200 words on the one decision that nearly broke the show (the budget call, the venue change, the 3 a.m. mix). Every production has one; it is the cheapest possible fix for pacing and the only thing readers retell.</li>
+<li><b>Codify the feature template as four fixed beats plus optional modules.</b> Fixed: The Open (hero, two paragraphs, one VueNote), The Work (mosaic of 4 to 8 real assets), The Turn (the decision beat above), The Toolkit (how it was made, so you can too). Optional modules per story: The Scale (multi-city / numbers strip), The Interview (three questions), The Sound (embedded track). Fixed beats keep authoring cheap; optional modules stop every story from having identical visual beats. Document this as the Vol. 02 feature brief.</li>
+</ul>
+
+<h2>7. Toolkits</h2>
+
+<h3><span class="working">What's working</span></h3>
+<ul>
+<li><b>The Music toolkit is the standard, and the reason is specific:</b> MixGlobe is an instrument, not an illustration. It teaches a mental model (your song is a 3D globe: pan, frequency, depth) through manipulation, it translates numbers into words ("slightly left, far back"), and, quietly its best feature, it serializes state into a URL for sharing and even a challenge mode with scoring. That is a teaching product hiding inside a magazine section.</li>
+<li>The Stations format is strong across all three: constellation rail scroll-spy, level filter, "when to reach for it," pairs-with chips, ROV Pick quotes, signals feed with dated outbound sources.</li>
+</ul>
+
+<h3><span class="notworking">What's not</span></h3>
+<ul>
+<li><b>Dev and Design ship without their instrument.</b> Both files admit it in comments ("the dev analog to the music globe is intentionally not built yet"). PromptVault and DefendDecision are good stand-ins, but they are exhibits you read, not instruments you play, and the gap against Music is visible.</li>
+<li><b>Tool previews depend on a third party that will rot.</b> ToolPreview screenshots come from the public WordPress mShots service: unbranded, rate-limited, occasionally blank, and outside ROV's control. By Vol. 06 some meaningful fraction of stations will show broken or stale frames.</li>
+<li><b>Cross-referencing is text, not links.</b> "Pairs with" chips are inert strings, and the only inter-toolkit connection is prev/next.</li>
+</ul>
+
+<h3><span class="fix">Fix</span></h3>
+<ul>
+<li><b>Extract the Music bar as three written requirements for every toolkit centerpiece:</b> (1) it teaches one mental model through direct manipulation, (2) its state serializes to a shareable URL, (3) it speaks words, not just numbers. Publish this internally as the "instrument standard."</li>
+<li><b>Web Dev centerpiece: "The Prompt Mixer."</b> Upgrade PromptVault from exhibit to instrument: the five prompt segments (role, context, task, constraints, format) become draggable, editable blocks; a live quality meter scores the assembled prompt against the same rubric the "why it works" panels already teach; the assembled prompt serializes to a shareable URL exactly like a mix. Same component skeleton, now playable.</li>
+<li><b>Design centerpiece: "The Poster Bench."</b> Promote DefendDecision and add three live variables to the defended poster (scale contrast, grid on/off, palette swap from a constrained set); every change re-renders the poster and updates the defense text. Manipulation, words, shareable state: the standard, met.</li>
+<li><b>Fourth toolkit: Video/Film, scoped at Music's fidelity.</b>
+  <ul>
+  <li><b>Centerpiece: "The Light Bench."</b> A canvas scene (a simple bust or product on a table) lit by three movable lights (key, fill, back), each with intensity and color-temperature controls, plus a live exposure readout translated into words ("moody, warm, crushed shadows"). It teaches lighting the way the globe teaches mixing, it is canvas-2D buildable with the exact engineering pattern MixGlobe already established (no new dependencies), and state shares by URL.</li>
+  <li><b>Picks, 8, same format:</b> camera body, lens, key light, grip/modifier, edit suite, color tool, location sound, delivery/compression. Level filter, when-to-reach-for-it, pairs-with, one ROV Pick quote each.</li>
+  <li><b>Monthly maintenance, honestly costed:</b> identical to the other three (swap 1 to 2 picks, add 2 to 3 dated signals). The centerpiece is built once. This is realistic for Vol. 02 or 03, not Vol. 01.5.</li>
+  </ul>
+</li>
+<li><b>Cross-referencing system: "Also in the kit."</b> A hand-authored <code>crossRefs</code> field on a tool (target toolkit, target tool, one editorial line), rendered as a single Instrument Serif italic line with a gold arrow at the foot of a station: <i>"Grading in DaVinci? The palette logic lives in the Design kit → Coolors."</i> Hard cap of three per toolkit, always human-written, never a card grid, never algorithmic. Editorial footnote, not related-products widget.</li>
+<li><b>Replace mShots</b> with self-captured screenshots stored in <code>public/ctrla/toolshots/</code>, refreshed on the monthly volume pass (a scripted capture step in the publishing checklist). Branded frame, no third-party dependency, no rot.</li>
+</ul>
+
+<h2>8. Brand Kit Generator</h2>
+
+<h3><span class="working">What's working</span></h3>
+<ul>
+<li><b>The developer story is further along than the brief assumed:</b> it already exports a standalone HTML guidelines page, a Markdown dev spec, design tokens, and a Tailwind config, all client-side. The gap is not output formats.</li>
+<li><b>The live preview is real craft:</b> the same generator that produces the export renders into a sandboxed iframe on every change (debounced 300ms), so preview and deliverable are byte-identical, with desktop/tablet/mobile viewport toggles.</li>
+</ul>
+
+<h3><span class="notworking">What's not</span></h3>
+<ul>
+<li><b>A refresh destroys the kit.</b> State is in-memory only. Twenty minutes of choices, gone on one accidental reload, with no warning. This is the single worst user-facing failure in the whole CTRL-A build.</li>
+<li><b>The export is paywalled behind an unexplained points system.</b> First-time flow: build a kit, hit export, get a Google OAuth wall, then discover exports cost 50 points from a 1000-point allowance you were never told about, then a "Point Limit Reached, contact us" modal when they run out. For a tool positioned as CTRL-A's flagship free utility, this reads as a dark pattern, and it is also throwing away the site's best email-capture moment (section 10).</li>
+<li><b>The flagship is invisible to search:</b> the layout sets <code>robots: noindex, nofollow</code> on the entire builder.</li>
+<li><b>Nothing is shareable or versioned.</b> No kit URL, no remix, no history; "versioning" is a free-text field. Meanwhile the codebase already contains the exact pattern needed (MixGlobe's URL state serialization).</li>
+<li><b>Generic fingerprints:</b> template names "warm-earth" and "corporate-blue," a linear 8-step wizard with no opinionated defaults visible, no designer-facing extras (no swatch file export, no logo lockup guidance) beyond the HTML page.</li>
+</ul>
+
+<h3><span class="fix">Fix</span></h3>
+<ul>
+<li><b>Persistence, before anything else.</b> Local persistence of the working kit (the store already uses zustand; adding persistence is a small, contained change). Autosave indicator in the masthead ("saved locally · 2m ago"). This one change converts the tool from a demo into something people trust with real work.</li>
+<li><b>Restructure the gate: first export free with email, points for the premium tier later.</b> Export delivers the files and emails the kit (Klaviyo capture with <code>export_format</code> as a segmentation property: designers pull HTML/swatches, developers pull tokens/Tailwind, and now ROV knows which is which). Keep OAuth and points for a future paid tier (extra templates, team kits), clearly priced up front. Remove noindex; this page should be a search magnet ("brand kit generator" queries are exactly ROV's ICP).</li>
+<li><b>Designer-side completion:</b> add palette usage rules (each swatch gets a role and a do/don't line in the HTML export), a downloadable swatches file for design tools, type-scale specimen sheet in the export, and one page of logo lockup guidance (clear space, minimum size) generated from the uploaded marks.</li>
+<li><b>Signature moment 1: "the reveal."</b> The live preview stops rendering a guidelines document and instead reskins a small fake product (a landing hero, a dashboard card, a mobile screen) in real time as choices are made, with a full-screen toggle. Watching your palette hit a real UI is the "I need this" moment; a guidelines doc is homework, a themed product is a mirror.</li>
+<li><b>Signature moment 2: the kit link.</b> Serialize the kit to a shareable, remixable URL (the MixGlobe <code>encodeMix</code> pattern, applied to brand data). "Remix this kit" turns every shared kit into an acquisition loop, and volume-stamped kits ("built in Vol. 01") tie the tool back to the magazine's cadence.</li>
+<li><b>De-generify:</b> rename templates in CTRL-A's own register (candidates from the existing palette language: "Bokashi," "Kintsugi," "Deep Field"), and seed the wizard with three opinionated starter kits authored by ROV rather than a blank form, so taste is visible before the first choice is made.</li>
+</ul>
+
+<h2>9. Technical &amp; Scalability</h2>
+
+<h3><span class="working">What's working</span></h3>
+<ul>
+<li>Content centralization in <code>data.ts</code>; canvas work that pauses off-screen; reduced-motion respected essentially everywhere; The Fold and the fridge drawing themselves with zero asset weight; LazyVideo. The engineering culture here is genuinely good.</li>
+</ul>
+
+<h3><span class="notworking">What's not</span></h3>
+<ul>
+<li><b>There is no volume abstraction.</b> Publishing Vol. 02 today means edits across <code>data.ts</code> plus hardcoded "Vol. 01" literals in at least four components (cover, footer colophon, feature back-nav, feature metadata), plus new media folders. Every volume adds risk of drift between those copies.</li>
+<li><b>three.js ships on the landing route to power a loader shader that most visitors see once</b> (it is sessionStorage-gated), and nothing in <code>app/ctrla</code> uses dynamic imports. That is the heaviest dependency on the route paying for the least-seen flourish.</li>
+<li><b>23MB in <code>public/ctrla</code>:</b> a 6.7MB concert video, a 6.6MB brand-guide PDF sitting unlinked, roughly 1.3MB of fonts (Gontserrat ×8, Franklin Gothic) that no stylesheet loads, and VOL1 media with no compression pass.</li>
+<li><b>Duplicate models and dead code:</b> two recipe shapes for one cookbook; a complete dormant Fold cafe implementation sharing a folder and CSS namespace with the live one (a future contributor will modify the wrong one); an orphaned teaser component.</li>
+<li><b>By Vol. 06:</b> a single <code>data.ts</code> at 4,000-plus lines with every past volume's content, or worse, past volumes overwritten and lost. <b>By Vol. 12:</b> no archive routes, so "a monthly magazine" with no back issues.</li>
+</ul>
+
+<h3><span class="fix">Fix</span></h3>
+<ul>
+<li><b>Volume abstraction now, before Vol. 02 is authored:</b> <code>app/ctrla/_volumes/vol-01.ts</code> (everything volume-specific: issueMeta, feature content, picks, signals, events) with a single <code>currentVolume</code> pointer, and all "Vol. 01"/"June 2026" literals read from it. Publishing Vol. 02 becomes: add one file, flip one pointer, drop one media folder.</li>
+<li><b>Decide the archive URL strategy in the same stroke:</b> <code>/ctrla</code> is always the current issue; past volumes live at <code>/ctrla/vol/[n]</code> (even if the archive template is a simple condensed digest, the URLs and data separation must exist from Vol. 02).</li>
+<li><b>Bundle hygiene:</b> dynamically import the loader (or replace the three.js shader with the CSS-gradient approach the Fold teaser already proved out); keep GSAP/framer-motion but audit that ScrollTrigger loads only where used.</li>
+<li><b>Asset pass:</b> compress or trim <code>concert1.mp4</code> (target under 2MB, or poster-plus-tap-to-play), delete the unreferenced font families, move the brand-guide PDF behind the lead capture (it is a perfect gated asset, see section 10), and add a compression step to the monthly publishing checklist for each VOLn folder.</li>
+<li><b>Debt cleanup:</b> one recipe type (section 2); delete or clearly quarantine the dormant cafe build once its audio engine is extracted into the live route (section 3); delete the orphaned teaser after the cookbook lands on the page.</li>
+<li><b>Write the two-page "publishing a volume" runbook</b> (edit vol file, media compression, toolshot refresh, signals update, QA checklist including anchor-link verification, which would have caught the dead <code>#cookbook</code> link). The runbook is what actually makes 12 volumes a year survivable.</li>
+</ul>
+
+<h2>10. Lead Capture Strategy (Klaviyo)</h2>
+
+<h3><span class="working">What's working</span></h3>
+<ul>
+<li>The copy promise is right ("No spam. One drop a month. Unsubscribe anytime."), and the site is unusually rich in things people genuinely want, which is the hard part of lead capture. The assets exist; only the plumbing and the asks are missing.</li>
+</ul>
+
+<h3><span class="notworking">What's not</span></h3>
+<ul>
+<li><b>Capture is currently zero, structurally.</b> Both existing forms discard input on the client. There is no Klaviyo (or any ESP) integration anywhere in the repo. Every visitor since launch who tried to subscribe was silently dropped.</li>
+<li>The only ask is the weakest one: a generic newsletter form at the very bottom of a long scroll, after the reader's intent has cooled.</li>
+</ul>
+
+<h3><span class="fix">Fix</span></h3>
+<p><b>Plumbing first:</b> wire Klaviyo, connect the existing footer form and the Prompt Vault form to real lists, with a tag for source and volume cohort (<code>vol-01</code>). Nothing below matters until the two forms that already exist stop lying.</p>
+<p><b>Then three high-intent mechanics, each trading something real, mapped to where intent peaks:</b></p>
+<table>
+<tr><th>Moment</th><th>Where it lives</th><th>The trade</th><th>Klaviyo segmentation</th></tr>
+<tr><td><b>1. Brand Kit delivery</b> (primary)</td><td>Export step of the builder</td><td>First export free with email: files download and the kit is emailed with its share link. Replaces the points wall for v1.</td><td><code>source: brand-kit</code>, <code>export_format</code> (html / tokens / tailwind / spec) separating designers from developers, brand name as a company hint</td></tr>
+<tr><td><b>2. Prompt Vault full library</b></td><td>Already designed, in the Web Dev toolkit</td><td>The extended prompt pack plus the starter skill file, delivered by email. The form exists; wire it.</td><td><code>source: prompt-vault</code>, interest: web-dev / AI tooling</td></tr>
+<tr><td><b>3. The Fold: "keep your progress"</b></td><td>After the second completed focus session, and at the Golden Hour unlock</td><td>Email keeps streaks and the Golden Hour unlock across devices, plus a monthly "new room tuning" note with each volume.</td><td><code>source: fold</code>, the retention cohort: these are the users who return weekly</td></tr>
+</table>
+<ul>
+<li><b>In-scroll placement discipline:</b> at most one inline capture moment on the landing page, placed <i>after</i> the toolkits section (post-value, mid-intent), offering the gated brand-guide PDF or next volume's early toolkit pick. Everything else lives inside the tools at their natural moments. No modals, no scroll-triggered popups, ever; that is a house rule worth writing down, because it is exactly what "grounded, warm, refined" means operationally.</li>
+<li><b>Cookbook submissions</b> (section 2) capture email as a by-product of contributing, tagged <code>source: galley</code>. Do not email-gate the recipes themselves; community features should never sit behind a form.</li>
+<li><b>What this enables in Klaviyo:</b> a monthly volume-drop campaign to all, a designer segment (brand-kit HTML exporters) for design-service nurture, a developer segment (token/Tailwind exporters plus prompt-vault) for web/AI-service nurture, and a high-retention Fold cohort that should get product news, not sales. Each capture point maps to one of ROV's actual service lines, which is the entire commercial point of CTRL-A.</li>
+</ul>
+
+<h2>Prioritized Punch List (Top 10)</h2>
+<table>
+<tr><th>#</th><th>Item</th><th>Why this rank</th><th>Section</th></tr>
+<tr><td class="rank">1</td><td>Wire the dormant synthesized audio engine into the live Fold; the mixer must actually play sound</td><td>The premium product's core claim is currently false; the fix is mostly relocation of existing, working code</td><td>3</td></tr>
+<tr><td class="rank">2</td><td>Wire all email capture to Klaviyo (footer + Prompt Vault), then add the Brand Kit email-for-export trade in place of the points wall for v1</td><td>Capture is structurally zero today; the brand kit is the single highest-intent moment on the site</td><td>10, 8</td></tr>
+<tr><td class="rank">3</td><td>Brand Kit local persistence + remove noindex</td><td>A refresh currently destroys user work in the flagship tool, and the tool is invisible to search</td><td>8</td></tr>
+<tr><td class="rank">4</td><td>Fix the dead #cookbook TOC anchor and land the cookbook (mini-fridge teaser) on the landing page; unify the two recipe data models</td><td>The contents page must tell the truth; best-crafted object on the site is currently unreachable by its own front door</td><td>2, 1</td></tr>
+<tr><td class="rank">5</td><td>Volume abstraction (vol-01 content file + currentVolume pointer + archive URL decision) before any Vol. 02 authoring begins</td><td>Every month of delay multiplies the migration cost; this is the scale-to-12 gate</td><td>9</td></tr>
+<tr><td class="rank">6</td><td>Fold arrival/session choreography, surfaced memory (streaks, last room), Golden Hour rebuilt as an earned, persistent sixth world, and the Vantage-vs-Fold naming resolved</td><td>This is what converts a good tool into the bookmarkable premium object the brief demands</td><td>3</td></tr>
+<tr><td class="rank">7</td><td>Feature hygiene: remove all placeholder tiles from DreamAsia, add "The Turn" narrative beat, codify the 4-beat + modules feature template for Vol. 02</td><td>The flagship story currently ships visibly unfinished; the template decision blocks next volume's authoring</td><td>6</td></tr>
+<tr><td class="rank">8</td><td>Landing re-weighting: thesis line on the cover, TOC/spine visible by default (left-rail spine on desktop), middle-third hierarchy, horizontal Off-the-Clock shelf</td><td>First-read comprehension and the two signature scroll mechanics, in one coordinated layout pass</td><td>4, 5, 1</td></tr>
+<tr><td class="rank">9</td><td>Bring Dev and Design toolkits to the instrument standard (Prompt Mixer, Poster Bench); replace mShots with self-hosted toolshots; add "Also in the kit" cross-references</td><td>Closes the visible quality gap against Music and removes a third-party dependency that will rot</td><td>7</td></tr>
+<tr><td class="rank">10</td><td>Performance and asset pass: dynamic-import the loader (drop three.js from the landing path), compress VOL1 video, delete dead fonts, gate the brand-guide PDF</td><td>Largest wins for mobile first-load; the PDF becomes a capture asset instead of dead weight</td><td>9, 10</td></tr>
+</table>
+
+<p class="meta">Deferred beyond the top 10, in rough order: the "selection" heading motif and Plate numbering system (section 1), Vue mascot commission and marginalia, the Video/Film toolkit with the Light Bench (target Vol. 02 or 03), Brand Kit "reveal" preview and shareable kit links, cookbook pull gesture and synthesized sounds, chef-of-the-volume and submission form, time-of-day tuning in The Fold, and the publishing runbook (which should in practice be written alongside item 5).</p>
+
+</body>
+</html>

@@ -9,7 +9,122 @@
 // ═══════════════════════════════════════════════════════
 
 import Image from "next/image";
+import { useEffect, useRef, useState, type MutableRefObject } from "react";
 import type { CSSProperties, ReactNode } from "react";
+
+// ── useInViewOnce — house IntersectionObserver primitive ────────────
+// Matches the ShootingStars / LazyVideo pattern: gate scroll-triggered
+// work behind a single-shot IntersectionObserver. Returns a ref to
+// attach and a boolean that latches true the first time the element
+// enters view (then disconnects). SSR / no-IO environments latch true
+// immediately so content never hides. Used for the "selection" heading
+// sweep and the "Off the clock" shelf stagger.
+export function useInViewOnce<T extends HTMLElement = HTMLElement>(
+  rootMargin = "0px 0px -12% 0px"
+): [MutableRefObject<T | null>, boolean] {
+  const ref = useRef<T | null>(null);
+  const [seen, setSeen] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || seen) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setSeen(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setSeen(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin, threshold: 0.15 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+    // rootMargin is a stable literal at every call site; latch is one-shot.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return [ref, seen];
+}
+
+// ── Typewriter — ReactBits-style character typing for headlines ──────
+// Types `text` in one character at a time with a blinking caret. The full
+// string is always present for SEO / a11y (sr-only + aria-label); the
+// animated copy is aria-hidden. Respects prefers-reduced-motion by showing
+// the whole headline instantly with no caret.
+export function Typewriter({
+  text,
+  speed = 55,
+  startDelay = 250,
+  cursorColor = "#E3C24A",
+  style,
+}: {
+  text: string;
+  speed?: number;
+  startDelay?: number;
+  cursorColor?: string;
+  style?: CSSProperties;
+}) {
+  const [count, setCount] = useState(0);
+  const [reduced, setReduced] = useState(false);
+
+  useEffect(() => {
+    const mq = typeof window !== "undefined" && window.matchMedia
+      ? window.matchMedia("(prefers-reduced-motion: reduce)")
+      : null;
+    if (mq?.matches) {
+      setReduced(true);
+      setCount(text.length);
+      return;
+    }
+    let i = 0;
+    let tick: ReturnType<typeof setTimeout>;
+    const start = setTimeout(function step() {
+      i += 1;
+      setCount(i);
+      if (i < text.length) tick = setTimeout(step, speed);
+    }, startDelay);
+    return () => {
+      clearTimeout(start);
+      clearTimeout(tick);
+    };
+  }, [text, speed, startDelay]);
+
+  const shown = text.slice(0, count);
+  const done = count >= text.length;
+
+  return (
+    <span style={style} aria-label={text}>
+      {/* Full headline for search engines + screen readers */}
+      <span
+        style={{
+          position: "absolute",
+          width: 1,
+          height: 1,
+          padding: 0,
+          margin: -1,
+          overflow: "hidden",
+          clip: "rect(0,0,0,0)",
+          whiteSpace: "nowrap",
+          border: 0,
+        }}
+      >
+        {text}
+      </span>
+      {/* Animated, visual-only copy */}
+      <span aria-hidden="true">{shown}</span>
+      {!reduced && (
+        <span
+          aria-hidden="true"
+          className="ctrla-type-caret"
+          data-done={done ? "true" : "false"}
+          style={{ background: cursorColor }}
+        />
+      )}
+    </span>
+  );
+}
 
 // CTRL-A cosmic brand system — DARK theme (illustrative space vibe).
 // Key names kept stable so the whole magazine surface re-themes from
@@ -65,6 +180,25 @@ export const legibleAccent = (accent: string): string =>
 
 export const legibleAccentDeep = (accent: string): string =>
   accent === ed.gold ? ed.panel : accent;
+
+// ── SweepText — the "select all" heading highlight ─────────────────
+// Wrap heading text in this to fire the one-shot gold selection sweep
+// when it scrolls into view. Renders an inline span so the highlight
+// paints behind the text run; safe to drop inside any h1/h2/h3.
+export function SweepText({
+  children,
+  style,
+}: {
+  children: ReactNode;
+  style?: CSSProperties;
+}) {
+  const [ref, seen] = useInViewOnce<HTMLSpanElement>();
+  return (
+    <span ref={ref} className={`ctrla-sweep${seen ? " is-selected" : ""}`} style={style}>
+      {children}
+    </span>
+  );
+}
 
 // ── Page container with print margins ──────────────────
 

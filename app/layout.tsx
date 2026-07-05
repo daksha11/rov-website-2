@@ -1,6 +1,6 @@
 // app/layout.tsx
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, DM_Sans } from "next/font/google";
 import "./globals.css";
 // import dynamic from "next/dynamic"; // chatbot hidden for now
 import Script from "next/script";
@@ -9,6 +9,15 @@ import { OrganizationSchema } from "@/components/OrganizationSchema";
 import ClarityProvider from "@/components/ClarityProvider";
 
 const inter = Inter({ subsets: ["latin"] });
+
+// DM Sans self-hosted via next/font (replaces the render-blocking Google Fonts
+// @import in globals.css). Exposed as --font-dm-sans; used by TagorePartnership.
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+  variable: "--font-dm-sans",
+  display: "swap",
+});
 
 // Dynamically import the chat widget (client-only) — hidden for now
 // const ChatWidget = dynamic(() => import("@/components/ChatWidget"), {
@@ -97,7 +106,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} ${dmSans.variable}`}>
         <ClarityProvider />
         <OrganizationSchema />
         {/* Google Analytics */}

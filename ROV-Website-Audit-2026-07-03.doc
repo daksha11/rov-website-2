@@ -1,0 +1,306 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word">
+<head>
+<meta charset="utf-8">
+<title>ROV Website Audit, July 2026</title>
+<style>
+  body { font-family: Georgia, "Times New Roman", serif; color: #3B2114; font-size: 11pt; line-height: 1.5; }
+  h1 { font-family: Arial, sans-serif; color: #3B2114; font-size: 22pt; border-bottom: 3px solid #90422C; padding-bottom: 6pt; }
+  h2 { font-family: Arial, sans-serif; color: #90422C; font-size: 15pt; margin-top: 18pt; border-bottom: 1px solid #EA9A61; padding-bottom: 3pt; }
+  h3 { font-family: Arial, sans-serif; color: #3B2114; font-size: 12pt; margin-top: 14pt; }
+  table { border-collapse: collapse; width: 100%; font-size: 9.5pt; margin: 8pt 0; }
+  th { background: #3B2114; color: #FFF4E3; font-family: Arial, sans-serif; text-align: left; padding: 5pt 7pt; }
+  td { border: 1px solid #D8C4A8; padding: 5pt 7pt; vertical-align: top; }
+  code { font-family: Consolas, monospace; font-size: 9pt; background: #F5EBDD; padding: 0 2pt; }
+  .crit { color: #8B1A1A; font-weight: bold; }
+  .high { color: #B05416; font-weight: bold; }
+  .med  { color: #8A6D00; font-weight: bold; }
+  .low  { color: #5A6B4F; }
+  .meta { color: #90422C; font-family: Arial, sans-serif; font-size: 10pt; }
+  .good { background: #EEF3E6; border-left: 4pt solid #5A6B4F; padding: 6pt 10pt; }
+  .callout { background: #FBEFE4; border-left: 4pt solid #90422C; padding: 6pt 10pt; }
+  li { margin-bottom: 4pt; }
+</style>
+</head>
+<body>
+
+<h1>Range of View Studios · Website Audit</h1>
+<p class="meta">rov-website-2 · Full read-only repository audit · July 3, 2026<br>
+Scope: SEO/GEO/AEO, indexing, performance, dependencies, code quality, CSS and animation, mobile, routing, media, Supabase architecture, scalability, plus a full UI/UX and usability report on the Brand Kit Generator (section 7). No code was modified.</p>
+
+<h2>1. Repo Overview</h2>
+<ul>
+<li><b>Framework:</b> Next.js ^13.5.11 (App Router), React 18.2.0, TypeScript 5.2.2 (strict: true, but target: es5). No vercel.json, no server actions, one API route (n8n chat proxy at <code>app/api/chat/proxy/route.ts</code>).</li>
+<li><b>Rendering:</b> Marketing surface is mostly Server Components with static metadata. SSG via generateStaticParams on <code>app/blog/[slug]</code> and <code>app/ctrla/toolkit/[id]</code>. Fully client-rendered: /admin (2,421 lines), /portal (1,746 lines), and the four flagship blog posts. The homepage is a server shell delegating everything to a client <code>app/HomeContent.tsx</code>. No loading.tsx and no Suspense boundary anywhere. 183 of 311 TS files (about 59%) are "use client".</li>
+<li><b>Styling:</b> Three parallel systems: Tailwind (shadcn config), styled-components (2 files plus global registry and compiler flag), and 4,200 inline style objects, plus a 3,334-line <code>app/globals.css</code>.</li>
+<li><b>Supabase:</b> @supabase/ssr browser client only. <code>utils/supabase/server.ts</code> and <code>utils/supabase.ts</code> have zero importers (dead code). <code>middleware.ts</code> creates a Supabase client on every non-asset request but never calls getUser(), so it neither refreshes sessions nor protects routes. All authenticated data flows browser to PostgREST, gated only by RLS policies that live in hand-run SQL files under <code>utils/spbase-docs/</code>. No generated database types.</li>
+<li><b>Routing:</b> About 34 routes; nested layouts under ctrla, admin, portal, and two case studies. Seven config redirects (all 308). SEO infrastructure present: robots.ts, sitemap.ts, sitemap index, video sitemap, llms.txt.</li>
+</ul>
+
+<h2>2. Findings by Category</h2>
+
+<h3>2.1 Security (read these first)</h3>
+<table>
+<tr><th width="12%">Severity</th><th width="58%">Finding</th><th>Location</th></tr>
+<tr><td class="crit">Critical</td><td><b>Users can set their own points to any value.</b> The UPDATE policy on brand_kit_credits is USING (auth.uid() = user_id) with no WITH CHECK and no column restriction, and direct table UPDATE is granted to authenticated users. Running update({ points: 999999 }) from browser devtools succeeds.</td><td>utils/spbase-docs/points-system-setup.sql:88-91</td></tr>
+<tr><td class="crit">Critical</td><td><b>Any user can drain any other user's points.</b> deduct_brand_kit_points(p_user_id, ...) is SECURITY DEFINER, granted to authenticated, and takes the target user as a parameter without ever checking auth.uid().</td><td>points-system-setup.sql:33, 98; called from hooks/brand-kit/usePoints.ts:102</td></tr>
+<tr><td class="crit">Critical</td><td><b>Signed client contracts sit in a public storage bucket.</b> Uploads to signed-documents are exposed via getPublicUrl() with guessable {timestamp}_{filename} keys. Anyone with a URL can fetch legal documents with no auth.</td><td>app/admin/page.tsx:500-513</td></tr>
+<tr><td class="crit">Critical</td><td><b>Client-side credit initialization.</b> The browser inserts { points: 1000 } directly on first load; the amount is client-controlled, and on failure the UI fakes setPoints(1000), showing credits that do not exist.</td><td>hooks/brand-kit/usePoints.ts:37-52</td></tr>
+<tr><td class="crit">Critical</td><td><b>End-of-life Next.js with middleware in play.</b> 13.5.11 receives no security patches. npm audit (production deps only) reports 2 high (next: SSRF, auth bypass, cache poisoning classes; ws) plus 3 moderate (styled-components/postcss, js-yaml). The middleware auth-bypass CVE class applies directly to this setup.</td><td>package.json:41</td></tr>
+<tr><td class="high">High</td><td><b>No server-side route protection at all.</b> Middleware discards the Supabase client it builds; /admin gating is a client-side useEffect role check, same for /portal. RLS is the only wall, and it lives in loose SQL files nothing verifies.</td><td>middleware.ts:6, app/admin/page.tsx:215-229, app/portal/page.tsx:76-85</td></tr>
+<tr><td class="high">High</td><td><b>Session refresh is broken.</b> The @supabase/ssr contract requires supabase.auth.getUser() in middleware; it is never called, and the try/catch swallows every error silently. The comment in utils/supabase/server.ts:22-23 assumes refresh that does not happen.</td><td>utils/supabase/middleware.ts:7-39</td></tr>
+<tr><td class="high">High</td><td><b>The deduction RPC has a race condition and no idempotency.</b> SELECT then UPDATE with no FOR UPDATE lock and no WHERE points &gt;= amount guard; concurrent spends throw raw CHECK-violation errors at users; a retried request double-charges.</td><td>points-system-setup.sql:40-60</td></tr>
+<tr><td class="high">High</td><td><b>Zero security headers.</b> No headers() in next.config.js: no CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy; X-Powered-By leaks. GA, Metricool, and Clarity load with no CSP and no consent gating.</td><td>next.config.js; app/layout.tsx:104-118</td></tr>
+<tr><td class="med">Medium</td><td>Role changes round-trip through the browser with no audit trail; a single policy typo is silently catastrophic.</td><td>app/admin/page.tsx:347-356</td></tr>
+<tr><td class="med">Medium</td><td>Two dead duplicate Supabase clients are import traps (utils/supabase.ts has placeholder-URL fallbacks that mask misconfiguration). .env.example omits the Supabase vars entirely. Positive: no service-role key appears anywhere in the repo.</td><td>utils/supabase.ts, utils/supabase/server.ts</td></tr>
+</table>
+
+<h3>2.2 SEO / GEO / AEO</h3>
+<table>
+<tr><th width="12%">Severity</th><th width="58%">Finding</th><th>Location</th></tr>
+<tr><td class="crit">Critical</td><td><b>Four flagship blog posts canonicalize to the homepage.</b> They are "use client" pages with no metadata, and the root layout's global alternates.canonical ("https://www.rovstudios.com") cascades down, so each post declares itself a duplicate of the homepage. Google can drop them from the index entirely. They also serve the homepage title and description.</td><td>app/blog/restaurant-atlanta/page.tsx:1 plus 3 siblings; root cause app/layout.tsx:77-79</td></tr>
+<tr><td class="crit">Critical</td><td><b>Those same posts have no structured data.</b> Their content/blog/*.md twins match the [slug] route, but static folders win in App Router, so the well-built BlogPostingSchema and FAQPageSchema pipeline is dead code for exactly the posts with real results. Rich FAQ arrays render as visual accordions only.</td><td>app/blog/[slug]/page.tsx:97-107 (bypassed); app/blog/restaurant-atlanta/page.tsx:32-53</td></tr>
+<tr><td class="crit">Critical</td><td><b>The three /web money pages are missing from the sitemap</b>, while the sitemap instead lists their /blog/&lt;stub&gt; URLs, which 307-redirect (Next's redirect() is temporary, not 301). The best-optimized pages on the site are unsubmitted.</td><td>app/sitemap.ts:7-12; app/blog/[slug]/page.tsx:91</td></tr>
+<tr><td class="high">High</td><td><b>AI crawlers see zero internal links on article pages.</b> NavigationDock and Footer load with dynamic({ ssr: false }) on the [slug] route, all four static blog pages, and all three /web ArticleBody pages. GPTBot, ClaudeBot, and PerplexityBot do not execute JS, so the pages robots.ts explicitly welcomes them to contain no server-rendered navigation.</td><td>app/blog/[slug]/page.tsx:14-22 and siblings</td></tr>
+<tr><td class="high">High</td><td><b>Organization schema is not a LocalBusiness.</b> No street address, phone, geo, or priceRange for an Atlanta service business chasing local queries; sameAs omits Spotify and GitHub (both linked in the footer) and any X/Twitter profile despite layout claiming @rovstudios.</td><td>components/OrganizationSchema.tsx:4-26</td></tr>
+<tr><td class="med">Medium</td><td>NAP inconsistency: contact@rovstudios.com in the footer vs rangeofview@rovstudios.com in NavDoc, schema, and llms.txt. Pick one everywhere.</td><td>components/Footer.tsx:146; components/NavDoc.tsx:187</td></tr>
+<tr><td class="med">Medium</td><td>llms.txt is orphaned (nothing links it), lists only 3 of 5 case studies, omits /blog, /about, /works, and all three /web pages, and carries pricing claims that can drift out of sync with page copy.</td><td>public/llms.txt</td></tr>
+<tr><td class="med">Medium</td><td>Sitemap lastModified values are hardcoded and over a year stale (2025-02 and 2025-03); /ctrla/tape3 is indexable but missing from the sitemap.</td><td>app/sitemap.ts:17, 59-91</td></tr>
+<tr><td class="med">Medium</td><td>The homepage's only H1 lives inside an invisible sr-only keyword and pricing block: textbook hidden-text risk. HomeContent renders no visible h1.</td><td>app/page.tsx:29-47</td></tr>
+<tr><td class="low">Low</td><td>/works has no OG/Twitter block (inherits homepage og:url); keywords meta is dead weight; verify the @rovstudios handle exists; case study and works hubs plus all ctrla pages lack CollectionPage/ItemList schema.</td><td>app/works/page.tsx:4-14; app/layout.tsx:26-36, 59-60</td></tr>
+</table>
+<p class="good"><b>Done well:</b> root metadata with metadataBase; the three /web pages are the gold standard (self-canonicals, @graph FAQ + Article + Breadcrumb, clean H1 to H2 hierarchy, named-author E-E-A-T); service pages carry Service, HowTo, and VideoObject schema; robots.ts explicitly allows AI bots; noindex correctly applied to admin, portal, brand-kit, and pitchdeck.</p>
+
+<h3>2.3 Indexing and Routing</h3>
+<ul>
+<li><span class="high">High:</span> Middleware runs Supabase cookie machinery on every non-asset request including all public pages (middleware.ts:22), defeating full-route caching for zero value. The matcher should be scoped to /admin and /portal.</li>
+<li><span class="med">Medium:</span> No loading.tsx or Suspense boundary in the entire app; no error.tsx for about, works, admin, or portal (the two client apps most likely to throw).</li>
+<li><span class="low">Low:</span> Duplicate redirect: /casestudy/aysegul-ikna defined in both next.config.js:62-66 and a dead in-app permanentRedirect page. Orphan app/ai/error.tsx with no page (the route is config-redirected).</li>
+</ul>
+
+<h3>2.4 Loading States and Perceived Performance</h3>
+<ul>
+<li><span class="high">High:</span> The homepage splash hard-locks scroll (overflow hidden, height 100vh) until window.load or a 5-second cap, and load waits on all the heavy hero media below. Add a 1.52 MB loading.mp4 splash asset, plus HeroWithAnimation's own second "SYSTEM OPTIMIZING" overlay: three stacked loading mechanisms competing for first paint. (app/HomeContent.tsx:48-93; components/Loading.tsx:65-77)</li>
+<li><span class="high">High:</span> The hero frame scrubber fetches 652 WebP frames (18.31 MB total); after the first 60, the remaining 591 fire as simultaneous Image() requests in a single loop, saturating the connection. (components/HeroWithAnimation.tsx:371-397)</li>
+<li><span class="high">High:</span> The portal mounts with a 6-request serial Supabase waterfall in useEffect (session, then profile, then projects, then tracks, then mixed tracks, then revisions), each awaited before the next. The last three are independent and could run in parallel. (app/portal/page.tsx:74-102). Admin has the same pattern plus client-side JS joins over unpaginated select('*') downloads (app/admin/page.tsx:248-283).</li>
+</ul>
+
+<h3>2.5 Media Optimization</h3>
+<table>
+<tr><th width="12%">Severity</th><th width="58%">Finding</th><th>Location</th></tr>
+<tr><td class="crit">Critical</td><td>The sound page hero autoplays a 9.83 MB video (starscollidemv.mp4). autoPlay overrides preload="metadata" and forces the full download on the LCP path.</td><td>components/sound_page/SoundHero.tsx:11</td></tr>
+<tr><td class="crit">Critical</td><td>The mobile homepage hero autoplays an 11.01 MB video (SpiralShotHorizontal.mp4) with no preload attribute and no poster.</td><td>components/HeroWithAnimation.tsx:554</td></tr>
+<tr><td class="high">High</td><td>The homepage LCP logo is a raw img tag with no dimensions and no priority. No image anywhere in the codebase uses the priority prop.</td><td>components/HeroWithAnimation.tsx:565</td></tr>
+<tr><td class="high">High</td><td>Fonts: about 46 manual @font-face blocks, all raw .otf/.ttf (no woff2, which is 2 to 4 times smaller), no preload. The NotoSans variable TTF alone is 1.95 MB. Neue Montreal and Instrument Serif are declared twice (globals.css and app/ctrla/layout.tsx:8-24). next/font is used in only 2 places.</td><td>app/globals.css:11-166; app/ctrla/layout.tsx:8-24</td></tr>
+<tr><td class="med">Medium</td><td>minimumCacheTTL: 60 re-optimizes images every 60 seconds; the footer renders the same webm as two autoplay video elements (mobile and desktop, both in the DOM); SpecialtyPackages autoplays a decorative background video with default preload; portal/admin audio lists lack preload="none".</td><td>next.config.js:11; components/Footer.tsx:91, 217; components/video-production/SpecialtyPackages.tsx:277</td></tr>
+</table>
+<p><b>Folder sizes for context:</b> videoprod 71.5 MB · soundpage 30 MB · ctrla 21.9 MB · webdev 20.5 MB · videoFrames 18.3 MB · audio 16.6 MB · video 13.4 MB · heroassets 11.8 MB.</p>
+
+<h3>2.6 Dependencies and Bundle</h3>
+<table>
+<tr><th width="12%">Severity</th><th width="58%">Finding</th><th>Location</th></tr>
+<tr><td class="high">High</td><td><b>Nine dead dependencies:</b> @dnd-kit/core, @dnd-kit/sortable, @dnd-kit/utilities, file-saver (plus types), react-colorful, react-icons (84 MB on disk, zero imports), rehype-raw, plus remark and remark-html which are imported but never used in the pipeline.</td><td>package.json; lib/blog.ts:93-94</td></tr>
+<tr><td class="high">High</td><td>Both animation engines ship on the homepage: gsap (via statically imported HeroWithAnimation) and framer-motion (Services, CustomCursor), plus lenis for one component. three.js (roughly 600 KB) is statically bundled into the /ctrla route via animated-shader-background; ogl is correctly dynamic.</td><td>app/HomeContent.tsx:5-13; components/ui/animated-shader-background.tsx:4</td></tr>
+<tr><td class="med">Medium</td><td>styled-components exists for 2 files plus a global SSR registry and compiler flag, and carries a moderate CVE. @next/bundle-analyzer@16 vs next@13 version mismatch. No optimizePackageImports for lucide-react (47 importing files). uuid@14 and zod@4 are installed and fine.</td><td>lib/registry.tsx; app/casestudy/CaseStudyContent.tsx:4; next.config.js:14</td></tr>
+</table>
+<p><b>npm audit (production deps):</b> 2 high (next, ws) · 3 moderate (styled-components, postcss, js-yaml) · 0 critical. The high-severity items require a Next.js upgrade to clear.</p>
+
+<h3>2.7 Code Efficiency and Quality</h3>
+<table>
+<tr><th width="12%">Severity</th><th width="58%">Finding</th><th>Location</th></tr>
+<tr><td class="crit">Critical</td><td><b>Unbounded requestAnimationFrame loop with an empty cleanup.</b> The animate() loop reschedules itself forever; the effect cleanup is literally a comment and never cancels. The loop survives unmount and multiplies on prop changes: permanent main-thread burn and mobile battery drain.</td><td>components/ui/gooey-text-morphing.tsx:64-92</td></tr>
+<tr><td class="crit">Critical</td><td><b>The entire homepage subtree is client-rendered</b> behind one "use client" HomeContent component; the only server-rendered content on / is the hidden sr-only block.</td><td>app/HomeContent.tsx:1</td></tr>
+<tr><td class="high">High</td><td>31 client components render purely static markup with no hooks, handlers, or motion (case study sections, pitchdeck tabs, ctrla editorial components) and could be Server Components.</td><td>e.g. app/casestudy/CaseStudyContent.tsx, components/casestudy/*, app/ctrla/pitchdeck/_tabs/*</td></tr>
+<tr><td class="high">High</td><td>Uncapped devicePixelRatio in two canvas hot paths (the other four canvases correctly clamp to 2): quadruples pixel work on 3x phones.</td><td>components/ui/interactive-globe.tsx:210; components/Web-Dev/WebHero.tsx:114</td></tr>
+<tr><td class="high">High</td><td>Motion-heavy site, but only 12 files honor prefers-reduced-motion. Missing in the biggest always-on animators: HeroWithAnimation, interactive-globe, FaultyTerminal, CustomCursor, CardSwap, gooey-text.</td><td>various</td></tr>
+<tr><td class="med">Medium</td><td>Untyped data layer: no generated database.types.ts, hand-written row interfaces drifting from schema, any[] state in admin. 34 "as any" casts (13 each in the near-duplicate LogoLoop and AlbumCoverLoop; the latter is dead-imported in HomeContent with its usage commented out). God components: admin/page.tsx at 2,421 lines with about 35 useState hooks spanning 5 data domains; portal/page.tsx at 1,746. The _archive folder is still compiled. tsconfig target es5. Lint is bare next/core-web-vitals with no @typescript-eslint rules.</td><td>app/admin/page.tsx; app/portal/page.tsx; components/LogoLoop.tsx; tsconfig.json:3</td></tr>
+</table>
+
+<h3>2.8 CSS and Micro-animations</h3>
+<ul>
+<li><span class="med">Medium:</span> The 3,334-line globals.css ships to every route, though much of it (ctrla-*, fold-*) is route-specific. Duplicate @keyframes fold-breathe defined twice (lines 2425 and 3309). 19 uses of !important. 4,200 inline style objects (heaviest: admin 262, pitchdeck tabs 160 to 217 each) reallocate every render and block any future CSP without unsafe-inline.</li>
+<li><span class="low">Low:</span> One layout-property transition (padding-left on .ctrla-toc-row, globals.css:851). ScrollTrigger cleanup is generally done right; interval hygiene is clean. requestAnimationFrame, not setInterval, is the leak vector here.</li>
+</ul>
+
+<h3>2.9 Mobile</h3>
+<ul>
+<li><span class="high">High:</span> No viewport export anywhere (no themeColor, no viewportFit: cover) and zero safe-area-inset usage. The fixed nav dock sits at bottom-6 and overlaps the iOS home indicator. (components/NavDoc.tsx:49)</li>
+<li><span class="high">High:</span> Primary nav touch targets are px-1.5 py-1.5 at 10px text: far under the 44x44 px guideline, on the site's main navigation. (components/NavDoc.tsx:62-86)</li>
+<li><span class="med">Medium:</span> Mobile trades the 18 MB desktop frame sequence for an 11 MB autoplay video (worst of both). window.innerWidth is seeded into initial state in HeroWithAnimation without following orientation changes.</li>
+</ul>
+
+<h2>3. Prioritized Recommendations</h2>
+
+<h3>Tier 1 · Do immediately (high impact, hours not days)</h3>
+<ol>
+<li><b>Fix the four points-system SQL holes.</b> Revoke direct UPDATE/INSERT on brand_kit_credits; rewrite the RPC to derive the user from auth.uid() with a single guarded UPDATE ... WHERE points &gt;= amount RETURNING, plus an idempotency key; move initialization into the DB trigger. Pure SQL, no app deploy, exploitable today.</li>
+<li><b>Make signed-documents a private bucket</b> and serve files via createSignedUrl with expiry.</li>
+<li><b>Delete alternates.canonical from the root layout</b> (app/layout.tsx:77-79). metadataBase already makes per-page relative canonicals work. One line, stops the homepage-canonical poisoning.</li>
+<li><b>Fix the sitemap:</b> filter externalUrl posts out, add the three /web pages plus /ctrla/tape3, refresh lastModified values.</li>
+<li><b>Remove the nine dead dependencies</b> and the two dead Supabase client files.</li>
+</ol>
+
+<h3>Tier 2 · This sprint</h3>
+<ol start="6">
+<li><b>Convert the four static blog pages to the /web pattern:</b> server page.tsx with metadata, self-canonical, and BlogPosting plus FAQPage JSON-LD wrapping a client body. Remove or rename their shadowing .md twins in the same change.</li>
+<li><b>Scope middleware to /admin and /portal, add getUser(),</b> and add server-side gates (a server layout doing a requireUser / requireRole redirect). One change fixes protection, session refresh, and per-request overhead.</li>
+<li><b>Add headers() to next.config:</b> HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, poweredByHeader: false; long Cache-Control for /videoFrames/, /font/, and media folders; raise minimumCacheTTL.</li>
+<li><b>Media triage:</b> compress or replace the two roughly 10 MB autoplay hero videos (target under 2.5 MB each, add posters, preload="none" with IntersectionObserver start), throttle the 591-frame burst into batches, deduplicate the footer video, and give the hero logo next/image with priority and dimensions.</li>
+<li><b>Drop ssr:false from Footer and NavigationDock</b> on all article pages so crawlers see internal links.</li>
+<li><b>Font consolidation:</b> subset to woff2, delete duplicate declarations, preload the 2 or 3 above-the-fold faces, migrate to next/font/local where feasible.</li>
+</ol>
+
+<h3>Tier 3 · Planned work</h3>
+<ol start="12">
+<li><b>Upgrade Next.js to 14.2.x LTS.</b> Clears both high-severity audit classes, realigns eslint-config and bundle-analyzer, unlocks optimizePackageImports. Bump tsconfig target to es2020 in the same pass.</li>
+<li>Fix the gooey-text rAF leak, clamp DPR in the two unclamped canvases, add prefers-reduced-motion to the big animators, add a viewport export, safe-area padding, and larger nav touch targets.</li>
+<li>Generate Supabase types (supabase gen types) and adopt createClient&lt;Database&gt;; parallelize portal and admin fetches; move JS joins into PostgREST embedded selects; add pagination.</li>
+<li>Demote the 31 static client components to Server Components; make the gsap-bearing HeroWithAnimation a dynamic import; remove styled-components (port one shimmer keyframe to CSS).</li>
+<li>Decompose the admin and portal god pages along their existing tab boundaries.</li>
+</ol>
+
+<h2>4. Safe Execution Plan</h2>
+
+<p><b>Phase 0 · Baseline (before anything):</b> capture npm run build output (route sizes), Lighthouse scores on /, /sound, and /blog/restaurant-atlanta, a screenshot of Search Console coverage, and npm run analyze. Tag the current commit. Every phase below ends with npm run build plus a click-through of /, one blog post, one /web page, /ctrla, and a /portal login.</p>
+
+<p><b>Phase 1 · Database and storage (no code deploys, reversible via SQL):</b> apply the points-system policy and RPC fixes and the bucket privatization in the Supabase SQL editor. Verify: a forge attempt from devtools fails; a legitimate spend still works; old document URLs return 403 while createSignedUrl works. Rollback: re-run the prior SQL (keep both versions in supabase/migrations/).</p>
+
+<p><b>Phase 2 · Zero-risk repo hygiene:</b> remove dead dependencies, dead Supabase clients, dead remark imports, the _archive compile inclusion, the orphan app/ai/error.tsx, and the dead aysegul-ikna page. Verify the build passes and npm ls is clean. Rollback: revert the commit.</p>
+
+<p><b>Phase 3 · SEO corrections (deploy separately, watch Search Console for two weeks):</b> root canonical removal, then sitemap fixes, then the blog page conversions (one page first, validated in the Rich Results Test, then the other three), then removing ssr:false from nav and footer, then the OrganizationSchema upgrade plus email unification, then the llms.txt refresh. Ordering matters: the canonical fix must land before or with the blog conversions so the new pages' canonicals are not overridden. Risk: converting "use client" pages to a server page plus client body can surface hydration errors; test each page's interactive pieces (FAQ accordion) locally.</p>
+
+<p><b>Phase 4 · Middleware and auth gates:</b> add getUser() and matcher scoping in one deploy, then server-layout gates for admin and portal in the next. Verify a logged-out /admin request redirects at the server (curl, not browser), logged-in flows stay intact, and marketing pages now cache. Rollback: revert; RLS remains the backstop.</p>
+
+<p><b>Phase 5 · Headers and media:</b> security headers first, with CSP in Report-Only mode initially. With GA, Clarity, Metricool, and 4,200 inline styles, an enforced CSP will break things; collect violations first. Then video compression, frame-batch throttling, and the woff2 font migration. Verify with Lighthouse against the Phase 0 baseline.</p>
+
+<p><b>Phase 6 · Next.js 14 upgrade (own branch, longest tail):</b> next@14.2.x plus eslint-config-next@14 plus analyzer alignment plus target es2020. Test every route. Key risk areas: the styled-components registry (or remove it first), dynamic imports with ssr:false, the middleware API surface, and image optimizer behavior. Rollback: branch revert.</p>
+
+<p><b>Phase 7 · Refactors:</b> typed Supabase client, fetch parallelization, RSC demotions, and god-page decomposition, delivered per feature rather than big-bang.</p>
+
+<h2>5. Nuances, Risks, and Gotchas</h2>
+<ul>
+<li><b>Canonical removal is not a regression.</b> Deleting the root alternates block is safe because metadataBase plus per-page alternates already cover the well-built pages. Only pages relying on the (wrong) inherited canonical change behavior, and for them no canonical is strictly better than a homepage canonical.</li>
+<li><b>Static folders beat [slug].</b> If you convert the four blog posts and keep their .md files, the sitemap and getAllPosts() will still emit duplicate URLs. Delete or rename the .md twins in the same PR.</li>
+<li><b>redirect() in a Server Component is a 307.</b> For the externalUrl blog stubs, use permanentRedirect() or next.config redirects if you keep them at all.</li>
+<li><b>Middleware matcher scoping changes caching.</b> Once marketing routes skip middleware they become fully static and cacheable. If you later add anything per-request (A/B tests, geo), you will need to deliberately re-widen the matcher.</li>
+<li><b>RSC conversion hydration traps:</b> components reading window at module or initial-state level (HeroWithAnimation does) must stay client; convert the parents around them. Keep the proven /web pattern: server page.tsx plus client Content.tsx.</li>
+<li><b>Supabase RLS testing:</b> test policies from an anonymous browser profile with a real user token, not the dashboard SQL editor (the dashboard runs as postgres and bypasses RLS). Keep RLS as defense in depth even after server gates land.</li>
+<li><b>The points RPC rewrite must ship before the points feature is promoted anywhere.</b> The two critical holes are exploitable now, quietly.</li>
+<li><b>CSP will be painful</b> until inline styles are reduced: start with Content-Security-Policy-Report-Only, allowlist GA, Clarity, Metricool, and Supabase domains, and only then enforce.</li>
+<li><b>Next 14 upgrade notes:</b> 14 moved viewport and themeColor out of metadata into a separate viewport export (which this site needs to add anyway); sharp becomes required for image optimization on some hosts; fetch-cache defaults change again if you later move to 15. Several of the audit CVEs target the image optimizer, so until the upgrade lands, avoid proxying arbitrary remote images (the current config has no remotePatterns, which is good).</li>
+</ul>
+
+<h2>6. Scalability Roadmap</h2>
+
+<h3>Now (while small)</h3>
+<ul>
+<li>The four SQL fixes.</li>
+<li>Generated, typed DB types; kill the duplicate Supabase clients.</li>
+<li>Adopt supabase/migrations/ via the CLI so what is live in the database becomes knowable from the repo. Today it is not, which is exactly why the RLS holes went unnoticed.</li>
+<li>Establish the rule: mutations only via server actions or route handlers with zod validation; RLS as backstop; never the browser.</li>
+</ul>
+
+<h3>Next quarter (as the portal and points grow)</h3>
+<ul>
+<li>Decompose admin and portal along their existing tab boundaries into features/{points, projects, audio, admin-users}/ with queries.ts, actions.ts, and components/ per feature.</li>
+<li>Points become an append-only point_transactions ledger with the balance maintained inside auth.uid()-scoped RPCs. This is the prerequisite for streaks, awards, and leaderboards.</li>
+<li>Route groups (admin) and (portal) with server-layout gates; pagination on every list query.</li>
+</ul>
+
+<h3>As it becomes a big beast</h3>
+<ul>
+<li>Move gamification rules fully into DB functions and server actions so clients are render-only; add an audit-log table for role and points mutations.</li>
+<li>Split the heavy creative surfaces (ctrla, the-fold) into route-group-scoped CSS and fonts instead of global.</li>
+<li>CI checks: typegen freshness, tsc --noEmit, lint with @typescript-eslint, and a bundle-size budget via the analyzer that is already wired.</li>
+<li>Revisit the animation stack: one engine (likely framer-motion given its 40-file footprint), keeping gsap only where ScrollTrigger and Flip are irreplaceable.</li>
+</ul>
+
+<h3>Defer indefinitely</h3>
+<ul>
+<li>The three-to-ogl shader rewrite (one page; fine once dynamically imported).</li>
+<li>The inline-style purge (do it opportunistically per touched file).</li>
+<li>Next 15 / React 19 (let 14.2 settle first).</li>
+</ul>
+
+<h2>The five things to fix this week, in order</h2>
+<ol>
+<li>Points-system SQL (exploitable by any logged-in user today).</li>
+<li>The signed-documents bucket (client contracts are publicly fetchable).</li>
+<li>Root canonical plus blog metadata (the four best posts are telling Google they are the homepage).</li>
+<li>The sitemap money-page omission.</li>
+<li>The dead-dependency sweep.</li>
+</ol>
+<p class="callout">The first two need no app deploy at all: they are SQL and storage-settings changes in the Supabase dashboard.</p>
+
+<h1>7. Brand Kit Generator · UI/UX and Usability Report</h1>
+<p class="meta">Added July 3, 2026 · Covers app/ctrla/brand-kit (8-step wizard), components/brand-kit, lib/brand-kit (store + generator), hooks/brand-kit. Read-only; nothing modified.</p>
+
+<h2>7.1 How it works today</h2>
+<ul>
+<li><b>Entry:</b> /ctrla/brand-kit is a bare server redirect straight into step 1 of the builder (app/ctrla/brand-kit/page.tsx:4). There is no landing page, and the 50-credit cost and Google-login requirement are never mentioned until the very last step.</li>
+<li><b>Wizard:</b> 8 steps (brand-info, logo, colors, typography, gradients, voice, sections, export) rendered by one dynamic route. Step order is duplicated in two files that must stay in sync manually (builder/[step]/page.tsx:11-20 and WizardShell.tsx:29-38).</li>
+<li><b>State:</b> plain zustand + immer with <b>no persistence</b> (lib/brand-kit/store.ts:159-161). Nothing is saved to localStorage or the server.</li>
+<li><b>Deliverable:</b> a single self-contained .html file (not a zip), generated client-side by concatenating CSS/HTML/JS strings, downloaded via a Blob and synthetic anchor click. The live preview correctly uses the same generator (good: no preview-vs-output drift).</li>
+<li><b>Payment:</b> 50 points deducted via Supabase RPC at the moment of export, with auth demanded only at that final click.</li>
+</ul>
+
+<h2>7.2 Critical bugs</h2>
+<table>
+<tr><th width="12%">Severity</th><th width="58%">Finding · user-facing symptom</th><th>Location</th></tr>
+<tr><td class="crit">Critical</td><td><b>User is charged 50 credits before generation runs, with no refund on failure.</b> deductPoints(50) executes, then generateBrandKit runs; if generation throws, the catch shows "Export failed" but the points are already gone. The only retry is clicking Download again, which deducts another 50. Paid, got nothing, charged again to retry.</td><td>components/brand-kit/builder/steps/ExportStep.tsx:44-76</td></tr>
+<tr><td class="crit">Critical</td><td><b>The forced login at the end destroys all work.</b> The store is not persisted, and the Google OAuth redirect is a full-page navigation. A user completes all 8 steps, is told to sign in at the Download click, logs in, and returns to an empty Export step. Every logo, color, and font is gone. The core journey cannot be completed by a new user without losing their kit.</td><td>store.ts:159-161 + AuthModal.tsx:27; any refresh mid-builder has the same total-loss effect</td></tr>
+<tr><td class="crit">Critical</td><td><b>HTML injection in the downloaded kit via font filename.</b> font-linker.ts interpolates the uploaded font's filename raw into the kit's &lt;style&gt; block. A filename containing a style-tag breakout executes arbitrary JavaScript when the recipient opens the kit. The brand name has the same hole through JSON.stringify in the inline script (a &lt;/script&gt; sequence in the name breaks out). These fire in the builder's live preview too.</td><td>lib/brand-kit/generator/font-linker.ts:34-38; js-generator.ts:299</td></tr>
+<tr><td class="crit">Critical</td><td><b>Remove buttons are invisible on touch devices.</b> The delete controls for uploaded logos and brand-voice pillars are opacity-0 group-hover:opacity-100. Phones and tablets have no hover, so mobile users can never delete or replace a logo or remove a pillar. Keyboard focus does not reveal them either (no group-focus-within).</td><td>LogoStep.tsx:124-129; BrandVoiceStep.tsx:98-103</td></tr>
+<tr><td class="crit">Critical</td><td><b>The eyedropper reloads and redraws the entire logo image on every single mouse move.</b> Each pixel-hover triggers a full new Image() decode plus a fresh canvas draw, dozens of times per second: severe jank on any real logo. It also has no touch handlers (mouse-only) and no keyboard path.</td><td>LogoEyedropper.tsx:46-51, 132-134; lib/brand-kit/utils/logoColors.ts:33</td></tr>
+</table>
+
+<h2>7.3 High-severity issues</h2>
+<table>
+<tr><th width="12%">Area</th><th width="58%">Finding · user-facing symptom</th><th>Location</th></tr>
+<tr><td>Flow</td><td><b>Phantom credits.</b> If the credit-row insert fails, the UI fakes setPoints(1000): the user sees "1000 / 1000", clicks Download, and is immediately told "Point Limit Reached" because no DB row exists. Directly self-contradictory. All other points-load failures are console-only and silently render as "0 / 1000".</td><td>usePoints.ts:52, 56-57; ExportStep.tsx:113</td></tr>
+<tr><td>Flow</td><td><b>Cost and login are a surprise at the end.</b> Nothing before the final click discloses that the kit requires Google login plus 50 credits, and there is no confirmation before spending. The success toast says "50 points have been deducted", framing a charge as the success message.</td><td>ExportStep.tsx:33-41, 71</td></tr>
+<tr><td>Flow</td><td><b>Every step is skippable.</b> Step pills are plain links, so a user can jump straight to Export (bypassing even the brand-name gate, the only validation in the wizard) and spend 50 credits on an empty kit titled "Brand". No step validates its own content before Next.</td><td>WizardShell.tsx:105-140, 172-191; generator/index.ts:23</td></tr>
+<tr><td>Flow</td><td><b>Logged-in users can be falsely told to sign in.</b> userId resolves asynchronously; clicking Export before the session loads shows the auth modal to someone already authenticated.</td><td>ExportStep.tsx:33 vs usePoints.ts:20</td></tr>
+<tr><td>Logo</td><td><b>No maximum file size, and wrong format labeling.</b> Compression only kicks in above 200KB and its failure path is a silent bare catch: a 50MB PNG can be stored raw as base64 in the store. Any non-SVG upload (JPG, WEBP, HEIC) is labeled "png"; an undecodable HEIC renders as a broken image with no error shown.</td><td>LogoStep.tsx:24-40, 87</td></tr>
+<tr><td>Typography</td><td><b>Nonexistent fonts fail silently.</b> Users can type any custom family name; the Google Fonts link 404s quietly and the preview falls back to a system font with no warning, so users believe they picked a real font. All 16 suggestion fonts are also injected as separate stylesheets on every visit to the step.</td><td>TypographyStep.tsx:39-54, 87-91, 467-480</td></tr>
+<tr><td>Typography</td><td><b>Non-ASCII font filenames crash the loader.</b> The @font-face id is built with btoa(filename), which throws on any non-Latin1 character (a file named Röboto.woff2 never loads). Apostrophes in filenames break the generated @font-face CSS since names are interpolated unescaped.</td><td>TypographyStep.tsx:57-64</td></tr>
+<tr><td>Colors</td><td><b>No pairwise contrast checking on the palette itself.</b> Swatches are only graded against pure white/black; text-on-primary and primary-vs-secondary combinations are never checked, so the kit can recommend failing-contrast pairings with zero warning. Duplicate hexes across slots are also allowed silently, and the color wheel has no keyboard access.</td><td>ColorPaletteStep.tsx:436-443, 504</td></tr>
+<tr><td>Gradients</td><td><b>Multiple gradients can all be "Primary".</b> The toggle has no mutual exclusion, so the export can carry several primary gradients. The validator also accepts any valid background value ("red" passes as a gradient).</td><td>GradientsStep.tsx:12-20, 119-124</td></tr>
+<tr><td>Voice</td><td><b>Half the feature has no UI.</b> The store and handlers support weAre / weAreNot lists, but the step only renders Do/Don't examples; users can never edit the other two. Do/Don't rows use array-index keys, so deleting a middle item mis-associates input focus.</td><td>BrandVoiceStep.tsx:44-65, 128-132</td></tr>
+<tr><td>Output</td><td><b>About 390 lines of the CSS generator are dead code, and 55 hardcoded ROV colors leak into every kit.</b> The corporate-blue template branch is unreachable (template is hardcoded warm-earth, and nothing calls setTemplate). Meanwhile grid lines, radials, and gradient fallbacks hardcode ROV clay/purple hexes, so a user who picked a blue palette still gets warm-earth accents in their download.</td><td>css-generator.ts:1875-2260, 64, 148-159; store.ts:128</td></tr>
+<tr><td>Output</td><td><b>Fragile positional palette mapping.</b> The theme consumes swatches by index (0 = ink, last = paper); extra colors are dropped from theming, and if slot 0 holds a light color the exported guidelines render light-on-light with no guard, despite role fields existing on the swatch model.</td><td>css-generator.ts:40-44</td></tr>
+</table>
+
+<h2>7.4 Medium and low</h2>
+<ul>
+<li><span class="med">Medium:</span> The suggestion-to-slot "tap to assign" interaction has weak discoverability (one animated banner, no drag fallback, no apply-to-next-empty default). (ColorPaletteStep.tsx:316-344, 742-745)</li>
+<li><span class="med">Medium:</span> Hex input rules differ between assisted and manual modes: shorthand #FFF and rgb() paste work in one and not the other; assisted mode shows no inline invalid message. A bad base color silently produces an all-black generated palette. (ColorPaletteStep.tsx:139-142, 356-384, 924-942)</li>
+<li><span class="med">Medium:</span> Type-scale size and line-height fields are free text with no validation; "16pxx" flows straight into the exported CSS. Custom font uploads have no size limit. (TypographyStep.tsx:281-313, 648-665)</li>
+<li><span class="med">Medium:</span> Brand-info fields: no maxLength on the name (overflows previews and the kit title), website accepts any string, year accepts letters. The Next gate checks the trimmed name but stores the raw whitespace. (BrandInfoStep.tsx:266-340)</li>
+<li><span class="med">Medium:</span> Uploaded SVGs are stored and embedded in the export verbatim with no sanitization: a stored-XSS vector in the deliverable. (LogoStep.tsx:105)</li>
+<li><span class="med">Medium:</span> The builder's own chrome fails the contrast bar it asks users to clear: helper text at 30 to 48 percent opacity on the dark background is well under WCAG AA. Several inputs are labeled by adjacent paragraphs instead of real label elements. (TypographyStep.tsx:278-305; ColorPaletteStep.tsx:921-924)</li>
+<li><span class="med">Medium:</span> Mobile (375px): the live preview is hidden entirely below lg, so phone users build blind; step-rail labels vanish leaving unlabeled number circles; 6-column swatch grids compress to ~52px columns with sub-44px touch targets; the Do/Don't grid stays two-up and cramped. (builder/layout.tsx:60-63; WizardShell.tsx:136; ColorPaletteStep.tsx:688-690)</li>
+<li><span class="med">Medium:</span> iOS Safari: the a.download blob pattern is historically unreliable there; no detection or fallback, so the paid download may open in-page instead of saving. (ExportStep.tsx:57-65)</li>
+<li><span class="med">Medium:</span> The exported kit links Google Fonts from a CDN, so an offline recipient silently sees system fallback fonts; custom uploads are data-URI embedded and fine. (font-linker.ts:19-21)</li>
+<li><span class="low">Low:</span> StepTransition.tsx is dead code (imported nowhere), so the intended step animation never plays. A generic downloadFile.ts utility exists but ExportStep inlines its own copy. Four separate color-math implementations exist, including near-twin files colorUtils.ts and color-utils.ts: high drift and wrong-import risk. rovbrandkit.html is an unused static reference. The RPC's real error message is discarded, and every failure routes to a generic "contact support" dead end. An invalid step URL 404s outside the builder chrome. Disabled-Next feedback is a title tooltip only, invisible on touch.</li>
+</ul>
+
+<h2>7.5 How to improve it (priority order)</h2>
+<ol>
+<li><b>Persist the store.</b> Add zustand persist (localStorage) with a version field and migration, and offer "Resume your draft?" on return. This one change fixes the refresh wipe, the OAuth wipe, and makes exit-and-resume possible. It also makes the logo size cap (below) mandatory, since base64 logos will hit localStorage quotas.</li>
+<li><b>Charge after success, not before.</b> Generate the kit, create the blob, then deduct; or wrap deduct + generate with a refund on failure and a retry that never double-charges. Show a confirm ("Download for 50 credits?") before spending, and make the success toast confirm the download, not the charge.</li>
+<li><b>Disclose the deal up front.</b> Give /ctrla/brand-kit a real landing view (what you get, sample kit, "requires Google sign-in, 50 credits") and show login state plus credit balance in the builder masthead from step 1. Prompt sign-in early, when losing context is cheap.</li>
+<li><b>Escape every user string at every sink.</b> CSS-escape font names and fallbacks in font-linker and css-generator, guard the inline script against script-tag breakout (escape the / in JSON.stringify output or serialize into a data attribute), sanitize uploaded SVGs, and consider restricting font-family identifiers to safe characters.</li>
+<li><b>Kill the phantom credits.</b> Remove the fake setPoints(1000) fallback; on load failure show a real toast and disable Export. Move first-credit granting into the DB trigger (this pairs with the section 2.1 security fixes: same root cause). Surface the RPC's actual error instead of always showing "Point Limit Reached", and keep the Export button disabled until the session and balance have resolved.</li>
+<li><b>Add per-step validation.</b> Gate Next and the step pills on minimum completion (name, at least one color, a chosen font), block Export on an empty kit before any deduction, and replace the tooltip-only disabled state with inline text.</li>
+<li><b>Fix touch:</b> make remove buttons always visible on coarse pointers and reveal on group-focus-within; add touch and keyboard support (plus a magnifier) to the eyedropper, and cache its decoded canvas once per open instead of per mouse move; add a preview toggle or drawer on mobile so phone users are not building blind; bring hex and type-scale inputs up to 44px targets.</li>
+<li><b>Harden the inputs:</b> hard max upload sizes with visible rejection messages, correct format detection for non-PNG images, font-existence validation (or a curated list) with a warning on unknown families, a Unicode-safe hash instead of btoa for font ids, numeric validation on type-scale fields, maxLength and trim on the brand name, single-primary radio semantics for gradients, and a real gradient editor (angle slider plus color stops) instead of a raw CSS paste box.</li>
+<li><b>Make the output honor the user:</b> map palette roles explicitly instead of by index, run a WCAG gate on ink-on-paper and swatch text pairings before export (warn or auto-adjust), replace the 55 hardcoded ROV hexes with derived tokens, delete or actually ship the corporate-blue template, embed Google fonts as data URIs at export so the kit is truly offline-complete, and consolidate the four color-math modules into one.</li>
+<li><b>Polish:</b> wire up or delete StepTransition, collapse the duplicated step-order arrays into one source of truth, use the shared downloadFile utility with an iOS Safari fallback path, render or remove the weAre/weAreNot lists, and use stable ids instead of array indexes for voice list keys.</li>
+</ol>
+
+<p class="callout"><b>Bottom line for the brand kit:</b> the generator's bones are good (single self-contained deliverable, live preview sharing the real generator, clean toast system, atomic-enough spend button), but the journey has two ship-blockers: work is destroyed by the login it demands, and users can be charged for a failed export. Fix persistence and charge-ordering first; they are small changes with the highest user-trust payoff. The injection escaping should ship in the same pass since the kit is a file users send to other people.</p>
+
+<p class="meta">Prepared by Claude Code · Read-only audit · No files were modified during this review.</p>
+
+</body>
+</html>

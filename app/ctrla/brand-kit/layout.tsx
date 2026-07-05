@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  robots: { index: false, follow: false },
+  // Flagship tool — allow search + AI crawlers to index it. Inherits the
+  // site's canonical/OG defaults; only the robots override is set here.
+  robots: { index: true, follow: true },
 };
 
 export default function BrandKitLayout({ children }: { children: React.ReactNode }) {

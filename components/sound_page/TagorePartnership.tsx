@@ -6,7 +6,7 @@ import { useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 
 const HEADING = "'Noto Sans VF', 'Noto Sans Condensed', 'Noto Sans', sans-serif";
-const BODY = "'DM Sans', sans-serif";
+const BODY = "var(--font-dm-sans), 'DM Sans', sans-serif";
 const EASE = [0.32, 0.72, 0, 1] as const;
 const EMBER_GRADIENT =
   "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)";

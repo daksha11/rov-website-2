@@ -7,7 +7,6 @@ import HeroWithAnimation from "@/components/HeroWithAnimation";
 import Services from "@/components/Services";
 import ElevateSection from "@/components/ElevateSection";
 import Footer from "@/components/Footer";
-import CustomCursor from "@/components/CustomCursor";
 import HomeTeamSection from "@/components/HomeTeamSection";
 import { NavigationDock } from "@/components/NavDoc";
 import ProjectStrip from "@/components/ProjectStrip";

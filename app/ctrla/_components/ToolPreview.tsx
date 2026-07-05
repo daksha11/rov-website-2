@@ -13,6 +13,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ed as edBase } from "./editorial";
+import { localShot } from "./toolshots";
 
 const shot = (url: string) =>
   `https://s0.wp.com/mshots/v1/${encodeURIComponent(url)}?w=1200&h=750`;
@@ -92,8 +93,14 @@ export default function ToolPreview({
   const [failed, setFailed] = useState(false);
   const [tick, setTick] = useState(0);
 
-  // Curated image wins; otherwise the auto screenshot.
-  const src = preview ?? shot(url);
+  // Priority: hand-curated `preview` override, then a self-hosted
+  // shot (public/ctrla/toolshots/{id}.webp) when the manifest lists
+  // one, then the third-party mShots capture as the safety net.
+  const local = localShot(url);
+  const src = preview ?? local ?? shot(url);
+  // Only the remote mShots capture needs the reload nudge; curated
+  // and self-hosted shots are local files that resolve immediately.
+  const isRemote = !preview && !local;
 
   // Load the heavy preview only once the station nears the viewport.
   useEffect(() => {
@@ -116,14 +123,14 @@ export default function ToolPreview({
   // reloads, then give up to the branded fallback if it never resolves.
   // (A curated `preview` image is local, so it needs no nudging.)
   useEffect(() => {
-    if (!inView || loaded || failed || preview) return;
+    if (!inView || loaded || failed || !isRemote) return;
     if (tick >= 3) {
       const id = setTimeout(() => setFailed(true), 3000);
       return () => clearTimeout(id);
     }
     const id = setTimeout(() => setTick((t) => t + 1), 2600);
     return () => clearTimeout(id);
-  }, [inView, loaded, failed, tick, preview]);
+  }, [inView, loaded, failed, tick, isRemote]);
 
   return (
     <div

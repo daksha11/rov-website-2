@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import AnimatedShaderBackground from "@/components/ui/animated-shader-background";
 import { GooeyText } from "@/components/ui/gooey-text-morphing";
 import { ed } from "./editorial";
+import { currentVolume } from "../_volumes";
 
 // White logo variants read cleanly as metaballs under the threshold filter.
 // The morph runs once: flat logo settles into the 3D logo.
@@ -226,7 +227,7 @@ export default function CtrlALoader({ onDone }: { onDone?: () => void }) {
       {/* Gooey caption — gentle word cycle while loading */}
       <div style={{ position: "relative", zIndex: 1, height: "clamp(40px,8vw,64px)", width: "100%" }}>
         <GooeyText
-          texts={["CTRL-A", "Vol. 01", "Loading"]}
+          texts={["CTRL-A", currentVolume.issueMeta.volume, "Loading"]}
           morphTime={1}
           cooldownTime={0.8}
           textClassName="text-[#F0E6E0] font-semibold tracking-tight text-4xl md:text-5xl"

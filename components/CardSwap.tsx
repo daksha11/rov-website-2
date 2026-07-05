@@ -102,6 +102,10 @@ const CardSwap: React.FC<CardSwapProps> = ({
                 returnDelay: 0.2
             };
 
+    // Clamp a numeric base width to the viewport so the card never overflows
+    // small phones before the container scale transform kicks in.
+    const resolvedWidth = typeof width === 'number' ? `min(${width}px, 84vw)` : width;
+
     const childArr = useMemo(() => Children.toArray(children) as ReactElement<CardProps>[], [children]);
     const refs = useMemo<CardRef[]>(() => childArr.map(() => React.createRef<HTMLDivElement>()), [childArr.length]);
 
@@ -206,7 +210,7 @@ const CardSwap: React.FC<CardSwapProps> = ({
             ? cloneElement(child, {
                 key: i,
                 ref: refs[i],
-                style: { width, height, ...(child.props.style ?? {}) },
+                style: { width: resolvedWidth, height, ...(child.props.style ?? {}) },
                 onClick: e => {
                     child.props.onClick?.(e as React.MouseEvent<HTMLDivElement>);
                     onCardClick?.(i);
@@ -219,7 +223,7 @@ const CardSwap: React.FC<CardSwapProps> = ({
         <div
             ref={container}
             className="relative perspective-[900px] overflow-visible max-[768px]:scale-[0.8] max-[480px]:scale-[0.6]"
-            style={{ width, height }}
+            style={{ width: resolvedWidth, height }}
         >
             {rendered}
         </div>

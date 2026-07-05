@@ -553,6 +553,7 @@ const HeroWithAnimation: React.FC = () => {
         <CanvasElement ref={canvasRef} />
         <VideoElement
           src="/video/SpiralShotHorizontal.mp4"
+          poster="/videoFrames/SpiralShotHorizontal60fpsV2_00000.webp"
           autoPlay
           muted
           loop
