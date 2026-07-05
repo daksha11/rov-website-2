@@ -39,6 +39,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'monthly',
             priority: 0.9,
         },
+        // Canonical /web SEO pages. The like-named blog posts are externalUrl
+        // stubs that 308-redirect here (and are filtered out of blogPosts above),
+        // so these canonical targets must be listed explicitly.
+        {
+            url: `${baseUrl}/web/how-much-does-a-website-cost-in-atlanta`,
+            lastModified: '2026-07-02',
+            changeFrequency: 'monthly',
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/web/real-estate-agent-website-atlanta`,
+            lastModified: '2026-07-02',
+            changeFrequency: 'monthly',
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/web/why-isnt-my-business-showing-up-on-google`,
+            lastModified: '2026-07-02',
+            changeFrequency: 'monthly',
+            priority: 0.8,
+        },
         {
             url: `${baseUrl}/ai-automation`,
             lastModified: '2026-04-29',

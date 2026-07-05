@@ -26,8 +26,12 @@ export default function robots(): MetadataRoute.Robots {
                 allow: '/',
             },
         ],
+        // List both content sitemaps directly so crawlers discover the video
+        // sitemap too. /sitemap-index.xml also references both for engines that
+        // prefer a sitemap index.
         sitemap: [
             'https://www.rovstudios.com/sitemap.xml',
+            'https://www.rovstudios.com/video-sitemap.xml',
         ],
         host: 'https://www.rovstudios.com',
     };
