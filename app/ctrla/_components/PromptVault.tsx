@@ -37,40 +37,40 @@ const PROMPT: Part[] = [
   {
     id: "role",
     label: "role",
-    text: "you are a senior product engineer who ships.",
-    why: "tells the model who to be. a senior who ships pulls for working, pragmatic output, not a tutorial or a hedge.",
+    text: "You are a senior product engineer who ships.",
+    why: "Tells the model who to be. A senior who ships pulls for working, pragmatic output, not a tutorial or a hedge.",
   },
   {
     id: "context",
     label: "context",
-    text: "i am a solo creative, not a coder, building {a small web tool} for {my audience}. i care that it works and looks intentional, not that it is clever.",
-    why: "the model cannot read your mind. who you are and what you are building changes every decision it makes. say it plainly, in one breath.",
+    text: "I am a solo creative, not a coder, building {a small web tool} for {my audience}. I care that it works and looks intentional, not that it is clever.",
+    why: "The model cannot read your mind. Who you are and what you are building changes every decision it makes. Say it plainly, in one breath.",
   },
   {
     id: "task",
     label: "task",
-    text: "build me {the thing}, end to end, in one file i can run.",
-    why: "one clear ask. end to end, in one file removes half the back and forth before it even starts.",
+    text: "Build me {the thing}, end to end, in one file I can run.",
+    why: "One clear ask. End to end, in one file removes half the back and forth before it even starts.",
   },
   {
     id: "constraints",
     label: "constraints",
-    text: "no dependencies i have to install. explain nothing unless i ask. if a choice is ambiguous, pick the simplest option that works and tell me in one line what you picked.",
-    why: "where most people stop too early. constraints keep it from running off to build something fancier and wrong. pick the simplest option is you saving yourself from cleverness you never asked for.",
+    text: "No dependencies I have to install. Explain nothing unless I ask. If a choice is ambiguous, pick the simplest option that works and tell me in one line what you picked.",
+    why: "Where most people stop too early. Constraints keep it from running off to build something fancier and wrong. Pick the simplest option is you saving yourself from cleverness you never asked for.",
   },
   {
     id: "format",
     label: "format",
-    text: "full code first, then a three line how to run it at the bottom. no preamble.",
-    why: "tell it how to hand the work back. code first, no preamble means you can use the output instead of scrolling past an essay.",
+    text: "Full code first, then a three line how to run it at the bottom. No preamble.",
+    why: "Tell it how to hand the work back. Code first, no preamble means you can use the output instead of scrolling past an essay.",
   },
 ];
 
 const GRAB = [
-  { id: "ideate", title: "the thinking partner", blurb: "before anything gets built", text: "act as a sharp creative director. i have a rough idea: {your idea}. do not build anything yet. ask me the three questions that most change the direction, then give me three distinct ways to take it, each one sentence. no hedging, have an opinion." },
-  { id: "draft", title: "ruthless first draft", blurb: "get to working, fast", text: "you are a senior {role}. give me the simplest version of {the thing} that actually works, end to end, in one file i can run. pick sensible defaults for anything i did not specify and list them in three lines at the end. code first, no preamble." },
-  { id: "review", title: "the reviewer", blurb: "before you ship", text: "review the work above as a skeptical senior {role}. list only the real problems, ranked by how badly they bite, each with a one line fix. ignore style and nitpicks. if something would break in front of a user, say so first." },
-  { id: "explain", title: "explain it to me", blurb: "understand what you got", text: "explain what this does, group by group, to someone who is creative but not a developer. no jargon without a plain words gloss. end with the one part i should be most careful changing." },
+  { id: "ideate", title: "The thinking partner", blurb: "before anything gets built", text: "Act as a sharp creative director. I have a rough idea: {your idea}. Do not build anything yet. Ask me the three questions that most change the direction, then give me three distinct ways to take it, each one sentence. No hedging, have an opinion." },
+  { id: "draft", title: "Ruthless first draft", blurb: "get to working, fast", text: "You are a senior {role}. Give me the simplest version of {the thing} that actually works, end to end, in one file I can run. Pick sensible defaults for anything I did not specify and list them in three lines at the end. Code first, no preamble." },
+  { id: "review", title: "The reviewer", blurb: "before you ship", text: "Review the work above as a skeptical senior {role}. List only the real problems, ranked by how badly they bite, each with a one line fix. Ignore style and nitpicks. If something would break in front of a user, say so first." },
+  { id: "explain", title: "Explain it to me", blurb: "understand what you got", text: "Explain what this does, group by group, to someone who is creative but not a developer. No jargon without a plain words gloss. End with the one part I should be most careful changing." },
 ];
 
 // ── Block model: an ordered, toggleable, editable copy of the parts. ──
@@ -82,14 +82,14 @@ const WHY = new Map(PROMPT.map((p) => [p.id, p.why]));
 // dimension counts only when its block is on and its text clears a
 // minimal specificity bar (short blank stubs do not earn the point). ──
 const RUBRIC: { id: string; label: string; short: string; min: number }[] = [
-  { id: "role", label: "a clear role", short: "a role", min: 10 },
-  { id: "context", label: "concrete context", short: "context", min: 24 },
-  { id: "task", label: "a specific task", short: "a task", min: 8 },
-  { id: "constraints", label: "real constraints", short: "constraints", min: 12 },
-  { id: "format", label: "an output format", short: "a format", min: 8 },
+  { id: "role", label: "A clear role", short: "a role", min: 10 },
+  { id: "context", label: "Concrete context", short: "context", min: 24 },
+  { id: "task", label: "A specific task", short: "a task", min: 8 },
+  { id: "constraints", label: "Real constraints", short: "constraints", min: 12 },
+  { id: "format", label: "An output format", short: "a format", min: 8 },
 ];
 
-const WORDS = ["empty", "barely there", "vague", "getting there", "almost sharp", "sharp"];
+const WORDS = ["Empty", "Barely there", "Vague", "Getting there", "Almost sharp", "Sharp"];
 
 function scorePrompt(blocks: Block[]) {
   const byId = new Map(blocks.map((b) => [b.id, b]));
@@ -104,9 +104,9 @@ function scorePrompt(blocks: Block[]) {
   const word = WORDS[metCount];
   const readout =
     metCount === RUBRIC.length
-      ? "sharp"
+      ? "Sharp"
       : metCount === 0
-        ? "empty, start with a task"
+        ? "Empty, start with a task"
         : `${word}, add ${missing[0].short}`;
   const tier = metCount >= 4 ? GOLD : metCount === 3 ? "#C9A94A" : ROSE;
   return { crit, metCount, pct, readout, tier };
@@ -211,7 +211,7 @@ export default function PromptVault() {
     });
   const resetBlocks = () => {
     setBlocks(SEED.map((b) => ({ ...b })));
-    setFlash("reset to the example");
+    setFlash("Reset to the example");
   };
 
   const copy = (id: string, text: string, note?: string) => {
@@ -224,10 +224,10 @@ export default function PromptVault() {
   };
   const copyAssembled = () => {
     if (!composed) {
-      setFlash("turn a block on first");
+      setFlash("Turn a block on first");
       return;
     }
-    copy("__assembled", composed, "assembled prompt copied");
+    copy("__assembled", composed, "Assembled prompt copied");
   };
   const share = () => {
     const token = encodePrompt(blocks);
@@ -235,7 +235,7 @@ export default function PromptVault() {
     if (navigator.clipboard?.writeText) {
       navigator.clipboard
         .writeText(url)
-        .then(() => setFlash("share link copied"))
+        .then(() => setFlash("Share link copied"))
         .catch(() => window.prompt("Copy this link:", url));
     } else {
       window.prompt("Copy this link:", url);
@@ -387,7 +387,7 @@ export default function PromptVault() {
                     disabled={!b.on}
                     rows={Math.max(2, Math.ceil(b.text.length / 52))}
                     aria-label={`${b.label} text`}
-                    placeholder={`write the ${b.label}...`}
+                    placeholder={`Write the ${b.label}...`}
                     style={{
                       width: "100%",
                       resize: "vertical",
@@ -422,7 +422,7 @@ export default function PromptVault() {
               style={{
                 fontFamily: ed.grotesque,
                 fontWeight: 800,
-                fontSize: "clamp(38px,6vw,54px)",
+                fontSize: "clamp(30px,4.4vw,42px)",
                 letterSpacing: "-0.03em",
                 lineHeight: 1,
                 color: score.tier,
@@ -439,11 +439,10 @@ export default function PromptVault() {
             style={{
               fontFamily: ed.grotesque,
               fontWeight: 800,
-              fontSize: "clamp(19px,2.4vw,26px)",
+              fontSize: "clamp(16px,1.9vw,21px)",
               letterSpacing: "-0.02em",
               color: score.tier,
-              margin: "0 0 14px",
-              textTransform: "lowercase",
+              margin: "0 0 12px",
             }}
           >
             {score.readout}
@@ -489,7 +488,7 @@ export default function PromptVault() {
           </ul>
 
           <p style={{ fontFamily: ed.body, fontStyle: "italic", fontSize: 13.5, lineHeight: 1.5, color: DIM, margin: 0, paddingTop: 14, borderTop: "1px solid rgba(240,230,224,0.14)" }}>
-            edit, reorder, or switch off any block. the score moves live. miss a part and the model fills the gap with a guess.
+            Edit, reorder, or switch off any block. The score moves live. Miss a part and the model fills the gap with a guess.
           </p>
         </div>
       </div>
@@ -531,7 +530,7 @@ export default function PromptVault() {
             overflow: "auto",
           }}
         >
-          {composed || "every block is off. turn one on to build your prompt."}
+          {composed || "Every block is off. Turn one on to build your prompt."}
         </pre>
 
         <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center" }}>
@@ -602,13 +601,13 @@ export default function PromptVault() {
       <div className="ctrla-vault-give">
         <div className="ctrla-vault-give-head">
           <span style={{ fontFamily: ed.mono, fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: GOLD }}>Grab and go · free</span>
-          <span style={{ fontFamily: ed.body, fontStyle: "italic", fontSize: 14, color: DIM }}>swap the braces, take what you need</span>
+          <span style={{ fontFamily: ed.body, fontStyle: "italic", fontSize: 14, color: DIM }}>Swap the braces, take what you need</span>
         </div>
         <div className="ctrla-vault-grab">
           {GRAB.map((p) => (
             <div key={p.id} className="ctrla-vault-card">
               <div>
-                <h5 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(16px,1.8vw,19px)", letterSpacing: "-0.01em", color: CREAM, margin: "0 0 4px", textTransform: "lowercase" }}>{p.title}</h5>
+                <h5 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(16px,1.8vw,19px)", letterSpacing: "-0.01em", color: CREAM, margin: "0 0 4px" }}>{p.title}</h5>
                 <span style={{ fontFamily: ed.mono, fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: DIM }}>{p.blurb}</span>
               </div>
               <button type="button" onClick={() => copy(p.id, p.text)} className="ctrla-vault-copy" style={{ color: copied === p.id ? "#0F0820" : GOLD, background: copied === p.id ? GOLD : "transparent", borderColor: GOLD }}>
@@ -639,7 +638,7 @@ export default function PromptVault() {
           <span style={{ fontFamily: ed.mono, fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: GOLD, display: "block", marginBottom: 12 }}>Want the full library?</span>
           {sent ? (
             <p style={{ fontFamily: ed.body, fontSize: 16, lineHeight: 1.5, color: CREAM, margin: 0 }}>
-              you are on the list. the full vault is on its way, plus every new drop.
+              You are on the list. The full vault is on its way, plus every new drop.
             </p>
           ) : (
             <form onSubmit={(e) => { e.preventDefault(); if (email.trim()) setSent(true); }} style={{ display: "flex", alignItems: "center", gap: 0, borderBottom: `1px solid rgba(240,230,224,0.4)`, maxWidth: 420 }}>
@@ -658,7 +657,7 @@ export default function PromptVault() {
             </form>
           )}
           <span style={{ fontFamily: ed.mono, fontSize: 10, letterSpacing: "0.1em", color: DIM, display: "block", marginTop: 12 }}>
-            no spam. the prompts and skill files we actually use.
+            No spam. The prompts and skill files we actually use.
           </span>
         </div>
       </div>

@@ -164,8 +164,8 @@ export const edLight: typeof ed = {
   panel: "#E7D8CD", // warm sand — lifted surface / device frames on cream
   ink: "#160C28", // primary text — near-black plum
   void: "#0F0820",
-  inkSoft: "rgba(22,12,40,0.66)",
-  inkFaint: "rgba(22,12,40,0.42)",
+  inkSoft: "rgba(22,12,40,0.84)", // body — darkened so it never reads as dim grey on cream
+  inkFaint: "rgba(22,12,40,0.66)", // small-caps meta — lifted well clear of illegible grey
   hair: "rgba(22,12,40,0.16)",
 };
 
@@ -176,10 +176,14 @@ export const edLight: typeof ed = {
 //   legibleAccentDeep  → ink-panel (#24123A), for tiny caps labels so they
 //                        stay distinct from the plum used elsewhere
 export const legibleAccent = (accent: string): string =>
-  accent === ed.gold ? ed.plum : accent;
+  accent === ed.gold ? ed.plum
+  : accent.toUpperCase() === "#8E76B8" ? "#574191" // video's light lavender → legible deep violet
+  : accent;
 
 export const legibleAccentDeep = (accent: string): string =>
-  accent === ed.gold ? ed.panel : accent;
+  accent === ed.gold ? ed.panel
+  : accent.toUpperCase() === "#8E76B8" ? "#34265C" // deeper still for tiny caps labels
+  : accent;
 
 // ── SweepText — the "select all" heading highlight ─────────────────
 // Wrap heading text in this to fire the one-shot gold selection sweep
@@ -255,8 +259,8 @@ export function Label({
     <span
       style={{
         fontFamily: ed.mono,
-        fontSize: "clamp(9px, 1vw, 11px)",
-        letterSpacing: "0.22em",
+        fontSize: "clamp(10.5px, 1.15vw, 12.5px)",
+        letterSpacing: "0.2em",
         textTransform: "uppercase",
         color,
         ...style,

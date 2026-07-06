@@ -35,6 +35,36 @@ function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }
   );
 }
 
+// Collapsible disclosure — keeps supporting detail out of the way until asked.
+// Summary label acts as the toggle; the body reveals on click.
+function Disclosure({ label, color, children }: { label: string; color: string; children: ReactNode }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+      style={{ borderTop: `2px solid ${color}`, paddingTop: 16 }}
+    >
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, width: "100%", background: "none", border: "none", padding: 0, cursor: "pointer", textAlign: "left" }}
+      >
+        <Label color={color}>{label}</Label>
+        <span aria-hidden style={{ display: "inline-flex", color, transition: "transform 0.28s ease", transform: open ? "rotate(45deg)" : "none", fontSize: 18, lineHeight: 1 }}>+</span>
+      </button>
+      <div style={{ display: "grid", gridTemplateRows: open ? "1fr" : "0fr", transition: "grid-template-rows 0.32s cubic-bezier(0.22,1,0.36,1)" }}>
+        <div style={{ overflow: "hidden" }}>
+          <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: "12px 0 0" }}>
+            {children}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Each question carries its meaning plus how the two example briefs answer
 // it, so selecting a question tells a small story instead of listing facts.
 const BRIEF = [
@@ -42,25 +72,25 @@ const BRIEF = [
     n: "01",
     title: "Purpose",
     prompt: "what is this trying to do",
-    body: "every color, every typeface, every gap is an answer to this. the work comes from the brief, not from what looks cool right now.",
-    jazz: "sell out a friday night. make someone stop on the street and feel the noise before they read the date.",
-    saas: "earn a busy buyer's demo. remove doubt, don't add flourish.",
+    body: "Every color, every typeface, every gap is an answer to this. The work comes from the brief, not from what looks cool right now.",
+    jazz: "Sell out a Friday night. Make someone stop on the street and feel the noise before they read the date.",
+    saas: "Earn a busy buyer's demo. Remove doubt, don't add flourish.",
   },
   {
     n: "02",
     title: "Audience",
     prompt: "who is it for",
-    body: "a downtown jazz crowd and a saas buyer want completely different things. you are designing for them, not for yourself.",
-    jazz: "night people walking past, half-distracted. they answer to energy and mood, not bullet points.",
-    saas: "a decision-maker with a budget and no time. they answer to clarity, proof, and restraint.",
+    body: "A downtown jazz crowd and a SaaS buyer want completely different things. You are designing for them, not for yourself.",
+    jazz: "Night people walking past, half-distracted. They answer to energy and mood, not bullet points.",
+    saas: "A decision-maker with a budget and no time. They answer to clarity, proof, and restraint.",
   },
   {
     n: "03",
     title: "Context",
     prompt: "where does it live",
-    body: "a poster on a wall and a landing page on a phone exist in different worlds. the environment decides as much as the idea does.",
-    jazz: "printed, pasted on a wall, seen from six feet away at night. it can shout.",
-    saas: "a phone screen at a desk, one tab of many. it has to be calm and instantly legible.",
+    body: "A poster on a wall and a landing page on a phone exist in different worlds. The environment decides as much as the idea does.",
+    jazz: "Printed, pasted on a wall, seen from six feet away at night. It can shout.",
+    saas: "A phone screen at a desk, one tab of many. It has to be calm and instantly legible.",
   },
 ];
 
@@ -70,18 +100,18 @@ const BRIEF_EXAMPLES = {
 };
 
 const MOODBOARD = [
-  { n: "01", name: "Typography direction", level: "the voice before the words", body: "serif or sans, sharp or soft, loud or quiet. you are choosing how it speaks before you write a line." },
-  { n: "02", name: "Color temperature", level: "the mood, not the hex", body: "warm or cool, saturated or muted. the feeling gets locked here, long before any specific color value." },
-  { n: "03", name: "Texture", level: "how the surface feels", body: "clean and flat, or grain, paper, ink, noise. the difference between a thing that feels digital and one that feels made." },
-  { n: "04", name: "Density", level: "how much breathes", body: "packed and busy, or open and slow. density sets the pace a person reads at before they read anything." },
-  { n: "05", name: "Negative space", level: "what you leave out", body: "the most senior decision on the board. confidence is knowing what to remove and trusting the room it leaves." },
-  { n: "06", name: "Photography style", level: "shot on purpose", body: "lit and graded one way, deliberately. or no photography at all, which is also a decision, not a default." },
+  { n: "01", name: "Typography direction", level: "the voice before the words", body: "Serif or sans, sharp or soft, loud or quiet. You are choosing how it speaks before you write a line." },
+  { n: "02", name: "Color temperature", level: "the mood, not the hex", body: "Warm or cool, saturated or muted. The feeling gets locked here, long before any specific color value." },
+  { n: "03", name: "Texture", level: "how the surface feels", body: "Clean and flat, or grain, paper, ink, noise. The difference between a thing that feels digital and one that feels made." },
+  { n: "04", name: "Density", level: "how much breathes", body: "Packed and busy, or open and slow. Density sets the pace a person reads at before they read anything." },
+  { n: "05", name: "Negative space", level: "what you leave out", body: "The most senior decision on the board. Confidence is knowing what to remove and trusting the room it leaves." },
+  { n: "06", name: "Photography style", level: "shot on purpose", body: "Lit and graded one way, deliberately. Or no photography at all, which is also a decision, not a default." },
 ];
 
 const TOOLS = [
-  { k: "layout", title: "Canva", body: "teaches you to place things on a page and make them sit right. it is where most people start, and there is nothing wrong with that." },
-  { k: "systems", title: "Figma", body: "teaches you why components exist, why constraints matter, and how a thing stays consistent as it scales across screens." },
-  { k: "texture and light", title: "Photoshop", body: "teaches you why blending modes exist, and how light, surface, and depth actually behave. the craft underneath the comp." },
+  { k: "layout", title: "Canva", body: "Teaches you to place things on a page and make them sit right. It is where most people start, and there is nothing wrong with that." },
+  { k: "systems", title: "Figma", body: "Teaches you why components exist, why constraints matter, and how a thing stays consistent as it scales across screens." },
+  { k: "texture and light", title: "Photoshop", body: "Teaches you why blending modes exist, and how light, surface, and depth actually behave. The craft underneath the comp." },
 ];
 
 // The brief, made interactive: the three questions become a selector.
@@ -232,20 +262,14 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
 
         <div className="ctrla-guide-split" style={{ margin: "clamp(28px,4vw,48px) 0 0" }}>
           <Reveal>
-            <div style={{ borderTop: `2px solid ${ed.hair}`, paddingTop: 18 }}>
-              <Label color={ed.inkFaint} style={{ display: "block", marginBottom: 12 }}>the question everyone asks</Label>
-              <p style={{ fontFamily: ed.body, fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0 }}>
-                it is the most common thing a beginner asks, and it is the reason most beginner work looks the same. the question is too open. it assumes the goal is aesthetics. it is not.
-              </p>
-            </div>
+            <Disclosure label="the question everyone asks" color={ed.inkFaint}>
+              Too open a question, and the reason most beginner work looks the same. It assumes the goal is <em style={{ fontStyle: "italic", color: accent }}>aesthetics</em>. It is not.
+            </Disclosure>
           </Reveal>
           <Reveal delay={0.08}>
-            <div style={{ borderTop: `2px solid ${accent}`, paddingTop: 18 }}>
-              <Label color={accent} style={{ display: "block", marginBottom: 12 }}>the better question</Label>
-              <p style={{ fontFamily: ed.body, fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0 }}>
-                design is not decoration. it is decision-making with a visual output. when the work looks good, it is because the right questions got asked first. when it looks like it is trying too hard, they did not.
-              </p>
-            </div>
+            <Disclosure label="the better question" color={accent}>
+              Design is <em style={{ fontStyle: "italic", color: accent }}>decision-making with a visual output</em>, not decoration. When it looks good, the right questions got asked first.
+            </Disclosure>
           </Reveal>
         </div>
 
@@ -257,7 +281,7 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
               Three questions, asked before you open a file
             </h3>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: "0 0 clamp(28px,4vw,40px)", maxWidth: 640 }}>
-              before my friends at scad ever touch a pen or open figma, they answer three things. not a checklist. a way of thinking.
+              Before my friends at SCAD ever touch a pen or open Figma, they answer three things. Not a checklist. A way of thinking.
             </p>
           </Reveal>
           <Reveal>
@@ -273,7 +297,7 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
               Lock the language before you make a thing
             </h3>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0, maxWidth: 660 }}>
-              a moodboard is not an aesthetic pinterest board. it is a decision. you are locking the visual language before any original work starts. pull from anywhere, film stills, architecture, fashion, packaging, editorial. curate until it has a point of view. when every reference feels like it belongs together, it is done. now every choice has a reference point. you are executing, not guessing. here is what the board actually decides.
+              A moodboard is not a Pinterest board, it is <em style={{ fontStyle: "italic", color: accent }}>a decision</em>. Lock the visual language before any original work starts, so every choice has a reference point and you are executing, not guessing. Here is what the board actually decides.
             </p>
           </Reveal>
 
@@ -288,7 +312,7 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
               A poster, defended
             </h3>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: "0 0 clamp(28px,4vw,44px)", maxWidth: 640 }}>
-              here is a real piece, built the way we build, no stock art. play the bench, change the scale contrast, reveal the grid, swap the palette, and watch the reasons change with it. tap any part to hear why it is the size it is, the color it is, where it is. a junior makes it look nice. a senior can defend every choice on the page, and name the trade of each one.
+              A real piece, built the way we build, no stock art. Play the bench, swap the palette, and tap any part to hear why it is the size, color, and place it is. A junior makes it look nice, a senior can <em style={{ fontStyle: "italic", color: accent }}>defend every choice</em>.
             </p>
           </Reveal>
           <Reveal delay={0.06}>
@@ -304,7 +328,7 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
               They are not competing
             </h3>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: "0 0 clamp(24px,3vw,40px)", maxWidth: 640 }}>
-              different instruments, not interchangeable and not rivals. tools do not make the work. understanding what they are doing, and why, makes the work.
+              Different instruments, not interchangeable and not rivals. Tools do not make the work. Understanding what they are doing, and why, makes the work.
             </p>
           </Reveal>
           <div className="ctrla-guide-grid">
@@ -328,7 +352,7 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
               The gap is not software skill. It is the ability to <span style={{ color: accent }}>defend every decision</span>. Why that size, why that color, why that much space between those two things. Nothing arbitrary.
             </p>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.6, color: ed.inkSoft, margin: "clamp(20px,2.5vw,28px) 0 0", maxWidth: 620 }}>
-              the process before the pixels is what makes that possible. start there.
+              The process before the pixels is what makes that possible. Start there.
             </p>
           </Reveal>
         </div>
@@ -339,8 +363,8 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
           <Reveal>
             <div style={{ paddingTop: "clamp(22px,3vw,32px)", display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
               <Kicker color={accent}>Part 02 · The Tools</Kicker>
-              <span style={{ fontFamily: ed.body, fontStyle: "italic", fontSize: "clamp(14px,1.6vw,18px)", lineHeight: 1.4, color: ed.inkSoft }}>
-                now the software. the picks our designers actually reach for.
+              <span style={{ fontFamily: ed.body, fontStyle: "normal", fontSize: "clamp(14px,1.6vw,18px)", lineHeight: 1.4, color: ed.inkSoft }}>
+                Now the software. The picks our designers <em style={{ fontStyle: "italic", color: accent }}>actually reach for</em>.
               </span>
             </div>
           </Reveal>

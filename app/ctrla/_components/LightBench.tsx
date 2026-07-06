@@ -22,8 +22,10 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { edLight as ed } from "./editorial";
+import { renderFace, type EngineFlag } from "./faceLighting";
 
 type LightId = "key" | "fill" | "back";
+type PickId = LightId | "flag";
 
 type Light = {
   x: number; // 0..1 across the stage
@@ -160,23 +162,34 @@ export default function LightBench({ accent = ed.plum }: { accent?: string }) {
   const rootRef = useRef<HTMLDivElement | null>(null);
 
   const [setup, setSetup] = useState<Setup>(DEFAULT);
-  const [selected, setSelected] = useState<LightId>("key");
+  const [selected, setSelected] = useState<PickId>("key");
   const [contrast, setContrast] = useState(false);
   const [isFull, setIsFull] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  // Negative fill: a black flag the user can add and drag onto the shadow
+  // side. Null until switched on. Default sits camera-right, opposite the key.
+  const [flag, setFlag] = useState<EngineFlag | null>(null);
 
   // Mutable mirrors the draw loop reads without restarting.
   const setupRef = useRef<Setup>(DEFAULT);
-  const selectedRef = useRef<LightId>("key");
+  const selectedRef = useRef<PickId>("key");
   const contrastRef = useRef(false);
-  const draggingRef = useRef<LightId | null>(null);
+  const flagRef = useRef<EngineFlag | null>(null);
+  const draggingRef = useRef<PickId | null>(null);
   const hoveringRef = useRef(false);
-  const handleHits = useRef<{ id: LightId; x: number; y: number }[]>([]);
+  const handleHits = useRef<{ id: PickId; x: number; y: number }[]>([]);
   const ambient = useRef(true);
 
-  useEffect(() => { setupRef.current = setup; }, [setup]);
+  // Cached offscreen face render — recomputed only when the lighting changes,
+  // then blitted onto the animated stage every frame (drawImage is cheap).
+  const faceCanvas = useRef<HTMLCanvasElement | null>(null);
+  const faceDirty = useRef(true);
+  const faceDims = useRef({ bw: 0, bh: 0 });
+
+  useEffect(() => { setupRef.current = setup; faceDirty.current = true; }, [setup]);
   useEffect(() => { selectedRef.current = selected; }, [selected]);
   useEffect(() => { contrastRef.current = contrast; }, [contrast]);
+  useEffect(() => { flagRef.current = flag; faceDirty.current = true; }, [flag]);
 
   // Restore a shared setup from the URL on first load.
   useEffect(() => {
@@ -218,7 +231,9 @@ export default function LightBench({ accent = ed.plum }: { accent?: string }) {
   };
 
   const setField = (field: "intensity" | "temp", value: number) => {
-    setSetup((s) => ({ ...s, [selected]: { ...s[selected], [field]: value } }));
+    if (selected === "flag") return;
+    const id = selected as LightId;
+    setSetup((s) => ({ ...s, [id]: { ...s[id], [field]: value } }));
     ambient.current = false; // a hand on the light means the user is studying it
   };
 
@@ -241,27 +256,6 @@ export default function LightBench({ accent = ed.plum }: { accent?: string }) {
       sp: 0.2 + Math.random() * 0.5,
       ph: Math.random() * Math.PI * 2,
     }));
-
-    // Trace the bust silhouette (head + neck + shoulders) as one path so it can
-    // be filled and clipped as a single form.
-    const traceSubject = (g: ReturnType<typeof geom>) => {
-      ctx.beginPath();
-      ctx.arc(g.cx, g.headCy, g.headR, 0, Math.PI * 2);
-      const neckHalf = g.headR * 0.42;
-      const shHalf = g.headR * 2.4;
-      const sTop = g.headCy + g.headR * 0.55;
-      const shTop = g.headCy + g.headR * 1.15;
-      const round = g.headR * 0.6;
-      ctx.moveTo(g.cx - neckHalf, sTop);
-      ctx.lineTo(g.cx - neckHalf, shTop - g.headR * 0.2);
-      ctx.quadraticCurveTo(g.cx - shHalf, shTop, g.cx - shHalf, shTop + round);
-      ctx.lineTo(g.cx - shHalf, g.baseY);
-      ctx.lineTo(g.cx + shHalf, g.baseY);
-      ctx.lineTo(g.cx + shHalf, shTop + round);
-      ctx.quadraticCurveTo(g.cx + shHalf, shTop, g.cx + neckHalf, shTop - g.headR * 0.2);
-      ctx.lineTo(g.cx + neckHalf, sTop);
-      ctx.closePath();
-    };
 
     const geom = (w: number, h: number) => {
       const cx = w * 0.5;
@@ -365,62 +359,38 @@ export default function LightBench({ accent = ed.plum }: { accent?: string }) {
       ctx.fillRect(0, tableTop, w, h - tableTop);
       ctx.restore();
 
-      // ── Subject silhouette (dark base) ──
-      traceSubject(g);
-      ctx.fillStyle = "#0b0912";
-      ctx.fill();
-
-      // ── Light the subject: clip to silhouette, add each light additively ──
-      ctx.save();
-      traceSubject(g);
-      ctx.clip();
-      ctx.globalCompositeOperation = "lighter";
-
-      const litForm = (l: Light, e: number, peak: number, from: "front" | "back") => {
-        const p = px(l);
-        const col = tempColor(l.temp);
-        // Highlight seats toward the light, offset from the head centre so the
-        // head reads as a lit sphere with a natural terminator.
-        let hlx = p.x;
-        let hly = p.y;
-        let radius = Math.min(w, h) * 0.72;
-        if (from === "front") {
-          const dx = p.x - g.cx;
-          const dy = p.y - g.headCy;
-          const len = Math.hypot(dx, dy) || 1;
-          hlx = g.cx + (dx / len) * g.headR * 0.75;
-          hly = g.headCy + (dy / len) * g.headR * 0.75;
-        } else {
-          radius = g.headR * 1.7; // tight, so the back light reads as a rim/kicker
+      // ── The subject: a per-pixel lit face from the engine ──
+      // Cached to an offscreen buffer and only recomputed when the lighting
+      // changes (flagged dirty). Blitted here scaled to the stage.
+      const targetBW = Math.max(160, Math.min(280, Math.round(w * 0.55)));
+      const targetBH = Math.round(targetBW * (h / w));
+      if (!faceCanvas.current) faceCanvas.current = document.createElement("canvas");
+      const fc = faceCanvas.current;
+      if (faceDims.current.bw !== targetBW || faceDims.current.bh !== targetBH) {
+        fc.width = targetBW;
+        fc.height = targetBH;
+        faceDims.current = { bw: targetBW, bh: targetBH };
+        faceDirty.current = true;
+      }
+      if (faceDirty.current) {
+        const fctx = fc.getContext("2d");
+        if (fctx) {
+          const img = fctx.createImageData(targetBW, targetBH);
+          renderFace(img, targetBW, targetBH, {
+            key: s.key,
+            fill: s.fill,
+            back: s.back,
+            flags: flagRef.current ? [flagRef.current] : [],
+            ambient: HC ? 0.2 : 0.15,
+          });
+          fctx.putImageData(img, 0, 0);
         }
-        const gr = ctx.createRadialGradient(hlx, hly, from === "back" ? g.headR * 0.2 : g.headR * 0.1, hlx, hly, radius);
-        gr.addColorStop(0, rgba(col, Math.min(1, e * peak)));
-        gr.addColorStop(from === "back" ? 0.55 : 0.7, rgba(col, e * peak * 0.28));
-        gr.addColorStop(1, rgba(col, 0));
-        ctx.fillStyle = gr;
-        ctx.fillRect(0, 0, w, h);
-      };
-      litForm(s.key, kE, 0.95, "front");
-      litForm(s.fill, fE, 0.8, "front");
-      litForm(s.back, bE, 1.0, "back");
-      ctx.restore();
-
-      // ── Form shading: darken under the chin so the head reads off the chest ──
-      ctx.save();
-      traceSubject(g);
-      ctx.clip();
-      const occ = ctx.createRadialGradient(g.cx, g.headCy + g.headR * 1.05, 2, g.cx, g.headCy + g.headR * 1.05, g.headR * 1.4);
-      occ.addColorStop(0, "rgba(0,0,0,0.5)");
-      occ.addColorStop(1, "rgba(0,0,0,0)");
-      ctx.fillStyle = occ;
-      ctx.fillRect(0, 0, w, h);
-      ctx.restore();
-
-      // ── Silhouette hairline so the edge always reads ──
-      traceSubject(g);
-      ctx.strokeStyle = "rgba(240,230,224,0.08)";
-      ctx.lineWidth = 1;
-      ctx.stroke();
+        faceDirty.current = false;
+      }
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+      // a faint contact shadow beneath the subject grounds it on the table
+      ctx.drawImage(fc, 0, 0, w, h);
 
       // ── Dust motes in the key beam (ambient) ──
       if (!still && !reduce) {
@@ -441,7 +411,51 @@ export default function LightBench({ accent = ed.plum }: { accent?: string }) {
       }
 
       // ── Light handles ──
-      const hits: { id: LightId; x: number; y: number }[] = [];
+      const hits: { id: PickId; x: number; y: number }[] = [];
+
+      // Negative-fill flag handle — a black panel that drinks the bounce.
+      const fl = flagRef.current;
+      if (fl) {
+        const fx = fl.x * w;
+        const fy = fl.y * h;
+        hits.push({ id: "flag", x: fx, y: fy });
+        const isSel = selectedRef.current === "flag";
+        const fw = 15;
+        const fh = 46;
+        ctx.save();
+        ctx.translate(fx, fy);
+        // the panel
+        ctx.fillStyle = "rgba(6,4,12,0.94)";
+        ctx.strokeStyle = isSel ? "rgba(245,238,230,0.85)" : "rgba(245,238,230,0.4)";
+        ctx.lineWidth = isSel ? 2 : 1.5;
+        ctx.beginPath();
+        ctx.rect(-fw / 2, -fh / 2, fw, fh);
+        ctx.fill();
+        ctx.stroke();
+        // absorb hatch, so it reads as "matte black, not a light"
+        ctx.strokeStyle = "rgba(245,238,230,0.18)";
+        ctx.lineWidth = 1;
+        for (let hy = -fh / 2 + 4; hy < fh / 2; hy += 7) {
+          ctx.beginPath();
+          ctx.moveTo(-fw / 2 + 2, hy);
+          ctx.lineTo(fw / 2 - 2, hy - 4);
+          ctx.stroke();
+        }
+        ctx.restore();
+        // label
+        const lf = HC ? 13 : 10;
+        ctx.font = `600 ${lf}px 'Neue Montreal', sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        const label = "− FILL";
+        const tw2 = ctx.measureText(label).width;
+        const ly = fy - fh / 2 - 10;
+        ctx.fillStyle = "rgba(10,7,18,0.7)";
+        ctx.fillRect(fx - tw2 / 2 - 5, ly - lf * 0.7, tw2 + 10, lf * 1.5);
+        ctx.fillStyle = "rgba(245,238,230,0.96)";
+        ctx.fillText(label, fx, ly);
+      }
+
       LIGHT_ORDER.forEach((id) => {
         const l = s[id];
         const p = px(l);
@@ -499,13 +513,13 @@ export default function LightBench({ accent = ed.plum }: { accent?: string }) {
   }, []);
 
   // ── Pointer: drag a light handle, tap to select ──
-  const pickHandle = (e: React.PointerEvent): LightId | null => {
+  const pickHandle = (e: React.PointerEvent): PickId | null => {
     const canvas = canvasRef.current;
     if (!canvas) return null;
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    let best: LightId | null = null;
+    let best: PickId | null = null;
     let bestD = 30 * 30;
     handleHits.current.forEach((hnd) => {
       const d = (hnd.x - x) ** 2 + (hnd.y - y) ** 2;
@@ -530,16 +544,25 @@ export default function LightBench({ accent = ed.plum }: { accent?: string }) {
     const rect = canvas.getBoundingClientRect();
     const nx = clamp((e.clientX - rect.left) / rect.width, 0.05, 0.95);
     const ny = clamp((e.clientY - rect.top) / rect.height, 0.05, 0.95);
-    setSetup((s) => ({ ...s, [id]: { ...s[id], x: nx, y: ny } }));
+    if (id === "flag") {
+      setFlag((f) => (f ? { ...f, x: nx, y: ny } : f));
+    } else {
+      setSetup((s) => ({ ...s, [id]: { ...s[id], x: nx, y: ny } }));
+    }
   };
   const onUp = () => { draggingRef.current = null; };
   const onEnter = () => { hoveringRef.current = true; };
   const onLeave = () => { hoveringRef.current = false; draggingRef.current = null; };
 
   const words = useMemo(() => describe(setup), [setup]);
-  const sel = setup[selected];
-  const meta = LIGHT_META[selected];
+  const isFlag = selected === "flag";
+  const lightSel: LightId = isFlag ? "key" : (selected as LightId);
+  const sel = setup[lightSel];
+  const meta = LIGHT_META[lightSel];
   const dirty = JSON.stringify(setup) !== JSON.stringify(DEFAULT);
+
+  const addFlag = () => { setFlag({ x: 0.82, y: 0.52, strength: 0.72 }); setSelected("flag"); ambient.current = false; };
+  const removeFlag = () => { setFlag(null); if (isFlag) setSelected("key"); };
 
   return (
     <div ref={rootRef} className={`ctrla-mixglobe-wrap${contrast ? " is-hc" : ""}${isFull ? " is-full" : ""}`}>
@@ -553,6 +576,9 @@ export default function LightBench({ accent = ed.plum }: { accent?: string }) {
           {dirty && <button type="button" className="ctrla-mixglobe-tool" onClick={reset}>Reset</button>}
         </div>
         <div className="ctrla-mixglobe-toolgroup">
+          <button type="button" className="ctrla-mixglobe-tool" data-on={!!flag} onClick={() => (flag ? removeFlag() : addFlag())}>
+            {flag ? "Remove neg fill" : "Add neg fill"}
+          </button>
           <button type="button" className="ctrla-mixglobe-tool" data-on={contrast} onClick={() => setContrast((c) => !c)}>
             {contrast ? "Standard view" : "High contrast"}
           </button>
@@ -581,7 +607,7 @@ export default function LightBench({ accent = ed.plum }: { accent?: string }) {
             style={{ width: "100%", height: "100%", display: "block", touchAction: "none" }}
           />
           <span className="ctrla-mixglobe-hint" style={{ fontFamily: ed.mono, color: "rgba(240,230,224,0.5)" }}>
-            drag a light · pick key, fill, back · ride intensity + temp
+            drag a light · watch the shadow shape the face · add neg fill to subtract
           </span>
         </div>
 
@@ -630,63 +656,119 @@ export default function LightBench({ accent = ed.plum }: { accent?: string }) {
                 {LIGHT_META[id].label}
               </button>
             ))}
+            {flag && (
+              <button
+                type="button"
+                className="ctrla-mixglobe-chip ctrla-mixglobe-chip-flag"
+                data-on={isFlag}
+                style={{ ["--c" as string]: "#0b0912" }}
+                onClick={() => setSelected("flag")}
+              >
+                <span aria-hidden className="ctrla-mixglobe-chip-dot" />
+                neg fill
+              </button>
+            )}
           </div>
 
-          <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(24px,3vw,34px)", letterSpacing: "-0.02em", color: ed.ink, margin: "0 0 12px", textTransform: "lowercase" }}>
-            <span style={{ display: "inline-block", width: 12, height: 12, borderRadius: "50%", background: meta.color, marginRight: 10, verticalAlign: "middle" }} />
-            {meta.label} light
-          </h4>
-          <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,18px)", lineHeight: 1.6, color: ed.inkSoft, margin: "0 0 18px" }}>
-            {meta.role}
-          </p>
+          {isFlag && flag ? (
+            /* ── Negative-fill flag controls ── */
+            <>
+              <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(24px,3vw,34px)", letterSpacing: "-0.02em", color: ed.ink, margin: "0 0 12px", textTransform: "lowercase" }}>
+                <span style={{ display: "inline-block", width: 12, height: 12, borderRadius: 3, background: "#0b0912", border: "1px solid rgba(22,12,40,0.4)", marginRight: 10, verticalAlign: "middle" }} />
+                negative fill
+              </h4>
+              <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,18px)", lineHeight: 1.6, color: ed.inkSoft, margin: "0 0 18px" }}>
+                not a light. a black flag that drinks the room bounce off the shadow side. drag it opposite the key and watch the shadows deepen. this is lighting by subtraction, the move that reads as expensive.
+              </p>
 
-          {/* live position readout */}
-          <div className="ctrla-mixglobe-axes">
-            <AxisReadout label="height" value={heightWord(sel.y)} accent={accent} />
-            <AxisReadout label="side" value={sideWord(sel.x)} accent={accent} />
-            <AxisReadout label="output" value={intensityWord(sel.intensity)} accent={accent} />
-          </div>
-
-          {/* intensity + temp sliders */}
-          <div className="ctrla-fx" style={{ ["--accent" as string]: meta.color }}>
-            <div className="ctrla-fx-head">
-              <span className="ctrla-fx-title">{meta.label} · intensity + temp</span>
-            </div>
-            <div className="ctrla-fx-row">
-              <div className="ctrla-fx-rowhead">
-                <span className="ctrla-fx-name">intensity</span>
-                <span className="ctrla-fx-val">{intensityWord(sel.intensity)}</span>
+              <div className="ctrla-mixglobe-axes">
+                <AxisReadout label="side" value={sideWord(flag.x)} accent={accent} />
+                <AxisReadout label="height" value={heightWord(flag.y)} accent={accent} />
+                <AxisReadout label="draw" value={flag.strength < 0.3 ? "a touch" : flag.strength < 0.65 ? "firm" : "full cut"} accent={accent} />
               </div>
-              <input
-                type="range"
-                className="ctrla-fx-range"
-                min={0}
-                max={100}
-                step={1}
-                value={Math.round(sel.intensity * 100)}
-                onChange={(e) => setField("intensity", Number(e.target.value) / 100)}
-                aria-label={`intensity for the ${meta.label} light`}
-              />
-              <p className="ctrla-fx-note">brighter pulls the eye and deepens the shadow it casts.</p>
-            </div>
-            <div className="ctrla-fx-row">
-              <div className="ctrla-fx-rowhead">
-                <span className="ctrla-fx-name">temperature</span>
-                <span className="ctrla-fx-val">{tempWordLabel(sel.temp)}</span>
+
+              <div className="ctrla-fx" style={{ ["--accent" as string]: ed.plum }}>
+                <div className="ctrla-fx-head">
+                  <span className="ctrla-fx-title">negative fill · strength</span>
+                </div>
+                <div className="ctrla-fx-row">
+                  <div className="ctrla-fx-rowhead">
+                    <span className="ctrla-fx-name">absorption</span>
+                    <span className="ctrla-fx-val">{flag.strength < 0.3 ? "a touch" : flag.strength < 0.65 ? "firm" : "full cut"}</span>
+                  </div>
+                  <input
+                    type="range"
+                    className="ctrla-fx-range"
+                    min={0}
+                    max={100}
+                    step={1}
+                    value={Math.round(flag.strength * 100)}
+                    onChange={(e) => { setFlag((f) => (f ? { ...f, strength: Number(e.target.value) / 100 } : f)); ambient.current = false; }}
+                    aria-label="negative fill absorption strength"
+                  />
+                  <p className="ctrla-fx-note">a bigger, closer flag drinks more bounce. more draw means a deeper, more sculpted shadow side.</p>
+                </div>
               </div>
-              <input
-                type="range"
-                className="ctrla-fx-range"
-                min={-100}
-                max={100}
-                step={1}
-                value={Math.round(sel.temp * 100)}
-                onChange={(e) => setField("temp", Number(e.target.value) / 100)}
-                aria-label={`colour temperature for the ${meta.label} light`}
-              />
-              <p className="ctrla-fx-note">warm reads like tungsten and evening. cool reads like daylight and clinical.</p>
-            </div>
-          </div>
+            </>
+          ) : (
+            <>
+              <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(24px,3vw,34px)", letterSpacing: "-0.02em", color: ed.ink, margin: "0 0 12px", textTransform: "lowercase" }}>
+                <span style={{ display: "inline-block", width: 12, height: 12, borderRadius: "50%", background: meta.color, marginRight: 10, verticalAlign: "middle" }} />
+                {meta.label} light
+              </h4>
+              <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,18px)", lineHeight: 1.6, color: ed.inkSoft, margin: "0 0 18px" }}>
+                {meta.role}
+              </p>
+
+              {/* live position readout */}
+              <div className="ctrla-mixglobe-axes">
+                <AxisReadout label="height" value={heightWord(sel.y)} accent={accent} />
+                <AxisReadout label="side" value={sideWord(sel.x)} accent={accent} />
+                <AxisReadout label="output" value={intensityWord(sel.intensity)} accent={accent} />
+              </div>
+
+              {/* intensity + temp sliders */}
+              <div className="ctrla-fx" style={{ ["--accent" as string]: meta.color }}>
+                <div className="ctrla-fx-head">
+                  <span className="ctrla-fx-title">{meta.label} · intensity + temp</span>
+                </div>
+                <div className="ctrla-fx-row">
+                  <div className="ctrla-fx-rowhead">
+                    <span className="ctrla-fx-name">intensity</span>
+                    <span className="ctrla-fx-val">{intensityWord(sel.intensity)}</span>
+                  </div>
+                  <input
+                    type="range"
+                    className="ctrla-fx-range"
+                    min={0}
+                    max={100}
+                    step={1}
+                    value={Math.round(sel.intensity * 100)}
+                    onChange={(e) => setField("intensity", Number(e.target.value) / 100)}
+                    aria-label={`intensity for the ${meta.label} light`}
+                  />
+                  <p className="ctrla-fx-note">brighter pulls the eye and deepens the shadow it casts.</p>
+                </div>
+                <div className="ctrla-fx-row">
+                  <div className="ctrla-fx-rowhead">
+                    <span className="ctrla-fx-name">temperature</span>
+                    <span className="ctrla-fx-val">{tempWordLabel(sel.temp)}</span>
+                  </div>
+                  <input
+                    type="range"
+                    className="ctrla-fx-range"
+                    min={-100}
+                    max={100}
+                    step={1}
+                    value={Math.round(sel.temp * 100)}
+                    onChange={(e) => setField("temp", Number(e.target.value) / 100)}
+                    aria-label={`colour temperature for the ${meta.label} light`}
+                  />
+                  <p className="ctrla-fx-note">warm reads like tungsten and evening. cool reads like daylight and clinical.</p>
+                </div>
+              </div>
+            </>
+          )}
 
           <div style={{ marginTop: 26, paddingTop: 20, borderTop: `1px solid ${ed.hair}`, display: "grid", gap: 10 }}>
             <Axis line="key" note="the main light. its position and height decide the whole mood." />

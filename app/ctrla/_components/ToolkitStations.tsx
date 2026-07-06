@@ -9,14 +9,12 @@
 // a Signals feed keeps the sector current. Flagship: Web Dev.
 // ═══════════════════════════════════════════════════════
 
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ed as edBase, edLight, Bleed, Label, Kicker, legibleAccent, legibleAccentDeep } from "./editorial";
 import ToolPreview from "./ToolPreview";
 import { toolkitSections } from "../data";
 import type { ToolkitSection, ToolLevel, SignalKind } from "../data";
-
-const LEVELS: (ToolLevel | "All")[] = ["All", "Beginner", "Intermediate", "Pro"];
 
 // Level/kind colours are accents (theme-independent), so they stay on the base.
 const levelColor = (l?: ToolLevel) =>
@@ -34,11 +32,16 @@ export default function ToolkitStations({ section, theme, hideKicker = false }: 
   // Theme-aware level/kind colours (gold → deep ink-panel on cream).
   const lvlColor = (l?: ToolLevel) => (isLight ? legibleAccentDeep(levelColor(l)) : levelColor(l));
   const kndColor = (k: SignalKind) => (isLight ? legibleAccentDeep(kindColor(k)) : kindColor(k));
-  const [level, setLevel] = useState<ToolLevel | "All">("All");
   const [open, setOpen] = useState<string | null>(null);
   const [active, setActive] = useState(0);
+  // List = full detailed stations; Flow = compressed signal chain on one view.
+  const [view, setView] = useState<"list" | "flow">("list");
 
-  const tools = section.tools.filter((t) => level === "All" || t.level === level);
+  // Workflow split: a DAW-led toolkit (music) opens with a compact "pick your
+  // DAW" chooser, then the plugin stack in order. The DAW-category tools are
+  // dropped from the station list so they are not duplicated as full stations.
+  const daws = section.daws;
+  const tools = daws ? section.tools.filter((t) => t.category !== "DAW") : section.tools;
   const stationRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Scroll-spy: highlight the station nearest the centre of the viewport.
@@ -56,11 +59,40 @@ export default function ToolkitStations({ section, theme, hideKicker = false }: 
     );
     stationRefs.current.forEach((el) => el && io.observe(el));
     return () => io.disconnect();
-  }, [tools.length, level]);
+  }, [tools.length]);
 
   const scrollTo = (i: number) => {
     stationRefs.current[i]?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
+
+  // List / Flow view switch
+  const viewToggle = (
+    <div style={{ display: "inline-flex", flexShrink: 0, border: `1px solid ${ed.hair}`, borderRadius: 999, overflow: "hidden" }}>
+      {(["list", "flow"] as const).map((v) => {
+        const on = view === v;
+        return (
+          <button
+            key={v}
+            onClick={() => setView(v)}
+            aria-pressed={on}
+            style={{
+              fontFamily: ed.mono,
+              fontSize: "clamp(9px,1vw,11px)",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              color: on ? ed.ground : ed.inkFaint,
+              background: on ? accent : "transparent",
+              border: "none",
+              padding: "7px 15px",
+              cursor: "pointer",
+            }}
+          >
+            {v === "list" ? "List" : "Flow"}
+          </button>
+        );
+      })}
+    </div>
+  );
 
   return (
     <section style={{ background: "transparent", padding: "clamp(40px,6vw,72px) 0 clamp(64px,9vw,120px)" }}>
@@ -119,38 +151,10 @@ export default function ToolkitStations({ section, theme, hideKicker = false }: 
           </div>
         )}
 
-        {/* ── Level filter ── */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", margin: "clamp(40px,5vw,64px) 0 clamp(24px,3vw,36px)" }}>
-          <Label color={ed.inkFaint} style={{ marginRight: 4 }}>Start where you are</Label>
-          {LEVELS.map((l) => {
-            const on = level === l;
-            const c = l === "All" ? accent : lvlColor(l as ToolLevel);
-            return (
-              <button
-                key={l}
-                onClick={() => { setLevel(l); setOpen(null); }}
-                className="ctrla-level-pill"
-                style={{
-                  fontFamily: ed.mono,
-                  fontSize: "clamp(10px,1.1vw,12px)",
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                  color: on ? ed.ground : c,
-                  background: on ? c : "transparent",
-                  border: `1px solid ${on ? c : ed.hair}`,
-                  padding: "8px 16px",
-                  cursor: "pointer",
-                }}
-              >
-                {l}
-              </button>
-            );
-          })}
-        </div>
-
         {/* ── Constellation rail + stations ── */}
-        <div className="ctrla-stations">
-          {/* Rail */}
+        <div className="ctrla-stations" style={{ marginTop: "clamp(40px,5vw,64px)" }} data-view={view}>
+          {/* Rail — list view only */}
+          {view === "list" && (
           <aside className="ctrla-station-rail" aria-hidden>
             <div className="ctrla-rail-line" />
             {tools.map((t, i) => (
@@ -167,14 +171,107 @@ export default function ToolkitStations({ section, theme, hideKicker = false }: 
               />
             ))}
           </aside>
+          )}
 
           {/* Stations */}
           <div>
-            {tools.map((t, i) => {
+            {/* DAW chooser — pick one, then the plugin stack */}
+            {daws && daws.length > 0 && (
+              <div style={{ marginBottom: "clamp(36px,5vw,64px)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "0 0 clamp(18px,2.2vw,26px)" }}>
+                  <span style={{ fontFamily: ed.mono, fontSize: "clamp(11px,1.25vw,14px)", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: accent, whiteSpace: "nowrap" }}>Pick your DAW</span>
+                  <span style={{ flex: 1, height: 1, background: ed.hair }} />
+                </div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "clamp(8px,1vw,12px)" }}>
+                  {daws.map((d) => (
+                    <a
+                      key={d.name}
+                      href={d.url || "#"}
+                      {...(d.url ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 8,
+                        fontFamily: ed.grotesque,
+                        fontWeight: 700,
+                        fontSize: "clamp(15px,1.7vw,20px)",
+                        letterSpacing: "-0.01em",
+                        color: d.ours ? ed.ground : ed.ink,
+                        background: d.ours ? accent : "transparent",
+                        border: `1.5px solid ${d.ours ? accent : ed.hair}`,
+                        borderRadius: 999,
+                        padding: "clamp(9px,1.1vw,13px) clamp(16px,1.8vw,22px)",
+                        textDecoration: "none",
+                      }}
+                    >
+                      {d.name}
+                      {d.ours && <span style={{ fontFamily: ed.mono, fontWeight: 400, fontSize: "clamp(8px,0.9vw,10px)", letterSpacing: "0.12em", textTransform: "uppercase", opacity: 0.85 }}>our pick</span>}
+                    </a>
+                  ))}
+                </div>
+                {section.dawNote && (
+                  <p style={{ fontFamily: ed.body, fontStyle: "normal", fontSize: "clamp(15px,1.7vw,20px)", lineHeight: 1.5, color: ed.inkSoft, margin: "clamp(16px,2vw,22px) 0 0", maxWidth: 620 }}>
+                    {section.dawNote}
+                  </p>
+                )}
+                <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "clamp(36px,5vw,60px) 0 0" }}>
+                  <span style={{ fontFamily: ed.mono, fontSize: "clamp(11px,1.25vw,14px)", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: accent, whiteSpace: "nowrap" }}>The plugin stack · in order of use</span>
+                  <span style={{ flex: 1, height: 1, background: ed.hair }} />
+                  {viewToggle}
+                </div>
+              </div>
+            )}
+
+            {/* View switch for toolkits with no DAW chooser */}
+            {!daws && (
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", marginBottom: "clamp(20px,3vw,32px)" }}>
+                {viewToggle}
+              </div>
+            )}
+
+            {/* ── Compressed flow view: the whole chain on one screen ── */}
+            {view === "flow" && (
+              <div style={{ display: "flex", flexWrap: "wrap", alignItems: "stretch", gap: "10px 8px" }}>
+                <span style={{ alignSelf: "center", fontFamily: ed.mono, fontSize: "clamp(9px,1vw,11px)", letterSpacing: "0.14em", textTransform: "uppercase", color: ed.inkFaint }}>Signal in</span>
+                {tools.map((t, i) => (
+                  <Fragment key={t.name}>
+                    <span aria-hidden style={{ alignSelf: "center", color: accent, fontSize: 18, lineHeight: 1 }}>→</span>
+                    <a
+                      href={t.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={t.oneLiner || t.description}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 3,
+                        minWidth: 128,
+                        padding: "10px 14px",
+                        borderRadius: 10,
+                        border: `1px solid ${ed.hair}`,
+                        borderTop: `2px solid ${accent}`,
+                        background: ed.panel,
+                        textDecoration: "none",
+                      }}
+                    >
+                      <span style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+                        <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: 12, color: accent }}>{String(i + 1).padStart(2, "0")}</span>
+                        <span style={{ fontFamily: ed.grotesque, fontWeight: 700, fontSize: "clamp(14px,1.5vw,17px)", letterSpacing: "-0.01em", color: ed.ink }}>{t.name}</span>
+                      </span>
+                      <span style={{ fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: ed.inkFaint }}>{t.category}</span>
+                    </a>
+                  </Fragment>
+                ))}
+                <span aria-hidden style={{ alignSelf: "center", color: accent, fontSize: 18, lineHeight: 1 }}>→</span>
+                <span style={{ alignSelf: "center", fontFamily: ed.mono, fontSize: "clamp(9px,1vw,11px)", letterSpacing: "0.14em", textTransform: "uppercase", color: ed.inkFaint }}>Release</span>
+              </div>
+            )}
+
+            {view === "list" && tools.map((t, i) => {
               const isOpen = open === t.name;
               return (
+                <Fragment key={t.name}>
                 <motion.div
-                  key={t.name}
                   data-idx={i}
                   ref={(el) => { stationRefs.current[i] = el; }}
                   className="ctrla-station"
@@ -208,7 +305,7 @@ export default function ToolkitStations({ section, theme, hideKicker = false }: 
                   <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,4.4vw,56px)", letterSpacing: "-0.02em", lineHeight: 0.96, color: ed.ink, margin: "0 0 14px" }}>
                     {t.name}
                   </h3>
-                  <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(17px,2vw,26px)", lineHeight: 1.4, color: ed.ink, margin: "0 0 22px", maxWidth: 640 }}>
+                  <p style={{ fontFamily: ed.serif, fontStyle: "normal", fontSize: "clamp(17px,2vw,26px)", lineHeight: 1.4, color: ed.ink, margin: "0 0 22px", maxWidth: 640 }}>
                     {t.oneLiner || t.description}
                   </p>
 
@@ -260,7 +357,7 @@ export default function ToolkitStations({ section, theme, hideKicker = false }: 
                               {t.favoriteBy && (
                                 <div style={{ marginTop: 18, paddingLeft: 16, borderLeft: `2px solid ${accent}` }}>
                                   <Label color={accent} style={{ display: "block", marginBottom: 6 }}>ROV Pick · {t.favoriteBy}</Label>
-                                  <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(14px,1.5vw,17px)", lineHeight: 1.5, color: ed.ink, margin: 0, maxWidth: 520 }}>&ldquo;{t.favoriteQuote}&rdquo;</p>
+                                  <p style={{ fontFamily: ed.serif, fontStyle: "normal", fontSize: "clamp(14px,1.5vw,17px)", lineHeight: 1.5, color: ed.ink, margin: 0, maxWidth: 520 }}>&ldquo;{t.favoriteQuote}&rdquo;</p>
                                 </div>
                               )}
                             </div>
@@ -278,11 +375,12 @@ export default function ToolkitStations({ section, theme, hideKicker = false }: 
                     </div>
                   </div>
                 </motion.div>
+                </Fragment>
               );
             })}
 
             {tools.length === 0 && (
-              <p style={{ fontFamily: ed.body, fontStyle: "italic", fontSize: 18, color: ed.inkSoft }}>
+              <p style={{ fontFamily: ed.body, fontStyle: "normal", fontSize: 18, color: ed.inkSoft }}>
                 No tools at this level yet. Try another.
               </p>
             )}
@@ -314,7 +412,7 @@ export default function ToolkitStations({ section, theme, hideKicker = false }: 
                     <span aria-hidden style={{ color: accent, fontFamily: ed.mono, fontSize: "clamp(15px,1.7vw,20px)", lineHeight: 1.4, flexShrink: 0 }}>
                       →
                     </span>
-                    <span style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(16px,1.9vw,22px)", lineHeight: 1.45, color: ed.inkSoft }}>
+                    <span style={{ fontFamily: ed.serif, fontStyle: "normal", fontSize: "clamp(16px,1.9vw,22px)", lineHeight: 1.45, color: ed.inkSoft }}>
                       {ref.line}
                       <span style={{ fontFamily: ed.mono, fontStyle: "normal", fontSize: "clamp(9px,1vw,11px)", letterSpacing: "0.12em", textTransform: "uppercase", color: accent, marginLeft: 10, whiteSpace: "nowrap" }}>
                         {destTitle} kit

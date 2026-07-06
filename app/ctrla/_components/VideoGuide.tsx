@@ -17,10 +17,12 @@
 // Part 02 The Tools (the stations below).
 // ═══════════════════════════════════════════════════════
 
-import type { ReactNode } from "react";
+import { useState } from "react";
+import type { ReactNode, CSSProperties } from "react";
 import { motion } from "framer-motion";
 import { edLight as ed, Bleed, Kicker, Label, Rule } from "./editorial";
 import LightBench from "./LightBench";
+import NegativeFill from "./NegativeFill";
 
 // Legibility tokens for this guide, matching the Music guide: the shared
 // inkSoft reads dim on cream, so body copy and labels are darkened here.
@@ -40,39 +42,96 @@ function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }
   );
 }
 
+// Truth card — a big circular number badge and title, with the body tucked
+// into a hover-reveal collapsible (also taps open on touch).
+function TruthCard({ n, title, body, accent, delay }: { n: string; title: string; body: string; accent: string; delay: number }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <Reveal delay={delay}>
+      <div
+        className="ctrla-truth"
+        data-open={open ? "true" : "false"}
+        onClick={() => setOpen((v) => !v)}
+        style={{ ["--acc" as string]: accent, borderTop: `2px solid ${ed.ink}`, paddingTop: 22, height: "100%", cursor: "pointer" } as CSSProperties}
+      >
+        <span className="ctrla-truth-num">{n}</span>
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, margin: "16px 0 0" }}>
+          <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.3vw,26px)", letterSpacing: "-0.02em", color: ed.ink, margin: 0 }}>{title}</h3>
+          <span className="ctrla-truth-plus" aria-hidden style={{ color: accent }}>+</span>
+        </div>
+        <div className="ctrla-truth-body" style={{ display: "grid", gridTemplateRows: "0fr", transition: "grid-template-rows 0.34s cubic-bezier(0.22,1,0.36,1)" }}>
+          <div style={{ overflow: "hidden" }}>
+            <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,16px)", lineHeight: 1.6, color: READABLE, margin: "12px 0 0" }}>{body}</p>
+          </div>
+        </div>
+      </div>
+    </Reveal>
+  );
+}
+
+// Collapsible disclosure — keeps supporting detail out of the way until asked.
+// Summary label acts as the toggle; the body reveals on click.
+function Disclosure({ label, color, children }: { label: string; color: string; children: ReactNode }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+      style={{ borderTop: `2px solid ${color}`, paddingTop: 16 }}
+    >
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, width: "100%", background: "none", border: "none", padding: 0, cursor: "pointer", textAlign: "left" }}
+      >
+        <Label color={color}>{label}</Label>
+        <span aria-hidden style={{ display: "inline-flex", color, transition: "transform 0.28s ease", transform: open ? "rotate(45deg)" : "none", fontSize: 18, lineHeight: 1 }}>+</span>
+      </button>
+      <div style={{ display: "grid", gridTemplateRows: open ? "1fr" : "0fr", transition: "grid-template-rows 0.32s cubic-bezier(0.22,1,0.36,1)" }}>
+        <div style={{ overflow: "hidden" }}>
+          <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: READABLE, margin: "12px 0 0" }}>
+            {children}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const TRUTHS = [
   {
     n: "01",
     title: "The camera never made it cinematic",
-    body: "the expensive body helps, it is true, more latitude, cleaner shadows, gradeable raw. but the look you are chasing is light, lens, and motion. a phone in beautiful, controlled light beats a cinema camera in a flat room every single time.",
+    body: "The body buys latitude and clean shadows, sure. But the look you chase is light, lens, and motion, and a phone in controlled light beats a cinema camera in a flat room.",
   },
   {
     n: "02",
     title: "Most of lighting is subtraction",
-    body: "beginners add lights. gaffers take light away. one good source, then a flag to cut the spill and a black flag for negative fill, carves shape into a face. counting fixtures is not the skill. shaping the one you have is.",
+    body: "Beginners add lights, gaffers take light away. One good source, a flag to cut the spill, a black flag for negative fill, and a face gains shape. Shaping the one light you have is the skill.",
   },
   {
     n: "03",
     title: "You cannot fix it in post",
-    body: "post amplifies what you captured, it does not invent it. a blown highlight is gone, soft focus stays soft, and muddy location audio stays muddy. the grade is polish. the image is made in the room, on the day.",
+    body: "Post amplifies what you captured, it never invents it. A blown highlight is gone, soft focus stays soft. The grade is polish, the image is made in the room.",
   },
 ];
 
 const CHAIN = [
-  { n: "00", name: "Motivate the source", level: "the one everyone skips", tool: "", body: "before a single fixture goes up, decide where the light in this scene comes from: a window, a practical lamp, the low sun. every light you add should sell that one direction. unmotivated light is exactly what makes a shot read as filmed instead of felt." },
-  { n: "01", name: "The key", level: "the main light, alone", tool: "Aputure LS 600d Pro", body: "kill everything else and place the key by itself. walk it around the subject and watch the shadow it carves down the face. the key sets the entire mood before anything else joins, so get it right in the dark first." },
-  { n: "02", name: "Shape it", level: "modify and flag", tool: "Matthews C-Stand", body: "raw light is harsh and it spills everywhere. soften it through a diffusion or a bounce for a gentler wrap, then flag the light off the walls and the lens. shaping the key is most of the difference between a snapshot and a frame." },
-  { n: "03", name: "The fill", level: "set the shadow depth", tool: "", body: "now decide how dark the shadow side falls. a soft bounce opposite the key opens it up, less fill keeps it moody and contrasty. this single ratio, key against fill, is what people mean when they say a shot looks dramatic or looks flat." },
-  { n: "04", name: "Negative fill", level: "take light away", tool: "Matthews C-Stand", body: "if the shadow side is too open and the face looks flat, add nothing, subtract. a black flag or a floppy on the fill side drinks the ambient bounce and deepens the shadow. this is the move that reads as expensive." },
-  { n: "05", name: "The back light", level: "separate from the world", tool: "", body: "a rim or hair light behind the subject draws a bright edge that lifts them clean off the backdrop. without it the subject melts into the background. with it, depth. keep it honest, a kiss of an edge, not a halo." },
-  { n: "06", name: "The background", level: "give the world depth", tool: "Aputure LS 600d Pro", body: "light the space behind the subject on its own so it is not one dead tone. a pool of light, a practical lamp, a gel for colour. a lit background is the difference between a person on a stage and a person in a place." },
-  { n: "07", name: "White balance on purpose", level: "set the colour, do not guess", tool: "Blackmagic Pocket Cinema Camera 6K Pro", body: "set your white balance to a decision, not auto. warm the frame toward evening or cool it toward daylight, but choose it, and keep it consistent across the coverage so the cut does not shift colour every shot." },
+  { n: "00", name: "Motivate the source", level: "the one everyone skips", tool: "", body: "Before a fixture goes up, decide where the light comes from: a window, a lamp, the low sun. Every light you add should sell that one direction. Unmotivated light is what makes a shot read as filmed, not felt." },
+  { n: "01", name: "The key", level: "the main light, alone", tool: "Aputure LS 600d Pro", body: "Kill everything else and place the key alone. Walk it around the subject and watch the shadow it carves down the face. It sets the mood before anything else joins, so get it right in the dark." },
+  { n: "02", name: "Shape it", level: "modify and flag", tool: "Matthews C-Stand", body: "Raw light is harsh and spills everywhere. Soften it through diffusion or a bounce, then flag it off the walls and the lens. Shaping the key is most of the gap between a snapshot and a frame." },
+  { n: "03", name: "The fill", level: "set the shadow depth", tool: "", body: "Decide how dark the shadow side falls: a soft bounce opposite the key opens it up, less fill keeps it moody. That ratio, key against fill, is what people mean by dramatic or flat." },
+  { n: "04", name: "Negative fill", level: "take light away", tool: "Matthews C-Stand", body: "If the shadow side looks too open and flat, subtract instead of add. A black flag on the fill side drinks the ambient bounce and deepens the shadow. This is the move that reads as expensive." },
+  { n: "05", name: "The back light", level: "separate from the world", tool: "", body: "A rim behind the subject draws a bright edge that lifts them off the backdrop. Without it they melt into the background, with it, depth. Keep it a kiss of an edge, not a halo." },
+  { n: "06", name: "The background", level: "give the world depth", tool: "Aputure LS 600d Pro", body: "Light the space behind the subject on its own so it is not one dead tone: a pool of light, a practical, a gel for colour. It is the difference between a person on a stage and a person in a place." },
+  { n: "07", name: "White balance on purpose", level: "set the colour, do not guess", tool: "Blackmagic Pocket Cinema Camera 6K Pro", body: "Set white balance to a decision, not auto. Warm toward evening or cool toward daylight, but choose it and hold it across the coverage so the cut does not shift colour." },
 ];
 
 const EXPOSE = [
-  { k: "protect the top", title: "Expose for highlights", body: "the bright end is the fragile end. use false colour or zebras and hold your highlights just under clipping. shadows lift cleanly in the grade, a blown highlight is gone for good. when in doubt, sit a touch under and raise it later." },
-  { k: "read the tools, not your eyes", title: "Meter, do not guess", body: "your eyes adapt and start lying within minutes. a waveform and false colour tell the truth. set skin tones where they belong on the scale and trust the scope over the vibe on the monitor, which is rarely calibrated on location." },
-  { k: "log needs discipline", title: "Only shoot flat if you will grade", body: "log and raw hold more range, but only pay off with correct exposure and a real grade after. if you cannot expose it right and colour it later, a good picture profile beats muddy, mishandled log every time. the format is not the look." },
+  { k: "protect the top", title: "Expose for highlights", body: "The bright end is the fragile end. Use false colour and hold highlights just under clipping. Shadows lift cleanly in the grade, a blown highlight is gone for good." },
+  { k: "read the tools, not your eyes", title: "Meter, do not guess", body: "Your eyes adapt and start lying within minutes. A waveform and false colour tell the truth, so set skin tones on the scale and trust the scope over an uncalibrated monitor." },
+  { k: "log needs discipline", title: "Only shoot flat if you will grade", body: "Log and raw hold more range, but only pay off with correct exposure and a real grade after. If you cannot do both, a good picture profile beats mishandled log. The format is not the look." },
 ];
 
 export default function VideoGuide({ accent = ed.plum }: { accent?: string }) {
@@ -101,20 +160,14 @@ export default function VideoGuide({ accent = ed.plum }: { accent?: string }) {
 
         <div className="ctrla-guide-split" style={{ margin: "clamp(28px,4vw,48px) 0 0" }}>
           <Reveal>
-            <div style={{ borderTop: `2px solid ${ed.hair}`, paddingTop: 18 }}>
-              <Label color={META_INK} style={{ display: "block", marginBottom: 12 }}>the fifty thousand dollar package</Label>
-              <p style={{ fontFamily: ed.body, fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.6, color: READABLE, margin: 0 }}>
-                the rented cinema body, the prime set, the trucks of lighting and grip. it is real, and it buys latitude and control that make hard days easier. that part is worth being honest about, the same way the treated room is real in music.
-              </p>
-            </div>
+            <Disclosure label="the fifty thousand dollar package" color={META_INK}>
+              The rented body, the prime set, trucks of lighting and grip. It is real, and it buys latitude and control, the same way the treated room is real in music.
+            </Disclosure>
           </Reveal>
           <Reveal delay={0.08}>
-            <div style={{ borderTop: `2px solid ${accent}`, paddingTop: 18 }}>
-              <Label color={accent} style={{ display: "block", marginBottom: 12 }}>what you actually control</Label>
-              <p style={{ fontFamily: ed.body, fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.6, color: READABLE, margin: 0 }}>
-                but the look lives in decisions that cost nothing: where the light comes from, how deep the shadow falls, what you leave in the dark. a window, a bounce, and a black flag will out-shoot a flat room full of gear. the craft is free. it is just hard to master.
-              </p>
-            </div>
+            <Disclosure label="what you actually control" color={accent}>
+              But the look lives in <em style={{ fontStyle: "italic", color: accent }}>free decisions</em>: where the light comes from, how deep the shadow falls, what you leave dark. A window, a bounce, and a black flag out-shoot a flat room full of gear.
+            </Disclosure>
           </Reveal>
         </div>
 
@@ -125,13 +178,7 @@ export default function VideoGuide({ accent = ed.plum }: { accent?: string }) {
           </Reveal>
           <div className="ctrla-guide-grid">
             {TRUTHS.map((t, i) => (
-              <Reveal key={t.n} delay={i * 0.06}>
-                <div style={{ borderTop: `2px solid ${ed.ink}`, paddingTop: 18, height: "100%" }}>
-                  <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,4vw,46px)", letterSpacing: "-0.03em", color: accent, display: "block", marginBottom: 10 }}>{t.n}</span>
-                  <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.3vw,26px)", letterSpacing: "-0.02em", color: ed.ink, margin: "0 0 12px" }}>{t.title}</h3>
-                  <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,16px)", lineHeight: 1.6, color: READABLE, margin: 0 }}>{t.body}</p>
-                </div>
-              </Reveal>
+              <TruthCard key={t.n} n={t.n} title={t.title} body={t.body} accent={accent} delay={i * 0.06} />
             ))}
           </div>
         </div>
@@ -146,20 +193,14 @@ export default function VideoGuide({ accent = ed.plum }: { accent?: string }) {
           </Reveal>
           <div className="ctrla-guide-split" style={{ marginTop: "clamp(24px,3vw,36px)" }}>
             <Reveal>
-              <div style={{ borderTop: `2px solid ${ed.hair}`, paddingTop: 18 }}>
-                <Label color={META_INK} style={{ display: "block", marginBottom: 12 }}>why it matters most</Label>
-                <p style={{ fontFamily: ed.body, fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.6, color: READABLE, margin: 0 }}>
-                  a beautiful room you cannot control will fight you all day. mixed colour from windows and overhead bulbs, sound bouncing off hard walls, no way to place a light where the shot needs it. the location is the room from the music lesson: fix it at the source or pay for it in every frame.
-                </p>
-              </div>
+              <Disclosure label="Why it matters most" color={META_INK}>
+                A beautiful room you cannot control fights you all day: mixed colour, hard-wall sound, nowhere to place a light. The location is the room from the music lesson, fix it at the source or pay for it in every frame.
+              </Disclosure>
             </Reveal>
             <Reveal delay={0.08}>
-              <div style={{ borderTop: `2px solid ${accent}`, paddingTop: 18 }}>
-                <Label color={accent} style={{ display: "block", marginBottom: 12 }}>the cheap fix</Label>
-                <p style={{ fontFamily: ed.body, fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.6, color: READABLE, margin: 0 }}>
-                  pick the spot where you own the light. kill the overheads, flag the window or turn it into your key, and shoot away from the reflective, noisy end of the room. one controllable direction beats a gorgeous space you cannot tame. it costs nothing but the decision.
-                </p>
-              </div>
+              <Disclosure label="The cheap fix" color={accent}>
+                Pick the spot where you own the light. Kill the overheads, flag the window or make it your key, and shoot away from the reflective end. One controllable direction beats a gorgeous space you cannot tame.
+              </Disclosure>
             </Reveal>
           </div>
         </div>
@@ -172,7 +213,7 @@ export default function VideoGuide({ accent = ed.plum }: { accent?: string }) {
               Build the scene, one light at a time
             </h3>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: READABLE, margin: 0, maxWidth: 640 }}>
-              two lights or ten, budget or blockbuster, the order does not change. add one light, judge it, then add the next. a scene lit in sequence has intention. a scene lit all at once is a guess.
+              Two lights or ten, budget or blockbuster, the order does not change. Add one light, judge it, then add the next. A scene lit in sequence has intention. A scene lit all at once is a guess.
             </p>
           </Reveal>
 
@@ -205,18 +246,21 @@ export default function VideoGuide({ accent = ed.plum }: { accent?: string }) {
             ))}
           </div>
 
-          {/* Negative fill explainer (plain language) */}
-          <Reveal>
-            <div className="ctrla-bus-card" style={{ background: ed.panel, border: `1px solid ${ed.hair}` }}>
+          {/* Negative fill explainer — plain language + the before/after visual */}
+          <div className="ctrla-negfill-block">
+            <Reveal>
               <div>
-                <Label color={accent} style={{ display: "block", marginBottom: 12 }}>Plain language</Label>
-                <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(24px,3.4vw,40px)", letterSpacing: "-0.02em", color: ed.ink, margin: 0 }}>So what is negative fill?</h4>
+                <Label color={accent} style={{ display: "block", marginBottom: 14 }}>Plain language · drag to see it</Label>
+                <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(24px,3.4vw,40px)", letterSpacing: "-0.02em", color: ed.ink, margin: "0 0 18px" }}>So what is negative fill?</h4>
+                <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.62, color: READABLE, margin: 0 }}>
+                  Negative fill is lighting by taking away. Instead of adding a light to the shadow side, you put something black there, a flag or a black sheet, to soak up the stray bounce filling that shadow in. The shadow deepens, the face gains shape, and the frame reads three-dimensional. That ratio between the lit side and the dark side is most of the gap between footage that looks like a home video and footage that looks like a film.
+                </p>
               </div>
-              <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.62, color: READABLE, margin: 0 }}>
-                negative fill is lighting by taking away. instead of adding a light to the shadow side, you put something black there, a flag, a floppy, a black sheet, to soak up the stray bounce filling that shadow in. the shadow deepens, the face gains shape, and the frame reads three-dimensional. it is the cheapest, most-skipped tool on set: you already own a black jacket. that ratio between the lit side and the dark side is most of the gap between footage that looks like a home video and footage that looks like a film.
-              </p>
-            </div>
-          </Reveal>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <NegativeFill accent={accent} />
+            </Reveal>
+          </div>
         </div>
 
         {/* ── The Light Bench ── */}
@@ -227,7 +271,7 @@ export default function VideoGuide({ accent = ed.plum }: { accent?: string }) {
               A scene is three lights
             </h3>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: READABLE, margin: "0 0 clamp(28px,4vw,44px)", maxWidth: 640 }}>
-              the lesson our film team teaches on every set. a key for mood, a fill for how deep the shadows fall, a back light for separation. drag each one, ride its intensity and colour, and watch the scene re-light. the readout calls the mood out loud the way a gaffer would.
+              The lesson our film team teaches on every set. A key for mood, a fill for how deep the shadows fall, a back light for separation. Drag each one, ride its intensity and colour, and watch the scene re-light. The readout calls the mood out loud the way a gaffer would.
             </p>
           </Reveal>
           <Reveal delay={0.06}>
@@ -240,7 +284,7 @@ export default function VideoGuide({ accent = ed.plum }: { accent?: string }) {
           <Reveal>
             <Kicker color={accent}>Exposure, the basics</Kicker>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.6vw,18px)", lineHeight: 1.6, color: READABLE, margin: "12px 0 0", maxWidth: 620 }}>
-              once the scene is lit, three things keep the image clean from capture to grade.
+              Once the scene is lit, three things keep the image clean from capture to grade.
             </p>
           </Reveal>
           <div className="ctrla-guide-grid" style={{ marginTop: "clamp(24px,3vw,40px)" }}>
@@ -262,8 +306,8 @@ export default function VideoGuide({ accent = ed.plum }: { accent?: string }) {
           <Reveal>
             <div style={{ paddingTop: "clamp(22px,3vw,32px)", display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
               <Kicker color={accent}>Part 02 · The Tools</Kicker>
-              <span style={{ fontFamily: ed.body, fontStyle: "italic", fontSize: "clamp(14px,1.6vw,18px)", lineHeight: 1.4, color: READABLE }}>
-                now the gear. the bodies, glass, and light our film team runs.
+              <span style={{ fontFamily: ed.body, fontStyle: "normal", fontSize: "clamp(14px,1.6vw,18px)", lineHeight: 1.4, color: READABLE }}>
+                Now the gear. The bodies, glass, and light our film team <em style={{ fontStyle: "italic", color: accent }}>runs</em>.
               </span>
             </div>
           </Reveal>

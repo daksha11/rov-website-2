@@ -133,6 +133,12 @@ export interface ToolkitSection {
    *  capped at 3. `toolkit` is another section id, `toolName` names a real tool
    *  in that section, `line` is a single Instrument Serif sentence in ROV voice. */
   crossRefs?: { toolkit: string; toolName: string; line: string }[];
+  /** Workflow-led toolkits (music) open with a DAW choice. When present, this
+   *  renders a compact "pick your DAW" chooser and the DAW-category tools are
+   *  dropped from the station list. `ours` flags the one we default to. */
+  daws?: { name: string; url?: string; ours?: boolean }[];
+  /** One-line editorial note under the DAW chooser. */
+  dawNote?: string;
 }
 
 // ── MUSIC TOOLKIT ──────────────────────────────────────
@@ -952,14 +958,23 @@ export const toolkitSections: ToolkitSection[] = [
         line: "A release needs a visual world, and the palette behind the artwork usually starts with Coolors in the design kit.",
       },
     ],
+    daws: [
+      { name: "FL Studio", url: "https://www.image-line.com/", ours: true },
+      { name: "Ableton Live", url: "https://www.ableton.com/" },
+      { name: "Logic Pro", url: "https://www.apple.com/logic-pro/" },
+      { name: "BandLab", url: "https://www.bandlab.com/" },
+      { name: "GarageBand", url: "https://www.apple.com/mac/garageband/" },
+      { name: "Pro Tools", url: "https://www.avid.com/pro-tools" },
+    ],
+    dawNote: "We usually reach for FL Studio, but it does not really matter which DAW you use. Free or paid, they all get you to the same finish line. Pick one and learn it.",
   },
   {
     id: "web-dev",
-    title: "Web Dev",
+    title: "Development",
     pageNumber: "02",
     accentColor: "#E3C24A",
-    intro: "Our full development stack, from framework to deployment. These are the tools we build client sites with every day, chosen for speed, reliability, and developer experience.",
-    blurb: "The stack we ship client sites on, framework to deploy. Chosen for speed and DX.",
+    intro: "Our full development stack, from framework to deployment. These are the tools we build and ship with every day, chosen for speed, reliability, and developer experience.",
+    blurb: "The stack we build and ship on, framework to deploy. Chosen for speed and DX.",
     pickCount: "8 Picks",
     cadence: "Updated monthly",
     tools: webDevTools,

@@ -802,6 +802,9 @@ input[type="range"]::-webkit-slider-thumb {
   grid-template-columns: 40px minmax(0, 1fr);
   gap: clamp(16px, 3vw, 44px);
 }
+.ctrla-stations[data-view="flow"] {
+  grid-template-columns: 1fr;
+}
 .ctrla-station-rail {
   position: sticky;
   top: 0;
@@ -990,6 +993,63 @@ input[type="range"]::-webkit-slider-thumb {
 }
 @media (prefers-reduced-motion: reduce) {
   .ctrla-type-caret { display: none; }
+}
+
+/* CTRL-A — Music guide "honest truths" cards: circular number badge + hover body */
+.ctrla-truth-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(46px, 4.4vw, 56px);
+  height: clamp(46px, 4.4vw, 56px);
+  border-radius: 50%;
+  /* thin, precise ring — quiet by default so the numeral leads */
+  border: 1.5px solid color-mix(in srgb, var(--acc, #A56A67) 55%, transparent);
+  color: var(--acc, #A56A67);
+  background: transparent;
+  /* refined technical numeral: mono, tabular figures, optical tracking */
+  font-family: 'Neue Montreal', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 700;
+  font-size: clamp(16px, 1.6vw, 19px);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  /* nudge the tracked figures back to optical center */
+  text-indent: 0.06em;
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--acc, #A56A67) 40%, transparent);
+  transition:
+    border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.35s ease,
+    background 0.35s ease,
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ctrla-truth:hover .ctrla-truth-num,
+.ctrla-truth[data-open="true"] .ctrla-truth-num {
+  border-color: var(--acc, #A56A67);
+  background: var(--acc, #A56A67);
+  color: #F6EFE8;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px -8px color-mix(in srgb, var(--acc, #A56A67) 55%, transparent);
+}
+.ctrla-truth-plus {
+  display: inline-block;
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: 22px;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0.6;
+}
+.ctrla-truth:hover .ctrla-truth-plus,
+.ctrla-truth[data-open="true"] .ctrla-truth-plus {
+  transform: rotate(45deg);
+  opacity: 1;
+}
+.ctrla-truth:hover .ctrla-truth-body,
+.ctrla-truth[data-open="true"] .ctrla-truth-body {
+  grid-template-rows: 1fr !important;
 }
 
 /* ──────────────────────────────────────────────────────────────
@@ -2449,6 +2509,101 @@ input[type="range"]::-webkit-slider-thumb {
   color: rgba(22, 12, 40, 0.95);
 }
 .ctrla-mixglobe-chip-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--c); flex: none; }
+.ctrla-mixglobe-chip-flag .ctrla-mixglobe-chip-dot { border-radius: 2px; border: 1px solid rgba(22, 12, 40, 0.35); }
+.ctrla-mixglobe-chip-flag[data-on="true"] { border-color: rgba(22, 12, 40, 0.6); background: rgba(22, 12, 40, 0.08); }
+
+/* ── Negative fill: plain-language copy + before/after wipe ── */
+.ctrla-negfill-block {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: center;
+  margin-top: clamp(28px, 4vw, 44px);
+  padding: clamp(24px, 4vw, 44px);
+  border-radius: 16px;
+  background: #e7d8cd;
+  border: 1px solid rgba(22, 12, 40, 0.16);
+}
+.ctrla-negfill { display: flex; flex-direction: column; gap: 14px; }
+.ctrla-negfill-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  max-height: 460px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0a0714;
+  border: 1px solid rgba(240, 230, 224, 0.16);
+}
+.ctrla-negfill-canvas { cursor: ew-resize; }
+.ctrla-negfill-tag {
+  position: absolute;
+  top: 12px;
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(245, 238, 230, 0.92);
+  background: rgba(10, 7, 18, 0.55);
+  padding: 4px 9px;
+  border-radius: 999px;
+  pointer-events: none;
+}
+.ctrla-negfill-tag.is-left { left: 12px; }
+.ctrla-negfill-tag.is-right { right: 12px; }
+.ctrla-negfill-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(240, 230, 224, 0.5);
+  pointer-events: none;
+}
+.ctrla-negfill-meter {
+  display: grid;
+  grid-template-columns: auto minmax(50px, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+}
+.ctrla-negfill-side { display: flex; flex-direction: column; gap: 2px; }
+.ctrla-negfill-side.is-right { text-align: right; }
+.ctrla-negfill-side-k {
+  font-family: "Neue Montreal", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(22, 12, 40, 0.55);
+}
+.ctrla-negfill-ratio {
+  font-family: "Neue Montreal", sans-serif;
+  font-weight: 800;
+  font-size: clamp(20px, 2.6vw, 28px);
+  letter-spacing: -0.02em;
+  color: rgba(22, 12, 40, 0.85);
+}
+.ctrla-negfill-verdict {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-size: 13px;
+  line-height: 1.3;
+  color: rgba(22, 12, 40, 0.6);
+}
+.ctrla-negfill-bar {
+  position: relative;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(22, 12, 40, 0.12);
+  overflow: hidden;
+}
+.ctrla-negfill-bar-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  border-radius: 999px;
+  transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
 
 /* ── Effects rack (per selected element) ── */
 .ctrla-fx { display: grid; gap: 15px; margin-top: 20px; }
@@ -2639,9 +2794,11 @@ input[type="range"]::-webkit-slider-thumb {
     radial-gradient(120% 80% at 100% 0%, rgba(78, 61, 115, 0.35) 0%, transparent 55%),
     linear-gradient(180deg, #190E2A 0%, #120A1E 60%, #0E0716 100%);
   border: 1px solid rgba(240, 230, 224, 0.12);
-  border-radius: 18px;
-  padding: clamp(20px, 3.5vw, 40px);
-  box-shadow: 0 28px 70px rgba(15, 8, 22, 0.4);
+  border-radius: 15px;
+  padding: clamp(15px, 2.4vw, 28px);
+  box-shadow: 0 24px 60px rgba(15, 8, 22, 0.38);
+  max-width: 920px;
+  margin: 0 auto;
 }
 .ctrla-vault-top {
   display: grid;
@@ -2735,6 +2892,170 @@ input[type="range"]::-webkit-slider-thumb {
   .ctrla-vault-foot { grid-template-columns: 1fr; }
 }
 
+/* ── Claude Code course: preview strip (replaces the 6-card grid on the dev guide) ── */
+.ctrla-course-strip {
+  display: block;
+  text-decoration: none;
+  border: 1px solid rgba(22, 12, 40, 0.16);
+  border-radius: 14px;
+  padding: clamp(14px, 1.8vw, 20px) clamp(16px, 2vw, 22px);
+  background: rgba(22, 12, 40, 0.02);
+  transition: border-color 0.28s ease, background 0.28s ease, transform 0.28s cubic-bezier(0.22,1,0.36,1);
+}
+.ctrla-course-strip:hover {
+  border-color: rgba(22, 12, 40, 0.34);
+  background: rgba(22, 12, 40, 0.045);
+  transform: translateY(-2px);
+}
+.ctrla-course-track {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.ctrla-course-track::-webkit-scrollbar { display: none; }
+.ctrla-course-chip {
+  flex: 1 0 auto;
+  min-width: 0;
+  padding: 4px clamp(14px, 1.6vw, 20px);
+  position: relative;
+}
+.ctrla-course-chip + .ctrla-course-chip { border-left: 1px solid rgba(22, 12, 40, 0.14); }
+.ctrla-course-chip-n {
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase;
+  opacity: 0.5;
+}
+.ctrla-course-chip-t {
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 700; letter-spacing: -0.01em;
+  font-size: clamp(14px, 1.5vw, 17px);
+  white-space: nowrap;
+  transition: color 0.25s ease;
+}
+.ctrla-course-strip:hover .ctrla-course-arrow { transform: translateX(5px); }
+.ctrla-course-arrow { display: inline-block; transition: transform 0.28s ease; }
+
+/* ── Claude Code course page ── */
+.ctrla-cc-index {
+  display: flex; flex-wrap: wrap; gap: 8px 10px;
+}
+.ctrla-cc-index a {
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: 12px; letter-spacing: 0.02em;
+  text-decoration: none;
+  padding: 7px 13px;
+  border: 1px solid rgba(22, 12, 40, 0.18);
+  border-radius: 999px;
+  transition: background 0.22s ease, border-color 0.22s ease, color 0.22s ease;
+}
+.ctrla-cc-index a:hover { background: rgba(22, 12, 40, 0.05); border-color: rgba(22, 12, 40, 0.4); }
+
+/* Model picker */
+.ctrla-cc-models { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(10px, 1.4vw, 16px); }
+.ctrla-cc-model {
+  border: 1px solid rgba(22, 12, 40, 0.14);
+  border-radius: 14px;
+  padding: clamp(16px, 1.8vw, 22px);
+  background: rgba(22, 12, 40, 0.02);
+  transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease;
+}
+.ctrla-cc-model[data-lit="true"] {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(22, 12, 40, 0.16);
+}
+.ctrla-cc-taskrow { display: flex; flex-wrap: wrap; gap: 9px; }
+.ctrla-cc-task {
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: clamp(12.5px, 1.4vw, 14.5px); letter-spacing: -0.01em;
+  padding: 9px 15px; border-radius: 999px; cursor: pointer;
+  border: 1px solid rgba(22, 12, 40, 0.2);
+  background: transparent;
+  transition: background 0.22s ease, border-color 0.22s ease, color 0.22s ease, transform 0.22s ease;
+}
+.ctrla-cc-task:hover { transform: translateY(-1px); }
+
+/* Command palette */
+.ctrla-cc-palette {
+  border: 1px solid rgba(22, 12, 40, 0.16);
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(22, 12, 40, 0.02);
+  max-width: 640px;
+}
+.ctrla-cc-palette-bar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 13px 16px;
+  border-bottom: 1px solid rgba(22, 12, 40, 0.12);
+}
+.ctrla-cc-palette-input {
+  border: none; outline: none; background: transparent;
+  width: 100%;
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+  font-size: clamp(13px, 1.4vw, 15px);
+  color: inherit;
+}
+.ctrla-cc-cmd {
+  width: 100%; text-align: left; background: transparent; border: none;
+  border-left: 2px solid transparent;
+  padding: 13px 16px; cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.ctrla-cc-cmd + .ctrla-cc-cmd { border-top: 1px solid rgba(22, 12, 40, 0.07); }
+.ctrla-cc-cmd:hover, .ctrla-cc-cmd[data-open="true"] { background: rgba(22, 12, 40, 0.04); }
+.ctrla-cc-cmd[data-open="true"] { border-left-color: currentColor; }
+
+/* Token optimizer */
+.ctrla-cc-token { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr); gap: clamp(20px, 3vw, 40px); align-items: center; }
+.ctrla-cc-practice {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 14px;
+  width: 100%; text-align: left;
+  padding: 13px 15px; cursor: pointer;
+  border: 1px solid rgba(22, 12, 40, 0.14);
+  border-radius: 11px; background: transparent;
+  transition: border-color 0.24s ease, background 0.24s ease;
+}
+.ctrla-cc-practice + .ctrla-cc-practice { margin-top: 9px; }
+.ctrla-cc-practice[data-on="true"] { background: rgba(22, 12, 40, 0.045); }
+.ctrla-cc-switch {
+  flex-shrink: 0; width: 40px; height: 23px; border-radius: 999px;
+  border: 1px solid rgba(22, 12, 40, 0.3); position: relative;
+  transition: background 0.26s ease, border-color 0.26s ease;
+}
+.ctrla-cc-switch::after {
+  content: ""; position: absolute; top: 2px; left: 2px;
+  width: 17px; height: 17px; border-radius: 999px; background: rgba(22, 12, 40, 0.55);
+  transition: transform 0.26s cubic-bezier(0.22,1,0.36,1), background 0.26s ease;
+}
+.ctrla-cc-practice[data-on="true"] .ctrla-cc-switch::after { transform: translateX(17px); }
+
+/* Fan-out diagram */
+.ctrla-cc-fanout { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(10px, 1.4vw, 16px); }
+.ctrla-cc-node {
+  border: 1px solid rgba(22, 12, 40, 0.14);
+  border-radius: 12px; padding: clamp(14px, 1.6vw, 18px);
+  background: rgba(22, 12, 40, 0.02);
+}
+
+/* FAQ */
+.ctrla-cc-faq-q {
+  width: 100%; text-align: left; background: transparent;
+  border: none; border-top: 1px solid rgba(22, 12, 40, 0.16);
+  padding: clamp(16px, 2vw, 22px) 0; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .ctrla-cc-models { grid-template-columns: repeat(2, 1fr); }
+  .ctrla-cc-token { grid-template-columns: 1fr; }
+  .ctrla-cc-fanout { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .ctrla-cc-models { grid-template-columns: 1fr; }
+}
+
 /* ── Build ideas (what you can build) ── */
 .ctrla-build-grid {
   display: grid;
@@ -2778,6 +3099,7 @@ input[type="range"]::-webkit-slider-thumb {
   .ctrla-guide-grid { grid-template-columns: 1fr; }
   .ctrla-bus-card { grid-template-columns: 1fr; align-items: start; }
   .ctrla-mixglobe { grid-template-columns: 1fr; }
+  .ctrla-negfill-block { grid-template-columns: 1fr; align-items: start; }
 }
 
 /* Cosmic floating assets — parallax set pieces peeking from the margins */
@@ -4457,4 +4779,128 @@ input[type="range"]::-webkit-slider-thumb {
   .fold__timerpop-card { transform: none; transition: opacity 0.2s ease; }
   .fold__session-rhythmcta.is-running .fold__session-rhythmcta-dot,
   .fold__session-timerchip.is-running .fold__session-timerchip-dot { animation: none; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   CTRL-A Audio Strip — slim inline "now playing" band
+   ───────────────────────────────────────────────────────────── */
+.ctrla-strip-wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 clamp(18px, 5vw, 64px);
+}
+
+.ctrla-strip {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2vw, 22px);
+  height: clamp(60px, 8vw, 78px);
+  border-top: 1px solid rgba(22, 12, 40, 0.16);
+  border-bottom: 1px solid rgba(22, 12, 40, 0.16);
+  font-family: "Neue Montreal", "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Play — circular ring in the sector accent, fills when active */
+.ctrla-strip-play {
+  flex-shrink: 0;
+  width: clamp(38px, 4.4vw, 46px);
+  height: clamp(38px, 4.4vw, 46px);
+  border-radius: 50%;
+  border: 1.5px solid var(--acc);
+  background: transparent;
+  color: var(--acc);
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.22s ease, color 0.22s ease, transform 0.22s ease;
+}
+
+.ctrla-strip-play:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--acc) 12%, transparent);
+  transform: scale(1.05);
+}
+
+.ctrla-strip-play.is-active {
+  background: var(--acc);
+  color: #F0E6E0;
+}
+
+.ctrla-strip-play:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Track meta */
+.ctrla-strip-meta {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.ctrla-strip-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: clamp(9px, 1vw, 10px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(22, 12, 40, 0.62);
+}
+
+.ctrla-strip-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: box-shadow 0.2s ease;
+}
+
+.ctrla-strip-title {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: clamp(14px, 1.7vw, 19px);
+  line-height: 1;
+  color: #160C28;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Reactive planet field takes all remaining width */
+.ctrla-strip-canvas {
+  flex: 1;
+  min-width: 40px;
+  height: 92%;
+  display: block;
+}
+
+/* Mute — quiet text button */
+.ctrla-strip-mute {
+  flex-shrink: 0;
+  width: clamp(34px, 4vw, 40px);
+  height: clamp(34px, 4vw, 40px);
+  border-radius: 50%;
+  border: 1px solid rgba(22, 12, 40, 0.28);
+  background: transparent;
+  color: rgba(22, 12, 40, 0.7);
+  font-size: 11px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.ctrla-strip-mute.is-muted {
+  color: var(--acc);
+  border-color: color-mix(in srgb, var(--acc) 55%, transparent);
+}
+
+.ctrla-strip-mute:disabled { opacity: 0.35; cursor: not-allowed; }
+
+@media (max-width: 640px) {
+  /* On narrow screens the serif title yields so the waveform keeps room */
+  .ctrla-strip-title { display: none; }
+  .ctrla-strip { gap: 12px; }
 }

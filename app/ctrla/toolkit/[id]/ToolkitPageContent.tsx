@@ -10,6 +10,7 @@ import MusicGuide from "../../_components/MusicGuide";
 import DesignGuide from "../../_components/DesignGuide";
 import DevGuide from "../../_components/DevGuide";
 import VideoGuide from "../../_components/VideoGuide";
+import { Component as MusicReactiveHero } from "@/components/ui/music-reactive-hero-section";
 // Toolkit pages run the LIGHT theme — the airy, cream reveal from the loader.
 import { edLight as ed, Bleed, Rule, Label, legibleAccent } from "../../_components/editorial";
 import { toolkitSections } from "../../data";
@@ -60,6 +61,13 @@ export default function ToolkitPageContent({ id }: { id: string }) {
         </Bleed>
         <Rule color={ed.hair} />
       </div>
+
+      {/* Music sector: slim inline audio strip — the Fold loop, reactive */}
+      {id === "music" && (
+        <div style={{ position: "relative", zIndex: 5, padding: "clamp(10px,1.6vw,18px) 0" }}>
+          <MusicReactiveHero accent={pageAccent} />
+        </div>
+      )}
 
       {/* Music, Design, and Web Dev sectors open with the founder's craft
           guide, above the tools. Each is Part 01; the stations are Part 02. */}

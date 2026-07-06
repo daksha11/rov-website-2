@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(npx next:*)",
-      "Bash(npx tsc --noEmit)"
+      "Bash(npx tsc --noEmit)",
+      "Bash(npx next *)",
+      "Bash(npx tsc *)"
     ]
   }
 }
