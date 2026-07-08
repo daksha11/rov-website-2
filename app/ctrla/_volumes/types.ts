@@ -69,6 +69,12 @@ export interface OnRepeat {
   headline: string;
   note: string;
   tracks: RepeatTrack[];
+  /** Spotify playlist promo shown in the soundtrack strip. */
+  playlist?: {
+    label: string;
+    cta: string;
+    url: string;
+  };
 }
 
 // ── Form of the volume (craft) ─────────────────────────

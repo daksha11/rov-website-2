@@ -734,7 +734,7 @@ export default function CtrlAContent() {
         <Label color={ed.inkFaint}>Plate III · The galley, this volume&apos;s spread</Label>
       </Bleed>
 
-      {/* Off the clock — music, craft, and fuel condensed into one bento */}
+      {/* The soundtrack — two on repeat + the CTRL-A playlist strip */}
       <VolumeBento />
 
       {/* The city — World Cup 26, Atlanta */}

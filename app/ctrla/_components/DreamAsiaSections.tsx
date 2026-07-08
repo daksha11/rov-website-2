@@ -669,7 +669,7 @@ export function DreamAsiaTeaser() {
         </div>
         <Rule style={{ marginBottom: "clamp(24px,3vw,36px)" }} />
 
-        <a href={feature.href} className="ctrla-feature-card" style={{ position: "relative", display: "block", width: "100%", aspectRatio: "16 / 7", minHeight: 260, background: ed.panel, overflow: "hidden", textDecoration: "none" }}>
+        <a href={feature.href} className="ctrla-feature-card" style={{ position: "relative", display: "block", width: "100%", aspectRatio: "16 / 7", minHeight: 300, background: ed.panel, border: `1px solid ${ed.hair}`, overflow: "hidden", textDecoration: "none" }}>
           <Image
             src={coverShot.src}
             alt={coverShot.alt}
@@ -683,20 +683,20 @@ export function DreamAsiaTeaser() {
             style={{
               position: "absolute",
               inset: 0,
-              background: "linear-gradient(to top, rgba(15,8,32,0.82) 0%, rgba(15,8,32,0.28) 46%, transparent 72%)",
+              background: "linear-gradient(to top, rgba(15,8,32,0.9) 0%, rgba(15,8,32,0.42) 40%, rgba(15,8,32,0.08) 68%, transparent 100%)",
             }}
           />
-          <span style={{ position: "absolute", top: 18, left: 20, fontFamily: ed.mono, fontSize: "clamp(9px,1vw,11px)", letterSpacing: "0.2em", textTransform: "uppercase", color: ed.gold }}>
+          <span style={{ position: "absolute", top: "clamp(16px,2vw,28px)", left: "clamp(18px,2.4vw,34px)", fontFamily: ed.mono, fontSize: "clamp(9px,1vw,11px)", letterSpacing: "0.2em", textTransform: "uppercase", color: ed.gold }}>
             Behind the scenes
           </span>
-          <div style={{ position: "absolute", left: 20, right: 20, bottom: 18, display: "flex", flexDirection: "column", gap: 12 }}>
-            <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,5vw,68px)", letterSpacing: "-0.03em", lineHeight: 0.92, color: ed.paper, margin: 0, maxWidth: 760 }}>
-              {issueMeta.featureHeadline}
+          <div style={{ position: "absolute", left: "clamp(18px,2.4vw,34px)", right: "clamp(18px,2.4vw,34px)", bottom: "clamp(16px,2.2vw,30px)", display: "flex", flexDirection: "column", gap: "clamp(8px,1vw,14px)" }}>
+            <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,3.6vw,52px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.paper, margin: 0, maxWidth: 640 }}>
+              {issueMeta.featureHeadline.replace(/\.$/, "")}<span style={{ color: ed.gold }}>.</span>
             </h2>
-            <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.6vw,18px)", lineHeight: 1.5, color: "rgba(240,230,224,0.86)", margin: 0, maxWidth: 560 }}>
+            <p style={{ fontFamily: ed.body, fontSize: "clamp(13px,1.4vw,17px)", lineHeight: 1.5, color: "rgba(240,230,224,0.86)", margin: 0, maxWidth: 520 }}>
               {issueMeta.featureDeck}
             </p>
-            <span className="ctrla-feature-cta" style={{ display: "inline-flex", alignItems: "center", gap: 9, fontFamily: ed.mono, fontSize: "clamp(11px,1.2vw,13px)", letterSpacing: "0.16em", textTransform: "uppercase", color: ed.paper, marginTop: 4 }}>
+            <span className="ctrla-feature-cta" style={{ display: "inline-flex", alignItems: "center", gap: 9, fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: ed.gold, marginTop: 4 }}>
               Read the feature <span aria-hidden className="ctrla-feature-arrow" style={{ transition: "transform .25s" }}>→</span>
             </span>
           </div>

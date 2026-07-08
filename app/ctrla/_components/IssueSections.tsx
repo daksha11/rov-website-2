@@ -5,7 +5,6 @@
 // Artist Showcase · ROV Spotlight · Events (condensed) · Vue Close
 // ═══════════════════════════════════════════════════════
 
-import { type CSSProperties } from "react";
 import Image from "next/image";
 import { ed, Bleed, Rule, Label, Kicker, SweepText } from "./editorial";
 import { taste, onRepeat, artForm, spotlight, events, eventSources, eventsCover, vueClose } from "../data";
@@ -181,65 +180,73 @@ export function ArtForm() {
   );
 }
 
-// ── Volume bento — two softer features in one asymmetric grid: the craft
-//    (large hero, 2x2) and two songs on repeat (right-column squares). ──
+// ── Soundtrack strip — two songs on repeat + the CTRL-A playlist promo ──
 
 export function VolumeBento() {
-  const [t1, t2] = onRepeat.tracks;
-  const tile: CSSProperties = { position: "relative", overflow: "hidden", border: `1px solid ${ed.hair}`, background: ed.panel, textDecoration: "none", display: "block" };
-  const scrim = "linear-gradient(to top, rgba(15,8,32,0.92) 0%, rgba(15,8,32,0.32) 44%, transparent 72%)";
-  const tracks = [
-    { t: t1, n: 1, cls: "ctrla-bento-track1" },
-    { t: t2, n: 2, cls: "ctrla-bento-track2" },
-  ];
+  const playlist = onRepeat.playlist;
 
   return (
     <section id="off-the-clock" style={{ background: "transparent", padding: "clamp(40px,6vw,88px) 0", scrollMarginTop: 0 }}>
       <Bleed>
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginBottom: "clamp(18px,2.4vw,30px)" }}>
-          <Kicker color={ed.gold}>Off the clock · this volume</Kicker>
-          <Label color={ed.gold}>Sound · Craft · Fuel</Label>
-        </div>
-        <Rule color={ed.hair} style={{ marginBottom: "clamp(18px,2.4vw,28px)" }} />
+        <div className="ctrla-soundstrip" style={{ border: `1px solid ${ed.hair}`, background: ed.panel, position: "relative", overflow: "hidden" }}>
+          {/* Gold edge — ties the strip to the flagship band language */}
+          <div aria-hidden style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: ed.gold }} />
 
-        <div className="ctrla-bento">
-          {/* CRAFT — the hero, 2x2 */}
-          <div className="ctrla-bento-art" style={tile}>
-            {artForm.image ? (
-              <Image src={artForm.image} alt={`${artForm.form} — ${artForm.origin}`} fill sizes="(max-width: 820px) 92vw, 720px" style={{ objectFit: "cover" }} />
-            ) : (
-              <span aria-hidden style={{ position: "absolute", inset: 0, background: `radial-gradient(130% 120% at 32% 26%, ${ed.plum} 0%, ${ed.panel} 46%, ${ed.void} 100%)` }} />
+          {/* Left — playlist promo copy */}
+          <div className="ctrla-soundstrip-copy" style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 14, padding: "clamp(24px,3vw,40px)" }}>
+            <Kicker color={ed.gold}>The Soundtrack · On repeat</Kicker>
+            <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(24px,3vw,42px)", letterSpacing: "-0.02em", lineHeight: 1, color: ed.ink, margin: 0 }}>
+              {playlist?.label ?? "The creative soundtrack to CTRL-A"}<span style={{ color: ed.gold }}>.</span>
+            </h3>
+            <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(14px,1.6vw,18px)", lineHeight: 1.4, color: ed.gold, margin: 0, maxWidth: 380 }}>
+              {onRepeat.note}
+            </p>
+            {playlist && (
+              <a
+                href={playlist.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ctrla-cover-cta"
+                style={{
+                  alignSelf: "flex-start",
+                  marginTop: 6,
+                  fontFamily: ed.mono,
+                  fontSize: "clamp(11px,1.2vw,13px)",
+                  fontWeight: 700,
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  color: ed.ground,
+                  background: ed.gold,
+                  padding: "12px 24px",
+                  borderRadius: 4,
+                  textDecoration: "none",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 10,
+                }}
+              >
+                {playlist.cta} <span aria-hidden>→</span>
+              </a>
             )}
-            <span aria-hidden style={{ position: "absolute", inset: 0, background: scrim }} />
-            <div style={{ position: "absolute", left: "clamp(18px,2.4vw,34px)", right: "clamp(18px,2.4vw,34px)", bottom: "clamp(18px,2.4vw,32px)" }}>
-              <Label color={ed.gold} style={{ display: "block", marginBottom: 12 }}>{artForm.eyebrow}</Label>
-              <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(34px,4.4vw,72px)", letterSpacing: "-0.03em", lineHeight: 0.9, color: ed.ink, margin: 0 }}>
-                {artForm.form}<span style={{ color: ed.gold }}>.</span>
-              </h3>
-              <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(16px,1.9vw,26px)", lineHeight: 1.28, color: ed.gold, margin: "10px 0 0", maxWidth: 460 }}>
-                {artForm.headline}
-              </p>
-              <p style={{ fontFamily: ed.body, fontSize: "clamp(13px,1.3vw,16px)", lineHeight: 1.55, color: ed.inkSoft, margin: "14px 0 0", maxWidth: 540 }}>
-                &ldquo;{artForm.pullquote}&rdquo;
-              </p>
-            </div>
           </div>
 
-          {/* SOUND — two songs on repeat, right-column squares */}
-          {tracks.map(({ t, n, cls }) => (
-            <a key={t.url} href={t.url} target="_blank" rel="noopener noreferrer" className={`ctrla-track ${cls}`} style={{ ...tile, aspectRatio: "1 / 1" }}>
-              <Image src={t.image} alt={`${t.title} — ${t.artist}`} fill sizes="(max-width: 820px) 46vw, 360px" className="ctrla-track-img" style={{ objectFit: "cover" }} />
-              <span aria-hidden style={{ position: "absolute", inset: 0, background: scrim }} />
-              <span style={{ position: "absolute", top: 12, left: 12, fontFamily: ed.mono, fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: ed.gold }}>On repeat · {String(n).padStart(2, "0")}</span>
-              <span className="ctrla-track-play" aria-hidden>
-                <span style={{ width: 0, height: 0, borderTop: "9px solid transparent", borderBottom: "9px solid transparent", borderLeft: `15px solid ${ed.void}`, marginLeft: 4 }} />
-              </span>
-              <div style={{ position: "absolute", left: 14, right: 14, bottom: 12 }}>
-                <span style={{ display: "block", fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(16px,1.5vw,22px)", letterSpacing: "-0.02em", lineHeight: 1.04, color: ed.ink }}>{t.title}</span>
-                <span style={{ display: "block", marginTop: 4, fontFamily: ed.mono, fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: ed.gold }}>{t.artist}</span>
-              </div>
-            </a>
-          ))}
+          {/* Right — the two tracks, compact squares */}
+          <div className="ctrla-soundstrip-tracks">
+            {onRepeat.tracks.map((t, i) => (
+              <a key={t.url} href={t.url} target="_blank" rel="noopener noreferrer" className="ctrla-track" style={{ position: "relative", overflow: "hidden", aspectRatio: "1 / 1", borderLeft: `1px solid ${ed.hair}`, textDecoration: "none", display: "block", background: ed.void }}>
+                <Image src={t.image} alt={`${t.title} — ${t.artist}`} fill sizes="(max-width: 820px) 46vw, 280px" className="ctrla-track-img" style={{ objectFit: "cover" }} />
+                <span aria-hidden style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(15,8,32,0.92) 0%, rgba(15,8,32,0.32) 44%, transparent 72%)" }} />
+                <span style={{ position: "absolute", top: 12, left: 12, fontFamily: ed.mono, fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: ed.gold }}>On repeat · {String(i + 1).padStart(2, "0")}</span>
+                <span className="ctrla-track-play" aria-hidden>
+                  <span style={{ width: 0, height: 0, borderTop: "9px solid transparent", borderBottom: "9px solid transparent", borderLeft: `15px solid ${ed.void}`, marginLeft: 4 }} />
+                </span>
+                <div style={{ position: "absolute", left: 14, right: 14, bottom: 12 }}>
+                  <span style={{ display: "block", fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(15px,1.4vw,20px)", letterSpacing: "-0.02em", lineHeight: 1.04, color: ed.ink }}>{t.title}</span>
+                  <span style={{ display: "block", marginTop: 4, fontFamily: ed.mono, fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: ed.gold }}>{t.artist}</span>
+                </div>
+              </a>
+            ))}
+          </div>
         </div>
       </Bleed>
     </section>

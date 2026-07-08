@@ -175,7 +175,7 @@ export const vol01: Volume = {
       "Every volume, free: a deep-dive toolkit for music, web, and design, the real process behind the work, and a brand-kit generator you can use today.",
     featureHeadline: "From the bedroom to the stage.",
     featureDeck:
-      "How a small team produced a multi-city festival headline. Sam Suen headlines DreamAsia Fest across two states. Everything that happened before the lights came up.",
+      "Sam Suen headlines DreamAsia Fest across two states. How a small team pulled off a multi-city festival, and everything that happened before the lights came up.",
     stats: [
       { value: "24", label: "Tools in rotation" },
       { value: "04", label: "Toolkits" },
@@ -215,6 +215,12 @@ export const vol01: Volume = {
         url: "https://open.spotify.com/track/78bezRj4TvB0XJhpsfOi48",
       },
     ],
+    playlist: {
+      label: "The creative soundtrack to CTRL-A",
+      cta: "Follow on Spotify",
+      // TODO: swap in the real CTRL-A playlist link once it's live.
+      url: "https://open.spotify.com",
+    },
   },
 
   // Vol. 01 — kintsugi, repair in gold (on-theme: nothing hidden).
