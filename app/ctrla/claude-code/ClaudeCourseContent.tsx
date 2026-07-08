@@ -24,6 +24,7 @@ import { motion } from "framer-motion";
 import { NavigationDock } from "@/components/NavDoc";
 import EditorialFooter from "../_components/EditorialFooter";
 import { edLight as ed, Bleed, Kicker, Label, Rule } from "../_components/editorial";
+import CtrlASignup from "../_components/CtrlASignup";
 import { currentVolume } from "../_volumes";
 
 const PLUM = ed.plum; // #4E3D73 — primary accent, legible on cream
@@ -628,8 +629,20 @@ Read it aloud: if it sounds like a LinkedIn post, rewrite.`}
                 The creative who learns to build right now has an <span style={{ color: PLUM }}>unfair advantage</span> for years.
               </p>
               <p style={{ fontFamily: ed.body, fontSize: "clamp(16px,1.9vw,21px)", lineHeight: 1.5, color: ed.inkSoft, margin: "clamp(16px,2vw,22px) auto 0", maxWidth: 600 }}>
-                This is how we think about walking through it. Want us to build the thing with you, or teach your team to?
+                This is a living course. Leave your email and every new chapter, plus the prompts and skill files we actually use, lands in your inbox.
               </p>
+              <div style={{ display: "flex", justifyContent: "center", marginTop: "clamp(22px,3vw,30px)" }}>
+                <CtrlASignup
+                  theme="light"
+                  accent={PLUM}
+                  source="claude-code-course"
+                  cta="Get the drops"
+                  note="No spam. New chapters and the files we build with."
+                  successTitle="You are on the list."
+                  successBody="New chapters and the files we use are on the way."
+                  style={{ textAlign: "left", width: "min(100%, 460px)" }}
+                />
+              </div>
               <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", marginTop: "clamp(24px,3vw,34px)" }}>
                 <a href="/contact" style={{ fontFamily: ed.grotesque, fontWeight: 700, fontSize: "clamp(14px,1.6vw,17px)", letterSpacing: "-0.01em", color: ed.ground, background: ed.ink, padding: "14px 26px", borderRadius: 999, textDecoration: "none" }}>Work with us</a>
                 <a href="/ctrla/toolkit/web-dev" style={{ fontFamily: ed.grotesque, fontWeight: 700, fontSize: "clamp(14px,1.6vw,17px)", letterSpacing: "-0.01em", color: ed.ink, background: "transparent", border: `1px solid ${ed.ink}`, padding: "14px 26px", borderRadius: 999, textDecoration: "none" }}>Back to the toolkit</a>

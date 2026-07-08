@@ -2892,6 +2892,29 @@ input[type="range"]::-webkit-slider-thumb {
   .ctrla-vault-foot { grid-template-columns: 1fr; }
 }
 
+/* ── CTRL-A signup (Klaviyo email capture, used across the magazine) ── */
+.ctrla-signup { position: relative; }
+.ctrla-signup .ctrla-signup-btn:hover:not(:disabled) { opacity: 0.72; }
+.ctrla-signup-spin {
+  width: 12px; height: 12px; border-radius: 50%;
+  border: 2px solid; border-top-color: transparent;
+  display: inline-block; animation: ctrla-signup-spin 0.7s linear infinite;
+}
+@keyframes ctrla-signup-spin { to { transform: rotate(360deg); } }
+.ctrla-signup-check {
+  flex-shrink: 0; width: 30px; height: 30px; border-radius: 999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 700;
+  animation: ctrla-signup-pop 0.4s cubic-bezier(0.22, 1.4, 0.36, 1);
+}
+@keyframes ctrla-signup-pop {
+  0% { transform: scale(0.2); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ctrla-signup-spin, .ctrla-signup-check { animation: none; }
+}
+
 /* ── Claude Code course: preview strip (replaces the 6-card grid on the dev guide) ── */
 .ctrla-course-strip {
   display: block;

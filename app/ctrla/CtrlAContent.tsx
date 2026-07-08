@@ -7,6 +7,7 @@ import { NavigationDock } from "@/components/NavDoc";
 import CosmicBackdrop from "./_components/CosmicBackdrop";
 import GooeyLogoMorph from "./_components/GooeyLogoMorph";
 import EditorialFooter from "./_components/EditorialFooter";
+import CtrlASignup from "./_components/CtrlASignup";
 import ShootingStars from "@/components/ui/shooting-stars";
 import { ThreeToolkits } from "./_components/Toolkits";
 import { DreamAsiaTeaser } from "./_components/DreamAsiaSections";
@@ -620,48 +621,17 @@ function SubscribeFooter() {
             <span style={{ fontFamily: ed.serif, fontStyle: "italic", fontWeight: 400, color: ed.gold }}>month</span>.
           </h2>
 
-          {/* Visual-only capture */}
-          <form
-            onSubmit={(e) => e.preventDefault()}
-            style={{ display: "flex", alignItems: "center", gap: 0, borderBottom: `1px solid rgba(240,230,224,0.4)`, minWidth: "min(100%, 340px)", flex: "0 1 380px" }}
-          >
-            <input
-              type="email"
-              placeholder="your@email.com"
-              aria-label="Email address"
-              style={{
-                flex: 1,
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                color: ed.paper,
-                fontFamily: ed.mono,
-                fontSize: 14,
-                padding: "12px 4px",
-              }}
-            />
-            <button
-              type="submit"
-              style={{
-                fontFamily: ed.mono,
-                fontSize: 11,
-                letterSpacing: "0.18em",
-                textTransform: "uppercase",
-                color: ed.gold,
-                background: "transparent",
-                border: "none",
-                cursor: "pointer",
-                padding: "12px 4px",
-                whiteSpace: "nowrap",
-              }}
-            >
-              Subscribe →
-            </button>
-          </form>
+          {/* Live Klaviyo capture */}
+          <CtrlASignup
+            variant="band"
+            theme="dark"
+            source="ctrla-monthly-drop"
+            cta="Subscribe"
+            note="No spam. One drop a month. Unsubscribe anytime."
+            successTitle="You are on the list."
+            successBody="One volume, every month, straight to your inbox."
+          />
         </div>
-        <Label color={ed.gold} style={{ display: "block", marginTop: 24 }}>
-          No spam. One drop a month. Unsubscribe anytime.
-        </Label>
       </Bleed>
     </section>
   );

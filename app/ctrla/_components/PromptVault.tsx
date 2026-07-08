@@ -21,6 +21,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { edLight as ed } from "./editorial";
+import CtrlASignup from "./CtrlASignup";
 
 const GOLD = "#E3C24A";
 const ROSE = "#A56A67";
@@ -173,8 +174,6 @@ export default function PromptVault() {
   const [openWhy, setOpenWhy] = useState<string | null>(null);
   const [flash, setFlash] = useState<string | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
-  const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
 
   // Restore a shared prompt from the URL on first load (mirrors MixGlobe).
   useEffect(() => {
@@ -632,33 +631,17 @@ export default function PromptVault() {
           </div>
         </div>
 
-        {/* TODO: wire to an email provider to actually send the library.
-            Matches the site's existing subscribe form (front-end only). */}
         <div className="ctrla-vault-email">
-          <span style={{ fontFamily: ed.mono, fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: GOLD, display: "block", marginBottom: 12 }}>Want the full library?</span>
-          {sent ? (
-            <p style={{ fontFamily: ed.body, fontSize: 16, lineHeight: 1.5, color: CREAM, margin: 0 }}>
-              You are on the list. The full vault is on its way, plus every new drop.
-            </p>
-          ) : (
-            <form onSubmit={(e) => { e.preventDefault(); if (email.trim()) setSent(true); }} style={{ display: "flex", alignItems: "center", gap: 0, borderBottom: `1px solid rgba(240,230,224,0.4)`, maxWidth: 420 }}>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
-                aria-label="Email address"
-                style={{ flex: 1, background: "transparent", border: "none", outline: "none", color: CREAM, fontFamily: ed.mono, fontSize: 14, padding: "12px 4px" }}
-              />
-              <button type="submit" style={{ fontFamily: ed.mono, fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: GOLD, background: "transparent", border: "none", cursor: "pointer", padding: "12px 4px", whiteSpace: "nowrap" }}>
-                send it →
-              </button>
-            </form>
-          )}
-          <span style={{ fontFamily: ed.mono, fontSize: 10, letterSpacing: "0.1em", color: DIM, display: "block", marginTop: 12 }}>
-            No spam. The prompts and skill files we actually use.
-          </span>
+          <CtrlASignup
+            theme="dark"
+            accent={GOLD}
+            source="dev-prompt-vault"
+            title="Want the full library?"
+            cta="Send it"
+            note="No spam. The prompts and skill files we actually use."
+            successTitle="You are on the list."
+            successBody="The full vault is on its way, plus every new drop."
+          />
         </div>
       </div>
     </div>
