@@ -3446,7 +3446,9 @@ input[type="range"]::-webkit-slider-thumb {
    !important is required) and lays them out in one shared grid. ── */
 .ctrla-peers {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* minmax(0,…): the teaser cards' aspect-ratio + min-height would otherwise
+     transfer into a min-content WIDTH and push the second column off-page. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: clamp(20px, 3vw, 44px);
   align-items: start;
 }

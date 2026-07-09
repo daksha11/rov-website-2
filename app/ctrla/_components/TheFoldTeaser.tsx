@@ -37,7 +37,7 @@ export function TheFoldTeaser() {
             display: "block",
             width: "100%",
             aspectRatio: "16 / 7",
-            minHeight: 260,
+            minHeight: 300,
             overflow: "hidden",
             textDecoration: "none",
             // The Fold's living light, drawn as a gradient (no image weight)
