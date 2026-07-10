@@ -676,7 +676,7 @@ export function DreamAsiaTeaser() {
             fill
             sizes="(max-width: 768px) 92vw, 1180px"
             className="ctrla-feature-img"
-            style={{ objectFit: "cover" }}
+            style={{ objectFit: "cover", filter: "blur(5px)" }}
           />
           <div
             aria-hidden

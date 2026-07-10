@@ -47,12 +47,9 @@ export function ThreeToolkits() {
             Lots of negative space, small vertical footprint. */}
         <div>
           {toolkitSections.map((s, i) => {
-            const n = toolkitSections.length;
-            const frac = n > 1 ? i / (n - 1) : 0;         // 0 = hard left, 1 = hard right
-            const alignRight = frac > 0.5;                 // right-half nodes hug the right
-            // Node's left edge slides from container-left (frac 0) to
-            // container-right-minus-node-width (frac 1), evenly spaced.
-            const offset = `calc(${frac} * (100% - min(460px, 100%)))`;
+            // All toolkit nodes hug the left edge, left-aligned.
+            const alignRight = false;
+            const offset = "0px";
             return (
               <motion.a
                 key={s.id}

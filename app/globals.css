@@ -3189,8 +3189,8 @@ input[type="range"]::-webkit-slider-thumb {
 
 /* Front-page feature teaser — image zoom + arrow nudge on hover */
 .ctrla-feature-card { cursor: pointer; }
-.ctrla-feature-img { transition: transform 0.5s ease; }
-.ctrla-feature-card:hover .ctrla-feature-img { transform: scale(1.04); }
+.ctrla-feature-img { transition: transform 0.5s ease; transform: scale(1.06); }
+.ctrla-feature-card:hover .ctrla-feature-img { transform: scale(1.1); }
 .ctrla-feature-card:hover .ctrla-feature-arrow { transform: translateX(4px); }
 
 /* 1. Story open — copy beside a contrast image pair */
