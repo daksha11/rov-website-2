@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import { CreativeWorkSchema } from "@/components/CreativeWorkSchema";
-import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
-import { NavigationDock } from "@/components/NavDoc";
-import Footer from "@/components/Footer";
+import { CreativeWorkSchema } from "@/components/schema/CreativeWorkSchema";
+import { BreadcrumbSchema } from "@/components/schema/BreadcrumbSchema";
+import { NavigationDock } from "@/components/sections/NavDoc";
+import Footer from "@/components/sections/Footer";
 import { CaseStudyHero } from "@/components/casestudy/CaseStudyHero";
 import { CaseStudySidebar } from "@/components/casestudy/CaseStudySidebar";
 import { OverviewSection } from "@/components/casestudy/OverviewSection";

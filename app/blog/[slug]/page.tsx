@@ -7,19 +7,19 @@ import { BlogPostBody } from "@/components/blog/BlogPostBody";
 import { BlogPostCTA } from "@/components/blog/BlogPostCTA";
 // import { RelatedPosts } from "@/components/blog/RelatedPosts";
 import { BlogPostingSchema } from "@/components/blog/BlogPostingSchema";
-import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
-import { FAQPageSchema } from "@/components/FAQPageSchema";
+import { BreadcrumbSchema } from "@/components/schema/BreadcrumbSchema";
+import { FAQPageSchema } from "@/components/schema/FAQPageSchema";
 import { BlogFAQ } from "@/components/blog/BlogFAQ";
 
 const NavigationDock = dynamic(
   () =>
-    import("@/components/NavDoc").then((mod) => ({
+    import("@/components/sections/NavDoc").then((mod) => ({
       default: mod.NavigationDock,
     })),
   { ssr: false }
 );
 
-const Footer = dynamic(() => import("@/components/Footer"), { ssr: false });
+const Footer = dynamic(() => import("@/components/sections/Footer"), { ssr: false });
 
 export async function generateStaticParams() {
   // Skip stub posts that only redirect to a /web page — no static page needed.

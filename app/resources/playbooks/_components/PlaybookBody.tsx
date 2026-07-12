@@ -13,10 +13,10 @@ import { VocabTable } from "./VocabTable";
 import { CompetitionAccordion } from "./CompetitionAccordion";
 
 const NavigationDock = dynamic(
-  () => import("@/components/NavDoc").then((mod) => ({ default: mod.NavigationDock })),
+  () => import("@/components/sections/NavDoc").then((mod) => ({ default: mod.NavigationDock })),
   { ssr: false }
 );
-const Footer = dynamic(() => import("@/components/Footer"), { ssr: false });
+const Footer = dynamic(() => import("@/components/sections/Footer"), { ssr: false });
 
 const CREAM = "#FFF4E3";
 const ESPRESSO = "#3B2114";

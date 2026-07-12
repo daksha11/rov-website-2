@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { FAQPageSchema } from "@/components/FAQPageSchema";
+import { FAQPageSchema } from "@/components/schema/FAQPageSchema";
 
 // Case-study FAQ — a full-width editorial band matching the testimonial style.
 // Emits FAQPage structured data (AEO / featured snippets) AND keeps every answer

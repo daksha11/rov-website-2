@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
-import { NavigationDock } from "@/components/NavDoc";
-import Footer from "@/components/Footer";
-import WebHero from "@/components/Web-Dev/WebHero";
+import { NavigationDock } from "@/components/sections/NavDoc";
+import Footer from "@/components/sections/Footer";
+import WebHero from "@/components/web/WebHero";
 import TestimonialsSection from "@/components/common/TestimonialsSection";
 import { webTestimonials } from "@/data/testimonials";
 import CrossSellNudges from "@/components/common/CrossSellNudges";
@@ -9,7 +9,7 @@ import { webFaqItems } from "@/data/faq";
 import { webDevSteps } from "@/data/approach-steps";
 
 // Dynamic imports for below-fold heavy components
-const FeaturedWorksSection = dynamic(() => import("@/components/Web-Dev/FeaturedWorksSection"), {
+const FeaturedWorksSection = dynamic(() => import("@/components/web/FeaturedWorksSection"), {
     loading: () => (
         <div className="bg-black min-h-[80vh] flex items-center justify-center">
             <div className="text-white/60 text-sm">Loading...</div>
@@ -17,9 +17,9 @@ const FeaturedWorksSection = dynamic(() => import("@/components/Web-Dev/Featured
     ),
 });
 
-const HaveAnIdeaSection = dynamic(() => import("@/components/Web-Dev/HaveAnIdeaSection"));
+const HaveAnIdeaSection = dynamic(() => import("@/components/web/HaveAnIdeaSection"));
 
-const WebPricingTiers = dynamic(() => import("@/components/Web-Dev/WebPricingTiers"), {
+const WebPricingTiers = dynamic(() => import("@/components/web/WebPricingTiers"), {
     loading: () => (
         <div className="bg-black min-h-[40vh] flex items-center justify-center">
             <div className="text-white/60 text-sm">Loading...</div>

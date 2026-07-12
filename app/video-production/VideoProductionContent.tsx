@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
-import { NavigationDock } from "@/components/NavDoc";
-import Footer from "@/components/Footer";
-import ProjectStrip from "@/components/ProjectStrip";
+import { NavigationDock } from "@/components/sections/NavDoc";
+import Footer from "@/components/sections/Footer";
+import ProjectStrip from "@/components/sections/ProjectStrip";
 import TestimonialsSection from "@/components/common/TestimonialsSection";
 import { videoTestimonials } from "@/data/testimonials";
 import CrossSellNudges from "@/components/common/CrossSellNudges";

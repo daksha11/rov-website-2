@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
-import Footer from "@/components/Footer";
-import { NavigationDock } from "@/components/NavDoc";
-import SoundHero from "@/components/sound_page/SoundHero";
-import Gallery from "@/components/Gallery";
+import Footer from "@/components/sections/Footer";
+import { NavigationDock } from "@/components/sections/NavDoc";
+import SoundHero from "@/components/sound/SoundHero";
+import Gallery from "@/components/sections/Gallery";
 import TestimonialsSection from "@/components/common/TestimonialsSection";
 import CrossSellNudges from "@/components/common/CrossSellNudges";
 import { soundTestimonials } from "@/data/testimonials";
 import { soundFaqItems } from "@/data/faq";
-import { VideoSchema } from "@/components/VideoSchema";
-import { ServiceSchema } from "@/components/ServiceSchema";
-import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
-import { FAQPageSchema } from "@/components/FAQPageSchema";
+import { VideoSchema } from "@/components/schema/VideoSchema";
+import { ServiceSchema } from "@/components/schema/ServiceSchema";
+import { BreadcrumbSchema } from "@/components/schema/BreadcrumbSchema";
+import { FAQPageSchema } from "@/components/schema/FAQPageSchema";
 
 export const metadata: Metadata = {
     title: "Sound Engineering & Music Production",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 };
 
 // Dynamic imports for heavy components
-const MusicPlayer = dynamic(() => import("@/components/sound_page/MusicPlayer"), {
+const MusicPlayer = dynamic(() => import("@/components/sound/MusicPlayer"), {
     loading: () => (
         <div className="bg-black min-h-[70vh] flex items-center justify-center">
             <div className="text-white/60 text-sm">Loading player...</div>
@@ -42,9 +42,9 @@ const MusicPlayer = dynamic(() => import("@/components/sound_page/MusicPlayer"),
     ssr: false,
 });
 
-const IntroOffer = dynamic(() => import("@/components/sound_page/IntroOffer"));
+const IntroOffer = dynamic(() => import("@/components/sound/IntroOffer"));
 
-const StudioSection = dynamic(() => import("@/components/sound_page/StudioSection"), {
+const StudioSection = dynamic(() => import("@/components/sound/StudioSection"), {
     loading: () => (
         <div className="bg-black min-h-[40vh] flex items-center justify-center">
             <div className="text-white/60 text-sm">Loading...</div>
@@ -52,7 +52,7 @@ const StudioSection = dynamic(() => import("@/components/sound_page/StudioSectio
     ),
 });
 
-const SavingsCalculator = dynamic(() => import("@/components/sound_page/SavingsCalculator"), {
+const SavingsCalculator = dynamic(() => import("@/components/sound/SavingsCalculator"), {
     loading: () => (
         <div className="bg-black min-h-[40vh] flex items-center justify-center">
             <div className="text-white/60 text-sm">Loading...</div>
@@ -60,11 +60,11 @@ const SavingsCalculator = dynamic(() => import("@/components/sound_page/SavingsC
     ),
     ssr: false,
 });
-const PricingTiers = dynamic(() => import("@/components/sound_page/PricingTiers"));
-const CreativeAddOns = dynamic(() => import("@/components/sound_page/CreativeAddOns"));
-// const StudioSetupSection = dynamic(() => import("@/components/sound_page/StudioSetup"));
+const PricingTiers = dynamic(() => import("@/components/sound/PricingTiers"));
+const CreativeAddOns = dynamic(() => import("@/components/sound/CreativeAddOns"));
+// const StudioSetupSection = dynamic(() => import("@/components/sound/StudioSetup"));
 
-const VideoShowcaseSection = dynamic(() => import("@/components/sound_page/VideoShowcaseSection"), {
+const VideoShowcaseSection = dynamic(() => import("@/components/sound/VideoShowcaseSection"), {
     loading: () => (
         <div className="bg-black min-h-[40vh] flex items-center justify-center">
             <div className="text-white/60 text-sm">Loading...</div>
@@ -72,7 +72,7 @@ const VideoShowcaseSection = dynamic(() => import("@/components/sound_page/Video
     ),
 });
 
-const DDKFeatureTestimonial = dynamic(() => import("@/components/sound_page/DDKFeatureTestimonial"), {
+const DDKFeatureTestimonial = dynamic(() => import("@/components/sound/DDKFeatureTestimonial"), {
     loading: () => (
         <div className="bg-[#080807] min-h-[40vh] flex items-center justify-center">
             <div className="text-white/30 text-sm">Loading...</div>
@@ -81,7 +81,7 @@ const DDKFeatureTestimonial = dynamic(() => import("@/components/sound_page/DDKF
     ssr: false,
 });
 
-const TagorePartnership = dynamic(() => import("@/components/sound_page/TagorePartnership"));
+const TagorePartnership = dynamic(() => import("@/components/sound/TagorePartnership"));
 
 const FAQSection = dynamic(() => import("@/components/common/FAQSection"), {
     loading: () => (

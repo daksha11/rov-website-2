@@ -9,9 +9,9 @@ import {
   Feather, Monitor, ShoppingBag,
   type LucideIcon,
 } from "lucide-react";
-import { NavigationDock } from "@/components/NavDoc";
-import Footer from "@/components/Footer";
-import SplitText from "@/components/SplitText";
+import { NavigationDock } from "@/components/sections/NavDoc";
+import Footer from "@/components/sections/Footer";
+import SplitText from "@/components/effects/SplitText";
 
 const EASE = [0.32, 0.72, 0, 1] as const;
 

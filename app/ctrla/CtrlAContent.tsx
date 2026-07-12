@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { NavigationDock } from "@/components/NavDoc";
+import { NavigationDock } from "@/components/sections/NavDoc";
 import CosmicBackdrop from "./_components/CosmicBackdrop";
 import GooeyLogoMorph from "./_components/GooeyLogoMorph";
 import EditorialFooter from "./_components/EditorialFooter";

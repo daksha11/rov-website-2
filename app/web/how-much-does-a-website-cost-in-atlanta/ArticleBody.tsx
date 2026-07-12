@@ -8,10 +8,10 @@ import dynamic from "next/dynamic";
 import { FAQS } from "./content";
 
 const NavigationDock = dynamic(
-  () => import("@/components/NavDoc").then((mod) => ({ default: mod.NavigationDock })),
+  () => import("@/components/sections/NavDoc").then((mod) => ({ default: mod.NavigationDock })),
   { ssr: false }
 );
-const Footer = dynamic(() => import("@/components/Footer"), { ssr: false });
+const Footer = dynamic(() => import("@/components/sections/Footer"), { ssr: false });
 
 const TOC = [
   { id: "the-real-answer", label: "The real answer, up front" },

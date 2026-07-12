@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import WebContent from "./WebContent";
-import { ServiceSchema } from "@/components/ServiceSchema";
-import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
-import { FAQPageSchema } from "@/components/FAQPageSchema";
-import { HowToSchema } from "@/components/HowToSchema";
+import { ServiceSchema } from "@/components/schema/ServiceSchema";
+import { BreadcrumbSchema } from "@/components/schema/BreadcrumbSchema";
+import { FAQPageSchema } from "@/components/schema/FAQPageSchema";
+import { HowToSchema } from "@/components/schema/HowToSchema";
 
 export const metadata: Metadata = {
     title: "Custom Web Development & Design Services",

@@ -21,7 +21,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { edLight as ed } from "./editorial";
-import CtrlASignup from "./CtrlASignup";
+import ToolGate from "./ToolGate";
 
 const GOLD = "#E3C24A";
 const ROSE = "#A56A67";
@@ -617,10 +617,20 @@ export default function PromptVault() {
         </div>
       </div>
 
-      {/* ── Give: the starter skill file + the full library ── */}
-      <div className="ctrla-vault-foot">
-        <div className="ctrla-vault-dl">
-          <span style={{ fontFamily: ed.mono, fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: GOLD, display: "block", marginBottom: 12 }}>Take the files</span>
+      {/* ── Give: the starter skill file + the full library (email-gated) ── */}
+      <div style={{ marginTop: "clamp(28px,4vw,44px)", paddingTop: "clamp(24px,3vw,32px)", borderTop: "1px solid rgba(240,230,224,0.12)" }}>
+        <span style={{ fontFamily: ed.mono, fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: GOLD, display: "block", marginBottom: 14 }}>Take the files</span>
+        <ToolGate
+          gateId="prompt-vault"
+          source="dev-prompt-vault"
+          theme="dark"
+          accent={GOLD}
+          title="The prompt and skill library"
+          blurb="The starter skill file and the prompt pack we actually build with. Drop your email and they open right here, plus you get every new drop."
+          bullets={["A ready to use SKILL.md starter you can drop into any project", "The full prompt pack, not just the grab and go samples", "Every future drop, first"]}
+          cta="Unlock the files"
+          note="No spam. The prompts and skill files we actually use."
+        >
           <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
             <a href="/ctrla/vault/ctrl-a-starter-skill.md" download className="ctrla-vault-dl-btn" style={{ borderColor: "rgba(240,230,224,0.25)", color: CREAM }}>
               ↓ starter skill file
@@ -629,20 +639,7 @@ export default function PromptVault() {
               ↓ prompt pack
             </a>
           </div>
-        </div>
-
-        <div className="ctrla-vault-email">
-          <CtrlASignup
-            theme="dark"
-            accent={GOLD}
-            source="dev-prompt-vault"
-            title="Want the full library?"
-            cta="Send it"
-            note="No spam. The prompts and skill files we actually use."
-            successTitle="You are on the list."
-            successBody="The full vault is on its way, plus every new drop."
-          />
-        </div>
+        </ToolGate>
       </div>
     </div>
   );

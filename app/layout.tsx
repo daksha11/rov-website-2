@@ -5,8 +5,8 @@ import "./globals.css";
 // import dynamic from "next/dynamic"; // chatbot hidden for now
 import Script from "next/script";
 import StyledComponentsRegistry from "@/lib/registry";
-import { OrganizationSchema } from "@/components/OrganizationSchema";
-import ClarityProvider from "@/components/ClarityProvider";
+import { OrganizationSchema } from "@/components/schema/OrganizationSchema";
+import ClarityProvider from "@/components/providers/ClarityProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +20,7 @@ const dmSans = DM_Sans({
 });
 
 // Dynamically import the chat widget (client-only) — hidden for now
-// const ChatWidget = dynamic(() => import("@/components/ChatWidget"), {
+// const ChatWidget = dynamic(() => import("@/components/providers/ChatWidget"), {
 //   ssr: false,
 // });
 

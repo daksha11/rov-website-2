@@ -3,12 +3,12 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { motion } from 'framer-motion';
-import { NavigationDock } from "@/components/NavDoc";
-import Footer from "@/components/Footer";
+import { NavigationDock } from "@/components/sections/NavDoc";
+import Footer from "@/components/sections/Footer";
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowUpRight } from 'lucide-react';
-import SplitText from '@/components/SplitText';
+import SplitText from '@/components/effects/SplitText';
 
 /*
  * MAIN PAGE WRAPPER

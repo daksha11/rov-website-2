@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import GradientBlob from "./GradientBlob";
+import GradientBlob from "@/components/effects/GradientBlob";
 import TeamGlobeView from "./TeamGlobeView";
 
 type Category = "All" | "Creative" | "Tech" | "Systems";

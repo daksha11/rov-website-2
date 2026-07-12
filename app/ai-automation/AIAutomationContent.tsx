@@ -4,10 +4,10 @@ import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { NavigationDock } from '@/components/NavDoc';
-import Footer from '@/components/Footer';
-import ProjectStrip from '@/components/ProjectStrip';
-import LogoLoop from '@/components/LogoLoop';
+import { NavigationDock } from '@/components/sections/NavDoc';
+import Footer from '@/components/sections/Footer';
+import ProjectStrip from '@/components/sections/ProjectStrip';
+import LogoLoop from '@/components/effects/LogoLoop';
 import { N8nWorkflowBlock } from '@/components/ui/n8n-workflow-block';
 
 // Dynamic imports for below-fold heavy components
@@ -45,7 +45,7 @@ const SiGmail = ({ className }: { className?: string }) => (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
 );
 
-const FaultyTerminal = dynamic(() => import('@/components/FaultyTerminal'), { ssr: false });
+const FaultyTerminal = dynamic(() => import('@/components/effects/FaultyTerminal'), { ssr: false });
 const AIROICalculator = dynamic(() => import('@/components/ai-automation/AIROICalculator'), {
     loading: () => <div className="bg-black min-h-[40vh]" />,
     ssr: false,

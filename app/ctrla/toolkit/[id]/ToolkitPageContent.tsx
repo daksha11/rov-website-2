@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { NavigationDock } from "@/components/NavDoc";
+import { NavigationDock } from "@/components/sections/NavDoc";
 import EditorialFooter from "../../_components/EditorialFooter";
 import ToolkitAtmosphere from "../../_components/ToolkitAtmosphere";
 import { ToolkitDetail } from "../../_components/Toolkits";

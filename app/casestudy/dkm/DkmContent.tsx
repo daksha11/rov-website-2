@@ -1,7 +1,7 @@
 "use client";
 
-import { NavigationDock } from "@/components/NavDoc";
-import Footer from "@/components/Footer";
+import { NavigationDock } from "@/components/sections/NavDoc";
+import Footer from "@/components/sections/Footer";
 import { CaseStudyHero } from "@/components/casestudy/CaseStudyHero";
 import { Testimonial } from "@/components/casestudy/Testimonial";
 import { CaseStudyFAQ } from "@/components/casestudy/CaseStudyFAQ";

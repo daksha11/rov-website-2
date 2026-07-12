@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import DkmContent from "./DkmContent";
-import { CreativeWorkSchema } from "@/components/CreativeWorkSchema";
-import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import { CreativeWorkSchema } from "@/components/schema/CreativeWorkSchema";
+import { BreadcrumbSchema } from "@/components/schema/BreadcrumbSchema";
 
 export const metadata: Metadata = {
     title: "DKM Corp - Case Study",

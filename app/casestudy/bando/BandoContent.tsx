@@ -1,13 +1,13 @@
 "use client";
 
-import { NavigationDock } from "@/components/NavDoc";
+import { NavigationDock } from "@/components/sections/NavDoc";
 import { Roboto } from "next/font/google";
 
 const roboto = Roboto({
     weight: ['300', '400', '500', '700'],
     subsets: ['latin'],
 });
-import Footer from "@/components/Footer";
+import Footer from "@/components/sections/Footer";
 import { CaseStudyHero } from "@/components/casestudy/CaseStudyHero";
 import { CaseStudySidebar } from "@/components/casestudy/CaseStudySidebar";
 import { Testimonial } from "@/components/casestudy/Testimonial";

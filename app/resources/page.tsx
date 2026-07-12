@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { getAllPosts } from "@/lib/blog";
-import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
-import { OrganizationSchema } from "@/components/OrganizationSchema";
+import { BreadcrumbSchema } from "@/components/schema/BreadcrumbSchema";
+import { OrganizationSchema } from "@/components/schema/OrganizationSchema";
 import { resourceEntries, type ResourceEntry } from "./_data/resources";
 import { ResourceCategoryRow } from "./_components/ResourceCategoryRow";
 
 const NavigationDock = dynamic(() =>
-  import("@/components/NavDoc").then((mod) => ({
+  import("@/components/sections/NavDoc").then((mod) => ({
     default: mod.NavigationDock,
   }))
 );
 
-const Footer = dynamic(() => import("@/components/Footer"));
+const Footer = dynamic(() => import("@/components/sections/Footer"));
 
 export const metadata: Metadata = {
   title: "Resources",

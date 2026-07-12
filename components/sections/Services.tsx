@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, LayoutGroup } from "framer-motion";
 import { Globe, Headphones, Clapperboard, Bot, ArrowUpRight, type LucideIcon } from "lucide-react";
-import GradientBlob from "./GradientBlob";
+import GradientBlob from "@/components/effects/GradientBlob";
 
 const SERVICES = [
   {

@@ -2,22 +2,22 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import Loading from "@/components/Loading";
-import HeroWithAnimation from "@/components/HeroWithAnimation";
-import Services from "@/components/Services";
-import ElevateSection from "@/components/ElevateSection";
-import Footer from "@/components/Footer";
-import HomeTeamSection from "@/components/HomeTeamSection";
-import { NavigationDock } from "@/components/NavDoc";
-import ProjectStrip from "@/components/ProjectStrip";
+import Loading from "@/components/sections/Loading";
+import HeroWithAnimation from "@/components/sections/HeroWithAnimation";
+import Services from "@/components/sections/Services";
+import ElevateSection from "@/components/sections/ElevateSection";
+import Footer from "@/components/sections/Footer";
+import HomeTeamSection from "@/components/sections/HomeTeamSection";
+import { NavigationDock } from "@/components/sections/NavDoc";
+import ProjectStrip from "@/components/sections/ProjectStrip";
 
 // Lazy load heavy components to reduce initial memory usage
-const DigiMag = dynamic(() => import("@/components/DigiMag"), {
+const DigiMag = dynamic(() => import("@/components/sections/DigiMag"), {
   loading: () => <div className="min-h-[800px]" />,
   ssr: false
 });
 
-const AlbumCoverLoop = dynamic(() => import("@/components/AlbumCoverLoop"), {
+const AlbumCoverLoop = dynamic(() => import("@/components/effects/AlbumCoverLoop"), {
   loading: () => <div className="min-h-[600px]" />,
   ssr: false
 });

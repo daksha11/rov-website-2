@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Tape3Content from "./Tape3Content";
-import { NavigationDock } from "@/components/NavDoc";
-import Footer from "@/components/Footer";
+import { NavigationDock } from "@/components/sections/NavDoc";
+import Footer from "@/components/sections/Footer";
 
 export const metadata: Metadata = {
     title: "The ROV Tape 3 - Creative Brief",

@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import TrueFocus from "./TrueFocus";
-import TiltedCard from "./TiltedCard";
-import GradientBlob from "./GradientBlob";
+import TrueFocus from "@/components/effects/TrueFocus";
+import TiltedCard from "@/components/effects/TiltedCard";
+import GradientBlob from "@/components/effects/GradientBlob";
 
 const DigiMag = () => {
   return (

@@ -75,6 +75,7 @@ export default function CtrlASignup({
   showName = false,
   listId,
   style,
+  onSuccess,
 }: {
   source: string;
   theme?: Theme;
@@ -89,6 +90,8 @@ export default function CtrlASignup({
   showName?: boolean;
   listId?: string;
   style?: CSSProperties;
+  // Fires after a confirmed subscribe. A gate uses this to unlock content.
+  onSuccess?: (email: string) => void;
 }) {
   const p = palette(theme, accent);
   const uid = useId();
@@ -121,6 +124,7 @@ export default function CtrlASignup({
       if (res.ok && data.ok) {
         klaviyoIdentify(value, source);
         setStatus("success");
+        onSuccess?.(value);
         return;
       }
       setStatus("error");

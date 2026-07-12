@@ -2,15 +2,15 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { getAllPosts } from "@/lib/blog";
 import { BlogCard } from "@/components/blog/BlogCard";
-import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import { BreadcrumbSchema } from "@/components/schema/BreadcrumbSchema";
 
 const NavigationDock = dynamic(() =>
-  import("@/components/NavDoc").then((mod) => ({
+  import("@/components/sections/NavDoc").then((mod) => ({
     default: mod.NavigationDock,
   }))
 );
 
-const Footer = dynamic(() => import("@/components/Footer"));
+const Footer = dynamic(() => import("@/components/sections/Footer"));
 
 export const metadata: Metadata = {
   title: "Web Design Blog & Creative Agency Insights",

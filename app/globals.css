@@ -758,19 +758,32 @@ input[type="range"]::-webkit-slider-thumb {
   display: inline-block;
   transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.ctrla-toolkit-step:hover .ctrla-toolkit-arrow {
+.ctrla-toolkit-step:hover .ctrla-toolkit-arrow-right {
   transform: translateX(6px);
 }
 .ctrla-toolkit-step:hover .ctrla-toolkit-arrow-left {
   transform: translateX(-6px);
 }
-@media (max-width: 640px) {
-  .ctrla-toolkit-node {
+
+/* Desktop: left-aligned nodes point right, right-aligned nodes point left.
+   Both arrows live in the DOM; visibility is driven by the node's alignment. */
+.ctrla-toolkit-arrow-left { display: none; }
+.ctrla-toolkit-arrow-right { display: inline-block; }
+.ctrla-toolkit-node.is-right .ctrla-toolkit-arrow-left { display: inline-block; }
+.ctrla-toolkit-node.is-right .ctrla-toolkit-arrow-right { display: none; }
+
+/* Mobile: collapse the stepped layout to a single left-aligned column, and
+   make every node point right regardless of its desktop alignment. */
+@media (max-width: 767px) {
+  .ctrla-toolkit-node,
+  .ctrla-toolkit-node.is-right {
     margin-left: 0 !important;
     width: 100% !important;
     text-align: left !important;
   }
-  .ctrla-toolkit-node > div:first-child { justify-content: flex-start !important; }
+  .ctrla-toolkit-row { justify-content: flex-start !important; }
+  .ctrla-toolkit-node.is-right .ctrla-toolkit-arrow-left { display: none; }
+  .ctrla-toolkit-node.is-right .ctrla-toolkit-arrow-right { display: inline-block; }
 }
 
 /* CTRL-A — DreamAsia feature ───────────────────────────── */
@@ -3459,7 +3472,10 @@ input[type="range"]::-webkit-slider-thumb {
   padding: 0 !important;
 }
 @media (max-width: 900px) {
-  .ctrla-peers { grid-template-columns: 1fr; gap: clamp(28px, 6vw, 48px); }
+  /* minmax(0,1fr), not 1fr: a single-column 1fr track resolves to
+     minmax(auto,1fr), whose auto minimum lets the cards' intrinsic width
+     overflow the viewport. Pin the minimum to 0 so they stay contained. */
+  .ctrla-peers { grid-template-columns: minmax(0, 1fr); gap: clamp(28px, 6vw, 48px); }
 }
 
 /* ── Thin stat strip — the four mono numerals as a single hairline row. */

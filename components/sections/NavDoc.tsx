@@ -3,7 +3,7 @@
 import { Instagram, Linkedin, Mail, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import GoogleLoginButton from "@/components/GoogleLoginButton";
+import GoogleLoginButton from "@/components/providers/GoogleLoginButton";
 
 interface NavigationDockProps {
   className?: string;

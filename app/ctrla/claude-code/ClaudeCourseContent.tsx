@@ -21,10 +21,11 @@
 import { useEffect, useMemo, useState } from "react";
 import type { ReactNode, CSSProperties } from "react";
 import { motion } from "framer-motion";
-import { NavigationDock } from "@/components/NavDoc";
+import { NavigationDock } from "@/components/sections/NavDoc";
 import EditorialFooter from "../_components/EditorialFooter";
 import { edLight as ed, Bleed, Kicker, Label, Rule } from "../_components/editorial";
 import CtrlASignup from "../_components/CtrlASignup";
+import ToolGate from "../_components/ToolGate";
 import { currentVolume } from "../_volumes";
 
 const PLUM = ed.plum; // #4E3D73 — primary accent, legible on cream
@@ -363,6 +364,22 @@ const mono: CSSProperties = {
   borderRadius: 5,
 };
 
+const dlBtn: CSSProperties = {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: 8,
+  fontFamily: "'Neue Montreal','Helvetica Neue',Arial,sans-serif",
+  fontWeight: 500,
+  fontSize: "clamp(13px,1.5vw,15px)",
+  letterSpacing: "-0.01em",
+  color: "#160C28",
+  background: "transparent",
+  border: "1px solid rgba(22,12,40,0.28)",
+  borderRadius: 999,
+  padding: "12px 20px",
+  textDecoration: "none",
+};
+
 const INDEX = [
   ["00", "Mental model", "ch-00"],
   ["01", "Models", "ch-01"],
@@ -619,6 +636,35 @@ Read it aloud: if it sounds like a LinkedIn post, rewrite.`}
             </div>
           </Reveal>
         </Chapter>
+
+        {/* Take it with you — email-gated companion download */}
+        <section style={{ marginTop: "clamp(56px,8vw,112px)" }}>
+          <Reveal>
+            <Kicker color={PLUM}>Take it with you</Kicker>
+            <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,4vw,48px)", letterSpacing: "-0.03em", lineHeight: 0.98, color: ed.ink, margin: "12px 0 clamp(20px,2.6vw,30px)", maxWidth: 720 }}>
+              The whole course on one page
+            </h2>
+          </Reveal>
+          <Reveal delay={0.06}>
+            <ToolGate
+              gateId="cc-cheatsheet"
+              source="claude-code-course"
+              theme="light"
+              accent={PLUM}
+              title="The Claude Code cheatsheet"
+              blurb="Every move on this page, condensed to one printable sheet, plus the skill file and prompt pack we build with. Drop your email and it opens right here."
+              bullets={["The models, commands, and token moves at a glance", "Our SKILL.md starter and full prompt pack", "New chapters and drops every month"]}
+              cta="Unlock the pack"
+              note="No spam. The files we actually use."
+            >
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+                <a href="/ctrla/vault/claude-code-cheatsheet.md" download style={dlBtn}>↓ Claude Code cheatsheet</a>
+                <a href="/ctrla/vault/ctrl-a-starter-skill.md" download style={dlBtn}>↓ Starter skill file</a>
+                <a href="/ctrla/vault/ctrl-a-prompt-pack.md" download style={dlBtn}>↓ Prompt pack</a>
+              </div>
+            </ToolGate>
+          </Reveal>
+        </section>
 
         {/* CTA */}
         <section style={{ marginTop: "clamp(64px,9vw,120px)" }}>

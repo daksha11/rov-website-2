@@ -47,9 +47,13 @@ export function ThreeToolkits() {
             Lots of negative space, small vertical footprint. */}
         <div>
           {toolkitSections.map((s, i) => {
-            // All toolkit nodes hug the left edge, left-aligned.
-            const alignRight = false;
-            const offset = "0px";
+            const n = toolkitSections.length;
+            const frac = n > 1 ? i / (n - 1) : 0;         // 0 = hard left, 1 = hard right
+            const alignRight = frac > 0.5;                 // right-half nodes hug the right
+            // Node's left edge slides from container-left (frac 0) to
+            // container-right-minus-node-width (frac 1), evenly spaced.
+            // Desktop only — a mobile media query collapses this back to the left.
+            const offset = `calc(${frac} * (100% - min(460px, 100%)))`;
             return (
               <motion.a
                 key={s.id}
@@ -71,7 +75,7 @@ export function ThreeToolkits() {
                 {/* The copy node = the circle, resting on the line, spread
                     evenly from the left edge (first) to the right edge (last) */}
                 <div
-                  className="ctrla-toolkit-node"
+                  className={`ctrla-toolkit-node${alignRight ? " is-right" : ""}`}
                   style={{
                     marginLeft: offset,
                     marginTop: "clamp(14px, 1.8vw, 22px)",
@@ -94,6 +98,7 @@ export function ThreeToolkits() {
                     {s.pageNumber}
                   </span>
                   <div
+                    className="ctrla-toolkit-row"
                     style={{
                       display: "flex",
                       alignItems: "baseline",
@@ -101,14 +106,14 @@ export function ThreeToolkits() {
                       justifyContent: alignRight ? "flex-end" : "flex-start",
                     }}
                   >
-                    {alignRight && (
-                      <span
-                        className="ctrla-toolkit-arrow ctrla-toolkit-arrow-left"
-                        style={{ color: s.accentColor, fontSize: 15, lineHeight: 1, marginRight: 2 }}
-                      >
-                        ←
-                      </span>
-                    )}
+                    {/* Left arrow: shown for right-aligned desktop nodes only.
+                        CSS hides it on mobile, where every node points right. */}
+                    <span
+                      className="ctrla-toolkit-arrow ctrla-toolkit-arrow-left"
+                      style={{ color: s.accentColor, fontSize: 15, lineHeight: 1, marginRight: 2 }}
+                    >
+                      ←
+                    </span>
                     <h3
                       style={{
                         fontFamily: ed.grotesque,
@@ -122,14 +127,14 @@ export function ThreeToolkits() {
                     >
                       {s.title}
                     </h3>
-                    {!alignRight && (
-                      <span
-                        className="ctrla-toolkit-arrow"
-                        style={{ color: s.accentColor, fontSize: 15, lineHeight: 1, marginLeft: 2 }}
-                      >
-                        →
-                      </span>
-                    )}
+                    {/* Right arrow: the default for left-aligned nodes, and the
+                        only arrow shown on mobile. CSS hides it for right nodes. */}
+                    <span
+                      className="ctrla-toolkit-arrow ctrla-toolkit-arrow-right"
+                      style={{ color: s.accentColor, fontSize: 15, lineHeight: 1, marginLeft: 2 }}
+                    >
+                      →
+                    </span>
                   </div>
                   <p
                     style={{

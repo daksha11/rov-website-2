@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import CardSwap, { Card } from './CardSwap';
-import GradientBlob from './GradientBlob';
+import CardSwap, { Card } from '@/components/effects/CardSwap';
+import GradientBlob from '@/components/effects/GradientBlob';
 
 const ElevateSection: React.FC = () => {
   const [isHovered, setIsHovered] = useState(false);

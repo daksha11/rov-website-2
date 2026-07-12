@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import AIAutomationContent from "./AIAutomationContent";
-import { ServiceSchema } from "@/components/ServiceSchema";
-import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
-import { FAQPageSchema } from "@/components/FAQPageSchema";
+import { ServiceSchema } from "@/components/schema/ServiceSchema";
+import { BreadcrumbSchema } from "@/components/schema/BreadcrumbSchema";
+import { FAQPageSchema } from "@/components/schema/FAQPageSchema";
 
 export const metadata: Metadata = {
     title: "Custom AI Automation Solutions",

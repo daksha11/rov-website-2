@@ -10,7 +10,7 @@
 // ═══════════════════════════════════════════════════════
 
 import { useEffect } from "react";
-import { NavigationDock } from "@/components/NavDoc";
+import { NavigationDock } from "@/components/sections/NavDoc";
 import CosmicBackdrop from "../../_components/CosmicBackdrop";
 import EditorialFooter from "../../_components/EditorialFooter";
 import { ed, Bleed, Rule, Label, Kicker } from "../../_components/editorial";

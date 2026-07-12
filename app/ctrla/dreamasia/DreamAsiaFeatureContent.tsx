@@ -8,7 +8,7 @@
 // ═══════════════════════════════════════════════════════
 
 import { useEffect } from "react";
-import { NavigationDock } from "@/components/NavDoc";
+import { NavigationDock } from "@/components/sections/NavDoc";
 import EditorialFooter from "../_components/EditorialFooter";
 import CosmicBackdrop from "../_components/CosmicBackdrop";
 import { FeatureStory } from "../_components/DreamAsiaSections";

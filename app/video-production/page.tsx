@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import VideoProductionContent from "./VideoProductionContent";
-import { VideoSchema } from "@/components/VideoSchema";
-import { ServiceSchema } from "@/components/ServiceSchema";
-import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
-import { FAQPageSchema } from "@/components/FAQPageSchema";
+import { VideoSchema } from "@/components/schema/VideoSchema";
+import { ServiceSchema } from "@/components/schema/ServiceSchema";
+import { BreadcrumbSchema } from "@/components/schema/BreadcrumbSchema";
+import { FAQPageSchema } from "@/components/schema/FAQPageSchema";
 
 export const metadata: Metadata = {
     title: "Video Production & Cinematography",
