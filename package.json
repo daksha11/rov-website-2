@@ -9,6 +9,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "seed:dailies": "node scripts/seed-dailies.mjs",
+    "dailies:status": "node scripts/dailies-status.mjs",
     "analyze": "ANALYZE=true next build"
   },
   "dependencies": {

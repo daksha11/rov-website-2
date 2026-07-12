@@ -1,4 +1,4 @@
-# CTRL-A Starter Skill — House Style
+# CTRL-A Starter Skill · House Style
 
 A starter skill file from Range of View Studios. Drop it in as a skill file
 or a system prompt so the model works the way we do, before you ask it for
@@ -30,5 +30,5 @@ anything. Edit it to fit you. This is a starting point, not a rulebook.
 - One line fix each. Ignore style and nitpicks.
 - If something breaks in front of a user, say that first.
 
-—— Range of View Studios · CTRL-A
-   rovstudios.com/ctrla
+Range of View Studios · CTRL-A
+rovstudios.com/ctrla

@@ -1,4 +1,4 @@
-# CTRL-A Prompt Pack — Starters
+# CTRL-A Prompt Pack · Starters
 
 Free starter prompts from Range of View Studios. Swap the {braces} for your
 own details. These are written to be precise on purpose: a role, your context,
@@ -48,5 +48,5 @@ part i should be most careful changing.
 
 ---
 
-—— Range of View Studios · CTRL-A
-   rovstudios.com/ctrla
+Range of View Studios · CTRL-A
+rovstudios.com/ctrla
