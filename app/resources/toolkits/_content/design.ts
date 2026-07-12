@@ -24,7 +24,7 @@ export const designContent: ToolkitArticleContent = {
     ogTitle: "Why Does My Brand Look Homemade?",
     ogDescription:
       "Eight tools, one process, and the questions worth asking before you invest in real brand design for your Atlanta business.",
-    ogImage: "/casestudy/casestudyheroimg.webp",
+    ogImage: "/casestudy/casestudyheroimg.png",
   },
 
   breadcrumb: "Resources · Design Toolkit",
