@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
             {
                 userAgent: '*',
                 allow: '/',
-                disallow: ['/api/', '/admin', '/portal', '/ctrla/brand-kit/builder'],
+                disallow: ['/api/', '/admin', '/portal', '/internal', '/ctrla/brand-kit/builder'],
             },
             // Explicitly welcome AI crawlers for GEO
             {
