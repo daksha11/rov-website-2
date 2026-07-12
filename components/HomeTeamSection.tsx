@@ -2,8 +2,9 @@
 
 import React, { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { X, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import GradientBlob from "./GradientBlob";
 import TeamGlobeView from "./TeamGlobeView";
 
@@ -27,7 +28,9 @@ interface TeamMember {
     portfolioLink?: string;
 }
 
-const teamMembers: TeamMember[] = [
+// Full roster lives in components/TeamSection.tsx (about page).
+// The home page only surfaces the members listed in homeMemberNames below.
+const allTeamMembers: TeamMember[] = [
     {
         id: 1,
         image: "/teammembers/basutm2.webp",
@@ -233,8 +236,8 @@ const teamMembers: TeamMember[] = [
     },
 ];
 
-const categories: Category[] = ["Creative", "Tech", "Systems"];
-const creativeSubcategories: CreativeSubcategory[] = ["UI/UX", "Motion", "Illustrative", "Sound"];
+const homeMemberNames = ["Ayush Basu", "Kavya", "Suchet", "Karina", "David", "Chandra"];
+const teamMembers = allTeamMembers.filter(m => homeMemberNames.includes(m.name));
 
 const ImageCardInner = ({ src, alt, onClick, name, role, rotation = 0 }: { src: string; alt: string, onClick?: () => void, name?: string, role?: string, rotation?: number }) => {
     const [isHovered, setIsHovered] = useState(false);
@@ -286,8 +289,6 @@ const ImageCardInner = ({ src, alt, onClick, name, role, rotation = 0 }: { src: 
 };
 
 const HomeTeamSection: React.FC = () => {
-    const [activeCategory, setActiveCategory] = useState<Category>("All");
-    const [activeCreativeSub, setActiveCreativeSub] = useState<CreativeSubcategory | "All">("All");
     const [expandedMemberId, setExpandedMemberId] = useState<number | null>(null);
     const [view, setView] = useState<"grid" | "globe">("grid");
 
@@ -301,12 +302,7 @@ const HomeTeamSection: React.FC = () => {
         );
     }, []);
 
-    const filteredMembers = activeCategory === "All"
-        ? teamMembers.filter((m, i, arr) => arr.findIndex(t => t.name === m.name) === i)
-        : teamMembers.filter(m =>
-            m.category === activeCategory ||
-            (m.additionalCategories?.includes(activeCategory))
-          );
+    const filteredMembers = teamMembers.filter((m, i, arr) => arr.findIndex(t => t.name === m.name) === i);
 
     const ExpandedMemberView = ({ expandedMember }: { expandedMember: TeamMember }) => (
         <motion.div
@@ -418,95 +414,6 @@ const HomeTeamSection: React.FC = () => {
         </div>
     );
 
-    const CategorySection = ({ members }: { category: Category, members: TeamMember[] }) => {
-        const expandedMember = members.find(m => m.id === expandedMemberId);
-        const gridMembers = members.filter(m => m.id !== expandedMemberId);
-
-        return (
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="w-full max-w-7xl mx-auto px-4"
-            >
-                <AnimatePresence mode="wait">
-                    {expandedMember && <ExpandedMemberView expandedMember={expandedMember} />}
-                </AnimatePresence>
-                <MemberGrid members={gridMembers} />
-            </motion.div>
-        );
-    };
-
-    const CreativeSection = ({ members }: { members: TeamMember[] }) => {
-        const expandedMember = members.find(m => m.id === expandedMemberId);
-
-        const inSub = (m: TeamMember, sub: CreativeSubcategory) =>
-            m.creativeSubcategory === sub || m.additionalSubcategories?.includes(sub);
-
-        // Get members for the active sub-filter
-        const getSubMembers = () => {
-            if (activeCreativeSub === "All") {
-                return members.filter(m => m.id !== expandedMemberId);
-            }
-            return members.filter(m => inSub(m, activeCreativeSub) && m.id !== expandedMemberId);
-        };
-
-        const subMembers = getSubMembers();
-
-        // Group by subcategory for "All" view
-        const groupedBySubcategory = activeCreativeSub === "All"
-            ? creativeSubcategories.map(sub => ({
-                label: sub,
-                members: members.filter(m => inSub(m, sub) && m.id !== expandedMemberId),
-            })).filter(g => g.members.length > 0)
-            : [];
-
-        return (
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="w-full max-w-7xl mx-auto px-4"
-            >
-                {/* Sub-filter pills */}
-                <div className="flex items-center gap-3 mb-8 justify-center flex-wrap">
-                    {(["All", ...creativeSubcategories] as const).map((sub) => (
-                        <button
-                            key={sub}
-                            onClick={() => { setActiveCreativeSub(sub); setExpandedMemberId(null); }}
-                            className={`px-4 py-1.5 rounded-full text-xs uppercase tracking-[0.15em] border transition-all duration-300 ${
-                                activeCreativeSub === sub
-                                    ? "bg-white/15 border-white/30 text-white"
-                                    : "bg-transparent border-white/10 text-white/40 hover:text-white/70 hover:border-white/20"
-                            }`}
-                            style={{ fontFamily: 'Roboto, sans-serif' }}
-                        >
-                            {sub}
-                        </button>
-                    ))}
-                </div>
-
-                <AnimatePresence mode="wait">
-                    {expandedMember && <ExpandedMemberView expandedMember={expandedMember} />}
-                </AnimatePresence>
-
-                {/* Grouped view when "All" sub is active */}
-                {activeCreativeSub === "All" ? (
-                    groupedBySubcategory.map((group) => (
-                        <div key={group.label} className="mb-10">
-                            <h3 className="text-xs tracking-[0.3em] uppercase text-white/30 mb-4 pl-1" style={{ fontFamily: 'Roboto, sans-serif' }}>
-                                {group.label}
-                            </h3>
-                            <MemberGrid members={group.members} />
-                        </div>
-                    ))
-                ) : (
-                    <MemberGrid members={subMembers} />
-                )}
-            </motion.div>
-        );
-    };
-
     return (
         <>
         <div id="team-members" style={{ marginTop: '-200px', paddingTop: '200px', pointerEvents: 'none' }} />
@@ -547,27 +454,21 @@ const HomeTeamSection: React.FC = () => {
                     ))}
                 </div>
 
-                {/* Category filters — grid view only */}
-                {view === "grid" && (
-                    <div className="flex flex-wrap items-center gap-2 md:gap-6 justify-center md:justify-end">
-                        <button
-                            onClick={() => { setActiveCategory("All"); setActiveCreativeSub("All"); setExpandedMemberId(null); }}
-                            className={`text-sm md:text-xl font-normal transition-all duration-300 ${activeCategory === "All" ? "text-white" : "text-white/50 hover:text-white/80"}`}
-                            style={{ fontFamily: 'Roboto, sans-serif' }}
-                        > ALL </button>
-                        <span className="text-white/30 text-xs md:text-base">|</span>
-                        {categories.map((cat, index) => (
-                            <React.Fragment key={cat}>
-                                <button
-                                    onClick={() => { setActiveCategory(cat); setActiveCreativeSub("All"); setExpandedMemberId(null); }}
-                                    className={`text-sm md:text-xl font-normal transition-all duration-300 ${activeCategory === cat ? "text-white" : "text-white/50 hover:text-white/80"}`}
-                                    style={{ fontFamily: 'Roboto, sans-serif' }}
-                                > {cat.toUpperCase()} </button>
-                                {index < categories.length - 1 && <span className="text-white/30 text-xs md:text-base">|</span>}
-                            </React.Fragment>
-                        ))}
-                    </div>
-                )}
+                {/* Link to the full team roster on the about page */}
+                <Link
+                    href="/about#team-members"
+                    className="group flex items-center gap-2 rounded-full px-4 md:px-5 py-1.5 md:py-2 text-xs md:text-sm font-normal transition-all duration-300 hover:scale-105"
+                    style={{
+                        fontFamily: 'Roboto, sans-serif',
+                        letterSpacing: '0.08em',
+                        background: 'rgba(255,255,255,0.06)',
+                        border: '1px solid rgba(255,255,255,0.12)',
+                        color: 'rgba(255,244,227,0.85)',
+                    }}
+                >
+                    VIEW FULL TEAM
+                    <ArrowUpRight className="w-3.5 h-3.5 md:w-4 md:h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </Link>
             </div>
 
             <div className="w-full flex-1 flex items-center justify-center">
@@ -581,7 +482,7 @@ const HomeTeamSection: React.FC = () => {
                     >
                         <TeamGlobeView />
                     </motion.div>
-                ) : activeCategory === "All" && expandedMemberId ? (
+                ) : expandedMemberId ? (
                     <motion.div
                         key="all-expanded"
                         initial={{ opacity: 0, y: 20 }}
@@ -602,25 +503,16 @@ const HomeTeamSection: React.FC = () => {
                             );
                         })()}
                     </motion.div>
-                ) : activeCategory === "All" ? (
+                ) : (
                     <motion.div key="marquee" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full">
                         {(() => {
                             // Resolve by id so array order changes never break the marquee
                             const byId = (id: number) => teamMembers.find(m => m.id === id)!;
                             const ayush     = byId(1);
                             const kavya     = byId(13);
-                            const jiwon     = byId(14);
-                            const anish     = byId(16);
-                            const samSuen   = byId(15);
                             const suchet    = byId(10);
-                            const daksha    = byId(7);
-                            const vaishnavi = byId(3);
-                            const tanvi     = byId(4);
                             const david     = byId(6);
-                            const chaman    = byId(5);
-                            const krina     = byId(20);
                             const chandra   = byId(21);
-                            const eshaal    = byId(17);
                             const karina    = byId(22);
                             const mk = (m: TeamMember) => (
                                 <ImageCard key={m.id} src={m.image} alt={m.name} name={m.name} role={m.role} onClick={() => handleMarqueeMemberClick(m)} rotation={m.imageRotation} />
@@ -634,10 +526,6 @@ const HomeTeamSection: React.FC = () => {
                                                 <div className="text-block"><h2>MEET</h2></div>
                                                 {mk(ayush)}
                                                 {mk(kavya)}
-                                                <button className="category-button" onClick={() => setActiveCategory("Creative")}>CREATIVE</button>
-                                                {mk(jiwon)}
-                                                {mk(anish)}
-                                                {mk(samSuen)}
                                             </React.Fragment>
                                         ))}
                                     </div>
@@ -647,12 +535,9 @@ const HomeTeamSection: React.FC = () => {
                                     <div className="marquee-track scroll-right">
                                         {[...Array(2)].map((_, i) => (
                                             <React.Fragment key={`r2-${i}`}>
-                                                <button className="category-button" onClick={() => setActiveCategory("Tech")}>TECH</button>
                                                 {mk(suchet)}
-                                                {mk(daksha)}
                                                 <div className="text-block"><h2>THE</h2></div>
-                                                {mk(vaishnavi)}
-                                                {mk(tanvi)}
+                                                {mk(david)}
                                             </React.Fragment>
                                         ))}
                                     </div>
@@ -662,14 +547,9 @@ const HomeTeamSection: React.FC = () => {
                                     <div className="marquee-track scroll-left">
                                         {[...Array(2)].map((_, i) => (
                                             <React.Fragment key={`r3-${i}`}>
-                                                {mk(david)}
-                                                {mk(chaman)}
-                                                <div className="text-block"><h2>TEAM</h2></div>
-                                                {mk(krina)}
-                                                {mk(chandra)}
-                                                <button className="category-button" onClick={() => setActiveCategory("Systems")}>SYSTEMS</button>
-                                                {mk(eshaal)}
                                                 {mk(karina)}
+                                                <div className="text-block"><h2>TEAM</h2></div>
+                                                {mk(chandra)}
                                             </React.Fragment>
                                         ))}
                                     </div>
@@ -678,10 +558,6 @@ const HomeTeamSection: React.FC = () => {
                             );
                         })()}
                     </motion.div>
-                ) : activeCategory === "Creative" ? (
-                    <CreativeSection members={filteredMembers} />
-                ) : (
-                    <CategorySection category={activeCategory} members={filteredMembers} />
                 )}
             </div>
 
@@ -692,10 +568,9 @@ const HomeTeamSection: React.FC = () => {
                 .scroll-right { animation: scrollRight 60s linear infinite; }
                 .text-block { padding: 0 40px; }
                 h2 { font-family: 'Roboto', sans-serif; font-size: clamp(2rem, 5vw, 4.5rem); font-weight: 400; color: #F7F2E4; letter-spacing: 0.05em; white-space: nowrap; }
-                .category-button { writing-mode: vertical-rl; text-orientation: mixed; background: #3B2114; color: #FFF4E3; padding: 40px 35px; border-radius: 10px; border: none; font-size: clamp(1rem, 2.5vw, 1.8rem); font-weight: 400; font-family: 'Roboto', sans-serif; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); white-space: nowrap; height: 253px; display: flex; align-items: center; justify-content: center; letter-spacing: 0.1em; }
                 @keyframes scrollLeft { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
                 @keyframes scrollRight { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
-                @media (max-width: 768px) { .image-card { width: 240px !important; height: 135px !important; } .category-button { height: 135px; padding: 20px 10px; } }
+                @media (max-width: 768px) { .image-card { width: 240px !important; height: 135px !important; } }
             `}</style>
         </section>
         </>

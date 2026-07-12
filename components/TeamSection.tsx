@@ -56,7 +56,7 @@ const teamMembers: TeamMember[] = [
         category: "Creative",
         creativeSubcategory: "UI/UX",
         name: "Kavya",
-        role: "DIRECTOR OF DESIGN — UI/UX & DESIGN SYSTEMS",
+        role: "DIRECTOR OF DESIGN · UI/UX & DESIGN SYSTEMS",
         skills: ["UI/UX Design", "Design Systems", "Web Design", "Design Infrastructure", "Brand Guidelines", "Design Standards", "Team Leadership", "Project Delegation", "Client Relations", "Creative Strategy"],
         location: "Atlanta",
         portfolioLink: "https://www.kavyaray.com/",
@@ -115,6 +115,7 @@ const teamMembers: TeamMember[] = [
         id: 7,
         image: "/teammembers/dakshatm.webp",
         category: "Tech",
+        additionalCategories: ["Systems"],
         name: "Daksha",
         role: "HEAD OF DEVELOPMENT",
         skills: ["Full-Stack Development", "Technical Architecture", "Complex Problem Solving", "Performance Optimization", "Code Standards"],
@@ -128,31 +129,12 @@ const teamMembers: TeamMember[] = [
         id: 10,
         image: "/teammembers/suchettm.webp",
         category: "Tech",
+        additionalCategories: ["Systems"],
         name: "Suchet",
         role: "CO-FOUNDER & SYSTEMS ARCHITECT",
         skills: ["Operations Strategy", "AI Systems Development", "Financial Management", "Sales & Client Relations", "Process Automation"],
         location: "Atlanta",
         specialties: "I joined as co-founder to build the operational backbone of R.O.V.",
-    },
-    {
-        id: 12,
-        image: "/teammembers/suchettm.webp",
-        category: "Systems",
-        name: "Suchet",
-        role: "CO-FOUNDER & SYSTEMS ARCHITECT",
-        skills: ["Operations Strategy", "AI Systems Development", "Financial Management", "Sales & Client Relations", "Process Automation"],
-        location: "Atlanta",
-        specialties: "I joined as co-founder to build the operational backbone of R.O.V.",
-    },
-    {
-        id: 11,
-        image: "/teammembers/dakshatm.webp",
-        category: "Systems",
-        name: "Daksha",
-        role: "HEAD OF DEVELOPMENT",
-        skills: ["Full-Stack Development", "Technical Architecture", "Complex Problem Solving", "Performance Optimization", "Code Standards"],
-        location: "India",
-        specialties: "I'm R.O.V.'s go-to technical lead for complex coding challenges and scalable solutions. I solve the toughest tech problems, architect robust systems, and make sure every build is performant, maintainable, and production-ready.",
     },
     {
         id: 5,
@@ -259,9 +241,24 @@ const T = {
     mono: "'Inter', 'Helvetica Neue', Arial, sans-serif", // labels / roles
 } as const;
 
-// Unique people (the data carries duplicate entries for category grouping we no
-// longer use), in a reading order that leads with the founders.
+// Unique people, in a reading order that leads with the founders.
 const PEOPLE = teamMembers.filter((m, i, arr) => arr.findIndex((t) => t.name === m.name) === i);
+
+// A person belongs to a team if it's their primary category or a secondary one,
+// so founders can span Creative, Tech, and Systems.
+const inCategory = (m: TeamMember, cat: Category) =>
+    m.category === cat || (m.additionalCategories?.includes(cat) ?? false);
+
+// The three studio teams, in the order they read on the page.
+const TEAMS: { key: Exclude<Category, "All">; label: string; blurb: string }[] = [
+    { key: "Creative", label: "Creative", blurb: "Design systems, motion, illustration, photography, and sound. The people who set how the work looks and feels." },
+    { key: "Tech", label: "Technology", blurb: "Engineering, architecture, and full-stack development. The people who make it real and make it fast." },
+    { key: "Systems", label: "Systems & Operations", blurb: "Operations, AI systems, and the business backbone that keeps every project moving." },
+];
+
+// Sub-groups inside Creative, ordered. Each Creative person sits in their primary
+// creativeSubcategory so no one repeats within the Creative section.
+const CREATIVE_SUBS: CreativeSubcategory[] = ["UI/UX", "Motion", "Illustrative", "Sound"];
 
 function Kicker({ children }: { children: React.ReactNode }) {
     return (
@@ -365,9 +362,31 @@ function ExpandedMemberView({ m, onClose }: { m: TeamMember; onClose: () => void
     );
 }
 
+function TeamHeading({ label, blurb, count }: { label: string; blurb: string; count: number }) {
+    return (
+        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 20, borderTop: `1px solid ${T.hair}`, paddingTop: "clamp(20px,2.6vw,30px)", flexWrap: "wrap" }}>
+            <div>
+                <h2 style={{ fontFamily: T.grotesque, fontWeight: 700, fontSize: "clamp(28px,4.2vw,46px)", letterSpacing: "-0.02em", lineHeight: 1, color: T.ink, margin: 0 }}>{label}</h2>
+                <p style={{ fontFamily: T.serif, fontSize: "clamp(14px,1.5vw,17px)", lineHeight: 1.55, color: T.inkSoft, margin: "12px 0 0", maxWidth: 560 }}>{blurb}</p>
+            </div>
+            <span style={{ fontFamily: T.mono, fontSize: 12, letterSpacing: "0.14em", color: T.inkFaint, whiteSpace: "nowrap" }}>
+                {String(count).padStart(2, "0")} {count === 1 ? "person" : "people"}
+            </span>
+        </div>
+    );
+}
+
 const TeamSection: React.FC = () => {
     const [expandedId, setExpandedId] = useState<number | null>(null);
     const expanded = PEOPLE.find((m) => m.id === expandedId) ?? null;
+
+    const tileGrid = (members: TeamMember[]) => (
+        <motion.div layout className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            {members.filter((m) => m.id !== expandedId).map((m) => (
+                <PersonTile key={m.id} m={m} onClick={() => setExpandedId(m.id)} />
+            ))}
+        </motion.div>
+    );
 
     return (
         <>
@@ -382,11 +401,37 @@ const TeamSection: React.FC = () => {
                         {expanded && <ExpandedMemberView key={expanded.id} m={expanded} onClose={() => setExpandedId(null)} />}
                     </AnimatePresence>
 
-                    <motion.div layout className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                        {PEOPLE.filter((m) => m.id !== expandedId).map((m) => (
-                            <PersonTile key={m.id} m={m} onClick={() => setExpandedId(m.id)} />
-                        ))}
-                    </motion.div>
+                    {TEAMS.map((team, ti) => {
+                        const members = PEOPLE.filter((m) => inCategory(m, team.key));
+                        if (!members.length) return null;
+
+                        return (
+                            <div key={team.key} style={{ marginTop: ti === 0 ? 0 : "clamp(52px,7vw,84px)" }}>
+                                <TeamHeading label={team.label} blurb={team.blurb} count={members.length} />
+
+                                {team.key === "Creative" ? (
+                                    <div style={{ marginTop: "clamp(24px,3vw,36px)", display: "flex", flexDirection: "column", gap: "clamp(32px,4vw,48px)" }}>
+                                        {CREATIVE_SUBS.map((sub) => {
+                                            const subMembers = members.filter((m) => m.creativeSubcategory === sub);
+                                            if (!subMembers.length) return null;
+                                            return (
+                                                <div key={sub}>
+                                                    <div style={{ marginBottom: 16 }}>
+                                                        <Kicker>{sub}</Kicker>
+                                                    </div>
+                                                    {tileGrid(subMembers)}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                ) : (
+                                    <div style={{ marginTop: "clamp(24px,3vw,36px)" }}>
+                                        {tileGrid(members)}
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
                 </div>
             </section>
         </>

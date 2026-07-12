@@ -161,9 +161,12 @@ function FeaturedCard({
   };
 
   return (
-    // Outer: no overflow-hidden so FannedImages can bleed out of bottom-right
-    <div
-      className="relative w-full h-full"
+    // Outer: no overflow-hidden so FannedImages can bleed out of bottom-right.
+    // The whole card is the link — click anywhere to open the service page.
+    <Link
+      href={service.link}
+      aria-label={`${service.title} — ${service.cta}`}
+      className="relative block w-full h-full"
       style={{ minHeight: 380 }}
       onMouseEnter={cycleImages}
     >
@@ -204,53 +207,53 @@ function FeaturedCard({
           >
             {service.subtitle}
           </p>
-          <Link href={service.link}>
-            <button
-              className="relative px-6 py-2.5 rounded-full text-sm active:scale-95 overflow-hidden"
+          {/* Visual button only — the whole card is the link, so this is a
+              styled span (no nested anchor) that still carries the shine hover. */}
+          <span
+            className="relative inline-block px-6 py-2.5 rounded-full text-sm active:scale-95 overflow-hidden"
+            style={{
+              background: "rgba(255,255,255,0.14)",
+              border: "1px solid rgba(255,255,255,0.45)",
+              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.18)",
+              color: "#fff",
+              fontFamily: "Roboto, sans-serif",
+              fontWeight: 400,
+              backdropFilter: "blur(10px)",
+              letterSpacing: "0.02em",
+              transition: "transform 0.1s ease",
+            }}
+            onMouseEnter={e => {
+              const shine = e.currentTarget.querySelector(".btn-shine") as HTMLElement;
+              if (shine) {
+                shine.style.transform = "translateX(200%)";
+                shine.style.opacity = "1";
+              }
+            }}
+            onMouseLeave={e => {
+              const shine = e.currentTarget.querySelector(".btn-shine") as HTMLElement;
+              if (shine) {
+                shine.style.transform = "translateX(-100%)";
+                shine.style.opacity = "0";
+              }
+            }}
+          >
+            <span
+              className="btn-shine pointer-events-none absolute inset-0"
               style={{
-                background: "rgba(255,255,255,0.14)",
-                border: "1px solid rgba(255,255,255,0.45)",
-                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.18)",
-                color: "#fff",
-                fontFamily: "Roboto, sans-serif",
-                fontWeight: 400,
-                backdropFilter: "blur(10px)",
-                letterSpacing: "0.02em",
-                transition: "transform 0.1s ease",
+                background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%)",
+                transform: "translateX(-100%)",
+                opacity: 0,
+                transition: "transform 1.7s ease, opacity 0.1s ease",
               }}
-              onMouseEnter={e => {
-                const shine = e.currentTarget.querySelector(".btn-shine") as HTMLElement;
-                if (shine) {
-                  shine.style.transform = "translateX(200%)";
-                  shine.style.opacity = "1";
-                }
-              }}
-              onMouseLeave={e => {
-                const shine = e.currentTarget.querySelector(".btn-shine") as HTMLElement;
-                if (shine) {
-                  shine.style.transform = "translateX(-100%)";
-                  shine.style.opacity = "0";
-                }
-              }}
-            >
-              <span
-                className="btn-shine pointer-events-none absolute inset-0"
-                style={{
-                  background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%)",
-                  transform: "translateX(-100%)",
-                  opacity: 0,
-                  transition: "transform 1.7s ease, opacity 0.1s ease",
-                }}
-              />
-              {service.cta}
-            </button>
-          </Link>
+            />
+            {service.cta}
+          </span>
         </div>
       </div>
 
       {/* FannedImages sits outside the overflow-hidden bg layer — bleeds freely */}
       <FannedImages images={service.images} order={order} transparent={service.transparent} />
-    </div>
+    </Link>
   );
 }
 
