@@ -1,0 +1,161 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<title>ROV Service Pages Audit</title>
+<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]-->
+<style>
+  @page { size: 8.5in 11in; margin: 1in; }
+  body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1c1030; line-height: 1.45; }
+  h1 { font-size: 24pt; font-weight: bold; color: #0F0820; margin: 0 0 4pt; }
+  .subtitle { font-family: Georgia, serif; font-style: italic; font-size: 12pt; color: #5b3fa0; margin: 0 0 18pt; }
+  h2 { font-size: 15pt; font-weight: bold; color: #0F0820; border-bottom: 2pt solid #E3C24A; padding-bottom: 3pt; margin: 22pt 0 8pt; }
+  h3 { font-size: 12pt; font-weight: bold; color: #5b3fa0; margin: 14pt 0 4pt; }
+  p { margin: 0 0 8pt; }
+  .meta { font-size: 9pt; color: #7a7086; letter-spacing: 1pt; text-transform: uppercase; margin-bottom: 4pt; }
+  table { border-collapse: collapse; width: 100%; margin: 8pt 0 12pt; }
+  th { background: #0F0820; color: #F0E6E0; font-size: 10pt; text-align: left; padding: 6pt 8pt; }
+  td { border: 1pt solid #d9d2c7; padding: 6pt 8pt; font-size: 10.5pt; vertical-align: top; }
+  tr.alt td { background: #f8f1e7; }
+  .callout { background: #f8f1e7; border-left: 4pt solid #E3C24A; padding: 8pt 12pt; margin: 10pt 0; }
+  .warn { background: #fbeae5; border-left: 4pt solid #a1503c; padding: 8pt 12pt; margin: 10pt 0; }
+  .crit { color: #a1503c; font-weight: bold; }
+  .high { color: #a6741a; font-weight: bold; }
+  .med { color: #5b3fa0; font-weight: bold; }
+  .file { font-family: Consolas, 'Courier New', monospace; font-size: 9.5pt; color: #5b3fa0; }
+  ul, ol { margin: 4pt 0 10pt; }
+  li { margin-bottom: 5pt; }
+  .footer { margin-top: 28pt; padding-top: 8pt; border-top: 1pt solid #d9d2c7; font-size: 9pt; color: #7a7086; }
+</style>
+</head>
+<body>
+
+<p class="meta">Range of View Studios · Internal Audit · July 11, 2026</p>
+<h1>Service Pages Audit</h1>
+<p class="subtitle">A component-by-component review of /web, /sound, /video-production, and /ai-automation: bugs, conversion gaps, SEO, performance, copy, and the plan to lock them in.</p>
+
+<div class="warn">
+<b>TL;DR: The pages look premium but leak leads.</b> Every one of the four pages has the same critical flaw: the only way to convert is a 30-minute Calendly call (or a raw mailto), so every warm-but-not-ready visitor leaves with no way to recapture them. Three of four pages contradict their own pricing on the same screen. And two of the strongest conversion assets are literally hidden: the AI ROI calculator only appears after a secret triple-click, and the chatbot demo widget is built, wired, and commented out.
+</div>
+
+<h2>The Six Cross-Page Patterns (fix once, wins four times)</h2>
+
+<h3>1 · <span class="crit">CRITICAL</span> · No lead capture anywhere</h3>
+<p>All four pages funnel exclusively to calendly.com/<b>rangeofviewmusic</b>/30min (note: the music slug on the web-design page) or mailto links. The working Klaviyo capture (CtrlASignup) and email gate (ToolGate) that already exist in the codebase are used nowhere on service pages. This is the single biggest revenue leak on the site.</p>
+
+<h3>2 · <span class="crit">CRITICAL</span> · Pricing contradicts itself on three of four pages</h3>
+<table>
+  <tr><th>Page</th><th>The contradiction a prospect sees</th></tr>
+  <tr><td><b>Sound</b></td><td>FAQ says $50 flat (old model) · JSON-LD schema says $145 to $400/mo · pricing cards say $300 for 12 songs. Plus "1 revision" vs "2 revisions" in visible copy.</td></tr>
+  <tr class="alt"><td><b>AI Automation</b></td><td>"From $500" card · "$17,000 total" market bar · hidden ROI calculator with $3k / $7k / $12k tiers under names that appear nowhere else.</td></tr>
+  <tr><td><b>Video</b></td><td>"Starting from $500" vs "ROV: $2,000 to $8,000" three screens later.</td></tr>
+  <tr class="alt"><td><b>Web</b></td><td>Tiers say $2,000 to $5,000; the FAQ two scrolls later says "$2,000 to $10,000+".</td></tr>
+</table>
+
+<h3>3 · <span class="high">HIGH</span> · Em dashes in rendered copy on all four pages</h3>
+<p>A hard brand rule violation. Roughly 25 instances across WebPricingTiers, FeaturedWorksSection, VideoPortfolioSection, PostProductionSection, SpecialtyPackages, AIPricingTiers, the AI meta description, approach-steps.ts, and tooltip source names.</p>
+
+<h3>4 · <span class="high">HIGH</span> · Atlanta claimed in schema, absent from copy</h3>
+<p>Web, video, and AI pages all declare areaServed: Atlanta in JSON-LD while the visible pages never say "Atlanta" once. No H1 on any page carries a single keyword ("Purpose in Every Pixel", "RAW. REFINED. RELEASED.", "Breathtaking Visuals", "AI that works the way your brand thinks"). The four Atlanta blog posts under /web/* are orphaned: the hub page never links to them. Cheapest SEO win available.</p>
+
+<h3>5 · <span class="med">MEDIUM</span> · FAQ schema diverges from visible FAQs on all four pages</h3>
+<p>Same root cause everywhere: answers hand-duplicated (and truncated) in each page.tsx instead of passing the data/faq.ts items into FAQPageSchema. A Google rich-result compliance risk and a guaranteed drift trap. One-line fix per page.</p>
+
+<h3>6 · <span class="med">MEDIUM</span> · Shared-component bugs affecting multiple pages</h3>
+<ul>
+  <li><b>OurApproachSection</b> (web + video): the Lenis requestAnimationFrame loop is never cancelled; it keeps firing on a destroyed instance after navigation. Plus a GSAP modal animation targeting a null ref on first open.</li>
+  <li><b>Nested link-wrapping-button</b> in hero CTAs (web + AI): invalid HTML, double screen-reader announcement, hydration-warning risk.</li>
+  <li><b>Testimonial counter</b> hardcodes a leading zero and breaks past nine items (cosmetic).</li>
+</ul>
+
+<h2>Page 1 · /web (Web Design)</h2>
+<p><b>Verdict: strongest page, weakest hub.</b> Solid dynamic imports, canvas rules followed, real case-study links, and the FAQ voice is pitch-perfect brand.</p>
+<ul>
+  <li><span class="high">HIGH</span> · Hero CTAs nest a button inside a link. <span class="file">components/Web-Dev/WebHero.tsx:417-447</span></li>
+  <li><span class="high">HIGH</span> · Zero Atlanta targeting in title/description while the child blog posts all chase Atlanta queries. <span class="file">app/web/page.tsx:9-11</span></li>
+  <li><span class="high">HIGH</span> · Atlanta blog cluster orphaned: no links from the hub to the four /web/* posts.</li>
+  <li><span class="med">MEDIUM</span> · Social proof disagrees with itself: Ikna is "+30% Sales" in the testimonial badge and "20% sales increase" in the project card.</li>
+  <li><span class="med">MEDIUM</span> · Calendly slug says "rangeofviewmusic" on a web-design page.</li>
+  <li><span class="med">MEDIUM</span> · Best proof (689x ordering views, #1 Google ranking) lives inside rotating carousels a visitor may never see. No static stats row.</li>
+  <li><span class="med">MEDIUM</span> · 4.7MB autoplay bando.mp4; most slides missing posters; ~13.7MB total slide media.</li>
+  <li><span class="med">MEDIUM</span> · Approach section spends six full screens showing six single words, all substance hidden in modals.</li>
+  <li><span class="med">MEDIUM</span> · HowTo schema generates anchors (#step-1 to #step-6) that exist nowhere on the page.</li>
+  <li>LOW · Video error state spins forever (no onError); carousel resets position on viewport re-entry; unused duplicate TestimonialsSection with stale copy should be deleted.</li>
+</ul>
+
+<h2>Page 2 · /sound (Sound Engineering)</h2>
+<p><b>Verdict: best demo mechanic on the site, most broken pricing story.</b> The before/after player is the strongest conversion asset anywhere on the site.</p>
+<ul>
+  <li><span class="crit">CRITICAL</span> · Three conflicting pricing stories (see cross-page table). The visible FAQ still describes the old $50-flat model. <span class="file">data/faq.ts:81-106 vs app/sound/page.tsx:109-117 vs PricingTiers.tsx:10-42</span></li>
+  <li><span class="high">HIGH</span> · No hero CTA. The file literally contains the comment "Bottom CTA Text - Removed from here". First action is 2.5 screens down. <span class="file">SoundHero.tsx:92</span></li>
+  <li><span class="high">HIGH</span> · Primary conversion path is mailto:, which fails silently for webmail users and cannot carry stems anyway. No upload flow, no form, no prefilled subject lines.</li>
+  <li><span class="high">HIGH</span> · The $500/mo Pro card's CTA says "Start at $50". <span class="file">PricingTiers.tsx:165</span></li>
+  <li><span class="med">MEDIUM</span> · Savings calculator computes "you save $X,XXX/year" then discards it into a generic mailto. Highest-intent capture on the page, thrown away.</li>
+  <li><span class="med">MEDIUM</span> · Highest-intent lead (over 18 songs/mo) is routed to Instagram DMs. <span class="file">SavingsCalculator.tsx:413-415</span></li>
+  <li><span class="med">MEDIUM</span> · Current track MP3 (~1.5MB) downloads eagerly for every visitor; missing preload="none". <span class="file">MusicPlayer.tsx:495-498</span></li>
+  <li><span class="med">MEDIUM</span> · YouTube embed loads eagerly below the fold; needs lazy loading or a click-to-load facade. Two animation libraries (GSAP + framer-motion) on one page.</li>
+  <li><span class="med">MEDIUM</span> · StudioSection sells "hourly rates" that are priced nowhere. "Atlanta's Most Affordable Recording Studio" is an unverifiable superlative.</li>
+  <li>LOW · Mute button icon never changes when muted; generic gallery alt text; all three studio clips share one poster; hype drift in hero ("your sound unleashed").</li>
+</ul>
+
+<h2>Page 3 · /video-production (Video)</h2>
+<p><b>Verdict: beautiful and heavy.</b> Work is watchable in zero seconds and the color-grade toggle is genuinely persuasive, but the page pays for it in bandwidth and has no ask.</p>
+<ul>
+  <li><span class="crit">CRITICAL</span> · No CTA in the hero or anywhere in the first three viewport-heights. First conversion action is below Portfolio, Post-Production, and Testimonials.</li>
+  <li><span class="high">HIGH</span> · Roughly 10MB of video downloads before the user scrolls at all: below-fold sections mount and call .play() on load (code-split but not visibility-gated; no IntersectionObserver anywhere). <span class="file">PostProductionSection.tsx:44-61, VideoPortfolioSection.tsx:169-181, SpecialtyPackages.tsx:277-286</span></li>
+  <li><span class="high">HIGH</span> · Hero carousel downloads all six clips (~13MB) within 30 seconds regardless of user behavior, and never pauses offscreen. <span class="file">VideoHero.tsx:23-33, 74-102</span></li>
+  <li><span class="med">MEDIUM</span> · Cinema mode button contradicts its own hover handlers on desktop (click appears dead, mode can never persist). <span class="file">VideoHero.tsx:176-181</span></li>
+  <li><span class="med">MEDIUM</span> · Only 4 of ~22 videos are in the video sitemap and VideoObject schema; durations and dates look invented (PT30S, same date everywhere).</li>
+  <li><span class="med">MEDIUM</span> · Pricing signals conflict: "Starting from $500" vs "$2,000 to $8,000" comparison bar.</li>
+  <li><span class="med">MEDIUM</span> · h-screen hero misbehaves under mobile browser chrome; should be svh/dvh. Wrong poster can flash during crossfade.</li>
+  <li><span class="med">MEDIUM</span> · Thin social proof: two testimonials, soft stats ("Property Sold"), portfolio clips link nowhere.</li>
+  <li>LOW · Two oversized clips need re-encoding (7.7MB, 6.3MB); LCP poster not preloaded; no captions tracks; tab-dependent h2 hides subcategory copy from crawlers.</li>
+</ul>
+
+<h2>Page 4 · /ai-automation (AI Automation)</h2>
+<p><b>Verdict: hidden treasure.</b> The two strangest findings on the whole site live here.</p>
+<ul>
+  <li><span class="crit">CRITICAL</span> · The ROI calculator (308 lines, recommends a tier, shows payback months) renders only after a secret triple-click on the pricing market bar. Invisible to 100% of real visitors. <span class="file">AIAutomationContent.tsx:723-726, AIPricingTiers.tsx:17-26</span></li>
+  <li><span class="crit">CRITICAL</span> · Three contradictory pricing stories (see cross-page table), including calculator tier names that appear nowhere else on the page.</li>
+  <li><span class="high">HIGH</span> · ChatWidget is already wired to the n8n chat proxy and simply commented out in the layout. An AI page where visitors talk to the actual $500 chatbot is the most convincing demo possible, one uncomment away. <span class="file">components/ChatWidget.tsx:267, app/layout.tsx:140</span></li>
+  <li><span class="high">HIGH</span> · Free workflow JSON downloads have a confirm-modal but no email gate: the page's one natural capture moment, uncaptured.</li>
+  <li><span class="high">HIGH</span> · WebGL background renders every frame forever, even six screens offscreen (battery and thermal cost on mobile). <span class="file">components/FaultyTerminal.tsx:366-405</span></li>
+  <li><span class="high">HIGH</span> · One of two testimonials is from Pursue Networking, which is the founder's own company. A diligence risk if a prospect checks.</li>
+  <li><span class="high">HIGH</span> · Zero cross-linking with the missed-call HVAC article, which is the concrete dollar-value proof of this exact offer.</li>
+  <li><span class="med">MEDIUM</span> · Workflow card diagrams describe the wrong workflows (RAG chatbot card shows a social-posting flow, etc.), hidden only because cover images are set. Latent bug.</li>
+  <li><span class="med">MEDIUM</span> · Section order buries the sell: a CTA banner before any proof, two redundant "look at our tools" sections, a 36-item tool tag-cloud that means nothing to a business owner, testimonials after eight sections.</li>
+  <li><span class="med">MEDIUM</span> · Entire 742-line page is one client component; stats and static content pay hydration cost for one piece of state (which controls the hidden calculator).</li>
+  <li>LOW · Unused 906KB PNG sitting in the route folder (delete); fake-discount strikethrough on the chatbot card; hype words ("seamlessly" twice, "START YOUR AI JOURNEY", all-caps "FREE"); UK/US spelling mixed in one line; raw img tags instead of next/image.</li>
+</ul>
+
+<h2>Prioritized Action Plan</h2>
+
+<h3>Tier 1 · Same day, highest damage-per-minute</h3>
+<ol>
+  <li>Reconcile pricing on sound, AI, video, and web (copy edits, no engineering).</li>
+  <li>Sweep all em dashes from rendered copy.</li>
+  <li>Un-hide the AI ROI calculator; align its tiers with the pricing cards.</li>
+  <li>Fix the Calendly slug on non-music pages.</li>
+</ol>
+
+<h3>Tier 2 · This week, the lead engine</h3>
+<ol start="5">
+  <li>One Klaviyo capture per page using existing components: gated cost guide (/web), "email me this quote" on the savings calculator plus a stem-prep guide (/sound), gated rate card (/video), email-gated workflow downloads (/ai).</li>
+  <li>Hero CTAs on sound and video (currently none).</li>
+  <li>Mount ChatWidget on the AI page as the live demo.</li>
+  <li>Link the Atlanta blog cluster from /web; cross-link the HVAC article and /ai-automation both ways.</li>
+</ol>
+
+<h3>Tier 3 · Engineering hygiene</h3>
+<ol start="9">
+  <li>Visibility-gate video mounting on /video-production (IntersectionObserver); compress the four oversized MP4s; preload="none" on the sound player; pause the AI WebGL loop offscreen.</li>
+  <li>Fix the Lenis rAF leak and the nested link/button pattern (shared components, fixes four pages at once).</li>
+  <li>Single-source all four FAQ schemas from data/faq.ts.</li>
+  <li>Add Atlanta and service keywords to titles and heading substructure; delete the unused 906KB PNG and the dead duplicate TestimonialsSection.</li>
+</ol>
+
+<div class="callout"><b>What is genuinely good and worth protecting:</b> the FAQ copy voice on every page (the closest to brand anywhere on the site), the before/after audio player on /sound, the color-grade toggle on /video, the BLS-sourced market-rate tooltips on /ai pricing, the dynamic-import discipline on /web and /ai, and the case-study linkage on /web. The foundation is strong; the fixes above are about honesty, capture, and weight, not redesign.</div>
+
+<p class="footer">ROV Service Pages Audit · Range of View Studios · Prepared July 11, 2026 · Full file:line evidence available in the four per-page audit reports.</p>
+
+</body>
+</html>
