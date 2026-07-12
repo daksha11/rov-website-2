@@ -14,7 +14,7 @@ import {
   getContrastRatio,
   wcagGrade,
   type OklchColor,
-} from "@/lib/brand-kit/utils/colorUtils";
+} from "@/lib/brand-kit/utils/color-utils";
 import { extractDominantColors } from "@/lib/brand-kit/utils/logoColors";
 import LogoEyedropper from "@/components/brand-kit/builder/LogoEyedropper";
 import { useToast } from "@/hooks/brand-kit/useToast";
