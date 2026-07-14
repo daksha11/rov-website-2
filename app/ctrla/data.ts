@@ -14,6 +14,10 @@
 
 import { currentVolume } from "./_volumes";
 import type { GalleyCategory } from "./_volumes/types";
+// History-lesson content for the toolkits (music is defined inline below).
+import { webDevHistory } from "./toolkit/[id]/history/_content/web-dev";
+import { designHistory } from "./toolkit/[id]/history/_content/design";
+import { videoHistory } from "./toolkit/[id]/history/_content/video";
 
 // ── Current-volume re-exports (compatibility layer) ─────
 // Prefer importing `currentVolume` from "./_volumes" in new code.
@@ -112,6 +116,72 @@ export interface GuideStep {
   tip?: string;
 }
 
+/** Signature visual glyph rendered beside a history moment. Each maps to a
+ *  bold inline-SVG drawn in HistoryMotifs.tsx (no image assets required). */
+export type HistoryMotif =
+  // ── Music ──
+  | "wave"     // improvised solo line
+  | "vinyl"    // a spinning record
+  | "tracks"   // stacked multitrack lanes
+  | "assembly" // a conveyor of hits
+  | "leslie"   // a spinning speaker / reversed tape
+  | "synth"    // knobs + patch cables
+  | "drum808"  // the step-sequencer grid
+  | "chop"     // a sampled waveform, cut
+  | "pitch"    // the auto-tune staircase
+  | "phone"    // a song on a screen
+  // ── Development ──
+  | "dev-nodes" | "dev-browser" | "dev-penguin" | "dev-braces" | "dev-ajax"
+  | "dev-branch" | "dev-tree" | "dev-cloud" | "dev-caret"
+  // ── Design ──
+  | "des-punch" | "des-serif" | "des-goblet" | "des-helvetica" | "des-logo"
+  | "des-title" | "des-subway" | "des-heart" | "des-pixel" | "des-gen"
+  // ── Video / Film ──
+  | "vid-pinhole" | "vid-plate" | "vid-roll" | "vid-claw" | "vid-frames"
+  | "vid-iris" | "vid-prism" | "vid-gauges" | "vid-sensor" | "vid-compute";
+
+/** One pivotal moment in the "history lesson" extension. Loose by design:
+ *  `era` is free text and optional, moments render in array order (no numeric
+ *  sort), and every visual element is optional so no two moments look alike.
+ *  The SURFACE is kept light: only `era`, `title`, `hook`, and the `motif`
+ *  show by default. `body` + `whyItMattered` live behind a "full story" expand. */
+export interface HistoryMoment {
+  /** Free label, e.g. "1998", "The bedroom years". Rendered as a big numeral. */
+  era?: string;
+  /** The moment as a headline. */
+  title: string;
+  /** One punchy line, shown by default. Keeps the page visual, not text-heavy. */
+  hook?: string;
+  /** The deeper story, revealed on expand. */
+  body: string;
+  /** The eye-opening beat, revealed on expand. */
+  whyItMattered?: string;
+  quote?: { text: string; attribution?: string };
+  /** Curated image in /public, reuses ImageBlock. */
+  image?: { src: string; alt: string; caption?: string };
+  /** Signature visual glyph beside the moment. */
+  motif?: HistoryMotif;
+  /** Renders an interactive, playable centerpiece inline. */
+  interactive?:
+    | "808" | "synth" | "autotune" | "vinyl"   // music
+    | "codepen" | "branchgraph"                 // development
+    | "typespecimen"                            // design
+    | "aperture" | "fpsscrub";                  // video
+}
+
+/** The scroll-driven "history lesson" for a toolkit topic. */
+export interface ToolkitHistory {
+  /** Grotesque display title, shown on the history hero. */
+  title: string;
+  /** Shown on the entry strip AND the history hero. */
+  lede: string;
+  /** Mono kicker label, e.g. "A history lesson". */
+  entryLabel: string;
+  moments: HistoryMoment[];
+  /** Optional grotesque display closer. */
+  closer?: string;
+}
+
 export interface ToolkitSection {
   id: string;
   title: string;
@@ -139,6 +209,9 @@ export interface ToolkitSection {
   daws?: { name: string; url?: string; ours?: boolean }[];
   /** One-line editorial note under the DAW chooser. */
   dawNote?: string;
+  /** Scroll-driven "history lesson" extension. Optional so sections adopt it
+   *  incrementally; when present, the entry strip mounts and /history renders. */
+  history?: ToolkitHistory;
 }
 
 // ── MUSIC TOOLKIT ──────────────────────────────────────
@@ -932,6 +1005,108 @@ const videoGuide: { title: string; steps: GuideStep[] } = {
 
 // ── EXPORT ──────────────────────────────────────────────
 
+// ── MUSIC HISTORY ──────────────────────────────────────
+// Not a history of the tools. A history of the music itself, the
+// pivotal, eye-opening moments that changed what a song could be.
+// Loose and chronological, written to inspire more than to catalog.
+
+const musicHistory: ToolkitHistory = {
+  entryLabel: "A history lesson",
+  title: "How the sound got made.",
+  lede: "Recorded music is barely a hundred years old. In that blink, a handful of people bent it into shapes nobody saw coming, often by accident, often by breaking the rules on purpose. Here are the moments that changed what a song could be.",
+  moments: [
+    {
+      era: "1920s",
+      title: "Jazz made the mistake the point",
+      hook: "The performer became the author. A solo was written the second it was played, and never the same way twice.",
+      motif: "wave",
+      body: "For the first time the performer, not the composer, was the author. A jazz solo was written the instant it was played and never the same way twice. Louis Armstrong took a horn line and turned it into a signature, and improvisation became a language the whole century would speak.",
+      whyItMattered: "It moved the center of gravity from the page to the person. Feel, phrasing, and the choices you make in the moment became the art. Every genre after this is arguing with that idea or building on it.",
+    },
+    {
+      era: "1936",
+      title: "Twenty-nine songs, one century",
+      hook: "A handful of blues sides, cut facing a hotel wall, quietly wrote the DNA of rock and roll. Spin one.",
+      motif: "vinyl",
+      interactive: "vinyl",
+      body: "Robert Johnson recorded a handful of Delta blues sides in a makeshift studio, reportedly facing the wall to keep the sound tight. That is nearly everything he ever committed to tape. Those few recordings seeded rock and roll, and the bent, aching notes of the blues became the DNA under almost everything that followed.",
+      whyItMattered: "It is proof that reach has nothing to do with volume of output. A tiny body of work, made with total conviction, can outlast libraries of the forgettable.",
+    },
+    {
+      era: "1948",
+      title: "You don't have to play it all at once",
+      hook: "Les Paul stacked himself into a band. The take stopped being the song and became a brick.",
+      motif: "tracks",
+      body: "Les Paul bounced one guitar part on top of another, then another, until a single man became a band. Multitrack recording was born out of that stubbornness. A recording stopped being a photograph of a performance and became something you could build, layer by layer.",
+      whyItMattered: "Every stacked vocal and doubled hook you hear today assumes this. The take is no longer the song. The take is a brick.",
+    },
+    {
+      era: "1960s",
+      title: "The hit factory",
+      hook: "One house in Detroit ran hit records like an assembly line, and out came the sound of young America.",
+      motif: "assembly",
+      body: "Berry Gordy ran Motown like an assembly line. Songwriting rooms, a house band of quiet geniuses called the Funk Brothers, quality control meetings that could kill a record. Out of one house in Detroit came the sound of young America, engineered as deliberately as anything rolling off a plant down the street.",
+      whyItMattered: "It proved that soul and system are not enemies. Structure, repetition, and taste applied like a craft can manufacture magic on purpose, week after week.",
+    },
+    {
+      era: "1966",
+      title: "The room becomes the instrument",
+      hook: "The Beatles stopped recording the band and started playing the studio itself.",
+      motif: "leslie",
+      quote: {
+        text: "We were now using the studio as an instrument, not just a place to record.",
+        attribution: "George Martin",
+      },
+      body: "George Martin and the Beatles stopped treating the studio as a place to capture a band and started treating it as a thing to play. Tape run backwards, vocals fed through a spinning speaker, edits spliced from two takes in different keys. The console became a member of the group.",
+      whyItMattered: "This is the permission slip for everything in the kit. Auto-Tune as a sound, not a fix. A doubler turning one take into four. The mix is not the paperwork of the song. It is part of the writing.",
+    },
+    {
+      era: "1970s",
+      title: "Machines that dreamed up new sounds",
+      hook: "First a machine could invent a sound that never existed. Then Kraftwerk decided the machine was the band. Sweep the filter.",
+      motif: "synth",
+      interactive: "synth",
+      body: "The Moog and the synthesizers that followed let a musician reach a tone that had never existed in any room, on any instrument. Then Kraftwerk went further and decided the machine was not a tool in the band, it was the band. Techno, house, and most of electronic music trace a straight line back to that choice.",
+      whyItMattered: "Sound became something you design from a waveform up, not something you go find and mic. The question changed from what did you play to what did you build.",
+    },
+    {
+      era: "1980",
+      title: "The drum machine nobody wanted",
+      hook: "Too fake to sell, it became the heartbeat of hip-hop, trap, and modern pop. Build a beat on it.",
+      motif: "drum808",
+      interactive: "808",
+      body: "Roland's TR-808 sold so poorly it was discontinued within a few years. Its kick was too long and boomy to sound real, its clap too snappy. But cheap on the used market, it fell into the hands of hip-hop, Miami bass, and eventually trap. That unreal booming 808 is now the low end of modern pop.",
+      whyItMattered: "The most influential drum machine ever made was a commercial failure. What sounds wrong to one era is the signature of the next. Do not let a spec sheet tell you what a thing is for.",
+    },
+    {
+      era: "1980s",
+      title: "The record becomes raw material",
+      hook: "A four second drum break, looped and chopped, became the spine of a whole genre.",
+      motif: "chop",
+      body: "Hip-hop producers with a sampler and a crate of vinyl turned other people's records into a new instrument. The Akai MPC put a drum machine, a sampler, and a sequencer under ten rubber pads. A four second drum break, looped and chopped, could become the spine of an entire genre.",
+      whyItMattered: "It rewrote who gets to make music and with what. You did not need a band or a budget. You needed ears, taste, and something to chop.",
+    },
+    {
+      era: "1998",
+      title: "A correction tool becomes a sound",
+      hook: "Built to hide flat notes. Cranked to the extreme on Believe, the glitch became the sound of thirty years. Flip it on.",
+      motif: "pitch",
+      interactive: "autotune",
+      body: "Antares built Auto-Tune to nudge a flat note back to pitch, quietly, invisibly. Then a producer on Cher's Believe cranked the retune speed to zero and left it on. The glitch was the point. What was engineered to disappear became one of the most recognizable sounds of the next thirty years.",
+      whyItMattered: "The clearest lesson in the whole story. The tool does not decide what it is for. You do. Almost every plugin in the kit has a setting that turns utility into signature.",
+    },
+    {
+      era: "Now",
+      title: "Everyone has the studio",
+      hook: "A song lives or dies on a phone speaker in eight seconds. The only edge left is taste.",
+      motif: "phone",
+      body: "The DAW folded a million dollar control room into a laptop, and streaming made distribution free. The barrier stopped being access and became attention. A song now lives or dies on a phone speaker in the first eight seconds. The craft did not get easier. The pressure just moved.",
+      whyItMattered: "You are not mixing for a mastering lab or a gatekeeper. You are mixing for a thumb about to scroll. The tools are finally in everyone's hands, which means the only edge left is taste.",
+    },
+  ],
+  closer: "None of it came from the manual. Someone pushed a knob past where it was meant to go, kept the mistake, and called it the sound. That is the whole history in one move. Your turn.",
+};
+
 export const toolkitSections: ToolkitSection[] = [
   {
     id: "music",
@@ -967,6 +1142,7 @@ export const toolkitSections: ToolkitSection[] = [
       { name: "Pro Tools", url: "https://www.avid.com/pro-tools" },
     ],
     dawNote: "We usually reach for FL Studio, but it does not really matter which DAW you use. Free or paid, they all get you to the same finish line. Pick one and learn it.",
+    history: musicHistory,
   },
   {
     id: "web-dev",
@@ -993,6 +1169,7 @@ export const toolkitSections: ToolkitSection[] = [
         line: "The 3D hero moments Framer Motion brings to life are modelled first with Spline over in the design kit.",
       },
     ],
+    history: webDevHistory,
   },
   {
     id: "design",
@@ -1024,6 +1201,7 @@ export const toolkitSections: ToolkitSection[] = [
         line: "Cover art and artist branding shaped here dress the records mixed with Auto-Tune in the music kit.",
       },
     ],
+    history: designHistory,
   },
   {
     id: "video",
@@ -1057,5 +1235,6 @@ export const toolkitSections: ToolkitSection[] = [
         line: "The finished recap needs a home, and the web dev kit mounts it in a Next.js page that loads fast.",
       },
     ],
+    history: videoHistory,
   },
 ];

@@ -144,6 +144,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'weekly' as const,
             priority: 0.6,
         })),
+        // Toolkit history-lesson extensions.
+        ...['music', 'web-dev', 'design', 'video'].map((id) => ({
+            url: `${baseUrl}/ctrla/toolkit/${id}/history`,
+            lastModified: '2026-07-13',
+            changeFrequency: 'monthly' as const,
+            priority: 0.5,
+        })),
         // CTRL-A back-issue archive — one entry per known volume.
         ...volumeNumbers.map((n) => ({
             url: `${baseUrl}/ctrla/vol/${n}`,

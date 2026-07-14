@@ -12,7 +12,7 @@ import DevGuide from "../../_components/DevGuide";
 import VideoGuide from "../../_components/VideoGuide";
 import { Component as MusicReactiveHero } from "@/components/ui/music-reactive-hero-section";
 // Toolkit pages run the LIGHT theme — the airy, cream reveal from the loader.
-import { edLight as ed, Bleed, Rule, Label, legibleAccent } from "../../_components/editorial";
+import { edLight as ed, Bleed, Rule, Label, Kicker, legibleAccent } from "../../_components/editorial";
 import { toolkitSections } from "../../data";
 import { currentVolume } from "../../_volumes";
 
@@ -79,6 +79,35 @@ export default function ToolkitPageContent({ id }: { id: string }) {
       {/* Flagship sectors with curated Signals get the immersive Stations
           experience; the rest fall back to the editorial detail for now. */}
       {section.signals ? <ToolkitStations section={section} theme={ed} hideKicker={id === "music" || id === "design" || id === "web-dev" || id === "video"} /> : <ToolkitDetail section={section} />}
+
+      {/* History lesson — accent-tinted entry strip into the immersive story */}
+      {section.history && (
+        <section style={{ background: "transparent", padding: "0 0 clamp(40px,6vw,72px)" }}>
+          <Bleed>
+            <a
+              href={`/ctrla/toolkit/${section.id}/history`}
+              className="ctrla-course-strip"
+              aria-label={`Open the ${section.title} history lesson`}
+              style={{ borderTop: `3px solid ${pageAccent}`, background: `${pageAccent}0D` }}
+            >
+              <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 24, flexWrap: "wrap" }}>
+                <div style={{ maxWidth: 720 }}>
+                  <Kicker color={pageAccent}>{section.history.entryLabel}</Kicker>
+                  <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,4vw,48px)", letterSpacing: "-0.03em", lineHeight: 0.96, color: ed.ink, margin: "12px 0 10px" }}>
+                    {section.history.title}
+                  </h3>
+                  <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.55, color: ed.inkSoft, margin: 0, maxWidth: 620 }}>
+                    {section.history.lede}
+                  </p>
+                </div>
+                <span style={{ fontFamily: ed.grotesque, fontWeight: 700, fontSize: "clamp(14px,1.6vw,18px)", letterSpacing: "-0.01em", color: pageAccent, display: "inline-flex", alignItems: "center", gap: 8, whiteSpace: "nowrap" }}>
+                  Enter <span className="ctrla-course-arrow" aria-hidden>→</span>
+                </span>
+              </div>
+            </a>
+          </Bleed>
+        </section>
+      )}
 
       {/* Prev / next toolkit */}
       <section style={{ background: "transparent", padding: "0 0 clamp(56px,8vw,104px)" }}>

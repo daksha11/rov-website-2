@@ -12,7 +12,9 @@ export default function GoogleLoginButton() {
   const [user, setUser] = useState<{ name: string; role: string } | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [menuPos, setMenuPos] = useState<{ bottom: number; right: number }>({ bottom: 0, right: 0 });
   const menuRef = useRef<HTMLDivElement>(null);
+  const btnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const checkSession = async () => {
@@ -47,7 +49,10 @@ export default function GoogleLoginButton() {
   useEffect(() => {
     if (!menuOpen) return;
     function handleClickOutside(e: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      const inMenu = menuRef.current?.contains(target);
+      const inButton = btnRef.current?.contains(target);
+      if (!inMenu && !inButton) {
         setMenuOpen(false);
       }
     }
@@ -73,36 +78,57 @@ export default function GoogleLoginButton() {
     router.push("/");
   }
 
-  function handleDashboard() {
+  const isStaff = user?.role === "admin" || user?.role === "engineer";
+  const menuLinks = isStaff
+    ? [
+        { label: "Admin view", path: "/admin" },
+        { label: "Normal view", path: "/portal" },
+        { label: "Profile", path: "/account" },
+      ]
+    : [{ label: "Profile", path: "/account" }];
+
+  function go(path: string) {
     setMenuOpen(false);
-    if (user?.role === "admin" || user?.role === "engineer") {
-      router.push("/admin");
-    } else {
-      router.push("/portal");
+    router.push(path);
+  }
+
+  function toggleMenu() {
+    if (!menuOpen && btnRef.current) {
+      const r = btnRef.current.getBoundingClientRect();
+      // Anchor the portaled menu just above the initials button.
+      setMenuPos({
+        bottom: Math.round(window.innerHeight - r.top + 12),
+        right: Math.round(Math.max(8, window.innerWidth - r.right)),
+      });
     }
+    setMenuOpen((prev) => !prev);
   }
 
   if (user) {
     return (
       <>
-        <div ref={menuRef} style={{ position: "relative" }}>
+        <div style={{ position: "relative" }}>
           <button
-            onClick={() => setMenuOpen((prev) => !prev)}
+            ref={btnRef}
+            onClick={toggleMenu}
             type="button"
             className="px-1.5 py-1.5 text-white/80 hover:text-white transition-colors cursor-pointer text-[10px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
           >
             {user.name.trim().split(/\s+/).filter(Boolean).map((w) => w[0]).slice(0, 2).join("").toUpperCase()}
           </button>
 
-          {menuOpen && (
+          {menuOpen && createPortal(
             <div
+              ref={menuRef}
               style={{
-                position: "absolute",
-                bottom: "calc(100% + 12px)",
-                right: 0,
+                position: "fixed",
+                bottom: menuPos.bottom,
+                right: menuPos.right,
+                zIndex: 100000,
                 minWidth: "180px",
                 background: "rgba(10,10,10,0.9)",
                 backdropFilter: "blur(16px)",
+                WebkitBackdropFilter: "blur(16px)",
                 border: "1px solid rgba(255,244,227,0.1)",
                 borderRadius: "12px",
                 padding: "6px",
@@ -111,26 +137,30 @@ export default function GoogleLoginButton() {
                 gap: "2px",
               }}
             >
-              <button
-                onClick={handleDashboard}
-                type="button"
-                style={{
-                  padding: "10px 14px",
-                  background: "transparent",
-                  border: "none",
-                  color: "#FFF4E3",
-                  fontSize: "13px",
-                  fontFamily: "'Roboto', sans-serif",
-                  textAlign: "left",
-                  cursor: "pointer",
-                  borderRadius: "8px",
-                  transition: "background 0.2s",
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
-              >
-                Dashboard
-              </button>
+              {menuLinks.map((item) => (
+                <button
+                  key={item.path}
+                  onClick={() => go(item.path)}
+                  type="button"
+                  style={{
+                    padding: "10px 14px",
+                    background: "transparent",
+                    border: "none",
+                    color: "#FFF4E3",
+                    fontSize: "13px",
+                    fontFamily: "'Roboto', sans-serif",
+                    textAlign: "left",
+                    cursor: "pointer",
+                    borderRadius: "8px",
+                    transition: "background 0.2s",
+                    width: "100%",
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+                >
+                  {item.label}
+                </button>
+              ))}
               <div style={{ height: "1px", background: "rgba(255,244,227,0.08)", margin: "2px 8px" }} />
               <button
                 onClick={() => { setMenuOpen(false); setConfirmOpen(true); }}
@@ -158,7 +188,8 @@ export default function GoogleLoginButton() {
               >
                 Sign Out
               </button>
-            </div>
+            </div>,
+            document.body
           )}
         </div>
 

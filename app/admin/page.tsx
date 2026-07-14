@@ -728,7 +728,7 @@ export default function AdminDashboard() {
             <p style={{ fontSize: '14px', textTransform: 'uppercase', letterSpacing: '0.3em', color: 'rgba(240,230,224,0.4)', marginBottom: '16px' }}>
               Welcome back
             </p>
-            <h1 style={{ fontSize: 'clamp(36px, 8vw, 72px)', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: 0, color: '#F0E6E0' }}>
+            <h1 style={{ fontSize: 'clamp(36px, 8vw, 72px)', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'normal', margin: 0, color: '#F0E6E0' }}>
               {fullName}
             </h1>
           </div>
@@ -807,6 +807,22 @@ export default function AdminDashboard() {
               border: '1px solid rgba(240,230,224,0.1)', borderRadius: '12px',
               padding: '6px', animation: 'portalMenuIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards',
             }}>
+              {[
+                { label: 'System Guide', path: '/internal/map/visual' },
+                { label: 'System Map', path: '/internal/map' },
+              ].map((item) => (
+                <button
+                  key={item.path}
+                  onClick={() => { setMenuOpen(false); router.push(item.path); }}
+                  type="button"
+                  style={{ width: '100%', padding: '10px 14px', background: 'transparent', border: 'none', color: '#F0E6E0', fontSize: '13px', fontFamily: "'Neue Montreal', 'Roboto', sans-serif", textAlign: 'left', cursor: 'pointer', borderRadius: '8px', transition: 'all 0.2s' }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+                >
+                  {item.label}
+                </button>
+              ))}
+              <div style={{ height: '1px', background: 'rgba(240,230,224,0.08)', margin: '2px 8px' }} />
               <button
                 onClick={() => { setMenuOpen(false); setConfirmOpen(true); }}
                 type="button"
@@ -839,7 +855,7 @@ export default function AdminDashboard() {
           <p style={{ margin: 0, fontSize: '11px', letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(240,230,224,0.72)', textShadow: '0 1px 10px rgba(15,8,32,0.55)' }}>
             Range of View Studios
           </p>
-          <h1 style={{ margin: '6px 0 0', fontFamily: "'Instrument Serif', Georgia, serif", fontStyle: 'italic', fontWeight: 400, fontSize: 'clamp(34px, 6vw, 60px)', lineHeight: 1, color: '#F0E6E0', textShadow: '0 2px 20px rgba(15,8,32,0.65)' }}>
+          <h1 style={{ margin: '6px 0 0', fontFamily: "'Instrument Serif', Georgia, serif", fontStyle: 'normal', fontWeight: 400, fontSize: 'clamp(34px, 6vw, 60px)', lineHeight: 1, color: '#F0E6E0', textShadow: '0 2px 20px rgba(15,8,32,0.65)' }}>
             Command Center
           </h1>
         </div>
@@ -884,7 +900,7 @@ export default function AdminDashboard() {
             { label: 'Tracks Submitted', value: submissions.length, isLoading: loadingTracks, urgent: false },
           ]).map(({ label, value, isLoading, urgent }) => (
             <div key={label} style={{ padding: '22px 24px', background: 'rgba(255,255,255,0.02)' }}>
-              <p style={{ margin: '0 0 5px 0', fontSize: '32px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', color: urgent ? '#E3C24A' : '#F0E6E0', lineHeight: 1 }}>
+              <p style={{ margin: '0 0 5px 0', fontSize: '32px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'normal', color: urgent ? '#E3C24A' : '#F0E6E0', lineHeight: 1 }}>
                 {isLoading ? '—' : value}
               </p>
               <p style={{ margin: 0, fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.18em', color: urgent ? 'rgba(227,194,74,0.6)' : 'rgba(240,230,224,0.3)', fontWeight: 500 }}>
@@ -947,7 +963,7 @@ export default function AdminDashboard() {
                   <span style={{ fontSize: '16px', lineHeight: 1 }}>📢</span>
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#F0E6E0' }}>
+                  <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'normal', margin: '0 0 2px 0', color: '#F0E6E0' }}>
                     Pending Revisions
                   </h3>
                   <p style={{ fontSize: '12px', color: 'rgba(240,230,224,0.35)', margin: 0 }}>
@@ -991,7 +1007,7 @@ export default function AdminDashboard() {
                     <p style={{
                       margin: 0, fontSize: '13px', color: 'rgba(240,230,224,0.7)',
                       lineHeight: 1.5, background: 'rgba(0,0,0,0.2)',
-                      padding: '12px', borderRadius: '8px', fontStyle: 'italic'
+                      padding: '12px', borderRadius: '8px', fontStyle: 'normal'
                     }}>
                       {`"${rev.notes}"`}
                     </p>
@@ -1043,7 +1059,7 @@ export default function AdminDashboard() {
                 <FileAudio size={16} />
               </div>
               <div>
-                <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#F0E6E0' }}>
+                <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'normal', margin: '0 0 2px 0', color: '#F0E6E0' }}>
                   Audio Submissions
                 </h3>
                 <p style={{ fontSize: '12px', color: 'rgba(240,230,224,0.35)', margin: 0 }}>All client-uploaded tracks</p>
@@ -1324,7 +1340,7 @@ export default function AdminDashboard() {
                 <Users size={16} />
               </div>
               <div>
-                <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#F0E6E0' }}>
+                <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'normal', margin: '0 0 2px 0', color: '#F0E6E0' }}>
                   Client Projects
                 </h3>
                 <p style={{ fontSize: '12px', color: 'rgba(240,230,224,0.35)', margin: 0 }}>Launch & track project roadmaps per user</p>
@@ -1541,7 +1557,7 @@ export default function AdminDashboard() {
               <Music2 size={16} />
             </div>
             <div>
-              <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#F0E6E0' }}>
+              <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'normal', margin: '0 0 2px 0', color: '#F0E6E0' }}>
                 Revision & Delivery History
               </h3>
               <p style={{ fontSize: '12px', color: 'rgba(240,230,224,0.35)', margin: 0 }}>
@@ -1616,7 +1632,7 @@ export default function AdminDashboard() {
                                         <span style={{ fontSize: '11px', fontWeight: 700, color: '#E3C24A' }}>Revision {rev.revision_number}</span>
                                         <span style={{ fontSize: '10px', color: 'rgba(240,230,224,0.3)' }}>{new Date(rev.created_at).toLocaleDateString()}</span>
                                       </div>
-                                      <p style={{ margin: 0, fontSize: '12px', color: 'rgba(240,230,224,0.6)', lineHeight: 1.4, fontStyle: 'italic' }}>{`"${rev.notes}"`}</p>
+                                      <p style={{ margin: 0, fontSize: '12px', color: 'rgba(240,230,224,0.6)', lineHeight: 1.4, fontStyle: 'normal' }}>{`"${rev.notes}"`}</p>
                                     </div>
                                   ))}
                                 </div>
@@ -1667,7 +1683,7 @@ export default function AdminDashboard() {
                   <Users size={16} />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', margin: '0 0 2px 0', color: '#F0E6E0' }}>
+                  <h3 style={{ fontSize: '18px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'normal', margin: '0 0 2px 0', color: '#F0E6E0' }}>
                     User Management
                   </h3>
                   <p style={{ fontSize: '12px', color: 'rgba(240,230,224,0.35)', margin: 0 }}>
@@ -1798,6 +1814,45 @@ export default function AdminDashboard() {
           </div>
         )}
 
+        {/* ── Internal · system reference (secondary utility, footer of the dashboard) ── */}
+        <div style={{ marginTop: '12px', paddingTop: '24px', borderTop: '1px solid rgba(240,230,224,0.08)' }}>
+          <p style={{ margin: '0 0 12px 0', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.22em', color: 'rgba(240,230,224,0.4)', fontWeight: 600 }}>
+            Internal · system reference
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '10px' }}>
+            {[
+              { label: 'System Guide', sub: 'Plain-English walkthrough of how the site works.', path: '/internal/map/visual' },
+              { label: 'System Map', sub: 'The technical map: every route, module and data source.', path: '/internal/map' },
+            ].map((item) => (
+              <button
+                key={item.path}
+                onClick={() => router.push(item.path)}
+                type="button"
+                style={{
+                  textAlign: 'left', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px',
+                  padding: '13px 16px', borderRadius: '12px',
+                  background: 'rgba(255,255,255,0.02)',
+                  border: '1px solid rgba(240,230,224,0.08)',
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.borderColor = 'rgba(240,230,224,0.2)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; e.currentTarget.style.borderColor = 'rgba(240,230,224,0.08)'; }}
+              >
+                <span style={{ display: 'flex', flexDirection: 'column', gap: '2px', minWidth: 0 }}>
+                  <span style={{ fontFamily: "'Neue Montreal', 'Roboto', sans-serif", fontWeight: 600, fontSize: '13.5px', color: 'rgba(240,230,224,0.85)' }}>
+                    {item.label}
+                  </span>
+                  <span style={{ fontFamily: "'Neue Montreal', 'Roboto', sans-serif", fontSize: '11.5px', color: 'rgba(240,230,224,0.4)', lineHeight: 1.4 }}>
+                    {item.sub}
+                  </span>
+                </span>
+                <span style={{ color: 'rgba(240,230,224,0.35)', fontSize: '15px', flex: 'none' }}>→</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
       </div>
 
       {/* Sign out confirmation modal */}
@@ -1826,7 +1881,7 @@ export default function AdminDashboard() {
             <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(240,230,224,0.35)', marginBottom: '12px' }}>
               Confirm
             </p>
-            <h2 style={{ fontSize: '22px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', color: '#F0E6E0', margin: '0 0 8px 0' }}>
+            <h2 style={{ fontSize: '22px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'normal', color: '#F0E6E0', margin: '0 0 8px 0' }}>
               Sign out?
             </h2>
             <p style={{ fontSize: '14px', color: 'rgba(240,230,224,0.4)', marginBottom: '32px', fontFamily: "'Neue Montreal', 'Roboto', sans-serif" }}>
@@ -1884,7 +1939,7 @@ export default function AdminDashboard() {
             <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(240,230,224,0.35)', margin: '0 0 6px 0' }}>
               New Project
             </p>
-            <h2 style={{ fontSize: '22px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', color: '#F0E6E0', margin: '0 0 4px 0' }}>
+            <h2 style={{ fontSize: '22px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'normal', color: '#F0E6E0', margin: '0 0 4px 0' }}>
               Launch for {launchTarget.full_name || 'User'}
             </h2>
             <p style={{ fontSize: '13px', color: 'rgba(240,230,224,0.35)', margin: '0 0 28px 0' }}>
@@ -2067,7 +2122,7 @@ export default function AdminDashboard() {
                 <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(240,230,224,0.35)', margin: '0 0 6px 0' }}>
                   Mixed Audio Track
                 </p>
-                <h2 style={{ fontSize: '22px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', color: '#F0E6E0', margin: 0 }}>
+                <h2 style={{ fontSize: '22px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'normal', color: '#F0E6E0', margin: 0 }}>
                   Upload for {mixedUploadTarget.full_name || 'User'}
                 </h2>
               </div>
@@ -2193,7 +2248,7 @@ export default function AdminDashboard() {
                 <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(240,230,224,0.35)', margin: '0 0 6px 0' }}>
                   Project Management
                 </p>
-                <h2 style={{ fontSize: '24px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'italic', color: '#F0E6E0', margin: 0 }}>
+                <h2 style={{ fontSize: '24px', fontFamily: 'Norwige, sans-serif', fontWeight: 700, fontStyle: 'normal', color: '#F0E6E0', margin: 0 }}>
                   {detailTarget.full_name || 'Client'}
                 </h2>
                 <p style={{ fontSize: '12px', color: 'rgba(240,230,224,0.25)', fontFamily: 'monospace', marginTop: '4px' }}>
