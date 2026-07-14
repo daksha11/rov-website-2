@@ -5,23 +5,41 @@
  * Gated to any authenticated session (redirects home otherwise).
  * Role-aware: staff get quick links to the admin view and the customer view;
  * customers get a direct link to their portal. Everyone can sign out here.
+ *
+ * CTRL-A themed: the cosmic sunset ground (dash-ground / dash-hero / grain),
+ * cream text, gold + rose + plum accents, Norwige / Neue Montreal type. No
+ * italics, matching the command center.
  */
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
+import CommunityPanel from "./CommunityPanel";
 
 const supabase = createClient();
 
 const C = {
-  cream: "#FFF4E3",
-  espresso: "#3B2114",
-  rust: "#90422C",
-  orange: "#EA9A61",
-  hair: "rgba(59,33,20,0.14)",
-  faint: "rgba(59,33,20,0.60)",
-  shadow: "0 1px 3px rgba(59,33,20,0.05), 0 10px 30px rgba(59,33,20,0.07)",
+  ground: "#0F0820",
+  panel: "#24123A",
+  plum: "#4E3D73",
+  cream: "#F0E6E0",
+  gold: "#E3C24A",
+  rose: "#A56A67",
+  hair: "rgba(240,230,224,0.1)",
+  faint: "rgba(240,230,224,0.55)",
+  soft: "rgba(240,230,224,0.82)",
+};
+
+const NEUE = "'Neue Montreal', 'Roboto', sans-serif";
+const NORWIGE = "Norwige, sans-serif";
+
+const card: React.CSSProperties = {
+  background: "rgba(255,255,255,0.03)",
+  border: `1px solid ${C.hair}`,
+  borderRadius: 18,
+  backdropFilter: "blur(20px)",
+  WebkitBackdropFilter: "blur(20px)",
 };
 
 interface Profile {
@@ -44,6 +62,7 @@ function initials(name: string) {
 export default function AccountPage() {
   const router = useRouter();
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
   const [status, setStatus] = useState<"checking" | "ok">("checking");
   const [confirmOpen, setConfirmOpen] = useState(false);
 
@@ -51,6 +70,7 @@ export default function AccountPage() {
     const load = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) { router.push("/"); return; }
+      setUserId(session.user.id);
 
       const meta = session.user.user_metadata || {};
       const name = meta.full_name || meta.name || session.user.email || "You";
@@ -80,8 +100,8 @@ export default function AccountPage() {
 
   if (status === "checking" || !profile) {
     return (
-      <main style={{ minHeight: "100vh", background: C.cream, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <p style={{ fontFamily: "Inter, sans-serif", fontSize: 13, color: C.faint, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+      <main className="dash-ground" style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <p style={{ fontFamily: NEUE, fontSize: 12, color: C.faint, letterSpacing: "0.18em", textTransform: "uppercase" }}>
           Loading your profile...
         </p>
       </main>
@@ -100,31 +120,56 @@ export default function AccountPage() {
       ];
 
   return (
-    <main style={{ minHeight: "100vh", background: C.cream, color: C.espresso, padding: "clamp(28px,5vw,64px) clamp(18px,5vw,40px) 80px" }}>
-      <div style={{ maxWidth: 560, margin: "0 auto" }}>
+    <main className="dash-ground" style={{ minHeight: "100vh", color: C.cream, fontFamily: NEUE }}>
+      {/* Signature accent bar */}
+      <div aria-hidden style={{ height: 3, background: C.gold }} />
 
-        {/* Back link */}
-        <Link href="/" style={{ fontFamily: "'Neue Montreal', Inter, sans-serif", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: C.rust, textDecoration: "none", fontWeight: 600 }}>
-          ← Range of View
+      {/* Masthead */}
+      <div style={{ maxWidth: 560, margin: "0 auto", padding: "14px clamp(18px,5vw,40px) 0", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
+        <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: NEUE, fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: C.cream, textDecoration: "none", fontWeight: 500 }}>
+          <span style={{ color: C.gold }}>←</span> Range of View
         </Link>
+        <span style={{ fontFamily: NEUE, fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: C.gold, fontWeight: 600 }}>
+          Profile
+        </span>
+      </div>
+
+      {/* Hero band — the signature CTRL-A sunset */}
+      <section className="dash-hero" style={{ height: "clamp(130px, 20vw, 200px)", display: "flex", alignItems: "flex-end", borderBottom: `1px solid ${C.hair}`, marginTop: 14 }}>
+        <div className="ctrla-grain" style={{ zIndex: 1 }} />
+        <span style={{ position: "absolute", top: 16, right: "clamp(18px,5vw,40px)", zIndex: 2, fontSize: 10.5, letterSpacing: "0.22em", textTransform: "uppercase", color: C.gold, fontWeight: 600 }}>
+          A ROV Creative Platform
+        </span>
+        <div style={{ position: "relative", zIndex: 2, width: "100%", maxWidth: 560, margin: "0 auto", padding: "0 clamp(18px,5vw,40px) clamp(18px,4vw,28px)" }}>
+          <p style={{ margin: 0, fontSize: 10.5, letterSpacing: "0.28em", textTransform: "uppercase", color: C.soft, textShadow: "0 1px 10px rgba(15,8,32,0.55)" }}>
+            Range of View Studios
+          </p>
+          <h1 style={{ margin: "6px 0 0", fontFamily: NORWIGE, fontWeight: 700, fontSize: "clamp(30px, 6vw, 52px)", lineHeight: 1, color: C.cream, textShadow: "0 2px 20px rgba(15,8,32,0.65)" }}>
+            Your Profile
+          </h1>
+        </div>
+      </section>
+
+      {/* Content */}
+      <div style={{ maxWidth: 560, margin: "0 auto", padding: "clamp(24px,5vw,40px) clamp(18px,5vw,40px) 80px" }}>
 
         {/* Identity card */}
-        <div style={{ background: "#FFFFFF", border: `1px solid ${C.hair}`, borderRadius: 22, boxShadow: C.shadow, padding: "clamp(24px,5vw,38px)", marginTop: 22, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 8 }}>
+        <div style={{ ...card, padding: "clamp(24px,5vw,38px)", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 8 }}>
           {profile.avatar ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={profile.avatar} alt="" width={84} height={84} style={{ borderRadius: "50%", objectFit: "cover", border: `2px solid ${C.hair}` }} />
           ) : (
-            <div style={{ width: 84, height: 84, borderRadius: "50%", background: C.rust, color: C.cream, display: "grid", placeItems: "center", fontFamily: "Norwige, sans-serif", fontWeight: 700, fontSize: 30 }}>
+            <div style={{ width: 84, height: 84, borderRadius: "50%", background: `linear-gradient(135deg, ${C.gold} 0%, ${C.rose} 55%, ${C.plum} 100%)`, color: "#160C28", display: "grid", placeItems: "center", fontFamily: NORWIGE, fontWeight: 700, fontSize: 30 }}>
               {initials(profile.name)}
             </div>
           )}
-          <h1 style={{ margin: "10px 0 0", fontFamily: "Norwige, sans-serif", fontWeight: 700, fontSize: "clamp(24px,4vw,32px)", lineHeight: 1.1 }}>
+          <h2 style={{ margin: "10px 0 0", fontFamily: NORWIGE, fontWeight: 700, fontSize: "clamp(24px,4vw,32px)", lineHeight: 1.1, color: C.cream }}>
             {profile.name}
-          </h1>
+          </h2>
           {profile.email && (
-            <p style={{ margin: 0, fontFamily: "Inter, sans-serif", fontSize: 14, color: C.faint }}>{profile.email}</p>
+            <p style={{ margin: 0, fontFamily: NEUE, fontSize: 14, color: C.faint }}>{profile.email}</p>
           )}
-          <span style={{ marginTop: 6, fontFamily: "'Neue Montreal', Inter, sans-serif", fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: C.rust, background: "rgba(144,66,44,0.08)", border: `1px solid ${C.hair}`, borderRadius: 999, padding: "5px 14px", fontWeight: 600 }}>
+          <span style={{ marginTop: 6, fontFamily: NEUE, fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: C.gold, background: "rgba(227,194,74,0.1)", border: "1px solid rgba(227,194,74,0.3)", borderRadius: 999, padding: "5px 14px", fontWeight: 600 }}>
             {ROLE_LABEL[profile.role] || profile.role}
           </span>
         </div>
@@ -138,27 +183,34 @@ export default function AccountPage() {
               style={{
                 display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16,
                 textDecoration: "none",
-                background: l.primary ? C.rust : "#FFFFFF",
-                color: l.primary ? C.cream : C.espresso,
-                border: `1px solid ${l.primary ? C.rust : C.hair}`,
+                background: l.primary ? "linear-gradient(135deg, #24123A 0%, #4E3D73 100%)" : "rgba(255,255,255,0.03)",
+                color: C.cream,
+                border: `1px solid ${l.primary ? "rgba(227,194,74,0.3)" : C.hair}`,
                 borderRadius: 16, padding: "18px 22px",
-                boxShadow: C.shadow,
+                transition: "border-color 0.2s ease, transform 0.2s ease",
               }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(227,194,74,0.55)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = l.primary ? "rgba(227,194,74,0.3)" : C.hair; e.currentTarget.style.transform = "translateY(0)"; }}
             >
               <span style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                <span style={{ fontFamily: "Norwige, sans-serif", fontWeight: 700, fontSize: 17 }}>{l.label}</span>
-                <span style={{ fontFamily: "Inter, sans-serif", fontSize: 13, color: l.primary ? "rgba(255,244,227,0.75)" : C.faint }}>{l.sub}</span>
+                <span style={{ fontFamily: NORWIGE, fontWeight: 700, fontSize: 17, color: C.cream }}>{l.label}</span>
+                <span style={{ fontFamily: NEUE, fontSize: 13, color: C.faint }}>{l.sub}</span>
               </span>
-              <span style={{ fontSize: 18, opacity: 0.8 }}>→</span>
+              <span style={{ fontSize: 18, color: C.gold }}>→</span>
             </Link>
           ))}
         </div>
+
+        {/* CTRL-A community hub: public profile toggle + my submissions */}
+        {userId && <CommunityPanel userId={userId} />}
 
         {/* Sign out */}
         <button
           onClick={() => setConfirmOpen(true)}
           type="button"
-          style={{ marginTop: 20, width: "100%", font: "inherit", fontFamily: "'Neue Montreal', Inter, sans-serif", fontSize: 13, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: C.faint, background: "transparent", border: `1px solid ${C.hair}`, borderRadius: 999, padding: "13px", cursor: "pointer" }}
+          style={{ marginTop: 20, width: "100%", font: "inherit", fontFamily: NEUE, fontSize: 13, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: C.faint, background: "transparent", border: `1px solid ${C.hair}`, borderRadius: 999, padding: "13px", cursor: "pointer", transition: "color 0.2s ease, border-color 0.2s ease" }}
+          onMouseEnter={(e) => { e.currentTarget.style.color = C.cream; e.currentTarget.style.borderColor = "rgba(240,230,224,0.28)"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.color = C.faint; e.currentTarget.style.borderColor = C.hair; }}
         >
           Sign out
         </button>
@@ -168,26 +220,26 @@ export default function AccountPage() {
       {confirmOpen && (
         <div
           onClick={() => setConfirmOpen(false)}
-          style={{ position: "fixed", inset: 0, zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(59,33,20,0.35)", backdropFilter: "blur(6px)", padding: 20 }}
+          style={{ position: "fixed", inset: 0, zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(15,8,32,0.6)", backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)", padding: 20 }}
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            style={{ background: "#FFFFFF", border: `1px solid ${C.hair}`, borderRadius: 20, padding: "34px 32px", maxWidth: 360, width: "100%", textAlign: "center", boxShadow: C.shadow }}
+            style={{ background: C.panel, border: `1px solid ${C.hair}`, borderRadius: 20, padding: "34px 32px", maxWidth: 360, width: "100%", textAlign: "center", boxShadow: "0 24px 60px rgba(15,8,32,0.55)" }}
           >
-            <h2 style={{ margin: "0 0 8px", fontFamily: "Norwige, sans-serif", fontWeight: 700, fontSize: 22 }}>Sign out?</h2>
-            <p style={{ margin: "0 0 26px", fontFamily: "Inter, sans-serif", fontSize: 14, color: C.faint }}>You will need to sign in again to access your account.</p>
+            <h2 style={{ margin: "0 0 8px", fontFamily: NORWIGE, fontWeight: 700, fontSize: 22, color: C.cream }}>Sign out?</h2>
+            <p style={{ margin: "0 0 26px", fontFamily: NEUE, fontSize: 14, color: C.faint }}>You will need to sign in again to access your account.</p>
             <div style={{ display: "flex", gap: 12 }}>
               <button
                 onClick={() => setConfirmOpen(false)}
                 type="button"
-                style={{ flex: 1, font: "inherit", fontFamily: "Inter, sans-serif", fontSize: 13, fontWeight: 600, color: C.espresso, background: "transparent", border: `1px solid ${C.hair}`, borderRadius: 999, padding: "12px", cursor: "pointer" }}
+                style={{ flex: 1, font: "inherit", fontFamily: NEUE, fontSize: 13, fontWeight: 600, color: C.cream, background: "transparent", border: `1px solid ${C.hair}`, borderRadius: 999, padding: "12px", cursor: "pointer" }}
               >
                 Cancel
               </button>
               <button
                 onClick={signOut}
                 type="button"
-                style={{ flex: 1, font: "inherit", fontFamily: "Inter, sans-serif", fontSize: 13, fontWeight: 600, color: C.cream, background: C.rust, border: `1px solid ${C.rust}`, borderRadius: 999, padding: "12px", cursor: "pointer" }}
+                style={{ flex: 1, font: "inherit", fontFamily: NEUE, fontSize: 13, fontWeight: 600, color: "#160C28", background: C.rose, border: `1px solid ${C.rose}`, borderRadius: 999, padding: "12px", cursor: "pointer" }}
               >
                 Sign out
               </button>
