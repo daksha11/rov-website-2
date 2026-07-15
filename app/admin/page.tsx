@@ -3,7 +3,8 @@ import { useEffect, useState, useRef, useMemo } from 'react';
 import JSZip from 'jszip';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
-import { Play, Pause, Trash2, FileAudio, Music2, ChevronDown, ChevronRight, User, Users, Download, UploadCloud, X, Search } from 'lucide-react';
+import Link from 'next/link';
+import { Play, Pause, Trash2, FileAudio, Music2, ChevronDown, ChevronRight, User, Users, Download, UploadCloud, X, Search, Inbox } from 'lucide-react';
 
 const supabase = createClient();
 
@@ -951,6 +952,32 @@ export default function AdminDashboard() {
                 </span>
               </button>
             ))}
+            {/* CTRL-A community queue lives on its own route */}
+            <Link
+              href="/admin/ctrla"
+              style={{
+                flex: 1,
+                padding: '10px 16px',
+                borderRadius: '10px',
+                background: 'transparent',
+                color: 'rgba(240,230,224,0.5)',
+                fontSize: '12px',
+                fontFamily: "'Neue Montreal', 'Roboto', sans-serif",
+                fontWeight: 400,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                textDecoration: 'none',
+                transition: 'all 0.2s ease',
+                border: '1px solid transparent',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = 'rgba(240,230,224,0.75)'; e.currentTarget.style.background = 'rgba(255,255,255,0.07)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(240,230,224,0.5)'; e.currentTarget.style.background = 'transparent'; }}
+            >
+              <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '7px' }}>
+                <Inbox size={13} />
+                CTRL-A
+              </span>
+            </Link>
           </div>
         )}
 
