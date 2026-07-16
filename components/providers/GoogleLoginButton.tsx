@@ -79,11 +79,11 @@ export default function GoogleLoginButton() {
   }
 
   const isStaff = user?.role === "admin" || user?.role === "engineer";
+  // The profile IS the dashboard for everyone; staff just get Admin on top.
   const menuLinks = isStaff
     ? [
-        { label: "Admin view", path: "/admin" },
-        { label: "Normal view", path: "/portal" },
         { label: "Profile", path: "/account" },
+        { label: "Admin", path: "/admin" },
       ]
     : [{ label: "Profile", path: "/account" }];
 
