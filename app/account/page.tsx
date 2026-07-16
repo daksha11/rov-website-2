@@ -1,20 +1,27 @@
 "use client";
 
 /**
- * /account · the personal profile view for every signed-in user.
- * Gated to any authenticated session (redirects home otherwise).
- * Role-aware: staff get quick links to the admin view and the customer view;
- * customers get a direct link to their portal. Everyone can sign out here.
+ * /account · the profile that IS the dashboard.
+ * One scrolling surface for every signed-in user: identity up top
+ * (avatar, handle, bio, public-page toggle), then the wallet (live
+ * points + recent ledger activity), contributions, and the Studio
+ * section, which is locked behind booking a session and comes alive
+ * once the user has a client project.
  *
- * CTRL-A themed: the cosmic sunset ground (dash-ground / dash-hero / grain),
- * cream text, gold + rose + plum accents, Norwige / Neue Montreal type. No
- * italics, matching the command center.
+ * There is no "admin view / normal view" choice anymore: this page
+ * is the normal view for everyone, staff included. Staff get one
+ * quiet Admin link in the identity card, and that is the only
+ * role-specific chrome.
+ *
+ * CTRL-A themed: cosmic sunset ground, cream text, gold + rose +
+ * plum accents, Norwige / Neue Montreal. No italics.
  */
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
+import { useCredits } from "@/hooks/useCredits";
 import CommunityPanel from "./CommunityPanel";
 
 const supabase = createClient();
@@ -33,6 +40,7 @@ const C = {
 
 const NEUE = "'Neue Montreal', 'Roboto', sans-serif";
 const NORWIGE = "Norwige, sans-serif";
+const BOOKING_URL = "https://calendly.com/rangeofviewmusic/30min";
 
 const card: React.CSSProperties = {
   background: "rgba(255,255,255,0.03)",
@@ -47,50 +55,101 @@ interface Profile {
   email: string;
   role: string;
   avatar: string | null;
+  handle: string | null;
+  bio: string;
+  isPublic: boolean;
 }
 
-const ROLE_LABEL: Record<string, string> = {
-  admin: "Administrator",
-  engineer: "Engineer",
-  client: "Client",
-};
+interface ActivityRow {
+  id: number;
+  action: string;
+  points: number;
+  created_at: string;
+}
 
 function initials(name: string) {
   return name.trim().split(/\s+/).filter(Boolean).map((w) => w[0]).slice(0, 2).join("").toUpperCase() || "?";
 }
 
+/** 'spend:brand-kit-export' → "Brand kit export", 'daily-play' → "Daily play" */
+function actionLabel(action: string) {
+  const raw = action.replace(/^spend:/, "").split(":")[0].replace(/-/g, " ").trim();
+  return raw.charAt(0).toUpperCase() + raw.slice(1);
+}
+
 export default function AccountPage() {
   const router = useRouter();
+  const { points } = useCredits();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const [activity, setActivity] = useState<ActivityRow[]>([]);
+  const [hasProject, setHasProject] = useState(false);
+  const [contribCount, setContribCount] = useState(0);
+  const [featuredCount, setFeaturedCount] = useState(0);
   const [status, setStatus] = useState<"checking" | "ok">("checking");
+  const [bio, setBio] = useState("");
+  const [isPublic, setIsPublic] = useState(false);
+  const [savedFlash, setSavedFlash] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   useEffect(() => {
     const load = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) { router.push("/"); return; }
-      setUserId(session.user.id);
+      const uid = session.user.id;
+      setUserId(uid);
 
       const meta = session.user.user_metadata || {};
-      const name = meta.full_name || meta.name || session.user.email || "You";
+      const fallbackName = meta.full_name || meta.name || session.user.email || "You";
 
-      const { data: row } = await supabase
-        .from("profiles")
-        .select("role, full_name, email")
-        .eq("id", session.user.id)
-        .single();
+      const [{ data: row }, { count: projCount }, { data: events }] = await Promise.all([
+        supabase
+          .from("profiles")
+          .select("role, full_name, email, handle, bio, is_public")
+          .eq("id", uid)
+          .single(),
+        supabase
+          .from("projects")
+          .select("id", { count: "exact", head: true })
+          .eq("client_id", uid),
+        supabase
+          .from("credit_events")
+          .select("id, action, points, created_at")
+          .eq("user_id", uid)
+          .order("created_at", { ascending: false })
+          .limit(8),
+      ]);
 
       setProfile({
-        name: row?.full_name || name,
+        name: row?.full_name || fallbackName,
         email: row?.email || session.user.email || "",
         role: row?.role || "client",
         avatar: meta.avatar_url || meta.picture || null,
+        handle: row?.handle ?? null,
+        bio: row?.bio ?? "",
+        isPublic: !!row?.is_public,
       });
+      setBio(row?.bio ?? "");
+      setIsPublic(!!row?.is_public);
+      setHasProject((projCount ?? 0) > 0);
+      setActivity((events ?? []) as ActivityRow[]);
       setStatus("ok");
     };
     load();
   }, [router]);
+
+  async function saveProfile(nextPublic?: boolean) {
+    if (!userId) return;
+    const { error } = await supabase
+      .from("profiles")
+      .update({ bio: bio.trim() || null, is_public: nextPublic ?? isPublic })
+      .eq("id", userId);
+    if (!error) {
+      if (nextPublic !== undefined) setIsPublic(nextPublic);
+      setSavedFlash(true);
+      setTimeout(() => setSavedFlash(false), 2000);
+    }
+  }
 
   async function signOut() {
     setConfirmOpen(false);
@@ -109,15 +168,11 @@ export default function AccountPage() {
   }
 
   const isStaff = profile.role === "admin" || profile.role === "engineer";
-
-  const links = isStaff
-    ? [
-        { label: "Admin view", sub: "The command center", href: "/admin", primary: true },
-        { label: "Normal view", sub: "See what customers see", href: "/portal", primary: false },
-      ]
-    : [
-        { label: "My projects", sub: "Your portal, tracks and deliverables", href: "/portal", primary: true },
-      ];
+  const stats = [
+    { n: points === null ? "…" : points.toLocaleString(), label: "Points" },
+    { n: String(contribCount), label: contribCount === 1 ? "Contribution" : "Contributions" },
+    { n: String(featuredCount), label: "Featured" },
+  ];
 
   return (
     <main className="dash-ground" style={{ minHeight: "100vh", color: C.cream, fontFamily: NEUE }}>
@@ -125,7 +180,7 @@ export default function AccountPage() {
       <div aria-hidden style={{ height: 3, background: C.gold }} />
 
       {/* Masthead */}
-      <div style={{ maxWidth: 560, margin: "0 auto", padding: "14px clamp(18px,5vw,40px) 0", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
+      <div style={{ maxWidth: 640, margin: "0 auto", padding: "14px clamp(18px,5vw,40px) 0", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
         <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: NEUE, fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: C.cream, textDecoration: "none", fontWeight: 500 }}>
           <span style={{ color: C.gold }}>←</span> Range of View
         </Link>
@@ -135,74 +190,161 @@ export default function AccountPage() {
       </div>
 
       {/* Hero band — the signature CTRL-A sunset */}
-      <section className="dash-hero" style={{ height: "clamp(130px, 20vw, 200px)", display: "flex", alignItems: "flex-end", borderBottom: `1px solid ${C.hair}`, marginTop: 14 }}>
+      <section className="dash-hero" style={{ height: "clamp(120px, 18vw, 180px)", display: "flex", alignItems: "flex-end", borderBottom: `1px solid ${C.hair}`, marginTop: 14 }}>
         <div className="ctrla-grain" style={{ zIndex: 1 }} />
-        <span style={{ position: "absolute", top: 16, right: "clamp(18px,5vw,40px)", zIndex: 2, fontSize: 10.5, letterSpacing: "0.22em", textTransform: "uppercase", color: C.gold, fontWeight: 600 }}>
-          A ROV Creative Platform
-        </span>
-        <div style={{ position: "relative", zIndex: 2, width: "100%", maxWidth: 560, margin: "0 auto", padding: "0 clamp(18px,5vw,40px) clamp(18px,4vw,28px)" }}>
+        <div style={{ position: "relative", zIndex: 2, width: "100%", maxWidth: 640, margin: "0 auto", padding: "0 clamp(18px,5vw,40px) clamp(16px,4vw,24px)" }}>
           <p style={{ margin: 0, fontSize: 10.5, letterSpacing: "0.28em", textTransform: "uppercase", color: C.soft, textShadow: "0 1px 10px rgba(15,8,32,0.55)" }}>
             Range of View Studios
           </p>
-          <h1 style={{ margin: "6px 0 0", fontFamily: NORWIGE, fontWeight: 700, fontSize: "clamp(30px, 6vw, 52px)", lineHeight: 1, color: C.cream, textShadow: "0 2px 20px rgba(15,8,32,0.65)" }}>
-            Your Profile
+          <h1 style={{ margin: "6px 0 0", fontFamily: NORWIGE, fontWeight: 700, fontSize: "clamp(28px, 5.5vw, 46px)", lineHeight: 1, color: C.cream, textShadow: "0 2px 20px rgba(15,8,32,0.65)" }}>
+            {profile.name}
           </h1>
         </div>
       </section>
 
       {/* Content */}
-      <div style={{ maxWidth: 560, margin: "0 auto", padding: "clamp(24px,5vw,40px) clamp(18px,5vw,40px) 80px" }}>
+      <div style={{ maxWidth: 640, margin: "0 auto", padding: "clamp(24px,5vw,40px) clamp(18px,5vw,40px) 80px" }}>
 
-        {/* Identity card */}
-        <div style={{ ...card, padding: "clamp(24px,5vw,38px)", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 8 }}>
-          {profile.avatar ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={profile.avatar} alt="" width={84} height={84} style={{ borderRadius: "50%", objectFit: "cover", border: `2px solid ${C.hair}` }} />
-          ) : (
-            <div style={{ width: 84, height: 84, borderRadius: "50%", background: `linear-gradient(135deg, ${C.gold} 0%, ${C.rose} 55%, ${C.plum} 100%)`, color: "#160C28", display: "grid", placeItems: "center", fontFamily: NORWIGE, fontWeight: 700, fontSize: 30 }}>
-              {initials(profile.name)}
+        {/* ── Identity ── */}
+        <section style={{ ...card, padding: "clamp(24px,5vw,34px)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap" }}>
+            {profile.avatar ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={profile.avatar} alt="" width={72} height={72} style={{ borderRadius: "50%", objectFit: "cover", border: `2px solid ${C.hair}` }} />
+            ) : (
+              <div style={{ width: 72, height: 72, borderRadius: "50%", background: `linear-gradient(135deg, ${C.gold} 0%, ${C.rose} 55%, ${C.plum} 100%)`, color: "#160C28", display: "grid", placeItems: "center", fontFamily: NORWIGE, fontWeight: 700, fontSize: 26 }}>
+                {initials(profile.name)}
+              </div>
+            )}
+            <div style={{ flex: 1, minWidth: 180 }}>
+              {profile.handle && (
+                <p style={{ margin: 0, fontSize: 13.5, color: C.gold, fontWeight: 600 }}>@{profile.handle}</p>
+              )}
+              {profile.email && (
+                <p style={{ margin: "3px 0 0", fontSize: 13, color: C.faint }}>{profile.email}</p>
+              )}
+              {isPublic && profile.handle && (
+                <Link href={`/ctrla/u/${profile.handle}`} style={{ display: "inline-block", marginTop: 6, fontSize: 12.5, fontWeight: 600, color: C.gold, textDecoration: "none" }}>
+                  View public page →
+                </Link>
+              )}
             </div>
-          )}
-          <h2 style={{ margin: "10px 0 0", fontFamily: NORWIGE, fontWeight: 700, fontSize: "clamp(24px,4vw,32px)", lineHeight: 1.1, color: C.cream }}>
-            {profile.name}
-          </h2>
-          {profile.email && (
-            <p style={{ margin: 0, fontFamily: NEUE, fontSize: 14, color: C.faint }}>{profile.email}</p>
-          )}
-          <span style={{ marginTop: 6, fontFamily: NEUE, fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: C.gold, background: "rgba(227,194,74,0.1)", border: "1px solid rgba(227,194,74,0.3)", borderRadius: 999, padding: "5px 14px", fontWeight: 600 }}>
-            {ROLE_LABEL[profile.role] || profile.role}
-          </span>
-        </div>
+            {isStaff && (
+              <Link href="/admin" style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: C.gold, background: "rgba(227,194,74,0.1)", border: "1px solid rgba(227,194,74,0.3)", borderRadius: 999, padding: "8px 18px", textDecoration: "none" }}>
+                Admin
+              </Link>
+            )}
+          </div>
 
-        {/* Navigation */}
-        <div style={{ display: "grid", gap: 12, marginTop: 20 }}>
-          {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              style={{
-                display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16,
-                textDecoration: "none",
-                background: l.primary ? "linear-gradient(135deg, #24123A 0%, #4E3D73 100%)" : "rgba(255,255,255,0.03)",
-                color: C.cream,
-                border: `1px solid ${l.primary ? "rgba(227,194,74,0.3)" : C.hair}`,
-                borderRadius: 16, padding: "18px 22px",
-                transition: "border-color 0.2s ease, transform 0.2s ease",
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(227,194,74,0.55)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = l.primary ? "rgba(227,194,74,0.3)" : C.hair; e.currentTarget.style.transform = "translateY(0)"; }}
-            >
-              <span style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                <span style={{ fontFamily: NORWIGE, fontWeight: 700, fontSize: 17, color: C.cream }}>{l.label}</span>
-                <span style={{ fontFamily: NEUE, fontSize: 13, color: C.faint }}>{l.sub}</span>
+          {/* Public toggle */}
+          <button
+            type="button"
+            onClick={() => saveProfile(!isPublic)}
+            style={{ font: "inherit", marginTop: 18, width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, textAlign: "left", cursor: "pointer", background: "rgba(255,255,255,0.03)", border: `1px solid ${isPublic ? "rgba(227,194,74,0.4)" : C.hair}`, borderRadius: 14, padding: "14px 18px", color: C.cream }}
+          >
+            <span>
+              <span style={{ display: "block", fontWeight: 700, fontSize: 14 }}>Public profile</span>
+              <span style={{ display: "block", marginTop: 3, fontSize: 12.5, color: C.faint }}>
+                {isPublic && profile.handle ? `Live at /ctrla/u/${profile.handle}` : "Off. Turn on to show your contributions to the world."}
               </span>
-              <span style={{ fontSize: 18, color: C.gold }}>→</span>
-            </Link>
+            </span>
+            <span aria-hidden style={{ width: 42, height: 24, borderRadius: 999, flexShrink: 0, background: isPublic ? C.gold : "rgba(255,255,255,0.1)", position: "relative", transition: "background 0.2s ease" }}>
+              <span style={{ position: "absolute", top: 3, left: isPublic ? 21 : 3, width: 18, height: 18, borderRadius: "50%", background: isPublic ? "#160C28" : C.faint, transition: "left 0.2s ease" }} />
+            </span>
+          </button>
+
+          {/* Bio */}
+          <div style={{ marginTop: 14 }}>
+            <label htmlFor="acct-bio" style={{ display: "block", fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase", color: C.faint, fontWeight: 600, marginBottom: 8 }}>
+              Bio (shows on your public page)
+            </label>
+            <textarea
+              id="acct-bio"
+              value={bio}
+              maxLength={280}
+              onChange={(e) => setBio(e.target.value)}
+              onBlur={() => saveProfile()}
+              placeholder="One or two lines about what you make."
+              style={{ width: "100%", font: "inherit", fontFamily: NEUE, fontSize: 14, color: C.cream, background: "rgba(255,255,255,0.04)", border: `1px solid ${C.hair}`, borderRadius: 12, padding: "12px 14px", minHeight: 64, resize: "vertical", outline: "none", lineHeight: 1.55 }}
+            />
+            {savedFlash && <span style={{ fontSize: 12, color: C.gold, fontWeight: 600 }}>Saved</span>}
+          </div>
+        </section>
+
+        {/* ── Stats ── */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginTop: 16 }}>
+          {stats.map((s) => (
+            <div key={s.label} style={{ ...card, padding: "18px 12px", textAlign: "center" }}>
+              <span style={{ display: "block", fontFamily: NORWIGE, fontWeight: 700, fontSize: 26, color: C.gold }}>{s.n}</span>
+              <span style={{ display: "block", marginTop: 2, fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: C.faint, fontWeight: 600 }}>{s.label}</span>
+            </div>
           ))}
         </div>
 
-        {/* CTRL-A community hub: public profile toggle + my submissions */}
-        {userId && <CommunityPanel userId={userId} />}
+        {/* ── Recent activity (the wallet ledger) ── */}
+        <section style={{ ...card, marginTop: 16, padding: "clamp(22px,4vw,30px)" }}>
+          <h2 style={{ margin: 0, fontFamily: NORWIGE, fontWeight: 700, fontSize: 19 }}>Recent activity</h2>
+          {activity.length === 0 ? (
+            <p style={{ margin: "14px 0 0", fontSize: 13.5, color: C.faint, lineHeight: 1.6 }}>
+              Your points story starts here: earn by playing the CTRL-A daily, referring friends, and contributing. Spend on the brand kit generator and premium unlocks.
+            </p>
+          ) : (
+            <div style={{ marginTop: 14, display: "grid", gap: 2 }}>
+              {activity.map((a) => (
+                <div key={a.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, padding: "10px 2px", borderBottom: `1px solid ${C.hair}` }}>
+                  <span style={{ fontSize: 13.5, color: C.soft }}>{actionLabel(a.action)}</span>
+                  <span style={{ fontSize: 13.5, fontWeight: 700, color: a.points >= 0 ? C.gold : C.faint }}>
+                    {a.points >= 0 ? `+${a.points}` : a.points}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+
+        {/* ── Contributions ── */}
+        {userId && (
+          <CommunityPanel
+            userId={userId}
+            onCounts={(total, featured) => { setContribCount(total); setFeaturedCount(featured); }}
+          />
+        )}
+
+        {/* ── Studio ── */}
+        {hasProject ? (
+          <Link
+            href="/portal"
+            style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, marginTop: 16, textDecoration: "none", background: "linear-gradient(135deg, #24123A 0%, #4E3D73 100%)", color: C.cream, border: "1px solid rgba(227,194,74,0.3)", borderRadius: 18, padding: "22px 24px", transition: "border-color 0.2s ease, transform 0.2s ease" }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(227,194,74,0.55)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(227,194,74,0.3)"; e.currentTarget.style.transform = "translateY(0)"; }}
+          >
+            <span style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+              <span style={{ fontFamily: NORWIGE, fontWeight: 700, fontSize: 18 }}>Your studio</span>
+              <span style={{ fontSize: 13, color: C.soft }}>Projects, mixes, revisions and deliverables</span>
+            </span>
+            <span style={{ fontSize: 18, color: C.gold }}>→</span>
+          </Link>
+        ) : (
+          <section style={{ ...card, marginTop: 16, padding: "clamp(22px,4vw,30px)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <h2 style={{ margin: 0, fontFamily: NORWIGE, fontWeight: 700, fontSize: 19 }}>Studio</h2>
+              <span style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", fontWeight: 700, color: C.faint, border: `1px solid ${C.hair}`, borderRadius: 999, padding: "3px 10px" }}>
+                Locked
+              </span>
+            </div>
+            <p style={{ margin: "12px 0 18px", fontSize: 13.5, color: C.faint, lineHeight: 1.65 }}>
+              Book a music session and this section becomes your studio dashboard: project status, mix revisions, uploads, and delivery, all right here.
+            </p>
+            <a
+              href={BOOKING_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: "inline-block", fontSize: 12.5, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#160C28", background: C.gold, borderRadius: 999, padding: "13px 26px", textDecoration: "none" }}
+            >
+              Book a music session
+            </a>
+          </section>
+        )}
 
         {/* Sign out */}
         <button
