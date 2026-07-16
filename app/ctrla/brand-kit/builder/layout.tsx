@@ -9,6 +9,8 @@ import Toaster from "@/components/brand-kit/Toaster";
 import { useBrandKitStore } from "@/lib/brand-kit/store";
 import { KIT_SHARE_PARAM, decodeKit } from "@/lib/brand-kit/share";
 import { useLeadSync } from "@/hooks/useLeadSync";
+import { createClient } from "@/utils/supabase/client";
+import type { BrandKitData } from "@/lib/brand-kit/types";
 
 export default function BrandKitBuilderLayout({
   children,
@@ -24,12 +26,26 @@ export default function BrandKitBuilderLayout({
   // so a mid-wizard refresh restores the user's work. Then, if the URL carries
   // a shared kit token, drop that kit in so the link opens ready to remix.
   useEffect(() => {
-    const token = new URLSearchParams(window.location.search).get(
-      KIT_SHARE_PARAM
-    );
-    // Rehydrate first, then apply the shared kit so localStorage cannot race in
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get(KIT_SHARE_PARAM);
+    const kitId = params.get("kit_id");
+    // Rehydrate first, then apply an incoming kit so localStorage cannot race in
     // and overwrite it. rehydrate() may return void, so normalize to a promise.
-    void Promise.resolve(useBrandKitStore.persist.rehydrate()).then(() => {
+    void Promise.resolve(useBrandKitStore.persist.rehydrate()).then(async () => {
+      // Resume a saved kit by id (own kits only, enforced by RLS). Full data,
+      // logos included, so it opens exactly where it was saved.
+      if (kitId) {
+        try {
+          const supabase = createClient();
+          const { data } = await supabase.from("brand_kits").select("data").eq("id", kitId).maybeSingle();
+          if (data?.data) {
+            useBrandKitStore.getState().loadFullKit(data.data as BrandKitData);
+            return;
+          }
+        } catch {
+          /* fall through to any share token */
+        }
+      }
       if (!token) return;
       const kit = decodeKit(token);
       if (kit) useBrandKitStore.getState().loadKit(kit);

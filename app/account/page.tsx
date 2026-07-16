@@ -23,6 +23,8 @@ import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
 import { useCredits } from "@/hooks/useCredits";
 import CommunityPanel from "./CommunityPanel";
+import WalletCard from "./WalletCard";
+import SavedKits from "./SavedKits";
 
 const supabase = createClient();
 
@@ -169,7 +171,6 @@ export default function AccountPage() {
 
   const isStaff = profile.role === "admin" || profile.role === "engineer";
   const stats = [
-    { n: points === null ? "…" : points.toLocaleString(), label: "Points" },
     { n: String(contribCount), label: contribCount === 1 ? "Contribution" : "Contributions" },
     { n: String(featuredCount), label: "Featured" },
   ];
@@ -271,8 +272,11 @@ export default function AccountPage() {
           </div>
         </section>
 
+        {/* ── Wallet (balance with verbs) ── */}
+        <WalletCard points={points} />
+
         {/* ── Stats ── */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginTop: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12, marginTop: 16 }}>
           {stats.map((s) => (
             <div key={s.label} style={{ ...card, padding: "18px 12px", textAlign: "center" }}>
               <span style={{ display: "block", fontFamily: NORWIGE, fontWeight: 700, fontSize: 26, color: C.gold }}>{s.n}</span>
@@ -309,6 +313,9 @@ export default function AccountPage() {
             onCounts={(total, featured) => { setContribCount(total); setFeaturedCount(featured); }}
           />
         )}
+
+        {/* ── Saved brand kits ── */}
+        {userId && <SavedKits userId={userId} />}
 
         {/* ── Studio ── */}
         {hasProject ? (

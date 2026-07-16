@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
-import { TOOLKITS, TYPE_META, type SubmissionPayload, type SubmissionType } from "@/lib/ctrla/community";
+import { TOOLKITS, TRACK_FOR, TYPE_META, type ProcessSection, type SubmissionPayload, type SubmissionType, type ToolUsed } from "@/lib/ctrla/community";
 
 const supabase = createClient();
 
@@ -34,10 +34,20 @@ const card: React.CSSProperties = {
   borderRadius: 18,
 };
 
+interface SignedMedia {
+  path: string;
+  kind: "image" | "audio" | "video";
+  caption?: string;
+  url?: string | null;
+}
+
 interface QueueRow {
   id: string;
   toolkit_slug: string | null;
   type: SubmissionType;
+  track?: "toolkit" | "magazine";
+  credit_cost?: number;
+  media?: SignedMedia[] | null;
   payload: SubmissionPayload;
   created_at: string;
   profiles: { full_name: string | null; handle: string | null; email: string | null } | null;
@@ -93,18 +103,106 @@ export default function CtrlaQueuePage() {
     padding: "10px 18px", cursor: "pointer",
   });
 
+  // Media-heavy magazine features (art / story): gallery, statement, the
+  // tools-used breakdown, and the sectioned process, so a reviewer sees the
+  // whole spread before deciding.
+  function FeatureBody({ row }: { row: QueueRow }) {
+    const p = row.payload;
+    const tools = (p.tools as (ToolUsed | string)[] | undefined) ?? [];
+    const process = (p.process as ProcessSection[] | undefined) ?? [];
+    return (
+      <div style={{ marginTop: 16, display: "grid", gap: 16 }}>
+        {typeof row.credit_cost === "number" && row.credit_cost > 0 && (
+          <p style={{ margin: 0, fontSize: 12, color: C.faint }}>
+            {p.medium ? `Medium: ${p.medium} · ` : ""}{row.credit_cost} credits spent to submit
+          </p>
+        )}
+
+        {Array.isArray(row.media) && row.media.length > 0 && (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: 8 }}>
+            {row.media.map((m, i) => (
+              <div key={m.path} style={{ borderRadius: 10, overflow: "hidden", border: `1px solid ${C.hair}`, background: "rgba(255,255,255,0.04)" }}>
+                {m.kind === "image" && m.url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={m.url} alt="" style={{ width: "100%", height: 120, objectFit: "cover", display: "block" }} />
+                ) : m.kind === "audio" && m.url ? (
+                  <audio controls src={m.url} style={{ width: "100%" }} />
+                ) : m.kind === "video" && m.url ? (
+                  <video controls src={m.url} style={{ width: "100%", height: 120, objectFit: "cover" }} />
+                ) : (
+                  <div style={{ padding: 14, fontSize: 12, color: C.faint }}>{m.kind}</div>
+                )}
+                {i === 0 && <div style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: C.gold, padding: "4px 8px", fontWeight: 700 }}>Hero</div>}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {p.statement && (
+          <div>
+            <p style={{ margin: "0 0 4px", fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: C.faint, fontWeight: 700 }}>Statement</p>
+            <p style={{ margin: 0, fontSize: 14, color: C.soft, lineHeight: 1.6 }}>{p.statement}</p>
+          </div>
+        )}
+
+        {tools.length > 0 && (
+          <div>
+            <p style={{ margin: "0 0 4px", fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: C.faint, fontWeight: 700 }}>Tools used</p>
+            <p style={{ margin: 0, fontSize: 13.5, color: C.soft, lineHeight: 1.6 }}>
+              {tools.map((t) => (typeof t === "string" ? t : t.toolkit ? `${t.name} (${t.toolkit})` : t.name)).join(" · ")}
+            </p>
+          </div>
+        )}
+
+        {process.length > 0 && (
+          <div>
+            <p style={{ margin: "0 0 6px", fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: C.faint, fontWeight: 700 }}>Process</p>
+            <div style={{ display: "grid", gap: 10 }}>
+              {process.map((s, i) => (
+                <div key={i}>
+                  <p style={{ margin: 0, fontSize: 13.5, fontWeight: 700, color: C.cream }}>{s.heading}</p>
+                  <p style={{ margin: "3px 0 0", fontSize: 13.5, color: C.soft, lineHeight: 1.6 }}>{s.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {p.bio && (
+          <div>
+            <p style={{ margin: "0 0 4px", fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: C.faint, fontWeight: 700 }}>Bio</p>
+            <p style={{ margin: 0, fontSize: 13.5, color: C.soft, lineHeight: 1.6 }}>{p.bio}</p>
+          </div>
+        )}
+
+        {Array.isArray(p.links) && p.links.length > 0 && (
+          <p style={{ margin: 0, fontSize: 12.5, color: C.faint }}>
+            Links: {p.links.map((l, i) => (
+              <a key={i} href={l} target="_blank" rel="noopener noreferrer" style={{ color: C.gold }}>{l}{i < p.links!.length - 1 ? ", " : ""}</a>
+            ))}
+          </p>
+        )}
+      </div>
+    );
+  }
+
   return (
     <main className="dash-ground" style={{ minHeight: "100vh", color: C.cream, fontFamily: NEUE }}>
       <div aria-hidden style={{ height: 3, background: C.gold }} />
 
-      <div style={{ maxWidth: 720, margin: "0 auto", padding: "14px clamp(18px,5vw,40px) 80px" }}>
+      <div style={{ maxWidth: 900, margin: "0 auto", padding: "14px clamp(18px,5vw,40px) 80px" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, marginBottom: 26 }}>
           <Link href="/admin" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: C.cream, textDecoration: "none", fontWeight: 500 }}>
             <span style={{ color: C.gold }}>←</span> Admin
           </Link>
-          <span style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: C.gold, fontWeight: 600 }}>
-            Community queue
-          </span>
+          <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+            <Link href="/admin/ctrla/forms" style={{ fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase", color: C.cream, textDecoration: "none", fontWeight: 600 }}>
+              Forms
+            </Link>
+            <span style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: C.gold, fontWeight: 600 }}>
+              Community queue
+            </span>
+          </div>
         </div>
 
         <h1 style={{ margin: "0 0 4px", fontFamily: NORWIGE, fontWeight: 700, fontSize: "clamp(26px,5vw,40px)" }}>
@@ -153,6 +251,8 @@ export default function CtrlaQueuePage() {
               {r.payload.tags && r.payload.tags.length > 0 && (
                 <p style={{ margin: "8px 0 0", fontSize: 12, color: C.faint }}>Tags: {r.payload.tags.join(", ")}</p>
               )}
+
+              {(r.track ?? TRACK_FOR[r.type]) === "magazine" && <FeatureBody row={r} />}
 
               {rejecting === r.id ? (
                 <div style={{ marginTop: 16, display: "grid", gap: 10 }}>

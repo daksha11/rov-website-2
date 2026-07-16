@@ -19,8 +19,10 @@
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import CtrlASignup from "./CtrlASignup";
+import { COSTS, type CostItem } from "@/lib/credits/config";
 
 type Theme = "dark" | "light";
+type Gate = "email" | "credits";
 
 const UNLOCK_KEY = "ctrla_unlocked";
 const EMAIL_KEY = "ctrla_lead_email";
@@ -56,6 +58,18 @@ function trackUnlock(source: string) {
   }
 }
 
+// Onsite guide-unlock signal, fired when a gated guide reveals (email gate).
+// The reliable server counterpart for completion is fired by /api/credits/earn.
+function trackGuideUnlocked(guideSlug: string, toolkit?: string) {
+  try {
+    const w = window as unknown as { _learnq?: unknown[] };
+    if (Array.isArray(w._learnq))
+      w._learnq.push(["track", "CTRL-A Guide Unlocked", { guide: guideSlug, toolkit: toolkit ?? "general" }]);
+  } catch {
+    /* best-effort */
+  }
+}
+
 export default function ToolGate({
   gateId,
   source,
@@ -68,6 +82,10 @@ export default function ToolGate({
   note = "No spam. Unsubscribe anytime.",
   children,
   preview,
+  gate = "email",
+  guideSlug,
+  toolkit,
+  costItem = "premium-course",
 }: {
   gateId: string;
   source: string;
@@ -81,20 +99,32 @@ export default function ToolGate({
   children: ReactNode;
   // Optional teaser shown blurred behind the lock (defaults to the children).
   preview?: ReactNode;
+  // "email" (default) captures a lead; "credits" spends credits to unlock.
+  // Flipping a single guide is just this prop, per lib/ctrla/guides.ts.
+  gate?: Gate;
+  // When set, fire the onsite Guide Unlocked signal on reveal.
+  guideSlug?: string;
+  toolkit?: string;
+  // Which cost to charge in credits mode (defaults to premium-course).
+  costItem?: CostItem;
 }) {
   const p = palette(theme, accent);
   // Start locked so server and first client render match; reveal in effect.
   const [unlocked, setUnlocked] = useState(false);
   const [ready, setReady] = useState(false);
+  const [spending, setSpending] = useState(false);
+  const [spendError, setSpendError] = useState<string | null>(null);
 
   useEffect(() => {
     try {
-      if (localStorage.getItem(UNLOCK_KEY) === "1") setUnlocked(true);
+      // The global email-lead unlock only opens email gates. Credit gates are
+      // per-item and must be paid, so they never auto-open from the lead flag.
+      if (gate === "email" && localStorage.getItem(UNLOCK_KEY) === "1") setUnlocked(true);
     } catch {
       /* private mode, etc. */
     }
     setReady(true);
-  }, []);
+  }, [gate]);
 
   function handleUnlock(email: string) {
     try {
@@ -104,12 +134,43 @@ export default function ToolGate({
       /* ignore */
     }
     trackUnlock(source);
+    if (guideSlug) trackGuideUnlocked(guideSlug, toolkit);
     setUnlocked(true);
+  }
+
+  // Credits gate: spend server-side, reveal on success. Not used at launch
+  // (all guides are email), but wired so a single guide can flip to credits.
+  async function handleSpend() {
+    if (spending) return;
+    setSpending(true);
+    setSpendError(null);
+    try {
+      const res = await fetch("/api/credits/spend", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ item: costItem }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (res.ok && json.ok) {
+        if (guideSlug) trackGuideUnlocked(guideSlug, toolkit);
+        setUnlocked(true);
+        return;
+      }
+      if (res.status === 401) setSpendError("Sign in to unlock this with credits.");
+      else if (res.status === 402) setSpendError("Not enough credits yet. Earn a few more and come back.");
+      else setSpendError("Could not unlock right now. Please try again.");
+    } catch {
+      setSpendError("Could not unlock right now. Please try again.");
+    } finally {
+      setSpending(false);
+    }
   }
 
   // Before hydration settles, render the locked shell without the form to
   // avoid a flash of the form for already-unlocked visitors.
   if (unlocked) return <>{children}</>;
+
+  const creditCost = COSTS[costItem];
 
   return (
     <div className="ctrla-gate" data-theme={theme}>
@@ -144,7 +205,7 @@ export default function ToolGate({
           </ul>
         )}
 
-        {ready && (
+        {ready && gate === "email" && (
           <CtrlASignup
             theme={theme}
             accent={accent}
@@ -153,6 +214,36 @@ export default function ToolGate({
             note={note}
             onSuccess={handleUnlock}
           />
+        )}
+
+        {ready && gate === "credits" && (
+          <div>
+            <button
+              type="button"
+              onClick={handleSpend}
+              disabled={spending}
+              style={{
+                width: "100%",
+                font: "inherit",
+                fontFamily: "'Neue Montreal','Helvetica Neue',Arial,sans-serif",
+                fontWeight: 700,
+                fontSize: 14,
+                letterSpacing: "0.02em",
+                color: "#160C28",
+                background: p.accent,
+                border: "none",
+                borderRadius: 12,
+                padding: "13px 18px",
+                cursor: spending ? "default" : "pointer",
+                opacity: spending ? 0.7 : 1,
+              }}
+            >
+              {spending ? "Unlocking..." : `${cta} · ${creditCost} credits`}
+            </button>
+            {spendError && (
+              <p style={{ margin: "10px 0 0", fontSize: 13, color: p.soft }}>{spendError}</p>
+            )}
+          </div>
         )}
       </div>
     </div>

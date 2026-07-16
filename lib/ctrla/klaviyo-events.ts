@@ -14,7 +14,15 @@ export type CtrlaEventName =
   | "CTRL-A Submission Received"
   | "CTRL-A Submission Approved"
   | "CTRL-A Submission Featured"
-  | "CTRL-A Submission Rejected";
+  | "CTRL-A Submission Rejected"
+  // Conversion-system events (guide gate, brand kit, account, economy, features).
+  // Onsite counterparts (Guide Unlocked, Brand Kit Started) fire via _learnq in the
+  // client; the events below are the reliable server-fired ones.
+  | "CTRL-A Guide Completed"
+  | "CTRL-A Brand Kit Exported"
+  | "CTRL-A Account Created"
+  | "CTRL-A Credits Earned"
+  | "CTRL-A Feature Submitted";
 
 export async function fireCtrlaEvent(
   event: CtrlaEventName,

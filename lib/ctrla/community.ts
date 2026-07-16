@@ -5,7 +5,11 @@
 // these are the shapes the UI reads and writes.
 // ─────────────────────────────────────────────────────────────
 
-export type SubmissionType = "tool" | "idea" | "signal" | "resource";
+// Track A (toolkit utility) + Track B (magazine features).
+export type ToolkitType = "tool" | "idea" | "signal" | "resource" | "history";
+export type MagazineType = "art" | "story";
+export type SubmissionType = ToolkitType | MagazineType;
+export type SubmissionTrack = "toolkit" | "magazine";
 export type SubmissionStatus = "pending" | "approved" | "featured" | "rejected";
 export type ToolkitSlug = "music" | "web-dev" | "design" | "video";
 
@@ -15,6 +19,36 @@ export const TOOLKITS: { slug: ToolkitSlug; title: string }[] = [
   { slug: "design", title: "Design" },
   { slug: "video", title: "Video" },
 ];
+
+/** Which track a type belongs to (mirrors the DB + form-config seed). */
+export const TRACK_FOR: Record<SubmissionType, SubmissionTrack> = {
+  tool: "toolkit",
+  idea: "toolkit",
+  signal: "toolkit",
+  resource: "toolkit",
+  history: "toolkit",
+  art: "magazine",
+  story: "magazine",
+};
+
+/** One media item stored in the ctrla-submissions bucket. */
+export interface MediaItem {
+  path: string;
+  kind: "image" | "audio" | "video";
+  caption?: string;
+}
+
+/** A tool used, optionally mapped to a CTRL-A toolkit (story features). */
+export interface ToolUsed {
+  name: string;
+  toolkit?: ToolkitSlug;
+}
+
+/** A process section, the ugly steps included (story features). */
+export interface ProcessSection {
+  heading: string;
+  body: string;
+}
 
 export const TYPE_META: Record<
   SubmissionType,
@@ -40,6 +74,21 @@ export const TYPE_META: Record<
     blurb: "A guide, video, or read that leveled you up.",
     needsToolkit: true,
   },
+  history: {
+    label: "Add a history milestone",
+    blurb: "A dated milestone for a toolkit's history section.",
+    needsToolkit: true,
+  },
+  art: {
+    label: "Submit art",
+    blurb: "Any medium, shown well. Featured in the magazine.",
+    needsToolkit: false,
+  },
+  story: {
+    label: "Submit a story",
+    blurb: "The full editorial: the how, the process, the ugly steps.",
+    needsToolkit: false,
+  },
 };
 
 export const STATUS_META: Record<SubmissionStatus, { label: string; tone: "wait" | "good" | "great" | "bad" }> = {
@@ -51,12 +100,57 @@ export const STATUS_META: Record<SubmissionStatus, { label: string; tone: "wait"
 
 /** payload shapes per type (validated server-side) */
 export interface SubmissionPayload {
-  title: string; // tool/resource name, idea title, signal headline
+  title: string; // tool/resource name, idea title, signal headline, art/story title
   url?: string;
   body?: string; // pitch / note / why you love it
   tags?: string[];
   level?: "Beginner" | "Intermediate" | "Pro";
   kind?: "Release" | "Shift" | "Trend" | "Sunset"; // signals only
+  date?: string; // history milestones (ISO date)
+  // Magazine features (art / story):
+  medium?: string; // art
+  statement?: string; // art
+  bio?: string; // art + story
+  links?: string[]; // art + story
+  tools?: ToolUsed[]; // story (name + toolkit mapping)
+  process?: ProcessSection[]; // story
+}
+
+// ── Admin-editable form configs (ctrla_form_configs) ──────────────────
+// The submit pages render from these; the API's zod stays the safety floor.
+export type FieldKind =
+  | "text"
+  | "textarea"
+  | "url"
+  | "tags"
+  | "select"
+  | "toolkit"
+  | "date"
+  | "media"
+  | "tools"
+  | "sections";
+
+export interface FormFieldConfig {
+  key: string;
+  label: string;
+  kind: FieldKind;
+  required: boolean;
+  help?: string;
+  maxLength?: number;
+  options?: string[];
+  min?: number;
+  max?: number;
+}
+
+export interface FormConfig {
+  type: SubmissionType;
+  track: SubmissionTrack;
+  is_open: boolean;
+  title: string;
+  intro: string | null;
+  credit_cost: number;
+  fields: FormFieldConfig[];
+  sort: number;
 }
 
 export interface WallRow {
@@ -77,6 +171,9 @@ export interface MySubmissionRow {
   id: string;
   toolkit_slug: ToolkitSlug | null;
   type: SubmissionType;
+  track?: SubmissionTrack;
+  credit_cost?: number;
+  media?: MediaItem[] | null;
   status: SubmissionStatus;
   payload: SubmissionPayload;
   review_note: string | null;

@@ -42,6 +42,10 @@ export function useLeadSync(source: string) {
           localStorage.setItem(key, "1");
           // A known lead: open the soft gates without nagging them again.
           localStorage.setItem("ctrla_unlocked", "1");
+          // Server backstop: set account_* props + fire Account Created once,
+          // so a login-first lead becomes a real, segmentable account profile.
+          // Best-effort, deduped by the same synced key above.
+          fetch("/api/ctrla/account-bridge", { method: "POST" }).catch(() => {});
         }
       } catch {
         /* best-effort, never surfaced */

@@ -4,11 +4,17 @@ import { useEffect, useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
+import { useLeadSync } from "@/hooks/useLeadSync";
 
 const supabase = createClient();
 
 export default function GoogleLoginButton() {
   const router = useRouter();
+  // Global auth chrome: mount the Klaviyo lead sync here so the FIRST
+  // authenticated session on ANY page reaches Klaviyo, including someone who
+  // signed in with Google before ever giving us their email through a form.
+  // Deduped per user inside the hook, best-effort, never blocks the UI.
+  useLeadSync("account");
   const [user, setUser] = useState<{ name: string; role: string } | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);

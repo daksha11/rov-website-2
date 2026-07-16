@@ -26,7 +26,12 @@ import EditorialFooter from "../_components/EditorialFooter";
 import { edLight as ed, Bleed, Kicker, Label, Rule } from "../_components/editorial";
 import CtrlASignup from "../_components/CtrlASignup";
 import ToolGate from "../_components/ToolGate";
+import GuideComplete from "../_components/GuideComplete";
 import { currentVolume } from "../_volumes";
+
+// This course is the flagship email-gated guide. The slug ties the unlock
+// event, the completion reward, and the Klaviyo nurture flow together.
+const GUIDE_SLUG = "claude-code-crash-course";
 
 const PLUM = ed.plum; // #4E3D73 — primary accent, legible on cream
 const ROSE = "#A56A67"; // secondary accent
@@ -649,6 +654,8 @@ Read it aloud: if it sounds like a LinkedIn post, rewrite.`}
             <ToolGate
               gateId="cc-cheatsheet"
               source="claude-code-course"
+              guideSlug={GUIDE_SLUG}
+              toolkit="web-dev"
               theme="light"
               accent={PLUM}
               title="The Claude Code cheatsheet"
@@ -663,6 +670,19 @@ Read it aloud: if it sounds like a LinkedIn post, rewrite.`}
                 <a href="/ctrla/vault/ctrl-a-prompt-pack.md" download style={dlBtn}>↓ Prompt pack</a>
               </div>
             </ToolGate>
+          </Reveal>
+
+          {/* Finished it? Claim the completion credits. */}
+          <Reveal delay={0.1}>
+            <div style={{ marginTop: "clamp(20px,3vw,30px)" }}>
+              <GuideComplete
+                guideSlug={GUIDE_SLUG}
+                theme="light"
+                accent={PLUM}
+                title="Made it to the end?"
+                blurb="Mark the course complete and claim your credits for finishing."
+              />
+            </div>
           </Reveal>
         </section>
 

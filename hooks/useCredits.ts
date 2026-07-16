@@ -93,12 +93,13 @@ export function useCredits() {
     };
   }, []);
 
-  const earn = useCallback(async (action: EarnAction): Promise<EarnResult> => {
+  // opts.guide is required for the per-guide reward (guide-complete); ignored otherwise.
+  const earn = useCallback(async (action: EarnAction, opts?: { guide?: string }): Promise<EarnResult> => {
     try {
       const res = await fetch("/api/credits/earn", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action }),
+        body: JSON.stringify({ action, ...(opts?.guide ? { guide: opts.guide } : {}) }),
       });
       const data = (await res.json().catch(() => ({}))) as EarnResult;
       if (data.ok && typeof data.points === "number") setPoints(data.points);

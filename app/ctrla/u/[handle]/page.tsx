@@ -207,7 +207,7 @@ export default async function PublicProfilePage({
           <p style={{ margin: "0 0 16px", fontFamily: NORWIGE, fontWeight: 700, fontSize: 18 }}>
             Build your own corner of CTRL-A
           </p>
-          <Link href="/ctrla/contribute" style={{ display: "inline-block", fontSize: 13, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#160C28", background: C.gold, borderRadius: 999, padding: "13px 28px", textDecoration: "none" }}>
+          <Link href="/ctrla/submit" style={{ display: "inline-block", fontSize: 13, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#160C28", background: C.gold, borderRadius: 999, padding: "13px 28px", textDecoration: "none" }}>
             Contribute
           </Link>
         </div>

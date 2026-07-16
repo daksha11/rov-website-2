@@ -14,6 +14,13 @@ import { z } from "zod";
 import { createClient } from "@/utils/supabase/server";
 import { createServiceClient } from "@/utils/supabase/admin";
 import { fireCtrlaEvent, type CtrlaEventName } from "@/lib/ctrla/klaviyo-events";
+import { REWARDS } from "@/lib/credits/config";
+
+// A review decision that pays the author credits, and how much.
+const AWARD_FOR: Partial<Record<"approved" | "featured", "contribution-approved" | "contribution-featured">> = {
+  approved: "contribution-approved",
+  featured: "contribution-featured",
+};
 
 export const runtime = "nodejs";
 export const maxDuration = 15;
@@ -61,7 +68,7 @@ export async function GET() {
 
   const { data, error } = await admin
     .from("ctrla_submissions")
-    .select("id, toolkit_slug, type, status, payload, created_at, profiles!ctrla_submissions_author_id_fkey(full_name, handle, email)")
+    .select("id, toolkit_slug, type, track, credit_cost, media, status, payload, created_at, profiles!ctrla_submissions_author_id_fkey(full_name, handle, email)")
     .eq("status", "pending")
     .order("created_at", { ascending: true })
     .limit(100);
@@ -70,7 +77,24 @@ export async function GET() {
     console.error("ctrla queue read error:", error.message);
     return NextResponse.json({ ok: false }, { status: 502 });
   }
-  return NextResponse.json({ ok: true, queue: data ?? [] });
+
+  // Sign media so the reviewer can actually see a feature's gallery. The
+  // bucket is private; signed URLs are short-lived and staff-only here.
+  const rows = (data ?? []) as Array<{ media?: { path: string; kind: string }[] | null; [k: string]: unknown }>;
+  await Promise.all(
+    rows.map(async (row) => {
+      if (Array.isArray(row.media) && row.media.length) {
+        row.media = await Promise.all(
+          row.media.map(async (m) => {
+            const { data: signed } = await admin.storage.from("ctrla-submissions").createSignedUrl(m.path, 3600);
+            return { ...m, url: signed?.signedUrl ?? null };
+          }),
+        );
+      }
+    }),
+  );
+
+  return NextResponse.json({ ok: true, queue: rows });
 }
 
 export async function POST(req: NextRequest) {
@@ -107,13 +131,35 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, code: r.code }, { status: 404 });
   }
 
-  // Tell the author (best-effort). Service client reads their email.
+  // Tell the author (best-effort). Service client reads their email + id.
   const { data: sub } = await admin
     .from("ctrla_submissions")
-    .select("type, toolkit_slug, payload, profiles!ctrla_submissions_author_id_fkey(email)")
+    .select("author_id, type, toolkit_slug, payload, profiles!ctrla_submissions_author_id_fkey(email)")
     .eq("id", body.submissionId)
     .single();
   const authorEmail = (sub?.profiles as { email?: string } | null)?.email;
+
+  // Pay the author for a good outcome. Deduped per submission+status so a
+  // re-review (or approve-then-feature) never double-pays for the same rung.
+  const awardAction = AWARD_FOR[body.status as "approved" | "featured"];
+  if (awardAction && sub?.author_id) {
+    const { error: awardErr } = await admin.rpc("award_credits", {
+      p_user_id: sub.author_id,
+      p_action: awardAction,
+      p_amount: REWARDS[awardAction].points,
+      p_dedupe_key: `submission:${body.submissionId}:${body.status}`,
+      p_meta: { submission_id: body.submissionId },
+    });
+    if (awardErr) console.error("contribution award error:", awardErr.message);
+    if (authorEmail) {
+      await fireCtrlaEvent("CTRL-A Credits Earned", authorEmail, {
+        action: awardAction,
+        awarded: REWARDS[awardAction].points,
+        submission_id: body.submissionId,
+      });
+    }
+  }
+
   if (authorEmail) {
     await fireCtrlaEvent(EVENT_FOR[body.status], authorEmail, {
       submission_id: body.submissionId,

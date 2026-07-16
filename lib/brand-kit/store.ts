@@ -220,6 +220,8 @@ interface BrandKitStore {
       "brandInfo" | "colors" | "typography" | "gradients" | "voice" | "sections" | "template"
     >
   ) => void;
+  /** Load a complete saved kit (logos + fonts included), for resuming from /account. */
+  loadFullKit: (data: BrandKitData) => void;
 }
 
 export const useBrandKitStore = create<BrandKitStore>()(
@@ -359,6 +361,14 @@ export const useBrandKitStore = create<BrandKitStore>()(
         state.data.sections = kit.sections;
         state.data.template = kit.template;
         state.data.logos = { variants: [] };
+      }),
+
+    // Load a complete saved kit as-is. Unlike loadKit (share links), this
+    // keeps logos + embedded fonts, since a member's own saved kit carries them.
+    loadFullKit: (data) =>
+      set((state) => {
+        state.data = data;
+        state.currentStep = 0;
       }),
   })),
     {

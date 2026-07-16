@@ -8,13 +8,17 @@ import { Label } from "@/components/brand-kit/ui/label";
 import { Button } from "@/components/brand-kit/ui/button";
 import { Download, Check, Loader2 } from "lucide-react";
 import ExportSpecButton from "@/components/brand-kit/ExportSpecButton";
+import SaveKitButton from "@/components/brand-kit/SaveKitButton";
 import ShareKitButton from "@/components/brand-kit/ShareKitButton";
 import ExportTokensButton from "@/components/brand-kit/ExportTokensButton";
 import ExportTailwindButton from "@/components/brand-kit/ExportTailwindButton";
 import { useToast } from "@/hooks/brand-kit/useToast";
 import { usePoints } from "@/hooks/brand-kit/usePoints";
+import { COSTS } from "@/lib/credits/config";
 import ContactUsModal from "@/components/brand-kit/ContactUsModal";
 import AuthModal from "@/components/brand-kit/AuthModal";
+
+const EXPORT_COST = COSTS["brand-kit-export"];
 
 export default function ExportStep() {
   const data = useBrandKitStore(useShallow((s) => s.data));
@@ -26,7 +30,9 @@ export default function ExportStep() {
   const [isExporting, setIsExporting] = useState(false);
 
   const pushToast = useToast((s) => s.push);
-  const { points, loading: loadingPoints, deductPoints, userId } = usePoints();
+  // usePoints stays for the live balance/userId display; the spend itself now
+  // runs server-side through /api/credits/spend so it lands in the ledger.
+  const { points, loading: loadingPoints, userId } = usePoints();
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
@@ -36,25 +42,33 @@ export default function ExportStep() {
       return;
     }
 
-    if (points !== null && points < 50) {
+    if (points !== null && points < EXPORT_COST) {
       setIsContactModalOpen(true);
       return;
     }
 
     setIsExporting(true);
     try {
-      // 1. Deduct points first
-      const deduction = await deductPoints(50);
-      if (!deduction.success) {
-        setIsContactModalOpen(true);
+      // 1. Spend server-side (checks balance, writes the ledger row atomically).
+      const res = await fetch("/api/credits/spend", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ item: "brand-kit-export" }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok || !json.ok) {
+        // 402 = not enough credits; anything else is a transient failure.
+        if (res.status === 402) setIsContactModalOpen(true);
+        else pushToast("Export could not start. Please try again.", "error");
         setIsExporting(false);
         return;
       }
 
-      // 2. Generate and download
+      // 2. Generate and download (usePoints' realtime subscription reflects the
+      // new balance automatically since the RPC updated brand_kit_credits).
       const { generateBrandKit } = await import("@/lib/brand-kit/generator");
-      const data = useBrandKitStore.getState().data;
-      const html = generateBrandKit(data);
+      const kitData = useBrandKitStore.getState().data;
+      const html = generateBrandKit(kitData);
       const blob = new Blob([html], { type: "text/html;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -64,12 +78,14 @@ export default function ExportStep() {
       a.click();
       document.body.removeChild(a);
       setTimeout(() => URL.revokeObjectURL(url), 1000);
-      
+
       setExported(true);
       setTimeout(() => setExported(false), 3000);
-      
-      // Success popup as requested
-      pushToast("50 points have been deducted", "success");
+
+      // Fire the reliable server-side export event (best-effort, non-blocking).
+      fetch("/api/ctrla/brand-kit/exported", { method: "POST" }).catch(() => {});
+
+      pushToast(`${EXPORT_COST} points have been deducted`, "success");
     } catch (err) {
       pushToast(
         err instanceof Error ? `Export failed: ${err.message}` : "Export failed",
@@ -140,6 +156,16 @@ export default function ExportStep() {
         </Button>
 
         <ExportSpecButton data={data} filename={fileName} className="w-full" />
+
+        <div className="pt-2">
+          <p className="text-[10px] tracking-[0.2em] uppercase text-[#F0E6E0]/50 mb-2 font-medium">
+            Save
+          </p>
+          <SaveKitButton className="w-full" />
+          <p className="text-[11px] text-[#F0E6E0]/50 mt-2 leading-relaxed">
+            Keeps your latest 3 kits on your account, on any device. Free, no credits.
+          </p>
+        </div>
 
         <div className="pt-2">
           <p className="text-[10px] tracking-[0.2em] uppercase text-[#F0E6E0]/50 mb-2 font-medium">

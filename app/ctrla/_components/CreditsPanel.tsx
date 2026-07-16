@@ -41,6 +41,9 @@ export default function CreditsPanel() {
   const [flash, setFlash] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [streak, setStreak] = useState<StreakRow | null>(null);
+  const [shareOpened, setShareOpened] = useState(false);
+  const [shareClaimed, setShareClaimed] = useState(false);
+  const [sharing, setSharing] = useState(false);
 
   // The Daily: streak + taste stats, live (user_streaks is in realtime).
   useEffect(() => {
@@ -87,6 +90,24 @@ export default function CreditsPanel() {
       });
   }, [userId]);
 
+  // The share reward is weekly. Reflect a claim already made in the last 7
+  // days so the button shows its claimed state (the server is the real gate).
+  useEffect(() => {
+    if (!userId) return;
+    const supabase = createClient();
+    const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+    supabase
+      .from("credit_events")
+      .select("created_at")
+      .eq("user_id", userId)
+      .eq("action", "social-engagement")
+      .gte("created_at", weekAgo)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data) setShareClaimed(true);
+      });
+  }, [userId]);
+
   async function signIn() {
     const supabase = createClient();
     await supabase.auth.signInWithOAuth({
@@ -102,6 +123,37 @@ export default function CreditsPanel() {
     if (res.ok) {
       setIgClaimed(true);
       setFlash(res.alreadyClaimed ? "Already claimed." : `+${REWARDS["follow-instagram"].points} credits`);
+    } else {
+      setFlash(res.error || "Could not claim. Try again.");
+    }
+    setTimeout(() => setFlash(null), 2600);
+  }
+
+  // Honor-system share: open a share sheet (or an X intent as fallback), then
+  // reveal the claim. Weekly-capped server-side.
+  async function shareCtrla() {
+    const url = SITE;
+    const text = "CTRL-A by Range of View: toolkits, a free brand kit generator, and a creative magazine.";
+    try {
+      const nav = navigator as Navigator & { share?: (d: { title?: string; text?: string; url?: string }) => Promise<void> };
+      if (typeof nav.share === "function") {
+        await nav.share({ title: "CTRL-A", text, url });
+      } else {
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, "_blank", "noopener,noreferrer");
+      }
+    } catch {
+      /* user dismissed the share sheet; still let them claim honor-system */
+    }
+    setShareOpened(true);
+  }
+
+  async function claimShare() {
+    setSharing(true);
+    const res = await earn("social-engagement");
+    setSharing(false);
+    if (res.ok) {
+      setShareClaimed(true);
+      setFlash(res.alreadyClaimed ? "Already claimed this week." : `+${REWARDS["social-engagement"].points} credits`);
     } else {
       setFlash(res.error || "Could not claim. Try again.");
     }
@@ -189,6 +241,25 @@ export default function CreditsPanel() {
               ) : (
                 <button onClick={claimInstagram} disabled={claiming} style={{ ...pill, color: VOID, background: GOLD, borderColor: GOLD, cursor: claiming ? "default" : "pointer" }}>
                   {claiming ? "..." : `Claim +${REWARDS["follow-instagram"].points}`}
+                </button>
+              )}
+            </div>
+
+            {/* Share CTRL-A (weekly) */}
+            <div style={rowStyle}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={rowTitle}>{REWARDS["social-engagement"].label}</div>
+                <div style={rowSub}>Share or tag CTRL-A, then claim. Once a week.</div>
+              </div>
+              {shareClaimed ? (
+                <span style={{ ...pill, color: VOID, background: GOLD, borderColor: GOLD }}>Claimed</span>
+              ) : !shareOpened ? (
+                <button onClick={shareCtrla} style={{ ...pill, color: GOLD, borderColor: GOLD, cursor: "pointer" }}>
+                  Share →
+                </button>
+              ) : (
+                <button onClick={claimShare} disabled={sharing} style={{ ...pill, color: VOID, background: GOLD, borderColor: GOLD, cursor: sharing ? "default" : "pointer" }}>
+                  {sharing ? "..." : `Claim +${REWARDS["social-engagement"].points}`}
                 </button>
               )}
             </div>
