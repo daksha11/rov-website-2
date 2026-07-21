@@ -61,6 +61,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.8,
         },
         {
+            url: `${baseUrl}/web/skills-that-matter-in-the-ai-era`,
+            lastModified: '2026-07-21',
+            changeFrequency: 'monthly',
+            priority: 0.8,
+        },
+        {
             url: `${baseUrl}/ai-automation`,
             lastModified: '2026-04-29',
             changeFrequency: 'monthly',
