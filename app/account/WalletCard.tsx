@@ -46,21 +46,25 @@ const SPEND_ROWS: { label: string; cost: number; href: string }[] = [
   { label: "Submit a story", cost: COSTS["story-feature"], href: "/ctrla/submit/story" },
 ];
 
-export default function WalletCard({ points }: { points: number | null }) {
+export default function WalletCard({ points, hideBalance }: { points: number | null; hideBalance?: boolean }) {
   return (
-    <section style={{ ...card, marginTop: 16, padding: "clamp(22px,4vw,30px)", fontFamily: NEUE }}>
-      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-        <div>
-          <p style={{ margin: 0, fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase", color: C.faint, fontWeight: 600 }}>Your balance</p>
-          <p style={{ margin: "4px 0 0", fontFamily: NORWIGE, fontWeight: 700, fontSize: 40, lineHeight: 1, color: C.gold }}>
-            {points === null ? "…" : points.toLocaleString()}
-          </p>
+    <section style={{ ...card, padding: "clamp(22px,4vw,30px)", fontFamily: NEUE }}>
+      {hideBalance ? (
+        <h2 style={{ margin: 0, fontFamily: NORWIGE, fontWeight: 700, fontSize: 19, color: C.cream }}>Credits</h2>
+      ) : (
+        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+          <div>
+            <p style={{ margin: 0, fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase", color: C.faint, fontWeight: 600 }}>Your balance</p>
+            <p style={{ margin: "4px 0 0", fontFamily: NORWIGE, fontWeight: 700, fontSize: 40, lineHeight: 1, color: C.gold }}>
+              {points === null ? "…" : points.toLocaleString()}
+            </p>
+          </div>
+          <span style={{ fontSize: 12, color: C.faint }}>credits</span>
         </div>
-        <span style={{ fontSize: 12, color: C.faint }}>credits</span>
-      </div>
+      )}
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginTop: 22 }} className="wallet-cols">
-        <div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginTop: hideBalance ? 16 : 22 }} className="wallet-cols">
+        <div id="earn" style={{ scrollMarginTop: 24 }}>
           <p style={{ margin: "0 0 10px", fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: C.faint, fontWeight: 700 }}>Ways to earn</p>
           <div style={{ display: "grid", gap: 2 }}>
             {EARN_ROWS.map((r) => {
@@ -81,7 +85,7 @@ export default function WalletCard({ points }: { points: number | null }) {
           </div>
         </div>
 
-        <div>
+        <div id="spend" style={{ scrollMarginTop: 24 }}>
           <p style={{ margin: "0 0 10px", fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: C.faint, fontWeight: 700 }}>What it unlocks</p>
           <div style={{ display: "grid", gap: 2 }}>
             {SPEND_ROWS.map((r) => (

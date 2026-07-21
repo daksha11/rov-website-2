@@ -62,7 +62,7 @@ export default function SavedKits({ userId }: { userId: string }) {
   if (!loaded) return null;
 
   return (
-    <section style={{ ...card, marginTop: 16, padding: "clamp(22px,4vw,30px)", fontFamily: NEUE }}>
+    <section style={{ ...card, padding: "clamp(22px,4vw,30px)", fontFamily: NEUE }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
         <h2 style={{ margin: 0, fontFamily: NORWIGE, fontWeight: 700, fontSize: 19, color: C.cream }}>Saved brand kits</h2>
         <Link href="/ctrla/brand-kit" style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: C.gold, textDecoration: "none" }}>

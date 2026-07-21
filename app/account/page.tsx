@@ -25,6 +25,7 @@ import { useCredits } from "@/hooks/useCredits";
 import CommunityPanel from "./CommunityPanel";
 import WalletCard from "./WalletCard";
 import SavedKits from "./SavedKits";
+import DashboardHUD, { type StreakStats } from "./DashboardHUD";
 
 const supabase = createClient();
 
@@ -86,8 +87,10 @@ export default function AccountPage() {
   const [userId, setUserId] = useState<string | null>(null);
   const [activity, setActivity] = useState<ActivityRow[]>([]);
   const [hasProject, setHasProject] = useState(false);
+  const [projectCount, setProjectCount] = useState(0);
   const [contribCount, setContribCount] = useState(0);
   const [featuredCount, setFeaturedCount] = useState(0);
+  const [streak, setStreak] = useState<StreakStats | null>(null);
   const [status, setStatus] = useState<"checking" | "ok">("checking");
   const [bio, setBio] = useState("");
   const [isPublic, setIsPublic] = useState(false);
@@ -104,7 +107,7 @@ export default function AccountPage() {
       const meta = session.user.user_metadata || {};
       const fallbackName = meta.full_name || meta.name || session.user.email || "You";
 
-      const [{ data: row }, { count: projCount }, { data: events }] = await Promise.all([
+      const [{ data: row }, { count: projCount }, { data: events }, { data: streakRow }] = await Promise.all([
         supabase
           .from("profiles")
           .select("role, full_name, email, handle, bio, is_public")
@@ -120,6 +123,11 @@ export default function AccountPage() {
           .eq("user_id", uid)
           .order("created_at", { ascending: false })
           .limit(8),
+        supabase
+          .from("user_streaks")
+          .select("current_streak, longest_streak, taste_plays, taste_agreements")
+          .eq("user_id", uid)
+          .maybeSingle(),
       ]);
 
       setProfile({
@@ -134,7 +142,9 @@ export default function AccountPage() {
       setBio(row?.bio ?? "");
       setIsPublic(!!row?.is_public);
       setHasProject((projCount ?? 0) > 0);
+      setProjectCount(projCount ?? 0);
       setActivity((events ?? []) as ActivityRow[]);
+      setStreak((streakRow as StreakStats) ?? null);
       setStatus("ok");
     };
     load();
@@ -170,10 +180,6 @@ export default function AccountPage() {
   }
 
   const isStaff = profile.role === "admin" || profile.role === "engineer";
-  const stats = [
-    { n: String(contribCount), label: contribCount === 1 ? "Contribution" : "Contributions" },
-    { n: String(featuredCount), label: "Featured" },
-  ];
 
   return (
     <main className="dash-ground" style={{ minHeight: "100vh", color: C.cream, fontFamily: NEUE }}>
@@ -203,166 +209,193 @@ export default function AccountPage() {
         </div>
       </section>
 
-      {/* Content */}
-      <div style={{ maxWidth: 640, margin: "0 auto", padding: "clamp(24px,5vw,40px) clamp(18px,5vw,40px) 80px" }}>
-
-        {/* ── Identity ── */}
-        <section style={{ ...card, padding: "clamp(24px,5vw,34px)" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap" }}>
-            {profile.avatar ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={profile.avatar} alt="" width={72} height={72} style={{ borderRadius: "50%", objectFit: "cover", border: `2px solid ${C.hair}` }} />
-            ) : (
-              <div style={{ width: 72, height: 72, borderRadius: "50%", background: `linear-gradient(135deg, ${C.gold} 0%, ${C.rose} 55%, ${C.plum} 100%)`, color: "#160C28", display: "grid", placeItems: "center", fontFamily: NORWIGE, fontWeight: 700, fontSize: 26 }}>
-                {initials(profile.name)}
-              </div>
-            )}
-            <div style={{ flex: 1, minWidth: 180 }}>
-              {profile.handle && (
-                <p style={{ margin: 0, fontSize: 13.5, color: C.gold, fontWeight: 600 }}>@{profile.handle}</p>
-              )}
-              {profile.email && (
-                <p style={{ margin: "3px 0 0", fontSize: 13, color: C.faint }}>{profile.email}</p>
-              )}
-              {isPublic && profile.handle && (
-                <Link href={`/ctrla/u/${profile.handle}`} style={{ display: "inline-block", marginTop: 6, fontSize: 12.5, fontWeight: 600, color: C.gold, textDecoration: "none" }}>
-                  View public page →
-                </Link>
-              )}
-            </div>
-            {isStaff && (
-              <Link href="/admin" style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: C.gold, background: "rgba(227,194,74,0.1)", border: "1px solid rgba(227,194,74,0.3)", borderRadius: 999, padding: "8px 18px", textDecoration: "none" }}>
-                Admin
-              </Link>
-            )}
-          </div>
-
-          {/* Public toggle */}
-          <button
-            type="button"
-            onClick={() => saveProfile(!isPublic)}
-            style={{ font: "inherit", marginTop: 18, width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, textAlign: "left", cursor: "pointer", background: "rgba(255,255,255,0.03)", border: `1px solid ${isPublic ? "rgba(227,194,74,0.4)" : C.hair}`, borderRadius: 14, padding: "14px 18px", color: C.cream }}
-          >
-            <span>
-              <span style={{ display: "block", fontWeight: 700, fontSize: 14 }}>Public profile</span>
-              <span style={{ display: "block", marginTop: 3, fontSize: 12.5, color: C.faint }}>
-                {isPublic && profile.handle ? `Live at /ctrla/u/${profile.handle}` : "Off. Turn on to show your contributions to the world."}
-              </span>
-            </span>
-            <span aria-hidden style={{ width: 42, height: 24, borderRadius: 999, flexShrink: 0, background: isPublic ? C.gold : "rgba(255,255,255,0.1)", position: "relative", transition: "background 0.2s ease" }}>
-              <span style={{ position: "absolute", top: 3, left: isPublic ? 21 : 3, width: 18, height: 18, borderRadius: "50%", background: isPublic ? "#160C28" : C.faint, transition: "left 0.2s ease" }} />
-            </span>
-          </button>
-
-          {/* Bio */}
-          <div style={{ marginTop: 14 }}>
-            <label htmlFor="acct-bio" style={{ display: "block", fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase", color: C.faint, fontWeight: 600, marginBottom: 8 }}>
-              Bio (shows on your public page)
-            </label>
-            <textarea
-              id="acct-bio"
-              value={bio}
-              maxLength={280}
-              onChange={(e) => setBio(e.target.value)}
-              onBlur={() => saveProfile()}
-              placeholder="One or two lines about what you make."
-              style={{ width: "100%", font: "inherit", fontFamily: NEUE, fontSize: 14, color: C.cream, background: "rgba(255,255,255,0.04)", border: `1px solid ${C.hair}`, borderRadius: 12, padding: "12px 14px", minHeight: 64, resize: "vertical", outline: "none", lineHeight: 1.55 }}
-            />
-            {savedFlash && <span style={{ fontSize: 12, color: C.gold, fontWeight: 600 }}>Saved</span>}
-          </div>
-        </section>
-
-        {/* ── Wallet (balance with verbs) ── */}
-        <WalletCard points={points} />
-
-        {/* ── Stats ── */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12, marginTop: 16 }}>
-          {stats.map((s) => (
-            <div key={s.label} style={{ ...card, padding: "18px 12px", textAlign: "center" }}>
-              <span style={{ display: "block", fontFamily: NORWIGE, fontWeight: 700, fontSize: 26, color: C.gold }}>{s.n}</span>
-              <span style={{ display: "block", marginTop: 2, fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: C.faint, fontWeight: 600 }}>{s.label}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* ── Recent activity (the wallet ledger) ── */}
-        <section style={{ ...card, marginTop: 16, padding: "clamp(22px,4vw,30px)" }}>
-          <h2 style={{ margin: 0, fontFamily: NORWIGE, fontWeight: 700, fontSize: 19 }}>Recent activity</h2>
-          {activity.length === 0 ? (
-            <p style={{ margin: "14px 0 0", fontSize: 13.5, color: C.faint, lineHeight: 1.6 }}>
-              Your points story starts here: earn by playing the CTRL-A daily, referring friends, and contributing. Spend on the brand kit generator and premium unlocks.
-            </p>
-          ) : (
-            <div style={{ marginTop: 14, display: "grid", gap: 2 }}>
-              {activity.map((a) => (
-                <div key={a.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, padding: "10px 2px", borderBottom: `1px solid ${C.hair}` }}>
-                  <span style={{ fontSize: 13.5, color: C.soft }}>{actionLabel(a.action)}</span>
-                  <span style={{ fontSize: 13.5, fontWeight: 700, color: a.points >= 0 ? C.gold : C.faint }}>
-                    {a.points >= 0 ? `+${a.points}` : a.points}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
-
-        {/* ── Contributions ── */}
-        {userId && (
-          <CommunityPanel
-            userId={userId}
-            onCounts={(total, featured) => { setContribCount(total); setFeaturedCount(featured); }}
-          />
-        )}
-
-        {/* ── Saved brand kits ── */}
-        {userId && <SavedKits userId={userId} />}
-
-        {/* ── Studio ── */}
-        {hasProject ? (
+      {/* ── Studio doorway — only for clients (people with paid work). A
+          compact, dignified strip; the full portal lives at /portal. Members
+          without a paid project never see this, so it never crowds. ── */}
+      {hasProject && (
+        <div style={{ maxWidth: 940, margin: "18px auto 0", padding: "0 clamp(18px,5vw,40px)" }}>
           <Link
             href="/portal"
-            style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, marginTop: 16, textDecoration: "none", background: "linear-gradient(135deg, #24123A 0%, #4E3D73 100%)", color: C.cream, border: "1px solid rgba(227,194,74,0.3)", borderRadius: 18, padding: "22px 24px", transition: "border-color 0.2s ease, transform 0.2s ease" }}
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(227,194,74,0.55)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(227,194,74,0.3)"; e.currentTarget.style.transform = "translateY(0)"; }}
+            style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, textDecoration: "none", background: "linear-gradient(135deg, #24123A 0%, #4E3D73 100%)", color: C.cream, border: "1px solid rgba(227,194,74,0.35)", borderRadius: 14, padding: "16px 22px", transition: "border-color 0.2s ease, transform 0.2s ease" }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(227,194,74,0.6)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(227,194,74,0.35)"; e.currentTarget.style.transform = "translateY(0)"; }}
           >
-            <span style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-              <span style={{ fontFamily: NORWIGE, fontWeight: 700, fontSize: 18 }}>Your studio</span>
-              <span style={{ fontSize: 13, color: C.soft }}>Projects, mixes, revisions and deliverables</span>
-            </span>
-            <span style={{ fontSize: 18, color: C.gold }}>→</span>
-          </Link>
-        ) : (
-          <section style={{ ...card, marginTop: 16, padding: "clamp(22px,4vw,30px)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <h2 style={{ margin: 0, fontFamily: NORWIGE, fontWeight: 700, fontSize: 19 }}>Studio</h2>
-              <span style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", fontWeight: 700, color: C.faint, border: `1px solid ${C.hair}`, borderRadius: 999, padding: "3px 10px" }}>
-                Locked
+            <span style={{ display: "flex", alignItems: "center", gap: 14, minWidth: 0 }}>
+              <span style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", fontWeight: 700, color: "#160C28", background: C.gold, borderRadius: 999, padding: "5px 12px", flexShrink: 0 }}>
+                Studio
               </span>
-            </div>
-            <p style={{ margin: "12px 0 18px", fontSize: 13.5, color: C.faint, lineHeight: 1.65 }}>
-              Book a music session and this section becomes your studio dashboard: project status, mix revisions, uploads, and delivery, all right here.
-            </p>
+              <span style={{ minWidth: 0 }}>
+                <span style={{ display: "block", fontFamily: NORWIGE, fontWeight: 700, fontSize: 16 }}>Your client work</span>
+                <span style={{ display: "block", fontSize: 12.5, color: C.soft }}>
+                  {projectCount} active {projectCount === 1 ? "project" : "projects"} · mixes, revisions, deliverables
+                </span>
+              </span>
+            </span>
+            <span style={{ fontSize: 18, color: C.gold, flexShrink: 0 }}>→</span>
+          </Link>
+        </div>
+      )}
+
+      {/* ── Command center HUD — a wider band above the focused detail column ── */}
+      <div style={{ maxWidth: 940, margin: "0 auto", padding: "0 clamp(18px,5vw,40px)" }}>
+        <DashboardHUD
+          name={profile.name}
+          points={points}
+          streak={streak}
+          contribCount={contribCount}
+          featuredCount={featuredCount}
+          handle={profile.handle}
+          isPublic={isPublic}
+        />
+      </div>
+
+      {/* Content — a two-column masonry dashboard, matched to the HUD width */}
+      <div style={{ maxWidth: 940, margin: "0 auto", padding: "clamp(28px,5vw,44px) clamp(18px,5vw,40px) 80px" }}>
+
+        <div className="account-masonry">
+
+          {/* ── Contributions (primary) ── */}
+          {userId && (
+            <CommunityPanel
+              userId={userId}
+              onCounts={(total, featured) => { setContribCount(total); setFeaturedCount(featured); }}
+            />
+          )}
+
+          {/* ── Saved brand kits ── */}
+          {userId && <SavedKits userId={userId} />}
+
+          {/* ── Credits — earn & spend detail (balance lives in the HUD) ── */}
+          <WalletCard points={points} hideBalance />
+
+          {/* ── Recent activity (the wallet ledger) ── */}
+          <section style={{ ...card, padding: "clamp(22px,4vw,30px)" }}>
+            <h2 style={{ margin: 0, fontFamily: NORWIGE, fontWeight: 700, fontSize: 19 }}>Recent activity</h2>
+            {activity.length === 0 ? (
+              <p style={{ margin: "14px 0 0", fontSize: 13.5, color: C.faint, lineHeight: 1.6 }}>
+                Your points story starts here: earn by playing the CTRL-A daily, referring friends, and contributing. Spend on the brand kit generator and premium unlocks.
+              </p>
+            ) : (
+              <div style={{ marginTop: 14, display: "grid", gap: 2 }}>
+                {activity.map((a) => (
+                  <div key={a.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, padding: "10px 2px", borderBottom: `1px solid ${C.hair}` }}>
+                    <span style={{ fontSize: 13.5, color: C.soft }}>{actionLabel(a.action)}</span>
+                    <span style={{ fontSize: 13.5, fontWeight: 700, color: a.points >= 0 ? C.gold : C.faint }}>
+                      {a.points >= 0 ? `+${a.points}` : a.points}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+
+          {/* ── Work with ROV — a small, clear box for non-clients. Not a
+              pitch baked into their stuff; its own little card, easy to skip. ── */}
+          {!hasProject && (
             <a
               href={BOOKING_URL}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ display: "inline-block", fontSize: 12.5, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#160C28", background: C.gold, borderRadius: 999, padding: "13px 26px", textDecoration: "none" }}
+              style={{ ...card, display: "block", padding: "clamp(18px,3.5vw,22px)", textDecoration: "none", transition: "border-color 0.2s ease, transform 0.2s ease" }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(227,194,74,0.4)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = C.hair; e.currentTarget.style.transform = "translateY(0)"; }}
             >
-              Book a music session
+              <p style={{ margin: 0, fontSize: 10.5, letterSpacing: "0.18em", textTransform: "uppercase", color: C.gold, fontWeight: 700 }}>The studio behind CTRL-A</p>
+              <p style={{ margin: "8px 0 0", fontFamily: NORWIGE, fontWeight: 700, fontSize: 18, color: C.cream }}>Work with ROV</p>
+              <p style={{ margin: "6px 0 12px", fontSize: 13, color: C.faint, lineHeight: 1.55 }}>
+                Web, sound, video, and AI, built by the team behind CTRL-A.
+              </p>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: C.gold }}>
+                Book a call <span aria-hidden>→</span>
+              </span>
             </a>
-          </section>
-        )}
+          )}
 
-        {/* Sign out */}
-        <button
-          onClick={() => setConfirmOpen(true)}
-          type="button"
-          style={{ marginTop: 20, width: "100%", font: "inherit", fontFamily: NEUE, fontSize: 13, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: C.faint, background: "transparent", border: `1px solid ${C.hair}`, borderRadius: 999, padding: "13px", cursor: "pointer", transition: "color 0.2s ease, border-color 0.2s ease" }}
-          onMouseEnter={(e) => { e.currentTarget.style.color = C.cream; e.currentTarget.style.borderColor = "rgba(240,230,224,0.28)"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.color = C.faint; e.currentTarget.style.borderColor = C.hair; }}
-        >
-          Sign out
-        </button>
+          {/* ── Profile & settings (demoted to the bottom) ── */}
+          <section style={{ ...card, padding: "clamp(24px,5vw,30px)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+              {profile.avatar ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={profile.avatar} alt="" width={56} height={56} style={{ borderRadius: "50%", objectFit: "cover", border: `2px solid ${C.hair}` }} />
+              ) : (
+                <div style={{ width: 56, height: 56, borderRadius: "50%", background: `linear-gradient(135deg, ${C.gold} 0%, ${C.rose} 55%, ${C.plum} 100%)`, color: "#160C28", display: "grid", placeItems: "center", fontFamily: NORWIGE, fontWeight: 700, fontSize: 20 }}>
+                  {initials(profile.name)}
+                </div>
+              )}
+              <div style={{ flex: 1, minWidth: 150 }}>
+                <p style={{ margin: 0, fontFamily: NORWIGE, fontWeight: 700, fontSize: 16, color: C.cream }}>Profile &amp; settings</p>
+                {profile.handle && (
+                  <p style={{ margin: "2px 0 0", fontSize: 13, color: C.gold, fontWeight: 600 }}>@{profile.handle}</p>
+                )}
+                {profile.email && (
+                  <p style={{ margin: "2px 0 0", fontSize: 12.5, color: C.faint }}>{profile.email}</p>
+                )}
+              </div>
+              {isStaff && (
+                <Link href="/admin" style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: C.gold, background: "rgba(227,194,74,0.1)", border: "1px solid rgba(227,194,74,0.3)", borderRadius: 999, padding: "8px 18px", textDecoration: "none" }}>
+                  Admin
+                </Link>
+              )}
+            </div>
+
+            {/* Public toggle */}
+            <button
+              type="button"
+              onClick={() => saveProfile(!isPublic)}
+              style={{ font: "inherit", marginTop: 18, width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, textAlign: "left", cursor: "pointer", background: "rgba(255,255,255,0.03)", border: `1px solid ${isPublic ? "rgba(227,194,74,0.4)" : C.hair}`, borderRadius: 14, padding: "14px 18px", color: C.cream }}
+            >
+              <span>
+                <span style={{ display: "block", fontWeight: 700, fontSize: 14 }}>Public profile</span>
+                <span style={{ display: "block", marginTop: 3, fontSize: 12.5, color: C.faint }}>
+                  {isPublic && profile.handle ? `Live at /ctrla/u/${profile.handle}` : "Off. Turn on to show your contributions to the world."}
+                </span>
+              </span>
+              <span aria-hidden style={{ width: 42, height: 24, borderRadius: 999, flexShrink: 0, background: isPublic ? C.gold : "rgba(255,255,255,0.1)", position: "relative", transition: "background 0.2s ease" }}>
+                <span style={{ position: "absolute", top: 3, left: isPublic ? 21 : 3, width: 18, height: 18, borderRadius: "50%", background: isPublic ? "#160C28" : C.faint, transition: "left 0.2s ease" }} />
+              </span>
+            </button>
+
+            {/* Bio */}
+            <div style={{ marginTop: 14 }}>
+              <label htmlFor="acct-bio" style={{ display: "block", fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase", color: C.faint, fontWeight: 600, marginBottom: 8 }}>
+                Bio (shows on your public page)
+              </label>
+              <textarea
+                id="acct-bio"
+                value={bio}
+                maxLength={280}
+                onChange={(e) => setBio(e.target.value)}
+                onBlur={() => saveProfile()}
+                placeholder="One or two lines about what you make."
+                style={{ width: "100%", font: "inherit", fontFamily: NEUE, fontSize: 14, color: C.cream, background: "rgba(255,255,255,0.04)", border: `1px solid ${C.hair}`, borderRadius: 12, padding: "12px 14px", minHeight: 64, resize: "vertical", outline: "none", lineHeight: 1.55 }}
+              />
+              {savedFlash && <span style={{ fontSize: 12, color: C.gold, fontWeight: 600 }}>Saved</span>}
+            </div>
+
+            {/* Sign out */}
+            <button
+              onClick={() => setConfirmOpen(true)}
+              type="button"
+              style={{ marginTop: 18, width: "100%", font: "inherit", fontFamily: NEUE, fontSize: 13, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: C.faint, background: "transparent", border: `1px solid ${C.hair}`, borderRadius: 999, padding: "13px", cursor: "pointer", transition: "color 0.2s ease, border-color 0.2s ease" }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = C.cream; e.currentTarget.style.borderColor = "rgba(240,230,224,0.28)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = C.faint; e.currentTarget.style.borderColor = C.hair; }}
+            >
+              Sign out
+            </button>
+          </section>
+
+        </div>
+
+        <style>{`
+          .account-masonry { column-count: 2; column-gap: 16px; }
+          .account-masonry > * {
+            break-inside: avoid;
+            -webkit-column-break-inside: avoid;
+            margin: 0 0 16px;
+            display: block;
+          }
+          @media (max-width: 720px) { .account-masonry { column-count: 1; } }
+        `}</style>
       </div>
 
       {/* Confirm sign out */}

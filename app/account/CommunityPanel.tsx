@@ -97,7 +97,7 @@ export default function CommunityPanel({
   const toolkit = subs.filter((s) => (s.track ?? TRACK_FOR[s.type]) !== "magazine");
 
   return (
-    <section style={{ ...card, marginTop: 16, padding: "clamp(22px,4vw,30px)", fontFamily: NEUE }}>
+    <section id="contributions" style={{ ...card, padding: "clamp(22px,4vw,30px)", fontFamily: NEUE, scrollMarginTop: 24 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
         <h2 style={{ margin: 0, fontFamily: NORWIGE, fontWeight: 700, fontSize: 19, color: C.cream }}>My contributions</h2>
         <Link href="/ctrla/submit" style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#160C28", background: C.gold, borderRadius: 999, padding: "9px 18px", textDecoration: "none" }}>
