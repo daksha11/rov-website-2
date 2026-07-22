@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { checkoutHref } from "@/data/soundPricing";
 
 const HEADING = "Norwige, sans-serif";
 const BODY = "'Roboto', sans-serif";
@@ -375,7 +376,7 @@ export default function CreativeAddOns() {
                 </div>
 
                 <a
-                  href="mailto:stems@rovstudios.com"
+                  href={checkoutHref("creative_pack")}
                   className="cta-shine inline-flex items-center justify-center gap-2 text-white font-semibold rounded-full transition-all duration-300 hover:scale-[1.03] w-full lg:w-auto"
                   style={{
                     fontFamily: HEADING,

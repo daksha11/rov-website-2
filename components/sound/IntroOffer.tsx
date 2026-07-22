@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { checkoutHref } from "@/data/soundPricing";
 
 const HEADING = "Norwige, sans-serif";
 const BODY = "'Roboto', sans-serif";
@@ -14,7 +15,8 @@ export default function IntroOffer() {
   return (
     <section
       ref={ref}
-      className="relative bg-black overflow-hidden"
+      id="mixing"
+      className="scroll-mt-24 relative bg-black overflow-hidden"
       style={{ padding: "clamp(60px, 10vw, 120px) clamp(16px, 5vw, 60px)" }}
     >
       {/* Ambient glow */}
@@ -90,7 +92,7 @@ export default function IntroOffer() {
           transition={{ ...spring, delay: 0.45 }}
         >
           <a
-            href="mailto:stems@rovstudios.com"
+            href={checkoutHref("intro")}
             className="cta-shine inline-flex items-center gap-2 text-white font-semibold transition-all duration-300 hover:scale-105"
             style={{
               fontFamily: HEADING,
@@ -114,7 +116,7 @@ export default function IntroOffer() {
           className="text-white/55 text-[clamp(0.7rem,1.5vw,0.75rem)] md:text-xs max-w-md mx-auto mt-6 leading-relaxed"
           style={{ fontFamily: BODY }}
         >
-          First 3 songs only, per artist. Same 48hr turnaround and 1 revision as all paid work. Full mix &amp; master, not just mastering.
+          First 3 songs only, per artist. Same 48hr turnaround and 2 revisions as all paid work. Full mix &amp; master, not just mastering.
         </motion.p>
       </div>
     </section>

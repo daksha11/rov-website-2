@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import { useMemo, useRef, useState } from "react";
+import { checkoutHref } from "@/data/soundPricing";
 
 const HEADING = "Norwige, sans-serif";
 const BODY = "'Roboto', sans-serif";
@@ -42,16 +43,18 @@ export default function SavingsCalculator() {
       tierPrice = 500 + (songs - 18) * 30;
     }
 
+    // Add-ons are per-release, not per-song. An artist dropping 12 tracks does
+    // not commission 12 covers or 12 visualizers, so we treat each add-on as a
+    // single monthly spend (like merch). Multiplying by songs overstated both
+    // sides and inflated the savings number. ROV subscriber add-on prices:
+    // cover $50, visualizer $40, merch $65.
     const currentMonthly =
-      songs * costPerSong +
-      (coverCost > 0 ? songs * coverCost : 0) +
-      (vizCost > 0 ? songs * vizCost : 0) +
-      (merchCost > 0 ? merchCost : 0);
+      songs * costPerSong + coverCost + vizCost + merchCost;
 
     const rovMonthly =
       tierPrice +
-      (coverCost > 0 ? songs * 50 : 0) +
-      (vizCost > 0 ? songs * 40 : 0) +
+      (coverCost > 0 ? 50 : 0) +
+      (vizCost > 0 ? 40 : 0) +
       (merchCost > 0 ? 65 : 0);
 
     const monthlySavings = currentMonthly - rovMonthly;
@@ -228,7 +231,7 @@ export default function SavingsCalculator() {
                     className="flex justify-between text-xs text-white/40 mb-1.5"
                     style={{ fontFamily: BODY }}
                   >
-                    <span>Cover art cost</span>
+                    <span>Monthly cover art cost</span>
                     <span className="text-[#EA9A61] font-bold">
                       {coverCost === 0 ? "—" : fmt(coverCost)}
                     </span>
@@ -251,7 +254,7 @@ export default function SavingsCalculator() {
                     className="flex justify-between text-xs text-white/40 mb-1.5"
                     style={{ fontFamily: BODY }}
                   >
-                    <span>Visualizer cost</span>
+                    <span>Monthly visualizer cost</span>
                     <span className="text-[#EA9A61] font-bold">
                       {vizCost === 0 ? "—" : fmt(vizCost)}
                     </span>
@@ -413,7 +416,7 @@ export default function SavingsCalculator() {
             href={
               calc.isCustom
                 ? "https://www.instagram.com/rangeofviewstudios/"
-                : "mailto:stems@rovstudios.com"
+                : checkoutHref("intro")
             }
             target={calc.isCustom ? "_blank" : undefined}
             rel={calc.isCustom ? "noopener noreferrer" : undefined}

@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Mail, Instagram, X } from "lucide-react";
+import { BOOKING_URL, CONTACT_EMAIL } from "@/data/soundPricing";
 
 // Minimal floating dock for rovmusic.com. Deliberately trimmed vs the studios
 // NavigationDock: no CTRL A, no B2B services menu, no account login. Structured
 // so more items (About, Works, Pricing) can slot in as the music site grows.
-const BOOKING_URL = "https://calendly.com/rangeofviewmusic/30min";
 
 export function MusicNav({ className }: { className?: string }) {
   const [contactOpen, setContactOpen] = useState(false);
@@ -67,7 +67,7 @@ export function MusicNav({ className }: { className?: string }) {
             <h3 className="text-xl font-bold mb-6 text-white/90">Get in touch</h3>
             <div className="flex flex-col gap-4">
               <a
-                href="mailto:stems@rovstudios.com"
+                href={`mailto:${CONTACT_EMAIL}`}
                 className="flex items-center gap-3 px-4 py-3 bg-white/5 rounded-2xl hover:bg-white/10 border border-white/10 transition-all"
               >
                 <Mail className="w-5 h-5 text-white" />

@@ -45,6 +45,8 @@ const MusicPlayer = dynamic(() => import("@/components/sound/MusicPlayer"), {
     ssr: false,
 });
 
+const PathFork = dynamic(() => import("@/components/sound/PathFork"));
+
 const IntroOffer = dynamic(() => import("@/components/sound/IntroOffer"));
 
 const StudioSection = dynamic(() => import("@/components/sound/StudioSection"), {
@@ -112,12 +114,12 @@ export default function Page() {
                 { name: "Range of View Music", url: "" },
             ]} />
             <FAQPageSchema faqs={[
-                { question: "How much does mixing and mastering cost?", answer: "Start at $50/song for your first 3 songs, mix and master included. After that, subscriptions start at $145/mo for 5 songs (under $30/song) up to $400/mo for 12 songs with 24-hour priority turnaround. Need just one song? One-off pricing is $120/song. The subscription discount exists because consistency goes both ways. You commit to dropping, we commit to the rate." },
+                { question: "How much does mixing and mastering cost?", answer: "Start at $50/song for your first 3 songs, mix and master included. After that, subscriptions run $145/mo for 5 songs (under $30/song), $300/mo for 12, and $500/mo for 18 with 24-hour priority turnaround. Need just one song? One-off pricing is $120/song. The subscription discount exists because consistency goes both ways. You commit to dropping, we commit to the rate." },
                 { question: "How long does it take to get my song mixed and mastered?", answer: "48 hours for all subscription tiers. 24 hours for Pro. 72 hours for one-off work. Clock starts when stems pass the quality check, Monday through Friday." },
                 { question: "What do you need from me to mix my track?", answer: "Stems exported from your DAW: dry vocals (no reverb, no compression), beat stems or a stereo beat file, and any reference tracks. Email to stems@rovstudios.com. We run a quality check before mixing. If something is off, we tell you before we start." },
-                { question: "What counts as a revision?", answer: "One round of feedback notes (louder vocals, more low end, soften the hi-hats). We rework the track. 1 revision included per song on all tiers and one-offs. Additional revisions are $65 each. Re-recording or rearranging the song counts as a new submission." },
+                { question: "What counts as a revision?", answer: "One round of feedback notes (louder vocals, more low end, soften the hi-hats). We rework the track. 2 revisions included per song on all tiers and one-offs. Additional revisions are $65 each. Re-recording or rearranging the song counts as a new submission." },
                 { question: "Can I cancel my subscription?", answer: "Yes, anytime. Cancellation is effective at the end of your current billing cycle. No refunds for partial months. If you reactivate within 90 days, your original rate is guaranteed." },
-                { question: "Do you do one-off work without a subscription?", answer: "$120 for a single mix and master, 72-hour turnaround, 1 revision included. Cover art, visualizers, and merch design are also available without a subscription." },
+                { question: "Do you do one-off work without a subscription?", answer: "$120 for a single mix and master, 72-hour turnaround, 2 revisions included. Cover art, visualizers, and merch design are also available without a subscription." },
                 { question: "Can you help with cover art and visuals?", answer: "Yes. Cover art is $50 for subscribers ($75 one-off). Lyric visualizers are $40 for subscribers ($60 one-off). Merch design is $65 for subscribers ($95 one-off). Or bundle all three in the Creative Pack for $125/mo and save $120." },
             ]} />
             <VideoSchema
@@ -148,6 +150,9 @@ export default function Page() {
             <div className="bg-black">
                 <MusicPlayer />
             </div>
+
+            {/* 02.5 — Two-path fork (record vs send stems) */}
+            <PathFork />
 
             {/* 03 — $50 Intro Offer */}
             <IntroOffer />

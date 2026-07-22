@@ -1,6 +1,6 @@
 import React from "react";
 
-type ServiceId = "video-production" | "web" | "ai" | "ai-automation" | "sound";
+type ServiceId = "video-production" | "web" | "ai" | "ai-automation";
 
 interface CardData {
   id: ServiceId;
@@ -118,30 +118,6 @@ const AutomationIllo = (
   </svg>
 );
 
-// Sound: waveform bars
-const SoundIllo = (
-  <svg
-    viewBox="0 0 96 96"
-    fill="none"
-    stroke={ILLO_STROKE}
-    strokeWidth="2.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="w-full h-full"
-  >
-    <line x1="10" y1="44" x2="10" y2="52" />
-    <line x1="18" y1="36" x2="18" y2="60" />
-    <line x1="26" y1="28" x2="26" y2="68" />
-    <line x1="34" y1="20" x2="34" y2="76" />
-    <line x1="42" y1="32" x2="42" y2="64" />
-    <line x1="50" y1="12" x2="50" y2="84" />
-    <line x1="58" y1="24" x2="58" y2="72" />
-    <line x1="66" y1="36" x2="66" y2="60" />
-    <line x1="74" y1="28" x2="74" y2="68" />
-    <line x1="82" y1="40" x2="82" y2="56" />
-  </svg>
-);
-
 const CARDS: Record<ServiceId, CardData> = {
   "video-production": {
     id: "video-production",
@@ -171,13 +147,6 @@ const CARDS: Record<ServiceId, CardData> = {
     tagline: "Workflows on autopilot.",
     illustration: AutomationIllo,
   },
-  sound: {
-    id: "sound",
-    href: "/sound",
-    label: "Sound Engineering",
-    tagline: "Audio that hits harder.",
-    illustration: SoundIllo,
-  },
 };
 
 const CROSS_SELL_MAP: Record<ServiceId, [ServiceId, ServiceId]> = {
@@ -185,7 +154,6 @@ const CROSS_SELL_MAP: Record<ServiceId, [ServiceId, ServiceId]> = {
   web: ["video-production", "ai-automation"],
   ai: ["ai-automation", "web"],
   "ai-automation": ["ai", "web"],
-  sound: ["video-production", "web"],
 };
 
 function Card({ card }: { card: CardData }) {

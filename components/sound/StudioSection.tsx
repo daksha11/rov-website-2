@@ -1,6 +1,7 @@
 "use client";
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { BOOKING_URL } from "@/data/soundPricing";
 
 const spring = { type: "spring" as const, stiffness: 100, damping: 20 };
 
@@ -79,8 +80,8 @@ const valueProps = [
     tag: "Pro gear",
   },
   {
-    label: "Atlanta's Most Affordable Recording Studio",
-    detail: "High-quality mixing and mastering shouldn't break the bank. Our hourly rates are lower than most recording studios in Atlanta, without cutting corners on sound quality. More studio time, more music, less overhead. From independent artists to full project runs, we deliver radio-ready results at prices that make sense.",
+    label: "One Rate, Mixed and Mastered",
+    detail: "Most studios charge for the hour, then send a separate bill to mix and master. Every session here includes the full mix and master, so your finished song costs less than piecing it together anywhere else. Same pro gear, radio-ready results, no surprise invoices.",
     tag: "Best value",
   },
 ];
@@ -239,6 +240,147 @@ function ValueAccordion() {
   );
 }
 
+const recordingFeatures = [
+  "A real engineer in the room, not a rented room",
+  "UAD, Waves, FabFilter, Neumann mics, Focusrite pres",
+  "Mixed and mastered in 48 hours",
+  "Walk out with a release-ready record",
+];
+
+function RecordingRates() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+
+  return (
+    <div ref={ref} id="record" className="scroll-mt-24 max-w-7xl mx-auto mb-16 md:mb-24">
+      <motion.span
+        initial={{ opacity: 0, x: -20 }}
+        animate={inView ? { opacity: 1, x: 0 } : {}}
+        transition={spring}
+        className="block text-xs uppercase tracking-[0.3em] text-[#EA9A61] mb-3"
+        style={{ fontFamily: BODY_FONT }}
+      >
+        Recording Rates
+      </motion.span>
+      <motion.h3
+        initial={{ opacity: 0, y: 20 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ ...spring, delay: 0.1 }}
+        className="text-white text-3xl md:text-4xl lg:text-5xl font-bold italic mb-3"
+        style={{ fontFamily: HEADING_FONT }}
+      >
+        Cheapest finished song in the city.
+      </motion.h3>
+      <motion.p
+        initial={{ opacity: 0, y: 10 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ ...spring, delay: 0.15 }}
+        className="text-white/40 text-sm md:text-base mb-10 max-w-xl"
+        style={{ fontFamily: BODY_FONT }}
+      >
+        Other rooms charge you for the hour, then bill mixing separately. Here, one rate and you leave finished.
+      </motion.p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+        {/* Hourly */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ ...spring, delay: 0.2 }}
+          className="relative rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 md:p-8 flex flex-col"
+        >
+          <span className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-white/40 mb-4" style={{ fontFamily: BODY_FONT }}>
+            Studio Time
+          </span>
+          <div className="flex items-baseline gap-1 mb-1">
+            <span className="text-white text-4xl md:text-5xl font-bold italic" style={{ fontFamily: HEADING_FONT }}>$60</span>
+            <span className="text-white/30 text-sm" style={{ fontFamily: BODY_FONT }}>/hr</span>
+          </div>
+          <span className="text-[#EA9A61] text-xs uppercase tracking-[0.15em] mb-6" style={{ fontFamily: BODY_FONT }}>
+            Mix &amp; master included
+          </span>
+          <ul className="flex-1 space-y-2 mb-6">
+            {recordingFeatures.map((f) => (
+              <li key={f} className="flex items-start gap-2 text-white/50 text-sm" style={{ fontFamily: BODY_FONT }}>
+                <span className="text-[#EA9A61] mt-0.5 shrink-0">&#10003;</span>
+                {f}
+              </li>
+            ))}
+          </ul>
+          <p className="text-white/55 text-xs italic mb-6 leading-relaxed" style={{ fontFamily: BODY_FONT }}>
+            Comparable Atlanta rooms run <span className="text-white/70 not-italic line-through">$75&ndash;120/hr</span> and bill mixing separately.
+          </p>
+          <a
+            href={BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block text-center text-white font-semibold rounded-full border border-white/10 hover:border-white/25 transition-all duration-300 hover:scale-[1.03]"
+            style={{ fontFamily: HEADING_FONT, padding: "14px", fontSize: "13px", letterSpacing: "0.05em", background: "rgba(255,255,255,0.03)" }}
+          >
+            Book a session &rarr;
+          </a>
+        </motion.div>
+
+        {/* Finished Single bundle — featured */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ ...spring, delay: 0.3 }}
+          className="relative rounded-2xl border border-[#EA9A61]/30 bg-[#EA9A61]/[0.04] p-6 md:p-8 flex flex-col"
+        >
+          <span
+            className="absolute -top-3 left-6 rounded-full border border-[#EA9A61]/40 bg-[#EA9A61]/15 px-3 py-0.5 text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-[#EA9A61]"
+            style={{ fontFamily: BODY_FONT }}
+          >
+            Best Deal
+          </span>
+          <span className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-white/40 mb-4" style={{ fontFamily: BODY_FONT }}>
+            Finished Single
+          </span>
+          <div className="flex items-baseline gap-2 mb-1">
+            <span className="text-white text-4xl md:text-5xl font-bold italic" style={{ fontFamily: HEADING_FONT }}>$149</span>
+            <span className="text-white/30 text-sm line-through" style={{ fontFamily: BODY_FONT }}>$300+</span>
+          </div>
+          <span className="text-[#EA9A61] text-xs uppercase tracking-[0.15em] mb-6" style={{ fontFamily: BODY_FONT }}>
+            Record, mix &amp; master, done
+          </span>
+          <ul className="flex-1 space-y-2 mb-6">
+            {["Up to 2 hours of tracking", "Full mix and master included", "48-hour turnaround", "One finished, release-ready song"].map((f) => (
+              <li key={f} className="flex items-start gap-2 text-white/50 text-sm" style={{ fontFamily: BODY_FONT }}>
+                <span className="text-[#EA9A61] mt-0.5 shrink-0">&#10003;</span>
+                {f}
+              </li>
+            ))}
+          </ul>
+          <p className="text-white/55 text-xs italic mb-6 leading-relaxed" style={{ fontFamily: BODY_FONT }}>
+            Elsewhere: room time plus a separate <span className="text-white/70 not-italic">$150+</span> mix plus a <span className="text-white/70 not-italic">$75</span> master.
+          </p>
+          <a
+            href={BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="cta-shine block text-center text-white font-semibold rounded-full transition-all duration-300 hover:scale-[1.03]"
+            style={{
+              fontFamily: HEADING_FONT,
+              padding: "14px",
+              fontSize: "13px",
+              letterSpacing: "0.05em",
+              background: "linear-gradient(112deg, #42201C 6.46%, #A64D2B 34.96%, #B16937 63.88%, #EA9A61 97.63%)",
+              boxShadow: "3px 4px 4px 0 rgba(255, 244, 227, 0.15) inset, 0 4.385px 4.385px 0 rgba(0, 0, 0, 0.25)",
+            }}
+          >
+            Book your session &rarr;
+          </a>
+        </motion.div>
+      </div>
+
+      <p className="text-white/40 text-xs md:text-sm mt-6" style={{ fontFamily: BODY_FONT }}>
+        Students record at <span className="text-[#EA9A61]">$40/hr</span> with a valid ID. Same room, same gear, same engineer.
+      </p>
+    </div>
+  );
+}
+
 export default function StudioSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const headerInView = useInView(sectionRef, { once: true, margin: "-100px" });
@@ -299,7 +441,7 @@ export default function StudioSection() {
               and walk out with professionally mixed and mastered records, ready for Spotify, Apple Music, and every streaming platform.
             </p>
             <a
-              href="https://calendly.com/rangeofviewmusic/30min"
+              href={BOOKING_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 group"
@@ -333,6 +475,9 @@ export default function StudioSection() {
         </div>
       </div>
 
+      {/* ── Recording Rates ── */}
+      <RecordingRates />
+
       {/* ── Studio Visuals ── */}
       <StudioVisuals />
 
@@ -364,12 +509,12 @@ export default function StudioSection() {
               className="text-white/60 text-sm md:text-base leading-relaxed"
               style={{ fontFamily: BODY_FONT }}
             >
-              Talent shouldn&apos;t be gated by budget. Show your student ID at our Atlanta recording studio
-              and get discounted hourly rates. Same professional mixing and mastering, same gear, same quality. No compromises.
+              Talent shouldn&apos;t be gated by budget. Show your student ID and record at $40/hr,
+              full mix and master included. Same room, same gear, same engineer. No compromises.
             </p>
           </div>
           <a
-            href="https://calendly.com/rangeofviewmusic/30min"
+            href={BOOKING_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="shrink-0 text-[#EA9A61] text-sm uppercase tracking-[0.15em] hover:tracking-[0.25em] transition-all duration-500"

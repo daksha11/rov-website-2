@@ -2,12 +2,22 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { checkoutHref, type CheckoutKey } from "@/data/soundPricing";
 
 const HEADING = "Norwige, sans-serif";
 const BODY = "'Roboto', sans-serif";
 const spring = { type: "spring" as const, stiffness: 100, damping: 20 };
 
-const tiers = [
+const tiers: {
+  name: string;
+  price: number;
+  songs: number;
+  effective: number;
+  turnaround: string;
+  tagline: string;
+  featured: boolean;
+  checkoutKey: CheckoutKey;
+}[] = [
   {
     name: "Starter",
     price: 145,
@@ -16,6 +26,7 @@ const tiers = [
     turnaround: "48hr",
     tagline: "5 songs a month. Under $30 each.",
     featured: false,
+    checkoutKey: "sub_starter",
   },
   {
     name: "Standard",
@@ -25,6 +36,7 @@ const tiers = [
     turnaround: "48hr",
     tagline: "The consistent dropper. Three a week.",
     featured: true,
+    checkoutKey: "sub_standard",
   },
   {
     name: "Pro",
@@ -34,6 +46,7 @@ const tiers = [
     turnaround: "24hr priority",
     tagline: "Album mode. 18 songs. 24 hours, not 48.",
     featured: false,
+    checkoutKey: "sub_pro",
   },
 ];
 
@@ -77,6 +90,38 @@ export default function PricingTiers() {
         >
           Pick Your Lane
         </motion.h2>
+
+        {/* One-off — no subscription */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ ...spring, delay: 0.15 }}
+          className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 md:p-7 mb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-5"
+        >
+          <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-5">
+            <div className="flex items-baseline gap-2">
+              <span className="text-white text-3xl md:text-4xl font-bold italic" style={{ fontFamily: HEADING }}>
+                $120
+              </span>
+              <span className="text-white/30 text-sm" style={{ fontFamily: BODY }}>/song</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-white/80 text-sm font-semibold" style={{ fontFamily: BODY }}>
+                One song, no subscription
+              </span>
+              <span className="text-white/40 text-xs" style={{ fontFamily: BODY }}>
+                Full mix + master &middot; 72hr turnaround &middot; 2 revisions
+              </span>
+            </div>
+          </div>
+          <a
+            href={checkoutHref("oneoff")}
+            className="shrink-0 text-center text-white font-semibold rounded-full border border-white/10 hover:border-white/25 transition-all duration-300 hover:scale-[1.03]"
+            style={{ fontFamily: HEADING, padding: "12px 28px", fontSize: "13px", letterSpacing: "0.05em", background: "rgba(255,255,255,0.03)" }}
+          >
+            Send one song &rarr;
+          </a>
+        </motion.div>
 
         {/* Tier cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 mb-10">
@@ -145,7 +190,7 @@ export default function PricingTiers() {
 
               {/* CTA */}
               <a
-                href="mailto:stems@rovstudios.com"
+                href={checkoutHref(tier.checkoutKey)}
                 className={`cta-shine block text-center text-white font-semibold rounded-full transition-all duration-300 hover:scale-[1.03] ${
                   tier.featured ? "" : "border border-white/10 hover:border-white/20"
                 }`}
@@ -162,7 +207,7 @@ export default function PricingTiers() {
                     : { background: "rgba(255,255,255,0.03)" }),
                 }}
               >
-                Start at $50 &rarr;
+                Start {tier.name} &rarr;
               </a>
             </motion.div>
           ))}

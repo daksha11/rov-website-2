@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Instagram } from "lucide-react";
+import { BOOKING_URL, CONTACT_EMAIL } from "@/data/soundPricing";
 
 // Music-branded footer for rovmusic.com. Mirrors the studios footer's visual
 // language (black, Norwige headings, ROV logo) but drops the B2B service links,
 // India-time toggle, and skylines. Music-only: submit, follow, book.
-const BOOKING_URL = "https://calendly.com/rangeofviewmusic/30min";
 
 export default function MusicFooter() {
   return (
@@ -56,11 +56,11 @@ export default function MusicFooter() {
             FOLLOW
           </h3>
           <a
-            href="mailto:stems@rovstudios.com"
+            href={`mailto:${CONTACT_EMAIL}`}
             className="text-base md:text-xl hover:text-gray-400 transition-colors duration-300 mb-1"
             style={{ fontFamily: "Roboto, sans-serif" }}
           >
-            stems@rovstudios.com
+            {CONTACT_EMAIL}
           </a>
           <div className="flex items-center gap-5">
             <a

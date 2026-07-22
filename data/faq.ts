@@ -81,7 +81,7 @@ export const aiAutomationFaqItems: FaqItem[] = [
 export const soundFaqItems: FaqItem[] = [
     {
         question: "How much do you charge for mixing and mastering?",
-        answer: "We charge $50 per song for vocal mixing and mastering. That includes balancing your vocals, cleaning up the sound, adding creative effects where needed, and making sure it hits the right loudness for streaming. If you need a full trackout mixed (beat stems, instruments, vocals, everything), pricing is higher depending on the complexity and number of stems. Reach out with your project details and we'll give you a custom quote."
+        answer: "Your first 3 songs are $50 each, full mix and master included, no commitment. After that you can go one-off at $120 a song, or subscribe from as low as $25 a song ($145/mo for 5 songs up to $500/mo for 18 with 24-hour priority). Mastering is always included, and every song comes with 2 revisions. Full trackouts (beat stems plus vocals) are quoted based on the number of stems, send us your project details for an exact number."
     },
     {
         question: "How long does it take to get my song mixed and mastered?",
@@ -93,7 +93,7 @@ export const soundFaqItems: FaqItem[] = [
     },
     {
         question: "Do you offer discounts for multiple songs or full projects?",
-        answer: "Yes. If you're bringing a full project, EP, or a batch of singles, we offer discounted rates on mixing and mastering. The more songs we're working on together, the better we can lock in a package price. Tell us how many tracks you have, your timeline, and what extra services you might need, and we'll build a custom quote."
+        answer: "Yes. The more consistently you drop, the less you pay. Subscriptions bring mixing and mastering down to $25 to $29 a song ($145/mo for 5, $300 for 12, $500 for 18 with 24-hour priority). Bringing a full EP or project at once? Tell us the track count and timeline and we'll lock in a package rate."
     },
     {
         question: "What makes your mixes stand out on streaming platforms?",
