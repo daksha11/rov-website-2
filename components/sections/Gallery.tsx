@@ -69,7 +69,7 @@ function Gallery() {
     >
       {/* Gallery Heading without italic */}
       <div
-        className="text-[#f5e7d1] text-5xl md:text-7xl lg:text-[140px] uppercase font-bold text-center drop-shadow-xl px-4 relative"
+        className="text-[#f5e7d1] text-5xl md:text-7xl lg:text-[8.75rem] uppercase font-bold text-center drop-shadow-xl px-4 relative"
         style={{ fontFamily: "Norwige" }}
       >
         <span

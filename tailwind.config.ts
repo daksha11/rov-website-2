@@ -8,6 +8,18 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      // Tailwind's default opacity scale omits several 5-step values
+      // (15/35/45/55/65/85). Without these, slash color modifiers like
+      // `text-white/55` silently fail to generate and the element falls back
+      // to inherited black — invisible on our dark backgrounds. Fill the scale.
+      opacity: {
+        '15': '0.15',
+        '35': '0.35',
+        '45': '0.45',
+        '55': '0.55',
+        '65': '0.65',
+        '85': '0.85',
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':

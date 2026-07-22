@@ -121,6 +121,18 @@ Our inbox is open.
 
 Why it works: hook opens on a familiar debate everyone has an opinion on, reframes it as a question, then refuses the premise ("Why not both?"). The real number (31 pieces) is the proof. The idea has a spine ("you beat it with a system"). Credits real people. Soft, quiet CTA. No self-congratulation, no slop.
 
+## Training Corpus
+
+`content/social/*-linkedin.md` is the living set of approved, locked posts written in this exact style. **Read them before writing a new post.** They are the ground truth for voice, rhythm, and spacing, more authoritative than any rule above, because they're what actually got approved. When a new post is locked, save it there so the corpus grows.
+
+Current corpus and the move each one teaches:
+
+- `taste-gap-linkedin.md` ("the time will pass, do it anyway") — leaning on a named concept (Ira Glass's taste gap) as the spine; the reframe that breaks paralysis ("same years, the clock doesn't care"); a payoff that ties the old pain to present-day skill.
+- `overworking-art-linkedin.md` ("more time doesn't always make it better") — holding a nuance up front so the point doesn't get misread ("some work takes years... but not everything"); a named idea (demo-itis); a hard one-word close ("stop").
+- `incubation-linkedin.md` ("reflection fosters creativity") — a three-part sensory hook (poster on the train / YouTube / a walk); naming the unnamed phenomenon (incubation, the three B's); a cross-domain parallel (sports, loose players win) that widens the idea.
+
+Pattern across all approved posts: a real personal confession in the hook, a concept named plainly in the middle to give it a spine, one line that stands alone as the quotable center, and a landing that's wider and more human than the open. Match that.
+
 ## Checklist Before Delivering
 
 - [ ] Hook is multi-part with a turn, and works alone before "see more"

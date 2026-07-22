@@ -180,9 +180,18 @@ GRANT  EXECUTE ON FUNCTION public.submit_ctrla_feature(UUID, TEXT, TEXT, JSONB, 
 -- Private bucket; members upload under their own id prefix, staff (and the
 -- service role) read everything for review. Featured media is surfaced by
 -- the app through signed URLs or a copy at publish time.
-INSERT INTO storage.buckets (id, name, public)
-    VALUES ('ctrla-submissions', 'ctrla-submissions', false)
-ON CONFLICT (id) DO NOTHING;
+-- Bucket-level backstop: 80MB hard cap and image/audio/video only. Per-kind
+-- caps (image 8MB, audio 25MB, video 80MB) are enforced client-side in
+-- MediaUploader; this is the server floor a forged request cannot slip past.
+INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+    VALUES (
+        'ctrla-submissions', 'ctrla-submissions', false,
+        83886080,
+        ARRAY['image/jpeg','image/png','image/webp','image/gif','audio/mpeg','audio/wav','audio/mp4','audio/aac','audio/ogg','video/mp4','video/webm','video/quicktime']
+    )
+ON CONFLICT (id) DO UPDATE
+    SET file_size_limit = EXCLUDED.file_size_limit,
+        allowed_mime_types = EXCLUDED.allowed_mime_types;
 
 -- Members write only under submissions/<their-uid>/...
 DROP POLICY IF EXISTS "ctrla upload own media" ON storage.objects;

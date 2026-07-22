@@ -26,6 +26,8 @@ import {
 } from "@/lib/ctrla/community";
 import { C, NEUE, NORWIGE, card, inputStyle, labelStyle } from "./theme";
 import MediaUploader from "./MediaUploader";
+import CostHeader from "./CostHeader";
+import SpreadPreview from "./SpreadPreview";
 
 type Values = Record<string, unknown>;
 
@@ -104,32 +106,13 @@ export default function ConfigForm({ config, userId }: { config: FormConfig; use
     );
   }
 
-  return (
+  const formColumn = (
     <div style={{ display: "grid", gap: 18 }}>
       {config.intro && (
         <p style={{ margin: 0, fontSize: 15, color: C.soft, lineHeight: 1.6 }}>{config.intro}</p>
       )}
 
-      {isMagazine && (
-        <div style={{ ...card, padding: "16px 18px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-          <div>
-            <p style={{ margin: 0, fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", color: C.faint, fontWeight: 600 }}>Cost to submit</p>
-            <p style={{ margin: "4px 0 0", fontFamily: NORWIGE, fontWeight: 700, fontSize: 22, color: C.gold }}>{cost} credits</p>
-          </div>
-          <div style={{ textAlign: "right" }}>
-            <p style={{ margin: 0, fontSize: 12, color: C.faint }}>Your balance</p>
-            <p style={{ margin: "4px 0 0", fontSize: 16, fontWeight: 700, color: short ? C.rose : C.cream }}>
-              {points === null ? "…" : points.toLocaleString()}
-            </p>
-          </div>
-          {short && (
-            <p style={{ flexBasis: "100%", margin: 0, fontSize: 13, color: C.soft, lineHeight: 1.6 }}>
-              A little short. Earn more by playing{" "}
-              <Link href="/ctrla" style={{ color: C.gold }}>the Daily</Link>, finishing a guide, or following on Instagram, then come back. Nothing here is spent until you submit.
-            </p>
-          )}
-        </div>
-      )}
+      {isMagazine && <CostHeader cost={cost} balance={points} short={short} />}
 
       {config.fields.map((f) => (
         <Field key={f.key} field={f} value={values[f.key]} onChange={(v) => set(f.key, v)} userId={userId} />
@@ -158,6 +141,22 @@ export default function ConfigForm({ config, userId }: { config: FormConfig; use
       >
         {sending ? "Sending…" : isMagazine ? `Submit · ${cost} credits` : "Submit for review"}
       </button>
+    </div>
+  );
+
+  // Track A stays a single clean column. Track B pairs the form with a live
+  // magazine preview so the submitter watches their spread form as they type.
+  if (!isMagazine) return formColumn;
+
+  return (
+    <div className="ctrla-mag-layout" style={{ display: "grid", gap: 24, alignItems: "start" }}>
+      <style>{`
+        @media (min-width: 900px) {
+          .ctrla-mag-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 0.82fr); }
+        }
+      `}</style>
+      {formColumn}
+      <SpreadPreview type={config.type} values={values} />
     </div>
   );
 }

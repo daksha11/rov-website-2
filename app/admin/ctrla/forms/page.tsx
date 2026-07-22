@@ -122,7 +122,10 @@ export default function FormsEditorPage() {
           <Link href="/admin/ctrla" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: C.cream, textDecoration: "none", fontWeight: 500 }}>
             <span style={{ color: C.gold }}>←</span> Community queue
           </Link>
-          <span style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: C.gold, fontWeight: 600 }}>Form configs</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+            <Link href="/admin/ctrla/economy" style={{ fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase", color: C.cream, textDecoration: "none", fontWeight: 600 }}>Economy</Link>
+            <span style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: C.gold, fontWeight: 600 }}>Form configs</span>
+          </div>
         </div>
 
         <h1 style={{ margin: "0 0 4px", fontFamily: NORWIGE, fontWeight: 700, fontSize: "clamp(26px,5vw,40px)" }}>Contribution forms</h1>

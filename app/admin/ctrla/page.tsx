@@ -199,6 +199,9 @@ export default function CtrlaQueuePage() {
             <Link href="/admin/ctrla/forms" style={{ fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase", color: C.cream, textDecoration: "none", fontWeight: 600 }}>
               Forms
             </Link>
+            <Link href="/admin/ctrla/economy" style={{ fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase", color: C.cream, textDecoration: "none", fontWeight: 600 }}>
+              Economy
+            </Link>
             <span style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: C.gold, fontWeight: 600 }}>
               Community queue
             </span>

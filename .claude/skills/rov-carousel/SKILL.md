@@ -93,6 +93,38 @@ ROV closes never hard-sell. A pitch right after a warm story kills it.
   about," not "book now / DM us / limited spots."
 - End on an open door: "our inbox is open," "come say hi." Never an imperative CTA.
 
+## Step 5.5: Distribution and funnel (bake into every flow)
+
+A post is only half the work; how it travels is the other half. Every flow must declare these
+before it's done. Put them in the header block of the saved file.
+
+1. **Funnel job.** Every flow does ONE of three jobs. Name it, because it changes the hook and close:
+   - **Reach** — broad topic, worldview, or lead-magnet. Optimized for shares and new followers
+     (e.g. the CTRL A launch, a "3 ways founders waste money on branding" teardown).
+   - **Positioning** — an opinion, a method, a hot take that proves how ROV thinks (e.g. the Pedro
+     "plan the day" thesis). Builds authority.
+   - **Conversion** — a client case study with proof, a tactical breakdown ending in a soft call to
+     work together. Carries a metric.
+   Most flows lean one way with a touch of a second. Don't try to do all three in one post.
+
+2. **Founder-reshare line.** Personal profiles out-distribute company pages, and the page is the
+   trust anchor the founder's post points back to. Draft a 1–2 sentence line Andi / Ayush / Suchet
+   can put on top when they reshare the company post from their personal profile. First person,
+   even more casual than the caption.
+
+3. **Engagement-window tags.** LinkedIn reach keys off the first 10–15 minutes of engagement. List
+   who to tag and who should comment early: crew, collaborators, the client/friend featured. Tagging
+   is a distribution move, not just credit. Always tag the people in the story by name.
+
+4. **Proof requirement (conversion + case-study flows).** If the flow is about client or real work,
+   it must carry a concrete before/after or metric ("31 pieces from one day", load time, revenue,
+   time saved). A nice story without a number is a reach post, not a conversion post; label it right.
+
+5. **ICP signal.** Client-facing flows must make clear WHO this is for, in the reader's own words
+   (e.g. "Atlanta founders", "local service businesses"). Inherit the ICP from the source page.
+   Audience-growth / brand flows (like CTRL A) may stay intentionally broad; if so, say so in the
+   header so it's a choice, not an accident.
+
 ## Step 6: Voice guardrails (ROV house style)
 
 Three pillars: **Grounded, Warm, Refined.** Substance over noise. Quiet confidence over hype.
@@ -111,8 +143,9 @@ Hard bans:
 1. Print the whole flow in the chat, cleanly spaced: carousel slides (blank line between slides),
    then LinkedIn caption, then Instagram caption, then alternate hooks.
 2. Save it to `content/social/{slug}-social.md` (create `content/social/` if missing) using the same
-   layout as the reference files: a header block (topic, thesis, deck spec, crew if any), then
-   carousel, captions, and alternates.
+   layout as the reference files. The header block must include: topic, thesis, **funnel job**, **ICP
+   (or "intentionally broad")**, deck spec, and **crew/tags**. After the captions, include a
+   **Distribution** section with the **founder-reshare line** and the **engagement-window tag list**.
 3. Flag any `[X]` placeholders and ask the user for the real numbers.
 4. Offer to generate a brand-colored Word doc (`.docx`) of the flow if they want a shareable file
    (see the CTRL A flow's doc for the pattern: HTML in ROV colors → Word COM SaveAs format 16).

@@ -3,8 +3,11 @@
 One carousel, posted to both LinkedIn and Instagram.
 Topic: a full planned shoot day for our friend Pedro. Thesis: you don't beat the quality-vs-quantity
 trap by working harder, you beat it with a system. One planned day = 31 pieces of content.
+Funnel job: Positioning (proves how ROV thinks), with light Conversion (soft "inbox is open").
+Proof/metric: 31 pieces from one day.
+ICP: founders, creators, and brands who need a steady content library without the daily scramble.
 Photo-forward: slides 4-7 should ride behind-the-scenes shots + the beautiful final stills.
-Crew: Ayush Basu, Suchet Konda, Krina Patel, Chandra Sunkara.
+Crew / tag on post: Ayush Basu, Suchet Konda, Krina Patel, Chandra Sunkara + tag Pedro.
 
 Deck: 1080x1350, 9 slides. Export as PDF for LinkedIn, individual images for IG.
 
@@ -124,3 +127,16 @@ Huge day with Pedro, and honestly some of our favorite frames all year. All the 
 .
 
 #ContentDay #ContentCreation #ContentStrategy #Atlanta #AtlantaCreatives #VideoProduction #Photography #BehindTheScenes #ContentCreator #ROVStudios #AtlantaVideographer #AtlantaPhotographer #CreativeAgency #ContentMarketing #SocialMediaContent #BTS #ContentProduction #Videographer #PhotoShoot #CreativeDirection #AtlantaContent #BrandContent #ContentTips #ShootDay #AtlantaBusiness
+
+---
+
+## DISTRIBUTION
+
+**Founder-reshare line** (for Ayush / Suchet to put on top when resharing the company post from
+their personal profile; first person, casual):
+> Spent a full day making this with Pedro and the crew. The whole point: you don't have to choose
+> between posting a lot and posting well. Plan the day and you get both. 31 pieces, one shoot.
+
+**Engagement window (first 10-15 min):** tag Pedro + all crew (Ayush Basu, Suchet Konda, Krina
+Patel, Chandra Sunkara) in the post so they're notified, and have each drop a quick comment or
+reaction inside the first 15 minutes to seed reach. Reshare from personal profiles right after.

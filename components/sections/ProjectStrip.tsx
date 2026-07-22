@@ -31,7 +31,9 @@ const ProjectStrip: React.FC = () => {
               height: 'clamp(4.5rem, 7vw, 6rem)',
             }}
           >
-            <Image src="/brand/rov-logo.webp" alt="ROV Logo" width={60} height={60} className="w-[60%] h-auto" />
+            <div className="relative w-[60%] h-[60%]">
+              <Image src="/brand/rov-logo.webp" alt="ROV Logo" fill sizes="60px" className="object-contain" />
+            </div>
           </div>
           <div className="flex flex-col gap-1.5 max-[968px]:items-center">
             <h2

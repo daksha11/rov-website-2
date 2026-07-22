@@ -134,7 +134,7 @@ export async function POST(req: NextRequest) {
   // Tell the author (best-effort). Service client reads their email + id.
   const { data: sub } = await admin
     .from("ctrla_submissions")
-    .select("author_id, type, toolkit_slug, payload, profiles!ctrla_submissions_author_id_fkey(email)")
+    .select("author_id, type, toolkit_slug, credit_cost, payload, profiles!ctrla_submissions_author_id_fkey(email)")
     .eq("id", body.submissionId)
     .single();
   const authorEmail = (sub?.profiles as { email?: string } | null)?.email;
@@ -158,6 +158,23 @@ export async function POST(req: NextRequest) {
         submission_id: body.submissionId,
       });
     }
+  }
+
+  // Refund the full submit cost on any accepted outcome (approved or featured).
+  // Rejections keep the cost (the anti-flood tax); accepted work is made whole.
+  // Deduped per submission (status-independent) so approve-then-feature refunds
+  // exactly once, and the amount is the price actually charged at submit time
+  // (read off the row) so later price changes never rewrite history.
+  const refundCost = typeof sub?.credit_cost === "number" ? sub.credit_cost : 0;
+  if (awardAction && sub?.author_id && refundCost > 0) {
+    const { error: refundErr } = await admin.rpc("award_credits", {
+      p_user_id: sub.author_id,
+      p_action: "refund:contribution",
+      p_amount: refundCost,
+      p_dedupe_key: `refund:${body.submissionId}`,
+      p_meta: { submission_id: body.submissionId, refunded: refundCost, on: body.status },
+    });
+    if (refundErr) console.error("contribution refund error:", refundErr.message);
   }
 
   if (authorEmail) {

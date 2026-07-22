@@ -10,6 +10,7 @@ import MusicGuide from "../../_components/MusicGuide";
 import DesignGuide from "../../_components/DesignGuide";
 import DevGuide from "../../_components/DevGuide";
 import VideoGuide from "../../_components/VideoGuide";
+import MedicineCabinet from "../../_components/MedicineCabinet";
 import { Component as MusicReactiveHero } from "@/components/ui/music-reactive-hero-section";
 // Toolkit pages run the LIGHT theme — the airy, cream reveal from the loader.
 import { edLight as ed, Bleed, Rule, Label, Kicker, legibleAccent } from "../../_components/editorial";
@@ -79,6 +80,9 @@ export default function ToolkitPageContent({ id }: { id: string }) {
       {/* Flagship sectors with curated Signals get the immersive Stations
           experience; the rest fall back to the editorial detail for now. */}
       {section.signals ? <ToolkitStations section={section} theme={ed} hideKicker={id === "music" || id === "design" || id === "web-dev" || id === "video"} /> : <ToolkitDetail section={section} />}
+
+      {/* Web Dev · Part 03 — the medicine cabinet of custom Claude Code skills */}
+      {id === "web-dev" && <MedicineCabinet accent={pageAccent} />}
 
       {/* History lesson — accent-tinted entry strip into the immersive story */}
       {section.history && (

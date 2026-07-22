@@ -1,10 +1,11 @@
 ﻿"use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import GradientBlob from "@/components/effects/GradientBlob";
 import TeamGlobeView from "./TeamGlobeView";
 
@@ -291,6 +292,53 @@ const ImageCardInner = ({ src, alt, onClick, name, role, rotation = 0 }: { src: 
 const HomeTeamSection: React.FC = () => {
     const [expandedMemberId, setExpandedMemberId] = useState<number | null>(null);
     const [view, setView] = useState<"grid" | "globe">("grid");
+    const router = useRouter();
+
+    // Cursor-following "View Full Team" hint (same pattern as the CTRL·A
+    // section). Only active over non-interactive areas so member cards,
+    // toggles, and links keep their own behavior. Positioned absolutely with
+    // section-relative coords because the section's backdrop-filter makes it
+    // the containing block for fixed descendants.
+    const sectionRef = useRef<HTMLElement>(null);
+    const tipRef = useRef<HTMLDivElement>(null);
+    const tipShown = useRef(false);
+    const tipTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const [showTip, setShowTip] = useState(false);
+    useEffect(() => () => { if (tipTimer.current) clearTimeout(tipTimer.current); }, []);
+
+    const isInteractive = (t: EventTarget | null) =>
+        t instanceof Element && !!t.closest("a,button,canvas,.image-card,.cursor-pointer");
+    const hideTip = () => {
+        if (tipTimer.current) clearTimeout(tipTimer.current);
+        tipShown.current = false;
+        setShowTip(false);
+    };
+    const revealTip = (e: React.MouseEvent<HTMLElement>) => {
+        if (isInteractive(e.target)) {
+            if (tipShown.current) hideTip();
+            return;
+        }
+        const host = sectionRef.current;
+        const el = tipRef.current;
+        if (host && el) {
+            const r = host.getBoundingClientRect();
+            el.style.left = `${e.clientX - r.left}px`;
+            el.style.top = `${e.clientY - r.top}px`;
+        }
+        if (!tipShown.current) {
+            tipShown.current = true;
+            setShowTip(true);
+        }
+        if (tipTimer.current) clearTimeout(tipTimer.current);
+        tipTimer.current = setTimeout(() => {
+            tipShown.current = false;
+            setShowTip(false);
+        }, 6000);
+    };
+    const onSectionClick = (e: React.MouseEvent<HTMLElement>) => {
+        if (isInteractive(e.target)) return;
+        router.push("/about#team-members");
+    };
 
     const handleMarqueeMemberClick = (member: TeamMember) => {
         setExpandedMemberId(member.id);
@@ -419,6 +467,11 @@ const HomeTeamSection: React.FC = () => {
         <div id="team-members" style={{ marginTop: '-200px', paddingTop: '200px', pointerEvents: 'none' }} />
         <section
             id="team"
+            ref={sectionRef}
+            onClick={onSectionClick}
+            onMouseEnter={revealTip}
+            onMouseMove={revealTip}
+            onMouseLeave={hideTip}
             style={{
                 borderRadius: "20px",
                 background: 'rgba(255, 255, 255, 0.05)',
@@ -426,9 +479,30 @@ const HomeTeamSection: React.FC = () => {
                 border: "1px solid rgba(255, 255, 255, 0.1)",
                 minHeight: "100vh", padding: "40px 0", position: "relative",
                 display: "flex", flexDirection: "column", alignItems: "center",
-                overflow: "hidden"
+                overflow: "hidden", cursor: "pointer"
             }}
         >
+            {/* Cursor-following full-team hint (fades after 6s idle) */}
+            <div
+                ref={tipRef}
+                aria-hidden
+                className="pointer-events-none absolute left-0 top-0 z-[100] transition-opacity duration-500"
+                style={{ opacity: showTip ? 1 : 0 }}
+            >
+                <span
+                    className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-[12px] font-medium tracking-[0.14em] uppercase"
+                    style={{
+                        transform: "translate(18px, 18px)",
+                        background: "#E4B93C",
+                        color: "#231A08",
+                        fontFamily: "Roboto, sans-serif",
+                        boxShadow: "0 10px 26px -6px rgba(0,0,0,0.6)",
+                    }}
+                >
+                    View Full Team
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                </span>
+            </div>
             <GradientBlob position="top-left" opacity={0.45} size="600px" blur="150px" />
             <GradientBlob position="bottom-right" opacity={0.45} size="600px" blur="150px" />
             <div className="z-50 mb-8 md:mb-12 flex flex-wrap items-center gap-3 md:gap-6 justify-between w-full px-2 md:px-8">

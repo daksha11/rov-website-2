@@ -106,38 +106,85 @@ const Footer = () => {
           >
             SERVICES
           </h3>
-          <ul
-            className="flex flex-col gap-1 text-base md:text-xl"
-            style={{ fontFamily: 'Roboto, sans-serif' }}
-          >
-            <li>
-              <a href="/web" className="hover:text-gray-400 transition-colors duration-300">Web Optimization</a>
-            </li>
-            <li>
-              <a href="/video-production" className="hover:text-gray-400 transition-colors duration-300">Video Production</a>
-            </li>
-            <li>
-              <a href="/ai-automation" className="hover:text-gray-400 transition-colors duration-300">AI Solutions</a>
-            </li>
-            <li>
-              <a href="/works" className="hover:text-gray-400 transition-colors duration-300">Work</a>
-            </li>
-            <li>
-              <a href="/casestudy" className="hover:text-gray-400 transition-colors duration-300">Case Studies</a>
-            </li>
-            <li>
-              <a href="/blog" className="hover:text-gray-400 transition-colors duration-300">Blog</a>
-            </li>
-            <li>
-              <a href="/resources" className="hover:text-gray-400 transition-colors duration-300">Resources</a>
-            </li>
-            <li>
-              <a href="/about" className="hover:text-gray-400 transition-colors duration-300">About &amp; Team</a>
-            </li>
-            <li>
-              <a href="https://www.rovmusic.com" target="_blank" rel="noopener noreferrer" className="text-white/60 hover:text-gray-400 transition-colors duration-300">Music&nbsp;↗</a>
-            </li>
-          </ul>
+          <div className="flex flex-col gap-8 sm:flex-row sm:gap-14">
+            {/* What we do */}
+            <div className="flex flex-col gap-3">
+              <span
+                className="text-[11px] uppercase tracking-[0.2em]"
+                style={{ fontFamily: 'Roboto, sans-serif', color: '#C1936A' }}
+              >
+                What we do
+              </span>
+              <ul
+                className="flex flex-col gap-2.5 text-base md:text-lg"
+                style={{ fontFamily: 'Roboto, sans-serif' }}
+              >
+                <li>
+                  <a href="/web" className="hover:text-gray-400 transition-colors duration-300">Web Optimization</a>
+                </li>
+                <li>
+                  <a href="/video-production" className="hover:text-gray-400 transition-colors duration-300">Video Production</a>
+                </li>
+                <li>
+                  <a href="/ai-automation" className="hover:text-gray-400 transition-colors duration-300">AI Solutions</a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Explore */}
+            <div className="flex flex-col gap-3">
+              <span
+                className="text-[11px] uppercase tracking-[0.2em]"
+                style={{ fontFamily: 'Roboto, sans-serif', color: '#C1936A' }}
+              >
+                Explore
+              </span>
+              <ul
+                className="flex flex-col gap-2.5 text-base md:text-lg"
+                style={{ fontFamily: 'Roboto, sans-serif' }}
+              >
+                <li>
+                  <a href="/works" className="hover:text-gray-400 transition-colors duration-300">Work</a>
+                </li>
+                <li>
+                  <a href="/casestudy" className="hover:text-gray-400 transition-colors duration-300">Case Studies</a>
+                </li>
+                <li>
+                  <a href="/blog" className="hover:text-gray-400 transition-colors duration-300">Blog</a>
+                </li>
+                <li>
+                  <a href="/resources" className="hover:text-gray-400 transition-colors duration-300">Resources</a>
+                </li>
+                <li>
+                  <a href="/about" className="hover:text-gray-400 transition-colors duration-300">About &amp; Team</a>
+                </li>
+                <li className="pt-2">
+                  <a
+                    href="/ctrla"
+                    className="group inline-flex items-center gap-1.5 hover:text-gray-400 transition-colors duration-300"
+                  >
+                    CTRL·A
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="transition-transform duration-300 group-hover:translate-x-0.5" style={{ color: '#C1936A' }}>
+                      <path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.rovmusic.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-1.5 hover:text-gray-400 transition-colors duration-300"
+                  >
+                    Music
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" style={{ color: '#C1936A' }}>
+                      <path d="M3 9L9 3M4 3h5v5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
 
         {/* Center Column - Follow Us */}
@@ -206,7 +253,7 @@ const Footer = () => {
               <AnimatePresence mode="wait">
                 <motion.p
                   key={isIndia ? "india" : "usa"}
-                  className="text-lg md:text-xl"
+                  className="text-lg md:text-xl whitespace-nowrap"
                   style={{ fontFamily: 'Roboto, sans-serif' }}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}

@@ -1,27 +1,23 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import { Fragment, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { AnimatePresence, motion, LayoutGroup, useScroll, useMotionValueEvent } from "framer-motion";
-import GradientBlob from "@/components/effects/GradientBlob";
 
-// Shared easing — the same curve the old quadrant grid morphed on,
-// so the new single-active viewer keeps the section's motion DNA.
-const EASE = [0.16, 1, 0.3, 1] as const;
+// Extra scroll distance each pinned panel holds — fully settled and static —
+// before the next panel starts sliding up over it. Bigger = longer hold.
+const DWELL_VH = 65;
 
 type Service = {
   id: string;
-  label: string; // full uppercase rail label
-  short: string; // pill label
-  headline: string; // large statement line
-  body: [string, string]; // two-column paragraphs
-  items: string[]; // sub-service list
+  label: string;
+  headline: string;
+  body: [string, string];
+  items: string[];
   link: string;
   cta: string;
   accent: string;
-  images: [string, string]; // two rectangles, side by side
-  // Line-draw icon paths (viewBox 0 0 48 48), redrawn on every switch.
+  images: [string, string];
   iconPaths: string[];
 };
 
@@ -29,7 +25,6 @@ const SERVICES: Service[] = [
   {
     id: "web",
     label: "Web Optimization",
-    short: "Web",
     headline: "Websites built to perform, and designed to feel right.",
     body: [
       "We build fast, considered sites in Next.js that turn visitors into clients. Every page is engineered for speed, structured for search, and shaped around the way real people actually move through it.",
@@ -50,7 +45,6 @@ const SERVICES: Service[] = [
   {
     id: "video",
     label: "Video Production",
-    short: "Video",
     headline: "Editorial-grade footage that's impossible to scroll past.",
     body: [
       "From aerial to street level, we find the frame that says everything. Brand films, walkthroughs, drone cinematography, and music videos, all shot and cut to hold attention.",
@@ -71,7 +65,6 @@ const SERVICES: Service[] = [
   {
     id: "ai",
     label: "AI Solutions",
-    short: "AI",
     headline: "Automations and AI systems that cut manual work by 60%.",
     body: [
       "We build practical AI into the parts of your business that quietly eat time: lead follow-up, scheduling, support, and content. Built smart, so your team can think bigger.",
@@ -94,255 +87,200 @@ const SERVICES: Service[] = [
   },
 ];
 
-// ── Animated line-draw mark ─────────────────────────────
-// Redraws (pathLength 0→1, staggered) each time the active service changes.
-function ServiceMark({ service }: { service: Service }) {
-  return (
-    <svg
-      viewBox="0 0 48 48"
-      width={64}
-      height={64}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.4}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-      style={{ overflow: "visible" }}
-    >
-      <AnimatePresence mode="wait">
-        <motion.g key={service.id}>
-          {service.iconPaths.map((d, i) => (
-            <motion.path
-              key={`${service.id}-${i}`}
-              d={d}
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 0.9 }}
-              transition={{
-                pathLength: { duration: 0.8, ease: EASE, delay: 0.08 + i * 0.09 },
-                opacity: { duration: 0.25, delay: 0.08 + i * 0.09 },
-              }}
-            />
-          ))}
-        </motion.g>
-      </AnimatePresence>
-    </svg>
-  );
-}
-
 export default function Services() {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(0);
-  const service = SERVICES[active];
+  // Pure CSS `sticky` stacking: each full-screen panel pins at the top and the
+  // next slides up over the whole viewport. Native and buttery — no per-frame
+  // JS, so nothing to jitter. The seam shadow on each panel sells the depth.
 
-  // Scroll progress across the tall wrapper drives which card is shown while
-  // the inner panel stays pinned. Pills can still jump to any service.
-  const { scrollYProgress } = useScroll({
-    target: wrapRef,
-    offset: ["start start", "end end"],
-  });
-
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    const idx = Math.min(SERVICES.length - 1, Math.max(0, Math.floor(v * SERVICES.length)));
-    setActive((prev) => (prev === idx ? prev : idx));
-  });
-
-  // Scroll the window so the given service lands in the middle of its segment.
-  const goTo = (i: number) => {
-    const el = wrapRef.current;
-    if (!el) {
-      setActive(i);
-      return;
-    }
-    const range = el.offsetHeight - window.innerHeight;
-    const progress = (i + 0.5) / SERVICES.length;
-    const top = window.scrollY + el.getBoundingClientRect().top + range * progress;
-    window.scrollTo({ top, behavior: "smooth" });
-  };
+  // Drive a per-panel `--glow` (0→1) from how far the NEXT panel has risen from
+  // the bottom, so a warm glow grows up as the next one loads in. Only sets a
+  // CSS variable (opacity/scale) — compositor-cheap, no layout, no jank.
+  useEffect(() => {
+    const panels = Array.from(document.querySelectorAll<HTMLElement>(".svc-panel"));
+    if (!panels.length) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const vh = window.innerHeight;
+      panels.forEach((p, i) => {
+        const next = panels[i + 1];
+        if (!next) {
+          p.style.setProperty("--glow", "0");
+          return;
+        }
+        const nt = next.getBoundingClientRect().top;
+        const g = Math.min(1, Math.max(0, (vh - nt) / (vh * 0.6)));
+        p.style.setProperty("--glow", g.toFixed(3));
+      });
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
 
   return (
-    <div ref={wrapRef} style={{ height: `${SERVICES.length * 100}vh` }} className="relative">
-      {/* Pinned viewport — swaps cards as the wrapper scrolls past */}
-      <section className="sticky top-0 h-screen bg-transparent w-full px-6 sm:px-12 md:px-16 relative flex flex-col overflow-hidden pt-20 pb-28 md:pt-14 md:pb-24">
-        <GradientBlob position="top-left" />
-        <GradientBlob position="bottom-right" />
-
-        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent pointer-events-none" />
-
-        <div className="w-full max-w-[1400px] mx-auto relative z-10 flex flex-col flex-1 min-h-0">
-        {/* Heading + pills + progress on one compact row */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-4 md:mb-5">
-          <h2
-            className="text-3xl md:text-4xl lg:text-5xl text-white/90 uppercase tracking-wider leading-none"
-            style={{ fontFamily: "Norwige, sans-serif" }}
+    <section className="relative bg-black w-full">
+      {SERVICES.map((s, i) => (
+        <Fragment key={s.id}>
+        <div
+          className="svc-panel md:sticky md:top-0"
+          style={{ zIndex: i + 1 }}
+        >
+          <div
+            className="relative w-full min-h-screen md:h-screen overflow-hidden"
+            style={{
+              background: `radial-gradient(120% 90% at 12% -5%, ${s.accent}66, transparent 55%), radial-gradient(90% 80% at 100% 105%, ${s.accent}4d, transparent 55%), #08070a`,
+              boxShadow: "0 -24px 70px -12px rgba(0,0,0,0.9)",
+            }}
           >
-            SERVICES
-          </h2>
-
-          {/* ── Filter pills ── */}
-          <div className="flex flex-wrap gap-2.5">
-            {SERVICES.map((s, i) => {
-              const on = i === active;
-              return (
-                <button
-                  key={s.id}
-                  onClick={() => goTo(i)}
-                  className="relative px-5 py-2 rounded-full text-xs md:text-sm uppercase overflow-hidden transition-colors"
-                  style={{
-                    fontFamily: "'Neue Montreal', sans-serif",
-                    letterSpacing: "0.14em",
-                    color: on ? "#fff" : "rgba(255,255,255,0.55)",
-                    border: `1px solid ${on ? "transparent" : "rgba(255,255,255,0.18)"}`,
-                  }}
+            <div className="max-w-[1400px] mx-auto h-full flex flex-col px-6 sm:px-10 md:px-16 pt-24 md:pt-[clamp(5rem,9vh,7rem)] pb-28 md:pb-[clamp(7rem,13vh,10rem)]">
+              {/* Top bar — ties every panel to the section identity */}
+              <div className="flex items-center justify-between mb-7 md:mb-9">
+                <span
+                  className="text-sm md:text-base uppercase tracking-[0.25em] text-white/70"
+                  style={{ fontFamily: "Norwige, sans-serif" }}
                 >
-                  {on && (
-                    <motion.span
-                      layoutId="service-pill"
-                      className="absolute inset-0 rounded-full"
-                      style={{ background: s.accent, border: `1px solid ${s.accent}` }}
-                      transition={{ duration: 0.5, ease: EASE }}
-                    />
-                  )}
-                  <span className="relative z-10">{s.short}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Segment progress dots */}
-        <div className="flex items-center gap-2 mb-4 md:mb-5">
-          <span
-            className="text-white/40 text-xs tabular-nums mr-1"
-            style={{ fontFamily: "'Neue Montreal', sans-serif", letterSpacing: "0.1em" }}
-          >
-            {String(active + 1).padStart(2, "0")} / {String(SERVICES.length).padStart(2, "0")}
-          </span>
-          {SERVICES.map((s, i) => (
-            <span
-              key={s.id}
-              className="h-[2px] rounded-full transition-all duration-500"
-              style={{
-                width: i === active ? 40 : 16,
-                background: i === active ? "#EA9A61" : "rgba(255,255,255,0.18)",
-              }}
-            />
-          ))}
-        </div>
-
-        {/* ── Active service block (flat, editorial — morphs on swap) ── */}
-        <LayoutGroup>
-          <div className="flex flex-col md:flex-row flex-1 min-h-0 border-t border-white/10">
-            {/* Left rail — bullets, divided from the right by a vertical line */}
-            <div className="md:w-[260px] lg:w-[300px] shrink-0 md:border-r md:border-white/12 md:pr-10 lg:pr-12 pt-6 md:pt-7 pb-6 md:pb-0">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={service.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.4, ease: EASE }}
-                  className="flex flex-col items-start"
-                >
-                  <div className="mb-6 text-white/85">
-                    <ServiceMark service={service} />
-                  </div>
-                  <h3
-                    className="text-white uppercase text-lg md:text-xl mb-5"
-                    style={{ fontFamily: "'Neue Montreal', sans-serif", letterSpacing: "0.12em" }}
+                  Services
+                </span>
+                <div className="flex items-center gap-3">
+                  <span
+                    className="text-xs tabular-nums text-white/45"
+                    style={{ fontFamily: "'Neue Montreal', sans-serif", letterSpacing: "0.1em" }}
                   >
-                    {service.label}
+                    {String(i + 1).padStart(2, "0")} / {String(SERVICES.length).padStart(2, "0")}
+                  </span>
+                  <div className="flex items-center gap-1.5">
+                    {SERVICES.map((_, k) => (
+                      <span
+                        key={k}
+                        className="h-[2px] rounded-full transition-all"
+                        style={{
+                          width: k === i ? 26 : 12,
+                          background: k === i ? "#EA9A61" : "rgba(255,255,255,0.2)",
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Main body */}
+              <div className="flex-1 min-h-0 flex flex-col md:flex-row gap-8 md:gap-16 border-t border-white/10 pt-7 md:pt-9">
+                {/* Left rail */}
+                <div className="md:w-[300px] lg:w-[340px] shrink-0 flex flex-col">
+                  <svg
+                    viewBox="0 0 48 48"
+                    className="w-11 h-11 md:w-12 md:h-12"
+                    fill="none"
+                    stroke="#EA9A61"
+                    strokeWidth={1.4}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    style={{ overflow: "visible" }}
+                    aria-hidden
+                  >
+                    {s.iconPaths.map((d, k) => (
+                      <path key={k} d={d} />
+                    ))}
+                  </svg>
+                  <h3
+                    className="text-white text-2xl md:text-3xl lg:text-4xl uppercase leading-[1.02] mt-5"
+                    style={{ fontFamily: "Norwige, sans-serif" }}
+                  >
+                    {s.label}
                   </h3>
-                  <ul className="space-y-2.5 mb-8">
-                    {service.items.map((item) => (
+                  <ul className="mt-6 md:mt-7 space-y-2.5 flex-1">
+                    {s.items.map((it) => (
                       <li
-                        key={item}
-                        className="flex items-center gap-3 text-white/55 text-sm md:text-[0.95rem]"
-                        style={{ fontFamily: "'Neue Montreal', sans-serif", letterSpacing: "0.02em" }}
+                        key={it}
+                        className="flex items-center gap-3 text-white/70 text-sm md:text-base"
+                        style={{ fontFamily: "Roboto, sans-serif" }}
                       >
-                        <span className="inline-block w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "#EA9A61" }} />
-                        {item}
+                        <span className="h-1.5 w-1.5 rounded-full" style={{ background: "#EA9A61" }} />
+                        {it}
                       </li>
                     ))}
                   </ul>
                   <Link
-                    href={service.link}
-                    aria-label={`${service.label} — ${service.cta}`}
-                    className="group inline-flex items-center justify-center px-7 py-3 rounded-full text-xs md:text-sm w-fit transition-colors hover:bg-white/5"
+                    href={s.link}
+                    className="cta-shine group mt-7 inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold text-white self-start transition-transform duration-300 hover:scale-[1.03]"
                     style={{
-                      fontFamily: "'Neue Montreal', sans-serif",
-                      letterSpacing: "0.08em",
-                      color: "#fff",
-                      border: "1px solid rgba(234,154,97,0.55)",
-                      textTransform: "uppercase",
+                      fontFamily: "Norwige, sans-serif",
+                      background:
+                        "linear-gradient(112deg, #42201C 6.46%, #A64D2B 34.96%, #B16937 63.88%, #EA9A61 97.63%)",
+                      boxShadow:
+                        "3px 4px 4px 0 rgba(255,244,227,0.15) inset, 0 4px 10px rgba(0,0,0,0.35)",
                     }}
                   >
-                    {service.cta}
+                    {s.cta}
+                    <span className="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
                   </Link>
-                </motion.div>
-              </AnimatePresence>
-            </div>
+                </div>
 
-            {/* Right column — big header, two body blocks under it, image below */}
-            <div className="flex-1 min-h-0 flex flex-col md:pl-10 lg:pl-14 pt-6 md:pt-7">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={service.id}
-                  initial={{ opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.45, ease: EASE }}
-                  className="shrink-0"
-                >
+                {/* Right — headline, body, imagery */}
+                <div className="flex-1 min-h-0 flex flex-col">
                   <h4
-                    className="text-white text-2xl md:text-4xl lg:text-[2.6rem] leading-[1.06] mb-4 md:mb-5"
+                    className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-[3.4rem] leading-[1.03]"
                     style={{ fontFamily: "Norwige, sans-serif" }}
                   >
-                    {service.headline}
+                    {s.headline}
                   </h4>
                   <div
-                    className="text-white/60 text-sm md:text-[0.9rem] md:[column-count:2] md:[column-gap:3rem]"
-                    style={{ fontFamily: "Roboto, sans-serif", fontWeight: 300, lineHeight: 1.7 }}
+                    className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-3 max-w-3xl text-white/55 text-sm md:text-[0.95rem] leading-relaxed"
+                    style={{ fontFamily: "Roboto, sans-serif" }}
                   >
-                    <p className="mb-4 md:mb-0 md:[break-inside:avoid]">{service.body[0]}</p>
-                    <p className="md:[break-inside:avoid]">{service.body[1]}</p>
+                    <p>{s.body[0]}</p>
+                    <p>{s.body[1]}</p>
                   </div>
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Two rectangles side by side, filling remaining height */}
-              <div className="flex-1 min-h-[130px] grid grid-cols-2 gap-3 md:gap-4 mt-4 md:mt-5">
-                {service.images.map((src, i) => (
-                  <div
-                    key={i}
-                    className="relative overflow-hidden rounded-lg border border-white/10 bg-white/[0.02]"
-                  >
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={`${service.id}-${i}`}
-                        className="absolute inset-0"
-                        initial={{ opacity: 0, scale: 1.05 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 1.02 }}
-                        transition={{ duration: 0.55, ease: EASE, delay: i * 0.06 }}
+                  <div className="mt-7 md:mt-8 flex-1 min-h-[160px] max-h-[46vh] grid grid-cols-2 gap-3 md:gap-4">
+                    {s.images.map((src, k) => (
+                      <div
+                        key={k}
+                        className="relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.02]"
                       >
                         <Image
                           src={src}
-                          alt={`${service.label} work by Range of View Studios`}
+                          alt={`${s.label} work by Range of View Studios`}
                           fill
-                          sizes="(max-width: 768px) 50vw, 550px"
+                          sizes="(max-width: 768px) 50vw, 460px"
                           className="object-cover object-center"
                         />
-                      </motion.div>
-                    </AnimatePresence>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
             </div>
+
+            {/* Growing glow rising from the bottom as the next panel loads up */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-[45vh]"
+              style={{
+                opacity: "var(--glow, 0)",
+                transform: "scaleY(calc(0.55 + var(--glow, 0) * 0.45))",
+                transformOrigin: "bottom",
+                background:
+                  "radial-gradient(75% 100% at 50% 100%, rgba(234,154,97,0.4), rgba(234,154,97,0.12) 42%, transparent 72%)",
+                willChange: "opacity, transform",
+              }}
+            />
           </div>
-        </LayoutGroup>
         </div>
-      </section>
-    </div>
+
+        {/* Dwell spacer: holds the pinned panel fully in view before the next
+            one starts sliding up. Desktop only; mobile panels stack naturally. */}
+        <div aria-hidden className="hidden md:block" style={{ height: `${DWELL_VH}vh` }} />
+        </Fragment>
+      ))}
+    </section>
   );
 }
