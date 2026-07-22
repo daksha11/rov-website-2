@@ -9,6 +9,23 @@
 export const CONTACT_EMAIL = "stems@rovstudios.com";
 export const BOOKING_URL = "https://calendly.com/rangeofviewmusic/30min";
 
+// Pricing beyond the flat intro/recording rates is consultative: the quote
+// questionnaire ends by letting the visitor book a call or send an inquiry.
+// Paste the Cal.com "Quote Call" event (URL or "username/event") here;
+// empty = form-only.
+export const CONSULT_BOOKING_URL = "";
+
+// Cal.com paid recording events. Paste each event as a URL or "username/event"
+// slug once created (Cal.com -> Apps -> Stripe must be connected first so the
+// event collects payment at booking). Empty = the CTA falls back to
+// BOOKING_URL (Calendly) so nothing breaks in the meantime.
+export const CAL_LINKS = {
+  /** "Studio Session" event — 1 hour, $60. */
+  hourlySession: "rov-studios-imhphw/studio-session",
+  /** "Finished Single" event — record, mix & master, $149. */
+  finishedSingle: "",
+};
+
 export type CheckoutKey =
   | "intro"
   | "oneoff"

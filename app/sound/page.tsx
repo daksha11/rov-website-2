@@ -65,8 +65,7 @@ const SavingsCalculator = dynamic(() => import("@/components/sound/SavingsCalcul
     ),
     ssr: false,
 });
-const PricingTiers = dynamic(() => import("@/components/sound/PricingTiers"));
-const CreativeAddOns = dynamic(() => import("@/components/sound/CreativeAddOns"));
+const QuoteEstimator = dynamic(() => import("@/components/sound/QuoteEstimator"));
 // const StudioSetupSection = dynamic(() => import("@/components/sound/StudioSetup"));
 
 const VideoShowcaseSection = dynamic(() => import("@/components/sound/VideoShowcaseSection"), {
@@ -160,13 +159,10 @@ export default function Page() {
             {/* 04 — Studio Recording + Calculator */}
             <StudioSection />
 
-            {/* 05 — Subscription Tiers */}
-            <PricingTiers />
+            {/* 05 — Quote questionnaire (replaces subscription tiers + add-ons) */}
+            <QuoteEstimator />
 
-            {/* 06 — Creative Add-Ons */}
-            <CreativeAddOns />
-
-            {/* 07 — Savings Calculator */}
+            {/* 06 — Savings Calculator */}
             <SavingsCalculator />
 
             {/* 08 — Studio Setup (hidden) */}

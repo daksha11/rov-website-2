@@ -1,7 +1,8 @@
 "use client";
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { BOOKING_URL } from "@/data/soundPricing";
+import { BOOKING_URL, CAL_LINKS } from "@/data/soundPricing";
+import CalBookButton from "@/components/sound/CalBookButton";
 
 const spring = { type: "spring" as const, stiffness: 100, damping: 20 };
 
@@ -310,15 +311,14 @@ function RecordingRates() {
           <p className="text-white/55 text-xs italic mb-6 leading-relaxed" style={{ fontFamily: BODY_FONT }}>
             Comparable Atlanta rooms run <span className="text-white/70 not-italic line-through">$75&ndash;120/hr</span> and bill mixing separately.
           </p>
-          <a
-            href={BOOKING_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block text-center text-white font-semibold rounded-full border border-white/10 hover:border-white/25 transition-all duration-300 hover:scale-[1.03]"
+          <CalBookButton
+            calLink={CAL_LINKS.hourlySession}
+            fallbackHref={BOOKING_URL}
+            className="block w-full text-center text-white font-semibold rounded-full border border-white/10 hover:border-white/25 transition-all duration-300 hover:scale-[1.03]"
             style={{ fontFamily: HEADING_FONT, padding: "14px", fontSize: "13px", letterSpacing: "0.05em", background: "rgba(255,255,255,0.03)" }}
           >
             Book a session &rarr;
-          </a>
+          </CalBookButton>
         </motion.div>
 
         {/* Finished Single bundle — featured */}
@@ -355,11 +355,10 @@ function RecordingRates() {
           <p className="text-white/55 text-xs italic mb-6 leading-relaxed" style={{ fontFamily: BODY_FONT }}>
             Elsewhere: room time plus a separate <span className="text-white/70 not-italic">$150+</span> mix plus a <span className="text-white/70 not-italic">$75</span> master.
           </p>
-          <a
-            href={BOOKING_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cta-shine block text-center text-white font-semibold rounded-full transition-all duration-300 hover:scale-[1.03]"
+          <CalBookButton
+            calLink={CAL_LINKS.finishedSingle}
+            fallbackHref={BOOKING_URL}
+            className="cta-shine block w-full text-center text-white font-semibold rounded-full transition-all duration-300 hover:scale-[1.03]"
             style={{
               fontFamily: HEADING_FONT,
               padding: "14px",
@@ -370,7 +369,7 @@ function RecordingRates() {
             }}
           >
             Book your session &rarr;
-          </a>
+          </CalBookButton>
         </motion.div>
       </div>
 
@@ -440,10 +439,9 @@ export default function StudioSection() {
               We don&apos;t just mix files from a laptop. Artists record in our Atlanta studio, stand behind real mics,
               and walk out with professionally mixed and mastered records, ready for Spotify, Apple Music, and every streaming platform.
             </p>
-            <a
-              href={BOOKING_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+            <CalBookButton
+              calLink={CAL_LINKS.hourlySession}
+              fallbackHref={BOOKING_URL}
               className="inline-flex items-center gap-3 group"
             >
               <span
@@ -470,7 +468,7 @@ export default function StudioSection() {
               >
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
-            </a>
+            </CalBookButton>
           </motion.div>
         </div>
       </div>
@@ -513,15 +511,14 @@ export default function StudioSection() {
               full mix and master included. Same room, same gear, same engineer. No compromises.
             </p>
           </div>
-          <a
-            href={BOOKING_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+          <CalBookButton
+            calLink={CAL_LINKS.hourlySession}
+            fallbackHref={BOOKING_URL}
             className="shrink-0 text-[#EA9A61] text-sm uppercase tracking-[0.15em] hover:tracking-[0.25em] transition-all duration-500"
             style={{ fontFamily: BODY_FONT }}
           >
             Inquire &rarr;
-          </a>
+          </CalBookButton>
         </div>
       </motion.div>
     </section>
