@@ -250,6 +250,13 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  /* Range of View — approved brand gradients (brand-kit.md §Gradients).
+     Only these four. Used by /industries ICP landing pages. */
+  --gradient-brand: linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%);
+  --gradient-earth: linear-gradient(180deg, #957E5E 0%, #3B2114 100%);
+  --gradient-ember: linear-gradient(135deg, #90422C 0%, #3B2114 100%);
+  --gradient-linen: linear-gradient(90deg, #D0BEA5 0%, #FFF4E3 100%);
 }
 
 /* Light mode (from :root) */
@@ -301,11 +308,45 @@
 
 html {
   scroll-behavior: smooth;
+  /* Guarantee no horizontal scroll on any screen size, including ultrawide.
+     Decorative off-canvas elements (e.g. GradientBlob corner glows on the
+     sound/video pages) bleed past the right edge by design; `clip` removes
+     the phantom horizontal scroll they create WITHOUT establishing a scroll
+     container, so it does not break the position: sticky sections the way
+     overflow-x: hidden would. */
+  overflow-x: clip;
+}
+
+/* --- FLUID PROPORTIONAL SCALING (Saint Urbain-style) ---
+   The root font-size tracks the viewport width so the layout renders as the
+   same "zoomed" composition across screen sizes instead of reflowing. Every
+   rem-based value — which is all standard Tailwind utilities: text-*, p-*,
+   gap-*, max-w-*, rounded-*, etc. — scales proportionally with it.
+
+   One continuous anchor to the 1440px desktop design width (16px ÷ 1440 =
+   1.1111vw), applied from 768px up. Our md: multi-column layouts switch on at
+   768px, so scaling starts there too: on a 768-1024px tablet the desktop grid
+   shrinks to ~75% instead of rendering cramped at full size, and on a 1920px
+   monitor it grows to ~133%, all keeping the exact 1440px composition.
+
+   clamp() floor (12px ≈ 75%) keeps text legible at the small end of the tablet
+   band; the 22px ceiling stops runaway growth on 4K screens. Below 768px the
+   root stays at the browser default and the mobile single-column layouts are
+   untouched. Values authored in px (borders, hairlines, arbitrary text-[Npx])
+   intentionally do not scale. */
+@media (min-width: 768px) {
+  html {
+    font-size: clamp(12px, 1.1111vw, 22px);
+  }
 }
 
 body {
   background-color: #110808;
-  overflow-x: hidden;
+  /* `clip` (not `hidden`) contains horizontal bleed without establishing a
+     scroll container — `overflow-x: hidden` here forces overflow-y to `auto`,
+     turning body into a scroller that breaks every `position: sticky` section
+     (e.g. the homepage Services scroll-swap). Matches the html rule above. */
+  overflow-x: clip;
 }
 
 /* --- KEYFRAMES & ANIMATIONS --- */
@@ -963,13 +1004,80 @@ input[type="range"]::-webkit-slider-thumb {
 .ctrla-cover-cta { transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease; }
 .ctrla-cover-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(227,194,74,0.28); }
 
+/* Craft pathways — the "which creative are you?" routes. Each row lights up in
+   its craft accent (--acc) on hover: node fills, name shifts, CTA slides. */
+.ctrla-path-row { transition: background 0.25s ease; }
+.ctrla-path-row:hover { background: color-mix(in srgb, var(--acc) 8%, transparent); }
+.ctrla-path-node { transition: background 0.25s ease, transform 0.25s ease; }
+.ctrla-path-row:hover .ctrla-path-node { background: var(--acc); transform: scale(1.3); }
+.ctrla-path-name { transition: transform 0.25s ease; }
+.ctrla-path-row:hover .ctrla-path-name { transform: translateX(6px); }
+.ctrla-path-cta { transition: transform 0.2s ease; }
+.ctrla-path-row:hover .ctrla-path-cta { transform: translateX(5px); }
+
+/* ATL Roots — the three lineage threads. Three across on desktop, stack on
+   narrow screens so each thread keeps a readable measure. */
+.ctrla-roots-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 860px) {
+  .ctrla-roots-grid { grid-template-columns: 1fr; }
+}
+
+/* Lock In — persistent focus-space chip. Dark glass in the same family as the
+   site nav dock, gold accent so it reads as the platform's own tool. Fixed
+   bottom-right, clear of the centered dock; below modals (z 998/999) but above
+   page content. */
+.ctrla-lockin-chip {
+  position: fixed;
+  right: clamp(14px, 3vw, 28px);
+  bottom: clamp(76px, 8vw, 30px); /* lift above the centered dock on small screens */
+  z-index: 900;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 18px;
+  border-radius: 999px;
+  background: rgba(15, 8, 32, 0.82);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(227, 194, 74, 0.55);
+  text-decoration: none;
+  box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.6);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.ctrla-lockin-chip:hover {
+  transform: translateY(-2px);
+  background: rgba(227, 194, 74, 0.14);
+  box-shadow: 0 14px 36px -8px rgba(227, 194, 74, 0.32);
+}
+.ctrla-lockin-chip:focus-visible {
+  outline: 2px solid #E3C24A;
+  outline-offset: 3px;
+}
+.ctrla-lockin-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 5px;
+  border: 1px solid rgba(227, 194, 74, 0.5);
+  background: rgba(227, 194, 74, 0.12);
+  font-size: 11px;
+  letter-spacing: 0;
+}
+/* On wider screens the dock is centered, so drop the chip back to the corner */
+@media (min-width: 640px) {
+  .ctrla-lockin-chip { bottom: clamp(20px, 3vw, 30px); }
+}
+
 /* Cover secondary CTA — outlined ghost that fills gold on hover */
 .ctrla-cover-cta-ghost {
   color: #E3C24A;
   background: transparent;
   border: 1.5px solid #E3C24A;
 }
-.ctrla-cover-cta-ghost:hover { background: #E3C24A; color: #0F0820; }
+.ctrla-cover-cta-ghost:hover { background: #E3C24A !important; color: #0F0820 !important; }
 
 /* Typewriter caret — blinks while typing, holds a soft pulse when done */
 .ctrla-type-caret {
@@ -1081,12 +1189,19 @@ input[type="range"]::-webkit-slider-thumb {
   overflow: hidden;
   background: linear-gradient(180deg,
     #0F0820 0%,
-    #20102F 26%,
-    #463768 48%,
-    #8C595A 66%,
-    #C2A957 78%,
-    #8C595A 85%,
-    #463768 93%,
+    #1C0E2B 20%,
+    #2E2246 34%,
+    #45364F 45%,
+    #5E4657 54%,
+    #7A5658 61%,
+    #9C6E54 68%,
+    #C29A50 74%,
+    #DBB44D 78%,
+    #E3C24A 81%,
+    #D0A850 84%,
+    #A67C5C 89%,
+    #6A4F66 93%,
+    #2A1740 97%,
     #0F0820 100%);
 }
 /* Legibility scrim — darkest at the bottom where the heading sits, fading to
@@ -1108,7 +1223,7 @@ input[type="range"]::-webkit-slider-thumb {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(120% 56% at 50% 78%, rgba(227,194,74,0.10), transparent 70%);
+  background: radial-gradient(150% 60% at 50% 80%, rgba(227,194,74,0.12), transparent 74%);
   animation: ctrla-cosmic-breathe 22s ease-in-out infinite alternate;
 }
 @media (prefers-reduced-motion: reduce) {

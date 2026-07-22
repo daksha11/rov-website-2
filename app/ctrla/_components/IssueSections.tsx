@@ -276,7 +276,7 @@ export function BrandKitFeature() {
         background: `linear-gradient(180deg, ${ed.ground} 0%, ${ed.panel} 42%, ${ed.panel} 58%, ${ed.ground} 100%)`,
         borderTop: `1px solid ${ed.hair}`,
         borderBottom: `1px solid ${ed.hair}`,
-        padding: "clamp(56px,8vw,112px) 0",
+        padding: "clamp(40px,6vw,80px) 0",
         position: "relative",
         overflow: "hidden",
         scrollMarginTop: 80,
@@ -621,7 +621,7 @@ export function CondensedEvents() {
 
 export function VueClose() {
   return (
-    <section style={{ background: "transparent", padding: "clamp(64px,9vw,128px) 0" }}>
+    <section style={{ background: "transparent", padding: "clamp(40px,6vw,88px) 0" }}>
       <Bleed>
         {/* Vue mascot illustration goes here (skipped for now) */}
         <div style={{ maxWidth: 660, borderLeft: `3px solid ${ed.plum}`, paddingLeft: "clamp(20px,3vw,40px)" }}>

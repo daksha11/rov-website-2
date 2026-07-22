@@ -9,12 +9,9 @@ import GooeyLogoMorph from "./_components/GooeyLogoMorph";
 import EditorialFooter from "./_components/EditorialFooter";
 import CtrlASignup from "./_components/CtrlASignup";
 import ShootingStars from "@/components/ui/shooting-stars";
-import { ThreeToolkits } from "./_components/Toolkits";
-import { DreamAsiaTeaser } from "./_components/DreamAsiaSections";
-import { TheFoldTeaser } from "./_components/TheFoldTeaser";
-import Cookbook from "./_components/Cookbook";
-import { VolumeBento, BrandKitFeature, CondensedEvents, VueClose } from "./_components/IssueSections";
+import { BrandKitFeature, VueClose } from "./_components/IssueSections";
 import { ed, Bleed, Rule, Label, Kicker, SweepText, Typewriter } from "./_components/editorial";
+import { toolkitSections } from "./data";
 import { currentVolume } from "./_volumes";
 
 // The live issue. Everything volume-specific reads from here, so
@@ -89,9 +86,11 @@ function Cover() {
             width: "100%",
             aspectRatio: "16 / 6",
             minHeight: 180,
-            // Japanese bokashi sky: night zenith → twilight → a narrow luminous
-            // gold horizon low (~78%), then back to night. Uneven stops on purpose.
-            background: `linear-gradient(180deg, ${ed.ground} 0%, ${ed.panel} 22%, ${ed.plum} 46%, ${ed.dusty} 66%, ${ed.gold} 78%, ${ed.dusty} 85%, ${ed.plum} 93%, ${ed.ground} 100%)`,
+            // Japanese bokashi sky: night zenith → twilight → a luminous gold
+            // horizon low (~80%), then back to night. The gold peak stays bright,
+            // but ramps in over many stops on both sides so it blooms wide across
+            // the horizon instead of snapping into a hard bright line.
+            background: `linear-gradient(180deg, #0F0820 0%, #1C0E2B 20%, #2E2246 34%, #45364F 45%, #5E4657 54%, #7A5658 61%, #9C6E54 68%, #C29A50 74%, #DBB44D 78%, #E3C24A 81%, #D0A850 84%, #A67C5C 89%, #6A4F66 93%, #2A1740 97%, #0F0820 100%)`,
             border: `1px solid ${ed.hair}`,
             display: "flex",
             alignItems: "center",
@@ -149,21 +148,25 @@ function Cover() {
         >
           {/* Left — headline, primary CTA, tagline */}
           <div>
+            {/* H1 — lead with the problem the reader actually feels, stated plainly
+                so it lands the instant the page loads. */}
             <h1
               style={{
                 fontFamily: ed.grotesque,
                 fontWeight: 800,
-                fontSize: "clamp(40px, 7.4vw, 104px)",
-                lineHeight: 0.9,
-                letterSpacing: "-0.03em",
+                fontSize: "clamp(30px, 5.4vw, 72px)",
+                lineHeight: 0.98,
+                letterSpacing: "-0.025em",
                 color: ed.ink,
                 margin: 0,
+                maxWidth: 780,
               }}
             >
-              <Typewriter text={issueMeta.coverHeadline} />
+              Your work never looks as good as it does in your head.
             </h1>
 
-            {/* Thesis line — a single serif italic register-setter under the H1 */}
+            {/* Resolution — the brand line, demoted beneath the problem and carrying
+                the typewriter cursor. The answer to the H1, not the lead. */}
             <p
               style={{
                 fontFamily: ed.serif,
@@ -177,13 +180,27 @@ function Cover() {
                 maxWidth: 620,
               }}
             >
+              There&rsquo;s a reason, and a fix. <Typewriter text={issueMeta.coverHeadline} />
+            </p>
+
+            {/* The recurring thesis, kept small so it still lands without competing. */}
+            <p
+              style={{
+                fontFamily: ed.mono,
+                fontSize: "clamp(11px,1.15vw,13px)",
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: ed.inkFaint,
+                margin: "clamp(10px,1.2vw,14px) 0 0",
+              }}
+            >
               Taste is the sky you set as your limit.
             </p>
 
-            {/* Emphasized primary CTA — send a cold visitor straight to the toolkits */}
+            {/* Emphasized primary CTA — send a cold visitor straight to the paths */}
             <div style={{ marginTop: "clamp(22px,2.8vw,36px)" }}>
               <a
-                href="#toolkits"
+                href="#paths"
                 className="ctrla-cover-cta"
                 style={{
                   fontFamily: ed.mono,
@@ -202,7 +219,7 @@ function Cover() {
                   boxShadow: "0 14px 38px -10px rgba(227,194,74,0.55)",
                 }}
               >
-                Explore the toolkits <span aria-hidden>→</span>
+                Find your path <span aria-hidden>→</span>
               </a>
 
               {/* Secondary — an outlined button, emphasized but subordinate to the solid primary */}
@@ -216,7 +233,12 @@ function Cover() {
                     fontWeight: 700,
                     letterSpacing: "0.14em",
                     textTransform: "uppercase",
-                    padding: "15px 32px",
+                    // Set the resting look inline so the browser's visited-link
+                    // purple can never win. Hover fill is handled in globals.css.
+                    color: ed.gold,
+                    background: "transparent",
+                    border: `1.5px solid ${ed.gold}`,
+                    padding: "18px 38px",
                     borderRadius: 4,
                     textDecoration: "none",
                     display: "inline-flex",
@@ -349,20 +371,22 @@ function StickerBelt() {
 // CONTENTS — the thesis + a map of the volume
 // ═══════════════════════════════════════════════════════
 
+// The volume, split by who each part is for. The tools up top are the four
+// creative types (Music / Design / Web / Video); "By what you make" goes
+// deeper per craft; then the ATL Community section for the young creatives
+// coming up in the city. Lock In (the focus space) is a persistent, summonable
+// tool, not a scroll row, so it lives outside this list.
 const CONTENTS = [
-  { n: "01", title: "The Toolkits", meta: "Music · Development · Design", href: "#toolkits", note: "Immersive and level by level. Learn the tool without the overwhelm." },
-  { n: "02", title: "Brand Kit Generator", meta: "Standing feature", href: "/ctrla/brand-kit", note: "Your colours, type, and tone, exported to a working system in minutes." },
-  { n: "03", title: "The Feature: DreamAsia Fest", meta: "The process, deep", href: "/ctrla/dreamasia", note: "From the bedroom to the stage, with none of the ugly steps skipped." },
-  { n: "04", title: "Vantage", meta: "Focus space", href: "/ctrla/the-fold", note: "Five worlds to work in. Fly to the one your head is in, and stay as long as the work takes." },
-  { n: "05", title: "The Cookbook", meta: "Fuel for the work", href: "#cookbook", note: "Easy recipes for creatives short on time and money." },
-  { n: "06", title: "The City", meta: "World Cup, Atlanta", href: "#events", note: "Our hometown stage, and the summer the whole world arrives." },
+  { n: "01", title: "Choose your path", meta: "Music · Design · Web · Video", href: "#paths", note: "Pick your craft. Each path opens its own landing page with the whole toolkit." },
+  { n: "02", title: "Brand Kit Generator", meta: "Standing tool", href: "/ctrla/brand-kit", note: "Your colours, type, and tone, exported to a working system in minutes." },
+  { n: "03", title: "ATL Community", meta: "For young Atlanta creatives", href: "/ctrla/atl", note: "Where the city came from, what is on, and how to eat well on nothing." },
 ];
 
-// On-page anchor targets that each CONTENTS row maps to. Half the TOC
-// hrefs point at standalone routes (brand-kit, dreamasia, the-fold), but
-// every one of those has a teaser section on the landing page, so the
-// Spine jumps to the on-page presence instead of navigating away.
-const SPINE_TARGETS = ["toolkits", "brandkit", "ctrla-dreamasia", "ctrla-fold", "cookbook", "events"];
+// On-page anchor targets that each CONTENTS row maps to. Row 02's href points
+// at the standalone Brand Kit route, but it has a feature section on the
+// landing page, so the Spine jumps to that on-page presence (#brandkit)
+// instead of navigating away.
+const SPINE_TARGETS = ["paths", "brandkit", "atl"];
 
 // ═══════════════════════════════════════════════════════
 // THE SPINE — fixed left-rail progress + TOC (desktop),
@@ -467,6 +491,88 @@ function ContentsChevron({ open }: { open: boolean }) {
   );
 }
 
+// Lock In — the focus space, made a persistent tool instead of a scroll
+// section. A dark-glass pill in the same family as the site nav dock (so it
+// reads as the platform's own affordance), gold-accented, keycap glyph to
+// nod at CTRL-A being a command. Fixed bottom-right, clear of the centered
+// dock, summonable from anywhere on the volume. Taps through to the five
+// focus worlds at /ctrla/the-fold.
+function LockInChip() {
+  return (
+    <a
+      href="/ctrla/the-fold"
+      className="ctrla-lockin-chip"
+      aria-label="Lock In — enter the focus space"
+      style={{
+        fontFamily: ed.mono,
+        fontSize: "clamp(11px,1.2vw,13px)",
+        fontWeight: 700,
+        letterSpacing: "0.14em",
+        textTransform: "uppercase",
+        color: ed.gold,
+      }}
+    >
+      <span className="ctrla-lockin-key" aria-hidden>
+        ⌘A
+      </span>
+      Lock in
+    </a>
+  );
+}
+
+// A zone divider — announces one of the lower-half departments (ATL, The
+// Magazine) so the two halves read as distinct zones instead of one long
+// scroll. Hairline top, gold kicker, grotesque title, serif deck: the same
+// editorial register the rest of the volume speaks in.
+// CraftPathways — the home-page "which creative are you?" moment. The four
+// crafts are rendered as pathways on a single trail: a colour-graded spine
+// links four nodes, each a route a creative walks into their own world
+// (the craft landing page). Not a list, a fork in the road.
+function CraftPathways() {
+  return (
+    <section id="paths" style={{ background: "transparent", padding: "clamp(36px,5vw,72px) 0", scrollMarginTop: 0 }}>
+      <Bleed>
+        <Kicker color={ed.gold}>Choose your path</Kicker>
+        <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(38px,6.6vw,96px)", letterSpacing: "-0.03em", lineHeight: 0.9, color: ed.ink, margin: "clamp(12px,1.6vw,18px) 0 0" }}>
+          Which one<br />are you?
+        </h2>
+        <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontWeight: 400, fontSize: "clamp(18px,2.4vw,32px)", lineHeight: 1.26, color: ed.gold, margin: "clamp(14px,1.8vw,22px) 0 0", maxWidth: 640 }}>
+          Four crafts, four ways through CTRL-A. Follow the one you make in.
+        </p>
+
+        <div style={{ position: "relative", marginTop: "clamp(24px,3.2vw,44px)" }}>
+          {/* The trail spine — a colour-graded line linking the four routes */}
+          <div aria-hidden style={{ position: "absolute", left: "clamp(12px,1.4vw,18px)", top: 30, bottom: 30, width: 2, background: "linear-gradient(180deg,#A56A67,#E3C24A,#4E3D73,#8E76B8)", opacity: 0.55 }} />
+          {toolkitSections.map((s) => (
+            <a
+              key={s.id}
+              href={`/ctrla/toolkit/${s.id}`}
+              className="ctrla-path-row"
+              style={{ ["--acc" as string]: s.accentColor, position: "relative", display: "grid", gridTemplateColumns: "clamp(26px,3vw,40px) 1fr auto", alignItems: "center", gap: "clamp(14px,2.4vw,30px)", padding: "clamp(24px,3.2vw,42px) 0", textDecoration: "none", borderBottom: `1px solid ${ed.hair}` }}
+            >
+              {/* Node on the spine */}
+              <span aria-hidden className="ctrla-path-node" style={{ width: "clamp(14px,1.5vw,18px)", height: "clamp(14px,1.5vw,18px)", borderRadius: 999, border: `2px solid ${s.accentColor}`, background: ed.ground, justifySelf: "start" }} />
+              <div style={{ minWidth: 0 }}>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap" }}>
+                  <h3 className="ctrla-path-name" style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,5vw,68px)", letterSpacing: "-0.03em", lineHeight: 1, color: ed.ink, margin: 0 }}>{s.title}</h3>
+                  <span style={{ fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.14em", textTransform: "uppercase", color: s.accentColor }}>{s.pickCount}</span>
+                </div>
+                <p style={{ fontFamily: ed.mono, fontSize: "clamp(11px,1.2vw,13px)", letterSpacing: "0.06em", color: ed.inkSoft, margin: "12px 0 0" }}>
+                  The guide <span style={{ color: s.accentColor }}>→</span> the toolkit <span style={{ color: s.accentColor }}>→</span> the history
+                </p>
+              </div>
+              <span className="ctrla-path-cta" style={{ fontFamily: ed.mono, fontSize: "clamp(11px,1.2vw,14px)", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: s.accentColor, whiteSpace: "nowrap", justifySelf: "end" }}>
+                Enter <span aria-hidden>→</span>
+              </span>
+            </a>
+          ))}
+        </div>
+      </Bleed>
+    </section>
+  );
+}
+
+
 // The mission — a spoken thesis. Lives near the foot of the volume as a
 // closing statement. Editorial voice: serif teaser, a quiet underlined text
 // link, generous air. Its own collapsible, distinct from the index.
@@ -474,7 +580,7 @@ function Mission() {
   const [open, setOpen] = useState(false);
 
   return (
-    <section style={{ background: "transparent", padding: "clamp(32px,5vw,72px) 0" }}>
+    <section style={{ background: "transparent", padding: "clamp(24px,3.5vw,48px) 0" }}>
       <Bleed>
         <button
           type="button"
@@ -528,7 +634,7 @@ function Contents() {
   const [indexOpen, setIndexOpen] = useState(false);
 
   return (
-    <section style={{ background: "transparent", padding: "clamp(24px,3.5vw,48px) 0 clamp(48px,7vw,96px)" }}>
+    <section style={{ background: "transparent", padding: "clamp(20px,3vw,40px) 0 clamp(24px,3.5vw,48px)" }}>
       <Bleed>
         {/* ── The index — a functional table of contents. Systematic: a running
             mono index line, a piece count, a squared Expand button. ── */}
@@ -678,6 +784,9 @@ export default function CtrlAContent() {
       {loading && <CtrlALoader onDone={dismissLoader} />}
       <NavigationDock />
 
+      {/* Lock In — persistent focus-space access, summonable from anywhere */}
+      <LockInChip />
+
       {/* Left-rail progress + TOC (desktop) / top hairline (mobile) */}
       <Spine />
 
@@ -690,59 +799,48 @@ export default function CtrlAContent() {
       {/* The thesis + a map of the volume */}
       <Contents />
 
+      {/* The "which creative are you?" pathways — the crafts entry for the
+          whole page. Each route walks into its own landing page
+          (/ctrla/toolkit/<craft>), where all that craft's info lives. This
+          replaces the old combined "Four Toolkits" section. */}
+      <CraftPathways />
+
       <StickerBelt />
-
-      {/* ─────────────────────────────────────────────
-          THE REFERENCE HALF — the tools, made deep
-          ───────────────────────────────────────────── */}
-
-      {/* The CTRL-A toolkits — Music / Web Dev / Design */}
-      <ThreeToolkits />
 
       {/* Standing feature — recurs every volume */}
       <BrandKitFeature />
 
-      {/* ─────────────────────────────────────────────
-          THE STORY HALF — process, taste, the city
-          ───────────────────────────────────────────── */}
-
-      {/* Honest peers — the deep feature teaser and the focus-space teaser
-          sit side by side at equal half-width. Their own section/Bleed
-          padding is neutralized by .ctrla-peers so this shared grid owns
-          the layout. */}
-      <section style={{ background: "transparent", padding: "clamp(48px,7vw,88px) 0" }}>
+      {/* ATL COMMUNITY — a door, not a section. The whole local field
+          guide (Roots, events, Cookbook) lives on its own page at
+          /ctrla/atl; the home page just opens the way in. */}
+      <section id="atl" style={{ background: "transparent", padding: "clamp(28px,4vw,56px) 0", scrollMarginTop: 80 }}>
         <Bleed>
-          <div className="ctrla-peers">
-            <div id="ctrla-dreamasia" style={{ scrollMarginTop: 80 }}>
-              <DreamAsiaTeaser />
-              <Label color={ed.inkFaint} style={{ display: "block", marginTop: 14 }}>
-                Plate II · DreamAsia Fest, behind the scenes
-              </Label>
+          <a
+            href="/ctrla/atl"
+            className="ctrla-path-row"
+            style={{ ["--acc" as string]: ed.gold, display: "block", textDecoration: "none", borderTop: `1px solid ${ed.hair}`, borderBottom: `1px solid ${ed.hair}`, padding: "clamp(26px,3.6vw,48px) clamp(4px,1vw,14px)" }}
+          >
+            <Kicker color={ed.gold}>CTRL-A · ATL Community</Kicker>
+            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: "clamp(16px,2.4vw,32px)", flexWrap: "wrap", marginTop: "clamp(12px,1.6vw,18px)" }}>
+              <h2 className="ctrla-path-name" style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(32px,5.4vw,76px)", letterSpacing: "-0.03em", lineHeight: 0.92, color: ed.ink, margin: 0, maxWidth: 860 }}>
+                For the ones coming up in Atlanta.
+              </h2>
+              <span className="ctrla-path-cta" style={{ fontFamily: ed.mono, fontSize: "clamp(12px,1.3vw,15px)", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: ed.gold, whiteSpace: "nowrap" }}>
+                Enter ATL <span aria-hidden>→</span>
+              </span>
             </div>
-            <div id="ctrla-fold" style={{ scrollMarginTop: 80 }}>
-              <TheFoldTeaser />
-            </div>
-          </div>
+            <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontWeight: 400, fontSize: "clamp(16px,2vw,26px)", lineHeight: 1.3, color: ed.gold, margin: "clamp(12px,1.6vw,18px) 0 0", maxWidth: 680 }}>
+              Where the city came from, what is on, and how to eat well on nothing.
+            </p>
+            <p style={{ fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.08em", textTransform: "uppercase", color: ed.inkFaint, margin: "clamp(12px,1.6vw,18px) 0 0" }}>
+              Roots <span style={{ color: ed.gold }}>→</span> the scene <span style={{ color: ed.gold }}>→</span> the cookbook
+            </p>
+          </a>
         </Bleed>
       </section>
 
-      {/* The Cookbook — landing anchor (#cookbook), a closed mini-fridge that
-          steps into the full galley at /ctrla/cookbook. Mounted before the
-          bento so the TOC jump resolves here. */}
-      <Cookbook />
-      <Bleed style={{ paddingBottom: "clamp(20px,3vw,40px)" }}>
-        <Label color={ed.inkFaint}>Plate III · The galley, this volume&apos;s spread</Label>
-      </Bleed>
-
-      {/* The soundtrack — two on repeat + the CTRL-A playlist strip */}
-      <VolumeBento />
-
-      {/* The city — World Cup 26, Atlanta */}
-      <CondensedEvents />
-
-      {/* The mission — a closing thesis on what CTRL-A is */}
+      {/* Closing thesis + Vue's note — the sign-off, for everyone */}
       <Mission />
-
       <VueClose />
 
       {/* Footer sentinel — the Spine disengages once this enters */}

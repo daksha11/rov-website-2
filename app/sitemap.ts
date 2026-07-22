@@ -138,6 +138,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'monthly',
             priority: 0.6,
         },
+        {
+            url: `${baseUrl}/ctrla/atl`,
+            lastModified: '2026-07-22',
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
         ...['music', 'web-dev', 'design', 'video'].map((id) => ({
             url: `${baseUrl}/ctrla/toolkit/${id}`,
             lastModified: '2026-06-15',
