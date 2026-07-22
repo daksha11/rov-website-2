@@ -126,16 +126,6 @@ export function NavigationDock({ className }: NavigationDockProps) {
             <ul className="space-y-4 w-full max-w-md">
               <li>
                 <Link
-                  href="/sound"
-                  className="block px-6 py-3 text-white/80 hover:text-white text-base md:text-lg transition-all hover:bg-white/5 rounded-xl border border-transparent hover:border-white/10 text-center"
-    
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Sound Engineering
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/web"
                   className="block px-6 py-3 text-white/80 hover:text-white text-base md:text-lg transition-all hover:bg-white/5 rounded-xl border border-transparent hover:border-white/10 text-center"
     

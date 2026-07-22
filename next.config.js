@@ -41,7 +41,7 @@ const nextConfig = {
       },
       {
         source: '/services/sound',
-        destination: '/sound',
+        destination: 'https://www.rovmusic.com/',
         permanent: true,
       },
       {

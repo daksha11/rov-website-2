@@ -8,7 +8,7 @@ export function OrganizationSchema() {
     url: "https://www.rovstudios.com",
     logo: "https://www.rovstudios.com/brand/rov-logo.webp",
     description:
-      "Creative production agency specializing in sound engineering, web development, video production, and AI automation.",
+      "Creative production agency specializing in web development, video production, and AI automation.",
     address: {
       "@type": "PostalAddress",
       addressLocality: "Atlanta",

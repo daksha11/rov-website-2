@@ -1,7 +1,9 @@
 export function BreadcrumbSchema({
   items,
+  baseUrl = "https://www.rovstudios.com",
 }: {
   items: { name: string; url: string }[];
+  baseUrl?: string;
 }) {
   const schema = {
     "@context": "https://schema.org",
@@ -10,7 +12,7 @@ export function BreadcrumbSchema({
       "@type": "ListItem",
       position: index + 1,
       name: item.name,
-      item: `https://www.rovstudios.com${item.url}`,
+      item: `${baseUrl}${item.url}`,
     })),
   };
 

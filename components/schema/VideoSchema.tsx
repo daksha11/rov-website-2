@@ -6,6 +6,7 @@ export function VideoSchema({
   contentUrl,
   duration,
   pageUrl,
+  baseUrl = "https://www.rovstudios.com",
 }: {
   name: string;
   description: string;
@@ -14,17 +15,18 @@ export function VideoSchema({
   contentUrl?: string;
   duration?: string;
   pageUrl?: string;
+  baseUrl?: string;
 }) {
   const schema = {
     "@context": "https://schema.org",
     "@type": "VideoObject",
     name,
     description,
-    thumbnailUrl: `https://www.rovstudios.com${thumbnailUrl}`,
+    thumbnailUrl: `${baseUrl}${thumbnailUrl}`,
     uploadDate,
-    ...(contentUrl && { contentUrl: `https://www.rovstudios.com${contentUrl}` }),
+    ...(contentUrl && { contentUrl: `${baseUrl}${contentUrl}` }),
     ...(duration && { duration }),
-    ...(pageUrl && { url: `https://www.rovstudios.com${pageUrl}` }),
+    ...(pageUrl && { url: `${baseUrl}${pageUrl}` }),
     isFamilyFriendly: true,
     inLanguage: "en",
     publisher: {

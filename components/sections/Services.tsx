@@ -1,513 +1,348 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, LayoutGroup } from "framer-motion";
-import { Globe, Headphones, Clapperboard, Bot, ArrowUpRight, type LucideIcon } from "lucide-react";
+import { AnimatePresence, motion, LayoutGroup, useScroll, useMotionValueEvent } from "framer-motion";
 import GradientBlob from "@/components/effects/GradientBlob";
 
-const SERVICES = [
+// Shared easing — the same curve the old quadrant grid morphed on,
+// so the new single-active viewer keeps the section's motion DNA.
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+type Service = {
+  id: string;
+  label: string; // full uppercase rail label
+  short: string; // pill label
+  headline: string; // large statement line
+  body: [string, string]; // two-column paragraphs
+  items: string[]; // sub-service list
+  link: string;
+  cta: string;
+  accent: string;
+  images: [string, string]; // two rectangles, side by side
+  // Line-draw icon paths (viewBox 0 0 48 48), redrawn on every switch.
+  iconPaths: string[];
+};
+
+const SERVICES: Service[] = [
   {
     id: "web",
-    title: "Web Optimization",
-    tagline: "Turning clicks into connections with seamless, high-impact designs.",
-    subtitle: "Built to perform, designed to feel right.",
+    label: "Web Optimization",
+    short: "Web",
+    headline: "Websites built to perform, and designed to feel right.",
+    body: [
+      "We build fast, considered sites in Next.js that turn visitors into clients. Every page is engineered for speed, structured for search, and shaped around the way real people actually move through it.",
+      "From the first wireframe to launch, we sweat the details that decide whether someone stays: load time, hierarchy, and the small moments that make a brand feel worth trusting.",
+    ],
+    items: ["Web Design", "SEO & Performance", "Landing Pages", "Conversion"],
     link: "/web",
-    accent: "#4C2D16",
-    images: ["/heroassets/webfolder1.png", "/heroassets/samwebfolder2.webp", "/heroassets/webfolder3.webp"],
-    transparent: false,
     cta: "See Our Work",
-    icon: Globe,
-  },
-  {
-    id: "sound",
-    title: "Sound Engineering",
-    tagline: "Studio-grade mixing and mastering delivered in 48 hours.",
-    subtitle: "Because great music deserves to sound like it.",
-    link: "/sound",
-    accent: "#7A4E28",
-    images: ["/heroassets/1.png", "/heroassets/2.png", "/heroassets/3.png"],
-    transparent: true,
-    cta: "Hear the Difference",
-    icon: Headphones,
+    accent: "#4C2D16",
+    images: ["/heroassets/samwebfolder2.webp", "/heroassets/webfolder3.webp"],
+    iconPaths: [
+      "M24 6 A18 18 0 1 0 24.01 6",
+      "M6 24 H42",
+      "M24 6 C13 13 13 35 24 42",
+      "M24 6 C35 13 35 35 24 42",
+    ],
   },
   {
     id: "video",
-    title: "Video Production",
-    tagline: "Aerial to street level, editorial-grade footage that makes your brand impossible to scroll past.",
-    subtitle: "We find the frame that says everything.",
+    label: "Video Production",
+    short: "Video",
+    headline: "Editorial-grade footage that's impossible to scroll past.",
+    body: [
+      "From aerial to street level, we find the frame that says everything. Brand films, walkthroughs, drone cinematography, and music videos, all shot and cut to hold attention.",
+      "We treat every project like a story with a point of view, not just coverage. The result is footage that looks considered, moves with intent, and makes your brand feel like it belongs on a bigger screen.",
+    ],
+    items: ["Brand Films", "Real Estate", "Drone", "Music Videos"],
     link: "/video-production",
-    accent: "#6B2E1A",
-    images: ["/heroassets/hydvideoframe.webp", "/heroassets/ponceshowframe.webp", "/heroassets/samxbasuvid.webp"],
-    transparent: false,
     cta: "See Our Work",
-    icon: Clapperboard,
+    accent: "#6B2E1A",
+    images: ["/heroassets/ponceshowframe.webp", "/heroassets/hydvideoframe.webp"],
+    iconPaths: [
+      "M6 18 H42 V40 H6 Z",
+      "M6 18 L12 10 H18 L12 18",
+      "M18 18 L24 10 H30 L24 18",
+      "M30 18 L36 10 H42 L36 18",
+    ],
   },
   {
     id: "ai",
-    title: "AI Solutions",
-    tagline: "Automations and AI systems that cut manual work by 60%.",
-    subtitle: "Built smart, so your team can think bigger.",
+    label: "AI Solutions",
+    short: "AI",
+    headline: "Automations and AI systems that cut manual work by 60%.",
+    body: [
+      "We build practical AI into the parts of your business that quietly eat time: lead follow-up, scheduling, support, and content. Built smart, so your team can think bigger.",
+      "Every system is designed around your actual workflow, not a generic template. We integrate with the tools you already use and hand you something that runs reliably in the background.",
+    ],
+    items: ["Automations", "Lead Follow-up", "Support", "Content Systems"],
     link: "/ai-automation",
-    accent: "#2E1A08",
-    images: ["/heroassets/codingframe.webp", "/heroassets/excelframe.webp", "/heroassets/n8nframe.webp"],
-    transparent: false,
     cta: "See It in Action",
-    icon: Bot,
+    accent: "#2E1A08",
+    images: ["/heroassets/n8nframe.webp", "/heroassets/codingframe.webp"],
+    iconPaths: [
+      "M12 18 H36 V38 H12 Z",
+      "M24 18 V11",
+      "M24 9 A2 2 0 1 0 24.01 9",
+      "M18 26 V29",
+      "M30 26 V29",
+      "M12 30 H8 V34",
+      "M36 30 H40 V34",
+    ],
   },
 ];
 
-// slot 0 = back (most rotated CCW), slot 2 = front (nearly flat)
-// All pivot from bottom-right anchor — creates the reference-style fan
-const FAN_ANGLES = [-20, -9, 3];
-
-//
-// Per-active grid layout configs.
-// Each service card expands in its own quadrant:
-//   web   → top-left large,    sides right,   strip bottom
-//   sound → top-right large,   sides left,    strip bottom
-//   video → bottom-left large, sides right,   strip top
-//   ai    → bottom-right large,sides left,    strip top
-//
-// Using fixed px for the strip row so CSS can transition row sizes cleanly.
-//
-const GRID_CONFIGS: Record<string, {
-  areas: string;
-  columns: string;
-  rows: string;
-  slots: Record<string, "A" | "B" | "C" | "D">;
-}> = {
-  web: {
-    areas: `"A B" "A C" "D D"`,
-    columns: "3fr 2fr",
-    rows: "1fr 1fr 80px",
-    slots: { web: "A", sound: "B", video: "C", ai: "D" },
-  },
-  sound: {
-    areas: `"B A" "C A" "D D"`,
-    columns: "2fr 3fr",
-    rows: "1fr 1fr 80px",
-    slots: { sound: "A", web: "B", video: "C", ai: "D" },
-  },
-  video: {
-    areas: `"D D" "A B" "A C"`,
-    columns: "3fr 2fr",
-    rows: "80px 1fr 1fr",
-    slots: { video: "A", sound: "B", ai: "C", web: "D" },
-  },
-  ai: {
-    areas: `"D D" "B A" "C A"`,
-    columns: "2fr 3fr",
-    rows: "80px 1fr 1fr",
-    slots: { ai: "A", web: "B", video: "C", sound: "D" },
-  },
-};
-
-// order[slot] = index into images array; stable key lets CSS transition fire on each shuffle
-function FannedImages({ images, order, transparent }: { images: string[]; order: number[]; transparent?: boolean }) {
+// ── Animated line-draw mark ─────────────────────────────
+// Redraws (pathLength 0→1, staggered) each time the active service changes.
+function ServiceMark({ service }: { service: Service }) {
   return (
-    // Fill the featured card so each image card can anchor to bottom-right of the card itself
-    <div className="absolute inset-0 pointer-events-none">
-      {order.map((imgIdx, slot) => (
-        <div
-          key={imgIdx}
-          className={`absolute ${transparent ? "" : "rounded-2xl overflow-hidden"}`}
-          style={{
-            width: transparent ? 560 : 300,
-            height: transparent ? 392 : 210,
-            right: transparent ? -190 : -10,
-            bottom: transparent ? -60 : -20,
-            zIndex: slot,
-            transformOrigin: "bottom right",
-            transform: `rotate(${FAN_ANGLES[slot]}deg)`,
-            transition: "transform 0.42s cubic-bezier(0.16,1,0.3,1)",
-            boxShadow: transparent ? "none" : "0 6px 22px rgba(0,0,0,0.5)",
-          }}
-        >
-          <Image
-            src={images[imgIdx]}
-            alt=""
-            fill
-            sizes={transparent ? "560px" : "300px"}
-            className={transparent ? "object-contain" : "object-cover"}
-          />
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// Card content components — plain divs, no Framer Motion, no competing animations
-function FeaturedCard({
-  service,
-  onDotClick,
-}: {
-  service: (typeof SERVICES)[number];
-  onDotClick: (id: string) => void;
-}) {
-  const [order, setOrder] = useState([0, 1, 2]);
-
-  // Reset order when the active service changes
-  React.useEffect(() => { setOrder([0, 1, 2]); }, [service.id]);
-
-  // Each mouse-enter cycles the back card to the front
-  const cycleImages = () => {
-    setOrder(prev => {
-      const next = [...prev];
-      next.push(next.shift()!);
-      return next;
-    });
-  };
-
-  return (
-    // Outer: no overflow-hidden so FannedImages can bleed out of bottom-right.
-    // The whole card is the link — click anywhere to open the service page.
-    <Link
-      href={service.link}
-      aria-label={`${service.title} — ${service.cta}`}
-      className="relative block w-full h-full"
-      style={{ minHeight: 380 }}
-      onMouseEnter={cycleImages}
+    <svg
+      viewBox="0 0 48 48"
+      width={64}
+      height={64}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.4}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      style={{ overflow: "visible" }}
     >
-      {/* Background layer — clips independently so rounded corners stay clean */}
-      <div
-        className="absolute inset-0 overflow-hidden rounded-2xl p-8"
-        style={{ background: service.accent }}
-      >
-        {/* Subtle noise overlay */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E")`,
-            backgroundSize: "160px 160px",
-            mixBlendMode: "overlay",
-            opacity: 0.4,
-          }}
-        />
-
-
-        {/* Text block — top left */}
-        <div className="relative z-10 max-w-xs">
-          <h3
-            className="text-5xl xl:text-6xl text-white font-bold leading-tight mb-3"
-            style={{ fontFamily: "Norwige, sans-serif" }}
-          >
-            {service.title}
-          </h3>
-          <p
-            className="text-white/80 text-sm md:text-base mb-2"
-            style={{ fontFamily: "Roboto, sans-serif", fontWeight: 300, lineHeight: 1.6 }}
-          >
-            {service.tagline}
-          </p>
-          <p
-            className="text-white/55 text-sm md:text-base mb-7"
-            style={{ fontFamily: "Roboto, sans-serif", fontWeight: 300, lineHeight: 1.6 }}
-          >
-            {service.subtitle}
-          </p>
-          {/* Visual button only — the whole card is the link, so this is a
-              styled span (no nested anchor) that still carries the shine hover. */}
-          <span
-            className="relative inline-block px-6 py-2.5 rounded-full text-sm active:scale-95 overflow-hidden"
-            style={{
-              background: "rgba(255,255,255,0.14)",
-              border: "1px solid rgba(255,255,255,0.45)",
-              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.18)",
-              color: "#fff",
-              fontFamily: "Roboto, sans-serif",
-              fontWeight: 400,
-              backdropFilter: "blur(10px)",
-              letterSpacing: "0.02em",
-              transition: "transform 0.1s ease",
-            }}
-            onMouseEnter={e => {
-              const shine = e.currentTarget.querySelector(".btn-shine") as HTMLElement;
-              if (shine) {
-                shine.style.transform = "translateX(200%)";
-                shine.style.opacity = "1";
-              }
-            }}
-            onMouseLeave={e => {
-              const shine = e.currentTarget.querySelector(".btn-shine") as HTMLElement;
-              if (shine) {
-                shine.style.transform = "translateX(-100%)";
-                shine.style.opacity = "0";
-              }
-            }}
-          >
-            <span
-              className="btn-shine pointer-events-none absolute inset-0"
-              style={{
-                background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%)",
-                transform: "translateX(-100%)",
-                opacity: 0,
-                transition: "transform 1.7s ease, opacity 0.1s ease",
+      <AnimatePresence mode="wait">
+        <motion.g key={service.id}>
+          {service.iconPaths.map((d, i) => (
+            <motion.path
+              key={`${service.id}-${i}`}
+              d={d}
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 0.9 }}
+              transition={{
+                pathLength: { duration: 0.8, ease: EASE, delay: 0.08 + i * 0.09 },
+                opacity: { duration: 0.25, delay: 0.08 + i * 0.09 },
               }}
             />
-            {service.cta}
-          </span>
-        </div>
-      </div>
-
-      {/* FannedImages sits outside the overflow-hidden bg layer — bleeds freely */}
-      <FannedImages images={service.images} order={order} transparent={service.transparent} />
-    </Link>
-  );
-}
-
-function StripCard({ service }: { service: typeof SERVICES[number] }) {
-  return (
-    <div
-      className="w-full h-full flex items-center justify-between px-8"
-      style={{
-        background: "#3B2114",
-        border: "1px solid rgba(208,190,165,0.10)",
-      }}
-    >
-      <span
-        className="text-white/70 text-2xl md:text-[1.7rem] leading-none"
-        style={{ fontFamily: "Norwige, sans-serif" }}
-      >
-        {service.title}
-      </span>
-      <Link href={service.link}>
-        <button
-          className="px-5 py-2 rounded-full text-xs md:text-sm"
-          style={{
-            background: "rgba(255,255,255,0.04)",
-            border: "1px solid rgba(255,255,255,0.12)",
-            color: "rgba(255,255,255,0.55)",
-            fontFamily: "Roboto, sans-serif",
-            letterSpacing: "0.03em",
-            transition: "border-color 0.2s ease, color 0.2s ease",
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.3)";
-            (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.9)";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.12)";
-            (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.55)";
-          }}
-        >
-          Learn More
-        </button>
-      </Link>
-    </div>
-  );
-}
-
-function SideCard({ service }: { service: typeof SERVICES[number] }) {
-  const Icon = service.icon as LucideIcon;
-  return (
-    <div
-      className="group w-full h-full relative overflow-hidden"
-      style={{
-        background: "#3B2114",
-        border: "1px solid rgba(208,190,165,0.10)",
-      }}
-    >
-      {/* Subtle radial glow on hover */}
-      <div
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-        style={{
-          background: `radial-gradient(ellipse 80% 60% at 50% 40%, ${service.accent}60 0%, transparent 70%)`,
-        }}
-      />
-
-      {/* Large ghost icon — upper center */}
-      <div className="absolute inset-0 flex items-center justify-center pb-10 pointer-events-none">
-        <Icon
-          size={72}
-          strokeWidth={0.75}
-          className="transition-all duration-700 group-hover:scale-110"
-          style={{ color: "rgba(255,255,255,0.12)", filter: "drop-shadow(0 0 18px rgba(255,255,255,0.06))" }}
-        />
-      </div>
-
-      {/* Bottom-left: title + arrow */}
-      <div className="absolute bottom-0 left-0 right-0 px-5 pb-5 flex items-end justify-between">
-        <span
-          className="text-white/60 group-hover:text-white/90 transition-colors duration-500 text-lg md:text-xl leading-tight"
-          style={{ fontFamily: "Norwige, sans-serif" }}
-        >
-          {service.title}
-        </span>
-        <ArrowUpRight
-          size={16}
-          strokeWidth={1.5}
-          className="text-white/20 group-hover:text-white/60 transition-colors duration-500 shrink-0 mb-0.5"
-        />
-      </div>
-    </div>
+          ))}
+        </motion.g>
+      </AnimatePresence>
+    </svg>
   );
 }
 
 export default function Services() {
-  const [activeId, setActiveId] = useState(SERVICES[0].id);
-  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
+  const service = SERVICES[active];
 
-  const config = GRID_CONFIGS[activeId];
+  // Scroll progress across the tall wrapper drives which card is shown while
+  // the inner panel stays pinned. Pills can still jump to any service.
+  const { scrollYProgress } = useScroll({
+    target: wrapRef,
+    offset: ["start start", "end end"],
+  });
 
-  const activate = (id: string) => {
-    if (id === activeId) return;
-    setActiveId(id);
-  };
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    const idx = Math.min(SERVICES.length - 1, Math.max(0, Math.floor(v * SERVICES.length)));
+    setActive((prev) => (prev === idx ? prev : idx));
+  });
 
-  const handleCardEnter = (id: string) => {
-    hoverTimer.current = setTimeout(() => activate(id), 180);
-  };
-
-  const handleCardLeave = () => {
-    if (hoverTimer.current) {
-      clearTimeout(hoverTimer.current);
-      hoverTimer.current = null;
+  // Scroll the window so the given service lands in the middle of its segment.
+  const goTo = (i: number) => {
+    const el = wrapRef.current;
+    if (!el) {
+      setActive(i);
+      return;
     }
+    const range = el.offsetHeight - window.innerHeight;
+    const progress = (i + 0.5) / SERVICES.length;
+    const top = window.scrollY + el.getBoundingClientRect().top + range * progress;
+    window.scrollTo({ top, behavior: "smooth" });
   };
 
   return (
-    <section className="min-h-screen bg-black py-20 w-full px-6 sm:px-12 md:px-16 relative flex flex-col justify-center overflow-hidden">
-      <GradientBlob position="top-left" />
-      <GradientBlob position="bottom-right" />
+    <div ref={wrapRef} style={{ height: `${SERVICES.length * 100}vh` }} className="relative">
+      {/* Pinned viewport — swaps cards as the wrapper scrolls past */}
+      <section className="sticky top-0 h-screen bg-transparent w-full px-6 sm:px-12 md:px-16 relative flex flex-col overflow-hidden pt-20 pb-28 md:pt-14 md:pb-24">
+        <GradientBlob position="top-left" />
+        <GradientBlob position="bottom-right" />
 
-      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent pointer-events-none" />
 
-      <div className="w-full relative z-10">
-        {/* Heading */}
-        <div className="mb-10 md:mb-14">
+        <div className="w-full max-w-[1400px] mx-auto relative z-10 flex flex-col flex-1 min-h-0">
+        {/* Heading + pills + progress on one compact row */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-4 md:mb-5">
           <h2
-            className="text-4xl md:text-6xl lg:text-[10rem] text-white/90 uppercase tracking-wider text-left leading-none"
+            className="text-3xl md:text-4xl lg:text-5xl text-white/90 uppercase tracking-wider leading-none"
             style={{ fontFamily: "Norwige, sans-serif" }}
           >
             SERVICES
           </h2>
-        </div>
 
-        {/* ── Desktop interactive grid ── */}
-        <LayoutGroup>
-          <div
-            className="hidden md:grid gap-3"
-            style={{
-              gridTemplateAreas: config.areas,
-              gridTemplateColumns: config.columns,
-              gridTemplateRows: config.rows,
-              minHeight: 560,
-            }}
-          >
-            {SERVICES.map((service) => {
-              const slot = config.slots[service.id];
-              const isFeatured = slot === "A";
-              const isStrip = slot === "D";
-
+          {/* ── Filter pills ── */}
+          <div className="flex flex-wrap gap-2.5">
+            {SERVICES.map((s, i) => {
+              const on = i === active;
               return (
-                <motion.div
-                  key={service.id}
-                  layout
-                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative overflow-hidden rounded-2xl cursor-pointer"
-                  style={{ gridArea: slot }}
-                  onMouseEnter={() => handleCardEnter(service.id)}
-                  onMouseLeave={handleCardLeave}
-                  onClick={() => activate(service.id)}
+                <button
+                  key={s.id}
+                  onClick={() => goTo(i)}
+                  className="relative px-5 py-2 rounded-full text-xs md:text-sm uppercase overflow-hidden transition-colors"
+                  style={{
+                    fontFamily: "'Neue Montreal', sans-serif",
+                    letterSpacing: "0.14em",
+                    color: on ? "#fff" : "rgba(255,255,255,0.55)",
+                    border: `1px solid ${on ? "transparent" : "rgba(255,255,255,0.18)"}`,
+                  }}
                 >
-                  {isFeatured ? (
-                    <FeaturedCard service={service} onDotClick={activate} />
-                  ) : isStrip ? (
-                    <StripCard service={service} />
-                  ) : (
-                    <SideCard service={service} />
+                  {on && (
+                    <motion.span
+                      layoutId="service-pill"
+                      className="absolute inset-0 rounded-full"
+                      style={{ background: s.accent, border: `1px solid ${s.accent}` }}
+                      transition={{ duration: 0.5, ease: EASE }}
+                    />
                   )}
-                </motion.div>
+                  <span className="relative z-10">{s.short}</span>
+                </button>
               );
             })}
           </div>
-        </LayoutGroup>
+        </div>
 
-        {/* ── Mobile: stacked full-width cards ── */}
-        <div className="flex flex-col gap-4 md:hidden">
-          {SERVICES.map((service) => (
-            <Link key={service.id} href={service.link}>
-              <div
-                className="relative w-full overflow-hidden rounded-2xl p-6 flex flex-col justify-between"
-                style={{ background: service.accent, minHeight: 220 }}
-              >
-                <div className="flex items-center gap-1.5">
-                  {[0, 1, 2].map((i) => (
-                    <div
-                      key={i}
-                      className="w-2 h-2 rounded-full"
-                      style={{ background: "rgba(255,255,255,0.45)" }}
-                    />
-                  ))}
-                </div>
-                <div className="relative z-10">
-                  <h3
-                    className="text-4xl text-white font-bold mb-2 leading-tight"
-                    style={{ fontFamily: "Norwige, sans-serif" }}
-                  >
-                    {service.title}
-                  </h3>
-                  <p
-                    className="text-white/72 text-sm mb-1"
-                    style={{ fontFamily: "Roboto, sans-serif", fontWeight: 300, lineHeight: 1.55 }}
-                  >
-                    {service.tagline}
-                  </p>
-                  <p
-                    className="text-white/45 text-sm mb-5"
-                    style={{ fontFamily: "Roboto, sans-serif", fontWeight: 300, lineHeight: 1.55 }}
-                  >
-                    {service.subtitle}
-                  </p>
-                  <span
-                    className="inline-block px-5 py-2 rounded-full text-sm text-white"
-                    style={{
-                      background: "rgba(255,255,255,0.14)",
-                      border: "1px solid rgba(255,255,255,0.38)",
-                      fontFamily: "Roboto, sans-serif",
-                    }}
-                  >
-                    Learn More
-                  </span>
-                </div>
-
-                {/* 2-card mini fan */}
-                <div
-                  className="absolute bottom-4 right-4 pointer-events-none"
-                  style={{ width: 150, height: 108 }}
-                >
-                  {service.images.slice(0, 2).map((src, i) => (
-                    <div
-                      key={i}
-                      className="absolute rounded-lg overflow-hidden"
-                      style={{
-                        width: 120,
-                        height: 86,
-                        right: 0,
-                        bottom: 0,
-                        zIndex: i,
-                        transform: `rotate(${i === 0 ? -9 : 7}deg) translate(${i === 0 ? -22 : 0}px, ${i === 0 ? 8 : 0}px)`,
-                        boxShadow: "0 4px 14px rgba(0,0,0,0.5)",
-                      }}
-                    >
-                      <Image
-                        src={src}
-                        alt=""
-                        fill
-                        sizes="120px"
-                        className={service.transparent ? "object-contain" : "object-cover"}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </Link>
+        {/* Segment progress dots */}
+        <div className="flex items-center gap-2 mb-4 md:mb-5">
+          <span
+            className="text-white/40 text-xs tabular-nums mr-1"
+            style={{ fontFamily: "'Neue Montreal', sans-serif", letterSpacing: "0.1em" }}
+          >
+            {String(active + 1).padStart(2, "0")} / {String(SERVICES.length).padStart(2, "0")}
+          </span>
+          {SERVICES.map((s, i) => (
+            <span
+              key={s.id}
+              className="h-[2px] rounded-full transition-all duration-500"
+              style={{
+                width: i === active ? 40 : 16,
+                background: i === active ? "#EA9A61" : "rgba(255,255,255,0.18)",
+              }}
+            />
           ))}
         </div>
-      </div>
-    </section>
+
+        {/* ── Active service block (flat, editorial — morphs on swap) ── */}
+        <LayoutGroup>
+          <div className="flex flex-col md:flex-row flex-1 min-h-0 border-t border-white/10">
+            {/* Left rail — bullets, divided from the right by a vertical line */}
+            <div className="md:w-[260px] lg:w-[300px] shrink-0 md:border-r md:border-white/12 md:pr-10 lg:pr-12 pt-6 md:pt-7 pb-6 md:pb-0">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={service.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.4, ease: EASE }}
+                  className="flex flex-col items-start"
+                >
+                  <div className="mb-6 text-white/85">
+                    <ServiceMark service={service} />
+                  </div>
+                  <h3
+                    className="text-white uppercase text-lg md:text-xl mb-5"
+                    style={{ fontFamily: "'Neue Montreal', sans-serif", letterSpacing: "0.12em" }}
+                  >
+                    {service.label}
+                  </h3>
+                  <ul className="space-y-2.5 mb-8">
+                    {service.items.map((item) => (
+                      <li
+                        key={item}
+                        className="flex items-center gap-3 text-white/55 text-sm md:text-[0.95rem]"
+                        style={{ fontFamily: "'Neue Montreal', sans-serif", letterSpacing: "0.02em" }}
+                      >
+                        <span className="inline-block w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "#EA9A61" }} />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href={service.link}
+                    aria-label={`${service.label} — ${service.cta}`}
+                    className="group inline-flex items-center justify-center px-7 py-3 rounded-full text-xs md:text-sm w-fit transition-colors hover:bg-white/5"
+                    style={{
+                      fontFamily: "'Neue Montreal', sans-serif",
+                      letterSpacing: "0.08em",
+                      color: "#fff",
+                      border: "1px solid rgba(234,154,97,0.55)",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {service.cta}
+                  </Link>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Right column — big header, two body blocks under it, image below */}
+            <div className="flex-1 min-h-0 flex flex-col md:pl-10 lg:pl-14 pt-6 md:pt-7">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={service.id}
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.45, ease: EASE }}
+                  className="shrink-0"
+                >
+                  <h4
+                    className="text-white text-2xl md:text-4xl lg:text-[2.6rem] leading-[1.06] mb-4 md:mb-5"
+                    style={{ fontFamily: "Norwige, sans-serif" }}
+                  >
+                    {service.headline}
+                  </h4>
+                  <div
+                    className="text-white/60 text-sm md:text-[0.9rem] md:[column-count:2] md:[column-gap:3rem]"
+                    style={{ fontFamily: "Roboto, sans-serif", fontWeight: 300, lineHeight: 1.7 }}
+                  >
+                    <p className="mb-4 md:mb-0 md:[break-inside:avoid]">{service.body[0]}</p>
+                    <p className="md:[break-inside:avoid]">{service.body[1]}</p>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Two rectangles side by side, filling remaining height */}
+              <div className="flex-1 min-h-[130px] grid grid-cols-2 gap-3 md:gap-4 mt-4 md:mt-5">
+                {service.images.map((src, i) => (
+                  <div
+                    key={i}
+                    className="relative overflow-hidden rounded-lg border border-white/10 bg-white/[0.02]"
+                  >
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={`${service.id}-${i}`}
+                        className="absolute inset-0"
+                        initial={{ opacity: 0, scale: 1.05 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 1.02 }}
+                        transition={{ duration: 0.55, ease: EASE, delay: i * 0.06 }}
+                      >
+                        <Image
+                          src={src}
+                          alt={`${service.label} work by Range of View Studios`}
+                          fill
+                          sizes="(max-width: 768px) 50vw, 550px"
+                          className="object-cover object-center"
+                        />
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </LayoutGroup>
+        </div>
+      </section>
+    </div>
   );
 }

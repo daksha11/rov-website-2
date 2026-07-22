@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
-import Footer from "@/components/sections/Footer";
-import { NavigationDock } from "@/components/sections/NavDoc";
+import { MusicNav } from "@/components/music/MusicNav";
+import MusicFooter from "@/components/music/MusicFooter";
 import SoundHero from "@/components/sound/SoundHero";
 import Gallery from "@/components/sections/Gallery";
 import TestimonialsSection from "@/components/common/TestimonialsSection";
-import CrossSellNudges from "@/components/common/CrossSellNudges";
 import { soundTestimonials } from "@/data/testimonials";
 import { soundFaqItems } from "@/data/faq";
 import { VideoSchema } from "@/components/schema/VideoSchema";
@@ -13,22 +12,26 @@ import { ServiceSchema } from "@/components/schema/ServiceSchema";
 import { BreadcrumbSchema } from "@/components/schema/BreadcrumbSchema";
 import { FAQPageSchema } from "@/components/schema/FAQPageSchema";
 
+// rovmusic.com is served from this same app via a host rewrite (see middleware.ts).
+// This page is the rovmusic home, so all of its SEO points at rovmusic, not studios.
+const MUSIC_URL = "https://www.rovmusic.com";
+
 export const metadata: Metadata = {
-    title: "Sound Engineering & Music Production",
+    title: { absolute: "Mixing & Mastering in Atlanta | Range of View Music" },
     description:
-        "Professional sound engineering, mixing, and mastering services by Range of View Studios. Mix and master starting at $50/song. 48-hour turnaround.",
-    alternates: { canonical: "https://www.rovstudios.com/sound" },
+        "Professional sound engineering, mixing, and mastering by Range of View Music. Mix and master starting at $50/song. 48-hour turnaround. Atlanta.",
+    alternates: { canonical: MUSIC_URL },
     openGraph: {
-        title: "Sound Engineering & Music Production | Range of View Studios",
-        description: "Professional mixing, mastering, and sound engineering services. Start at $50/song.",
-        url: "https://www.rovstudios.com/sound",
-        images: [{ url: "/og/og-sound.webp", width: 1200, height: 630, alt: "ROV Studios sound engineering setup" }],
+        title: "Mixing & Mastering in Atlanta | Range of View Music",
+        description: "Professional mixing, mastering, and sound engineering. Start at $50/song.",
+        url: MUSIC_URL,
+        images: [{ url: `${MUSIC_URL}/og/og-sound.webp`, width: 1200, height: 630, alt: "Range of View Music studio" }],
     },
     twitter: {
         card: "summary_large_image",
-        title: "Sound Engineering & Music Production | Range of View Studios",
-        description: "Professional mixing, mastering, and sound engineering services. Start at $50/song.",
-        images: ["/og/og-sound.webp"],
+        title: "Mixing & Mastering in Atlanta | Range of View Music",
+        description: "Professional mixing, mastering, and sound engineering. Start at $50/song.",
+        images: [`${MUSIC_URL}/og/og-sound.webp`],
     },
 };
 
@@ -98,13 +101,15 @@ export default function Page() {
                 name="Sound Engineering & Music Production"
                 description="Professional sound engineering, mixing, and mastering services. Mix and master starting at $50/song with 48-hour turnaround."
                 serviceType="Sound Engineering"
-                url="/sound"
+                url=""
                 image="/og/og-sound.webp"
                 offerDescription="First 3 songs at $50/song, mix and master included"
+                baseUrl={MUSIC_URL}
+                providerName="Range of View Music"
+                providerUrl={MUSIC_URL}
             />
-            <BreadcrumbSchema items={[
-                { name: "Home", url: "" },
-                { name: "Sound Engineering", url: "/sound" },
+            <BreadcrumbSchema baseUrl={MUSIC_URL} items={[
+                { name: "Range of View Music", url: "" },
             ]} />
             <FAQPageSchema faqs={[
                 { question: "How much does mixing and mastering cost?", answer: "Start at $50/song for your first 3 songs, mix and master included. After that, subscriptions start at $145/mo for 5 songs (under $30/song) up to $400/mo for 12 songs with 24-hour priority turnaround. Need just one song? One-off pricing is $120/song. The subscription discount exists because consistency goes both ways. You commit to dropping, we commit to the rate." },
@@ -122,7 +127,8 @@ export default function Page() {
                 uploadDate="2025-01-10"
                 contentUrl="/soundpage/starscollidemv.mp4"
                 duration="PT3M30S"
-                pageUrl="/sound"
+                pageUrl=""
+                baseUrl={MUSIC_URL}
             />
             <VideoSchema
                 name="Starboy Music Video"
@@ -131,7 +137,8 @@ export default function Page() {
                 uploadDate="2025-01-15"
                 contentUrl="/soundpage/starbmvv.mp4"
                 duration="PT3M"
-                pageUrl="/sound"
+                pageUrl=""
+                baseUrl={MUSIC_URL}
             />
 
             {/* 01 — Hero */}
@@ -177,17 +184,12 @@ export default function Page() {
             {/* 10.5 — Tagore Studios Partnership */}
             <TagorePartnership />
 
-            {/* 11 — Cross-Sell Nudges */}
-            <CrossSellNudges currentService="sound" />
-
-            {/* 12 — FAQ */}
+            {/* 11 — FAQ */}
             <FAQSection items={soundFaqItems} />
 
-            {/* Footer */}
-            <Footer />
-
-            {/* Navigation Dock */}
-            <NavigationDock />
+            {/* Music-branded footer + nav (rovmusic shell) */}
+            <MusicFooter />
+            <MusicNav />
         </>
     );
 }

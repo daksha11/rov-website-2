@@ -36,15 +36,6 @@ export async function GET() {
             duration: 35,
             publicationDate: "2025-02-01",
         },
-        {
-            loc: "https://www.rovstudios.com/sound",
-            title: "Stars Collide Music Video",
-            description: "Stars Collide official music video, mixed and mastered by Range of View Studios sound engineering team.",
-            contentUrl: "https://www.rovstudios.com/soundpage/starscollidemv.mp4",
-            thumbnailUrl: "https://www.rovstudios.com/thumbnails/soundhero.webp",
-            duration: 210,
-            publicationDate: "2025-01-10",
-        },
     ];
 
     const escapeXml = (str: string) =>

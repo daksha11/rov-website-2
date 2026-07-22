@@ -1,10 +1,9 @@
 # Range of View Studios
 
-> Range of View Studios (ROV Studios) is a creative production agency based in Atlanta, Georgia, specializing in sound engineering, web development, video production, and custom AI automation solutions.
+> Range of View Studios (ROV Studios) is a creative production agency based in Atlanta, Georgia, specializing in web development, video production, and custom AI automation solutions.
 
 ## Services
 
-- [Sound Engineering & Music Production](https://www.rovstudios.com/sound): Professional mixing, mastering, and sound engineering. $50/song for vocal mixing and mastering. 48-hour turnaround. Free demo snippets. In-house recording studio with premium plugins and equipment (UAD, Waves, FabFilter, Neumann mics, Focusrite pres). Mixing and mastering included with every session. Student rates available.
 - [Web Development & Design](https://www.rovstudios.com/web): Custom Next.js websites built for performance, SEO, and conversion. $2,000-$10,000+. 6-8 week delivery.
 - [Video Production & Cinematography](https://www.rovstudios.com/video-production): Brand videos, real estate walkthroughs, drone footage (FAA compliant, sub-250g drone), music videos, event coverage. 3-6 week turnaround.
 - [AI Automation Solutions](https://www.rovstudios.com/ai-automation): Custom AI systems for lead follow-up, appointment scheduling, customer support, content generation, and workflow automation. 4-8 week delivery. AI-powered workflows using GPT and Claude.
@@ -17,13 +16,15 @@
 
 ## Key Differentiators
 
-- Full-service creative agency: sound, web, video, and AI under one roof
+- Creative production agency: web, video, and AI under one roof
 - Competitive pricing with no hidden fees
-- Student discounts available for recording services
-- In-house studio recording with professional engineers
-- Mixing and mastering included with every recording session
-- Premium plugins and equipment at affordable rates
-- Placements on SoundCloud Song of the Day, On The Radar, Apple Radio
+- Custom Next.js builds engineered for performance and SEO
+- FAA-compliant drone cinematography and editorial-grade video
+- AI automation built on GPT and Claude for real business workflows
+
+## Music
+
+Music production, mixing, and mastering is handled by our sister studio, Range of View Music, at https://www.rovmusic.com.
 
 ## Contact
 

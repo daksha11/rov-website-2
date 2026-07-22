@@ -101,7 +101,7 @@ export default function HomeContent() {
   // engines get the full content and every internal link. The loading
   // screen is a fixed overlay on top, removed once loading completes.
   return (
-    <main className="min-h-screen bg-black text-white overflow-x-hidden">
+    <main className="min-h-screen bg-black text-white [overflow-x:clip]">
         <h2 className="sr-only">Range of View Studios — Creative Production Agency in Atlanta</h2>
 
         <section id="hero-with-animation" style={{ margin: 0, padding: 0 }}>

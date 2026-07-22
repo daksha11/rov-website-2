@@ -22,12 +22,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 1,
         },
         {
-            url: `${baseUrl}/sound`,
-            lastModified: '2025-03-23',
-            changeFrequency: 'monthly',
-            priority: 0.9,
-        },
-        {
             url: `${baseUrl}/video-production`,
             lastModified: '2025-03-15',
             changeFrequency: 'monthly',

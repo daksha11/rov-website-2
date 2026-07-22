@@ -5,6 +5,9 @@ export function ServiceSchema({
   url,
   image,
   offerDescription,
+  baseUrl = "https://www.rovstudios.com",
+  providerName = "Range of View Studios",
+  providerUrl = "https://www.rovstudios.com",
 }: {
   name: string;
   description: string;
@@ -12,6 +15,9 @@ export function ServiceSchema({
   url: string;
   image: string;
   offerDescription?: string;
+  baseUrl?: string;
+  providerName?: string;
+  providerUrl?: string;
 }) {
   const schema: Record<string, unknown> = {
     "@context": "https://schema.org",
@@ -20,16 +26,16 @@ export function ServiceSchema({
     description,
     provider: {
       "@type": "Organization",
-      name: "Range of View Studios",
-      url: "https://www.rovstudios.com",
+      name: providerName,
+      url: providerUrl,
     },
     serviceType,
     areaServed: {
       "@type": "Place",
       name: "Atlanta, Georgia",
     },
-    url: `https://www.rovstudios.com${url}`,
-    image: `https://www.rovstudios.com${image}`,
+    url: `${baseUrl}${url}`,
+    image: `${baseUrl}${image}`,
   };
 
   if (offerDescription) {

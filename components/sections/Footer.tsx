@@ -67,13 +67,15 @@ const Footer = () => {
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="cursor-pointer"
           >
-            <Image
-              src="/brand/rov-logo.webp"
-              alt="ROV Studios Logo"
-              width={120}
-              height={60}
-              className="object-contain w-[80px] md:w-[120px]"
-            />
+            <span className="relative block w-[80px] h-[40px] md:w-[120px] md:h-[60px]">
+              <Image
+                src="/brand/rov-logo.webp"
+                alt="ROV Studios Logo"
+                fill
+                sizes="120px"
+                className="object-contain"
+              />
+            </span>
           </Link>
           <h2
             className="text-3xl md:text-5xl uppercase tracking-wider font-bold"
@@ -109,9 +111,6 @@ const Footer = () => {
             style={{ fontFamily: 'Roboto, sans-serif' }}
           >
             <li>
-              <a href="/sound" className="hover:text-gray-400 transition-colors duration-300">Sound</a>
-            </li>
-            <li>
               <a href="/web" className="hover:text-gray-400 transition-colors duration-300">Web Optimization</a>
             </li>
             <li>
@@ -134,6 +133,9 @@ const Footer = () => {
             </li>
             <li>
               <a href="/about" className="hover:text-gray-400 transition-colors duration-300">About &amp; Team</a>
+            </li>
+            <li>
+              <a href="https://www.rovmusic.com" target="_blank" rel="noopener noreferrer" className="text-white/60 hover:text-gray-400 transition-colors duration-300">Music&nbsp;↗</a>
             </li>
           </ul>
         </div>
