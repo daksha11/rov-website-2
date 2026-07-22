@@ -1,9 +1,20 @@
 import { MetadataRoute } from 'next';
 import { getAllPosts } from '@/lib/blog';
+import { getIndexedIndustries } from '@/lib/industries';
 import { volumeNumbers } from './ctrla/_volumes';
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = 'https://www.rovstudios.com';
+
+    // ICP industry landing pages. Only pages promoted to indexed: true appear
+    // here. Phase 1 drafts (indexed: false) are intentionally excluded, so this
+    // list is empty until Andi personally promotes a page.
+    const industryPages = getIndexedIndustries().map((page) => ({
+        url: `${baseUrl}/industries/${page.slug}`,
+        lastModified: page.dateModified,
+        changeFrequency: 'monthly' as const,
+        priority: 0.8,
+    }));
 
     const blogPosts = getAllPosts()
         .filter((post) => !post.externalUrl)
@@ -194,6 +205,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'monthly',
             priority: 0.7,
         },
+        ...industryPages,
         ...blogPosts,
     ];
 }
