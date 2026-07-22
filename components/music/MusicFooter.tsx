@@ -115,10 +115,23 @@ export default function MusicFooter() {
           href="https://www.rovstudios.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-white/40 hover:text-white/70 text-xs md:text-sm transition-colors"
-          style={{ fontFamily: "Roboto, sans-serif" }}
+          aria-label="Back to Range of View Studios"
+          className="group inline-flex items-center gap-3 pl-3 pr-4 py-2 rounded-full border border-white/12 hover:border-white/30 hover:bg-white/5 transition-colors"
         >
-          Looking for web, video, or AI? → rovstudios.com
+          <Image
+            src="/brand/rov-logo.webp"
+            alt="Range of View Studios"
+            width={28}
+            height={28}
+            className="object-contain w-6 h-6 opacity-80 group-hover:opacity-100 transition-opacity"
+          />
+          <span
+            className="text-white/60 group-hover:text-white text-xs md:text-sm uppercase transition-colors"
+            style={{ fontFamily: "'Neue Montreal', sans-serif", letterSpacing: "0.06em" }}
+          >
+            Range of View Studios
+          </span>
+          <span className="text-white/40 group-hover:text-white/80 text-sm transition-colors">↗</span>
         </a>
       </div>
     </footer>
