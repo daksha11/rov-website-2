@@ -65,9 +65,9 @@ function computeEstimate(a: Answers) {
   const ongoing = a.cadence === "ongoing";
 
   // Per-song base. Recording is a finished single ($149, mix+master included).
-  // Mixing: intro $50/song low end one-off, $120 standalone high; ongoing ~$25-29.
+  // Mixing: intro $50/song low end one-off, $100 standalone high; ongoing ~$25-29.
   const baseLow = isMix ? (ongoing ? 25 : 50) : 149;
-  const baseHigh = isMix ? (ongoing ? 29 : 120) : 149;
+  const baseHigh = isMix ? (ongoing ? 29 : 100) : 149;
 
   const selected = EXTRAS.filter((e) => a.extras.has(e.key));
   const extrasLow = selected.reduce((sum, e) => sum + e.plan, 0);

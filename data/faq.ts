@@ -81,7 +81,7 @@ export const aiAutomationFaqItems: FaqItem[] = [
 export const soundFaqItems: FaqItem[] = [
     {
         question: "How much do you charge for mixing and mastering?",
-        answer: "Your first 3 songs are $50 each, full mix and master included, no commitment. After that you can go one-off at $120 a song, or subscribe from as low as $25 a song ($145/mo for 5 songs up to $500/mo for 18 with 24-hour priority). Mastering is always included, and every song comes with 2 revisions. Full trackouts (beat stems plus vocals) are quoted based on the number of stems, send us your project details for an exact number."
+        answer: "Your first 3 songs are $50 each, full mix and master included, no commitment. After that you can go one-off at $100 a song, or subscribe from as low as $25 a song ($145/mo for 5 songs up to $500/mo for 18 with 24-hour priority). Mastering is always included, and every song comes with 2 revisions. Full trackouts (beat stems plus vocals) are quoted based on the number of stems, send us your project details for an exact number."
     },
     {
         question: "How long does it take to get my song mixed and mastered?",
