@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { BlogFAQ } from "@/components/blog/BlogFAQ";
+import BlogLeadForm from "@/components/blog/BlogLeadForm";
 import { BreadcrumbSchema } from "@/components/schema/BreadcrumbSchema";
 import { FAQPageSchema } from "@/components/schema/FAQPageSchema";
 
@@ -477,58 +478,15 @@ export default function StudioVsAgencyVsFreelancerPage() {
           </div>
         </section>
 
-        {/* ── CTA ── */}
-        <section style={{
-          background: "#FFF4E3",
-          border: "1.5px solid rgba(59,33,20,0.15)",
-          borderRadius: 16,
-          padding: "48px 36px",
-          textAlign: "center",
-        }}>
-          <h2 style={{ fontFamily: "Norwige, sans-serif", fontSize: "clamp(24px, 4vw, 36px)", fontWeight: 400, marginBottom: 16, lineHeight: 1.2, color: "#3B2114" }}>
-            Not sure which one you need?
-          </h2>
-          <p style={{ fontSize: 16, lineHeight: 1.65, color: "rgba(59,33,20,0.7)", marginBottom: 32, maxWidth: 480, margin: "0 auto 32px" }}>
-            Tell us what you are trying to build. We will tell you honestly whether a studio is overkill, a perfect fit, or the wrong tool, before you spend a dollar.
-          </p>
-          <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
-            <a
-              href="https://calendly.com/rangeofviewmusic/30min"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                background: "#90422C",
-                color: "#FFF4E3",
-                padding: "14px 28px",
-                borderRadius: 100,
-                fontFamily: "'Neue Montreal', sans-serif",
-                fontWeight: 700,
-                fontSize: 15,
-                textDecoration: "none",
-                display: "inline-block",
-              }}
-            >
-              Book a free call
-            </a>
-            <Link
-              href="/blog/creative-studios-atlanta"
-              style={{
-                background: "transparent",
-                color: "#3B2114",
-                padding: "14px 28px",
-                borderRadius: 100,
-                fontFamily: "'Neue Montreal', sans-serif",
-                fontWeight: 600,
-                fontSize: 15,
-                textDecoration: "none",
-                display: "inline-block",
-                border: "1.5px solid rgba(59,33,20,0.25)",
-              }}
-            >
-              Read the studio guide
-            </Link>
-          </div>
-        </section>
+        {/* ── LEAD FORM CTA ── */}
+        <BlogLeadForm
+          source="blog:creative-studio-vs-agency-vs-freelancer"
+          heading="Not sure which one you need?"
+          subheading="Tell us what you're trying to build. We'll tell you honestly whether a studio is overkill, a perfect fit, or the wrong tool, before you spend a dollar."
+          messagePlaceholder="What you're trying to build, your rough budget, and your timeline..."
+          secondaryHref="https://calendly.com/rangeofviewmusic/30min"
+          secondaryLabel="Prefer to talk? Book a free call"
+        />
 
       </div>
       <NavigationDock />

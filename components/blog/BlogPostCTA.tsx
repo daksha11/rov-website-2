@@ -1,79 +1,21 @@
-import Link from "next/link";
+import BlogLeadForm from "@/components/blog/BlogLeadForm";
 
-export function BlogPostCTA() {
+// Generic end-of-article lead form for markdown-based blog posts (the
+// app/blog/[slug] template). Custom design-standard pages call BlogLeadForm
+// directly with topic-tuned copy; this wraps it with a sensible default and
+// tags the lead with the post slug so you know which article generated it.
+export function BlogPostCTA({ slug }: { slug?: string }) {
   return (
     <section style={{ background: "#FFF4E3", padding: "16px 24px 80px" }}>
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
-        <div
-          style={{
-            background: "#FFF4E3",
-            border: "1.5px solid rgba(59,33,20,0.15)",
-            borderRadius: 16,
-            padding: "48px 36px",
-            textAlign: "center",
-          }}
-        >
-          <h2
-            style={{
-              fontFamily: "Norwige, sans-serif",
-              fontSize: "clamp(24px, 4vw, 36px)",
-              fontWeight: 400,
-              marginBottom: 16,
-              lineHeight: 1.2,
-              color: "#3B2114",
-            }}
-          >
-            Want to know where your business is leaking revenue?
-          </h2>
-          <p
-            style={{
-              fontSize: 16,
-              lineHeight: 1.65,
-              color: "rgba(59,33,20,0.7)",
-              maxWidth: 480,
-              margin: "0 auto 32px",
-            }}
-          >
-            We run free audits for Atlanta businesses. We look at your site, your funnel, your search visibility. We find the gap. We show you exactly what to fix.
-          </p>
-          <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
-            <a
-              href="https://calendly.com/rangeofviewmusic/30min"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                background: "#90422C",
-                color: "#FFF4E3",
-                padding: "14px 28px",
-                borderRadius: 100,
-                fontFamily: "'Neue Montreal', sans-serif",
-                fontWeight: 700,
-                fontSize: 15,
-                textDecoration: "none",
-                display: "inline-block",
-              }}
-            >
-              Book a free audit
-            </a>
-            <Link
-              href="/web"
-              style={{
-                background: "transparent",
-                color: "#3B2114",
-                padding: "14px 28px",
-                borderRadius: 100,
-                fontFamily: "'Neue Montreal', sans-serif",
-                fontWeight: 600,
-                fontSize: 15,
-                textDecoration: "none",
-                display: "inline-block",
-                border: "1.5px solid rgba(59,33,20,0.25)",
-              }}
-            >
-              See our web services
-            </Link>
-          </div>
-        </div>
+        <BlogLeadForm
+          source={slug ? `blog:${slug}` : "blog:post"}
+          heading="Want to know where your business is leaking revenue?"
+          subheading="We run free audits for Atlanta businesses. Tell us where to look and we'll show you exactly what to fix."
+          messagePlaceholder="Your business, your website, and what you're trying to fix..."
+          secondaryHref="https://calendly.com/rangeofviewmusic/30min"
+          secondaryLabel="Prefer to talk? Book a free audit call"
+        />
       </div>
     </section>
   );

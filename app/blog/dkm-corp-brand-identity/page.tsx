@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { BlogFAQ } from "@/components/blog/BlogFAQ";
+import BlogLeadForm from "@/components/blog/BlogLeadForm";
 
 const NavigationDock = dynamic(
   () => import("@/components/sections/NavDoc").then((mod) => ({ default: mod.NavigationDock })),
@@ -459,58 +460,15 @@ export default function DkmCorpBrandIdentityPage() {
           </div>
         </section>
 
-        {/* ── CTA ── */}
-        <section style={{
-          background: "#FFF4E3",
-          border: "1.5px solid rgba(59,33,20,0.15)",
-          borderRadius: 16,
-          padding: "48px 36px",
-          textAlign: "center",
-        }}>
-          <h2 style={{ fontFamily: "Norwige, sans-serif", fontSize: "clamp(24px, 4vw, 36px)", fontWeight: 400, marginBottom: 16, lineHeight: 1.2, color: "#3B2114" }}>
-            Does your website match the caliber of your work?
-          </h2>
-          <p style={{ fontSize: 16, lineHeight: 1.65, color: "rgba(59,33,20,0.7)", marginBottom: 32, maxWidth: 480, margin: "0 auto 32px" }}>
-            We run free audits for professional services companies. We look at your brand, your messaging, and your site, then show you exactly what is holding your first impression back.
-          </p>
-          <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
-            <a
-              href="https://calendly.com/rangeofviewmusic/30min"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                background: "#90422C",
-                color: "#FFF4E3",
-                padding: "14px 28px",
-                borderRadius: 100,
-                fontFamily: "'Neue Montreal', sans-serif",
-                fontWeight: 700,
-                fontSize: 15,
-                textDecoration: "none",
-                display: "inline-block",
-              }}
-            >
-              Book a free audit
-            </a>
-            <Link
-              href="/web"
-              style={{
-                background: "transparent",
-                color: "#3B2114",
-                padding: "14px 28px",
-                borderRadius: 100,
-                fontFamily: "'Neue Montreal', sans-serif",
-                fontWeight: 600,
-                fontSize: 15,
-                textDecoration: "none",
-                display: "inline-block",
-                border: "1.5px solid rgba(59,33,20,0.25)",
-              }}
-            >
-              See our web services
-            </Link>
-          </div>
-        </section>
+        {/* ── LEAD FORM CTA ── */}
+        <BlogLeadForm
+          source="blog:dkm-corp-brand-identity"
+          heading="Does your website match the caliber of your work?"
+          subheading="We run free audits for professional services companies. Tell us where to look and we'll show you what's holding your first impression back."
+          messagePlaceholder="Your company, your website, and what feels off about how you show up online..."
+          secondaryHref="https://calendly.com/rangeofviewmusic/30min"
+          secondaryLabel="Prefer to talk? Book a free audit call"
+        />
 
       </div>
       <NavigationDock />

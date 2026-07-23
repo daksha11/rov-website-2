@@ -111,7 +111,7 @@ export default async function BlogPostPage({
         <BlogPostHeader post={post} />
         <BlogPostBody htmlContent={post.htmlContent ?? ""} />
         {post.faqs && post.faqs.length > 0 && <BlogFAQ faqs={post.faqs} />}
-        <BlogPostCTA />
+        <BlogPostCTA slug={post.slug} />
         {/* TODO: Re-enable RelatedPosts when blog has 20+ posts */}
         {/* <RelatedPosts posts={related} /> */}
       </article>
