@@ -78,6 +78,107 @@ const ROOTS_JSONLD = {
   citation: ROOTS_SOURCES.map((s) => ({ "@type": "CreativeWork", name: s.label, url: s.url })),
 };
 
+// ── The Map — where to actually start. Six doors into the city, most of
+// them free: places to work, see art, and cross paths with the scene.
+// Visual-first like Roots: labelled wireframe placeholders until real
+// shots land in /public/ctrla/atl/ (map-beltline, map-library, map-high,
+// map-criminal, map-pcm, map-mjq). ──
+const MAP_SPOTS = [
+  {
+    n: "01",
+    title: "The BeltLine",
+    line: "An open-air gallery you can jog. Murals, skyline, and half the city on foot.",
+    tags: ["Free", "See art", "Eastside Trail"],
+    img: undefined as string | undefined,
+    shot: "Shot · Eastside Trail murals",
+  },
+  {
+    n: "02",
+    title: "Central Library",
+    line: "Marcel Breuer's concrete landmark. Free wifi, free desks, all day.",
+    tags: ["Free", "Work", "Downtown"],
+    img: undefined as string | undefined,
+    shot: "Shot · The Breuer facade",
+  },
+  {
+    n: "03",
+    title: "The High",
+    line: "A world-class collection up the street. Check the calendar for free days and student rates.",
+    tags: ["Student rates", "See art", "Midtown"],
+    img: undefined as string | undefined,
+    shot: "Shot · The atrium ramps",
+  },
+  {
+    n: "04",
+    title: "Criminal Records",
+    line: "Records, zines, and in-stores in Little Five. The bulletin board is the scene's front page.",
+    tags: ["Cheap", "Music", "L5P"],
+    img: undefined as string | undefined,
+    shot: "Shot · The record bins",
+  },
+  {
+    n: "05",
+    title: "Ponce City Market",
+    line: "Food hall people-watching with BeltLine access. Bring a notebook.",
+    tags: ["Wander", "Eat", "Old Fourth Ward"],
+    img: undefined as string | undefined,
+    shot: "Shot · Central Food Hall",
+  },
+  {
+    n: "06",
+    title: "MJQ Concourse",
+    line: "The underground dance floor where every scene in the city crosses.",
+    tags: ["Night", "Music", "Ponce"],
+    img: undefined as string | undefined,
+    shot: "Shot · The concourse door",
+  },
+];
+
+export function ATLMap() {
+  return (
+    <section id="atl-map" style={{ background: "transparent", padding: "clamp(40px,6vw,80px) 0", scrollMarginTop: 80 }}>
+      <Bleed>
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginBottom: "clamp(18px,2.4vw,26px)" }}>
+          <Kicker color={ed.gold}>The Map · Where to start</Kicker>
+          <Label color={ed.gold}>Most of it free</Label>
+        </div>
+        <Rule style={{ marginBottom: "clamp(24px,3.4vw,40px)" }} />
+
+        <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,4.6vw,64px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: 0, maxWidth: 900 }}>
+          Six doors into the city<span style={{ color: ed.gold }}>.</span>
+        </h2>
+        <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontWeight: 400, fontSize: "clamp(17px,2.2vw,26px)", lineHeight: 1.3, color: ed.gold, margin: "clamp(12px,1.6vw,18px) 0 0", maxWidth: 720 }}>
+          You do not need a studio to start. You need a seat, a wall of art, and other people. Here is where they are.
+        </p>
+
+        <div className="ctrla-roots-grid" style={{ display: "grid", gap: "clamp(20px,2.6vw,36px)", margin: "clamp(28px,4vw,56px) 0 0" }}>
+          {MAP_SPOTS.map((s) => (
+            <div key={s.n}>
+              <ImageBlock src={s.img} alt={s.shot} ratio="4 / 3">
+                {!s.img && (
+                  <span style={{ position: "absolute", left: 12, bottom: 10, fontFamily: ed.mono, fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(36,18,58,0.75)" }}>
+                    {s.shot}
+                  </span>
+                )}
+              </ImageBlock>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 10, margin: "clamp(12px,1.6vw,18px) 0 6px" }}>
+                <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(14px,1.5vw,18px)", letterSpacing: "-0.01em", color: ed.gold }}>{s.n}</span>
+                <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.3vw,30px)", letterSpacing: "-0.02em", lineHeight: 1, color: ed.ink, margin: 0 }}>{s.title}</h3>
+              </div>
+              <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.55vw,17px)", lineHeight: 1.5, color: ed.inkSoft, margin: "0 0 12px" }}>{s.line}</p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                {s.tags.map((tag) => (
+                  <span key={tag} style={{ fontFamily: ed.mono, fontSize: "clamp(9px,1vw,11px)", letterSpacing: "0.08em", textTransform: "uppercase", color: ed.gold, border: `1px solid rgba(227,194,74,0.4)`, borderRadius: 999, padding: "5px 11px" }}>{tag}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </Bleed>
+    </section>
+  );
+}
+
 export function ATLRoots() {
   const [sourcesOpen, setSourcesOpen] = useState(false);
 

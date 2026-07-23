@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { NavigationDock } from "@/components/sections/NavDoc";
 import EditorialFooter from "../_components/EditorialFooter";
 import Cookbook from "../_components/Cookbook";
-import { ATLRoots } from "../_components/ATLSections";
+import { ATLRoots, ATLMap } from "../_components/ATLSections";
 import { CondensedEvents } from "../_components/IssueSections";
 import { ed, Bleed, Rule, Label, Kicker, ImageBlock } from "../_components/editorial";
 import { currentVolume } from "../_volumes";
@@ -75,13 +75,45 @@ export default function ATLPageContent() {
         </Bleed>
       </section>
 
-      {/* Roots — why Atlanta is a creative capital (sourced, JSON-LD citations) */}
+      {/* Contents — the field guide's architecture. Four chapters, four doors,
+          same pattern as the CTRL-A cover and the Cookbook landing page. */}
+      <section style={{ background: "transparent", padding: "clamp(24px,3.5vw,48px) 0 clamp(16px,2.5vw,32px)" }}>
+        <Bleed>
+          <Label color={accent}>Contents</Label>
+          <div style={{ marginTop: 12 }}>
+            <Rule color={ed.hair} />
+            {[
+              { n: "01", title: "Roots", desc: "Why this city is a creative capital.", href: "#atl-roots" },
+              { n: "02", title: "The Scene", desc: "What is on: creative events and the big-city calendar.", href: "#events" },
+              { n: "03", title: "The Map", desc: "Where to start: six doors, most of them free.", href: "#atl-map" },
+              { n: "04", title: "Fuel", desc: "The cookbook. Eat well on nothing.", href: "#cookbook" },
+            ].map((c) => (
+              <a key={c.n} href={c.href} className="ctrla-path-row" style={{ ["--acc" as string]: accent, display: "block", textDecoration: "none" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "clamp(14px,2vw,24px)", padding: "clamp(16px,2.4vw,28px) clamp(6px,1vw,14px)", flexWrap: "wrap" }}>
+                  <span aria-hidden className="ctrla-path-node" style={{ width: 10, height: 10, borderRadius: 999, border: `1.5px solid ${accent}`, flexShrink: 0 }} />
+                  <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(13px,1.4vw,17px)", letterSpacing: "-0.01em", color: accent }}>{c.n}</span>
+                  <span className="ctrla-path-name" style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(24px,3.4vw,46px)", letterSpacing: "-0.02em", lineHeight: 1, color: ed.ink }}>{c.title}</span>
+                  <span style={{ flex: 1 }} />
+                  <span style={{ fontFamily: ed.serif, fontStyle: "italic", fontSize: "clamp(13px,1.5vw,16px)", lineHeight: 1.4, color: ed.inkSoft, maxWidth: 320, textAlign: "right" }}>{c.desc}</span>
+                  <span className="ctrla-path-cta" style={{ fontFamily: ed.mono, fontSize: "clamp(10.5px,1.15vw,12.5px)", letterSpacing: "0.2em", textTransform: "uppercase", color: accent, whiteSpace: "nowrap" }}>Jump ↓</span>
+                </div>
+                <Rule color={ed.hair} />
+              </a>
+            ))}
+          </div>
+        </Bleed>
+      </section>
+
+      {/* 01 Roots — why Atlanta is a creative capital (sourced, JSON-LD citations) */}
       <ATLRoots />
 
-      {/* The scene — creative events + the big-city calendar (World Cup 26) */}
+      {/* 02 The scene — creative events + the big-city calendar (World Cup 26) */}
       <CondensedEvents />
 
-      {/* Fuel — the Cookbook teaser; steps into the full galley at /ctrla/cookbook */}
+      {/* 03 The map — where to start: six doors into the city, most of them free */}
+      <ATLMap />
+
+      {/* 04 Fuel — the Cookbook teaser; steps into the full galley at /ctrla/cookbook */}
       <Cookbook />
       <Bleed style={{ paddingBottom: "clamp(28px,4vw,56px)" }}>
         <Label color={ed.inkFaint}>Plate III · The galley, this volume&apos;s spread</Label>
