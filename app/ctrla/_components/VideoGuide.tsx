@@ -23,6 +23,16 @@ import { motion } from "framer-motion";
 import { edLight as ed, Bleed, Kicker, Label, Rule } from "./editorial";
 import LightBench from "./LightBench";
 import NegativeFill from "./NegativeFill";
+import ToolkitJumpNav from "./ToolkitJumpNav";
+
+// Chapter list for the shared sticky jump-nav.
+const CHAPTERS: [string, string][] = [
+  ["vg-craft", "The Bench"],
+  ["vg-location", "The Location"],
+  ["vg-chain", "The Chain"],
+  ["vg-exposure", "Exposure"],
+  ["tk-stations", "The Stations"],
+];
 
 // Legibility tokens for this guide, matching the Music guide: the shared
 // inkSoft reads dim on cream, so body copy and labels are darkened here.
@@ -136,27 +146,50 @@ const EXPOSE = [
 
 export default function VideoGuide({ accent = ed.plum }: { accent?: string }) {
   return (
-    <section style={{ background: "transparent", padding: "clamp(40px,6vw,80px) 0 0" }}>
-      <Bleed>
-        {/* ── Hero: the body vs the light ── */}
+    <section style={{ background: "transparent", padding: 0 }}>
+      <ToolkitJumpNav accent={accent} items={CHAPTERS} />
+      <Bleed style={{ paddingTop: "clamp(40px,6vw,80px)" }}>
+        {/* ── Hero: mission + the centerpiece, playable at scroll-zero ── */}
+        <div id="vg-craft" style={{ scrollMarginTop: 64 }} />
         <Reveal>
-          <Kicker color={accent}>Part 01 · The Craft</Kicker>
+          <Kicker color={accent}>The Video Toolkit · Part 01 The Craft</Kicker>
           <h2
             style={{
               fontFamily: ed.grotesque,
               fontWeight: 800,
-              fontSize: "clamp(34px,6vw,80px)",
-              lineHeight: 0.92,
+              fontSize: "clamp(32px,5.2vw,68px)",
+              lineHeight: 0.94,
               letterSpacing: "-0.03em",
               color: ed.ink,
               margin: "16px 0 0",
-              maxWidth: 980,
+              maxWidth: 920,
             }}
           >
-            Cinematic was never the camera.<br />
-            It was the light<span style={{ color: accent }}>.</span>
+            Phone footage to cinema, the gap is smaller than they tell you<span style={{ color: accent }}>.</span>
           </h2>
         </Reveal>
+
+        <Reveal delay={0.06}>
+          <p style={{ fontFamily: ed.body, fontStyle: "normal", fontSize: "clamp(16px,2vw,24px)", lineHeight: 1.45, color: READABLE, margin: "clamp(16px,2.4vw,26px) 0 0", maxWidth: 800 }}>
+            We teach the light, the frame, and the tools that close it. Start here: the bench. A key, a fill, and a back light. <em style={{ fontStyle: "italic", color: accent }}>Drag them around the scene</em> and watch the mood change.
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.1}>
+          <div style={{ marginTop: "clamp(22px,3.2vw,40px)" }}>
+            <LightBench accent={accent} />
+          </div>
+        </Reveal>
+
+        {/* ── The thesis: the body vs the light ── */}
+        <div style={{ marginTop: "clamp(40px,5.5vw,76px)" }}>
+          <Reveal>
+            <Kicker color={accent}>The thesis</Kicker>
+            <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 0", maxWidth: 900 }}>
+              Cinematic was never the camera. It was the light
+            </h3>
+          </Reveal>
+        </div>
 
         <div className="ctrla-guide-split" style={{ margin: "clamp(28px,4vw,48px) 0 0" }}>
           <Reveal>
@@ -172,7 +205,7 @@ export default function VideoGuide({ accent = ed.plum }: { accent?: string }) {
         </div>
 
         {/* ── Three honest truths ── */}
-        <div style={{ marginTop: "clamp(56px,8vw,104px)" }}>
+        <div style={{ marginTop: "clamp(40px,5.5vw,72px)" }}>
           <Reveal>
             <Kicker color={accent} style={{ marginBottom: 22 }}>The honest truth</Kicker>
           </Reveal>
@@ -184,7 +217,7 @@ export default function VideoGuide({ accent = ed.plum }: { accent?: string }) {
         </div>
 
         {/* ── Before the shoot: the location (control the light) ── */}
-        <div style={{ marginTop: "clamp(56px,8vw,112px)" }}>
+        <div id="vg-location" style={{ marginTop: "clamp(40px,5.5vw,76px)", scrollMarginTop: 64 }}>
           <Reveal>
             <Kicker color={accent}>Before the lights · the location</Kicker>
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 0" }}>
@@ -206,7 +239,7 @@ export default function VideoGuide({ accent = ed.plum }: { accent?: string }) {
         </div>
 
         {/* ── The lighting chain, in order ── */}
-        <div style={{ marginTop: "clamp(56px,8vw,112px)" }}>
+        <div id="vg-chain" style={{ marginTop: "clamp(40px,5.5vw,76px)", scrollMarginTop: 64 }}>
           <Reveal>
             <Kicker color={accent}>The ROV lighting chain</Kicker>
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 10px" }}>
@@ -263,24 +296,8 @@ export default function VideoGuide({ accent = ed.plum }: { accent?: string }) {
           </div>
         </div>
 
-        {/* ── The Light Bench ── */}
-        <div style={{ marginTop: "clamp(56px,8vw,112px)" }}>
-          <Reveal>
-            <Kicker color={accent}>The visual that makes it click</Kicker>
-            <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 10px" }}>
-              A scene is three lights
-            </h3>
-            <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: READABLE, margin: "0 0 clamp(28px,4vw,44px)", maxWidth: 640 }}>
-              The lesson our film team teaches on every set. A key for mood, a fill for how deep the shadows fall, a back light for separation. Drag each one, ride its intensity and colour, and watch the scene re-light. The readout calls the mood out loud the way a gaffer would.
-            </p>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <LightBench accent={accent} />
-          </Reveal>
-        </div>
-
         {/* ── Exposure basics ── */}
-        <div style={{ marginTop: "clamp(56px,8vw,112px)" }}>
+        <div id="vg-exposure" style={{ marginTop: "clamp(40px,5.5vw,76px)", scrollMarginTop: 64 }}>
           <Reveal>
             <Kicker color={accent}>Exposure, the basics</Kicker>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.6vw,18px)", lineHeight: 1.6, color: READABLE, margin: "12px 0 0", maxWidth: 620 }}>
@@ -301,7 +318,7 @@ export default function VideoGuide({ accent = ed.plum }: { accent?: string }) {
         </div>
 
         {/* ── Chapter handoff: Part 02 · The Tools ── */}
-        <div style={{ marginTop: "clamp(64px,9vw,120px)" }}>
+        <div style={{ marginTop: "clamp(44px,6vw,84px)" }}>
           <Rule color={ed.hair} />
           <Reveal>
             <div style={{ paddingTop: "clamp(22px,3vw,32px)", display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>

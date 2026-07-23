@@ -27,7 +27,10 @@ export default function ToolkitPageContent({ id }: { id: string }) {
     window.scrollTo(0, 0);
     const prevBg = document.body.style.backgroundColor;
     document.body.style.backgroundColor = ed.ground;
-    document.body.style.overflowX = "hidden";
+    // `clip` (not `hidden`) — hidden turns body into a scroll container and
+    // silently breaks every position:sticky descendant (e.g. the guide's
+    // chapter jump-nav).
+    document.body.style.overflowX = "clip";
     document.body.style.height = "auto";
     return () => {
       document.body.style.backgroundColor = prevBg;
@@ -42,7 +45,7 @@ export default function ToolkitPageContent({ id }: { id: string }) {
   const pageAccent = legibleAccent(section.accentColor);
 
   return (
-    <div className="ctrla-light" style={{ background: "transparent", minHeight: "100vh", width: "100%", overflowX: "hidden" }}>
+    <div className="ctrla-light" style={{ background: "transparent", minHeight: "100vh", width: "100%", overflowX: "clip" }}>
       <ToolkitAtmosphere />
       <NavigationDock />
 
@@ -78,8 +81,11 @@ export default function ToolkitPageContent({ id }: { id: string }) {
       {id === "video" && <VideoGuide accent={pageAccent} />}
 
       {/* Flagship sectors with curated Signals get the immersive Stations
-          experience; the rest fall back to the editorial detail for now. */}
-      {section.signals ? <ToolkitStations section={section} theme={ed} hideKicker={id === "music" || id === "design" || id === "web-dev" || id === "video"} /> : <ToolkitDetail section={section} />}
+          experience; the rest fall back to the editorial detail for now.
+          `tk-stations` is the shared jump-nav anchor for Part 02. */}
+      <div id="tk-stations" style={{ scrollMarginTop: 56 }}>
+        {section.signals ? <ToolkitStations section={section} theme={ed} hideKicker={id === "music" || id === "design" || id === "web-dev" || id === "video"} /> : <ToolkitDetail section={section} />}
+      </div>
 
       {/* Web Dev · Part 03 — the medicine cabinet of custom Claude Code skills */}
       {id === "web-dev" && <MedicineCabinet accent={pageAccent} />}

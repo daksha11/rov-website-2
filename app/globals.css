@@ -859,6 +859,25 @@ input[type="range"]::-webkit-slider-thumb {
 .ctrla-stations[data-view="flow"] {
   grid-template-columns: 1fr;
 }
+/* Shared toolkit jump-nav: hide the horizontal scrollbar, keep the swipe. */
+.ctrla-jumpbar { scrollbar-width: none; }
+.ctrla-jumpbar::-webkit-scrollbar { display: none; }
+
+/* Featured stations: the top three, one row, side by side. */
+.ctrla-feat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 1.8vw, 24px);
+  align-items: stretch;
+}
+@media (max-width: 900px) {
+  .ctrla-feat-grid { grid-template-columns: 1fr; }
+}
+.ctrla-feat-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.ctrla-feat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(22, 12, 40, 0.14);
+}
 .ctrla-station-rail {
   position: sticky;
   top: 0;
@@ -1020,6 +1039,42 @@ input[type="range"]::-webkit-slider-thumb {
 .ctrla-roots-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 @media (max-width: 860px) {
   .ctrla-roots-grid { grid-template-columns: 1fr; }
+}
+
+/* ATL customs — passport stamps + the .edu layer grid. Stamps ink in with a
+   press-down animation; the campus grid runs 4-up, then 2, then 1. */
+.ctrla-stamp {
+  display: inline-block;
+  padding: 7px 16px;
+  border: 2px solid #e3c24a;
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1.5px rgba(227, 194, 74, 0.35);
+  transform: rotate(-4deg);
+  font-family: "Neue Montreal", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 800;
+  font-size: clamp(11px, 1.2vw, 14px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #e3c24a;
+  animation: ctrla-stamp-in 0.35s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+.ctrla-stamp--alt {
+  transform: rotate(3deg);
+  animation-delay: 0.12s;
+}
+@keyframes ctrla-stamp-in {
+  from { opacity: 0; transform: rotate(-12deg) scale(1.7); }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ctrla-stamp { animation: none; }
+}
+.ctrla-campus-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 1000px) {
+  .ctrla-campus-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .ctrla-campus-grid { grid-template-columns: 1fr; }
 }
 
 /* Galley kitchen science — diagram + copy lesson rows. Side by side on
@@ -2489,7 +2544,8 @@ input[type="range"]::-webkit-slider-thumb {
   gap: clamp(24px, 4vw, 56px);
   align-items: start;
 }
-.ctrla-mixglobe-legend { padding-top: clamp(8px, 4vw, 48px); }
+/* Legend sits flush with the top of the globe stage — no drop. */
+.ctrla-mixglobe-legend { padding-top: 0; }
 .ctrla-mixglobe-stage {
   position: relative;
   width: 100%;
@@ -2585,11 +2641,14 @@ input[type="range"]::-webkit-slider-thumb {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   animation: ctrla-fridge-fade 0.2s ease both;
 }
-/* Present mode: fill the screen, center the tool. */
+/* Present mode: fill the screen, center the tool. The inner panel type is
+   dark ink for the cream theme, so the fullscreen ground must stay CREAM —
+   a dark ground here made every label/chip illegible. */
 .ctrla-mixglobe-wrap.is-full {
-  background: #07040f;
+  background: #f0e6e0;
   padding: clamp(16px, 3vw, 40px);
   justify-content: center;
+  overflow-y: auto;
 }
 .ctrla-mixglobe-wrap.is-full .ctrla-mixglobe { align-content: center; }
 .ctrla-mixglobe-wrap.is-full .ctrla-mixglobe-stage { max-height: min(82vh, 720px); }
@@ -2904,7 +2963,8 @@ input[type="range"]::-webkit-slider-thumb {
 .ctrla-poster-hint {
   font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
 }
-.ctrla-defend-legend { padding-top: clamp(4px, 2vw, 18px); }
+/* Legend sits flush with the top of the poster — matches the globe/bench. */
+.ctrla-defend-legend { padding-top: 0; }
 .ctrla-defend-list { display: flex; flex-wrap: wrap; gap: 8px; }
 .ctrla-defend-chip {
   display: inline-flex; align-items: center; gap: 8px;

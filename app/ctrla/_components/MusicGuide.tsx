@@ -13,11 +13,12 @@
 // Part 02 The Tools (the stations below).
 // ═══════════════════════════════════════════════════════
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import type { ReactNode, CSSProperties } from "react";
 import { motion } from "framer-motion";
 import { edLight as ed, Bleed, Kicker, Label, Rule } from "./editorial";
 import MixGlobe from "./MixGlobe";
+import ToolkitJumpNav from "./ToolkitJumpNav";
 
 // Legibility tokens for this guide. The shared inkSoft (0.66 alpha) reads as a
 // dim grey on the cream gradient, so body copy and meta labels are darkened
@@ -195,6 +196,160 @@ function Disclosure({ label, color, children }: { label: string; color: string; 
   );
 }
 
+// Chapter list for the shared sticky jump-nav (see ToolkitJumpNav).
+const CHAPTERS: [string, string][] = [
+  ["mg-craft", "The Globe"],
+  ["mg-room", "The Room"],
+  ["mg-chain", "The Chain"],
+  ["mg-master", "Mastering"],
+  ["mg-tools", "The Tools"],
+  ["tk-stations", "The Stations"],
+];
+
+// The vocal chain as an actual signal chain: a rack of modules wired IN → OUT,
+// the whole sequence visible in one viewport. The wire lights up to the active
+// module; the detail reads in a fixed panel below. Mobile: tap-open accordion.
+function ChainRack({ accent }: { accent: string }) {
+  const [active, setActive] = useState(0);
+  const [mOpen, setMOpen] = useState<number>(0);
+  const step = CHAIN[active];
+  const rows = [CHAIN.slice(0, 5), CHAIN.slice(5)];
+
+  const Wire = ({ lit }: { lit: boolean }) => (
+    <span aria-hidden style={{ flex: "0 0 clamp(8px,1.2vw,18px)", alignSelf: "center", height: 2, background: lit ? accent : ed.hair, transition: "background 0.3s ease" }} />
+  );
+  const Cap = ({ label, lit }: { label: string; lit: boolean }) => (
+    <span style={{ alignSelf: "center", flexShrink: 0, fontFamily: ed.mono, fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: lit ? accent : META_INK, border: `1px solid ${lit ? accent : ed.hair}`, borderRadius: 999, padding: "4px 10px", transition: "color 0.3s ease, border-color 0.3s ease" }}>
+      {label}
+    </span>
+  );
+  const Module = ({ idx }: { idx: number }) => {
+    const s = CHAIN[idx];
+    const on = idx === active;
+    const passed = idx <= active;
+    return (
+      <button
+        type="button"
+        onClick={() => setActive(idx)}
+        aria-pressed={on}
+        style={{
+          flex: "1 1 0",
+          minWidth: 0,
+          textAlign: "left",
+          padding: "11px 12px 13px",
+          borderRadius: 12,
+          border: `1.5px solid ${on ? accent : ed.hair}`,
+          background: on ? `color-mix(in srgb, ${accent} 9%, transparent)` : "transparent",
+          boxShadow: on ? `0 6px 18px -8px color-mix(in srgb, ${accent} 55%, transparent)` : "none",
+          cursor: "pointer",
+          transition: "border-color 0.28s ease, background 0.28s ease, box-shadow 0.28s ease",
+        }}
+      >
+        <span style={{ fontFamily: ed.mono, fontSize: 10, letterSpacing: "0.14em", color: passed ? accent : META_INK, transition: "color 0.3s ease" }}>{s.n}</span>
+        <span style={{ display: "block", marginTop: 5, fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(12px,1.15vw,15px)", letterSpacing: "-0.01em", lineHeight: 1.12, color: ed.ink, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+          {s.short}
+        </span>
+      </button>
+    );
+  };
+
+  return (
+    <>
+      {/* ── Desktop: the rack ── */}
+      <div className="hidden md:block" style={{ marginTop: "clamp(22px,3vw,36px)", background: ed.panel, border: `1px solid ${ed.hair}`, borderRadius: 18, padding: "clamp(18px,2.6vw,30px)" }}>
+        <div style={{ display: "flex", gap: 0 }}>
+          <Cap label="In" lit />
+          <Wire lit />
+          {rows[0].map((s, i) => (
+            <span key={s.n} style={{ display: "contents" }}>
+              {i > 0 && <Wire lit={active >= i} />}
+              <Module idx={i} />
+            </span>
+          ))}
+        </div>
+        {/* Return wire: signal drops from the end of row one back to row two */}
+        <svg width="100%" height="24" viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden style={{ display: "block", margin: "3px 0" }}>
+          <path d="M97,0 L97,12 L3,12 L3,24" fill="none" stroke={active >= 5 ? accent : ed.hair} strokeWidth="2" vectorEffect="non-scaling-stroke" style={{ transition: "stroke 0.3s ease" }} />
+        </svg>
+        <div style={{ display: "flex", gap: 0 }}>
+          {rows[1].map((s, i) => (
+            <span key={s.n} style={{ display: "contents" }}>
+              {i > 0 && <Wire lit={active >= 5 + i} />}
+              <Module idx={5 + i} />
+            </span>
+          ))}
+          <Wire lit={active === 9} />
+          <Cap label="Out" lit={active === 9} />
+        </div>
+
+        {/* ── Fixed detail panel ── */}
+        <div style={{ marginTop: "clamp(18px,2.4vw,26px)", borderTop: `2px solid ${ed.ink}`, paddingTop: 16, minHeight: 138 }}>
+          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 14, flexWrap: "wrap" }}>
+              <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,3vw,38px)", letterSpacing: "-0.03em", lineHeight: 0.9, color: accent }}>{step.n}</span>
+              <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.2vw,28px)", letterSpacing: "-0.02em", color: ed.ink, margin: 0 }}>{step.name}</h4>
+              <Label color={accent}>{step.level}</Label>
+            </div>
+            <div style={{ display: "flex", gap: 8 }}>
+              {[["←", -1], ["→", 1]].map(([g, d]) => (
+                <button
+                  key={g as string}
+                  type="button"
+                  aria-label={d === -1 ? "Previous step" : "Next step"}
+                  onClick={() => setActive((a) => Math.min(9, Math.max(0, a + (d as number))))}
+                  style={{ width: 32, height: 32, borderRadius: "50%", border: `1px solid ${ed.hair}`, background: "none", color: ed.ink, cursor: "pointer", fontSize: 14, lineHeight: 1 }}
+                >
+                  {g}
+                </button>
+              ))}
+            </div>
+          </div>
+          <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,17px)", lineHeight: 1.6, color: READABLE, margin: "10px 0 0", maxWidth: 760 }}>{step.body}</p>
+          {step.tool && (
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 12, fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.04em", color: accent, background: `color-mix(in srgb, ${accent} 9%, transparent)`, border: `1px solid ${accent}`, borderRadius: 999, padding: "5px 12px" }}>
+              <span style={{ width: 5, height: 5, borderRadius: "50%", background: accent }} aria-hidden />
+              we reach for {step.tool}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* ── Mobile: compact accordion ── */}
+      <div className="md:hidden" style={{ marginTop: 22 }}>
+        {CHAIN.map((s, i) => {
+          const open = mOpen === i;
+          return (
+            <div key={s.n} style={{ borderTop: `1px solid ${ed.hair}` }}>
+              <button
+                type="button"
+                onClick={() => setMOpen(open ? -1 : i)}
+                aria-expanded={open}
+                style={{ width: "100%", display: "flex", alignItems: "baseline", gap: 12, padding: "13px 0", background: "none", border: "none", cursor: "pointer", textAlign: "left" }}
+              >
+                <span style={{ fontFamily: ed.mono, fontSize: 11, letterSpacing: "0.12em", color: accent }}>{s.n}</span>
+                <span style={{ flex: 1, fontFamily: ed.grotesque, fontWeight: 800, fontSize: 16, letterSpacing: "-0.01em", color: ed.ink }}>{s.name}</span>
+                <span aria-hidden style={{ color: accent, fontSize: 18, lineHeight: 1, transition: "transform 0.28s ease", transform: open ? "rotate(45deg)" : "none" }}>+</span>
+              </button>
+              <div style={{ display: "grid", gridTemplateRows: open ? "1fr" : "0fr", transition: "grid-template-rows 0.32s cubic-bezier(0.22,1,0.36,1)" }}>
+                <div style={{ overflow: "hidden" }}>
+                  <p style={{ fontFamily: ed.body, fontSize: 14, lineHeight: 1.6, color: READABLE, margin: "0 0 6px" }}>{s.body}</p>
+                  {s.tool && (
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 7, margin: "4px 0 14px", fontFamily: ed.mono, fontSize: 10, letterSpacing: "0.04em", color: accent, border: `1px solid ${accent}`, borderRadius: 999, padding: "4px 10px" }}>
+                      we reach for {s.tool}
+                    </span>
+                  )}
+                  {!s.tool && <span style={{ display: "block", height: 8 }} />}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+        <div style={{ borderTop: `1px solid ${ed.hair}` }} />
+      </div>
+    </>
+  );
+}
+
 const TRUTHS = [
   {
     n: "01",
@@ -214,16 +369,16 @@ const TRUTHS = [
 ];
 
 const CHAIN = [
-  { n: "00", name: "Clean input", level: "the one everyone skips", tool: "", body: "Pop filter up, a fist off the mic, sing slightly off axis, and record with headroom so nothing clips. More than half the work is here." },
-  { n: "01", name: "Manual tuning", level: "by hand, graphical", tool: "Antares Auto-Tune (Graph)", body: "Fix the notes that drift in the graph editor, by eye and by ear. You are correcting a real performance, not leaning on a crutch." },
-  { n: "02", name: "The tuner", level: "auto-tune on top", tool: "Antares Auto-Tune", body: "A real-time tuner rides over the manual work. Light retune to stay invisible, near zero when the locked sound is the point." },
-  { n: "03", name: "De-esser", level: "tame the harshness", tool: "FabFilter Pro-DS", body: "Pull down the sharp sss and t sounds that stab through a mix. You may need to de-ess again near the end." },
-  { n: "04", name: "EQ, subtractive", level: "carve the space first", tool: "FabFilter Pro-Q 3", body: "Take away before you add. High-pass the rumble and cut the mud before the compressor, save the bright lifts for after." },
-  { n: "05", name: "Compressor", level: "even it out", tool: "Waves CLA-2A", body: "Even out the loud and quiet words so every one lands up front. Two gentle compressors beat one working hard." },
-  { n: "06", name: "Multiband compressor", level: "the surgical pass", tool: "FabFilter Pro-Q 3 (dynamic)", body: "The same control, split by frequency. Calm a boomy low or harsh mid without squashing the whole vocal." },
-  { n: "07", name: "Saturation", level: "the analog warmth", tool: "CamelCrusher", body: "The warmth those expensive rooms get for free. A touch of harmonic saturation helps the vocal sit forward." },
-  { n: "08", name: "Wet effects on a bus", level: "reverb · delay · doubling", tool: "Pro-R · EchoBoy · Doubler", body: "Depth and width go on last, on a send, never straight on the track. Reverb for space, delay for throws, a doubler for width." },
-  { n: "09", name: "Automation", level: "ride it home", tool: "", body: "Ride the vocal volume line by line so every word sits. This is where a good mix quietly becomes finished." },
+  { n: "00", name: "Clean input", short: "Clean input", level: "the one everyone skips", tool: "", body: "Pop filter up, a fist off the mic, sing slightly off axis, and record with headroom so nothing clips. More than half the work is here." },
+  { n: "01", name: "Manual tuning", short: "Manual tune", level: "by hand, graphical", tool: "Antares Auto-Tune (Graph)", body: "Fix the notes that drift in the graph editor, by eye and by ear. You are correcting a real performance, not leaning on a crutch." },
+  { n: "02", name: "The tuner", short: "Tuner", level: "auto-tune on top", tool: "Antares Auto-Tune", body: "A real-time tuner rides over the manual work. Light retune to stay invisible, near zero when the locked sound is the point." },
+  { n: "03", name: "De-esser", short: "De-esser", level: "tame the harshness", tool: "FabFilter Pro-DS", body: "Pull down the sharp sss and t sounds that stab through a mix. You may need to de-ess again near the end." },
+  { n: "04", name: "EQ, subtractive", short: "EQ cut", level: "carve the space first", tool: "FabFilter Pro-Q 3", body: "Take away before you add. High-pass the rumble and cut the mud before the compressor, save the bright lifts for after." },
+  { n: "05", name: "Compressor", short: "Compressor", level: "even it out", tool: "Waves CLA-2A", body: "Even out the loud and quiet words so every one lands up front. Two gentle compressors beat one working hard." },
+  { n: "06", name: "Multiband compressor", short: "Multiband", level: "the surgical pass", tool: "FabFilter Pro-Q 3 (dynamic)", body: "The same control, split by frequency. Calm a boomy low or harsh mid without squashing the whole vocal." },
+  { n: "07", name: "Saturation", short: "Saturation", level: "the analog warmth", tool: "CamelCrusher", body: "The warmth those expensive rooms get for free. A touch of harmonic saturation helps the vocal sit forward." },
+  { n: "08", name: "Wet effects on a bus", short: "Wet FX bus", level: "reverb · delay · doubling", tool: "Pro-R · EchoBoy · Doubler", body: "Depth and width go on last, on a send, never straight on the track. Reverb for space, delay for throws, a doubler for width." },
+  { n: "09", name: "Automation", short: "Automation", level: "ride it home", tool: "", body: "Ride the vocal volume line by line so every word sits. This is where a good mix quietly becomes finished." },
 ];
 
 const MASTER = [
@@ -233,64 +388,45 @@ const MASTER = [
 ];
 
 export default function MusicGuide({ accent = ed.amber }: { accent?: string }) {
-  // Scroll-spy for the vocal chain: the step crossing the middle band of the
-  // viewport becomes active. Replaces the old hardcoded "step 00 is always lit"
-  // that read as a stuck highlight. IntersectionObserver works under Lenis
-  // smooth-scroll since it is layout based, not scroll-event based.
-  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const visible = useRef<Set<number>>(new Set());
-  const [active, setActive] = useState(0);
-
-  useEffect(() => {
-    const els = stepRefs.current.filter(Boolean) as HTMLElement[];
-    if (!els.length) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          const idx = Number((e.target as HTMLElement).dataset.idx);
-          if (e.isIntersecting) visible.current.add(idx);
-          else visible.current.delete(idx);
-        }
-        if (visible.current.size) setActive(Math.min(...Array.from(visible.current)));
-      },
-      // Thin detection band ~centered vertically, so one step is active at a time.
-      { rootMargin: "-42% 0px -45% 0px", threshold: 0 }
-    );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
-
   return (
-    <section style={{ background: "transparent", padding: "clamp(40px,6vw,80px) 0 0" }}>
+    <section style={{ background: "transparent", padding: 0 }}>
+      <ToolkitJumpNav accent={accent} items={CHAPTERS} />
+      <div aria-hidden style={{ height: "clamp(28px,4vw,52px)" }} />
       <Bleed>
-        {/* ── Hero: bedroom vs big room ── */}
+        {/* ── Hero: mission + the centerpiece, playable at scroll-zero ── */}
+        <div id="mg-craft" style={{ scrollMarginTop: 64 }} />
         <Reveal>
-          <Kicker color={accent}>Part 01 · The Craft</Kicker>
+          <Kicker color={accent}>The Music Toolkit · Part 01 The Craft</Kicker>
           <h2
             style={{
               fontFamily: ed.grotesque,
               fontWeight: 800,
-              fontSize: "clamp(34px,6vw,80px)",
-              lineHeight: 0.92,
+              fontSize: "clamp(32px,5.2vw,68px)",
+              lineHeight: 0.94,
               letterSpacing: "-0.03em",
               color: ed.ink,
               margin: "16px 0 0",
-              maxWidth: 980,
+              maxWidth: 920,
             }}
           >
-            The bedroom and the big room are<br />
-            closer than they tell you<span style={{ color: accent }}>.</span>
+            Bedroom to big room, the gap is smaller than they tell you<span style={{ color: accent }}>.</span>
           </h2>
         </Reveal>
 
         <Reveal delay={0.06}>
-          <p style={{ fontFamily: ed.body, fontStyle: "normal", fontSize: "clamp(18px,2.4vw,30px)", lineHeight: 1.4, color: READABLE, margin: "clamp(20px,3vw,32px) 0 0", maxWidth: 860 }}>
-            What separates a downtown studio from your setup is mostly the room, not a magic plugin, and the room is <em style={{ fontStyle: "italic", color: accent }}>the cheapest part to fix</em>.
+          <p style={{ fontFamily: ed.body, fontStyle: "normal", fontSize: "clamp(16px,2vw,24px)", lineHeight: 1.45, color: READABLE, margin: "clamp(16px,2.4vw,26px) 0 0", maxWidth: 800 }}>
+            We teach the room, the chain, and the tools that close it. Start here: every record is a globe of space. Dry sits up front, wet drifts back, panning spreads it wide. <em style={{ fontStyle: "italic", color: accent }}>Spin it, tap a sound</em>, and watch each element claim its pocket.
           </p>
         </Reveal>
 
+        <Reveal delay={0.1}>
+          <div style={{ marginTop: "clamp(22px,3.2vw,40px)" }}>
+            <MixGlobe accent={accent} />
+          </div>
+        </Reveal>
+
         {/* ── Three honest truths ── */}
-        <div style={{ marginTop: "clamp(56px,8vw,104px)" }}>
+        <div style={{ marginTop: "clamp(40px,5.5vw,72px)" }}>
           <Reveal>
             <Kicker color={accent} style={{ marginBottom: 22 }}>The honest truth</Kicker>
           </Reveal>
@@ -302,7 +438,7 @@ export default function MusicGuide({ accent = ed.amber }: { accent?: string }) {
         </div>
 
         {/* ── The room (the real gap, the cheap fix) ── */}
-        <div style={{ marginTop: "clamp(56px,8vw,112px)" }}>
+        <div id="mg-room" style={{ marginTop: "clamp(40px,5.5vw,76px)", scrollMarginTop: 64 }}>
           <Reveal>
             <Kicker color={accent}>Before the chain · the room</Kicker>
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 0" }}>
@@ -324,7 +460,7 @@ export default function MusicGuide({ accent = ed.amber }: { accent?: string }) {
         </div>
 
         {/* ── The vocal chain, in order ── */}
-        <div style={{ marginTop: "clamp(56px,8vw,112px)" }}>
+        <div id="mg-chain" style={{ marginTop: "clamp(40px,5.5vw,76px)", scrollMarginTop: 64 }}>
           <Reveal>
             <Kicker color={accent}>The ROV vocal chain</Kicker>
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 10px" }}>
@@ -335,40 +471,7 @@ export default function MusicGuide({ accent = ed.amber }: { accent?: string }) {
             </p>
           </Reveal>
 
-          <div className="ctrla-chain">
-            {CHAIN.map((s, i) => {
-              const isActive = i === active;
-              return (
-              <Reveal key={s.n} delay={Math.min(i * 0.04, 0.2)}>
-                <div
-                  ref={(el) => { stepRefs.current[i] = el; }}
-                  data-idx={i}
-                  className="ctrla-chain-step"
-                  style={{
-                    borderLeft: `3px solid ${isActive ? accent : ed.hair}`,
-                    opacity: isActive ? 1 : 0.92,
-                    transition: "border-color 0.35s ease, opacity 0.35s ease",
-                  }}
-                >
-                  <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,3.4vw,42px)", letterSpacing: "-0.03em", lineHeight: 0.9, color: isActive ? accent : ed.ink, opacity: isActive ? 1 : 0.5, transition: "color 0.35s ease, opacity 0.35s ease" }}>{s.n}</span>
-                  <div>
-                    <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap", marginBottom: 8 }}>
-                      <h4 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(20px,2.4vw,30px)", letterSpacing: "-0.02em", color: ed.ink, margin: 0 }}>{s.name}</h4>
-                      <Label color={isActive ? accent : META_INK}>{s.level}</Label>
-                    </div>
-                    <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.5vw,17px)", lineHeight: 1.6, color: READABLE, margin: 0, maxWidth: 640 }}>{s.body}</p>
-                    {s.tool && (
-                      <span style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 12, fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.04em", color: isActive ? accent : META_INK, background: isActive ? "rgba(165,106,103,0.1)" : "transparent", border: `1px solid ${isActive ? accent : ed.hair}`, borderRadius: 999, padding: "5px 12px", transition: "color 0.35s ease, border-color 0.35s ease, background 0.35s ease" }}>
-                        <span style={{ width: 5, height: 5, borderRadius: "50%", background: isActive ? accent : META_INK, transition: "background 0.35s ease" }} aria-hidden />
-                        we reach for {s.tool}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </Reveal>
-              );
-            })}
-          </div>
+          <ChainRack accent={accent} />
 
           {/* Bus explainer */}
           <Reveal>
@@ -388,24 +491,8 @@ export default function MusicGuide({ accent = ed.amber }: { accent?: string }) {
           </Reveal>
         </div>
 
-        {/* ── Mix as a globe ── */}
-        <div style={{ marginTop: "clamp(56px,8vw,112px)" }}>
-          <Reveal>
-            <Kicker color={accent}>The visual that makes it click</Kicker>
-            <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 10px" }}>
-              Your song is a 3D globe
-            </h3>
-            <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: READABLE, margin: "0 0 clamp(28px,4vw,44px)", maxWidth: 640 }}>
-              The lesson I teach every artist. The front sounds are dry and in your face. Wet effects like reverb and delay send things to the back. Panning moves them left and right. Spin it, tap a sound, and watch every element claim its own pocket of space.
-            </p>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <MixGlobe accent={accent} />
-          </Reveal>
-        </div>
-
         {/* ── Mastering basics ── */}
-        <div style={{ marginTop: "clamp(56px,8vw,112px)" }}>
+        <div id="mg-master" style={{ marginTop: "clamp(40px,5.5vw,76px)", scrollMarginTop: 64 }}>
           <Reveal>
             <Kicker color={accent}>Mastering, the basics</Kicker>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.6vw,18px)", lineHeight: 1.6, color: READABLE, margin: "12px 0 0", maxWidth: 620 }}>
@@ -426,7 +513,7 @@ export default function MusicGuide({ accent = ed.amber }: { accent?: string }) {
         </div>
 
         {/* ── Chapter handoff: Part 02 · The Tools ── */}
-        <div style={{ marginTop: "clamp(64px,9vw,120px)" }}>
+        <div id="mg-tools" style={{ marginTop: "clamp(44px,6vw,84px)", scrollMarginTop: 64 }}>
           <Rule color={ed.hair} />
           <Reveal>
             <div style={{ paddingTop: "clamp(22px,3vw,32px)", display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>

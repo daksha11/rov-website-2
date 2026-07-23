@@ -23,6 +23,9 @@ const levelColor = (l?: ToolLevel) =>
 const kindColor = (k: SignalKind) =>
   k === "Release" ? edBase.gold : k === "Shift" ? edBase.amber : k === "Trend" ? edBase.plum : edBase.inkFaint;
 
+// A small glyph per signal kind so the feed reads visually, not just as text.
+const kindGlyph = (k: SignalKind) => (k === "Release" ? "▲" : k === "Shift" ? "⇄" : k === "Trend" ? "↗" : "●");
+
 export default function ToolkitStations({ section, theme, hideKicker = false }: { section: ToolkitSection; theme?: typeof edBase; hideKicker?: boolean }) {
   // Shadow `ed` with the active theme so every token below re-themes for free.
   const ed = theme ?? edBase;
@@ -42,6 +45,15 @@ export default function ToolkitStations({ section, theme, hideKicker = false }: 
   // dropped from the station list so they are not duplicated as full stations.
   const daws = section.daws;
   const tools = daws ? section.tools.filter((t) => t.category !== "DAW") : section.tools;
+  // Featured-first: the list view opens with the top three stations as a
+  // single row of compact cards and a library CTA, instead of every tool
+  // stacked (which ran many screens deep). Opening the library reveals the
+  // full detailed stations. The flow view still shows the whole chain.
+  const FEATURED = 3;
+  const [expanded, setExpanded] = useState(false);
+  const listTools = expanded ? tools : [];
+  const featured = tools.slice(0, FEATURED);
+  const hiddenTools = tools.slice(FEATURED);
   const stationRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Scroll-spy: highlight the station nearest the centre of the viewport.
@@ -59,7 +71,7 @@ export default function ToolkitStations({ section, theme, hideKicker = false }: 
     );
     stationRefs.current.forEach((el) => el && io.observe(el));
     return () => io.disconnect();
-  }, [tools.length]);
+  }, [listTools.length, view]);
 
   const scrollTo = (i: number) => {
     stationRefs.current[i]?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -137,10 +149,30 @@ export default function ToolkitStations({ section, theme, hideKicker = false }: 
                   href={s.url || "#"}
                   {...(s.url ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                   className="ctrla-signal"
-                  style={{ borderTop: `2px solid ${kndColor(s.kind)}` }}
+                  style={{ borderTop: `2px solid ${kndColor(s.kind)}`, background: `linear-gradient(180deg, ${kndColor(s.kind)}14 0%, transparent 42%)` }}
                 >
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 10 }}>
-                    <span style={{ fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", color: kndColor(s.kind) }}>{s.kind}</span>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 12 }}>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                      <span
+                        aria-hidden
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          width: 24,
+                          height: 24,
+                          borderRadius: 6,
+                          border: `1px solid ${kndColor(s.kind)}`,
+                          color: kndColor(s.kind),
+                          fontSize: 11,
+                          lineHeight: 1,
+                          flexShrink: 0,
+                        }}
+                      >
+                        {kindGlyph(s.kind)}
+                      </span>
+                      <span style={{ fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", color: kndColor(s.kind) }}>{s.kind}</span>
+                    </span>
                     <span style={{ fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.1em", color: ed.inkFaint }}>{s.date}</span>
                   </div>
                   <h4 style={{ fontFamily: ed.grotesque, fontWeight: 700, fontSize: "clamp(15px,1.6vw,18px)", letterSpacing: "-0.01em", color: ed.ink, margin: "0 0 8px" }}>{s.title}</h4>
@@ -152,12 +184,20 @@ export default function ToolkitStations({ section, theme, hideKicker = false }: 
         )}
 
         {/* ── Constellation rail + stations ── */}
-        <div className="ctrla-stations" style={{ marginTop: "clamp(40px,5vw,64px)" }} data-view={view}>
-          {/* Rail — list view only */}
-          {view === "list" && (
+        <div
+          className="ctrla-stations"
+          style={{
+            marginTop: "clamp(40px,5vw,64px)",
+            // Collapsed featured row has no rail — let the cards take the full width.
+            ...(view === "list" && !expanded ? { gridTemplateColumns: "1fr" } : {}),
+          }}
+          data-view={view}
+        >
+          {/* Rail — expanded list view only (the featured row needs no rail) */}
+          {view === "list" && expanded && (
           <aside className="ctrla-station-rail" aria-hidden>
             <div className="ctrla-rail-line" />
-            {tools.map((t, i) => (
+            {listTools.map((t, i) => (
               <button
                 key={t.name}
                 onClick={() => scrollTo(i)}
@@ -175,46 +215,40 @@ export default function ToolkitStations({ section, theme, hideKicker = false }: 
 
           {/* Stations */}
           <div>
-            {/* DAW chooser — pick one, then the plugin stack */}
+            {/* DAW note — one editorial line, names as quiet inline links.
+                (Was a pill-grid "chooser" that chose nothing; the advice IS
+                "it does not matter", so it reads as one line now.) */}
             {daws && daws.length > 0 && (
-              <div style={{ marginBottom: "clamp(36px,5vw,64px)" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "0 0 clamp(18px,2.2vw,26px)" }}>
-                  <span style={{ fontFamily: ed.mono, fontSize: "clamp(11px,1.25vw,14px)", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: accent, whiteSpace: "nowrap" }}>Pick your DAW</span>
-                  <span style={{ flex: 1, height: 1, background: ed.hair }} />
-                </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "clamp(8px,1vw,12px)" }}>
+              <div style={{ marginBottom: "clamp(32px,4.5vw,56px)" }}>
+                {section.dawNote && (
+                  <p style={{ fontFamily: ed.serif, fontStyle: "normal", fontSize: "clamp(16px,1.9vw,22px)", lineHeight: 1.5, color: ed.ink, margin: 0, maxWidth: 680 }}>
+                    {section.dawNote}
+                  </p>
+                )}
+                <div style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", gap: "8px 18px", marginTop: 14 }}>
+                  <Label color={ed.inkFaint}>The DAWs</Label>
                   {daws.map((d) => (
                     <a
                       key={d.name}
                       href={d.url || "#"}
                       {...(d.url ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                       style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 8,
-                        fontFamily: ed.grotesque,
-                        fontWeight: 700,
-                        fontSize: "clamp(15px,1.7vw,20px)",
-                        letterSpacing: "-0.01em",
-                        color: d.ours ? ed.ground : ed.ink,
-                        background: d.ours ? accent : "transparent",
-                        border: `1.5px solid ${d.ours ? accent : ed.hair}`,
-                        borderRadius: 999,
-                        padding: "clamp(9px,1.1vw,13px) clamp(16px,1.8vw,22px)",
+                        fontFamily: ed.mono,
+                        fontSize: 11,
+                        letterSpacing: "0.1em",
+                        textTransform: "uppercase",
+                        color: d.ours ? accent : ed.inkSoft,
                         textDecoration: "none",
+                        borderBottom: `1px solid ${d.ours ? accent : ed.hair}`,
+                        paddingBottom: 2,
+                        whiteSpace: "nowrap",
                       }}
                     >
-                      {d.name}
-                      {d.ours && <span style={{ fontFamily: ed.mono, fontWeight: 400, fontSize: "clamp(8px,0.9vw,10px)", letterSpacing: "0.12em", textTransform: "uppercase", opacity: 0.85 }}>our pick</span>}
+                      {d.name}{d.ours ? " · ours" : ""}
                     </a>
                   ))}
                 </div>
-                {section.dawNote && (
-                  <p style={{ fontFamily: ed.body, fontStyle: "normal", fontSize: "clamp(15px,1.7vw,20px)", lineHeight: 1.5, color: ed.inkSoft, margin: "clamp(16px,2vw,22px) 0 0", maxWidth: 620 }}>
-                    {section.dawNote}
-                  </p>
-                )}
-                <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "clamp(36px,5vw,60px) 0 0" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "clamp(28px,3.6vw,44px) 0 0" }}>
                   <span style={{ fontFamily: ed.mono, fontSize: "clamp(11px,1.25vw,14px)", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: accent, whiteSpace: "nowrap" }}>The plugin stack · in order of use</span>
                   <span style={{ flex: 1, height: 1, background: ed.hair }} />
                   {viewToggle}
@@ -267,7 +301,90 @@ export default function ToolkitStations({ section, theme, hideKicker = false }: 
               </div>
             )}
 
-            {view === "list" && tools.map((t, i) => {
+            {/* ── Featured row: top three stations, side by side ── */}
+            {view === "list" && !expanded && (
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "0 0 clamp(16px,2vw,24px)" }}>
+                  <span style={{ fontFamily: ed.mono, fontSize: "clamp(11px,1.25vw,14px)", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: accent, whiteSpace: "nowrap" }}>Featured · start here</span>
+                  <span style={{ flex: 1, height: 1, background: ed.hair }} />
+                </div>
+                <div className="ctrla-feat-grid">
+                  {featured.map((t, i) => (
+                    <div
+                      key={t.name}
+                      role="link"
+                      tabIndex={0}
+                      onClick={(e) => {
+                        // The preview's fallback renders its own link; don't double-fire.
+                        if (!(e.target as Element).closest("a")) window.open(t.url, "_blank", "noopener,noreferrer");
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") window.open(t.url, "_blank", "noopener,noreferrer");
+                      }}
+                      className="ctrla-feat-card"
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        background: ed.panel,
+                        border: `1px solid ${ed.hair}`,
+                        borderTop: `3px solid ${accent}`,
+                        borderRadius: 14,
+                        padding: "clamp(16px,2vw,22px)",
+                        textDecoration: "none",
+                        minWidth: 0,
+                        cursor: "pointer",
+                      }}
+                    >
+                      {/* Live look at the tool — the card leads with a visual */}
+                      <div style={{ position: "relative", aspectRatio: "16 / 10", borderRadius: 10, overflow: "hidden", border: `1px solid ${ed.hair}`, marginBottom: 16 }}>
+                        <ToolPreview url={t.url} name={t.name} accent={accent} embeddable={t.embeddable} preview={t.preview} theme={ed} />
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 14 }}>
+                        <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,3vw,40px)", lineHeight: 0.8, letterSpacing: "-0.04em", color: `${accent}${isLight ? "AA" : "55"}` }}>
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        {t.level && (
+                          <span style={{ fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: lvlColor(t.level), border: `1px solid ${lvlColor(t.level)}`, padding: "4px 10px", borderRadius: 2, flexShrink: 0 }}>
+                            {t.level}
+                          </span>
+                        )}
+                      </div>
+                      <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(22px,2.4vw,30px)", letterSpacing: "-0.02em", lineHeight: 1, color: ed.ink, margin: "0 0 10px" }}>
+                        {t.name}
+                      </h3>
+                      <p
+                        style={{
+                          fontFamily: ed.serif,
+                          fontSize: "clamp(14px,1.5vw,17px)",
+                          lineHeight: 1.45,
+                          color: ed.inkSoft,
+                          margin: "0 0 18px",
+                          display: "-webkit-box",
+                          WebkitLineClamp: 3,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                        }}
+                      >
+                        {t.oneLiner || t.description}
+                      </p>
+                      <div style={{ marginTop: "auto", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+                        <Label color={ed.inkFaint}>{t.category}</Label>
+                        <a
+                          href={t.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ fontFamily: ed.mono, fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: accent, whiteSpace: "nowrap", textDecoration: "none" }}
+                        >
+                          Open <span aria-hidden>↗</span>
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {view === "list" && listTools.map((t, i) => {
               const isOpen = open === t.name;
               return (
                 <Fragment key={t.name}>
@@ -378,6 +495,44 @@ export default function ToolkitStations({ section, theme, hideKicker = false }: 
                 </Fragment>
               );
             })}
+
+            {/* ── Full library CTA: the rest of the rack, one click away ── */}
+            {view === "list" && !expanded && hiddenTools.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setExpanded(true)}
+                className="ctrla-course-strip"
+                style={{
+                  display: "block",
+                  width: "100%",
+                  textAlign: "left",
+                  cursor: "pointer",
+                  border: "none",
+                  borderTop: `3px solid ${accent}`,
+                  background: `${accent}0D`,
+                  marginTop: "clamp(28px,4vw,44px)",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 24, flexWrap: "wrap" }}>
+                  <div style={{ maxWidth: 720 }}>
+                    <Kicker color={accent}>The full tool library</Kicker>
+                    <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(24px,3.6vw,44px)", letterSpacing: "-0.03em", lineHeight: 0.96, color: ed.ink, margin: "12px 0 14px" }}>
+                      {hiddenTools.length} more stations, in order of use
+                    </h3>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                      {hiddenTools.map((t) => (
+                        <span key={t.name} style={{ fontFamily: ed.mono, fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: ed.inkSoft, border: `1px solid ${ed.hair}`, borderRadius: 999, padding: "5px 12px" }}>
+                          {t.name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <span style={{ fontFamily: ed.grotesque, fontWeight: 700, fontSize: "clamp(14px,1.6vw,18px)", letterSpacing: "-0.01em", color: accent, display: "inline-flex", alignItems: "center", gap: 8, whiteSpace: "nowrap" }}>
+                    Open the library <span className="ctrla-course-arrow" aria-hidden>→</span>
+                  </span>
+                </div>
+              </button>
+            )}
 
             {tools.length === 0 && (
               <p style={{ fontFamily: ed.body, fontStyle: "normal", fontSize: 18, color: ed.inkSoft }}>

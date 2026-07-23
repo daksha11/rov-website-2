@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NavigationDock } from "@/components/sections/NavDoc";
 import EditorialFooter from "../_components/EditorialFooter";
 import Cookbook from "../_components/Cookbook";
-import { ATLRoots, ATLMap } from "../_components/ATLSections";
+import { ATLRoots, ATLMap, ATLCustoms, type AtlStamp } from "../_components/ATLSections";
 import { CondensedEvents } from "../_components/IssueSections";
 import { ed, Bleed, Rule, Label, Kicker, ImageBlock } from "../_components/editorial";
 import { currentVolume } from "../_volumes";
@@ -13,8 +13,45 @@ import { currentVolume } from "../_volumes";
 // young Atlanta creatives and students: Roots (why the city is a creative
 // capital), the scene (events), and the Cookbook (cheap fuel). Runs the
 // DARK editorial theme, same shell as the Cookbook page.
+// The four chapter doors. Stamps reorder them into a recommended reading
+// order; the numbers stay fixed because the sections themselves never move.
+const DOORS = {
+  roots: { n: "01", title: "Roots", desc: "Why this city is a creative capital.", href: "#atl-roots" },
+  scene: { n: "02", title: "The Scene", desc: "What is on: creative events and the big-city calendar.", href: "#events" },
+  map: { n: "03", title: "The Map", desc: "Where to start: six doors, most of them free.", href: "#atl-map" },
+  fuel: { n: "04", title: "Fuel", desc: "The cookbook. Eat well on nothing.", href: "#cookbook" },
+} as const;
+
+const STAMP_KEY = "ctrla-atl-stamp";
+
 export default function ATLPageContent() {
   const accent = ed.gold;
+
+  // Customs stamp — read after mount so SSR markup stays universal.
+  const [stamp, setStampState] = useState<AtlStamp | null>(null);
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STAMP_KEY);
+      if (raw) setStampState(JSON.parse(raw));
+    } catch {}
+  }, []);
+  const setStamp = (s: AtlStamp | null) => {
+    setStampState(s);
+    try {
+      if (s) localStorage.setItem(STAMP_KEY, JSON.stringify(s));
+      else localStorage.removeItem(STAMP_KEY);
+    } catch {}
+  };
+
+  // Recommended reading order per stamp. Students head straight to the Map
+  // (and its .edu layer); locals get the Scene; new arrivals get Roots.
+  const doorOrder: (keyof typeof DOORS)[] = !stamp
+    ? ["roots", "scene", "map", "fuel"]
+    : stamp.student
+    ? ["map", "scene", "roots", "fuel"]
+    : stamp.origin === "local"
+    ? ["scene", "map", "roots", "fuel"]
+    : ["roots", "map", "scene", "fuel"];
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -75,19 +112,21 @@ export default function ATLPageContent() {
         </Bleed>
       </section>
 
+      {/* Customs — declare yourself, get stamped, the guide re-inks */}
+      <ATLCustoms stamp={stamp} onStamp={setStamp} />
+
       {/* Contents — the field guide's architecture. Four chapters, four doors,
-          same pattern as the CTRL-A cover and the Cookbook landing page. */}
+          same pattern as the CTRL-A cover and the Cookbook landing page.
+          Stamps reorder the doors into a recommended reading order. */}
       <section style={{ background: "transparent", padding: "clamp(24px,3.5vw,48px) 0 clamp(16px,2.5vw,32px)" }}>
         <Bleed>
-          <Label color={accent}>Contents</Label>
+          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 14, flexWrap: "wrap" }}>
+            <Label color={accent}>Contents</Label>
+            {stamp && <Label color={accent}>Inked in your order</Label>}
+          </div>
           <div style={{ marginTop: 12 }}>
             <Rule color={ed.hair} />
-            {[
-              { n: "01", title: "Roots", desc: "Why this city is a creative capital.", href: "#atl-roots" },
-              { n: "02", title: "The Scene", desc: "What is on: creative events and the big-city calendar.", href: "#events" },
-              { n: "03", title: "The Map", desc: "Where to start: six doors, most of them free.", href: "#atl-map" },
-              { n: "04", title: "Fuel", desc: "The cookbook. Eat well on nothing.", href: "#cookbook" },
-            ].map((c) => (
+            {doorOrder.map((k) => DOORS[k]).map((c) => (
               <a key={c.n} href={c.href} className="ctrla-path-row" style={{ ["--acc" as string]: accent, display: "block", textDecoration: "none" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "clamp(14px,2vw,24px)", padding: "clamp(16px,2.4vw,28px) clamp(6px,1vw,14px)", flexWrap: "wrap" }}>
                   <span aria-hidden className="ctrla-path-node" style={{ width: 10, height: 10, borderRadius: 999, border: `1.5px solid ${accent}`, flexShrink: 0 }} />
@@ -105,13 +144,13 @@ export default function ATLPageContent() {
       </section>
 
       {/* 01 Roots — why Atlanta is a creative capital (sourced, JSON-LD citations) */}
-      <ATLRoots />
+      <ATLRoots arrival={stamp?.origin === "arrival"} />
 
       {/* 02 The scene — creative events + the big-city calendar (World Cup 26) */}
       <CondensedEvents />
 
-      {/* 03 The map — where to start: six doors into the city, most of them free */}
-      <ATLMap />
+      {/* 03 The map — where to start; the Student stamp lights the .edu layer */}
+      <ATLMap student={stamp?.student === true} />
 
       {/* 04 Fuel — the Cookbook teaser; steps into the full galley at /ctrla/cookbook */}
       <Cookbook />

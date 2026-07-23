@@ -23,6 +23,16 @@ import { motion } from "framer-motion";
 import { edLight as ed, Bleed, Kicker, Label, Rule } from "./editorial";
 import PromptVault from "./PromptVault";
 import BuildIdeas from "./BuildIdeas";
+import ToolkitJumpNav from "./ToolkitJumpNav";
+
+// Chapter list for the shared sticky jump-nav.
+const CHAPTERS: [string, string][] = [
+  ["dv-craft", "The Vault"],
+  ["dv-thesis", "The Thesis"],
+  ["dv-prompting", "Prompting"],
+  ["dv-course", "Claude Code"],
+  ["tk-stations", "The Stations"],
+];
 
 function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
   return (
@@ -123,27 +133,50 @@ const COURSE = [
 
 export default function DevGuide({ accent = ed.plum }: { accent?: string }) {
   return (
-    <section style={{ background: "transparent", padding: "clamp(40px,6vw,80px) 0 0" }}>
-      <Bleed>
-        {/* ── Hero: the shift is already here ── */}
+    <section style={{ background: "transparent", padding: 0 }}>
+      <ToolkitJumpNav accent={accent} items={CHAPTERS} />
+      <Bleed style={{ paddingTop: "clamp(40px,6vw,80px)" }}>
+        {/* ── Hero: mission + the centerpiece, playable at scroll-zero ── */}
+        <div id="dv-craft" style={{ scrollMarginTop: 64 }} />
         <Reveal>
-          <Kicker color={accent}>Part 01 · The Craft</Kicker>
+          <Kicker color={accent}>The Dev Toolkit · Part 01 The Craft</Kicker>
           <h2
             style={{
               fontFamily: ed.grotesque,
               fontWeight: 800,
-              fontSize: "clamp(34px,6vw,80px)",
-              lineHeight: 0.92,
+              fontSize: "clamp(32px,5.2vw,68px)",
+              lineHeight: 0.94,
               letterSpacing: "-0.03em",
               color: ed.ink,
               margin: "16px 0 0",
-              maxWidth: 1000,
+              maxWidth: 920,
             }}
           >
-            AI is coming for development.<br />
-            It already did<span style={{ color: accent }}>.</span>
+            Tutorial hell to shipped, the gap is smaller than they tell you<span style={{ color: accent }}>.</span>
           </h2>
         </Reveal>
+
+        <Reveal delay={0.06}>
+          <p style={{ fontFamily: ed.body, fontStyle: "normal", fontSize: "clamp(16px,2vw,24px)", lineHeight: 1.45, color: ed.inkSoft, margin: "clamp(16px,2.4vw,26px) 0 0", maxWidth: 800 }}>
+            We teach the prompts, the workflow, and the tools that close it. Start here: the vault. <em style={{ fontStyle: "italic", color: accent }}>Steal the exact prompts we run</em>, then direct the output like a senior.
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.1}>
+          <div style={{ marginTop: "clamp(22px,3.2vw,40px)" }}>
+            <PromptVault />
+          </div>
+        </Reveal>
+
+        {/* ── The thesis: the shift is already here ── */}
+        <div id="dv-thesis" style={{ marginTop: "clamp(40px,5.5vw,76px)", scrollMarginTop: 64 }}>
+          <Reveal>
+            <Kicker color={accent}>The thesis</Kicker>
+            <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 0", maxWidth: 900 }}>
+              AI is coming for development. It already did
+            </h3>
+          </Reveal>
+        </div>
 
         <div className="ctrla-guide-split" style={{ margin: "clamp(28px,4vw,48px) 0 0" }}>
           <Reveal>
@@ -159,7 +192,7 @@ export default function DevGuide({ accent = ed.plum }: { accent?: string }) {
         </div>
 
         {/* ── The trap ── */}
-        <div style={{ marginTop: "clamp(56px,8vw,104px)" }}>
+        <div style={{ marginTop: "clamp(40px,5.5vw,72px)" }}>
           <Reveal>
             <Kicker color={accent}>Where most people get it wrong</Kicker>
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 clamp(28px,4vw,40px)", maxWidth: 900 }}>
@@ -174,26 +207,20 @@ export default function DevGuide({ accent = ed.plum }: { accent?: string }) {
         </div>
 
         {/* ── The foundation: prompt engineering ── */}
-        <div style={{ marginTop: "clamp(56px,8vw,112px)" }}>
+        <div id="dv-prompting" style={{ marginTop: "clamp(40px,5.5vw,76px)", scrollMarginTop: 64 }}>
           <Reveal>
             <Kicker color={accent}>The foundation · prompt engineering</Kicker>
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 10px" }}>
               The real skill is saying exactly what you mean
             </h3>
             <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: 0, maxWidth: 660 }}>
-              Not the buzzword version. The actual skill of saying precisely what you want, with the right context and constraints, so the output is something you can use. It is <em style={{ fontStyle: "italic", color: accent }}>the most transferable skill</em> in this space right now, and we go deep on it here.
+              Not the buzzword version. The actual skill of saying precisely what you want, with the right context and constraints, so the output is something you can use. It is <em style={{ fontStyle: "italic", color: accent }}>the most transferable skill</em> in this space right now. The vault at the top of this page is it, in practice.
             </p>
           </Reveal>
-
-          <div style={{ marginTop: "clamp(28px,4vw,44px)" }}>
-            <Reveal delay={0.06}>
-              <PromptVault />
-            </Reveal>
-          </div>
         </div>
 
         {/* ── The Claude Code crash course (its own chapter) ── */}
-        <div style={{ marginTop: "clamp(56px,8vw,112px)" }}>
+        <div id="dv-course" style={{ marginTop: "clamp(40px,5.5vw,76px)", scrollMarginTop: 64 }}>
           <Reveal>
             <Kicker color={accent}>The living course · Claude Code</Kicker>
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 10px" }}>
@@ -224,7 +251,7 @@ export default function DevGuide({ accent = ed.plum }: { accent?: string }) {
         </div>
 
         {/* ── Applied: what you can build ── */}
-        <div style={{ marginTop: "clamp(56px,8vw,112px)" }}>
+        <div style={{ marginTop: "clamp(40px,5.5vw,76px)" }}>
           <Reveal>
             <Kicker color={accent}>Proof · what you can build</Kicker>
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 10px" }}>
@@ -240,7 +267,7 @@ export default function DevGuide({ accent = ed.plum }: { accent?: string }) {
         </div>
 
         {/* ── Closer: the window is open ── */}
-        <div style={{ marginTop: "clamp(56px,8vw,112px)" }}>
+        <div style={{ marginTop: "clamp(40px,5.5vw,76px)" }}>
           <Reveal>
             <Kicker color={accent} style={{ marginBottom: 22 }}>The window is open</Kicker>
             <p style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,4vw,52px)", lineHeight: 1.04, letterSpacing: "-0.03em", color: ed.ink, margin: 0, maxWidth: 1000 }}>
@@ -253,7 +280,7 @@ export default function DevGuide({ accent = ed.plum }: { accent?: string }) {
         </div>
 
         {/* ── Chapter handoff: Part 02 · The Tools ── */}
-        <div style={{ marginTop: "clamp(64px,9vw,120px)" }}>
+        <div style={{ marginTop: "clamp(44px,6vw,84px)" }}>
           <Rule color={ed.hair} />
           <Reveal>
             <div style={{ paddingTop: "clamp(22px,3vw,32px)", display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>

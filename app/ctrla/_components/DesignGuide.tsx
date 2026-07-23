@@ -21,6 +21,16 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { edLight as ed, Bleed, Kicker, Label, Rule } from "./editorial";
 import DefendDecision from "./DefendDecision";
+import ToolkitJumpNav from "./ToolkitJumpNav";
+
+// Chapter list for the shared sticky jump-nav.
+const CHAPTERS: [string, string][] = [
+  ["dg-craft", "The Poster"],
+  ["dg-brief", "The Brief"],
+  ["dg-board", "Moodboard"],
+  ["dg-tools", "Instruments"],
+  ["tk-stations", "The Stations"],
+];
 
 function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
   return (
@@ -238,27 +248,50 @@ function MoodboardChain({ accent }: { accent: string }) {
 
 export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
   return (
-    <section style={{ background: "transparent", padding: "clamp(40px,6vw,80px) 0 0" }}>
-      <Bleed>
-        {/* ── Hero: the wrong question ── */}
+    <section style={{ background: "transparent", padding: 0 }}>
+      <ToolkitJumpNav accent={accent} items={CHAPTERS} />
+      <Bleed style={{ paddingTop: "clamp(40px,6vw,80px)" }}>
+        {/* ── Hero: mission + the centerpiece, playable at scroll-zero ── */}
+        <div id="dg-craft" style={{ scrollMarginTop: 64 }} />
         <Reveal>
-          <Kicker color={accent}>Part 01 · The Craft</Kicker>
+          <Kicker color={accent}>The Design Toolkit · Part 01 The Craft</Kicker>
           <h2
             style={{
               fontFamily: ed.grotesque,
               fontWeight: 800,
-              fontSize: "clamp(34px,6vw,80px)",
-              lineHeight: 0.92,
+              fontSize: "clamp(32px,5.2vw,68px)",
+              lineHeight: 0.94,
               letterSpacing: "-0.03em",
               color: ed.ink,
               margin: "16px 0 0",
-              maxWidth: 1000,
+              maxWidth: 920,
             }}
           >
-            How do I make this look good<br />
-            is the wrong question<span style={{ color: accent }}>.</span>
+            Making it pretty to making it work, the gap is smaller than they tell you<span style={{ color: accent }}>.</span>
           </h2>
         </Reveal>
+
+        <Reveal delay={0.06}>
+          <p style={{ fontFamily: ed.body, fontStyle: "normal", fontSize: "clamp(16px,2vw,24px)", lineHeight: 1.45, color: ed.inkSoft, margin: "clamp(16px,2.4vw,26px) 0 0", maxWidth: 800 }}>
+            We teach the brief, the moodboard, and the calls that close it. Start here: a real poster, built our way. Swap the palette, <em style={{ fontStyle: "italic", color: accent }}>tap any element</em>, and hear why it earns its place.
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.1}>
+          <div style={{ marginTop: "clamp(22px,3.2vw,40px)" }}>
+            <DefendDecision accent={accent} />
+          </div>
+        </Reveal>
+
+        {/* ── The thesis: the wrong question ── */}
+        <div style={{ marginTop: "clamp(40px,5.5vw,76px)" }}>
+          <Reveal>
+            <Kicker color={accent}>The thesis</Kicker>
+            <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 0", maxWidth: 900 }}>
+              How do I make this look good is the wrong question
+            </h3>
+          </Reveal>
+        </div>
 
         <div className="ctrla-guide-split" style={{ margin: "clamp(28px,4vw,48px) 0 0" }}>
           <Reveal>
@@ -274,7 +307,7 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
         </div>
 
         {/* ── The brief: purpose / audience / context ── */}
-        <div style={{ marginTop: "clamp(56px,8vw,104px)" }}>
+        <div id="dg-brief" style={{ marginTop: "clamp(40px,5.5vw,72px)", scrollMarginTop: 64 }}>
           <Reveal>
             <Kicker color={accent}>Before the pixels · the brief</Kicker>
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 10px" }}>
@@ -290,7 +323,7 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
         </div>
 
         {/* ── The moodboard: lock the language ── */}
-        <div style={{ marginTop: "clamp(56px,8vw,112px)" }}>
+        <div id="dg-board" style={{ marginTop: "clamp(40px,5.5vw,76px)", scrollMarginTop: 64 }}>
           <Reveal>
             <Kicker color={accent}>The step everyone skips · the moodboard</Kicker>
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 10px" }}>
@@ -304,24 +337,8 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
           <MoodboardChain accent={accent} />
         </div>
 
-        {/* ── Interactive centerpiece: defend every decision ── */}
-        <div style={{ marginTop: "clamp(56px,8vw,112px)" }}>
-          <Reveal>
-            <Kicker color={accent}>The proof · a poster you can play</Kicker>
-            <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 10px" }}>
-              A poster, defended
-            </h3>
-            <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: "0 0 clamp(28px,4vw,44px)", maxWidth: 640 }}>
-              A real piece, built the way we build, no stock art. Play the bench, swap the palette, and tap any part to hear why it is the size, color, and place it is. A junior makes it look nice, a senior can <em style={{ fontStyle: "italic", color: accent }}>defend every choice</em>.
-            </p>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <DefendDecision accent={accent} />
-          </Reveal>
-        </div>
-
         {/* ── The tools as instruments ── */}
-        <div style={{ marginTop: "clamp(56px,8vw,112px)" }}>
+        <div id="dg-tools" style={{ marginTop: "clamp(40px,5.5vw,76px)", scrollMarginTop: 64 }}>
           <Reveal>
             <Kicker color={accent}>Know your instruments · the tools</Kicker>
             <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(28px,4.4vw,56px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: "14px 0 10px" }}>
@@ -345,7 +362,7 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
         </div>
 
         {/* ── Closer: the senior truth ── */}
-        <div style={{ marginTop: "clamp(56px,8vw,112px)" }}>
+        <div style={{ marginTop: "clamp(40px,5.5vw,76px)" }}>
           <Reveal>
             <Kicker color={accent} style={{ marginBottom: 22 }}>Junior to senior</Kicker>
             <p style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,4vw,52px)", lineHeight: 1.04, letterSpacing: "-0.03em", color: ed.ink, margin: 0, maxWidth: 1000 }}>
@@ -358,7 +375,7 @@ export default function DesignGuide({ accent = ed.plum }: { accent?: string }) {
         </div>
 
         {/* ── Chapter handoff: Part 02 · The Tools ── */}
-        <div style={{ marginTop: "clamp(64px,9vw,120px)" }}>
+        <div style={{ marginTop: "clamp(44px,6vw,84px)" }}>
           <Rule color={ed.hair} />
           <Reveal>
             <div style={{ paddingTop: "clamp(22px,3vw,32px)", display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
