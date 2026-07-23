@@ -815,30 +815,50 @@ export default function CtrlAContent() {
       <BrandKitFeature />
 
       {/* ATL COMMUNITY — a door, not a section. The whole local field
-          guide (Roots, events, Cookbook) lives on its own page at
-          /ctrla/atl; the home page just opens the way in. */}
+          guide (Roots, events, the Map, Cookbook) lives on its own page at
+          /ctrla/atl; the home page opens the way in with a postcard: copy
+          on the left, a taped-in city shot with the ATL sticker on the right. */}
       <section id="atl" style={{ background: "transparent", padding: "clamp(28px,4vw,56px) 0", scrollMarginTop: 80 }}>
         <Bleed>
           <a
             href="/ctrla/atl"
-            className="ctrla-path-row"
-            style={{ ["--acc" as string]: ed.gold, display: "block", textDecoration: "none", borderTop: `1px solid ${ed.hair}`, borderBottom: `1px solid ${ed.hair}`, padding: "clamp(26px,3.6vw,48px) clamp(4px,1vw,14px)" }}
+            className="ctrla-atl-door"
+            style={{ display: "block", textDecoration: "none", borderTop: `1px solid ${ed.hair}`, borderBottom: `1px solid ${ed.hair}`, padding: "clamp(28px,4vw,56px) clamp(4px,1vw,14px)" }}
           >
-            <Kicker color={ed.gold}>CTRL-A · ATL Community</Kicker>
-            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: "clamp(16px,2.4vw,32px)", flexWrap: "wrap", marginTop: "clamp(12px,1.6vw,18px)" }}>
-              <h2 className="ctrla-path-name" style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(32px,5.4vw,76px)", letterSpacing: "-0.03em", lineHeight: 0.92, color: ed.ink, margin: 0, maxWidth: 860 }}>
-                For the ones coming up in Atlanta.
-              </h2>
-              <span className="ctrla-path-cta" style={{ fontFamily: ed.mono, fontSize: "clamp(12px,1.3vw,15px)", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: ed.gold, whiteSpace: "nowrap" }}>
-                Enter ATL <span aria-hidden>→</span>
-              </span>
+            <div className="ctrla-atl-door-grid">
+              {/* Copy column */}
+              <div>
+                <Kicker color={ed.gold}>CTRL-A · ATL Community</Kicker>
+                <h2 className="ctrla-atl-door-name" style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(32px,5vw,72px)", letterSpacing: "-0.03em", lineHeight: 0.92, color: ed.ink, margin: "clamp(14px,1.8vw,20px) 0 0", maxWidth: 640 }}>
+                  For the ones coming up in Atlanta.
+                </h2>
+                <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontWeight: 400, fontSize: "clamp(16px,2vw,26px)", lineHeight: 1.3, color: ed.gold, margin: "clamp(14px,1.8vw,20px) 0 0", maxWidth: 560 }}>
+                  Where the city came from, what is on, where to start, and how to eat well on nothing.
+                </p>
+                <p style={{ fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.08em", textTransform: "uppercase", color: ed.inkFaint, margin: "clamp(14px,1.8vw,20px) 0 0" }}>
+                  Roots <span style={{ color: ed.gold }}>→</span> the scene <span style={{ color: ed.gold }}>→</span> the map <span style={{ color: ed.gold }}>→</span> the cookbook
+                </p>
+                <span className="ctrla-atl-door-cta" style={{ display: "inline-block", fontFamily: ed.mono, fontSize: "clamp(12px,1.3vw,15px)", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: ed.gold, marginTop: "clamp(20px,2.8vw,32px)", borderBottom: `1.5px solid ${ed.gold}`, paddingBottom: 4 }}>
+                  Enter ATL <span aria-hidden>→</span>
+                </span>
+              </div>
+
+              {/* Postcard column — the city shot, taped in, sticker on the corner */}
+              <div className="ctrla-atl-postcard" aria-hidden>
+                <div style={{ background: ed.paper, padding: "10px 10px 44px", boxShadow: "0 18px 44px rgba(0,0,0,0.45)", position: "relative" }}>
+                  <div style={{ position: "relative", width: "100%", aspectRatio: "4 / 3", overflow: "hidden", background: ed.panel }}>
+                    <Image src="/ctrla/VOL1/fanfestatl.webp" alt="Fan fest crowd in downtown Atlanta" fill style={{ objectFit: "cover" }} sizes="(max-width: 860px) 100vw, 42vw" />
+                  </div>
+                  <span style={{ position: "absolute", left: 14, bottom: 13, fontFamily: ed.mono, fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(36,18,58,0.75)" }}>
+                    Downtown · The city, mid-summer
+                  </span>
+                  {/* The ATL sticker, slapped on the corner like the belt above */}
+                  <div style={{ position: "absolute", right: -22, top: -24, width: "clamp(84px,9vw,124px)", transform: "rotate(9deg)", filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.4))" }}>
+                    <Image src="/ctrla/atlsticker.webp" alt="" width={124} height={124} style={{ width: "100%", height: "auto" }} />
+                  </div>
+                </div>
+              </div>
             </div>
-            <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontWeight: 400, fontSize: "clamp(16px,2vw,26px)", lineHeight: 1.3, color: ed.gold, margin: "clamp(12px,1.6vw,18px) 0 0", maxWidth: 680 }}>
-              Where the city came from, what is on, and how to eat well on nothing.
-            </p>
-            <p style={{ fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.08em", textTransform: "uppercase", color: ed.inkFaint, margin: "clamp(12px,1.6vw,18px) 0 0" }}>
-              Roots <span style={{ color: ed.gold }}>→</span> the scene <span style={{ color: ed.gold }}>→</span> the cookbook
-            </p>
           </a>
         </Bleed>
       </section>
