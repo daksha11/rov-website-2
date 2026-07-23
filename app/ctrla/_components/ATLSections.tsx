@@ -8,33 +8,40 @@
 // ═══════════════════════════════════════════════════════
 
 import { useState } from "react";
-import { ed, Bleed, Rule, Label, Kicker } from "./editorial";
+import { ed, Bleed, Rule, Label, Kicker, ImageBlock } from "./editorial";
 
-// ── Roots content — the three threads of Atlanta's creative lineage.
-// Facts drawn from a sourced research pass; only independently-defensible
-// claims are used (studio marketing superlatives and unverified quotes were
-// left out). Citations live in ROOTS_SOURCES + JSON-LD below. ──
+// ── Roots content — the three threads of Atlanta's creative lineage,
+// VISUAL-FIRST: each thread is an image card (labelled wireframe placeholder
+// until the real shot drops into /public/ctrla/atl/) with ONE line of copy.
+// Facts drawn from a sourced research pass; citations live in ROOTS_SOURCES
+// + JSON-LD below, so the page stays citable while reading light. ──
 const ROOTS_THREADS = [
   {
     n: "01",
     title: "The Sound",
-    body:
-      "The world's pop music speaks with an Atlanta accent. LaFace Records opened here in 1989 and turned the city into the new Motown. Out of a basement in East Point, the Dungeon Family gave us OutKast and Goodie Mob. Jermaine Dupri's So So Def followed in 1993. Then trap was born here, T.I.'s Trap Muzik named it in 2003, and the city has set the tempo for hip-hop ever since.",
-    tags: ["LaFace · 1989", "Dungeon Family · East Point", "So So Def · 1993", "Trap Muzik · 2003"],
+    line: "LaFace, the Dungeon Family, So So Def, then trap. Atlanta has set hip-hop's tempo since 1989.",
+    tags: ["LaFace · 1989", "OutKast · East Point", "Trap Muzik · 2003"],
+    // Swap for a real shot: /ctrla/atl/roots-sound.webp
+    img: undefined as string | undefined,
+    shot: "Shot · The basement studio, East Point",
   },
   {
     n: "02",
     title: "The Screen",
-    body:
-      "They call it Y'allywood, and the numbers earned the name. A 2008 tax credit lit the fuse, and film and TV now spend billions in Georgia every year. Tyler Perry bought a former army base and built the first major studio solely owned by a Black filmmaker. The Walking Dead, the Marvel films, Stranger Things, and Donald Glover's Atlanta all shot in these neighborhoods.",
-    tags: ["Tax credit · 2008", "$2.6B spent · FY2024", "Tyler Perry Studios · 330 acres", "Atlanta · FX"],
+    line: "A 2008 tax credit built Y'allywood. Billions in film and TV now shoot in these neighborhoods.",
+    tags: ["Tax credit · 2008", "$2.6B · FY2024", "Tyler Perry · 330 acres"],
+    // Swap for a real shot: /ctrla/atl/roots-screen.webp
+    img: undefined as string | undefined,
+    shot: "Shot · A Y'allywood soundstage",
   },
   {
     n: "03",
     title: "The Scene",
-    body:
-      "The culture has a campus and a canvas. The Atlanta University Center, the largest group of private HBCUs in the world, has been the engine of the city's Black creative leadership since 1929. SCAD Atlanta and the High feed the design and gallery world. The BeltLine turned an old rail line into the country's biggest outdoor show, and Living Walls has put 500-plus murals on the city.",
-    tags: ["AUC · since 1929", "SCAD Atlanta", "Art on the BeltLine", "Living Walls"],
+    line: "The AUC, SCAD, the High, and a BeltLine of murals. The culture has a campus and a canvas.",
+    tags: ["AUC · since 1929", "BeltLine art", "Living Walls · 500+"],
+    // Swap for a real shot: /ctrla/atl/roots-scene.webp
+    img: undefined as string | undefined,
+    shot: "Shot · BeltLine mural walk",
   },
 ];
 
@@ -86,28 +93,31 @@ export function ATLRoots() {
         </div>
         <Rule style={{ marginBottom: "clamp(24px,3.4vw,40px)" }} />
 
-        {/* Headline + thesis deck */}
+        {/* Headline + one serif line — that is ALL the intro copy */}
         <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(34px,5.4vw,76px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: 0, maxWidth: 900 }}>
           The city that built its own stage<span style={{ color: ed.gold }}>.</span>
         </h2>
         <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontWeight: 400, fontSize: "clamp(18px,2.4vw,30px)", lineHeight: 1.3, color: ed.gold, margin: "clamp(14px,1.8vw,20px) 0 0", maxWidth: 720 }}>
           Atlanta didn&rsquo;t wait for permission. It built the studios, the labels, and the schools itself, and the world followed the sound.
         </p>
-        <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.6, color: ed.inkSoft, margin: "clamp(16px,2vw,24px) 0 0", maxWidth: 720 }}>
-          If you&rsquo;re making something here, you&rsquo;re standing on deep ground. Atlanta became a creative capital for one
-          reason: the people who came up here built their own institutions instead of leaving for New York or LA.
-          Basement studios became labels. Black colleges became a pipeline. A line in the tax code became Y&rsquo;allywood.
-        </p>
 
-        {/* The three threads */}
-        <div className="ctrla-roots-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "clamp(20px,2.6vw,36px)", margin: "clamp(32px,4.4vw,60px) 0 0" }}>
+        {/* The three threads — image cards, one line each */}
+        <div className="ctrla-roots-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "clamp(20px,2.6vw,36px)", margin: "clamp(28px,4vw,56px) 0 0" }}>
           {ROOTS_THREADS.map((t) => (
-            <div key={t.n} style={{ borderTop: `2px solid ${ed.gold}`, paddingTop: "clamp(16px,1.8vw,22px)" }}>
-              <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 12 }}>
+            <div key={t.n}>
+              {/* The visual leads. Wireframe placeholder until the real shot lands. */}
+              <ImageBlock src={t.img} alt={t.shot} ratio="4 / 5">
+                {!t.img && (
+                  <span style={{ position: "absolute", left: 12, bottom: 10, fontFamily: ed.mono, fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(36,18,58,0.75)" }}>
+                    {t.shot}
+                  </span>
+                )}
+              </ImageBlock>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 10, margin: "clamp(14px,1.8vw,20px) 0 8px" }}>
                 <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(16px,1.7vw,20px)", letterSpacing: "-0.01em", color: ed.gold }}>{t.n}</span>
                 <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(22px,2.6vw,34px)", letterSpacing: "-0.02em", lineHeight: 1, color: ed.ink, margin: 0 }}>{t.title}</h3>
               </div>
-              <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.55vw,17px)", lineHeight: 1.6, color: ed.inkSoft, margin: "0 0 18px" }}>{t.body}</p>
+              <p style={{ fontFamily: ed.body, fontSize: "clamp(14px,1.55vw,17px)", lineHeight: 1.5, color: ed.inkSoft, margin: "0 0 14px" }}>{t.line}</p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                 {t.tags.map((tag) => (
                   <span key={tag} style={{ fontFamily: ed.mono, fontSize: "clamp(9px,1vw,11px)", letterSpacing: "0.08em", textTransform: "uppercase", color: ed.gold, border: `1px solid rgba(227,194,74,0.4)`, borderRadius: 999, padding: "5px 11px" }}>{tag}</span>

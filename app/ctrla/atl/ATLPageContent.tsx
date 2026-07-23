@@ -6,7 +6,7 @@ import EditorialFooter from "../_components/EditorialFooter";
 import Cookbook from "../_components/Cookbook";
 import { ATLRoots } from "../_components/ATLSections";
 import { CondensedEvents } from "../_components/IssueSections";
-import { ed, Bleed, Rule, Label, Kicker } from "../_components/editorial";
+import { ed, Bleed, Rule, Label, Kicker, ImageBlock } from "../_components/editorial";
 import { currentVolume } from "../_volumes";
 
 // CTRL-A · ATL — the local field guide as its own page. A home base for
@@ -60,6 +60,18 @@ export default function ATLPageContent() {
           <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontWeight: 400, fontSize: "clamp(18px,2.4vw,32px)", lineHeight: 1.26, color: accent, margin: "clamp(16px,2vw,24px) 0 0", maxWidth: 720 }}>
             A home base for young Atlanta creatives and students: where the city came from, what is on, and how to eat well on nothing.
           </p>
+        </Bleed>
+      </section>
+
+      {/* Hero visual — the city itself leads the page. Wireframe placeholder
+          until the real shot lands at /public/ctrla/atl/hero-skyline.webp */}
+      <section style={{ background: "transparent", padding: "clamp(20px,3vw,40px) 0 0" }}>
+        <Bleed>
+          <ImageBlock ratio="21 / 9" alt="Atlanta skyline from the Jackson Street Bridge at dusk">
+            <span style={{ position: "absolute", left: 14, bottom: 12, fontFamily: ed.mono, fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(36,18,58,0.75)" }}>
+              Hero shot · Atlanta skyline, Jackson Street Bridge at dusk
+            </span>
+          </ImageBlock>
         </Bleed>
       </section>
 
