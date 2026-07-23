@@ -190,6 +190,7 @@ const teamMembers: TeamMember[] = [
         category: "Creative",
         creativeSubcategory: "Illustrative",
         name: "Karina",
+        portfolioLink: "https://karinasosaalmanzar.weebly.com/",
         role: "BRAND DESIGNER & ILLUSTRATOR",
         skills: ["Brand Design", "Illustration", "Visual Identity", "Logo Design", "Creative Concepting", "Editorial Design"],
         location: "Atlanta",

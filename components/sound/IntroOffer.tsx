@@ -9,9 +9,8 @@ const HEADING = "Norwige, sans-serif";
 const BODY = "'Roboto', sans-serif";
 const spring = { type: "spring" as const, stiffness: 100, damping: 20 };
 
-// Karina designed the flyer. Paste her portfolio URL here to make the hover
-// credit clickable; empty = the credit still shows but isn't a link.
-const KARINA_PORTFOLIO_URL = "";
+// Karina designed the flyer. The hover credit links to her portfolio.
+const KARINA_PORTFOLIO_URL = "https://karinasosaalmanzar.weebly.com/";
 
 export default function IntroOffer() {
   const ref = useRef<HTMLElement>(null);
