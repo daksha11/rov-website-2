@@ -106,7 +106,7 @@ export default function QuoteEstimator() {
     const ours = est.songsMid * est.perSongMid;
     const diff = theirs - ours;
     const pct = theirs > 0 ? Math.round((diff / theirs) * 100) : 0;
-    return { diff, pct };
+    return { diff, pct, theirs, ours };
   }, [est, payNow]);
 
   const setNeed = (need: NeedKey) => {
@@ -340,22 +340,45 @@ export default function QuoteEstimator() {
                         background: `linear-gradient(to right, #EA9A61 ${((payNow - 50) / 350) * 100}%, rgba(255,255,255,0.08) ${((payNow - 50) / 350) * 100}%)`,
                       }}
                     />
-                    <p className="text-sm mt-3 leading-relaxed" style={{ fontFamily: BODY }}>
-                      {savings.diff > 0 ? (
-                        <>
-                          <span className="text-white/60">On {est.songsMid} {est.songsMid === 1 ? "song" : "songs"}, you&apos;d keep about{" "}</span>
-                          <span className="text-[#EA9A61] font-bold">
-                            {money(savings.diff)}
-                            {est.ongoing ? "/mo" : ""}
-                          </span>
-                          <span className="text-white/60"> with us ({savings.pct}% less), mastering and 2 revisions included.</span>
-                        </>
-                      ) : (
-                        <span className="text-white/60">
-                          We&apos;d match that rate, with the master and 2 revisions included instead of billed separately.
+                    {/* Side-by-side comparison */}
+                    <div className="grid grid-cols-2 gap-3 mt-4 mb-4">
+                      <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-3">
+                        <span className="block text-[10px] uppercase tracking-[0.2em] text-white/35 mb-1" style={{ fontFamily: BODY }}>
+                          Elsewhere
                         </span>
-                      )}
-                    </p>
+                        <span className="text-white/45 text-xl md:text-2xl font-bold italic line-through decoration-white/25 tabular-nums" style={{ fontFamily: HEADING }}>
+                          {money(savings.theirs)}
+                        </span>
+                      </div>
+                      <div className="rounded-lg border border-[#EA9A61]/30 bg-[#EA9A61]/[0.06] p-3">
+                        <span className="block text-[10px] uppercase tracking-[0.2em] text-[#EA9A61] mb-1" style={{ fontFamily: BODY }}>
+                          With R.O.V
+                        </span>
+                        <span className="text-white text-xl md:text-2xl font-bold italic tabular-nums" style={{ fontFamily: HEADING }}>
+                          {money(savings.ours)}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* The punchline */}
+                    {savings.diff > 0 ? (
+                      <div className="text-center pt-1">
+                        <span className="block text-[10px] uppercase tracking-[0.25em] text-white/40 mb-1" style={{ fontFamily: BODY }}>
+                          You keep
+                        </span>
+                        <span className="block text-[#EA9A61] text-3xl md:text-4xl font-bold italic leading-none tabular-nums" style={{ fontFamily: HEADING }}>
+                          {money(savings.diff)}
+                          {est.ongoing ? <span className="text-white/40 text-base">/mo</span> : null}
+                        </span>
+                        <span className="block text-white/50 text-xs mt-1.5" style={{ fontFamily: BODY }}>
+                          {savings.pct}% less, mastering and 2 revisions included
+                        </span>
+                      </div>
+                    ) : (
+                      <p className="text-white/60 text-sm text-center" style={{ fontFamily: BODY }}>
+                        We&apos;d match that rate, with the master and 2 revisions included instead of billed separately.
+                      </p>
+                    )}
                   </div>
                 )}
 
