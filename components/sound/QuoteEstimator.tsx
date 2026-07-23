@@ -76,7 +76,11 @@ function computeEstimate(a: Answers) {
   const low = s.low * baseLow + extrasLow;
   const high = s.high * baseHigh + extrasHigh;
 
-  return { low, high, ongoing, isMix };
+  // Song-only midpoints, used by the "what do you pay now" comparison.
+  const songsMid = Math.round((s.low + s.high) / 2);
+  const perSongMid = Math.round((baseLow + baseHigh) / 2);
+
+  return { low, high, ongoing, isMix, songsMid, perSongMid };
 }
 
 export default function QuoteEstimator() {
@@ -91,8 +95,19 @@ export default function QuoteEstimator() {
     cadence: null,
   });
   const [modalOpen, setModalOpen] = useState(false);
+  // "What do you pay per song now?" — powers the personalized savings reveal.
+  const [payNow, setPayNow] = useState(150);
 
   const est = useMemo(() => computeEstimate(answers), [answers]);
+
+  const savings = useMemo(() => {
+    if (!est) return null;
+    const theirs = est.songsMid * payNow;
+    const ours = est.songsMid * est.perSongMid;
+    const diff = theirs - ours;
+    const pct = theirs > 0 ? Math.round((diff / theirs) * 100) : 0;
+    return { diff, pct };
+  }, [est, payNow]);
 
   const setNeed = (need: NeedKey) => {
     setAnswers((p) => ({ ...p, need }));
@@ -300,6 +315,49 @@ export default function QuoteEstimator() {
                   <li className="flex justify-between gap-4"><span className="text-white/40">Extras</span><span className="text-right">{summary.extras}</span></li>
                   <li className="flex justify-between gap-4"><span className="text-white/40">Cadence</span><span className="text-right">{summary.cadence}</span></li>
                 </ul>
+
+                {/* Personalized savings — the calculator, fed by their answers */}
+                {savings && (
+                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] p-4 md:p-5 mb-6">
+                    <div className="flex items-baseline justify-between gap-3 mb-2.5">
+                      <span className="text-white/60 text-xs" style={{ fontFamily: BODY }}>
+                        What do you pay per song right now?
+                      </span>
+                      <span className="text-[#EA9A61] text-sm font-bold tabular-nums" style={{ fontFamily: BODY }}>
+                        {money(payNow)}
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min={50}
+                      max={400}
+                      step={10}
+                      value={payNow}
+                      onChange={(e) => setPayNow(Number(e.target.value))}
+                      aria-label="What you currently pay per song"
+                      className="rov-range"
+                      style={{
+                        background: `linear-gradient(to right, #EA9A61 ${((payNow - 50) / 350) * 100}%, rgba(255,255,255,0.08) ${((payNow - 50) / 350) * 100}%)`,
+                      }}
+                    />
+                    <p className="text-sm mt-3 leading-relaxed" style={{ fontFamily: BODY }}>
+                      {savings.diff > 0 ? (
+                        <>
+                          <span className="text-white/60">On {est.songsMid} {est.songsMid === 1 ? "song" : "songs"}, you&apos;d keep about{" "}</span>
+                          <span className="text-[#EA9A61] font-bold">
+                            {money(savings.diff)}
+                            {est.ongoing ? "/mo" : ""}
+                          </span>
+                          <span className="text-white/60"> with us ({savings.pct}% less), mastering and 2 revisions included.</span>
+                        </>
+                      ) : (
+                        <span className="text-white/60">
+                          We&apos;d match that rate, with the master and 2 revisions included instead of billed separately.
+                        </span>
+                      )}
+                    </p>
+                  </div>
+                )}
 
                 <p className="text-white/40 text-xs mb-6 leading-relaxed" style={{ fontFamily: BODY }}>
                   Ballpark only. The exact quote depends on your stems, turnaround, and rollout, so we lock it in on a quick call or over email.

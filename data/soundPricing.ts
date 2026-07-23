@@ -49,7 +49,7 @@ interface CheckoutItem {
 
 export const checkout: Record<CheckoutKey, CheckoutItem> = {
   intro: { label: "$50 Intro (first 3 songs)", amount: 50, unit: "song", payUrl: "https://buy.stripe.com/14A6oG1Fg6Uv503aawfMA01" },
-  oneoff: { label: "One-off mix & master", amount: 100, unit: "song", payUrl: "" },
+  oneoff: { label: "One-off mix & master", amount: 100, unit: "song", payUrl: "https://buy.stripe.com/6oUdR8fw6emX1NR3M8fMA02" },
   sub_starter: { label: "Starter subscription (5 songs/mo)", amount: 145, unit: "mo", payUrl: "" },
   sub_standard: { label: "Standard subscription (12 songs/mo)", amount: 300, unit: "mo", payUrl: "" },
   sub_pro: { label: "Pro subscription (18 songs/mo, 24hr)", amount: 500, unit: "mo", payUrl: "" },

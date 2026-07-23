@@ -57,14 +57,6 @@ const StudioSection = dynamic(() => import("@/components/sound/StudioSection"), 
     ),
 });
 
-const SavingsCalculator = dynamic(() => import("@/components/sound/SavingsCalculator"), {
-    loading: () => (
-        <div className="bg-black min-h-[40vh] flex items-center justify-center">
-            <div className="text-white/60 text-sm">Loading...</div>
-        </div>
-    ),
-    ssr: false,
-});
 const QuoteEstimator = dynamic(() => import("@/components/sound/QuoteEstimator"));
 // const StudioSetupSection = dynamic(() => import("@/components/sound/StudioSetup"));
 
@@ -159,11 +151,8 @@ export default function Page() {
             {/* 04 — Studio Recording + Calculator */}
             <StudioSection />
 
-            {/* 05 — Quote questionnaire (replaces subscription tiers + add-ons) */}
+            {/* 05 — Quote questionnaire + personalized savings (replaces tiers, add-ons, and the standalone calculator) */}
             <QuoteEstimator />
-
-            {/* 06 — Savings Calculator */}
-            <SavingsCalculator />
 
             {/* 08 — Studio Setup (hidden) */}
             {/* <StudioSetupSection /> */}
