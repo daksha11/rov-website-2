@@ -32,6 +32,16 @@ type Props = {
    * "dark" = inverted dark-brown premium gradient card for pages with a dark bg.
    */
   theme?: "light" | "dark";
+  /**
+   * Optional context chips shown above the name field (e.g. service pillars on
+   * the homepage). The selected one is folded into the emailed message so you
+   * know what they came for. Purely context; the form submits fine with none picked.
+   */
+  topics?: string[];
+  /** Label above the topic chips. */
+  topicsLabel?: string;
+  /** Optional submit-button label override (default "Send it over"). */
+  submitLabel?: string;
 };
 
 // Two palettes. Light follows the blog design standard (beige card, dark text,
@@ -80,8 +90,12 @@ export default function BlogLeadForm({
   secondaryHref,
   secondaryLabel = "Prefer to talk? Book a free call",
   theme = "light",
+  topics,
+  topicsLabel = "What do you need?",
+  submitLabel = "Send it over",
 }: Props) {
   const c = palette(theme);
+  const [topic, setTopic] = useState<string>("");
   const inputStyle: React.CSSProperties = {
     width: "100%",
     background: c.inputBg,
@@ -104,15 +118,22 @@ export default function BlogLeadForm({
     setStatus("sending");
     setError("");
     try {
+      // Fold the picked topic into the message so it shows up in the inbox,
+      // and into the source tag so the subject line carries it too.
+      const rawMessage = (fd.get("message") as string) || "";
+      const message = topic ? `[Looking for: ${topic}]\n\n${rawMessage}`.trim() : rawMessage;
+      const taggedSource = topic
+        ? `${source}:${topic.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`
+        : source;
       const res = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: fd.get("name"),
           email: fd.get("email"),
-          message: fd.get("message"),
+          message,
           company: fd.get("company"),
-          source,
+          source: taggedSource,
           page: typeof window !== "undefined" ? window.location.pathname : "",
         }),
       });
@@ -186,6 +207,46 @@ export default function BlogLeadForm({
               style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
             />
 
+            {topics && topics.length > 0 && (
+              <div style={{ marginBottom: 4 }}>
+                <p style={{ fontSize: 12, letterSpacing: "0.08em", textTransform: "uppercase", color: c.body, fontFamily: LABEL_FONT, marginBottom: 10, textAlign: "center" }}>
+                  {topicsLabel}
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center" }}>
+                  {topics.map((t) => {
+                    const active = topic === t;
+                    return (
+                      <button
+                        key={t}
+                        type="button"
+                        onClick={() => setTopic(active ? "" : t)}
+                        style={{
+                          padding: "8px 16px",
+                          borderRadius: 100,
+                          fontSize: 13,
+                          fontFamily: LABEL_FONT,
+                          fontWeight: 600,
+                          cursor: "pointer",
+                          transition: "all 0.2s",
+                          border: active
+                            ? `1.5px solid ${theme === "dark" ? ORANGE : RUST}`
+                            : c.inputBorder,
+                          background: active
+                            ? (theme === "dark" ? "rgba(234,154,97,0.15)" : "rgba(144,66,44,0.08)")
+                            : "transparent",
+                          color: active
+                            ? (theme === "dark" ? ORANGE : RUST)
+                            : c.body,
+                        }}
+                      >
+                        {t}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 14 }}>
               <input type="text" name="name" required maxLength={120} placeholder="Your name" aria-label="Your name" style={inputStyle} />
               <input type="email" name="email" required maxLength={254} placeholder="Email" aria-label="Email" style={inputStyle} />
@@ -221,7 +282,7 @@ export default function BlogLeadForm({
                 transition: "opacity 0.2s",
               }}
             >
-              {status === "sending" ? "Sending..." : "Send it over"}
+              {status === "sending" ? "Sending..." : submitLabel}
             </button>
 
             {secondaryHref && (
