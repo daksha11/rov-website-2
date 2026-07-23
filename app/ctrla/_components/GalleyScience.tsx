@@ -256,31 +256,37 @@ export default function GalleyScience() {
 
       <Bleed>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginBottom: "clamp(18px,2.4vw,26px)" }}>
-          <Kicker color={ed.gold}>The Galley · Kitchen science</Kicker>
+          <Kicker color={ed.gold}>Chapter 02 · Kitchen Science</Kicker>
           <Label color={ed.gold}>Why cheap food tastes expensive</Label>
         </div>
         <Rule style={{ marginBottom: "clamp(24px,3.4vw,40px)" }} color={ed.hair} />
 
-        <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(34px,5.4vw,76px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: 0, maxWidth: 900 }}>
+        <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,4.6vw,64px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: 0, maxWidth: 900 }}>
           Why it works<span style={{ color: ed.gold }}>.</span>
         </h2>
-        <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontWeight: 400, fontSize: "clamp(18px,2.4vw,30px)", lineHeight: 1.3, color: ed.gold, margin: "clamp(14px,1.8vw,20px) 0 0", maxWidth: 720 }}>
+        <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontWeight: 400, fontSize: "clamp(17px,2.2vw,26px)", lineHeight: 1.3, color: ed.gold, margin: "clamp(12px,1.6vw,18px) 0 0", maxWidth: 720 }}>
           Cooking is chemistry you can eat. Five reactions explain most of what happens in your pan, and once you know them, you can improvise forever.
         </p>
 
-        {/* The lessons — diagram + copy, alternating sides on desktop */}
-        <div style={{ display: "grid", gap: "clamp(40px,6vw,80px)", margin: "clamp(36px,5vw,72px) 0 0" }}>
+        {/* The lessons — each opens with a ruled running header (Lesson 0X / 05)
+            so the sequence reads as one numbered curriculum, not five loose blocks */}
+        <div style={{ display: "grid", gap: "clamp(36px,5vw,64px)", margin: "clamp(32px,4.5vw,60px) 0 0" }}>
           {LESSONS.map((l, i) => (
-            <div key={l.n} className="ctrla-sci-row">
+            <div key={l.n}>
+              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12, marginBottom: 10 }}>
+                <Label color={ed.gold}>Lesson {l.n} / 05</Label>
+                <Label color={ed.gold}>{l.tag}</Label>
+              </div>
+              <Rule color={ed.hair} style={{ marginBottom: "clamp(20px,2.8vw,32px)" }} />
+              <div className="ctrla-sci-row">
               <div className="ctrla-sci-visual" style={{ order: i % 2 === 1 ? 2 : undefined }}>
                 <l.Diagram />
               </div>
               <div>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 6 }}>
-                  <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(16px,1.7vw,20px)", letterSpacing: "-0.01em", color: ed.gold }}>{l.n}</span>
-                  <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(26px,3.2vw,44px)", letterSpacing: "-0.02em", lineHeight: 1, color: ed.ink, margin: 0 }}>{l.title}</h3>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: "clamp(12px,1.6vw,18px)" }}>
+                  <span style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(15px,1.6vw,19px)", letterSpacing: "-0.01em", color: ed.gold }}>{l.n}</span>
+                  <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(24px,3vw,40px)", letterSpacing: "-0.02em", lineHeight: 1, color: ed.ink, margin: 0 }}>{l.title}</h3>
                 </div>
-                <Label color={ed.gold} style={{ display: "block", marginBottom: "clamp(12px,1.6vw,18px)" }}>{l.tag}</Label>
                 <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.55, color: ed.inkSoft, margin: "0 0 14px", maxWidth: 560 }}>
                   {l.science}
                 </p>
@@ -288,6 +294,7 @@ export default function GalleyScience() {
                   <span style={{ fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.16em", textTransform: "uppercase", color: ed.gold, marginRight: 8 }}>Use it</span>
                   {l.useIt}
                 </p>
+              </div>
               </div>
             </div>
           ))}
