@@ -54,8 +54,33 @@ function ensureCalScript() {
   })(window, `${CAL_ORIGIN}/embed/embed.js`, "init");
   /* eslint-enable */
   window.Cal!("init", { origin: CAL_ORIGIN });
-  // Match the rovmusic dark theme + brand accent.
-  window.Cal!("ui", { theme: "dark", styles: { branding: { brandColor: "#EA9A61" } }, hideEventTypeDetails: false });
+  // Skin the embed with the rovmusic palette: warm near-black surfaces, the
+  // brand orange for selected dates/slots/CTAs, soft borders. Keeps the popup
+  // feeling like part of the page instead of stock Cal.
+  window.Cal!("ui", {
+    theme: "dark",
+    styles: { branding: { brandColor: "#EA9A61" } },
+    cssVarsPerTheme: {
+      dark: {
+        "cal-brand": "#EA9A61",
+        "cal-brand-emphasis": "#B16937",
+        "cal-brand-text": "#120D0A",
+        "cal-bg": "#0E0C0A",
+        "cal-bg-emphasis": "#1C1714",
+        "cal-bg-subtle": "#161210",
+        "cal-bg-muted": "#0E0C0A",
+        "cal-border": "rgba(255,255,255,0.10)",
+        "cal-border-emphasis": "rgba(234,154,97,0.45)",
+        "cal-border-subtle": "rgba(255,255,255,0.06)",
+        "cal-border-booker": "rgba(255,255,255,0.10)",
+        "cal-text": "#FFFFFF",
+        "cal-text-emphasis": "#FFFFFF",
+        "cal-text-subtle": "rgba(255,255,255,0.55)",
+        "cal-text-muted": "rgba(255,255,255,0.38)",
+      },
+    },
+    hideEventTypeDetails: false,
+  });
 }
 
 export default function CalBookButton({
