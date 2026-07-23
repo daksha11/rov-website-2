@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { NavigationDock } from "@/components/sections/NavDoc";
 import EditorialFooter from "../_components/EditorialFooter";
 import GalleyFridge from "../_components/GalleyFridge";
+import GalleyScience from "../_components/GalleyScience";
 import { ed, Bleed, Rule, Label, Kicker } from "../_components/editorial";
 import { cookbook } from "../data";
 import { currentVolume } from "../_volumes";
@@ -67,15 +68,29 @@ export default function CookbookPageContent() {
               Chef of the volume: {cookbook.chef.name}, {cookbook.chef.city}. {cookbook.chef.bio}
             </p>
           )}
+          {/* In-page contents — the fridge feeds you, the science teaches you */}
+          <div style={{ display: "flex", gap: 24, flexWrap: "wrap", marginTop: "clamp(20px,2.6vw,30px)" }}>
+            <a href="#fridge" style={{ textDecoration: "none" }}>
+              <Label color={accent}>01 · The fridge ↓</Label>
+            </a>
+            <a href="#science" style={{ textDecoration: "none" }}>
+              <Label color={accent}>02 · Kitchen science ↓</Label>
+            </a>
+          </div>
         </Bleed>
       </section>
 
       {/* The galley fridge — the interactive heart */}
-      <section style={{ background: "transparent", padding: "clamp(8px,2vw,24px) 0 clamp(56px,8vw,104px)" }}>
+      <section id="fridge" style={{ background: "transparent", padding: "clamp(8px,2vw,24px) 0 clamp(40px,6vw,72px)", scrollMarginTop: 80 }}>
         <Bleed>
           <GalleyFridge />
         </Bleed>
       </section>
+
+      <Rule color={ed.hair} />
+
+      {/* Kitchen science — why the cheap stuff works. The education layer. */}
+      <GalleyScience />
 
       <EditorialFooter />
     </div>

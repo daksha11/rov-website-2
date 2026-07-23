@@ -1022,6 +1022,20 @@ input[type="range"]::-webkit-slider-thumb {
   .ctrla-roots-grid { grid-template-columns: 1fr; }
 }
 
+/* Galley kitchen science — diagram + copy lesson rows. Side by side on
+   desktop (diagram alternates sides via inline order), stacked on mobile
+   with the diagram always leading. */
+.ctrla-sci-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: clamp(24px, 3.5vw, 56px);
+  align-items: center;
+}
+@media (max-width: 860px) {
+  .ctrla-sci-row { grid-template-columns: 1fr; gap: 20px; }
+  .ctrla-sci-row .ctrla-sci-visual { order: 0 !important; }
+}
+
 /* Lock In — persistent focus-space chip. Dark glass in the same family as the
    site nav dock, gold accent so it reads as the platform's own tool. Fixed
    bottom-right, clear of the centered dock; below modals (z 998/999) but above
