@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { NavigationDock } from '@/components/sections/NavDoc';
 import Footer from '@/components/sections/Footer';
+import ServiceLeadSection from '@/components/sections/ServiceLeadSection';
 import ProjectStrip from '@/components/sections/ProjectStrip';
 import LogoLoop from '@/components/effects/LogoLoop';
 import { N8nWorkflowBlock } from '@/components/ui/n8n-workflow-block';
@@ -733,6 +734,14 @@ export default function AIAutomationContent() {
 
             {/* FAQ Section */}
             <FAQSection items={aiAutomationFaqItems} />
+
+            {/* Closing lead form */}
+            <ServiceLeadSection
+                source="services:ai"
+                heading="What's quietly eating your team's time?"
+                subheading="Tell us where the manual work piles up. We'll tell you honestly what we could automate, what it would take, and roughly what it costs. No pitch deck, just a conversation."
+                messagePlaceholder="The repetitive task you'd love gone, and the tools you already use..."
+            />
 
             <Footer />
 

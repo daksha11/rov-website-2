@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import { NavigationDock } from "@/components/sections/NavDoc";
 import Footer from "@/components/sections/Footer";
+import ServiceLeadSection from "@/components/sections/ServiceLeadSection";
 import WebHero from "@/components/web/WebHero";
 import TestimonialsSection from "@/components/common/TestimonialsSection";
 import { webTestimonials } from "@/data/testimonials";
@@ -69,6 +70,14 @@ export default function WebContent() {
 
             {/* FAQ Section */}
             <FAQSection items={webFaqItems} />
+
+            {/* Closing lead form */}
+            <ServiceLeadSection
+                source="services:web"
+                heading="Ready to build a site that pulls its weight?"
+                subheading="Tell us what you're working with and what you want it to do. We'll tell you honestly what it would take and roughly what it costs. No pitch deck, just a conversation."
+                messagePlaceholder="Your current site (if any), what you're trying to fix, and your rough timeline..."
+            />
 
             {/* Navigation Dock */}
             <NavigationDock />

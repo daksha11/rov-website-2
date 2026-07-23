@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import { NavigationDock } from "@/components/sections/NavDoc";
 import Footer from "@/components/sections/Footer";
+import ServiceLeadSection from "@/components/sections/ServiceLeadSection";
 import ProjectStrip from "@/components/sections/ProjectStrip";
 import TestimonialsSection from "@/components/common/TestimonialsSection";
 import { videoTestimonials } from "@/data/testimonials";
@@ -75,6 +76,14 @@ export default function VideoProductionContent() {
 
             {/* FAQ Section */}
             <FAQSection items={videoFaqItems} />
+
+            {/* Closing lead form */}
+            <ServiceLeadSection
+                source="services:video"
+                heading="Got something worth filming?"
+                subheading="Tell us what you're shooting and what it's for. We'll tell you honestly what it would take and roughly what it costs. No pitch deck, just a conversation."
+                messagePlaceholder="What you want to shoot, where, and your rough timeline..."
+            />
 
             <Footer />
         </main>
