@@ -555,13 +555,17 @@ function CraftPathways() {
               <div style={{ minWidth: 0 }}>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap" }}>
                   <h3 className="ctrla-path-name" style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,5vw,68px)", letterSpacing: "-0.03em", lineHeight: 1, color: ed.ink, margin: 0 }}>{s.title}</h3>
-                  <span style={{ fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.14em", textTransform: "uppercase", color: s.accentColor }}>{s.pickCount}</span>
+                  {/* Small text on the dark ground is ALWAYS gold (CTRL-A
+                      standard; inverted on light backgrounds). The craft
+                      accents stay on the nodes and spine only — plum and
+                      lavender are illegible as text on this ground. */}
+                  <span style={{ fontFamily: ed.mono, fontSize: "clamp(10px,1.1vw,12px)", letterSpacing: "0.14em", textTransform: "uppercase", color: ed.gold }}>{s.pickCount}</span>
                 </div>
-                <p style={{ fontFamily: ed.mono, fontSize: "clamp(11px,1.2vw,13px)", letterSpacing: "0.06em", color: ed.inkSoft, margin: "12px 0 0" }}>
-                  The guide <span style={{ color: s.accentColor }}>→</span> the toolkit <span style={{ color: s.accentColor }}>→</span> the history
+                <p style={{ fontFamily: ed.mono, fontSize: "clamp(11px,1.2vw,13px)", letterSpacing: "0.06em", color: ed.gold, margin: "12px 0 0" }}>
+                  The guide → the toolkit → the history
                 </p>
               </div>
-              <span className="ctrla-path-cta" style={{ fontFamily: ed.mono, fontSize: "clamp(11px,1.2vw,14px)", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: s.accentColor, whiteSpace: "nowrap", justifySelf: "end" }}>
+              <span className="ctrla-path-cta" style={{ fontFamily: ed.mono, fontSize: "clamp(11px,1.2vw,14px)", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: ed.gold, whiteSpace: "nowrap", justifySelf: "end" }}>
                 Enter <span aria-hidden>→</span>
               </span>
             </a>
