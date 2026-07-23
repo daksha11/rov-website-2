@@ -11,9 +11,8 @@ export const BOOKING_URL = "https://calendly.com/rangeofviewmusic/30min";
 
 // Pricing beyond the flat intro/recording rates is consultative: the quote
 // questionnaire ends by letting the visitor book a call or send an inquiry.
-// Paste the Cal.com "Quote Call" event (URL or "username/event") here;
-// empty = form-only.
-export const CONSULT_BOOKING_URL = "";
+// The Cal.com "Quote Call" event (free, 15 min) — opens as an on-site popup.
+export const CONSULT_BOOKING_URL = "rov-studios-imhphw/quote-call";
 
 // Cal.com paid recording events. Paste each event as a URL or "username/event"
 // slug once created (Cal.com -> Apps -> Stripe must be connected first so the
@@ -23,7 +22,7 @@ export const CAL_LINKS = {
   /** "Studio Session" event — 1 hour, $60. */
   hourlySession: "rov-studios-imhphw/studio-session",
   /** "Finished Single" event — record, mix & master, $149. */
-  finishedSingle: "",
+  finishedSingle: "rov-studios-imhphw/finished-single",
 };
 
 export type CheckoutKey =
