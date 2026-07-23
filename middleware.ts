@@ -6,6 +6,10 @@ import { type NextRequest, NextResponse } from "next/server";
 const MUSIC_HOST = "rovmusic";
 const STUDIOS_HOST = "rovstudios";
 
+// Music-site subpages that live under app/sound/ but get clean top-level
+// URLs on the music host (rovmusic.com/sam-suen ← app/sound/sam-suen).
+const MUSIC_SUBPAGES = ["/sam-suen"];
+
 export async function middleware(request: NextRequest) {
   const host = (request.headers.get("host") || "").toLowerCase();
   const { pathname } = request.nextUrl;
@@ -15,14 +19,23 @@ export async function middleware(request: NextRequest) {
     if (pathname === "/") {
       return NextResponse.rewrite(new URL("/sound", request.url));
     }
-    // Keep one canonical home: /sound folds back to / on the music host.
-    if (pathname === "/sound") {
-      return NextResponse.redirect(new URL("/", request.url), 308);
+    // Clean URLs for music subpages: /sam-suen serves /sound/sam-suen.
+    if (MUSIC_SUBPAGES.includes(pathname)) {
+      return NextResponse.rewrite(new URL(`/sound${pathname}`, request.url));
     }
-  } else if (host.includes(STUDIOS_HOST) && pathname === "/sound") {
-    // Migration: the sound page now lives on rovmusic.com. Scoped to the
+    // Keep one canonical URL per page: /sound paths fold back on the music host.
+    if (pathname === "/sound" || pathname.startsWith("/sound/")) {
+      const stripped = pathname.slice("/sound".length) || "/";
+      return NextResponse.redirect(new URL(stripped, request.url), 308);
+    }
+  } else if (
+    host.includes(STUDIOS_HOST) &&
+    (pathname === "/sound" || pathname.startsWith("/sound/"))
+  ) {
+    // Migration: the sound pages now live on rovmusic.com. Scoped to the
     // production studios domain so /sound stays testable on localhost.
-    return NextResponse.redirect("https://www.rovmusic.com/", 308);
+    const stripped = pathname.slice("/sound".length) || "/";
+    return NextResponse.redirect(`https://www.rovmusic.com${stripped}`, 308);
   }
 
   try {

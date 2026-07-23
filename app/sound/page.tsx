@@ -77,6 +77,15 @@ const DDKFeatureTestimonial = dynamic(() => import("@/components/sound/DDKFeatur
     ssr: false,
 });
 
+const SamSuenFeature = dynamic(() => import("@/components/sound/SamSuenFeature"), {
+    loading: () => (
+        <div className="bg-[#080807] min-h-[40vh] flex items-center justify-center">
+            <div className="text-white/30 text-sm">Loading...</div>
+        </div>
+    ),
+    ssr: false,
+});
+
 const TagorePartnership = dynamic(() => import("@/components/sound/TagorePartnership"));
 
 const FAQSection = dynamic(() => import("@/components/common/FAQSection"), {
@@ -170,6 +179,9 @@ export default function Page() {
 
             {/* 10.1 — Testimonials */}
             <TestimonialsSection testimonials={soundTestimonials} variant="sound" />
+
+            {/* 10.3 — Sam Suen: in-house artist development proof */}
+            <SamSuenFeature />
 
             {/* 10.5 — Tagore Studios Partnership */}
             <TagorePartnership />
