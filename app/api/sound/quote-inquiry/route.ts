@@ -25,7 +25,10 @@ export const runtime = "nodejs";
 export const maxDuration = 15;
 
 const DEFAULT_TO_EMAIL = "stems@rovstudios.com";
-const DEFAULT_FROM_EMAIL = "plans@rovstudios.com";
+// Resend refuses senders on unverified domains. Until rovstudios.com is
+// verified in Resend (DNS records), send from their sandbox address; override
+// with SUB_FROM_EMAIL=plans@rovstudios.com once the domain is verified.
+const DEFAULT_FROM_EMAIL = "onboarding@resend.dev";
 
 const bodySchema = z.object({
   name: z.string().trim().min(1).max(120),
