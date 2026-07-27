@@ -1,0 +1,66 @@
+{
+  "slug": "3-parks-wine",
+  "business": {
+    "name": "3 Parks Wine Shop",
+    "short": "3 Parks",
+    "location": "Eastside Trail · Old Fourth Ward",
+    "neighborhood": "Old Fourth Ward",
+    "category": "wine shops",
+    "date": "July 2026"
+  },
+  "comp": [
+    { "name": "Hop City", "why": "Krog Street Market · right on the Eastside Trail" },
+    { "name": "Elemental Spirits Co.", "why": "Poncey-Highland · steps from the Beltline" },
+    { "name": "VinoTeca", "why": "Inman Park · natural wine near the Eastside Trail" }
+  ],
+  "ai": { "absent": "named as a wine shop, but AI and Maps still point to the Glenwood Park store, not your new Eastside Trail address." },
+  "gap": {
+    "hero": {
+      "number": "2.5M",
+      "label": "people a year move along the Beltline, and the Eastside Trail is its busiest stretch. You just put a shop on it, but Google, Apple, and AI still send them to your old address.",
+      "sub": "Beltline: ~2.5M annual visits (Econsult / ABI); the Eastside Trail is the most-trafficked segment. Your O4W shop at 405 N Angier Ave opened in 2026; the listings have not caught up."
+    },
+    "tiles": [
+      { "num": "3", "label": "trail-side bottle shops rank for \"wine near the Beltline\"" },
+      { "num": "2", "label": "different addresses AI and Maps show for you" },
+      { "num": "0", "label": "major listings that show 405 N Angier as your Beltline store" }
+    ]
+  },
+  "seo": {
+    "score": "6 / 10",
+    "cost": "A great shop pointing customers to the wrong door.",
+    "finding": "You are an established name with strong reviews and a real Shopify store, which puts you ahead of most bottle shops. The leak is the move: Yelp, Apple Maps, and your own homepage title still lead with Glenwood Park, so the new Eastside Trail shop at 405 N Angier is nearly invisible. Fix the NAP everywhere and give the O4W location its own indexed page.",
+    "gbp": { "status": "Verify", "finding": "Confirm a separate, claimed Google Business Profile for 405 N Angier Ave Ste 200 (not just the Glenwood Park listing), with correct hours, category \"Wine store,\" and Eastside Trail photos. A second location often shares or duplicates the original profile." },
+    "reviews": { "status": "Strong", "finding": "The Glenwood Park listing carries a solid Yelp history (69 reviews, 83 photos) and reviewers name the staff by name. The risk: those reviews sit on the old address while the new shop starts from zero. Verify exact live star ratings." },
+    "localpack": { "status": "Mixed", "finding": "\"wine shop Old Fourth Ward\" and \"near the Beltline\" surface Hop City, Elemental Spirits, and VinoTeca in the pack. 3 Parks appears, but tied to Glenwood Park; the new O4W address does not rank yet." },
+    "speed": { "status": "Verify", "finding": "Shopify storefront with product imagery and event graphics. Run PageSpeed on the final pass and log mobile LCP." },
+    "maps": { "status": "Verify", "finding": "Apple Maps still lists 451 Bill Kennedy Way (Glenwood Park). Confirm Apple Maps and Bing Places carry the new 405 N Angier Ave Ste 200 shop, and reconcile the relocation history." }
+  },
+  "geo": {
+    "score": "6 / 10",
+    "cost": "AI knows the brand, but not the new trail-side address.",
+    "finding": "You are already cited as one of Atlanta's better wine shops (Decanter, AJC, natural-wine guides), so the brand corpus is real. The gap is geographic: AI answers still attach you to Glenwood Park, and nothing yet claims the Eastside Trail / Old Fourth Ward location in the guides and schema AI reads. Publish the O4W shop as its own entity and get it into the Beltline guides.",
+    "aitest": { "status": "Mixed", "finding": "AI names 3 Parks for Atlanta wine, but for \"near the Beltline / Eastside Trail\" it defaults to the Glenwood Park address or the trail-side competitors. Run all 9 phrasings live (ChatGPT, Perplexity, Gemini) and log which address each returns." },
+    "corpus": { "status": "Strong", "finding": "Well represented on Yelp, Decanter's best-of, AJC, and natural-wine roundups, with a clear owner story (Sarah Pierre, small-production, women and Black-owned brands). The corpus points at Glenwood Park, not yet the new trail store." },
+    "lists": { "status": "Mixed", "finding": "Present in the wine-shop best-of lists AI cites, but entries reference the original location. None yet name 405 N Angier or place you on the Eastside Trail. Update the listings and pitch the Beltline dining guides." },
+    "schema": { "status": "Missing", "finding": "No visible LocalBusiness schema distinguishing the two locations. A machine cannot tell there is a new Eastside Trail shop, or where it sits relative to the Beltline." }
+  },
+  "aeo": {
+    "score": "5 / 10",
+    "cost": "You answer wine questions, but not the \"which location\" question.",
+    "finding": "You already run an FAQ and rich events content (tastings, wine club, mobile wine bar), which is ahead of most shops. But nothing clearly answers the two questions the move created: which shop is on the Beltline, and what is at 405 N Angier. Add location-specific Q&A that claims the Eastside Trail.",
+    "qa": { "status": "Verify", "finding": "Check both Google profiles for open, owner-unanswered questions (parking, which location has events, Beltline access), then seed your own for the new O4W shop." },
+    "qcontent": { "status": "Strong", "finding": "A dedicated FAQ page plus deep events content is live (weekly tastings, wine club, private and mobile events). Add O4W-specific questions and a plain-language \"on the Eastside Trail\" answer." },
+    "answers": { "status": "Gap", "finding": "Nothing owns \"wine shop on the Atlanta Beltline\" or \"Old Fourth Ward wine shop near the Eastside Trail.\" Hop City, Elemental Spirits, and VinoTeca answer it while your best new asset stays unclaimed." }
+  },
+  "verdict": "3 Parks is the rare local shop that already has the reviews, the press, the events, and a working Shopify store, so this is not a build-from-nothing job. The single biggest leak is the move: Google, Apple, Yelp, and AI still send customers to Glenwood Park while your new Eastside Trail shop at 405 N Angier goes unclaimed. The fastest fix: stand up the O4W location as its own claimed, schema-backed profile and page, fix the NAP everywhere, and get \"on the Beltline\" into the guides, so the busiest trail in the city starts sending traffic to the door that is actually on it.",
+  "verify": [
+    "Exact Google + Yelp star ratings and review counts for each location",
+    "Whether 405 N Angier Ave has its own claimed Google Business Profile vs. sharing Glenwood Park's",
+    "Apple Maps + Bing Places accuracy for 405 N Angier Ave Ste 200",
+    "Full 9-query AI test logged per engine, noting which address each returns",
+    "Relocation history (Reynoldstown / Grant Park origin vs. Glenwood Park flagship) and whether both locations are currently open",
+    "PageSpeed mobile LCP on the Shopify store",
+    "Current Beltline annual visitation figure for the cited source"
+  ]
+}

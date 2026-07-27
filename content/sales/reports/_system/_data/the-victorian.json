@@ -1,0 +1,66 @@
+{
+  "slug": "the-victorian",
+  "business": {
+    "name": "The Victorian Atlanta",
+    "short": "The Victorian",
+    "location": "Eastside Trail · Old Fourth Ward",
+    "neighborhood": "Old Fourth Ward",
+    "category": "plants",
+    "date": "July 2026"
+  },
+  "comp": [
+    { "name": "GardenHood", "why": "Grant Park, just off the Beltline · the established nursery that tops the best-of lists" },
+    { "name": "Nourish Botanica", "why": "Chosewood Park · plant shop plus a Botanica Bar, steps from the Beltline" },
+    { "name": "West Elm Plant Shop", "why": "Ponce City Market, right on the Eastside Trail" }
+  ],
+  "ai": { "absent": "sometimes named, never certain: with no schema and an \"Atlanta\" title, AI cannot confirm you own the Eastside Trail. GardenHood and the trail-adjacent shops get the safe pick." },
+  "gap": {
+    "hero": {
+      "number": "2.5M",
+      "label": "visitors a year move along the Beltline you sit on. You have the story and the trail, but your Shopify signals do not turn that traffic into search and AI recommendations.",
+      "sub": "Beltline: 2.5M annual visits (Econsult / ABI, 2026). You are on the Eastside Trail; your machine-readable presence is not."
+    },
+    "tiles": [
+      { "num": "0", "label": "lines of LocalBusiness schema telling AI where you sit on the trail" },
+      { "num": "26", "label": "Yelp reviews at your Old Fourth Ward shop, the corpus AI weighs" },
+      { "num": "0", "label": "\"Beltline\" or \"Eastside Trail\" mentions in your homepage title or H1" }
+    ]
+  },
+  "seo": {
+    "score": "6 / 10",
+    "cost": "You rank as \"The Victorian Atlanta,\" but not for the trail you are physically on.",
+    "finding": "You have real presence: on the Eastside Trail, in the local plant press, and expanding. But your Shopify homepage title says only \"The Victorian Atlanta,\" your Old Fourth Ward shop shows just 26 Yelp reviews, and there is no schema. Prime location, generic signals.",
+    "gbp": { "status": "Claimed", "finding": "Google presence is live (hours show for both shops). Enrich it: add plant shop and nursery categories, trail-side photos, and \"on the Eastside Trail, along the Beltline\" in the description." },
+    "reviews": { "status": "Mixed", "finding": "Yelp Old Fourth Ward: 26 reviews, mostly warm (knowledgeable staff, rare aroids, lattes). Recurring soft spot: uneven staff training on plant care. Verify the exact live Google rating and count." },
+    "localpack": { "status": "Mixed", "finding": "\"plant shop Old Fourth Ward\" and \"plant shop Atlanta\": you appear. \"plant shop near the Beltline\": you are on the trail, but the signals that win the pack (schema, trail-named title, review volume) point elsewhere." },
+    "speed": { "status": "Verify", "finding": "Shopify storefront on a standard theme with lazy-loaded imagery. Run PageSpeed on the final pass and log mobile LCP." },
+    "maps": { "status": "Verify", "finding": "Confirm Apple Maps and Bing Places are claimed and match 505 North Angier Ave NE, Suite 500 (Burle's Bar upstairs is a separate brand)." }
+  },
+  "geo": {
+    "score": "5 / 10",
+    "cost": "You earned the press, but AI cannot confirm you own the trail.",
+    "finding": "You have a genuine asset most shops lack: real editorial coverage (Atlanta Magazine, WhatNow Atlanta, AccessAtlanta) that AI reads. But with no LocalBusiness schema and an \"Atlanta\" title, AI cannot verify you are the plant shop on the Eastside Trail, so it hedges.",
+    "aitest": { "status": "Mixed", "finding": "Your press means AI can name you, but for \"plant shop near the Beltline\" it is not the certain pick. Run all 9 phrasings live (ChatGPT, Perplexity, Gemini) and log each engine." },
+    "corpus": { "status": "Mixed", "finding": "Strong on editorial (Atlanta Magazine, WhatNow Atlanta, AccessAtlanta, Wanderlog); thin on review volume (26 on Yelp) and on the Beltline.org and Discover Atlanta guides AI cites." },
+    "lists": { "status": "Mixed", "finding": "Named in Atlanta plant shop round-ups, but framed as an Atlanta shop, not \"the plant shop on the Eastside Trail.\" Verify inclusion and rank in the 2026 AtlantaHits best plant nursery list." },
+    "schema": { "status": "Missing", "finding": "No LocalBusiness schema detected in the page HTML; the address and Beltline mention live in body copy only. No geo or \"on the Eastside Trail\" signal a machine can read." }
+  },
+  "aeo": {
+    "score": "5 / 10",
+    "cost": "Good plant answers, but nothing you publish claims the trail.",
+    "finding": "You already run a Plant Care FAQ, better AEO than most shops. But none of it claims the Beltline or the Eastside Trail, so you do not own the \"plant shop near the Beltline\" answer.",
+    "qa": { "status": "Verify", "finding": "Check the Google profile for open, owner-unanswered questions, then seed your own (parking, workshops, Burle's Bar upstairs, plants along the trail)." },
+    "qcontent": { "status": "Strong", "finding": "A Plant Care FAQ and common-questions content are already live, a real strength. Add Beltline, Eastside Trail, and \"visiting on the trail\" questions." },
+    "answers": { "status": "Gap", "finding": "Nothing on the site owns \"plant shop on the Atlanta Beltline\" or \"Eastside Trail plant shop.\" Burle's Bar carries the trail story, but it is a separate brand and does not answer the plant query." }
+  },
+  "verdict": "You have what money cannot buy: a plant shop physically on the Eastside Trail, a real founder story, and a cocktail bar named for a botanist. But your Shopify title says only \"Atlanta,\" you publish no LocalBusiness schema, and there is no brand video carrying the room online, so AI cannot confirm you own the trail you stand on. Fastest fix: put \"Eastside Trail, along the Beltline\" in your homepage title and schema, film one brand piece, and the press you already earned starts pointing straight to you.",
+  "verify": [
+    "Exact live Google star rating + review count for the Old Fourth Ward shop (have Yelp 26)",
+    "Google Business Profile claim status and category completeness",
+    "Confirm no LocalBusiness schema on the live site (not detected in fetched HTML)",
+    "Whether The Victorian appears in the 2026 AtlantaHits best plant nursery list, and at what rank (page blocked our fetch)",
+    "Full 9-query AI test logged per engine (ChatGPT, Perplexity, Gemini)",
+    "PageSpeed mobile LCP on the Shopify store",
+    "Apple Maps + Bing Places claim status"
+  ]
+}

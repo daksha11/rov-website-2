@@ -1,0 +1,64 @@
+{
+  "slug": "mattsage-therapy",
+  "business": {
+    "name": "Mattsage Therapy",
+    "short": "Mattsage",
+    "location": "Eastside Trail · Reynoldstown",
+    "neighborhood": "Reynoldstown",
+    "category": "massage",
+    "date": "July 2026"
+  },
+  "comp": [
+    { "name": "Inman Park Massage", "why": "Inman Park, blocks from the Eastside Trail" },
+    { "name": "Tiny House Massage Studio", "why": "Reynoldstown location on its own domain" },
+    { "name": "Massage by Design", "why": "Old Fourth Ward, on the Beltline corridor" }
+  ],
+  "ai": { "absent": "not named for \"massage near the Beltline.\" The studios with real websites are." },
+  "gap": {
+    "hero": {
+      "number": "1",
+      "label": "page is your entire web presence: a single Carrd link that Google and AI cannot read as a real Reynoldstown massage business.",
+      "sub": "mattsagetherapy.carrd.co is one page, no service pages, no schema, booking pushed to a Square link. The Beltline you sit beside sees 2.5M visits a year (Atlanta Beltline analysis, 2026)."
+    },
+    "tiles": [
+      { "num": "3", "label": "massage practices rank above you for \"massage near the Beltline\"" },
+      { "num": "0", "label": "AI answers for \"massage near the Beltline\" that name you" },
+      { "num": "0", "label": "pages Google can index beyond one Carrd link" }
+    ]
+  },
+  "seo": {
+    "score": "3 / 10",
+    "cost": "A one-page Carrd link cannot rank for the neighborhood you work in.",
+    "finding": "Your massage is well reviewed by the people who find you, but a single Carrd page gives Google almost nothing to rank: no service pages, no address in machine-readable form, no local signal. A real site with a Reynoldstown and Eastside Trail page is the single highest-leverage fix.",
+    "gbp": { "status": "Verify", "finding": "Confirm whether a Google Business Profile exists and is claimed for 955 Memorial Dr SE, Ste 522. If not, this is the fastest single win: it is what puts a solo practice on the map and in the local pack." },
+    "reviews": { "status": "Verify", "finding": "Reviews on Yelp and Atly are warm (tailored, professional, relaxing) but the exact star rating and count could not be confirmed remotely. Verify the live Google and Yelp numbers and start routing happy clients to Google." },
+    "localpack": { "status": "Missing", "finding": "For \"massage Reynoldstown\" and \"massage near the Beltline\" the pack shows Inman Park Massage, Tiny House, and studios with real sites and profiles, not you." },
+    "speed": { "status": "Verify", "finding": "Carrd single-page site, light by design, but with no real structure to optimize. Run PageSpeed on the final pass and log mobile LCP." },
+    "maps": { "status": "Verify", "finding": "Confirm Apple Maps and Bing Places listings exist and match the Salon Lofts Reynoldstown address." }
+  },
+  "geo": {
+    "score": "2 / 10",
+    "cost": "Ask AI for a massage near the Beltline and you are not in the answer.",
+    "finding": "Ask for \"massage near the Beltline\" or \"massage in Reynoldstown\" and AI names Inman Park Massage and the studios with real websites and review corpus. A Carrd page gives the engines almost nothing to cite, so you are absent.",
+    "aitest": { "status": "Absent", "finding": "For \"massage near the Beltline,\" AI summaries name Inman Park Massage, Tiny House Massage, and others with real sites. Run all 9 phrasings live across ChatGPT, Perplexity, and Gemini and log each engine." },
+    "corpus": { "status": "Thin", "finding": "Present on Yelp, Atly, magicpin, and the Salon Lofts profile, but light on the reviews, press, and Beltline guides AI reads. A real site plus more Google reviews would thicken it." },
+    "lists": { "status": "Missing", "finding": "Absent from the \"best massage in Atlanta / Inman Park\" lists AI cites; those rank studios with established sites and review counts." },
+    "schema": { "status": "Missing", "finding": "Carrd emits no LocalBusiness schema, so there is no machine-readable name, address, service, or \"near the Eastside Trail\" signal at all." }
+  },
+  "aeo": {
+    "score": "2 / 10",
+    "cost": "No question content, so you answer none of a searcher's questions.",
+    "finding": "There is no FAQ or question-shaped content, so you do not answer the things people actually ask: what a deep tissue session costs, whether you take prenatal clients, parking at Salon Lofts, how to book. Adding those on a real site is straightforward AEO ground.",
+    "qa": { "status": "Verify", "finding": "Confirm whether a Google profile exists to hold Q&A; if so, seed the common questions (pricing, session length, first-visit discount, parking)." },
+    "qcontent": { "status": "Missing", "finding": "The Carrd page lists services but answers no questions. An FAQ (deep tissue vs Swedish, prenatal, booking, parking, the first-visit 20% off) would feed AEO directly." },
+    "answers": { "status": "Gap", "finding": "Nothing you publish owns \"massage near the Eastside Trail\" or \"massage in Reynoldstown.\" The studios with real sites answer it." }
+  },
+  "verdict": "You are a skilled solo therapist a block off the Beltline whose entire web presence is one Carrd link, so Google and AI have almost nothing to work with. The fastest fix: a small real site with a Reynoldstown and Eastside Trail page, a claimed Google Business Profile, and a handful of Google reviews, and a strong practitioner finally becomes findable.",
+  "verify": [
+    "Exact Google and Yelp star rating + review count (warm but unconfirmed remotely)",
+    "Whether a Google Business Profile exists and is claimed for the Salon Lofts address",
+    "Full 9-query AI test logged per engine (ChatGPT, Perplexity, Gemini)",
+    "PageSpeed mobile LCP",
+    "Apple Maps + Bing Places listing status"
+  ]
+}

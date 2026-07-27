@@ -1,0 +1,33 @@
+# ROV Beltline prospects — verified open (2026-07). url | pointers (segment · address · fit/gap)
+# ElectroBike Georgia already built (_data/electrobike-georgia.json).
+
+# --- CLUSTER A: Southside Trail (The Beacon / Grant Park / Glenwood Park / Reynoldstown) ---
+https://divinedermatl.com | The Beacon, 1039 Grant St SE Ste A-11 · med-aesthetics, premium; rebrand + polished web + patient video. STAR
+https://www.nicalifeproject.com | The Beacon, 1039 Grant St SE B-19 · fair-trade jewelry on Shopify; brand-story video + GEO. STAR
+https://www.luciaatlanta.com | Glenwood Park, 925 Garrett St Ste L · new (opened ~Apr 2026) Italian; launch video + brand + local/AEO. STAR
+https://www.butecoatlanta.com | The Beacon, 1039 Grant St SE · Brazilian coffeehouse/bar + Butaco taco truck; thin site, video/social upside
+https://www.patriacocinaatl.com | The Beacon, 1039 Grant St SE · Mexican; decent site, upsell video/photo + local SEO/GEO
+https://www.kickstartatl.com | The Beacon, 1039 Grant St SE · youth martial arts; TWO competing domains, unify brand/web + lead-gen video
+https://reynoldsatl.com | Reynoldstown, 180 Pearl St SE · coffee + maker/gift retail (Reynolds, Makery & Pulperia); basic site, ecommerce/content
+https://westsidecreamery.com | Glenwood Park, 447 Bill Kennedy Way SE · ice cream (grew from a truck); minimal site, brand + social video
+
+# --- CLUSTER B: Eastside Trail (Krog / Inman Park / O4W / Reynoldstown) ---
+https://3parkswine.com | O4W, 405 N Angier Ave NE Ste 200 (recently relocated) · wine shop/bar; ecommerce + events + local SEO. STAR
+https://thevictorianatlanta.com | Eastside Beltline, 505 N Angier Ave NE · plant shop; story-rich brand, Shopify + video. STAR
+https://www.casicieloatl.com | Beltline/O4W, 405 N Angier Ave NE · upscale Mexican, growing; stronger site + SEO + launch video. STAR
+https://hopcitybeer.com | Krog Street Market, 99 Krog St NE · craft beer/wine bottle shop (multi-loc Shopify); brand cohesion + local SEO. STAR
+https://mattsagetherapy.carrd.co | Reynoldstown, 955 Memorial Dr SE Ste 522 · solo massage; Carrd-only, biggest gap = real site + booking + SEO. STAR
+https://gusdumplings.com | Krog Street Market, 99 Krog St NE Ste M · Sichuan; dated site, weak SEO/video
+https://www.fredsmeatandbread.com | Krog Street Market, 99 Krog St NE · cult burgers; minimal site, ordering UX + video
+https://www.littletartatl.com | Krog 99 Krog St NE + Grant Park 437 Memorial Dr SE · bakery; multi-loc content + preorder + video
+https://muchachoatl.com | Reynoldstown, 904 Memorial Dr SE · taqueria/coffee; cool brand, owned-channel content lags the aesthetic
+https://www.twourbanlicks.com | 820 Ralph McGill Blvd NE · wood-fired dining + live music; aging site underplays the experience
+https://www.wreckingbarbrewpub.com | 292 Moreland Ave NE (L5P, off-route detour) · brewpub in a historic mansion; strong story thinly told
+https://www.ladybirdatl.com | Eastside Beltline, 684 John Wesley Dobbs Ave NE · outdoor bar/restaurant; Squarespace site off-brand vs camp identity
+https://www.burlesbar.com | Eastside Beltline, 505 N Angier Ave NE (above The Victorian) · cocktail bar; separate brand needs its own web/video
+
+# --- BACKFILL (verified open 2026) ---
+https://wisteria-atlanta.com/ | Inman Park, 471 N Highland Ave NE · New American/modern Southern; longstanding, dated site = brand/web/video refresh
+https://hottohotto.com/ | The Beacon, 1039 Grant St SE · Japanese ramen/teppanyaki, family-owned; thin web, brand + video upside
+https://rationanddram.com/ | Kirkwood (near Eastside), 130 Arizona Ave NE · craft cocktail bar + Southern; chef-driven, basic site
+https://www.sixfeetunder.net/ | Grant Park, 415 Memorial Dr SE (verify open) · seafood pub by Oakland Cemetery; institution, dated site

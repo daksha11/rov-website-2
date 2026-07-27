@@ -1,0 +1,66 @@
+{
+  "slug": "casi-cielo",
+  "business": {
+    "name": "Casi Cielo",
+    "short": "Casi Cielo",
+    "location": "Eastside Trail · Old Fourth Ward",
+    "neighborhood": "Old Fourth Ward",
+    "category": "Mexican",
+    "date": "July 2026"
+  },
+  "comp": [
+    { "name": "Superica", "why": "Krog Street Market · steps from the Eastside Trail, a MICHELIN listing" },
+    { "name": "Rreal Tacos", "why": "On Ponce, right where the Beltline crosses" },
+    { "name": "bartaco", "why": "Inman Park · patio traffic straight off the trail" }
+  ],
+  "ai": { "absent": "for \"Mexican near the Beltline,\" AI leads with Superica, Rreal Tacos, and bartaco. You get named by hand, not by default." },
+  "gap": {
+    "hero": {
+      "number": "2.5M",
+      "label": "visitors a year move along the Beltline your patio opens onto. The ones who search or ask AI for Mexican get handed to the established trail names.",
+      "sub": "Beltline: 2.5M annual visits (Econsult / ABI, 2026). Your Old Fourth Ward room opens onto the Eastside Trail; your search and AI presence has not caught up."
+    },
+    "tiles": [
+      { "num": "3", "label": "Mexican spots rank above you for \"near the Beltline\"" },
+      { "num": "14", "label": "reviews on your Beltline location's Yelp, the corpus AI actually reads" },
+      { "num": "1", "label": "best-of list your Beltline room has landed so far (The Infatuation)" }
+    ]
+  },
+  "seo": {
+    "score": "5 / 10",
+    "cost": "You show up as \"Casi Cielo,\" but not when someone searches Mexican on the Beltline.",
+    "finding": "The Infatuation already rates the room 8.4, but your new Beltline location carries only 14 Yelp reviews, the site returned a 403 to our crawler, and the original Sandy Springs listing (3.7 stars) dilutes the name. Real buzz, thin signals.",
+    "gbp": { "status": "Verify", "finding": "Confirm the Beltline profile is claimed separately from Sandy Springs, with the correct address (405 N Angier Ave NE, Suite 120), plant-forward patio photos, and Oaxacan and Mexican categories." },
+    "reviews": { "status": "Mixed", "finding": "Beltline location: OpenTable 4.8 over 34 diners, Yelp 14 reviews. Original Sandy Springs: about 3.7 stars over a much larger base. The new room reads strong but thin; the older name drags the brand average. Verify the live Google rating." },
+    "localpack": { "status": "Mixed", "finding": "\"Casi Cielo\" and \"Oaxacan Atlanta\": you appear. \"Mexican near the Beltline\": the pack is Superica, Rreal Tacos, and bartaco." },
+    "speed": { "status": "Verify", "finding": "The site returned a 403 to our automated fetch, so the stack and mobile LCP need a live check. Confirm bot protection is not also blocking AI and search crawlers." },
+    "maps": { "status": "Verify", "finding": "An Apple Maps listing exists. Confirm Bing Places is claimed and that the Beltline pin is distinct from the Sandy Springs original." }
+  },
+  "geo": {
+    "score": "5 / 10",
+    "cost": "Ask AI for Mexican near the Beltline and it names the trail regulars first.",
+    "finding": "You hold a real GEO asset most new rooms lack: an 8.4 Infatuation review and a place in its best Mexican Atlanta guide. But the corpus is still thin, there is no schema, and the trail names own the default answer.",
+    "aitest": { "status": "Mixed", "finding": "AI names Superica, Rreal Tacos, and bartaco first for \"near the Beltline\"; you surface once prompted by name. Run all 9 phrasings live (ChatGPT, Perplexity, Gemini) and log each engine." },
+    "corpus": { "status": "Mixed", "finding": "The Infatuation review (8.4) and best-Mexican guide help. Your Yelp and OpenTable base and general press are still thin next to the trail incumbents." },
+    "lists": { "status": "Mixed", "finding": "In The Infatuation's best Mexican Atlanta guide, a genuine win. Not yet confirmed in Discover Atlanta, Beltline.org, or the AJC Eastside Trail dining guides at the level rivals hold." },
+    "schema": { "status": "Missing", "finding": "No LocalBusiness schema confirmed, and the site's 403 to crawlers means AI may not be able to read your menu or hours at all. Verify on the live pass." }
+  },
+  "aeo": {
+    "score": "4 / 10",
+    "cost": "Nothing you publish claims the trail, and the site may be unreadable to AI.",
+    "finding": "There is no FAQ or question-shaped content answering \"Mexican on the Beltline,\" \"Oaxacan near the Eastside Trail,\" or \"patio on the Beltline,\" and the site blocked our crawler, so the trail names own those answers.",
+    "qa": { "status": "Verify", "finding": "Check the Google profile for open, owner-unanswered questions, then seed your own (patio, reservations, mezcal, parking near the trail)." },
+    "qcontent": { "status": "Missing", "finding": "No FAQ or question content is visible on the site. Add Beltline, patio, Oaxacan, mezcal, and reservation questions phrased the way people ask them." },
+    "answers": { "status": "Gap", "finding": "Superica, Rreal Tacos, and bartaco own \"Mexican on the Beltline.\" Nothing on your site claims the Eastside Trail or the patio in words a machine can quote." }
+  },
+  "verdict": "You already earned the hard part: an 8.4 from The Infatuation and a patio that opens onto the Eastside Trail. What is missing is plumbing, a site AI can actually read, LocalBusiness schema, a Beltline profile claimed separately from Sandy Springs, and a launch film for the new room. Fix the site and claim the trail in words, and the review you already hold starts doing its job.",
+  "verify": [
+    "Exact live Google star rating + review count for the Old Fourth Ward / Beltline location (have Yelp 14, OpenTable 4.8 over 34)",
+    "Whether the 403 blocks AI crawlers (GPTBot, PerplexityBot, Google-Extended) or only our fetch; confirm the site stack",
+    "LocalBusiness schema presence on the live site",
+    "Full 9-query AI test logged per engine (ChatGPT, Perplexity, Gemini)",
+    "PageSpeed mobile LCP",
+    "Apple Maps + Bing Places claim status; Beltline pin distinct from Sandy Springs",
+    "Inclusion in Discover Atlanta, Beltline.org, and AJC Eastside Trail dining guides"
+  ]
+}

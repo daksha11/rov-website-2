@@ -1,0 +1,5 @@
+# One business per line: url  |  optional pointers (competitor, neighborhood, angle)
+# Blank lines and #comments are ignored.
+https://www.electrobikega.com/  | Old Fourth Ward, on the Eastside Trail; repair turnaround is their weak spot
+https://example-coffee-shop.com/  | Inman Park; competes with Ponce City Market cafes
+https://example-boutique.com/

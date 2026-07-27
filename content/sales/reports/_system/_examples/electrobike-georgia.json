@@ -1,0 +1,73 @@
+{
+  "slug": "electrobike-georgia",
+  "business": {
+    "name": "ElectroBike Georgia",
+    "short": "ElectroBike",
+    "location": "Eastside Trail · Old Fourth Ward",
+    "neighborhood": "Old Fourth Ward",
+    "category": "e-bikes",
+    "date": "July 2026"
+  },
+  "comp": [
+    { "name": "The Belt Hub", "why": "Old Fourth Ward · rides on the trail" },
+    { "name": "Beltline Biking", "why": "\"Beltline\" right in the name" },
+    { "name": "Atlanta Bicycle Barn", "why": "Steps from the Eastside Trail" }
+  ],
+  "ai": { "absent": "not named for \"near the Beltline.\" The trail-named shops are." },
+  "gap": {
+    "hero": {
+      "number": "2.5M",
+      "label": "visitors a year move along the Beltline you sit on. The ones who search or ask AI for an e-bike get handed to other shops.",
+      "sub": "Beltline: 2.5M annual visits (Econsult / ABI, 2026). You are on the Eastside Trail; your search presence is not."
+    },
+    "tiles": [
+      { "num": "3", "label": "e-bike shops rank above you for \"near the Beltline\"" },
+      { "num": "0", "label": "AI picks for \"near the Beltline\" that include you" },
+      { "num": "0", "label": "2026 \"best Atlanta e-bike\" lists you appear on" }
+    ]
+  },
+  "seo": {
+    "score": "5 / 10",
+    "cost": "You show up for \"e-bike Atlanta,\" but not the Beltline you are on.",
+    "finding": "You rank for generic \"e-bike Atlanta\" (a 2026 top-8 list has you at #3), but your page titles say \"Atlanta,\" not \"Beltline,\" and Yelp sits at 3.1 stars. Prime location, generic signals.",
+    "gbp": { "status": "Claimed", "finding": "Listed in the Bicycle Barn building; category \"Bikes.\" Add \"Electric bike / e-bike\" categories, trail-side photos, and \"on the Beltline\" to the description." },
+    "reviews": { "status": "Weak", "finding": "Yelp 3.1 stars · 18 reviews; Facebook 13 (100% recommend). Recurring theme: repair turnaround and slow replies. Verify Google rating live." },
+    "localpack": { "status": "Mixed", "finding": "\"e-bike shop Atlanta\": present (a 2026 top-8 has you #3). \"e-bike near the Beltline\": not in the pack; trail-named shops win it." },
+    "speed": { "status": "Verify", "finding": "WordPress / WooCommerce store with lazy-loaded imagery. Run PageSpeed on the final pass and log mobile LCP." },
+    "maps": { "status": "Verify", "finding": "Confirm Apple Maps and Bing Places are claimed and match 151 Sampson St NE, Suite C." }
+  },
+  "geo": {
+    "score": "3 / 10",
+    "cost": "Ask AI for an e-bike near the Beltline and it names other shops.",
+    "finding": "Ask for \"e-bikes near the Beltline\" and AI names The Belt Hub, Beltline Biking, and the Bike Barn. You are on the Eastside Trail, yet absent from the 2026 best-of lists AI quotes.",
+    "aitest": { "status": "Absent", "finding": "For \"near the Beltline,\" AI summaries name The Belt Hub, Beltline Biking, and Atlanta Bicycle Barn. Run all 9 phrasings live and log each engine." },
+    "corpus": { "status": "Thin", "finding": "On Yelp (3.1 stars) and Facebook; light on Reddit, local press, and the Beltline guides AI cites." },
+    "lists": { "status": "Missing", "finding": "Absent from the 2026 \"best Atlanta e-bike stores\" list; in one \"top 8\" at #3, behind Edison and the Bicycle Barn. Not in Beltline.org or Discover Atlanta guides." },
+    "schema": { "status": "Missing", "finding": "No visible LocalBusiness schema; the address sits in footer text only. No geo or \"on the Beltline\" signal a machine can read." }
+  },
+  "aeo": {
+    "score": "5 / 10",
+    "cost": "Strong FAQ, but nothing you publish claims the trail.",
+    "finding": "You already run an 18-question FAQ, better than most shops. But none of it claims the Beltline or the Eastside Trail, so you do not own the \"near the Beltline\" answer.",
+    "qa": { "status": "Verify", "finding": "Check the Google profile for open, owner-unanswered questions, then seed your own (parking, test rides on the trail, rentals)." },
+    "qcontent": { "status": "Strong", "finding": "An 18-question FAQ is already live (products, maintenance, safety, buying). Add Beltline, parking, and \"test ride on the Eastside Trail\" questions." },
+    "answers": { "status": "Gap", "finding": "Nothing on the site owns \"e-bike shop on the Atlanta Beltline\" or \"Eastside Trail e-bike rental.\" The trail-named shops answer it." }
+  },
+  "verdict": "You are physically on the Eastside Beltline, and you press-released exactly that, yet every \"Beltline\" search hands the customer to shops named after the trail. The fastest fix: claim the Beltline in your homepage title, your schema, and the 2026 Atlanta e-bike lists, and you win the ground you already stand on.",
+  "cover": {
+    "image": "https://www.electrobikega.com/wp-content/uploads/2022/07/electrobike-shop-atlanta-ga.jpeg",
+    "alt": "ElectroBike Georgia storefront with its lineup of e-bikes",
+    "caption": "ElectroBike Georgia, Atlanta's first full-service e-bike shop. The storefront works. This report is about the second storefront, the one on the phone."
+  },
+  "ride": {
+    "image": "https://www.electrobikega.com/wp-content/uploads/2022/07/electrobikes-atlanta-ga2.jpg",
+    "alt": "People riding electric bikes together",
+    "caption": "The ride people are already searching for. The only question is whether the search points them to you, or to the shop that claimed the trail first."
+  },
+  "verify": [
+    "Exact Google star rating + review count (have Yelp 3.1/18, Facebook 13)",
+    "Full 9-query AI test logged per engine (ChatGPT, Perplexity, Gemini)",
+    "PageSpeed mobile LCP",
+    "Apple Maps + Bing Places claim status"
+  ]
+}

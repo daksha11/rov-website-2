@@ -1,0 +1,65 @@
+{
+  "slug": "trattoria-lucia",
+  "business": {
+    "name": "Trattoria Lucia",
+    "short": "Lucia",
+    "location": "Southside Beltline · Glenwood Park",
+    "neighborhood": "Glenwood Park",
+    "category": "Italian restaurants",
+    "date": "July 2026"
+  },
+  "comp": [
+    { "name": "Indaco", "why": "725 Ponce · opened right on the Eastside Trail" },
+    { "name": "Bellina Alimentari", "why": "Ponce City Market · Beltline patio seating" },
+    { "name": "BoccaLupo", "why": "Inman Park · Italian on the Eastside Trail" }
+  ],
+  "ai": { "absent": "not yet named for \"Italian near the Beltline.\" AI hands that answer to Indaco, Bellina, and BoccaLupo." },
+  "gap": {
+    "hero": {
+      "number": "2.5M",
+      "label": "people a year move along the Beltline you just opened on. The ones who search or ask AI for Italian nearby get handed to the trail-named spots, because your name is three months old and search has not caught up.",
+      "sub": "Beltline: ~2.5M annual visits (Econsult / ABI). Lucia sits off the Southside Trail on Garrett St; the press knows it, the search engines and AI do not yet."
+    },
+    "tiles": [
+      { "num": "3", "label": "Italian spots rank above you for \"near the Beltline\"" },
+      { "num": "0", "label": "AI picks for \"Italian near the Beltline\" that name you" },
+      { "num": "0", "label": "2026 \"best Atlanta Italian\" lists you appear on" }
+    ]
+  },
+  "seo": {
+    "score": "3 / 10",
+    "cost": "A brand-new name that search does not recognize yet.",
+    "finding": "You launched with real press (Atlanta Magazine, The Infatuation, Rough Draft, Appetito), but the site itself is a bare Squarespace page whose title is just \"TRATTORIA LUCIA,\" with no neighborhood, no Beltline, and no address signal. The fix is to make the site say what the press already says: Italian in Glenwood Park, off the Southside Beltline.",
+    "gbp": { "status": "Verify", "finding": "Confirm the Google Business Profile is claimed, categorized \"Italian restaurant,\" and shows 925 Garrett St Ste L, hours, menu link, and interior photos. New openings often go live auto-generated and unclaimed." },
+    "reviews": { "status": "Thin", "finding": "A Yelp page exists (opened ~spring 2026, 14 photos, few reviews) and the Infatuation has not visited yet. Too new to have a rating that ranks. Seed early Google reviews from the opening crowd." },
+    "localpack": { "status": "Missing", "finding": "\"Italian near the Beltline\" and \"Italian Glenwood Park\" surface Indaco, Bellina, and BoccaLupo. Lucia is not in the pack yet; the site gives Google nothing local to rank." },
+    "speed": { "status": "Verify", "finding": "Squarespace site with a large stock hero image. Run PageSpeed on the final pass and log mobile LCP." },
+    "maps": { "status": "Verify", "finding": "Confirm Apple Maps and Bing Places are claimed and match 925 Garrett St SE Ste L, Atlanta, GA 30316." }
+  },
+  "geo": {
+    "score": "3 / 10",
+    "cost": "Ask AI for Italian near the Beltline and it names other rooms.",
+    "finding": "You have a strong early press corpus, which AI reads, but ask for \"Italian near the Beltline\" and it still returns Indaco, Bellina, and BoccaLupo. The name is too new to have earned the best-of lists AI quotes, and nothing you publish claims the trail. Turn the launch coverage into owned pages that say Beltline and Glenwood Park.",
+    "aitest": { "status": "Absent", "finding": "For \"near the Beltline,\" AI summaries name the established Eastside Trail Italian rooms. Run all 9 phrasings live (ChatGPT, Perplexity, Gemini) and log each engine as Lucia matures." },
+    "corpus": { "status": "Mixed", "finding": "Unusually good launch press for a new spot (Atlanta Magazine, Hoodline, Rough Draft, Appetito, The Infatuation preview). Light on Yelp, Reddit, and the Beltline dining guides AI cites most." },
+    "lists": { "status": "Missing", "finding": "Absent from the 2026 \"best Italian in Atlanta\" and Beltline dining lists (OpenTable, Atlanta Eats, Discover Atlanta). These are the citations AI leans on; a three-month-old name has not made them yet." },
+    "schema": { "status": "Missing", "finding": "No visible Restaurant or LocalBusiness schema; the address lives in footer text. No cuisine, geo, or \"off the Beltline\" signal a machine can read." }
+  },
+  "aeo": {
+    "score": "2 / 10",
+    "cost": "Nothing you publish answers a single question a diner asks.",
+    "finding": "There is no FAQ, no reservations copy, and no question-shaped content on the site, so you own none of the answers people ask before booking (parking, reservations, brunch hours, private dining, Beltline access). Add an FAQ that claims Glenwood Park and the Southside Trail in plain language.",
+    "qa": { "status": "Verify", "finding": "Check the Google profile for open, owner-unanswered questions, then seed your own: reservations, parking off Garrett St, brunch service, walkable from the Beltline." },
+    "qcontent": { "status": "Missing", "finding": "No FAQ or question content anywhere on the Squarespace site. Diners search \"Trattoria Lucia reservations,\" \"brunch,\" \"parking,\" and get nothing from you." },
+    "answers": { "status": "Gap", "finding": "Nothing on the site owns \"Italian restaurant on the Atlanta Beltline\" or \"Glenwood Park Italian.\" The trail-named rooms answer it, even though you are the newest thing on that stretch." }
+  },
+  "verdict": "You opened a genuinely well-reviewed Italian room off the Southside Beltline and earned press most restaurants would kill for, yet the website is a blank Squarespace page and every \"Beltline\" or \"Glenwood Park\" search hands the diner to an older room. The fastest fix: turn the launch coverage into an owned, schema-backed site that says Italian, Glenwood Park, and Beltline, claim the Google and Apple profiles, and seed the first wave of reviews before the name settles into search without you.",
+  "verify": [
+    "Exact Google and Yelp star ratings + review counts (page is new, few reviews)",
+    "Google Business Profile + Apple Maps + Bing Places claim status for 925 Garrett St Ste L",
+    "Full 9-query AI test logged per engine (ChatGPT, Perplexity, Gemini)",
+    "PageSpeed mobile LCP on the Squarespace site",
+    "Exact opening date (press ranges from Dec 2025 soft open to Apr 2026); brunch began late March 2026",
+    "Current Beltline annual visitation figure for the cited source"
+  ]
+}

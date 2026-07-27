@@ -1,0 +1,64 @@
+{
+  "slug": "divine-dermatology",
+  "business": {
+    "name": "Divine Dermatology & Aesthetics",
+    "short": "Divine Dermatology",
+    "location": "Southside Beltline · Grant Park",
+    "neighborhood": "Grant Park",
+    "category": "med spa",
+    "date": "July 2026"
+  },
+  "comp": [
+    { "name": "Atlanta Medical Aesthetics", "why": "Old Fourth Ward, 659 Auburn Ave, right on the Beltline" },
+    { "name": "Natural Body Spa + Med Spa", "why": "Markets itself steps from the Eastside Trail" },
+    { "name": "FORTH Atlanta", "why": "Old Fourth Ward wellness and spa, on the Beltline" }
+  ],
+  "ai": { "absent": "not named for \"med spa near the Beltline.\" The trail-side clinics are, and your citations still point to your old address." },
+  "gap": {
+    "hero": {
+      "number": "2.5M",
+      "label": "people move along the Beltline you sit on each year. The ones who search or ask AI for a dermatologist get handed to trail-side clinics, and your own listings still send them to your old address.",
+      "sub": "Beltline: 2.5M annual visits (Econsult / ABI, 2026). You are at The Beacon on the Southside Trail; your schema, Yelp, and citations still read 1323 Metropolitan Pkwy SW."
+    },
+    "tiles": [
+      { "num": "3", "label": "med spas rank above you for \"near the Beltline\"" },
+      { "num": "0", "label": "AI picks for \"near the Beltline\" that include you" },
+      { "num": "0", "label": "2026 \"best Atlanta med spa\" lists you appear on" }
+    ]
+  },
+  "seo": {
+    "score": "4 / 10",
+    "cost": "You read as \"Atlanta,\" and half your citations still point to your old address.",
+    "finding": "You have a board-certified dermatologist and a premium practice, but your schema, Yelp, and directory listings still show 1323 Metropolitan Pkwy SW, not The Beacon in Grant Park. The fix: unify your name, address, and phone to the Grant Park location everywhere, then claim the neighborhood in your titles.",
+    "gbp": { "status": "Verify", "finding": "Confirm whether the Google Business Profile shows the Beacon address (1039 Grant St SE Ste A-11) or the old Metropolitan Pkwy location. Add \"Medical spa\" and \"Skin care clinic\" categories, Grant Park photos, and \"near the Beltline\" to the description." },
+    "reviews": { "status": "Thin", "finding": "Reviews are scattered and low in count: Yelp lists 18 at the old Metropolitan Pkwy address, CareDash shows 5 stars from 2 patients. Recurring theme: long waits past appointment times. Verify the live Google rating and count for the Grant Park location." },
+    "localpack": { "status": "Mixed", "finding": "You surface for some generic \"dermatologist Atlanta\" queries, but not for \"med spa near the Beltline\" or \"dermatologist Grant Park.\" The trail-side clinics own that pack." },
+    "speed": { "status": "Verify", "finding": "Built on the GoDaddy website builder with stock hero imagery. Run PageSpeed on the final pass and log the mobile LCP." },
+    "maps": { "status": "Verify", "finding": "Confirm Apple Maps and Bing Places are claimed and match the Beacon address, not the old Metropolitan Pkwy location." }
+  },
+  "geo": {
+    "score": "3 / 10",
+    "cost": "Ask AI for a med spa near the Beltline and it names the trail-side clinics.",
+    "finding": "Ask for a \"med spa near the Beltline\" and AI names Atlanta Medical Aesthetics and other Old Fourth Ward clinics. You have a real board-certified dermatologist, a genuine authority signal, yet you are absent from the corpus and best-of lists AI reads. Publish provider-led, Grant Park content and the story changes.",
+    "aitest": { "status": "Absent", "finding": "For \"near the Beltline,\" AI summaries name Atlanta Medical Aesthetics, Natural Body, and other trail-adjacent clinics. Run all 9 phrasings live and log each engine." },
+    "corpus": { "status": "Thin", "finding": "Present on directories (CareDash, Nextdoor, Fresha, BBB, Healthline) but light on press, Reddit, and the Beltline and Grant Park guides AI cites. Dr. Cornelius's credentials are underused as a trust signal online." },
+    "lists": { "status": "Missing", "finding": "Absent from the 2026 \"best Atlanta med spa\" and \"best dermatologist\" lists (medspaatlantaguide, Modern Luxury's Botox roundup). Not in Beltline.org or Discover Atlanta guides." },
+    "schema": { "status": "Weak", "finding": "LocalBusiness schema exists but points to the old 1323 Metropolitan Pkwy SW address with matching geo coordinates. No Grant Park, no Beacon, no \"near the Beltline\" signal a machine can trust." }
+  },
+  "aeo": {
+    "score": "3 / 10",
+    "cost": "A board-certified dermatologist on site, and nothing you publish answers a single question.",
+    "finding": "You have the one asset most med spas lack, a board-certified dermatologist, but the site publishes no question content, so you own none of the answers. Add a provider-led FAQ (results, safety, downtime, Grant Park parking) and you can own \"dermatologist near the Beltline.\"",
+    "qa": { "status": "Verify", "finding": "Check the Google profile for open, owner-unanswered questions, then seed your own (insurance, memberships, first-visit, parking at The Beacon)." },
+    "qcontent": { "status": "Missing", "finding": "No FAQ or question-shaped content on the site. For a high-ticket practice, this is where trust and answers are won. Start with the questions patients actually type before booking." },
+    "answers": { "status": "Gap", "finding": "Nothing on the site owns \"dermatologist near the Atlanta Beltline\" or \"med spa in Grant Park.\" With a board-certified physician, that answer is yours to claim, and no one holds it yet." }
+  },
+  "verdict": "You are a premium, board-certified dermatology practice at The Beacon on the Southside Beltline, yet your schema, your Yelp page, and your citations still send patients to your old Metropolitan Pkwy address, so no \"Grant Park\" or \"near the Beltline\" search finds the practice you actually are. The fastest fix: unify your name, address, and phone to the Beacon location across Google, Apple, Bing, and your schema, then claim Grant Park and the Beltline in your homepage title and a provider-led FAQ. You already have the authority; you are just pointing it at the wrong door.",
+  "verify": [
+    "Exact Google star rating + review count for the Grant Park / Beacon location (have Yelp 18 at old address, CareDash 5/5 from 2)",
+    "Whether the Google Business Profile lists the Beacon address (1039 Grant St SE Ste A-11) or the old 1323 Metropolitan Pkwy SW address",
+    "Full 9-query AI test logged per engine (ChatGPT, Perplexity, Gemini)",
+    "PageSpeed mobile LCP",
+    "Apple Maps + Bing Places claim status and address accuracy"
+  ]
+}

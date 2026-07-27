@@ -1,0 +1,75 @@
+{
+  "slug": "hop-city",
+  "business": {
+    "name": "Hop City Craft Beer & Wine",
+    "short": "Hop City",
+    "location": "Eastside Trail · Inman Park",
+    "neighborhood": "Inman Park",
+    "category": "craft beer",
+    "date": "July 2026"
+  },
+  "comp": [
+    { "name": "New Realm Brewing", "why": "Perched on the Eastside Trail with a Beltline patio" },
+    { "name": "Orpheus Brewing", "why": "Brew house overlooks the Eastside Trail" },
+    { "name": "BrewDog Atlanta", "why": "Right on the Eastside Trail, taproom on the Beltline" }
+  ],
+  "ai": { "absent": "named as a top Atlanta bottle shop, but for \"craft beer near the Beltline\" AI hands the answer to the trail breweries, not to you." },
+  "gap": {
+    "hero": {
+      "number": "2.5M",
+      "label": "visits a year move along the Beltline your Krog Street store sits two minutes from. Your bottles are that close, your search signals are not.",
+      "sub": "Beltline: 2.5M annual visits, $52M spent on retail and dining a year (Atlanta Beltline economic analysis, 2026). Your Krog Street Market store is a two-minute walk from the Eastside Trail."
+    },
+    "tiles": [
+      { "num": "3", "label": "trail breweries AI names first for \"craft beer near the Beltline\"" },
+      { "num": "2", "label": "Atlanta stores sharing one site, neither with its own local page" },
+      { "num": "0", "label": "mentions of \"Beltline\" or \"Eastside Trail\" in your titles or schema" }
+    ]
+  },
+  "seo": {
+    "score": "6 / 10",
+    "cost": "You win \"bottle shop Atlanta,\" but not the Beltline your Krog store sits beside.",
+    "finding": "Your reviews are genuinely strong (Google 4.5 from ~315, and Hop Culture called you the best bottle shop in Atlanta), so you rank for \"bottle shop Atlanta.\" But your two Atlanta stores share one site with no per-location page, and nothing in your titles claims the Beltline or Inman Park. Fix the local pages and the neighborhood signals.",
+    "gbp": { "status": "Claimed", "finding": "The Krog Street Market listing shows on Google with a 4.5 rating. Add \"Beer store / Wine store\" categories, trail-side photos, and \"steps from the Eastside Trail\" to the description. Confirm the West End profile is equally complete." },
+    "reviews": { "status": "Strong", "finding": "Google ~4.5 from roughly 315, Yelp Krog 153 reviews, TripAdvisor 4.2, BeerAdvocate 4.41. A real asset. Keep responding and verify the exact live counts per location." },
+    "localpack": { "status": "Mixed", "finding": "\"craft beer store Atlanta\" and \"bottle shop Atlanta\": you win, top of the Yelp lists. \"craft beer near the Beltline\": the pack fills with the trail breweries, not you." },
+    "speed": { "status": "Verify", "finding": "Multi-location Shopify storefront with heavy product imagery. Run PageSpeed on the final pass and log mobile LCP." },
+    "maps": { "status": "Verify", "finding": "Confirm Apple Maps and Bing Places are claimed for both Atlanta stores and match 99 Krog St NE, Suite D and the West End address." }
+  },
+  "geo": {
+    "score": "6 / 10",
+    "cost": "AI knows you as a bottle shop, but not as the one on the Beltline.",
+    "finding": "You have a strong corpus, so AI does name you as a top Atlanta bottle shop. But ask for \"craft beer near the Beltline\" and it lists New Realm, Orpheus, and BrewDog, the shops that claimed the trail. You are missing that ground and the machine-readable geo signal that would win it.",
+    "aitest": { "status": "Mixed", "finding": "For \"best Atlanta bottle shop\" you appear; for \"near the Beltline\" the trail breweries lead. Run all 9 phrasings live across ChatGPT, Perplexity, and Gemini and log each engine." },
+    "corpus": { "status": "Strong", "finding": "Yelp, TripAdvisor, BeerAdvocate, Hop Culture (\"best bottle shop in Atlanta\"), and local guides. A rare strength. The gap is that almost none of it ties you to the Beltline." },
+    "lists": { "status": "Mixed", "finding": "You appear on best-bottle-shop lists, but not on the Beltline and Eastside Trail drink guides AI cites for the trail, which name the breweries instead." },
+    "schema": { "status": "Verify", "finding": "Confirm LocalBusiness schema per location on the Shopify site. Multi-location Shopify rarely emits it. No \"on the Beltline\" signal a machine can read today." }
+  },
+  "aeo": {
+    "score": "4 / 10",
+    "cost": "No question content, so you own none of the trail answers.",
+    "finding": "There is no FAQ or question-shaped content claiming the Beltline, the Eastside Trail, or your Krog Street location, so you do not own \"where to buy craft beer near the Beltline.\" Add trail, parking, and make-your-own-four-pack questions per store.",
+    "qa": { "status": "Verify", "finding": "Check both Google profiles for open, owner-unanswered questions, then seed your own (four-packs, growler fills, walking from the trail)." },
+    "qcontent": { "status": "Thin", "finding": "The site sells product well but publishes little question-shaped content. An FAQ per location (Beltline access, parking, tastings) would feed AEO directly." },
+    "answers": { "status": "Gap", "finding": "Nothing you publish owns \"craft beer near the Atlanta Beltline\" or \"bottle shop on the Eastside Trail.\" The trail breweries answer it." }
+  },
+  "verdict": "You are already the best-reviewed bottle shop in Atlanta and AI knows it, yet your Krog Street store sits two minutes off the Beltline and never says so. The fastest fix: give each store its own local page with Beltline and neighborhood signals in the title, schema, and an FAQ, and you turn a strong brand into the obvious answer for \"craft beer near the Beltline.\"",
+  "cover": {
+    "image": "https://images.squarespace-cdn.com/content/v1/62e113831445fc09ed01234c/830a1a53-a34e-4073-ab92-666c6c959905/BW_TKD0822_0115.jpg",
+    "alt": "Hop City Craft Beer & Wine at Krog Street Market",
+    "caption": "Hop City at Krog Street Market. The wall of bottles works. This report is about the second storefront, the one on the phone."
+  },
+  "ride": {
+    "image": "https://images.squarespace-cdn.com/content/v1/62e113831445fc09ed01234c/1658917960185-FFXMR2ROP8BKEZL35Q3M/BW_KrogMay21_1319.jpg",
+    "alt": "Interior of Krog Street Market near Hop City",
+    "caption": "The Eastside Trail foot traffic is already here. The only question is whether the search points them to your shelves, or to the brewery that claimed the trail first."
+  },
+  "verify": [
+    "Exact live Google rating + review count per location (have ~4.5/315 Krog, Yelp 153, TripAdvisor 4.2)",
+    "Full 9-query AI test logged per engine (ChatGPT, Perplexity, Gemini)",
+    "PageSpeed mobile LCP on the Shopify storefront",
+    "LocalBusiness schema presence per location on hopcitybeer.com",
+    "Apple Maps + Bing Places claim status for both Atlanta stores",
+    "Per-location Google Business Profile completeness (West End vs Krog)"
+  ]
+}

@@ -43,3 +43,9 @@ next-env.d.ts
 # office temp lock files
 ~$*
 .bolt/
+
+# ROV visibility reports — runtime + generated outputs (rebuild from JSON via _system/run-batch.mjs)
+content/sales/reports/_system/_batch/
+content/sales/reports/beltline--*.html
+content/sales/reports/beltline--*.pdf
+content/sales/reports/beltline-visibility-report.pdf

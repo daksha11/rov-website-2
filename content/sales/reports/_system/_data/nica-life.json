@@ -1,0 +1,74 @@
+{
+  "slug": "nica-life",
+  "business": {
+    "name": "Nica Life",
+    "short": "Nica Life",
+    "location": "Southside Beltline · Grant Park",
+    "neighborhood": "Grant Park",
+    "category": "jewelry",
+    "date": "July 2026"
+  },
+  "comp": [
+    { "name": "Citizen Supply", "why": "Inside Ponce City Market, right on the Eastside Trail; 130+ makers including jewelry" },
+    { "name": "The Beehive ATL", "why": "Maker collective near the Beltline; handmade jewelry from local artisans" },
+    { "name": "Ponce City Market", "why": "The Beltline's retail anchor on the Eastside Trail" }
+  ],
+  "ai": { "absent": "not named for \"jewelry near the Beltline.\" The Ponce City Market shops are." },
+  "gap": {
+    "hero": {
+      "number": "2.5M",
+      "label": "people move along the Beltline you sit on each year. The ones who search or ask AI for jewelry near the trail get sent to Ponce City Market, not to The Beacon.",
+      "sub": "Beltline: 2.5M annual visits (Econsult / ABI, 2026). You are at The Beacon on the Southside Trail; nothing on your site says so."
+    },
+    "tiles": [
+      { "num": "3", "label": "jewelry shops rank above you for \"near the Beltline\"" },
+      { "num": "0", "label": "AI picks for \"near the Beltline\" that include you" },
+      { "num": "0", "label": "2026 \"best Atlanta jewelry / boutique\" lists you appear on" }
+    ]
+  },
+  "seo": {
+    "score": "5 / 10",
+    "cost": "Great product reviews, but nothing local ties you to the Beltline you sit on.",
+    "finding": "Your Shopify store is solid and your product reviews are excellent, but every signal says \"Nica Life\" and \"Nicaragua,\" never \"Grant Park\" or \"the Beltline.\" You have a physical storefront at The Beacon that your site treats like it does not exist. Add a local layer: a store page, the neighborhood in your titles, and a claimed profile.",
+    "gbp": { "status": "Verify", "finding": "Confirm a Google Business Profile exists for the Beacon storefront (1039 Grant St SE B-19) with jewelry and fair-trade categories, hours, and trail-side photos. This is the fastest local win available." },
+    "reviews": { "status": "Strong", "finding": "Judge.me shows 4.9 stars from 68 product reviews and Facebook has 1,525 likes, better than most shops your size. These are product and social reviews, though; verify the Google star rating and count for the storefront itself." },
+    "localpack": { "status": "Thin", "finding": "You surface for your brand name, but not for \"jewelry near the Beltline,\" \"handmade jewelry Grant Park,\" or \"fair-trade jewelry Atlanta.\" The Ponce City Market shops own that pack." },
+    "speed": { "status": "Verify", "finding": "Standard Shopify storefront, usually fast, but image-heavy collection pages can drag on mobile. Run PageSpeed on the final pass and log the mobile LCP." },
+    "maps": { "status": "Verify", "finding": "Confirm Apple Maps and Bing Places list the Beacon storefront with the correct address, hours, and category." }
+  },
+  "geo": {
+    "score": "3 / 10",
+    "cost": "Ask AI where to buy jewelry near the Beltline and it sends people to Ponce City Market.",
+    "finding": "Ask for \"jewelry near the Beltline\" and AI names Citizen Supply, The Beehive, and Ponce City Market. Your fair-trade mission is exactly the kind of story AI loves to quote, yet it is absent from the guides and lists AI reads. Structure the mission and the location and you become citable.",
+    "aitest": { "status": "Absent", "finding": "For \"near the Beltline,\" AI summaries name the Ponce City Market and Eastside Trail shops. Run all 9 phrasings live and log each engine." },
+    "corpus": { "status": "Thin", "finding": "Present on the Fair Trade Federation directory, Faire wholesale, and one opening announcement (WhatNow Atlanta), but light on Reddit, ongoing press, and the Beltline and Grant Park guides AI cites." },
+    "lists": { "status": "Missing", "finding": "Absent from the 2026 \"best Atlanta jewelry\" and \"best boutique\" lists and Discover Atlanta's Made in ATL and boutique roundups. Not in Beltline.org guides." },
+    "schema": { "status": "Weak", "finding": "Shopify ships Organization and Product schema, but there is no LocalBusiness markup for the Beacon storefront and no geo or \"near the Beltline\" signal a machine can read." }
+  },
+  "aeo": {
+    "score": "4 / 10",
+    "cost": "You have an FAQ, but none of it claims Grant Park or the trail.",
+    "finding": "You already run an FAQ page, ahead of most shops, but it answers wholesale and where-to-buy questions, not local ones. Add questions about visiting The Beacon, parking, the Beltline, and the fair-trade story, and you can own the \"fair-trade jewelry near the Beltline\" answer.",
+    "qa": { "status": "Verify", "finding": "Check the Google profile for open, owner-unanswered questions, then seed your own (hours, parking at The Beacon, custom pieces, the artisans behind each piece)." },
+    "qcontent": { "status": "Mixed", "finding": "An FAQ page is live, but it is oriented to stockists and wholesale, not to a walk-in near the trail. Add Grant Park, Beltline, and fair-trade questions worded the way people actually ask them." },
+    "answers": { "status": "Gap", "finding": "Nothing on the site owns \"fair-trade jewelry near the Atlanta Beltline\" or \"handmade jewelry in Grant Park.\" With your mission and your storefront, that answer is yours to claim, and no one holds it yet." }
+  },
+  "verdict": "You are a fair-trade jewelry storefront on the Southside Beltline at The Beacon, with a genuinely moving story and 4.9-star reviews, but the entire site speaks \"Nicaragua\" and never \"Grant Park\" or \"the Beltline,\" so every \"jewelry near the Beltline\" search and AI answer hands the walk-in to Ponce City Market. The fastest fix: add a LocalBusiness profile and a Grant Park / Beltline store page with a real FAQ, claim the storefront on Google, Apple, and Bing, and turn the fair-trade mission into the answer AI quotes. The story is your unfair advantage; right now the map just does not know you are on it.",
+  "cover": {
+    "image": "https://cdn.shopify.com/s/files/1/0986/6274/files/2024ProductShots-71.jpg",
+    "alt": "Nica Life handmade fair-trade jewelry",
+    "caption": "Nica Life, fair-trade jewelry handmade by artisans in Nicaragua. The pieces speak for themselves. This report is about the storefront on the phone, the one search cannot find on the Beltline."
+  },
+  "ride": {
+    "image": "https://cdn.shopify.com/s/files/1/0986/6274/files/2024ProductShots-61.jpg",
+    "alt": "Stacked handmade Nica Life bracelets and anklets",
+    "caption": "The kind of piece someone walking the trail would stop for, if the search that sent them there knew you were steps away."
+  },
+  "verify": [
+    "Exact Google star rating + review count for the Beacon storefront (have Judge.me 4.9/68 product reviews, Facebook 1,525 likes)",
+    "Whether a Google Business Profile exists for the Beacon storefront (1039 Grant St SE B-19)",
+    "Full 9-query AI test logged per engine (ChatGPT, Perplexity, Gemini)",
+    "PageSpeed mobile LCP",
+    "Apple Maps + Bing Places claim status and category accuracy"
+  ]
+}
