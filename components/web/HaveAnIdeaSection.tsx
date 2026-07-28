@@ -70,7 +70,7 @@ export default function HaveAnIdeaSection() {
                                 }}
                             />
                             <motion.a
-                                href="https://calendly.com/rangeofviewmusic/30min"
+                                href="https://cal.com/rov-studios-imhphw/15min"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 whileHover={{ scale: 1.1 }}
@@ -95,7 +95,7 @@ export default function HaveAnIdeaSection() {
                         </div>
 
                         <motion.a
-                            href="https://calendly.com/rangeofviewmusic/30min"
+                            href="https://cal.com/rov-studios-imhphw/15min"
                             target="_blank"
                             rel="noopener noreferrer"
                             whileHover={{ scale: 1.05 }}

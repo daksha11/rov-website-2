@@ -488,7 +488,7 @@ export default function RestaurantAtlantaPage() {
           heading="Want to know where your restaurant is leaking revenue?"
           subheading="We run free audits for Atlanta restaurants. Tell us where to look and we'll show you exactly what to fix."
           messagePlaceholder="Your restaurant's name, website, and what's bugging you about it..."
-          secondaryHref="https://calendly.com/rangeofviewmusic/30min"
+          secondaryHref="https://cal.com/rov-studios-imhphw/15min"
           secondaryLabel="Prefer to talk? Book a free audit call"
         />
 

@@ -400,7 +400,7 @@ export default function IknaEcommerceGrowthPage() {
           heading="Ready to build your online store from scratch?"
           subheading="We run free audits for Atlanta small businesses. Tell us what you're selling and we'll show you the revenue you're leaving on the table."
           messagePlaceholder="What you sell, where you sell it now, and what you're trying to grow..."
-          secondaryHref="https://calendly.com/rangeofviewmusic/30min"
+          secondaryHref="https://cal.com/rov-studios-imhphw/15min"
           secondaryLabel="Prefer to talk? Book a free audit call"
         />
 

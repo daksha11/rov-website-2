@@ -17,7 +17,7 @@ const { issueMeta } = currentVolume;
 const NAV = [
   { kicker: "Let's make it happen", title: "Services", href: "/#services", external: false },
   { kicker: "Get to know us", title: "About", href: "/#team-members", external: false },
-  { kicker: "Contact", title: "Calendly", href: "https://calendly.com/rangeofviewmusic/30min", external: true },
+  { kicker: "Contact", title: "Book a Call", href: "https://cal.com/rov-studios-imhphw/15min", external: true },
 ];
 
 const paperSoft = "rgba(240,230,224,0.66)";

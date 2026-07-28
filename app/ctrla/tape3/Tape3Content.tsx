@@ -218,7 +218,7 @@ export default function Tape3Content() {
                             className="flex items-center gap-4"
                         >
                             <a
-                                href="https://calendly.com/rangeofviewmusic/30min"
+                                href="https://cal.com/rov-studios-imhphw/15min"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="cta-shine inline-flex items-center gap-2 text-white font-semibold transition-all duration-300 hover:scale-105"

@@ -77,7 +77,7 @@ export default function FAQSection({ items }: FAQSectionProps) {
                                         }}
                                     />
                                     <a
-                                        href="https://calendly.com/rangeofviewmusic/30min"
+                                        href="https://cal.com/rov-studios-imhphw/15min"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="w-12 h-12 md:w-14 md:h-14 flex-shrink-0 rounded-full bg-[#FFF4E3] flex items-center justify-center hover:scale-110 transition-transform relative z-10"
@@ -110,7 +110,7 @@ export default function FAQSection({ items }: FAQSectionProps) {
                                 </div>
 
                                 <a
-                                    href="https://calendly.com/rangeofviewmusic/30min"
+                                    href="https://cal.com/rov-studios-imhphw/15min"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="flex-1 px-6 py-3 md:px-8 md:py-4 rounded-full font-medium hover:opacity-90 transition-opacity uppercase tracking-wide text-sm md:text-base flex items-center justify-center"

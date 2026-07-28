@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { NavigationDock } from "@/components/sections/NavDoc";
 import EditorialFooter from "../_components/EditorialFooter";
 import Cookbook from "../_components/Cookbook";
-import { ATLRoots, ATLMap, ATLCustoms, type AtlStamp } from "../_components/ATLSections";
+import { ATLRoots, ATLMap, ATLBroll, ATLCustoms, type AtlStamp } from "../_components/ATLSections";
 import { CondensedEvents } from "../_components/IssueSections";
 import { ed, Bleed, Rule, Label, Kicker, ImageBlock } from "../_components/editorial";
 import { currentVolume } from "../_volumes";
@@ -19,7 +19,8 @@ const DOORS = {
   roots: { n: "01", title: "Roots", desc: "Why this city is a creative capital.", href: "#atl-roots" },
   scene: { n: "02", title: "The Scene", desc: "What is on: creative events and the big-city calendar.", href: "#events" },
   map: { n: "03", title: "The Map", desc: "Where to start: six doors, most of them free.", href: "#atl-map" },
-  fuel: { n: "04", title: "Fuel", desc: "The cookbook. Eat well on nothing.", href: "#cookbook" },
+  reel: { n: "04", title: "The Reel", desc: "Free Atlanta b-roll, licensed to sell. On us.", href: "#atl-reel" },
+  fuel: { n: "05", title: "Fuel", desc: "The cookbook. Eat well on nothing.", href: "#cookbook" },
 } as const;
 
 const STAMP_KEY = "ctrla-atl-stamp";
@@ -46,12 +47,12 @@ export default function ATLPageContent() {
   // Recommended reading order per stamp. Students head straight to the Map
   // (and its .edu layer); locals get the Scene; new arrivals get Roots.
   const doorOrder: (keyof typeof DOORS)[] = !stamp
-    ? ["roots", "scene", "map", "fuel"]
+    ? ["roots", "scene", "map", "reel", "fuel"]
     : stamp.student
-    ? ["map", "scene", "roots", "fuel"]
+    ? ["map", "scene", "roots", "reel", "fuel"]
     : stamp.origin === "local"
-    ? ["scene", "map", "roots", "fuel"]
-    : ["roots", "map", "scene", "fuel"];
+    ? ["scene", "map", "roots", "reel", "fuel"]
+    : ["roots", "map", "scene", "reel", "fuel"];
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -152,7 +153,10 @@ export default function ATLPageContent() {
       {/* 03 The map — where to start; the Student stamp lights the .edu layer */}
       <ATLMap student={stamp?.student === true} />
 
-      {/* 04 Fuel — the Cookbook teaser; steps into the full galley at /ctrla/cookbook */}
+      {/* 04 The Reel — free, commercially-licensed Atlanta b-roll for an email (lead magnet) */}
+      <ATLBroll />
+
+      {/* 05 Fuel — the Cookbook teaser; steps into the full galley at /ctrla/cookbook */}
       <Cookbook />
       <Bleed style={{ paddingBottom: "clamp(28px,4vw,56px)" }}>
         <Label color={ed.inkFaint}>Plate III · The galley, this volume&apos;s spread</Label>

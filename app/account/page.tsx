@@ -43,7 +43,7 @@ const C = {
 
 const NEUE = "'Neue Montreal', 'Roboto', sans-serif";
 const NORWIGE = "Norwige, sans-serif";
-const BOOKING_URL = "https://calendly.com/rangeofviewmusic/30min";
+const BOOKING_URL = "https://cal.com/rov-studios-imhphw/15min";
 
 const card: React.CSSProperties = {
   background: "rgba(255,255,255,0.03)",

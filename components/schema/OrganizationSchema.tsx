@@ -25,7 +25,7 @@ export function OrganizationSchema() {
       "@type": "ContactPoint",
       email: "rangeofview@rovstudios.com",
       contactType: "customer service",
-      url: "https://calendly.com/rangeofviewmusic/30min",
+      url: "https://cal.com/rov-studios-imhphw/15min",
     },
   };
 

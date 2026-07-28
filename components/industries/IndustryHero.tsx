@@ -15,7 +15,7 @@ import {
 } from "./shared";
 import { trackCallClick } from "./analytics";
 
-const BOOKING_URL = "https://calendly.com/rangeofviewmusic/30min";
+const BOOKING_URL = "https://cal.com/rov-studios-imhphw/15min";
 
 /**
  * Full-bleed hero video layer (SoundHero-style). The CSS ember splash paints

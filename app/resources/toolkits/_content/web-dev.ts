@@ -192,7 +192,7 @@ export const webDevContent: ToolkitArticleContent = {
     heading: "Not sure what your current site is built on?",
     subtitle:
       "We run free audits for Atlanta businesses. We look at your current site's stack, speed, and search visibility, then tell you exactly what's costing you and what it would take to fix it.",
-    primaryHref: "https://calendly.com/rangeofviewmusic/30min",
+    primaryHref: "https://cal.com/rov-studios-imhphw/15min",
     primaryLabel: "Book a free audit",
     secondaryHref: "/web",
     secondaryLabel: "See our web services",

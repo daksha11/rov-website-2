@@ -564,7 +564,7 @@ export default function CreativeStudiosAtlantaPage() {
           heading="Looking for a creative studio in Atlanta?"
           subheading="Tell us what you're building. We'll tell you honestly whether we're the right studio for it, and what it would take. No pitch deck, just a conversation."
           messagePlaceholder="What you're building, your rough budget, and when you'd want it done..."
-          secondaryHref="https://calendly.com/rangeofviewmusic/30min"
+          secondaryHref="https://cal.com/rov-studios-imhphw/15min"
           secondaryLabel="Prefer to talk? Book a free call"
         />
 

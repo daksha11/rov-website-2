@@ -484,7 +484,7 @@ export default function StudioVsAgencyVsFreelancerPage() {
           heading="Not sure which one you need?"
           subheading="Tell us what you're trying to build. We'll tell you honestly whether a studio is overkill, a perfect fit, or the wrong tool, before you spend a dollar."
           messagePlaceholder="What you're trying to build, your rough budget, and your timeline..."
-          secondaryHref="https://calendly.com/rangeofviewmusic/30min"
+          secondaryHref="https://cal.com/rov-studios-imhphw/15min"
           secondaryLabel="Prefer to talk? Book a free call"
         />
 

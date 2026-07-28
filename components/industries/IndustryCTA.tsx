@@ -13,7 +13,7 @@ import {
 import { trackCallClick } from "./analytics";
 import { IndustryLeadForm } from "./IndustryLeadForm";
 
-const BOOKING_URL = "https://calendly.com/rangeofviewmusic/30min";
+const BOOKING_URL = "https://cal.com/rov-studios-imhphw/15min";
 
 /**
  * Lead-capture finale — dark section with ember splashes, the form held inside

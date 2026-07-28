@@ -466,7 +466,7 @@ export default function DkmCorpBrandIdentityPage() {
           heading="Does your website match the caliber of your work?"
           subheading="We run free audits for professional services companies. Tell us where to look and we'll show you what's holding your first impression back."
           messagePlaceholder="Your company, your website, and what feels off about how you show up online..."
-          secondaryHref="https://calendly.com/rangeofviewmusic/30min"
+          secondaryHref="https://cal.com/rov-studios-imhphw/15min"
           secondaryLabel="Prefer to talk? Book a free audit call"
         />
 

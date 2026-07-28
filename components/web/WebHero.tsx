@@ -414,7 +414,7 @@ export default function WebHero() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7, delay: 0.85, ease: "easeOut" }}
                     >
-                        <Link href="https://calendly.com/rangeofviewmusic/30min" target="_blank">
+                        <Link href="https://cal.com/rov-studios-imhphw/15min" target="_blank">
                             <motion.button
                                 className="cta-shine px-8 py-3.5 md:px-10 md:py-4 text-white rounded-full font-medium uppercase tracking-wide text-sm"
                                 style={{

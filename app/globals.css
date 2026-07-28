@@ -1077,6 +1077,29 @@ input[type="range"]::-webkit-slider-thumb {
   .ctrla-campus-grid { grid-template-columns: 1fr; }
 }
 
+/* ATL The Reel — the free b-roll lead magnet. Offer copy left, filmstrip +
+   email capture right; collapses to a single column so the form gets full
+   width on phones. The license trio drops to one column with it. */
+@media (max-width: 860px) {
+  .ctrla-reel-grid { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 480px) {
+  .ctrla-reel-license { grid-template-columns: 1fr !important; }
+}
+
+/* The Reel — license terms page. Clause number/title left, body right; stacks
+   to one column on tablets. Body copy spacing + list styling so the legal text
+   stays readable rather than a wall. */
+@media (max-width: 720px) {
+  .ctrla-license-row { grid-template-columns: 1fr !important; }
+}
+.ctrla-license-body p { margin: 0 0 14px; }
+.ctrla-license-body p:last-child { margin-bottom: 0; }
+.ctrla-license-body ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.ctrla-license-body li { padding-left: 20px; position: relative; }
+.ctrla-license-body li::before { content: "\2192"; position: absolute; left: 0; color: #E3C24A; }
+.ctrla-license-body strong { color: #F0E6E0; font-weight: 600; }
+
 /* ATL door (CTRL-A home) — the postcard split. Copy left, taped-in city
    shot right; the photo straightens and lifts on hover, the CTA slides. */
 .ctrla-atl-door { transition: background 0.25s ease; }

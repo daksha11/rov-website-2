@@ -219,7 +219,7 @@ export default function AIAutomationContent() {
                         alignItems: 'center',
                     }}
                 >
-                    <Link href="https://calendly.com/rangeofviewmusic/30min" target="_blank">
+                    <Link href="https://cal.com/rov-studios-imhphw/15min" target="_blank">
                         <motion.button
                             whileHover={{ scale: 1.04 }}
                             whileTap={{ scale: 0.97 }}

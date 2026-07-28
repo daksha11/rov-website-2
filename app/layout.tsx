@@ -8,7 +8,7 @@ import StyledComponentsRegistry from "@/lib/registry";
 import { OrganizationSchema } from "@/components/schema/OrganizationSchema";
 import ClarityProvider from "@/components/providers/ClarityProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 // DM Sans self-hosted via next/font (replaces the render-blocking Google Fonts
 // @import in globals.css). Exposed as --font-dm-sans; used by TagorePartnership.
@@ -106,7 +106,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} ${dmSans.variable}`}>
+      <body className={`${inter.className} ${inter.variable} ${dmSans.variable}`}>
         <ClarityProvider />
         <OrganizationSchema />
         {/* Google Analytics */}

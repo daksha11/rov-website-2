@@ -195,7 +195,7 @@ export default function AIPricingTiers({ onUnlock }: { onUnlock?: () => void }) 
                 </div>
 
                 <a
-                  href="https://calendly.com/rangeofviewmusic/30min"
+                  href="https://cal.com/rov-studios-imhphw/15min"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="cta-shine inline-flex items-center justify-center gap-2 text-white font-semibold rounded-full transition-all duration-300 hover:scale-[1.02] w-full"
@@ -333,7 +333,7 @@ export default function AIPricingTiers({ onUnlock }: { onUnlock?: () => void }) 
                 $2,900/yr for a bot that never sleeps.
               </p>
               <a
-                href="https://calendly.com/rangeofviewmusic/30min"
+                href="https://cal.com/rov-studios-imhphw/15min"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="shrink-0 block text-center text-white font-semibold rounded-full border border-white/15 hover:border-white/30 hover:bg-white/[0.04] transition-all duration-300"

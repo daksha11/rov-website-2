@@ -216,7 +216,7 @@ export default function WebPricingTiers() {
 
               {/* CTA */}
               <a
-                href="https://calendly.com/rangeofviewmusic/30min"
+                href="https://cal.com/rov-studios-imhphw/15min"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`cta-shine block text-center text-white font-semibold rounded-full transition-all duration-300 hover:scale-[1.03] ${

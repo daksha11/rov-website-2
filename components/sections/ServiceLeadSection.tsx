@@ -38,7 +38,7 @@ export default function ServiceLeadSection({
           subheading={subheading}
           messagePlaceholder={messagePlaceholder}
           submitLabel={submitLabel}
-          secondaryHref="https://calendly.com/rangeofviewmusic/30min"
+          secondaryHref="https://cal.com/rov-studios-imhphw/15min"
           secondaryLabel="Prefer to talk? Book a free call"
         />
       </div>

@@ -13,7 +13,7 @@ export function BlogPostCTA({ slug }: { slug?: string }) {
           heading="Want to know where your business is leaking revenue?"
           subheading="We run free audits for Atlanta businesses. Tell us where to look and we'll show you exactly what to fix."
           messagePlaceholder="Your business, your website, and what you're trying to fix..."
-          secondaryHref="https://calendly.com/rangeofviewmusic/30min"
+          secondaryHref="https://cal.com/rov-studios-imhphw/15min"
           secondaryLabel="Prefer to talk? Book a free audit call"
         />
       </div>

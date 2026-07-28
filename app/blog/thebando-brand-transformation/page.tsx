@@ -513,7 +513,7 @@ export default function TheBandoBrandTransformationPage() {
           heading="Does your website tell the truth about your restaurant?"
           subheading="We run free audits for Atlanta restaurants. Tell us where to look and we'll show you where your identity is getting flattened."
           messagePlaceholder="Your restaurant's name, website, and what feels off about how it comes across..."
-          secondaryHref="https://calendly.com/rangeofviewmusic/30min"
+          secondaryHref="https://cal.com/rov-studios-imhphw/15min"
           secondaryLabel="Prefer to talk? Book a free audit call"
         />
 

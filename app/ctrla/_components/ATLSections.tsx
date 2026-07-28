@@ -10,6 +10,7 @@
 import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
 import { ed, Bleed, Rule, Label, Kicker, ImageBlock } from "./editorial";
+import CtrlASignup from "./CtrlASignup";
 
 // ── ATL Customs — the passport-stamp check-in ───────────────────────
 // Hartsfield-Jackson is the busiest airport on earth, so the field guide
@@ -298,6 +299,121 @@ export function ATLMap({ student = false }: { student?: boolean }) {
                 <p style={{ fontFamily: ed.body, fontSize: "clamp(13px,1.45vw,16px)", lineHeight: 1.5, color: ed.inkSoft, margin: 0 }}>{d.line}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </Bleed>
+    </section>
+  );
+}
+
+// ── The Reel — the free b-roll gift. CTRL-A gives young Atlanta creatives a
+// pack of cinematic, commercially-licensed Atlanta footage in exchange for an
+// email. Doubles as the ATL page's lead magnet: CtrlASignup posts to Klaviyo
+// with source "atl-broll", and the confirmed subscribe both unlocks the inline
+// download and (via the Klaviyo flow on that source) mails the same link.
+//
+// DELIVERY: email-only. A confirmed subscribe tells the visitor to check their
+// inbox; the download link is sent by the Klaviyo flow keyed to source
+// "atl-broll". Keeping the link out of the page markup means a real, working
+// email is required to receive it. Paste this pack URL into that Klaviyo email:
+//   https://drive.google.com/drive/folders/148hHC1omZOQrxaegcIlf7tI41nZMWYRL?usp=sharing
+
+// What's in the pack + the license, kept short and honest. Confirm the exact
+// license wording with Andi before this leaves noindex.
+const BROLL_INCLUDES = [
+  "4K skyline, golden hour into blue hour",
+  "Blue-hour aerials over Downtown + Midtown",
+  "The Connector at dusk, highway light trails",
+  "Architecture, glass reflections, street motion",
+];
+
+const BROLL_LICENSE = [
+  { k: "Free", v: "No cost, no catch. A gift to the city." },
+  { k: "Use it in your work", v: "Commercial and personal edits, no attribution needed." },
+  { k: "As-is", v: "Provided as-is. See the full terms before you publish." },
+];
+
+export function ATLBroll() {
+  return (
+    <section id="atl-reel" style={{ background: "transparent", padding: "clamp(40px,6vw,80px) 0", scrollMarginTop: 80 }}>
+      <Bleed>
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginBottom: "clamp(18px,2.4vw,26px)" }}>
+          <Kicker color={ed.gold}>The Reel · On us</Kicker>
+          <Label color={ed.gold}>Free · Cleared for commercial use</Label>
+        </div>
+        <Rule style={{ marginBottom: "clamp(24px,3.4vw,40px)" }} />
+
+        <div
+          style={{
+            border: `1px solid ${ed.hair}`,
+            background: ed.panel,
+            padding: "clamp(22px,3.2vw,44px)",
+            display: "grid",
+            gap: "clamp(28px,4vw,56px)",
+            gridTemplateColumns: "minmax(0, 1.15fr) minmax(0, 1fr)",
+            alignItems: "start",
+          }}
+          className="ctrla-reel-grid"
+        >
+          {/* Left — the offer */}
+          <div>
+            <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(30px,4.6vw,60px)", letterSpacing: "-0.03em", lineHeight: 0.94, color: ed.ink, margin: 0, maxWidth: 640 }}>
+              Free Atlanta b-roll<span style={{ color: ed.gold }}>.</span> Yours to use.
+            </h2>
+            <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontWeight: 400, fontSize: "clamp(17px,2.2vw,26px)", lineHeight: 1.3, color: ed.gold, margin: "clamp(12px,1.6vw,18px) 0 0", maxWidth: 560 }}>
+              A pack of cinematic footage of the city, free to use in your commercial and personal work. Cut it into a client edit, a reel, a spot. Just tell us where to send it.
+            </p>
+
+            {/* What's in the pack */}
+            <ul style={{ listStyle: "none", margin: "clamp(22px,3vw,34px) 0 0", padding: 0, display: "grid", gap: 10, maxWidth: 560 }}>
+              {BROLL_INCLUDES.map((line) => (
+                <li key={line} style={{ display: "flex", gap: 12, alignItems: "baseline", fontFamily: ed.body, fontSize: "clamp(14px,1.55vw,17px)", lineHeight: 1.45, color: ed.inkSoft }}>
+                  <span aria-hidden style={{ color: ed.gold, fontFamily: ed.mono, fontSize: "0.8em", transform: "translateY(-1px)" }}>▶</span>
+                  {line}
+                </li>
+              ))}
+            </ul>
+
+            {/* License row */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0,1fr))", gap: "clamp(12px,1.6vw,20px)", margin: "clamp(24px,3.2vw,36px) 0 0", borderTop: `1px solid ${ed.hair}`, paddingTop: "clamp(20px,2.6vw,28px)" }} className="ctrla-reel-license">
+              {BROLL_LICENSE.map((t) => (
+                <div key={t.k}>
+                  <Label color={ed.gold} style={{ display: "block", marginBottom: 6 }}>{t.k}</Label>
+                  <p style={{ fontFamily: ed.body, fontSize: "clamp(13px,1.4vw,15px)", lineHeight: 1.4, color: ed.inkSoft, margin: 0 }}>{t.v}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right — filmstrip visual + the capture */}
+          <div>
+            {/* Filmstrip wireframe — three frames, swap for real stills later */}
+            <div aria-hidden style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 6, padding: "8px 6px", background: ed.ground, border: `1px solid ${ed.hair}` }}>
+              {["Skyline", "Connector", "Aerial"].map((f) => (
+                <ImageBlock key={f} ratio="4 / 3" alt={`ATL b-roll frame · ${f}`}>
+                  <span style={{ position: "absolute", left: 8, bottom: 6, fontFamily: ed.mono, fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(36,18,58,0.75)" }}>{f}</span>
+                </ImageBlock>
+              ))}
+            </div>
+
+            <div style={{ marginTop: "clamp(20px,2.6vw,28px)" }}>
+              <CtrlASignup
+                source="atl-broll"
+                theme="dark"
+                accent={ed.gold}
+                variant="stacked"
+                title="Where should we send it?"
+                cta="Send me the pack"
+                note="One email. The pack, plus the occasional CTRL-A drop. Unsubscribe anytime."
+                successTitle="Check your inbox."
+                successBody="We just emailed you the download link. Give it a minute to land, and check spam if it hides."
+              />
+            </div>
+
+            <p style={{ fontFamily: ed.mono, fontSize: "clamp(9.5px,1vw,11px)", letterSpacing: "0.06em", lineHeight: 1.5, color: ed.inkFaint, margin: "clamp(16px,2vw,20px) 0 0", textTransform: "none" }}>
+              Free for commercial and personal edits. Don&rsquo;t resell or redistribute the raw clips on their own. Provided as-is; you&rsquo;re responsible for any releases your specific use needs. Shot by Range Of View.{" "}
+              <a href="/ctrla/atl/license" style={{ color: ed.gold, textDecoration: "none", borderBottom: `1px solid rgba(227,194,74,0.4)` }}>Full license terms →</a>
+            </p>
           </div>
         </div>
       </Bleed>

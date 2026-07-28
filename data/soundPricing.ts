@@ -7,7 +7,7 @@
 // Recording sessions are booked (not pre-paid), so those CTAs use BOOKING_URL.
 
 export const CONTACT_EMAIL = "stems@rovstudios.com";
-export const BOOKING_URL = "https://calendly.com/rangeofviewmusic/30min";
+export const BOOKING_URL = "https://cal.com/rov-studios-imhphw/15min";
 
 // Pricing beyond the flat intro/recording rates is consultative: the quote
 // questionnaire ends by letting the visitor book a call or send an inquiry.

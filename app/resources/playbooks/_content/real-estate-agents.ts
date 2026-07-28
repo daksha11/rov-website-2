@@ -350,7 +350,7 @@ export const realEstateAgentsPlaybook: PlaybookContent = {
     heading: "Think your website is costing you listings?",
     subtitle:
       "We'll tell you for free. A quick, no-pitch audit of your site and online presence, built specifically for real estate agents.",
-    primaryHref: "https://calendly.com/rangeofviewmusic/30min",
+    primaryHref: "https://cal.com/rov-studios-imhphw/15min",
     primaryLabel: "Book a free audit",
     secondaryHref: "/web",
     secondaryLabel: "See our web work",

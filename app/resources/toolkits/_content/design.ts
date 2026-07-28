@@ -193,7 +193,7 @@ export const designContent: ToolkitArticleContent = {
     heading: "Not sure if your current brand is helping or hurting you?",
     subtitle:
       "We run free brand audits for Atlanta businesses. We look at your logo, colors, and consistency across your site, signage, and socials, then tell you exactly what's costing you trust and what it would take to fix it.",
-    primaryHref: "https://calendly.com/rangeofviewmusic/30min",
+    primaryHref: "https://cal.com/rov-studios-imhphw/15min",
     primaryLabel: "Book a free audit",
     secondaryHref: "/works",
     secondaryLabel: "See our design work",

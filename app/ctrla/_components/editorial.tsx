@@ -145,9 +145,10 @@ export const ed = {
   plum: "#4E3D73", // muted purple (mid)
   wine: "#4E3D73",
   dusty: "#A56A67",
-  // Display/headings: Neue Montreal. Body: Instrument Serif.
+  // Display/headings: Neue Montreal. Body: Inter (sans, readable long-form).
+  // Serif is kept for the decorative italic sublines + pullquotes only.
   grotesque: "'Neue Montreal', 'Helvetica Neue', Arial, sans-serif",
-  body: "'Instrument Serif', Georgia, 'Times New Roman', serif",
+  body: "var(--font-inter), 'Inter', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif",
   serif: "'Instrument Serif', Georgia, 'Times New Roman', serif",
   mono: "'Neue Montreal', 'Helvetica Neue', Arial, sans-serif",
 };

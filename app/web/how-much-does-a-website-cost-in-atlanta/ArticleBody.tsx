@@ -562,7 +562,7 @@ export default function ArticleBody() {
           </p>
           <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
             <a
-              href="https://calendly.com/rangeofviewmusic/30min"
+              href="https://cal.com/rov-studios-imhphw/15min"
               target="_blank"
               rel="noopener noreferrer"
               style={{

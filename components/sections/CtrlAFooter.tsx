@@ -65,7 +65,7 @@ const CtrlAFooter = () => {
                                 </span>
                             </div>
                             <a
-                                href="https://calendly.com/rangeofviewmusic/30min"
+                                href="https://cal.com/rov-studios-imhphw/15min"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="group"
@@ -74,11 +74,11 @@ const CtrlAFooter = () => {
                                     className="text-3xl md:text-5xl font-bold mb-2 group-hover:text-[#EA9A61] transition-colors duration-300"
                                     style={{ fontFamily: 'Norwige, sans-serif' }}
                                 >
-                                    Calendly
+                                    Book a Call
                                 </h3>
                             </a>
                             <a
-                                href="https://calendly.com/rangeofviewmusic/30min"
+                                href="https://cal.com/rov-studios-imhphw/15min"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-sm md:text-base hover:text-[#EA9A61] transition-colors duration-300 w-fit"
