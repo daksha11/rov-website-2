@@ -2,10 +2,11 @@
 
 // /card — business card QR landing. One screen, email is the only required
 // field, built for someone tapping a phone in the ten seconds after a
-// handshake. Posts straight to the existing Klaviyo subscribe route (its own
-// list via NEXT_PUBLIC_KLAVIYO_CARD_LIST_ID) so the add is instant, and
-// fires a best-effort copy to /api/leads so the team sees the scan in real
-// time too. Visual language matches StartProjectForm (dark espresso card).
+// handshake. Subscribes to the "From Cards" Klaviyo list (SQRrEK, override via
+// NEXT_PUBLIC_KLAVIYO_CARD_LIST_ID) so the add is instant, and fires a
+// best-effort copy to /api/leads (pinned to the same From-Cards list, not web
+// leads) so the team sees the scan by email too. Visual language matches
+// StartProjectForm (dark espresso card).
 
 import { useState } from "react";
 import Link from "next/link";
@@ -25,6 +26,10 @@ const INTERESTS = ["Web", "Video", "AI Automation", "Not sure yet"];
 
 const SOURCE = "card:qr";
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+// IRL card scans go to the "ROV Business Leads (From Cards)" Klaviyo list,
+// kept separate from website form leads (ROV web leads). Override via env.
+const CARD_LIST_ID = process.env.NEXT_PUBLIC_KLAVIYO_CARD_LIST_ID || "SQRrEK";
 
 const BOOKING_URL = "https://cal.com/rov-studios-imhphw/15min";
 
@@ -56,7 +61,7 @@ export default function CardIntake() {
           name,
           source,
           company,
-          listId: process.env.NEXT_PUBLIC_KLAVIYO_CARD_LIST_ID || undefined,
+          listId: CARD_LIST_ID,
         }),
       });
       const data = await res.json().catch(() => ({}));
@@ -75,6 +80,8 @@ export default function CardIntake() {
             source,
             page: "/card",
             company,
+            // Keep card scans out of the web-leads list; they belong in From-Cards.
+            klaviyoListId: CARD_LIST_ID,
           }),
         }).catch(() => {});
       } else {

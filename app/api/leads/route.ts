@@ -41,6 +41,9 @@ const bodySchema = z.object({
   source: z.string().trim().min(1).max(120),
   // Full pathname for extra context (optional).
   page: z.string().trim().max(300).optional().or(z.literal("")),
+  // Optional Klaviyo list override. Website forms omit it (→ ROV web leads);
+  // the /card scan passes the From-Cards list so IRL and web leads stay split.
+  klaviyoListId: z.string().trim().max(20).optional(),
   // Honeypot — real users never fill this. Bots do.
   company: z.string().max(0).optional(),
 });
@@ -133,7 +136,7 @@ export async function POST(req: NextRequest) {
   // Non-fatal: subscribeToKlaviyo never throws, and the email is the primary
   // delivery, so a Klaviyo hiccup must not fail the submission.
   const klaviyoPromise = subscribeToKlaviyo({
-    listId: LEADS_LIST_ID,
+    listId: lead.klaviyoListId || LEADS_LIST_ID,
     email: lead.email,
     name: lead.name,
     source: lead.source,
