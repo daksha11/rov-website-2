@@ -17,7 +17,7 @@ export const CONSULT_BOOKING_URL = "rov-studios-imhphw/quote-call";
 // Cal.com paid recording events. Paste each event as a URL or "username/event"
 // slug once created (Cal.com -> Apps -> Stripe must be connected first so the
 // event collects payment at booking). Empty = the CTA falls back to
-// BOOKING_URL (Calendly) so nothing breaks in the meantime.
+// BOOKING_URL (the Cal.com 15-min booking) so nothing breaks in the meantime.
 export const CAL_LINKS = {
   /** "Studio Session" event — 1 hour, $60. */
   hourlySession: "rov-studios-imhphw/studio-session",

@@ -54,7 +54,7 @@ const CtrlAFooter = () => {
                             </h3>
                         </Link>
 
-                        {/* Right Column - Calendly */}
+                        {/* Right Column - Book a call */}
                         <div className="flex flex-col gap-4">
                             <div className="inline-block">
                                 <span
