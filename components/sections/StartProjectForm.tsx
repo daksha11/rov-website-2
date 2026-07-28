@@ -308,7 +308,7 @@ export default function StartProjectForm() {
                   </div>
 
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, marginTop: 8 }}>
-                    <a href="https://calendly.com/rangeofviewmusic/30min" target="_blank" rel="noopener noreferrer" style={{ fontFamily: LABEL, fontSize: 13, color: "rgba(255,244,227,0.6)", textDecoration: "underline" }}>
+                    <a href="https://cal.com/rov-studios-imhphw/15min" target="_blank" rel="noopener noreferrer" style={{ fontFamily: LABEL, fontSize: 13, color: "rgba(255,244,227,0.6)", textDecoration: "underline" }}>
                       Prefer to talk? Book a free call
                     </a>
                     <p style={{ fontFamily: BODY, fontSize: 12, color: "rgba(255,244,227,0.4)", margin: 0 }}>No newsletter, no spam. Just a real reply from the team.</p>
