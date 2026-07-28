@@ -19,11 +19,15 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { subscribeToKlaviyo } from "@/utils/klaviyo";
 
 export const runtime = "nodejs";
 export const maxDuration = 15;
 
 const DEFAULT_TO_EMAIL = "rangeofviewmusic@gmail.com";
+// Every website form lead is also added to the Klaviyo "ROV web leads" list,
+// kept separate from card-collected leads. Override with KLAVIYO_LEADS_LIST_ID.
+const LEADS_LIST_ID = process.env.KLAVIYO_LEADS_LIST_ID || "WGRd8Q";
 // Resend refuses senders on unverified domains. Until rovstudios.com is
 // verified in Resend, send from their sandbox address; override with
 // LEAD_FROM_EMAIL once the domain is verified.
@@ -125,10 +129,22 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Add the lead to the Klaviyo business-leads list in parallel with the email.
+  // Non-fatal: subscribeToKlaviyo never throws, and the email is the primary
+  // delivery, so a Klaviyo hiccup must not fail the submission.
+  const klaviyoPromise = subscribeToKlaviyo({
+    listId: LEADS_LIST_ID,
+    email: lead.email,
+    name: lead.name,
+    source: lead.source,
+  });
+
   try {
     const delivered = webhookUrl
       ? await deliverWebhook(webhookUrl, lead)
       : await deliverResend(resendKey as string, lead);
+
+    await klaviyoPromise; // best-effort; result logged inside the helper
 
     if (delivered) return NextResponse.json({ ok: true });
 
