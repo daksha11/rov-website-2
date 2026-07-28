@@ -61,14 +61,15 @@ function palette(theme: "light" | "dark") {
       card: "linear-gradient(160deg, #1C1714 0%, #2A1D15 55%, #42201C 100%)",
       cardBorder: "1px solid rgba(234,154,97,0.22)",
       heading: "#FFF4E3",
-      body: "rgba(255,244,227,0.72)",
-      inputBg: "rgba(255,244,227,0.04)",
-      inputBorder: "1.5px solid rgba(255,244,227,0.18)",
+      body: "rgba(255,244,227,0.9)",
+      inputBg: "rgba(255,244,227,0.06)",
+      inputBorder: "1.5px solid rgba(255,244,227,0.28)",
       inputText: "#FFF4E3",
+      placeholder: "rgba(255,244,227,0.62)",
       button: "linear-gradient(112deg, #42201C 6%, #A64D2B 40%, #B16937 68%, #EA9A61 98%)",
       buttonText: "#FFF4E3",
-      secondary: "rgba(255,244,227,0.6)",
-      fine: "rgba(255,244,227,0.4)",
+      secondary: "rgba(255,244,227,0.82)",
+      fine: "rgba(255,244,227,0.62)",
       successRing: ORANGE,
       successTick: ORANGE,
     };
@@ -81,6 +82,7 @@ function palette(theme: "light" | "dark") {
     inputBg: "#FFFFFF",
     inputBorder: "1.5px solid rgba(59,33,20,0.2)",
     inputText: ESPRESSO,
+    placeholder: "rgba(59,33,20,0.55)",
     button: RUST,
     buttonText: CREAM,
     secondary: "rgba(59,33,20,0.6)",
@@ -115,6 +117,9 @@ export default function BlogLeadForm({
     color: c.inputText,
     fontFamily: "inherit",
     outline: "none",
+    // Consumed by the ::placeholder rule below — browsers dim placeholders by
+    // default, which kills legibility on the dark card.
+    ["--rov-ph" as string]: c.placeholder,
   };
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [error, setError] = useState("");
@@ -168,6 +173,7 @@ export default function BlogLeadForm({
         padding: "48px 36px",
       }}
     >
+      <style>{`.rov-lead-input::placeholder { color: var(--rov-ph); opacity: 1; }`}</style>
       {status === "sent" ? (
         <div style={{ textAlign: "center", padding: "24px 0" }}>
           <div
@@ -197,10 +203,10 @@ export default function BlogLeadForm({
       ) : (
         <>
           <div style={{ textAlign: "center", marginBottom: 32 }}>
-            <h2 style={{ fontFamily: HEADING_FONT, fontSize: "clamp(24px, 4vw, 36px)", fontWeight: 400, marginBottom: 16, lineHeight: 1.2, color: c.heading }}>
+            <h2 style={{ fontFamily: HEADING_FONT, fontSize: "clamp(32px, 5.5vw, 52px)", fontWeight: 400, marginBottom: 16, lineHeight: 1.12, letterSpacing: "-0.01em", color: c.heading }}>
               {heading}
             </h2>
-            <p style={{ fontSize: 16, lineHeight: 1.65, color: c.body, maxWidth: 480, margin: "0 auto" }}>
+            <p style={{ fontSize: 17, lineHeight: 1.6, color: c.body, maxWidth: 480, margin: "0 auto" }}>
               {subheading}
             </p>
           </div>
@@ -257,10 +263,11 @@ export default function BlogLeadForm({
             )}
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 14 }}>
-              <input type="text" name="name" required maxLength={120} placeholder="Your name" aria-label="Your name" style={inputStyle} />
-              <input type="email" name="email" required maxLength={254} placeholder="Email" aria-label="Email" style={inputStyle} />
+              <input className="rov-lead-input" type="text" name="name" required maxLength={120} placeholder="Your name" aria-label="Your name" style={inputStyle} />
+              <input className="rov-lead-input" type="email" name="email" required maxLength={254} placeholder="Email" aria-label="Email" style={inputStyle} />
             </div>
             <textarea
+              className="rov-lead-input"
               name="message"
               rows={3}
               maxLength={800}
