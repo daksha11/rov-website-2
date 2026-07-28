@@ -73,7 +73,7 @@ For a **small business e-commerce website** build like Aysegul's, including bran
 
 ### How long does it take to build an e-commerce website?
 
-A full **e-commerce website design** build from brand identity through launch usually takes **6 to 10 weeks**. Aysegul's project included branding, website design and development, e-commerce setup, and social media onboarding. The timeline depends on product catalog size, how quickly product photography can be completed, and how many revision rounds are needed. [Book a call](https://calendly.com/rangeofviewmusic/30min) to discuss your project.
+A full **e-commerce website design** build from brand identity through launch usually takes **6 to 10 weeks**. Aysegul's project included branding, website design and development, e-commerce setup, and social media onboarding. The timeline depends on product catalog size, how quickly product photography can be completed, and how many revision rounds are needed. [Book a call](https://cal.com/rov-studios-imhphw/15min) to discuss your project.
 
 ### What platform works best for small business e-commerce?
 

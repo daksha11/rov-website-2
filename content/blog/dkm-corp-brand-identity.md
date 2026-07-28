@@ -65,7 +65,7 @@ Read the full [DKM Corp website redesign and brand identity case study](/casestu
 
 ### What does a website redesign process look like?
 
-Our **website redesign** process starts with discovery. understanding your business, audience, and goals. From there, we move into **brand identity** work, wireframing, visual design, development, and launch. For DKM Corp, the entire process was collaborative, with Dheeraj involved at every decision point. We do not disappear for 6 weeks and come back with a finished product. You see the work as it develops and shape it with us. [Book a call](https://calendly.com/rangeofviewmusic/30min) to start the conversation.
+Our **website redesign** process starts with discovery. understanding your business, audience, and goals. From there, we move into **brand identity** work, wireframing, visual design, development, and launch. For DKM Corp, the entire process was collaborative, with Dheeraj involved at every decision point. We do not disappear for 6 weeks and come back with a finished product. You see the work as it develops and shape it with us. [Book a call](https://cal.com/rov-studios-imhphw/15min) to start the conversation.
 
 ### How long does a website redesign take?
 

@@ -79,7 +79,7 @@ Most restaurant website redesigns cost between **$3,000 and $50,000**, depending
 
 ### How long does a restaurant website redesign take?
 
-For most restaurant projects, we work on a **4 to 8 week timeline** from kickoff to launch. TheBando's redesign followed a similar pace. The timeline depends on how many custom pages you need, whether you are integrating online ordering platforms, and how quickly you can provide feedback during the design phase. [Book a call](https://calendly.com/rangeofviewmusic/30min) to discuss your timeline.
+For most restaurant projects, we work on a **4 to 8 week timeline** from kickoff to launch. TheBando's redesign followed a similar pace. The timeline depends on how many custom pages you need, whether you are integrating online ordering platforms, and how quickly you can provide feedback during the design phase. [Book a call](https://cal.com/rov-studios-imhphw/15min) to discuss your timeline.
 
 ### What makes a good restaurant website?
 
