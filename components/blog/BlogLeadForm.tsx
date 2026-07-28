@@ -28,6 +28,14 @@ type Props = {
   secondaryHref?: string;
   secondaryLabel?: string;
   /**
+   * "link" (default) = quiet underlined text, current behavior everywhere.
+   * "button" = equal-weight outlined pill button, for pages where booking a
+   * call is the priority conversion path, not an afterthought.
+   * "primary" = the booking link BECOMES the hero action (filled, on top);
+   * the form's submit button shrinks to the outlined secondary spot below it.
+   */
+  secondaryVariant?: "link" | "button" | "primary";
+  /**
    * "light" (default) = beige card for cream/light pages (blog design standard).
    * "dark" = inverted dark-brown premium gradient card for pages with a dark bg.
    */
@@ -89,6 +97,7 @@ export default function BlogLeadForm({
   messagePlaceholder = "Tell us a little about your business and what you're trying to fix...",
   secondaryHref,
   secondaryLabel = "Prefer to talk? Book a free call",
+  secondaryVariant = "link",
   theme = "light",
   topics,
   topicsLabel = "What do you need?",
@@ -264,28 +273,90 @@ export default function BlogLeadForm({
               <p style={{ fontSize: 13, color: theme === "dark" ? ORANGE : RUST, margin: 0, fontWeight: 600 }}>{error}</p>
             )}
 
+            {secondaryHref && secondaryVariant === "primary" && (
+              <a
+                href={secondaryHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "block",
+                  textAlign: "center",
+                  background: c.button,
+                  color: c.buttonText,
+                  padding: "14px 28px",
+                  borderRadius: 100,
+                  fontFamily: LABEL_FONT,
+                  fontWeight: 700,
+                  fontSize: 15,
+                  boxShadow: theme === "dark" ? "3px 4px 4px 0 rgba(255,244,227,0.12) inset, 0 4px 4px 0 rgba(0,0,0,0.25)" : "none",
+                }}
+              >
+                {secondaryLabel}
+              </a>
+            )}
+
             <button
               type="submit"
               disabled={status === "sending"}
-              style={{
-                background: c.button,
-                color: c.buttonText,
-                padding: "14px 28px",
-                borderRadius: 100,
-                fontFamily: LABEL_FONT,
-                fontWeight: 700,
-                fontSize: 15,
-                border: "none",
-                boxShadow: theme === "dark" ? "3px 4px 4px 0 rgba(255,244,227,0.12) inset, 0 4px 4px 0 rgba(0,0,0,0.25)" : "none",
-                cursor: status === "sending" ? "wait" : "pointer",
-                opacity: status === "sending" ? 0.7 : 1,
-                transition: "opacity 0.2s",
-              }}
+              style={
+                secondaryVariant === "primary"
+                  ? {
+                      background: "transparent",
+                      color: c.secondary,
+                      padding: "11px 24px",
+                      borderRadius: 100,
+                      fontFamily: LABEL_FONT,
+                      fontWeight: 600,
+                      fontSize: 13.5,
+                      border: `1.5px solid ${c.inputBorder.split(" ").slice(-1)[0]}`,
+                      cursor: status === "sending" ? "wait" : "pointer",
+                      opacity: status === "sending" ? 0.7 : 1,
+                      transition: "opacity 0.2s",
+                      marginTop: 2,
+                    }
+                  : {
+                      background: c.button,
+                      color: c.buttonText,
+                      padding: "14px 28px",
+                      borderRadius: 100,
+                      fontFamily: LABEL_FONT,
+                      fontWeight: 700,
+                      fontSize: 15,
+                      border: "none",
+                      boxShadow: theme === "dark" ? "3px 4px 4px 0 rgba(255,244,227,0.12) inset, 0 4px 4px 0 rgba(0,0,0,0.25)" : "none",
+                      cursor: status === "sending" ? "wait" : "pointer",
+                      opacity: status === "sending" ? 0.7 : 1,
+                      transition: "opacity 0.2s",
+                    }
+              }
             >
               {status === "sending" ? "Sending..." : submitLabel}
             </button>
 
-            {secondaryHref && (
+            {secondaryHref && secondaryVariant === "button" && (
+              <a
+                href={secondaryHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "block",
+                  textAlign: "center",
+                  fontFamily: LABEL_FONT,
+                  fontWeight: 700,
+                  fontSize: 15,
+                  padding: "13px 26px",
+                  borderRadius: 100,
+                  marginTop: 2,
+                  color: theme === "dark" ? ORANGE : RUST,
+                  background: theme === "dark" ? "rgba(234,154,97,0.1)" : "rgba(144,66,44,0.06)",
+                  border: `1.5px solid ${theme === "dark" ? ORANGE : RUST}`,
+                }}
+              >
+                {secondaryLabel}
+              </a>
+            )}
+
+            {secondaryHref && secondaryVariant === "link" && (
               <a
                 href={secondaryHref}
                 target="_blank"
