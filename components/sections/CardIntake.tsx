@@ -307,9 +307,6 @@ function SuccessState({ name, email }: { name: string; email: string }) {
           <h2 style={{ fontFamily: HEADING, fontSize: "clamp(1.3rem, 4.5vw, 1.6rem)", fontWeight: 400, color: CREAM, margin: 0, lineHeight: 1.15 }}>
             You&apos;re in. Grab a time?
           </h2>
-          <p style={{ fontFamily: BODY, fontSize: 12.5, color: "rgba(255,244,227,0.6)", margin: "3px 0 0" }}>
-            Fifteen minutes, no pressure. Or skip it, we&apos;ll be in your inbox soon either way.
-          </p>
         </div>
       </div>
 
