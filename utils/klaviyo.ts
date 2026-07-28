@@ -29,6 +29,9 @@ export type KlaviyoSubscribeInput = {
   email: string;
   name?: string;
   source?: string;
+  // Extra profile properties merged alongside signup_source (e.g. ctrla_source
+  // for the CTRL-A signup, which existing Klaviyo segments may key on).
+  properties?: Record<string, string>;
 };
 
 function splitName(name?: string): { first_name?: string; last_name?: string } {
@@ -51,10 +54,12 @@ async function timedFetch(url: string, init: RequestInit, timeout = 10000) {
 
 // Best-effort profile upsert (private key path). Carries name + source, which
 // the subscribe job itself will not accept. Never fatal to the subscribe.
-async function upsertProfileServer(email: string, name?: string, source?: string) {
-  if (!name && !source) return;
+async function upsertProfileServer(email: string, name?: string, source?: string, properties?: Record<string, string>) {
+  const props = { ...(source ? { signup_source: source } : {}), ...(properties || {}) };
+  const hasProps = Object.keys(props).length > 0;
+  if (!name && !hasProps) return;
   const attributes: Record<string, unknown> = { email, ...splitName(name) };
-  if (source) attributes.properties = { signup_source: source };
+  if (hasProps) attributes.properties = props;
 
   try {
     const res = await timedFetch("https://a.klaviyo.com/api/profile-import/", {
@@ -76,8 +81,8 @@ async function upsertProfileServer(email: string, name?: string, source?: string
   }
 }
 
-async function subscribeServer({ listId, email, name, source }: KlaviyoSubscribeInput) {
-  await upsertProfileServer(email, name, source);
+async function subscribeServer({ listId, email, name, source, properties }: KlaviyoSubscribeInput) {
+  await upsertProfileServer(email, name, source, properties);
   const payload = {
     data: {
       type: "profile-subscription-bulk-create-job",
@@ -111,9 +116,10 @@ async function subscribeServer({ listId, email, name, source }: KlaviyoSubscribe
   });
 }
 
-async function subscribeClient({ listId, email, name, source }: KlaviyoSubscribeInput) {
+async function subscribeClient({ listId, email, name, source, properties }: KlaviyoSubscribeInput) {
   const profileAttributes: Record<string, unknown> = { email, ...splitName(name) };
-  if (source) profileAttributes.properties = { signup_source: source };
+  const props = { ...(source ? { signup_source: source } : {}), ...(properties || {}) };
+  if (Object.keys(props).length > 0) profileAttributes.properties = props;
 
   const payload = {
     data: {
