@@ -16,7 +16,9 @@ export function NavigationDock({ className }: NavigationDockProps) {
   const links = [
     { title: "home", to: "/", isLink: true },
     { title: "services", to: null, isLink: false },
-    { title: "contact us", to: "https://cal.com/rov-studios-imhphw/15min", isLink: true, external: true },
+    // Routes to /contact, not straight to cal.com. The contact page still
+    // leads with the booking CTA, but keeps the form as the softer option.
+    { title: "contact us", to: "/contact", isLink: true },
   ];
 
   useEffect(() => {
@@ -60,7 +62,6 @@ export function NavigationDock({ className }: NavigationDockProps) {
                 <Link
                   href={link.to || "#"}
                   className="px-2 min-h-[44px] flex items-center text-white/80 hover:text-white transition-colors cursor-pointer text-[12px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
-                  {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 >
                   {link.title}
                 </Link>
