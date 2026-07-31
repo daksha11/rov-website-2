@@ -8,7 +8,7 @@ authorRole: "Co-Founder & Systems Architect"
 authorUrl: "https://www.rovstudios.com/about"
 date: "2026-06-30"
 dateModified: "2026-06-30"
-category: "web-design"
+category: "Web Design"
 tags: ["restaurant", "web design", "Atlanta", "case study", "conversion optimization", "GEO"]
 featured: true
 readingTime: 7

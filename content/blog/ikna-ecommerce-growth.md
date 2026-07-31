@@ -8,7 +8,7 @@ authorRole: "Founder & Creative Director"
 authorUrl: "https://www.rovstudios.com/about"
 date: "2026-03-30"
 dateModified: "2026-03-30"
-category: "Branding & Web Design"
+category: "Web Design"
 tags: ["e-commerce website design", "small business website", "Atlanta web design", "brand identity", "online store"]
 featured: true
 readingTime: 5

@@ -8,7 +8,7 @@ authorRole: "Co-Founder & Systems Architect"
 authorUrl: "https://www.rovstudios.com/about"
 date: "2026-07-03"
 dateModified: "2026-07-03"
-category: "Web Development"
+category: "Web Design"
 tags: ["web development", "tools", "toolkit", "resources"]
 featured: false
 readingTime: 9

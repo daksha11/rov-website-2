@@ -8,7 +8,7 @@ authorRole: "Founder & Creative Director"
 authorUrl: "https://www.rovstudios.com/about"
 date: "2026-03-30"
 dateModified: "2026-03-30"
-category: "Branding & Web Design"
+category: "Brand & Experience"
 tags: ["brand identity design", "website redesign", "professional services website", "Atlanta web design", "global collaboration"]
 featured: false
 readingTime: 5

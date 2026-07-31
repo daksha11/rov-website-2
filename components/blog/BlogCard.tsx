@@ -10,6 +10,14 @@ const categoryColors: Record<string, string> = {
   "Branding": "bg-cyan-500/15 text-cyan-400",
   "Branding & Web Design": "bg-[#EA9A61]/15 text-[#EA9A61]",
   "Marketing": "bg-orange-500/15 text-orange-400",
+  // Cluster categories. `category` is matched exactly by getRelatedPosts in
+  // lib/blog.ts, so these strings are the clustering mechanism, not just styling.
+  // A category with only one post returns zero related posts, so don't split a
+  // cluster out until it has at least two members.
+  "Brand & Experience": "bg-[#EA9A61]/15 text-[#EA9A61]",
+  // Reserved: split the local-visibility posts out of "Web Design" once the
+  // local-visibility hub ships and there are siblings to link between.
+  "Local Visibility": "bg-teal-500/15 text-teal-400",
 };
 
 function getCategoryStyle(category: string): string {

@@ -8,7 +8,7 @@ authorRole: "Co-Founder & Systems Architect"
 authorUrl: "https://www.rovstudios.com/about"
 date: "2026-07-03"
 dateModified: "2026-07-03"
-category: "Marketing"
+category: "Web Design"
 tags: ["real estate", "playbook", "resources", "commissions"]
 featured: false
 readingTime: 12

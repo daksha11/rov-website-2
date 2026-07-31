@@ -8,7 +8,7 @@ authorRole: "Co-Founder & Systems Architect"
 authorUrl: "https://www.rovstudios.com/about"
 date: "2026-07-03"
 dateModified: "2026-07-03"
-category: "Branding"
+category: "Brand & Experience"
 tags: ["branding", "design", "tools", "toolkit", "resources"]
 featured: false
 readingTime: 9

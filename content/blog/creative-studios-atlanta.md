@@ -8,7 +8,7 @@ authorRole: "Founder & Creative Director"
 authorUrl: "https://www.rovstudios.com/about"
 date: "2026-07-16"
 dateModified: "2026-07-16"
-category: "Creative Direction"
+category: "Brand & Experience"
 tags: ["creative studio", "Atlanta", "branding", "web design", "video production", "creative tech", "GEO"]
 featured: true
 readingTime: 10
