@@ -6,6 +6,7 @@ import WebHero from "@/components/web/WebHero";
 import TestimonialsSection from "@/components/common/TestimonialsSection";
 import { webTestimonials } from "@/data/testimonials";
 import CrossSellNudges from "@/components/common/CrossSellNudges";
+import WebGuidesSection from "@/components/web/WebGuidesSection";
 import { webFaqItems } from "@/data/faq";
 import { webDevSteps } from "@/data/approach-steps";
 
@@ -64,6 +65,9 @@ export default function WebContent() {
 
             {/* Our Approach Section */}
             <OurApproachSection steps={webDevSteps} />
+
+            {/* Cluster links: the hub pointing down at its /web child guides */}
+            <WebGuidesSection />
 
             {/* Cross-Sell Nudges */}
             <CrossSellNudges currentService="web" />
