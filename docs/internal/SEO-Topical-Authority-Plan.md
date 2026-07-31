@@ -8,7 +8,7 @@ _Created 2026-07-30. Audit, task list, and execution log. See the execution-pass
 |---|---------|-----|-----|--------|
 | 1 | Atlanta web design + cost | Traffic engine. Only cluster with real local buying volume. | `/web` | Hub links down as of 2026-07-30 |
 | 2 | Brand identity + the experience it flows into | Differentiation + AI citation. Why they pick us over cheaper. | `/brand` | Shipped 2026-07-31 |
-| 3 | Industry + Atlanta | Beats national competitors on local specificity. | `/industries` | All six indexed 2026-07-31 |
+| 3 | Industry + Atlanta | Beats national competitors on local specificity. | `/industries` | All six indexed as of commit 4d453c6 |
 
 Supporting cluster: local visibility ("why isn't my business showing up on Google") feeds cluster 1 rather than standing alone.
 
@@ -59,7 +59,7 @@ practice areas in `company.md`.
 ### Now, structural, no new writing
 - ~~**T1** Add a cluster links section pointing at all five children.~~ Done, as `WebGuidesSection` in `WebContent`.
 - ~~**T2** Add `/web/missed-call-text-back-atlanta-hvac` to `app/sitemap.ts`.~~ Done, plus the missing content stub.
-- ~~**T3** Flip `indexed: true` on the industry pages.~~ Done 2026-07-31, all six. Unblocks T5.
+- ~~**T3** Flip `indexed: true` on the industry pages.~~ Already done in commit 4d453c6 (2026-07-30), not this session. Unblocks T5.
 
 ### Next, still no new writing
 - **T4** Audit the seven non-stub blog posts for whether they link into `/web`. Several are cluster-1 topics sitting outside the cluster.
@@ -284,11 +284,14 @@ Also wired for discoverability: added to `app/sitemap.ts`, added to the `NavDoc`
 and added to `CrossSellNudges` as a fifth `ServiceId`. The cross-sell map was rebalanced so
 `/brand` gets inbound links from `/web`, `/video-production`, and `/ai-automation`.
 
-**T3 done: all six industry pages are indexed.** `indexed: true` on all six content files.
-Verified in the build: no `robots` noindex meta on any of the six rendered pages, all six now in
-`sitemap.xml`, and the `/industries` hub flipped to indexable automatically as designed. Sitemap
-went from 49 to 50 URLs plus the six industry pages. The hub links to all six children and the
-footer links to the hub, so nothing is orphaned.
+**T3 was already done, in commit `4d453c6` (2026-07-30 22:54), not in this session.** That commit
+("Promote industry pages: /industries hub, real Beltline media, report-style visuals") flipped
+`indexed: false` to `indexed: true` on all six files. A later `sed` pass here was a no-op against
+already-promoted files, which is why nothing staged.
+
+Verified end state regardless: no `robots` noindex meta on any of the six rendered pages, all six
+in `sitemap.xml`, and the `/industries` hub indexable as the loader was designed to do. The hub
+links to all six children and the footer links to the hub, so nothing is orphaned.
 
 `tsc --noEmit` clean, `next build` clean at 102 static pages. Link validation on `app/brand/`
 reports 0 problems.
