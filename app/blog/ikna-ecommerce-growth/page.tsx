@@ -353,6 +353,8 @@ export default function IknaEcommerceGrowthPage() {
               { href: "/casestudy/ikna", label: "Full Aysegul Ikna case study", desc: "The complete brand and e-commerce build. Every decision, every asset, the full rollout." },
               { href: "/web", label: "ROV Studios web design services", desc: "How we build Atlanta e-commerce sites and brands. Pricing, timeline, and what to expect." },
               { href: "/blog/restaurant-atlanta", label: "Every restaurant is bleeding revenue online", desc: "How a buried ordering page cost one Atlanta restaurant thousands, and how we fixed it." },
+              { href: "/web/how-much-does-a-website-cost-in-atlanta", label: "How much does a website cost in Atlanta?", desc: "Real 2026 prices, what moves them, and what a cheap site really costs you later." },
+              { href: "/web/why-isnt-my-business-showing-up-on-google", label: "Why isn't my business showing up on Google?", desc: "The six reasons Atlanta businesses stay invisible in local search, and how to fix each one." },
               { href: "/ctrla", label: "CTRL-A by ROV Studios", desc: "Our editorial arm covering creative direction, design systems, and the Atlanta creative scene." },
             ].map((link) => (
               <Link key={link.href} href={link.href} style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 16, alignItems: "start", textDecoration: "none", padding: "16px 0", borderBottom: "1px solid rgba(59,33,20,0.07)" }}>

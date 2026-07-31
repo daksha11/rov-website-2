@@ -418,6 +418,9 @@ export default function DkmCorpBrandIdentityPage() {
           <div style={{ display: "grid", gap: 16 }}>
             {[
               { href: "/casestudy/dkm", label: "Full DKM Corp case study", desc: "The complete website redesign and brand identity build, every decision and every change." },
+              { href: "/blog/creative-studios-atlanta", label: "Creative studios in Atlanta: the complete guide", desc: "What a creative studio actually does, how to judge one, and what it costs in 2026." },
+              { href: "/blog/creative-studio-vs-agency-vs-freelancer", label: "Studio vs. agency vs. freelancer", desc: "Cost, speed, range, and accountability compared, so you can pick the right one." },
+              { href: "/web/how-much-does-a-website-cost-in-atlanta", label: "How much does a website cost in Atlanta?", desc: "Real 2026 prices, what moves them, and what a cheap site really costs you later." },
               { href: "/web", label: "ROV Studios web design services", desc: "How we build brand identity systems and responsive websites. Pricing, timeline, and process." },
               { href: "/about", label: "About ROV Studios", desc: "The Atlanta studio behind the work, and how we collaborate across time zones." },
             ].map((link) => (
