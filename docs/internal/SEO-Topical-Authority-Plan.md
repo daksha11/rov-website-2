@@ -219,6 +219,50 @@ at all. This is the actual internal-linking gap and it is larger than the taxono
 signals freshness that does not exist. Do it during a real content pass on those case studies,
 not as part of a taxonomy edit.
 
+## Second execution pass and corrections, 2026-07-30
+
+**Correction 3: F6 was wrong. All six custom pages already have a "Related reading" section.**
+The earlier count grepped for `href="` and missed links written as `href: "` inside link
+arrays, which is how every one of these sections is built. So "three pages link to zero other
+posts" was a measurement artifact, not a fact.
+
+**Correction 4: B9 was unnecessary as written.** `components/blog/RelatedPosts.tsx` already
+exists and is commented out at `app/blog/[slug]/page.tsx:116` behind a deliberate
+`TODO: Re-enable RelatedPosts when blog has 20+ posts`. Since no post renders through `[slug]`
+(Correction 1), re-enabling it would change nothing. Left as-is. The hand-built sections in the
+custom pages are the real rail and they work.
+
+**What the link audit actually found, and what got fixed:**
+
+- **One broken link.** `restaurant-atlanta` pointed at `/blog/every-business-leaks-money`,
+  which has no content file. A 404 sitting in the related-reading block of a flagship asset.
+  Repointed at `/web/why-isnt-my-business-showing-up-on-google`.
+- **Three redirect hops.** `creative-studios-atlanta` (2 links) and
+  `creative-studio-vs-agency-vs-freelancer` (1 link) pointed at
+  `/blog/how-much-does-a-website-cost-in-atlanta`, which is an `externalUrl` stub that
+  308-redirects. Repointed straight at the canonical `/web/` page.
+- **Thin link blocks thickened.** `dkm-corp-brand-identity` had no links to any sibling article,
+  `ikna-ecommerce-growth` and `restaurant-atlanta` had one each. Added cluster-mate links.
+
+Article-to-article link counts after the pass (links to `/blog/*` or `/web/*` guides):
+
+| Page | Before | After |
+|---|---|---|
+| `creative-studio-vs-agency-vs-freelancer` | 5 | 5 |
+| `creative-studios-atlanta` | 5 | 5 |
+| `dkm-corp-brand-identity` | 0 | 3 |
+| `ikna-ecommerce-growth` | 1 | 3 |
+| `restaurant-atlanta` | 1 (broken) | 3 |
+| `thebando-brand-transformation` | 2 | 2 |
+
+A validation script now checks every internal href in `app/blog/*/` against the filesystem:
+`/blog/<slug>` must have a content file and must not be a stub, everything else must have a
+route directory. It reports 0 problems. Worth re-running after any content edit. `tsc --noEmit`
+and `next build` both clean, 101 static pages.
+
+**Standing rule this pass established:** never link to a `/blog/<slug>` that is an `externalUrl`
+stub. Link to the canonical target directly. The stubs exist for listing discovery only.
+
 ## Sequenced blog task list
 
 - ~~**B1** Add `Brand & Experience` and `Local Visibility` to `categoryColors`.~~ Done.
@@ -226,12 +270,10 @@ not as part of a taxonomy edit.
 - **B3** ~~Refresh `dateModified` on the 4 stale case studies.~~ Skipped on purpose. Fold into a real content pass.
 - ~~**B4** Create the `missed-call-text-back-atlanta-hvac` stub plus its sitemap entry.~~ Done, sitemap now 49 URLs.
 - ~~**B5** Verify related-posts output after B2.~~ Done, and it revealed the rail never runs. See Correction 1.
-- **B9 (new, now the priority)** Add a related-posts rail to the 6 custom blog pages, or extract
-  the `[slug]` rail into a shared component they can each render. Until this exists, the
-  category taxonomy has no internal-linking effect. Fixes Correction 1.
-- **B10 (new)** Hand-add contextual links to `dkm-corp-brand-identity`,
-  `ikna-ecommerce-growth`, and `restaurant-atlanta`, which currently link to zero other posts.
-  Fixes F6.
+- ~~**B9** Add a related-posts rail to the 6 custom blog pages.~~ Not needed. They all already
+  have one. See Correction 4.
+- ~~**B10** Hand-add contextual links to the thin pages.~~ Done, plus fixed one 404 and three
+  redirect hops the audit surfaced. See Correction 3.
 - **B6** Repoint the two creative-studio posts at `/brand`. Depends on T6.
 - **B7** Write N1 through N3. Depends on T6.
 - **B8** Write N4 through N6.
