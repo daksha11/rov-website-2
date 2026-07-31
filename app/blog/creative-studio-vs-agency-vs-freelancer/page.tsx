@@ -435,7 +435,7 @@ export default function StudioVsAgencyVsFreelancerPage() {
             {[
               { href: "/blog/creative-studios-atlanta", label: "Creative studios in Atlanta: the complete guide", desc: "What a studio does, how to choose one, and what it costs in 2026." },
               { href: "/blog/restaurant-atlanta", label: "How one team grew ordering 689x", desc: "A real Atlanta case study in what no-handoff, full-stack work delivers." },
-              { href: "/blog/how-much-does-a-website-cost-in-atlanta", label: "How much does a website cost in Atlanta?", desc: "Real 2026 prices and what actually moves them." },
+              { href: "/web/how-much-does-a-website-cost-in-atlanta", label: "How much does a website cost in Atlanta?", desc: "Real 2026 prices and what actually moves them." },
               { href: "/works", label: "The Range of View portfolio", desc: "Brand, web, video, and creative tech across the four disciplines." },
               { href: "/about", label: "Meet the team", desc: "The named people who do the work, not just pitch it." },
             ].map((link) => (

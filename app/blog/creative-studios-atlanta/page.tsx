@@ -483,7 +483,7 @@ export default function CreativeStudiosAtlantaPage() {
           </div>
 
           <p style={{ fontSize: 17, lineHeight: 1.75 }}>
-            The cheapest option is rarely the cheapest outcome. A $500 template site that never converts costs more than a $5,000 site that pays for itself, because the lost customers do not show up on the invoice. We break down real numbers in <Link href="/blog/how-much-does-a-website-cost-in-atlanta" style={{ color: "#90422C", textDecoration: "underline", fontWeight: 600 }}>how much a website costs in Atlanta</Link>.
+            The cheapest option is rarely the cheapest outcome. A $500 template site that never converts costs more than a $5,000 site that pays for itself, because the lost customers do not show up on the invoice. We break down real numbers in <Link href="/web/how-much-does-a-website-cost-in-atlanta" style={{ color: "#90422C", textDecoration: "underline", fontWeight: 600 }}>how much a website costs in Atlanta</Link>.
           </p>
         </section>
 
@@ -515,7 +515,7 @@ export default function CreativeStudiosAtlantaPage() {
             {[
               { href: "/blog/creative-studio-vs-agency-vs-freelancer", label: "Creative studio vs agency vs freelancer", desc: "Which of the three your Atlanta brand actually needs, and how to tell." },
               { href: "/blog/restaurant-atlanta", label: "How a redesign grew ordering 689x", desc: "A real Atlanta case study. What we changed and the numbers it moved." },
-              { href: "/blog/how-much-does-a-website-cost-in-atlanta", label: "How much does a website cost in Atlanta?", desc: "Real 2026 prices, what moves them, and what a cheap site really costs." },
+              { href: "/web/how-much-does-a-website-cost-in-atlanta", label: "How much does a website cost in Atlanta?", desc: "Real 2026 prices, what moves them, and what a cheap site really costs." },
               { href: "/works", label: "The Range of View portfolio", desc: "Brand, web, video, and creative tech work across the four disciplines." },
               { href: "/about", label: "Meet the team", desc: "The named designers, developers, and producers behind the work." },
             ].map((link) => (

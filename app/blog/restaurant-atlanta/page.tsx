@@ -440,7 +440,9 @@ export default function RestaurantAtlantaPage() {
               { href: "/casestudy/bando", label: "Full TheBando case study", desc: "Complete breakdown of the redesign. Every decision, every change, the full data." },
               { href: "/web", label: "ROV Studios web design services", desc: "How we build Atlanta websites. Pricing, timeline, and what to expect from the process." },
               { href: "/ai-automation", label: "AI automations for restaurants", desc: "Missed call text-back, review request automation, follow-up sequences. All running without you." },
-              { href: "/blog/every-business-leaks-money", label: "Every business leaks money", desc: "The revenue leak framework and how ROV finds and fixes it across industries." },
+              { href: "/blog/thebando-brand-transformation", label: "689x more online orders: the TheBando write-up", desc: "The same redesign told as a before-and-after, with the numbers and the timeline." },
+              { href: "/web/why-isnt-my-business-showing-up-on-google", label: "Why isn't my business showing up on Google?", desc: "The six reasons Atlanta businesses stay invisible in local search, and how to fix each one." },
+              { href: "/web/how-much-does-a-website-cost-in-atlanta", label: "How much does a website cost in Atlanta?", desc: "Real 2026 prices, what moves them, and what a cheap site really costs you later." },
               { href: "/ctrla", label: "CTRL-A by ROV Studios", desc: "Our editorial arm covering creative direction, design systems, and the Atlanta creative scene." },
             ].map((link) => (
               <Link key={link.href} href={link.href} style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 16, alignItems: "start", textDecoration: "none", padding: "16px 0", borderBottom: "1px solid rgba(59,33,20,0.07)" }}>
