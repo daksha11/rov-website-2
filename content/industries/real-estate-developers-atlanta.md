@@ -7,10 +7,12 @@ pitchLine: "we help Atlanta developers make new projects memorable, not intercha
 title: Branding & Launch Marketing for Atlanta Real Estate Developers
 seoTitle: Development Branding Atlanta | Range of View Studios
 description: "Range of View Studios names, brands, and launches new developments in Atlanta. Identity, renderings and story, marketing site, and launch content, built as one system."
-coverImage: /og/og-industries-developers.webp
+coverImage: /casestudy/atm/atm1.webp
+cardImage: /casestudy/atm/atm1.webp
+cardAlt: A modern amenity lounge inside a new Atlanta development
 
 published: true
-indexed: false
+indexed: true
 date: 2026-07-21
 dateModified: 2026-07-21
 
@@ -60,6 +62,11 @@ proof:
   type: credentials
   heading: One team, from the name to the launch
   body: "We work across four disciplines under one roof: naming and brand identity, web and interactive, film and motion, and creative tech. For a development, that means the name, the identity, the marketing site, and the launch content are drawn by the same hands, so the story does not drift as it moves from the hoarding to the sales center. We have built brand and launch systems across sectors, and the mechanics that make a place feel inevitable transfer directly to real estate. Where a project needs proof specific to your asset class, we will show you the closest work we have and be honest about what carries over."
+  points:
+    - { label: "The name", text: "Naming and brand identity, drawn first so everything after it agrees." }
+    - { label: "The site", text: "Web and interactive, built as the front door to the sales center." }
+    - { label: "The film", text: "Launch content and motion, shot before the first unit is finished." }
+    - { label: "The honesty", text: "Where a project needs proof from your asset class, we show the closest work we have and say what carries over." }
   stat: { value: "4-in-1", label: "naming, brand, web, and content on one team" }
   link: ""
 
@@ -132,6 +139,11 @@ calculator:
         - { label: "Around 1%", value: 1 }
         - { label: "1.5% or more", value: 1.7 }
   formula: "units * price * carryRate / 100 * extraMonths * 0.5"
+  chain:
+    - { formula: "units", label: "units in the development" }
+    - { op: "×", opKey: "price", opNote: "average price per unit", formula: "units * price", label: "in inventory to absorb at launch", currency: true }
+    - { op: "×", opKey: "carryRate", opNote: "monthly carry on unsold value", formula: "units * price * carryRate / 100", sub: "a month", label: "in carrying cost while it sits", currency: true }
+    - { op: "×", opKey: "extraMonths", opNote: "extra months at a slow pace, averaged as inventory sells down", formula: "units * price * carryRate / 100 * extraMonths * 0.5", label: "in extra carry from a launch that absorbs slowly instead of selling out on pace", currency: true, end: true }
   resultLabel: "Extra carrying cost from a launch that absorbs slowly instead of selling out on pace."
   note: "An estimate from the numbers you set, not a Range of View performance claim. It assumes on average half your inventory is still on the books across the extra months (the 0.5 factor), which is a rough midpoint, not your actual draw schedule. It exists to show why a launch that creates demand early is worth investing in."
 

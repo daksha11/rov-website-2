@@ -7,10 +7,12 @@ pitchLine: "a missed call is a missed job, and a flyer-grade site loses the big 
 title: Websites & Lead Capture for Atlanta Home Services
 seoTitle: Home Services Marketing Atlanta | Range of View Studios
 description: "Range of View Studios builds lead capture and premium brands for Atlanta home services: roofing, HVAC, pools, and remodeling. Catch the missed call, then win the big-ticket job."
-coverImage: /og/og-industries-home-services.webp
+coverImage: /thumbnails/neighborhood1.webp
+cardImage: /thumbnails/neighborhood1.webp
+cardAlt: Aerial view of an Atlanta neighborhood at golden hour, rooftops in view
 
 published: true
-indexed: false
+indexed: true
 date: 2026-07-21
 dateModified: 2026-07-21
 
@@ -55,6 +57,11 @@ proof:
   type: credentials
   heading: We already built the missed-call playbook for Atlanta trades
   body: "We wrote the guide on missed-call text-back for Atlanta HVAC and home services, the exact system that catches the calls you cannot answer and turns them back into booked work. This page is the brand and website layer on top of that system: because catching the lead is only half the job. Winning a big-ticket estimate takes a presence a homeowner trusts. We build both, so the same team that stops your leads from leaking also makes your quotes easy to say yes to. Where a trade needs proof from real footage on real jobs, we build that in as you supply it."
+  points:
+    - { label: "The capture", text: "Missed-call text-back: the system that turns calls you cannot answer into booked work." }
+    - { label: "The playbook", text: "We wrote the guide on it for Atlanta HVAC and trades." }
+    - { label: "The presence", text: "The brand and website layer that makes a big-ticket quote easy to say yes to." }
+    - { label: "One team", text: "The same team that stops the leak also builds what closes the job." }
   stat: { value: "1 system", label: "capture the missed call, then close the big job" }
   link: "/web/missed-call-text-back-atlanta-hvac"
 
@@ -115,6 +122,11 @@ calculator:
         - { label: "$5,000-12,000", value: 8500 }
         - { label: "$12,000+", value: 18000 }
   formula: "callsMissed * 52 * closeRate / 100 * jobValue"
+  chain:
+    - { formula: "callsMissed", sub: "a week", label: "calls ring out while you are on a job" }
+    - { op: "×", opValue: "52", opNote: "weeks in a year", formula: "callsMissed * 52", sub: "a year", label: "missed calls, every one of them a homeowner with a problem" }
+    - { op: "×", opKey: "closeRate", opNote: "of answered calls you win", formula: "callsMissed * 52 * closeRate / 100", sub: "a year", label: "would have become booked jobs", widthFormula: "closeRate" }
+    - { op: "×", opKey: "jobValue", opNote: "average job value", formula: "callsMissed * 52 * closeRate / 100 * jobValue", sub: "a year", label: "walks to whoever picked up instead", currency: true, end: true }
   resultLabel: "Revenue left on the table each year from calls that ring out while you are on a job."
   note: "An estimate from the numbers you set, not a Range of View performance claim. It assumes a missed call would have closed at the same rate as an answered one. Catching those calls automatically is exactly the leak this page is about plugging."
 

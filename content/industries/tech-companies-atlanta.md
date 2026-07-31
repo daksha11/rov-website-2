@@ -7,10 +7,12 @@ pitchLine: "your product is good, your story should look like it"
 title: Brand & Story Design for Atlanta Tech Companies
 seoTitle: Tech Branding Atlanta | Range of View Studios
 description: "Range of View Studios builds brand systems, sites, and product stories for Atlanta tech companies and startups. We build with the same tools you do, so the story matches the product."
-coverImage: /og/og-industries-tech.webp
+coverImage: /casestudy/Pursue/pursuecover.webp
+cardImage: /casestudy/Pursue/pursuecover.webp
+cardAlt: The Pursue Networking platform built by Range of View Studios
 
 published: true
-indexed: false
+indexed: true
 date: 2026-07-21
 dateModified: 2026-07-21
 
@@ -68,6 +70,11 @@ proof:
   type: credentials
   heading: We build with the same tools you do
   body: "Creative tech and AI-powered experiences is one of our four practice areas, and it is our wedge. Most studios can design a nice site. Fewer can build the interactive product story, the custom tool, or the AI integration that actually runs. We work in the same stack your team does, so we are not handing off static mockups and hoping. We are building the thing. That fluency is exactly why our brand work for a technical audience lands: we understand what you shipped well enough to tell the truth about why it is good."
+  points:
+    - { label: "The stack", text: "We work in the same tools your team ships with, not static mockups handed over the wall." }
+    - { label: "The wedge", text: "Creative tech and AI-powered experiences is one of our four practice areas, and the one most studios cannot do." }
+    - { label: "The build", text: "The interactive product story, the custom tool, the AI integration: built, not mocked up." }
+    - { label: "The truth", text: "We understand what you shipped well enough to say plainly why it is good." }
   stat: { value: "Wedge", label: "creative tech is what we do that most studios cannot" }
   link: ""
   image: /casestudy/Pursue/pursuecover.webp
@@ -142,6 +149,11 @@ calculator:
         - { label: "$8,000-20,000", value: 14000 }
         - { label: "$20,000+", value: 30000 }
   formula: "visitors * 12 * (improvedRate - currentRate) / 100 * dealValue"
+  chain:
+    - { formula: "visitors", sub: "a month", label: "people land on your site" }
+    - { op: "×", opValue: "12", opNote: "months in a year", formula: "visitors * 12", sub: "a year", label: "visitors who decide what you are in a few seconds" }
+    - { op: "×", opFormula: "improvedRate - currentRate", opSuffix: "%", opNote: "points of demo rate a clearer story adds", formula: "visitors * 12 * (improvedRate - currentRate) / 100", sub: "a year", label: "extra demos, from the same traffic you already have", widthFormula: "improvedRate - currentRate" }
+    - { op: "×", opKey: "dealValue", opNote: "average value of a closed deal", formula: "visitors * 12 * (improvedRate - currentRate) / 100 * dealValue", sub: "a year", label: "in additional revenue, with no extra spend on traffic", currency: true, end: true }
   resultLabel: "Additional revenue per year if a clearer story lifts your demo rate by the gap you set."
   note: "An estimate from the numbers you set, not a Range of View performance claim. It assumes every additional demo request closes at your average deal value, which real pipelines never do exactly. Treat it as the size of the opportunity a better-told product story is competing for."
 

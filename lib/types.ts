@@ -81,6 +81,32 @@ export interface IndustryProof {
   image?: string;
   /** Alt text for `image`. */
   imageAlt?: string;
+  /**
+   * credentials type only. Supply four short points and the panel renders the
+   * body as a lede plus a 2x2 card grid instead of one long paragraph. Omit to
+   * keep the original single-paragraph layout.
+   */
+  points?: { label: string; text: string }[];
+}
+
+/**
+ * A single client quote given a full band of its own. Used where one real,
+ * on-corridor client says the thing better than a row of small cards can.
+ * `place` is the client's location (a landmark, not an endorsement by it).
+ */
+export interface IndustrySpotlight {
+  quote: string;
+  name: string;
+  role: string;
+  /** Where the client's business sits, e.g. "Citizen Supply, Ponce City Market". */
+  place?: string;
+  /** Short result badge, e.g. "+30% sales". */
+  stat?: string;
+  image?: string;
+  imageAlt?: string;
+  /** Internal href to the full case study. */
+  link?: string;
+  linkLabel?: string;
 }
 
 /** One media card in the IndustryShowcase band. Videos are lazy-mounted below
@@ -142,6 +168,40 @@ export interface IndustryCalculatorInput {
  *  declarative expression over the input keys, evaluated by a tiny parser that
  *  supports only the four arithmetic operators and parentheses (never eval).
  *  Results are labeled as estimates, never ROV claims. */
+/**
+ * One rung of the estimator's narrowing chain, matching the funnel device in
+ * the outreach visibility report: the operation that got here, then the number
+ * it produced. Every field is declarative so the arithmetic stays in content.
+ *
+ *  - `formula`   expression over input keys, run through the same safe parser
+ *                as `IndustryCalculator.formula`. This rung's value.
+ *  - `opKey`     names an input whose chosen answer is the operand, so the
+ *                operand shown is always the reader's own answer.
+ *  - `widthFormula` sets the bar width as a percentage (clamped 2-100). Omit
+ *                for a full-width bar.
+ */
+export interface IndustryCalculatorStep {
+  formula: string;
+  label: string;
+  /** Small caps qualifier beside the number, e.g. "a year". */
+  sub?: string;
+  op?: string;
+  /** Literal operand, e.g. "52". Ignored when `opKey` or `opFormula` is set. */
+  opValue?: string;
+  opKey?: string;
+  /** Operand computed from inputs, for an operand that is not one answer
+   *  (e.g. the gap between two rates). Takes precedence over `opKey`. */
+  opFormula?: string;
+  /** Appended to an `opFormula` result, e.g. "%". */
+  opSuffix?: string;
+  opNote?: string;
+  widthFormula?: string;
+  /** Render the value as currency rather than a plain count. */
+  currency?: boolean;
+  /** The final rung: ember treatment and a dashed border. */
+  end?: boolean;
+}
+
 export interface IndustryCalculator {
   heading: string;
   /** Small ember eyebrow above the heading. */
@@ -155,6 +215,9 @@ export interface IndustryCalculator {
   note: string;
   /** "loss" (money leaking, default) or "opportunity" (money on the table). */
   frame?: "loss" | "opportunity";
+  /** Optional narrowing chain shown on the result screen. Falls back to a
+   *  compact answer strip when absent. */
+  chain?: IndustryCalculatorStep[];
 }
 
 export interface IndustryCta {
@@ -218,6 +281,9 @@ export interface Industry {
   seoTitle?: string;
   description: string;
   coverImage?: string;
+  /** Still used on the /industries index card. Must be a real file in public/. */
+  cardImage?: string;
+  cardAlt?: string;
 
   // Lifecycle
   published: boolean;
@@ -249,6 +315,8 @@ export interface Industry {
   /** Optional heading for the showcase band (Norwige). */
   showcaseHeading?: string;
   proof: IndustryProof;
+  /** Optional full-width client spotlight band (one quote, shown large). */
+  spotlight?: IndustrySpotlight;
   faqs: IndustryFaq[];
   cta: IndustryCta;
   /** Optional per-page interactive estimate widget. */

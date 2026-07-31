@@ -82,6 +82,237 @@ export function IndustryProof({ proof }: { proof: ProofData }) {
   const hasStat = !!(proof.stat && proof.stat.value);
   const hasImage = !!proof.image;
 
+  /**
+   * Credentials with structured points: the body becomes a short lede and the
+   * substance moves into a 2x2 card grid, with the stat sitting beside the
+   * heading instead of floating in an empty right column. Pages without
+   * `points` fall through to the original prose panel below.
+   */
+  if (proof.type === "credentials" && proof.points && proof.points.length > 0) {
+    return (
+      <section
+        style={{
+          position: "relative",
+          overflow: "hidden",
+          background: BLACK,
+          padding: "clamp(56px, 7vw, 92px) clamp(20px, 6%, 6%)",
+        }}
+      >
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            left: "-6%",
+            top: "10%",
+            width: "55%",
+            height: "70%",
+            background:
+              "radial-gradient(ellipse, rgba(234,154,97,0.12) 0%, transparent 68%)",
+            filter: "blur(72px)",
+            pointerEvents: "none",
+          }}
+        />
+        <Reveal style={{ position: "relative", maxWidth: 1040, margin: "0 auto" }}>
+          <div
+            style={{
+              borderRadius: 24,
+              padding: 1,
+              background:
+                "linear-gradient(135deg, rgba(234,154,97,0.45) 0%, rgba(234,154,97,0.06) 45%, rgba(234,154,97,0.02) 100%)",
+            }}
+          >
+            <div
+              style={{
+                borderRadius: 23,
+                padding: "clamp(30px, 5vw, 56px)",
+                background:
+                  "linear-gradient(160deg, rgba(30,26,23,1) 0%, rgba(12,10,9,1) 100%)",
+              }}
+            >
+              {/* Header row: heading left, stat hard right so the top of the
+                  panel carries weight on both sides. */}
+              <div className="icp-proof-head">
+                <div>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 12,
+                      marginBottom: 20,
+                    }}
+                  >
+                    <span
+                      aria-hidden
+                      style={{
+                        display: "inline-block",
+                        width: 22,
+                        height: 1,
+                        background: "rgba(234,154,97,0.5)",
+                      }}
+                    />
+                    <span
+                      style={{
+                        fontFamily: BODY,
+                        fontSize: 12,
+                        fontWeight: 600,
+                        letterSpacing: "0.3em",
+                        textTransform: "uppercase",
+                        color: PILL_TEXT,
+                      }}
+                    >
+                      Why us
+                    </span>
+                  </div>
+                  <h2
+                    style={{
+                      fontFamily: HEADING,
+                      fontStyle: "italic",
+                      fontWeight: 700,
+                      fontSize: "clamp(1.6rem, 3.6vw, 2.5rem)",
+                      lineHeight: 1.15,
+                      color: "#FFFFFF",
+                      margin: "0 0 16px",
+                      maxWidth: 560,
+                    }}
+                  >
+                    {proof.heading}
+                  </h2>
+                  <p
+                    style={{
+                      fontFamily: BODY,
+                      fontWeight: 300,
+                      fontSize: "clamp(0.98rem, 1.6vw, 1.06rem)",
+                      lineHeight: 1.65,
+                      color: "rgba(255,255,255,0.62)",
+                      margin: 0,
+                      maxWidth: 560,
+                    }}
+                  >
+                    {proof.body}
+                  </p>
+                </div>
+
+                {hasStat && (
+                  <div className="icp-proof-stat">
+                    <span
+                      style={{
+                        fontFamily: HEADING,
+                        fontStyle: "italic",
+                        fontWeight: 700,
+                        fontSize: "clamp(2.6rem, 6vw, 4rem)",
+                        lineHeight: 0.95,
+                        color: "#FFFFFF",
+                        display: "block",
+                      }}
+                    >
+                      {proof.stat!.value}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: BODY,
+                        fontWeight: 300,
+                        fontSize: 14,
+                        lineHeight: 1.45,
+                        color: "rgba(255,255,255,0.6)",
+                        display: "block",
+                        marginTop: 10,
+                      }}
+                    >
+                      {proof.stat!.label}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* The substance, as cards rather than a paragraph. */}
+              <div className="icp-proof-points">
+                {proof.points.map((pt) => (
+                  <div
+                    key={pt.label}
+                    style={{
+                      background: "rgba(255,255,255,0.025)",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                      borderRadius: 14,
+                      padding: "20px 20px 22px",
+                    }}
+                  >
+                    <h3
+                      style={{
+                        fontFamily: HEADING,
+                        fontStyle: "italic",
+                        fontWeight: 700,
+                        fontSize: "1.2rem",
+                        lineHeight: 1.2,
+                        color: PILL_TEXT,
+                        margin: "0 0 8px",
+                      }}
+                    >
+                      {pt.label}
+                    </h3>
+                    <p
+                      style={{
+                        fontFamily: BODY,
+                        fontWeight: 300,
+                        fontSize: 14.5,
+                        lineHeight: 1.55,
+                        color: "rgba(255,255,255,0.66)",
+                        margin: 0,
+                      }}
+                    >
+                      {pt.text}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {proof.link && (
+                <div style={{ marginTop: 26 }}>
+                  <Link
+                    href={proof.link}
+                    style={{
+                      fontFamily: BODY,
+                      fontWeight: 500,
+                      fontSize: 15,
+                      color: EMBER_LIGHT,
+                      textDecoration: "underline",
+                      textUnderlineOffset: 4,
+                    }}
+                  >
+                    Read the full story →
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
+        </Reveal>
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+          .icp-proof-head { display: grid; grid-template-columns: 1fr; gap: 28px; }
+          .icp-proof-stat {
+            border-left: 2px solid rgba(234,154,97,0.45);
+            padding-left: 20px;
+            align-self: start;
+          }
+          .icp-proof-points {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+            margin-top: clamp(28px, 4vw, 40px);
+          }
+          @media (min-width: 700px) {
+            .icp-proof-points { grid-template-columns: 1fr 1fr; }
+          }
+          @media (min-width: 900px) {
+            .icp-proof-head { grid-template-columns: 1.55fr 1fr; gap: 44px; align-items: start; }
+          }
+        `,
+          }}
+        />
+      </section>
+    );
+  }
+
   return (
     <section
       style={{

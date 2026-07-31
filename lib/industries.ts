@@ -5,11 +5,13 @@ import type {
   Industry,
   IndustryVisual,
   IndustryProof,
+  IndustrySpotlight,
   IndustryShowcaseItem,
   IndustryBodyAside,
   IndustryHeroMedia,
   IndustryCalculator,
   IndustryCalculatorInput,
+  IndustryCalculatorStep,
   IndustryCalculatorOption,
   HeroGradient,
 } from "@/lib/types";
@@ -80,6 +82,35 @@ function normalizeProof(raw: unknown): IndustryProof {
     logos: p.logos as IndustryProof["logos"],
     image: (p.image as string) ?? undefined,
     imageAlt: (p.imageAlt as string) ?? undefined,
+    points: Array.isArray(p.points)
+      ? (p.points as unknown[])
+          .map((entry) => {
+            const e = (entry ?? {}) as Record<string, unknown>;
+            const label = (e.label as string) ?? "";
+            const text = (e.text as string) ?? "";
+            return label && text ? { label, text } : null;
+          })
+          .filter((x): x is { label: string; text: string } => x !== null)
+      : undefined,
+  };
+}
+
+/** Spotlight needs a quote and a name to be worth a band; otherwise skip it. */
+function normalizeSpotlight(raw: unknown): IndustrySpotlight | undefined {
+  const s = (raw ?? {}) as Record<string, unknown>;
+  const quote = (s.quote as string) ?? "";
+  const name = (s.name as string) ?? "";
+  if (!quote || !name) return undefined;
+  return {
+    quote,
+    name,
+    role: (s.role as string) ?? "",
+    place: (s.place as string) ?? undefined,
+    stat: (s.stat as string) ?? undefined,
+    image: (s.image as string) ?? undefined,
+    imageAlt: (s.imageAlt as string) ?? undefined,
+    link: (s.link as string) ?? undefined,
+    linkLabel: (s.linkLabel as string) ?? undefined,
   };
 }
 
@@ -286,6 +317,33 @@ function normalizeCalculator(raw: unknown): IndustryCalculator | undefined {
     resultLabel,
     note: typeof c.note === "string" ? c.note.trim() : "",
     frame,
+    chain: Array.isArray(c.chain)
+      ? (c.chain as unknown[])
+          .map((entry) => {
+            const s = (entry ?? {}) as Record<string, unknown>;
+            const stepFormula =
+              typeof s.formula === "string" ? s.formula.trim() : "";
+            const label = typeof s.label === "string" ? s.label.trim() : "";
+            if (!stepFormula || !label) return null;
+            const str = (v: unknown) =>
+              typeof v === "string" && v.trim() !== "" ? v.trim() : undefined;
+            return {
+              formula: stepFormula,
+              label,
+              sub: str(s.sub),
+              op: str(s.op),
+              opValue: str(s.opValue),
+              opKey: str(s.opKey),
+              opFormula: str(s.opFormula),
+              opSuffix: str(s.opSuffix),
+              opNote: str(s.opNote),
+              widthFormula: str(s.widthFormula),
+              currency: s.currency === true,
+              end: s.end === true,
+            } as IndustryCalculatorStep;
+          })
+          .filter((x): x is IndustryCalculatorStep => x !== null)
+      : undefined,
   };
 }
 
@@ -308,6 +366,8 @@ function parseFrontmatter(slug: string, fileContent: string): Industry {
     seoTitle: data.seoTitle ?? undefined,
     description: data.description ?? "",
     coverImage: data.coverImage ?? undefined,
+    cardImage: data.cardImage ?? undefined,
+    cardAlt: data.cardAlt ?? undefined,
 
     published: data.published ?? false,
     indexed: data.indexed ?? false,
@@ -329,6 +389,7 @@ function parseFrontmatter(slug: string, fileContent: string): Industry {
     showcase: normalizeShowcase(data.showcase),
     showcaseHeading: data.showcaseHeading ?? undefined,
     proof: normalizeProof(data.proof),
+    spotlight: normalizeSpotlight(data.spotlight),
     faqs: data.faqs ?? [],
     cta: data.cta ?? { heading: "", body: "", phone: "+1-XXX-XXX-XXXX" },
     calculator: normalizeCalculator(data.calculator),

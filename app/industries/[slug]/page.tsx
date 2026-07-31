@@ -122,6 +122,10 @@ const IndustryProof = dynamic(
   () => import("@/components/industries/IndustryProof").then((m) => ({ default: m.IndustryProof })),
   { loading: dl("40vh") }
 );
+const IndustrySpotlight = dynamic(
+  () => import("@/components/industries/IndustrySpotlight").then((m) => ({ default: m.IndustrySpotlight })),
+  { loading: dl("50vh") }
+);
 const IndustryCTA = dynamic(
   () => import("@/components/industries/IndustryCTA").then((m) => ({ default: m.IndustryCTA })),
   { loading: dl("60vh") }
@@ -263,6 +267,7 @@ export default async function IndustryPage({
         {art.pullQuotePos === "afterShowcase" && pullQuote}
         <IndustryBody htmlContent={page.htmlContent ?? ""} asides={page.bodyAsides} />
         <IndustryProof proof={page.proof} />
+        {page.spotlight && <IndustrySpotlight spotlight={page.spotlight} />}
         {testimonials && (
           <TestimonialsSection
             testimonials={testimonials.data}

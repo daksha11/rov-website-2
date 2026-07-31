@@ -150,6 +150,9 @@ const Footer = () => {
                   <a href="/casestudy" className="hover:text-gray-400 transition-colors duration-300">Case Studies</a>
                 </li>
                 <li>
+                  <a href="/industries" className="hover:text-gray-400 transition-colors duration-300">Industries</a>
+                </li>
+                <li>
                   <a href="/blog" className="hover:text-gray-400 transition-colors duration-300">Blog</a>
                 </li>
                 <li>

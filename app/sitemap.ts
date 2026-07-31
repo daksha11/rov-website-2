@@ -9,12 +9,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // ICP industry landing pages. Only pages promoted to indexed: true appear
     // here. Phase 1 drafts (indexed: false) are intentionally excluded, so this
     // list is empty until Andi personally promotes a page.
-    const industryPages = getIndexedIndustries().map((page) => ({
+    const indexedIndustries = getIndexedIndustries();
+    const industryPages = indexedIndustries.map((page) => ({
         url: `${baseUrl}/industries/${page.slug}`,
         lastModified: page.dateModified,
         changeFrequency: 'monthly' as const,
         priority: 0.8,
     }));
+
+    // The /industries hub only belongs in the sitemap once it has something
+    // indexable to point at, matching the noindex rule on the page itself.
+    const industryHub =
+        indexedIndustries.length > 0
+            ? [
+                  {
+                      url: `${baseUrl}/industries`,
+                      lastModified: indexedIndustries
+                          .map((p) => p.dateModified)
+                          .sort()
+                          .reverse()[0],
+                      changeFrequency: 'monthly' as const,
+                      priority: 0.8,
+                  },
+              ]
+            : [];
 
     const blogPosts = getAllPosts()
         .filter((post) => !post.externalUrl)
@@ -205,6 +223,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'monthly',
             priority: 0.7,
         },
+        ...industryHub,
         ...industryPages,
         ...blogPosts,
     ];

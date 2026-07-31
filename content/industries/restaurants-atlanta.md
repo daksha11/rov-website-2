@@ -8,9 +8,11 @@ title: Branding, Websites & Content for Atlanta Restaurants
 seoTitle: Restaurant Branding Atlanta | Range of View Studios
 description: "Range of View Studios builds brands, ordering-ready websites, menus, and content for Atlanta restaurants. We doubled The Bando's online revenue after a relaunch."
 coverImage: /og/og-bando.webp
+cardImage: /casestudy/bando/bando4.webp
+cardAlt: The Bando brand and food photography, Atlanta
 
 published: true
-indexed: false
+indexed: true
 date: 2026-07-21
 dateModified: 2026-07-21
 
@@ -123,6 +125,11 @@ calculator:
         - { label: "Around 25%", value: 25 }
         - { label: "30% or more", value: 32 }
   formula: "orders * 52 * ticket * commission / 100"
+  chain:
+    - { formula: "orders", sub: "a week", label: "orders come through the delivery apps" }
+    - { op: "×", opValue: "52", opNote: "weeks in a year", formula: "orders * 52", sub: "a year", label: "orders where the app owns the customer, not you" }
+    - { op: "×", opKey: "ticket", opNote: "average order total", formula: "orders * 52 * ticket", sub: "a year", label: "in food goes out the door through the apps", currency: true }
+    - { op: "×", opKey: "commission", opNote: "the app's cut of every one", formula: "orders * 52 * ticket * commission / 100", sub: "a year", label: "is what the apps keep that direct ordering could keep on your side of the counter", currency: true, widthFormula: "commission", end: true }
   resultLabel: "Paid to delivery apps each year that direct ordering could keep on your side of the counter."
   note: "An estimate from the numbers you set, not a Range of View performance claim. It is the gross commission on that order volume; a direct ordering path will not recover all of it, but it shows the size of the tax you are paying to rent your own customers."
 

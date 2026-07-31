@@ -7,10 +7,12 @@ pitchLine: "on the Beltline, whoever looks sharpest wins the walk-by"
 title: Branding for Atlanta Beltline Businesses
 seoTitle: Beltline Branding Atlanta | Range of View Studios
 description: "Range of View Studios brands storefronts, studios, and businesses along the Atlanta Beltline. Identity, signage, and content built to win the foot traffic walking past your door."
-coverImage: /og/og-industries-beltline.webp
+coverImage: /industries/beltline/north-ave-bridge-1240.webp
+cardImage: /industries/beltline/north-ave-bridge-1240.webp
+cardAlt: Walkers and cyclists crossing the Atlanta Beltline North Ave. Bridge
 
 published: true
-indexed: false
+indexed: true
 date: 2026-07-21
 dateModified: 2026-07-21
 
@@ -21,7 +23,8 @@ subhead: Thousands of people pass your door every week on foot and on bikes. A b
 heroGradient: emberDark
 answerLine: "Range of View Studios is an Atlanta creative studio that brands businesses along the Beltline, from storefront identity and signage to the content that carries it online."
 heroMedia:
-  src: /videoprod/Redstairs.mp4
+  src: /industries/beltline/fourth-ward-skatepark.mp4
+  poster: /industries/beltline/fourth-ward-skatepark-poster.webp
 
 stats:
   - { value: "2 sec", label: "the window you get to earn a walk-by's attention" }
@@ -35,33 +38,49 @@ pains:
   - { title: "Your online presence does not match your corner", body: "The Beltline location is a whole identity. The website and feed look generic, so the energy of the spot never carries past the block." }
 
 services:
-  - { name: "Storefront identity & signage", blurb: "A mark, palette, and type system designed to read fast from the path, on a window, a sign, an A-frame, or a mural wall. Built for the two-second glance." }
+  - { name: "Storefront identity & signage", blurb: "A mark, palette, and type system designed to read fast from the path, on a window, a sign, an A-frame, or a mural wall. Built to land before someone finishes walking past." }
   - { name: "A site that matches the corner", blurb: "A website that feels like your spot, not a template. Fast, distinctive, and built so the walk-by who looked you up finds the same energy they saw on the path." }
   - { name: "Content for a place people photograph", blurb: "The Beltline is a camera magnet. We build the visual moments and content that make people shoot your frontage and tag it, then carry that look online." }
   - { name: "Walk-by to follow, capture built in", blurb: "The creative-tech piece: simple ways to turn a curious passerby into a follow, an email, or a booking, so the sidewalk moment does not evaporate." }
 
 visual:
   type: annotated-mockup
-  title: What sharp branding wins on a Beltline frontage
-  image: /heroassets/ponceshowframe.webp
-  alt: A lively Beltline-adjacent rooftop and storefront moment in Atlanta
+  title: What the corridor actually looks like from above
+  image: /industries/beltline/eastside-trail-aerial-1240.webp
+  alt: Aerial view of the Atlanta Beltline Eastside Trail, with the path running between homes, businesses, and a painted mural
   annotations:
-    - { x: 26, y: 30, label: "A mark that reads in two seconds from the path" }
-    - { x: 70, y: 26, label: "Signage sized and lit for slow foot and bike traffic" }
-    - { x: 40, y: 66, label: "A frontage worth photographing and tagging" }
-    - { x: 78, y: 70, label: "A clear next step: a follow, a scan, a booking" }
+    - { x: 26, y: 30, label: "The path runs along the back of buildings that were never designed to be seen from it" }
+    - { x: 70, y: 26, label: "Traffic moves at walking and biking speed, slow enough to read something" }
+    - { x: 40, y: 66, label: "Painted ground and mural walls: the corridor is already a camera magnet" }
+    - { x: 78, y: 70, label: "Your competition here is every other frontage on the same stretch" }
 
-showcaseHeading: Our Atlanta presence, on the ground
+showcaseHeading: The corridor, and the work that lives on it
 showcase:
-  - { src: /videoprod/Redstairs.mp4, kind: video, label: "Atlanta, at street level", ratio: "16 / 9", result: "We design for how people actually move past your frontage, on foot and unhurried." }
+  - { src: /industries/beltline/north-ave-bridge-1240.webp, kind: image, label: "The corridor, at street level", ratio: "16 / 9", alt: "Walkers, cyclists, and scooters crossing the Atlanta Beltline North Ave. Bridge past a painted mural", result: "This is the traffic your frontage is talking to: on foot, unhurried, looking around." }
   - { src: /videoprod/eventsweb/Goatturnikna.mp4, kind: video, label: "Event energy, on camera", ratio: "16 / 9", result: "The kind of moment that gets photographed, tagged, and carried onto the feed." }
 
 proof:
   type: credentials
   heading: We build for how Atlanta actually moves
-  body: "Our work lives across this city, from event and rooftop moments to storefront brands and the sites behind them. The Beltline is its own kind of audience: on foot, unhurried, looking around, camera in hand. We design for that specific behavior, a mark that lands in two seconds, signage sized for a slow pass, a frontage people want to photograph, and a capture path that turns the walk-by into a follow. Because brand, web, video, and creative tech all sit on one team, the energy of your corner carries from the sidewalk to the screen without losing anything."
+  body: "The Beltline is its own kind of audience: on foot, unhurried, looking around, camera in hand. We design for that specific behavior. And because brand, web, video, and creative tech all sit on one team, the energy of your corner carries from the sidewalk to the screen without losing anything."
+  points:
+    - { label: "The mark", text: "Lands in two seconds, at the pace people actually move past your door." }
+    - { label: "The signage", text: "Sized and set for a slow pass on foot, not a windshield doing thirty." }
+    - { label: "The frontage", text: "Built as something people want to photograph and tag, not just walk by." }
+    - { label: "The capture", text: "A path that turns the walk-by into a follow, an email, or a booking." }
   stat: { value: "1 look", label: "from the frontage to the feed" }
   link: ""
+
+spotlight:
+  quote: "Everything finally looks like it came from one brain. The website, the branding, the content, it all tells the same story now."
+  name: Aysegul Ikna
+  role: Founder, Aysegul Ikna
+  place: Citizen Supply · Ponce City Market · on the Beltline
+  stat: "+30% sales"
+  image: /casestudy/ikna/fashion1ikna.webp
+  imageAlt: Aysegul Ikna's runway show at Ponce City Market on the Atlanta Beltline
+  link: /casestudy/ikna
+  linkLabel: Read the Aysegul Ikna case study
 
 faqs:
   - { q: "What makes Beltline branding different from regular storefront branding?", a: "The audience moves slowly and looks around. On a normal commercial strip most traffic is in cars, so you design for a glance at speed. On the Beltline people are on foot and bikes, unhurried, and often holding a camera. That changes everything: the sign, the frontage, and the reasons someone stops. We design for the walk-by, not the drive-by." }
@@ -120,6 +139,11 @@ calculator:
         - { label: "$30-60", value: 45 }
         - { label: "$60+", value: 90 }
   formula: "footTraffic * 52 * stopRate / 100 * ticket"
+  chain:
+    - { formula: "footTraffic", sub: "a week", label: "people move past your block on foot and on bikes" }
+    - { op: "×", opValue: "52", opNote: "weeks in a year", formula: "footTraffic * 52", sub: "a year", label: "pass your frontage, every one of them deciding in a glance" }
+    - { op: "×", opKey: "stopRate", opNote: "stop in when the frontage earns it", formula: "footTraffic * 52 * stopRate / 100", sub: "a year", label: "come through your door", widthFormula: "stopRate" }
+    - { op: "×", opKey: "ticket", opNote: "average spend per visit", formula: "footTraffic * 52 * stopRate / 100 * ticket", sub: "a year", label: "is what the walk-by is worth once your frontage does its job", currency: true, end: true }
   resultLabel: "Potential revenue each year from walk-by traffic your frontage earns a stop from."
   note: "An estimate from the numbers you set, not a Range of View performance claim. You choose the stop-in rate; the math just annualizes it. It is meant to show why the two-second glance on a path this busy is worth designing for."
 
@@ -140,7 +164,7 @@ pullQuote:
 bodyAsides:
   - { afterH2: "The Beltline hands you the best foot traffic in Atlanta. Are you catching it?", type: pull, kicker: "The opportunity", text: "The most valuable kind of traffic a business can get: attention that is already open and unhurried." }
   - { afterH2: "Great inside is not enough", type: keywords, kicker: "The surface you own", items: ["The window", "The sign", "The A-frame", "The mural wall"] }
-  - { afterH2: "Turn the walk-by into a follow", type: media, kicker: "The capture", src: /videoprod/eventsweb/Goatturnikna.mp4, mediaKind: video, label: "The kind of moment people photograph, tag, and carry onto the feed." }
+  - { afterH2: "Turn the walk-by into a follow", type: pull, kicker: "The capture", text: "On a path this busy, that is a staggering amount of interest evaporating every single day." }
   - { afterH2: "Built for this corridor", type: keywords, kicker: "What wins the glance", items: ["Small footprint", "Sharp identity", "Big presence"] }
 ---
 

@@ -7,10 +7,12 @@ pitchLine: "we help real estate agents in ATL brand and tell stories"
 title: Branding & Storytelling for Atlanta Real Estate Agents
 seoTitle: Real Estate Branding Atlanta | Range of View Studios
 description: "Range of View Studios builds brand identity, websites, and listing stories for Atlanta real estate agents and brokerages who are tired of blending into every other headshot."
-coverImage: /og/og-industries-real-estate.webp
+coverImage: /thumbnails/house1.webp
+cardImage: /thumbnails/house1.webp
+cardAlt: Aerial view of new-build homes in an Atlanta neighborhood
 
 published: true
-indexed: false
+indexed: true
 date: 2026-07-21
 dateModified: 2026-07-21
 
@@ -68,6 +70,11 @@ proof:
   type: credentials
   heading: We have already built the real estate version of this
   body: "We wrote the playbook on why Atlanta agents lose deals after the lead comes in, and built the website and follow-up system that fixes it. The branding and storytelling sit on top of that same foundation, so the presence that wins attention and the system that captures it are designed together, by one team."
+  points:
+    - { label: "The playbook", text: "We wrote why Atlanta agents lose deals after the lead comes in." }
+    - { label: "The system", text: "The website and follow-up that fixes it, already built and running." }
+    - { label: "The brand", text: "Storytelling that sits on that same foundation, not bolted on afterwards." }
+    - { label: "One team", text: "The presence that wins attention and the system that captures it, designed together." }
   stat: { value: "1 team", label: "brand, web, and follow-up designed as one piece" }
   link: "/web/real-estate-agent-website-atlanta"
 
@@ -128,6 +135,10 @@ calculator:
         - { label: "Around 1 in 3", value: 30 }
         - { label: "Close to half", value: 45 }
   formula: "listings * commission * lostShare / 100"
+  chain:
+    - { formula: "listings", sub: "a year", label: "listings you take" }
+    - { op: "×", opKey: "lostShare", opNote: "lost to a faster, sharper competitor", formula: "listings * lostShare / 100", sub: "a year", label: "go to the agent who answered first", widthFormula: "lostShare" }
+    - { op: "×", opKey: "commission", opNote: "average commission per deal", formula: "listings * commission * lostShare / 100", sub: "a year", label: "in commission, lost to someone who looked sharper doing it", currency: true, end: true }
   resultLabel: "Commission lost each year to the agent who answered first and looked sharper doing it."
   note: "An estimate from the numbers you set, not a Range of View performance claim. You choose the share you think slips away; the math just multiplies it out. It is a way to size the deals a stronger brand and faster follow-up are competing to keep."
 
