@@ -90,6 +90,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.8,
         },
         {
+            url: `${baseUrl}/web/missed-call-text-back-atlanta-hvac`,
+            lastModified: '2026-07-05',
+            changeFrequency: 'monthly',
+            priority: 0.8,
+        },
+        {
             url: `${baseUrl}/ai-automation`,
             lastModified: '2026-04-29',
             changeFrequency: 'monthly',
