@@ -1,14 +1,14 @@
 # SEO Topical Authority Plan
 
-_Created 2026-07-30. Audit + task list. No implementation done yet._
+_Created 2026-07-30. Audit, task list, and execution log. See the execution-pass sections below for what has shipped and which claims were retracted._
 
 ## The three clusters, in priority order
 
 | # | Cluster | Job | Hub | Status |
 |---|---------|-----|-----|--------|
-| 1 | Atlanta web design + cost | Traffic engine. Only cluster with real local buying volume. | `/web` | Exists, hub is broken (see T1) |
-| 2 | Brand identity + the experience it flows into | Differentiation + AI citation. Why they pick us over cheaper. | `/brand` | **Does not exist** |
-| 3 | Industry + Atlanta | Beats national competitors on local specificity. | `/industries` | Built, all six `indexed: false`, Andi-gated |
+| 1 | Atlanta web design + cost | Traffic engine. Only cluster with real local buying volume. | `/web` | Hub links down as of 2026-07-30 |
+| 2 | Brand identity + the experience it flows into | Differentiation + AI citation. Why they pick us over cheaper. | `/brand` | Shipped 2026-07-31 |
+| 3 | Industry + Atlanta | Beats national competitors on local specificity. | `/industries` | All six indexed 2026-07-31 |
 
 Supporting cluster: local visibility ("why isn't my business showing up on Google") feeds cluster 1 rather than standing alone.
 
@@ -57,16 +57,16 @@ practice areas in `company.md`.
 ## Task list
 
 ### Now, structural, no new writing
-- **T1** Add a cluster links section to `app/web/page.tsx` pointing at all five children with descriptive anchor text. Fixes F1.
-- **T2** Add `/web/missed-call-text-back-atlanta-hvac` to `app/sitemap.ts`. Fixes F2.
-- **T3** *(Andi's call, pending)* Flip `indexed: true` on the industry pages. One line per file, reversible. Blocks T5.
+- ~~**T1** Add a cluster links section pointing at all five children.~~ Done, as `WebGuidesSection` in `WebContent`.
+- ~~**T2** Add `/web/missed-call-text-back-atlanta-hvac` to `app/sitemap.ts`.~~ Done, plus the missing content stub.
+- ~~**T3** Flip `indexed: true` on the industry pages.~~ Done 2026-07-31, all six. Unblocks T5.
 
 ### Next, still no new writing
 - **T4** Audit the seven non-stub blog posts for whether they link into `/web`. Several are cluster-1 topics sitting outside the cluster.
 - **T5** Point the three industry-matched blog posts at their `/industries` pages. Depends on T3.
 
 ### Then, new writing, in order
-- **T6** Build the `/brand` hub. Identity work and the experience layer on one page, organized around the wedge, not around a service menu.
+- ~~**T6** Build the `/brand` hub.~~ Done 2026-07-31. Shipped with cluster links already pointing down.
 - **T7** Cluster 2 spokes, buyer-facing: branded email template design, post-purchase experience, thank-you page design, brand consistency across touchpoints.
 - **T8** Cluster 1 buying-intent spokes under `/web`: timeline, what's included, Wix vs custom, who owns the code.
 - **T9** Local-visibility hub with the gap report as the conversion step.
@@ -262,6 +262,40 @@ and `next build` both clean, 101 static pages.
 
 **Standing rule this pass established:** never link to a `/blog/<slug>` that is an `externalUrl`
 stub. Link to the canonical target directly. The stubs exist for listing discovery only.
+
+## Third execution pass, 2026-07-31
+
+**T6 done: `/brand` shipped.** Built on the live service-page DNA (dark hero, CSS-only ember
+splashes, white headline plus `NorwigeHeroItalic` gradient accent, pill eyebrow), as a server
+component like `WebContent` so no `framer-motion` and no client bundle. Sections: hero, project
+strip, the gap (the wedge argument), the Full View five moments, deliverables split into "the
+identity" and "the surfaces it lives on", approach, cluster links, cross-sell, FAQ, lead form.
+
+Copy pulls from the locked Full View positioning rather than inventing its own: Found, Captured,
+Answered, Nurtured, Kept; taste plus plumbing; the 11pm email proof line; the $2,500 floor stated
+plainly. New `brandFaqItems` (7 entries) and `brandSteps` (5 phases) in the shared data files.
+
+**Lesson from the `/web` hub applied on day one:** `/brand` ships with its cluster links already
+pointing down at `creative-studios-atlanta`,
+`creative-studio-vs-agency-vs-freelancer`, `dkm-corp-brand-identity`, and the website-cost guide.
+It did not repeat the one-directional mistake.
+
+Also wired for discoverability: added to `app/sitemap.ts`, added to the `NavDoc` services menu,
+and added to `CrossSellNudges` as a fifth `ServiceId`. The cross-sell map was rebalanced so
+`/brand` gets inbound links from `/web`, `/video-production`, and `/ai-automation`.
+
+**T3 done: all six industry pages are indexed.** `indexed: true` on all six content files.
+Verified in the build: no `robots` noindex meta on any of the six rendered pages, all six now in
+`sitemap.xml`, and the `/industries` hub flipped to indexable automatically as designed. Sitemap
+went from 49 to 50 URLs plus the six industry pages. The hub links to all six children and the
+footer links to the hub, so nothing is orphaned.
+
+`tsc --noEmit` clean, `next build` clean at 102 static pages. Link validation on `app/brand/`
+reports 0 problems.
+
+**Still open from the audit:** T4 (do the 7 non-stub posts link into `/web`), T8 (`/web`
+buying-intent spokes), T9 (local-visibility hub, which also unblocks splitting the
+`Local Visibility` category out), T10 (video cluster), B6, B7, B8.
 
 ## Sequenced blog task list
 
