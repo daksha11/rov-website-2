@@ -139,3 +139,34 @@ export const videoFaqItems: FaqItem[] = [
         answer: "Just reach out and tell us what you're working on. We'll talk through your goals, who your audience is, what you actually want to accomplish. Then we'll give you a clear scope and timeline before anything happens."
     }
 ];
+
+export const brandFaqItems: FaqItem[] = [
+    {
+        question: "What's included in a brand identity project?",
+        answer: "A full identity covers naming (if you need it), a primary logo and its variations, a type system, a color palette with accessible contrast pairs, and written guidelines so the whole thing survives contact with real use. Where we differ from most studios is that we don't stop at the guidelines document. We carry the identity into the places customers actually see it: your website, your confirmation emails, your receipts, your thank-you pages. A logo nobody applies consistently is decoration, not a brand."
+    },
+    {
+        question: "How much does brand identity work cost?",
+        answer: "Our floor is $2,500, and we don't discount below it. A focused identity refresh for an established business typically lands between $2,500 and $6,000. A full identity built from nothing, with naming, a complete system, and the customer-facing touchpoints wired up, generally runs $6,000 to $15,000 depending on how many surfaces need to be built. We'll give you a specific number after we understand how many touchpoints you actually have."
+    },
+    {
+        question: "Do I need a rebrand, or just better touchpoints?",
+        answer: "Usually the second one, and we'll tell you so. Most businesses that think they need a rebrand have a perfectly serviceable logo attached to a broken experience: a website that looks nothing like the business card, a confirmation email that looks like a 2009 receipt, a thank-you page that says nothing. That's not an identity problem, it's an application problem, and it's cheaper to fix. We'd rather do the smaller correct job than sell you the bigger wrong one."
+    },
+    {
+        question: "Do you actually build the email flows, or just design them?",
+        answer: "We build and ship them. Designing a beautiful email template and handing it over as a PDF is how most agencies leave the job half done. We set up the actual sequences in your platform, whether that's Klaviyo, Mailchimp, HubSpot, or something else, and we test them end to end. The automated email that goes out at 11pm should look like it came from the same company as your website. That only happens if the same people do both."
+    },
+    {
+        question: "What are the five moments you keep referring to?",
+        answer: "Found, Captured, Answered, Nurtured, and Kept. Those are the five points where a customer meets your business: how they find you, how you capture their interest, how fast you answer, how you stay in touch, and what makes them come back. Most studios work on one slice, usually the first. We call the whole thing the Full View, because the money leaks in the gaps between those moments, not in the traffic."
+    },
+    {
+        question: "How long does an identity project take?",
+        answer: "A focused refresh takes 3 to 4 weeks. A full identity with naming and touchpoint build-out runs 6 to 10 weeks. The variable is almost never the design work, it's how many surfaces we're carrying the identity onto and how quickly you can get us access to the platforms where your emails and forms live. We'll give you a timeline during scoping, and we'd rather quote honestly than quote fast."
+    },
+    {
+        question: "Can you work with the logo we already have?",
+        answer: "Yes, and often that's the right call. If your mark is sound, we keep it and build the system around it: type, color, spacing rules, and the touchpoints it was never applied to. Redrawing a logo that works is an expensive way to feel productive. We'll say plainly whether yours is worth keeping."
+    },
+];

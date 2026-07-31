@@ -1,6 +1,6 @@
 import React from "react";
 
-type ServiceId = "video-production" | "web" | "ai" | "ai-automation";
+type ServiceId = "video-production" | "web" | "ai" | "ai-automation" | "brand";
 
 interface CardData {
   id: ServiceId;
@@ -118,6 +118,37 @@ const AutomationIllo = (
   </svg>
 );
 
+// Brand: an identity mark flowing out into the touchpoints it has to survive on.
+const BrandIllo = (
+  <svg
+    viewBox="0 0 96 96"
+    fill="none"
+    stroke={ILLO_STROKE}
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="w-full h-full"
+  >
+    {/* The mark */}
+    <rect x="10" y="12" width="34" height="34" rx="8" fill={ILLO_STROKE} fillOpacity="0.08" />
+    <circle cx="27" cy="29" r="9" />
+    <circle cx="27" cy="29" r="3" fill={ILLO_STROKE} />
+    {/* Flow into the touchpoints */}
+    <path d="M44 29 C58 29 58 29 66 29" strokeDasharray="3 4" />
+    <path d="M27 46 C27 62 27 62 27 70" strokeDasharray="3 4" />
+    {/* Envelope touchpoint */}
+    <rect x="60" y="18" width="28" height="22" rx="3" />
+    <path d="M60 22 L74 32 L88 22" />
+    {/* Card / receipt touchpoint */}
+    <rect x="12" y="66" width="30" height="20" rx="3" />
+    <line x1="18" y1="73" x2="34" y2="73" />
+    <line x1="18" y1="79" x2="28" y2="79" />
+    {/* Thank-you screen touchpoint */}
+    <rect x="56" y="58" width="30" height="28" rx="3" />
+    <path d="M63 72 L69 78 L79 66" strokeWidth="2" />
+  </svg>
+);
+
 const CARDS: Record<ServiceId, CardData> = {
   "video-production": {
     id: "video-production",
@@ -147,13 +178,21 @@ const CARDS: Record<ServiceId, CardData> = {
     tagline: "Workflows on autopilot.",
     illustration: AutomationIllo,
   },
+  brand: {
+    id: "brand",
+    href: "/brand",
+    label: "Brand & Experience",
+    tagline: "Identity that survives the receipt.",
+    illustration: BrandIllo,
+  },
 };
 
 const CROSS_SELL_MAP: Record<ServiceId, [ServiceId, ServiceId]> = {
-  "video-production": ["web", "ai-automation"],
-  web: ["video-production", "ai-automation"],
+  "video-production": ["web", "brand"],
+  web: ["brand", "ai-automation"],
   ai: ["ai-automation", "web"],
-  "ai-automation": ["ai", "web"],
+  "ai-automation": ["brand", "web"],
+  brand: ["web", "ai-automation"],
 };
 
 function Card({ card }: { card: CardData }) {

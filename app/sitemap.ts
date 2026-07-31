@@ -62,6 +62,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'monthly',
             priority: 0.9,
         },
+        {
+            url: `${baseUrl}/brand`,
+            lastModified: '2026-07-31',
+            changeFrequency: 'monthly',
+            priority: 0.9,
+        },
         // Canonical /web SEO pages. The like-named blog posts are externalUrl
         // stubs that 308-redirect here (and are filtered out of blogPosts above),
         // so these canonical targets must be listed explicitly.

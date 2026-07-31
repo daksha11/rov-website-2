@@ -206,3 +206,66 @@ export const aiAutomationSteps: ApproachStep[] = [
     bgColor: "#1A1A1A",
   },
 ];
+
+export const brandSteps: ApproachStep[] = [
+  {
+    title: "AUDIT",
+    description: "We inventory every place a customer already meets your business, and find the ones that look like they belong to a different company.",
+    expandableContent: [
+      "Before we design anything, we map your actual surfaces. The website, sure, but also the confirmation email, the receipt, the booking page, the invoice, the thank-you screen, the review request, the voicemail script. Most businesses have never seen this list written down.",
+      "Then we grade it honestly. Which surfaces carry the brand, which ones contradict it, and which ones are missing entirely. This is usually the moment a client realizes their identity stops at the homepage.",
+      "You end this phase with a written inventory of every touchpoint and a clear picture of where the gaps are, whether or not you hire us for the rest.",
+    ],
+    accentColor: "#FFF4E3",
+    textColor: "#FFF4E3",
+    bgColor: "#1A1A1A",
+  },
+  {
+    title: "DEFINE",
+    description: "We settle what the brand is and how it speaks, so every later decision has something to be measured against.",
+    expandableContent: [
+      "This is positioning and voice before pixels. Who you serve, what you actually sell, what you sound like, and what you refuse to sound like. Written down, in plain language, short enough that your team will read it.",
+      "We pressure-test it against your real customers and your real competitors. A positioning statement that could describe any business in your category is not positioning, it's filler.",
+      "The output is a short written foundation. It is the thing we point at later when a design decision is up for debate.",
+    ],
+    accentColor: "#FFF4E3",
+    textColor: "#FFF4E3",
+    bgColor: "#1A1A1A",
+  },
+  {
+    title: "DESIGN",
+    description: "We build the identity system: mark, type, color, and the rules that keep it consistent when we are no longer in the room.",
+    expandableContent: [
+      "The logo and its variations, a type system with real hierarchy, a palette with accessible contrast pairs, and spacing rules. Designed in Figma, reviewed with you, revised until it is right.",
+      "Every choice gets tested small and ugly, not just large and beautiful. A mark that only works as a hero image is a mark that will fail in an email signature and a favicon.",
+      "We deliver guidelines written for the people who will actually apply them, not a 60-page PDF nobody opens.",
+    ],
+    accentColor: "#FFF4E3",
+    textColor: "#FFF4E3",
+    bgColor: "#1A1A1A",
+  },
+  {
+    title: "APPLY",
+    description: "We carry the identity onto every surface from the audit, including the ones nobody thinks of as design work.",
+    expandableContent: [
+      "This is the step most studios skip and most of the value lives in. The website, the email templates, the booking flow, the receipts, the thank-you pages, the review requests, the forms.",
+      "We build the email and lifecycle sequences in your platform and test them end to end. Not a template handed over as a file, the actual working flow, sending actual mail.",
+      "The standard we hold: the automated email that goes out at 11pm should look like it came from the same company as your website. If it does not, we are not done.",
+    ],
+    accentColor: "#FFF4E3",
+    textColor: "#FFF4E3",
+    bgColor: "#1A1A1A",
+  },
+  {
+    title: "HAND OFF",
+    description: "We train your team, document what we built, and make sure the system holds without us.",
+    expandableContent: [
+      "You get the working files, the guidelines, and a walkthrough of every flow we built, recorded so you can hand it to the next person who joins.",
+      "We are explicit about what needs maintaining and what does not. Some of this is set and forget. Some of it, especially the lifecycle sequences, gets better if someone reviews the numbers quarterly.",
+      "If you want us to keep doing that review, we will say so during scoping rather than springing a retainer on you at handoff.",
+    ],
+    accentColor: "#FFF4E3",
+    textColor: "#FFF4E3",
+    bgColor: "#1A1A1A",
+  },
+];
