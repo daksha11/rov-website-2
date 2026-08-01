@@ -516,6 +516,7 @@ export default function CreativeStudiosAtlantaPage() {
               { href: "/blog/creative-studio-vs-agency-vs-freelancer", label: "Creative studio vs agency vs freelancer", desc: "Which of the three your Atlanta brand actually needs, and how to tell." },
               { href: "/blog/restaurant-atlanta", label: "How a redesign grew ordering 689x", desc: "A real Atlanta case study. What we changed and the numbers it moved." },
               { href: "/web/how-much-does-a-website-cost-in-atlanta", label: "How much does a website cost in Atlanta?", desc: "Real 2026 prices, what moves them, and what a cheap site really costs." },
+              { href: "/brand", label: "Brand identity and the experience it flows into", desc: "Identity work plus the emails, receipts, and thank-you pages it has to survive on." },
               { href: "/works", label: "The Range of View portfolio", desc: "Brand, web, video, and creative tech work across the four disciplines." },
               { href: "/about", label: "Meet the team", desc: "The named designers, developers, and producers behind the work." },
             ].map((link) => (

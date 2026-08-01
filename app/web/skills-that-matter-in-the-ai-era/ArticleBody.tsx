@@ -653,7 +653,7 @@ export default function ArticleBody() {
               { href: "/ai-automation", label: "AI automations for Atlanta businesses", desc: "What directing AI looks like in practice. The systems we build so a small team ships like a big one." },
               { href: "/web", label: "ROV Studios web design", desc: "How we build sites where the code is the easy part and the strategy behind it is the real work." },
               { href: "/about", label: "About ROV Studios", desc: "Who we are, how we think, and why we build the way we do." },
-              { href: "/blog/every-business-leaks-money", label: "Every business leaks money", desc: "The revenue leak framework, and how judgment beats raw output when you are finding the leak." },
+              { href: "/brand", label: "Brand identity and the experience it flows into", desc: "Judgment applied to a real problem: the gap between a brand and the touchpoints nobody designed." },
               { href: "/ctrla", label: "CTRL-A by ROV Studios", desc: "Our editorial arm on creative direction, design systems, and building in the age of AI." },
             ].map((link) => (
               <Link key={link.href} href={link.href} style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 16, alignItems: "start", textDecoration: "none", padding: "16px 0", borderBottom: "1px solid rgba(59,33,20,0.07)" }}>

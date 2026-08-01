@@ -524,7 +524,7 @@ export default function ArticleBody() {
               { href: "/web/how-much-does-a-website-cost-in-atlanta", label: "How much does a website cost in Atlanta?", desc: "Real 2026 pricing, what drives the cost, and why the cheapest site is the one you pay for twice." },
               { href: "/web/real-estate-agent-website-atlanta", label: "Real estate agent websites in Atlanta", desc: "Why agents lose deals after the lead comes in, and the website and follow-up system that fixes it." },
               { href: "/ai-automation", label: "AI automations for Atlanta businesses", desc: "Missed call text-back, automatic review requests, follow-up sequences. Visibility that runs itself." },
-              { href: "/blog/every-business-leaks-money", label: "Every business leaks money", desc: "The revenue leak framework and how ROV finds and fixes it across industries." },
+              { href: "/industries/home-services-atlanta", label: "What we do for Atlanta home-services companies", desc: "Getting found is step one. Here is the whole picture for trades, and what it costs." },
               { href: "/ctrla", label: "CTRL-A by ROV Studios", desc: "Our editorial arm covering creative direction, design systems, and the Atlanta creative scene." },
             ].map((link) => (
               <Link key={link.href} href={link.href} style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 16, alignItems: "start", textDecoration: "none", padding: "16px 0", borderBottom: "1px solid rgba(59,33,20,0.07)" }}>

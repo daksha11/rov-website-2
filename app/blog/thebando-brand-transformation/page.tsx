@@ -464,6 +464,8 @@ export default function TheBandoBrandTransformationPage() {
             {[
               { href: "/blog/restaurant-atlanta", label: "The revenue-and-ordering breakdown", desc: "The other half of TheBando story. How the redesign drove a 689x jump in online ordering views." },
               { href: "/casestudy/bando", label: "Full TheBando case study", desc: "Complete breakdown of the brand and website work. Every decision, every change, the full data." },
+              { href: "/industries/restaurants-atlanta", label: "What we do for Atlanta restaurants", desc: "The whole picture for restaurants: ordering, visibility, follow-up, and what it costs." },
+              { href: "/brand", label: "Brand identity and the experience it flows into", desc: "The identity half of this project, and the touchpoints most brands never apply it to." },
               { href: "/web", label: "ROV Studios web design services", desc: "How we build Atlanta brands and websites. Pricing, timeline, and what to expect from the process." },
               { href: "/ai-automation", label: "AI automations for restaurants", desc: "Missed call text-back, review request automation, follow-up sequences. All running without you." },
               { href: "/ctrla", label: "CTRL-A by ROV Studios", desc: "Our editorial arm covering creative direction, design systems, and the Atlanta creative scene." },

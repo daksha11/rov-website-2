@@ -459,7 +459,7 @@ export default function ArticleBody() {
               { href: "/web", label: "ROV Studios web design services", desc: "How we build Atlanta sites that turn visitors into booked appointments. Process, timeline, what you get." },
               { href: "/ai-automation", label: "AI automations for Atlanta businesses", desc: "Missed-call text-back, speed-to-lead response, review requests, and sphere follow-up that runs itself." },
               { href: "/web/why-isnt-my-business-showing-up-on-google", label: "Why isn't my business showing up on Google?", desc: "The six reasons Atlanta businesses stay invisible in local search, and how to fix each one." },
-              { href: "/blog/every-business-leaks-money", label: "Every business leaks money", desc: "The revenue leak framework and how ROV finds and fixes it across industries." },
+              { href: "/industries/real-estate-agents-atlanta", label: "What we do for Atlanta real estate agents", desc: "The whole picture for agents: lead capture, speed-to-lead, sphere follow-up, and what it costs." },
               { href: "/ctrla", label: "CTRL-A by ROV Studios", desc: "Our editorial arm covering creative direction, design systems, and the Atlanta creative scene." },
             ].map((link) => (
               <Link key={link.href} href={link.href} style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 16, alignItems: "start", textDecoration: "none", padding: "16px 0", borderBottom: "1px solid rgba(59,33,20,0.07)" }}>

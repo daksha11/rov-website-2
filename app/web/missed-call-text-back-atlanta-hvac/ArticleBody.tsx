@@ -729,6 +729,7 @@ export default function ArticleBody() {
             {[
               { href: "/web/why-isnt-my-business-showing-up-on-google", label: "Why isn't my business showing up on Google?", desc: "The six reasons Atlanta businesses stay invisible in local search, and how to fix each one." },
               { href: "/web/how-much-does-a-website-cost-in-atlanta", label: "How much does a website cost in Atlanta?", desc: "Real 2026 pricing, what drives the cost, and why the cheapest site is the one you pay for twice." },
+              { href: "/industries/home-services-atlanta", label: "What we do for Atlanta home-services companies", desc: "The whole picture for trades: getting found, answering fast, and keeping the job. Plus what it costs." },
               { href: "/ai-automation", label: "AI automations for Atlanta businesses", desc: "Missed call text-back, automatic review requests, dead-estimate follow-up. The full automation lineup." },
               { href: "/web", label: "ROV Studios web design services", desc: "How we build Atlanta websites Google trusts and homeowners book on. Pricing, timeline, process." },
               { href: "/casestudy/bando", label: "TheBando case study", desc: "How we took a buried ordering page to 91,060 views with no ad spend. Every decision, every number." },

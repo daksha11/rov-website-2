@@ -439,6 +439,7 @@ export default function RestaurantAtlantaPage() {
             {[
               { href: "/casestudy/bando", label: "Full TheBando case study", desc: "Complete breakdown of the redesign. Every decision, every change, the full data." },
               { href: "/web", label: "ROV Studios web design services", desc: "How we build Atlanta websites. Pricing, timeline, and what to expect from the process." },
+              { href: "/industries/restaurants-atlanta", label: "What we do for Atlanta restaurants", desc: "The whole picture for restaurants: ordering, visibility, follow-up, and what it costs." },
               { href: "/ai-automation", label: "AI automations for restaurants", desc: "Missed call text-back, review request automation, follow-up sequences. All running without you." },
               { href: "/blog/thebando-brand-transformation", label: "689x more online orders: the TheBando write-up", desc: "The same redesign told as a before-and-after, with the numbers and the timeline." },
               { href: "/web/why-isnt-my-business-showing-up-on-google", label: "Why isn't my business showing up on Google?", desc: "The six reasons Atlanta businesses stay invisible in local search, and how to fix each one." },
