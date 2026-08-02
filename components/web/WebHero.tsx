@@ -446,6 +446,24 @@ export default function WebHero() {
                             </motion.button>
                         </Link>
                     </motion.div>
+
+                    {/* Quieter path for people who'd rather write than talk */}
+                    <motion.p
+                        className="mt-5 text-sm text-center md:text-left"
+                        style={{ fontFamily: BODY }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.7, delay: 1, ease: "easeOut" }}
+                    >
+                        <span className="text-white/40">Not ready for a call? </span>
+                        <Link
+                            href="/web/brief"
+                            className="text-[#EA9A61] hover:text-white transition-colors underline underline-offset-4 decoration-[#EA9A61]/40"
+                        >
+                            Start a project brief
+                        </Link>
+                        <span className="text-white/40"> and we&apos;ll come back with a direction.</span>
+                    </motion.p>
                 </div>
             </div>
 

@@ -29,6 +29,8 @@ const WebPricingTiers = dynamic(() => import("@/components/web/WebPricingTiers")
     ),
 });
 
+const BriefCTASection = dynamic(() => import("@/components/web/BriefCTASection"));
+
 const OurApproachSection = dynamic(() => import("@/components/common/OurApproachSection"), {
     loading: () => (
         <div className="bg-black min-h-[40vh] flex items-center justify-center">
@@ -62,6 +64,9 @@ export default function WebContent() {
 
             {/* Pricing Tiers */}
             <WebPricingTiers />
+
+            {/* Project brief entry point: right after pricing, where they're deciding */}
+            <BriefCTASection />
 
             {/* Our Approach Section */}
             <OurApproachSection steps={webDevSteps} />
