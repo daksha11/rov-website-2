@@ -30,16 +30,16 @@ const BODY = "'Roboto', sans-serif";
 
 const PROMISES = [
     {
-        title: "You answer once",
-        body: "No back and forth over email figuring out what you meant. Everything we need to scope the work is in one place.",
+        title: "We look before we ask",
+        body: "Your link tells us your industry, your market, and what you're up against. No point making you type what we can read.",
     },
     {
-        title: "We read it ourselves",
-        body: "Not a form that lands in a CRM and dies. A person reads your brief and replies within one business day.",
+        title: "A person reads it",
+        body: "Not a form that lands in a CRM and dies. We reply within one business day with our honest read on the project.",
     },
     {
         title: "You get a direction",
-        body: "Our honest read on the project, roughly what it takes, and what a demo of your site would look like.",
+        body: "Roughly what it takes, what your budget actually buys, and what a demo of your site would look like.",
     },
 ];
 
@@ -83,9 +83,10 @@ export default function WebBriefPage() {
                             className="text-white/55 leading-relaxed max-w-xl"
                             style={{ fontFamily: BODY, fontSize: "clamp(1rem, 1.6vw, 1.125rem)" }}
                         >
-                            Most agencies open with a sales call. We&apos;d rather start with your answers. Six
-                            short steps covering your business, your goals, and your taste. That&apos;s enough
-                            for us to scope the work honestly and show you a direction worth reacting to.
+                            Most agencies open with a sales call. We&apos;d rather start with your answers.
+                            Four short steps: your link, the job the site has to do, the work you actually
+                            like, and what you&apos;re working with. Under two minutes, and you get our read
+                            on the project at the end.
                         </p>
                     </div>
                 </section>

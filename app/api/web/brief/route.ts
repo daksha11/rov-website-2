@@ -36,10 +36,16 @@ const long = z.string().trim().max(1500).optional().or(z.literal(""));
 const tags = z.array(z.string().trim().max(80)).max(30).optional();
 
 const bodySchema = z.object({
-  // Required: the minimum we need to reply at all.
+  // Required: the minimum we need to reply at all. Business name is optional
+  // because the form asks for a URL first and most visitors have one; when it
+  // is missing we derive a label from the domain.
   name: z.string().trim().min(1).max(120),
   email: z.string().trim().email().max(254),
-  businessName: z.string().trim().min(1).max(160),
+  businessName: z.string().trim().max(160).optional().or(z.literal("")),
+
+  // "initial" is the gated submission that captures the lead. "details" is the
+  // optional deepening they can fill in after, which arrives as a follow-up.
+  stage: z.enum(["initial", "details"]).optional(),
 
   // 1. Business
   website: short,
@@ -90,6 +96,22 @@ function val(v?: string) {
   return v && v.trim() ? v.trim() : "—";
 }
 
+// What to call this lead in the subject line and email header. The form leads
+// with a URL rather than a business name, so fall back to the bare domain.
+function briefLabel(b: Brief) {
+  if (b.businessName && b.businessName.trim()) return b.businessName.trim();
+  const site = b.website && b.website.trim();
+  if (site) {
+    const domain = site
+      .replace(/^https?:\/\//i, "")
+      .replace(/^www\./i, "")
+      .replace(/[/?#].*$/, "")
+      .trim();
+    if (domain) return domain;
+  }
+  return b.name;
+}
+
 function briefToText(b: Brief) {
   return [
     `WHO`,
@@ -99,7 +121,7 @@ function briefToText(b: Brief) {
     `Prefers: ${val(b.contactPref)}`,
     "",
     `BUSINESS`,
-    `Business: ${b.businessName}`,
+    `Business: ${briefLabel(b)}`,
     `Current site: ${val(b.website)}`,
     `Industry: ${val(b.industry)}`,
     `Location / service area: ${val(b.location)}`,
@@ -182,9 +204,11 @@ function briefToHtml(b: Brief) {
 <body style="margin:0;padding:0;background:#FFF4E3">
 <div style="background:#FFF4E3;padding:28px 20px">
 <div class="brief-card" style="max-width:640px;margin:0 auto;background:#ffffff;border:1px solid #e7ddc9;border-radius:14px;padding:30px">
-<p style="margin:0 0 10px;font-family:${TEXT};font-size:11px;line-height:1;letter-spacing:.2em;text-transform:uppercase;color:#8a8378">Range of View Studios &middot; New website brief</p>
+<p style="margin:0 0 10px;font-family:${TEXT};font-size:11px;line-height:1;letter-spacing:.2em;text-transform:uppercase;color:#8a8378">Range of View Studios &middot; ${
+    b.stage === "details" ? "Added detail on an existing brief" : "New website brief"
+  }</p>
 <h2 class="brief-title" style="margin:0;font-family:${DISPLAY};font-style:italic;font-weight:800;font-size:30px;line-height:1.2;color:#3B2114">${esc(
-    b.businessName
+    briefLabel(b)
   )}</h2>
 ${group(
     "Who",
@@ -270,7 +294,10 @@ async function deliverResend(apiKey: string, brief: Brief) {
       from,
       to: [to],
       reply_to: brief.email,
-      subject: `Website brief: ${brief.businessName}${brief.budget ? ` (${brief.budget})` : ""}`,
+      subject:
+        brief.stage === "details"
+          ? `Added detail: ${briefLabel(brief)}`
+          : `Website brief: ${briefLabel(brief)}${brief.budget ? ` (${brief.budget})` : ""}`,
       text: briefToText(brief),
       html: briefToHtml(brief),
     }),
@@ -291,7 +318,7 @@ export async function POST(req: NextRequest) {
     const honeypotTripped = parsed.error.issues.some((i) => i.path[0] === "company");
     if (honeypotTripped) return NextResponse.json({ ok: true });
     return NextResponse.json(
-      { ok: false, error: "Please fill in your name, business, and a valid email." },
+      { ok: false, error: "Please fill in your name and a valid email." },
       { status: 400 }
     );
   }
