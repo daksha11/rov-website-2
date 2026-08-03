@@ -142,21 +142,50 @@ function esc(s: string) {
     .replace(/>/g, "&gt;");
 }
 
+// ── Email typography ────────────────────────────────────────────
+// Norwige is served from the live site so mail clients that honor
+// @font-face (Apple Mail, iOS Mail) render the real brand face. Gmail and
+// Outlook strip @font-face, so every element also carries an inline stack:
+// they fall back to italic Helvetica, which keeps the slanted display feel
+// the brand leans on. Color and layout carry the identity everywhere else.
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.rovstudios.com").replace(/\/$/, "");
+const NORWIGE_DIR = `${SITE_URL}/font/norwige-font-family-1750004186-0`;
+
+// Norwige only ships italic cuts, and the brand always sets it italic.
+const DISPLAY = "'Norwige','Helvetica Neue',Helvetica,Arial,sans-serif";
+const TEXT = "'Roboto','Helvetica Neue',Helvetica,Arial,sans-serif";
+
+const FONT_STYLE = `
+<style type="text/css">
+@font-face{font-family:'Norwige';src:url('${NORWIGE_DIR}/Norwige-SemiBoldItalic-BF68175f326e730.otf') format('opentype');font-weight:600;font-style:italic;font-display:swap}
+@font-face{font-family:'Norwige';src:url('${NORWIGE_DIR}/Norwige-ExtraBoldItalicItalic-BF68175f3224386.otf') format('opentype');font-weight:800;font-style:italic;font-display:swap}
+@font-face{font-family:'Norwige';src:url('${NORWIGE_DIR}/Norwige-MediumItalic-BF68175f325d0c2.otf') format('opentype');font-weight:500;font-style:italic;font-display:swap}
+body{margin:0;padding:0;background:#FFF4E3}
+a{color:#90422C}
+@media (max-width:620px){.brief-card{padding:22px !important}.brief-title{font-size:26px !important}}
+</style>`;
+
 function briefToHtml(b: Brief) {
   const row = (label: string, value: string) =>
-    `<tr><td style="padding:6px 12px 6px 0;color:#8a8378;font:12px/1.5 Helvetica,Arial,sans-serif;vertical-align:top;white-space:nowrap">${esc(
+    `<tr><td style="padding:7px 14px 7px 0;color:#8a8378;font-family:${TEXT};font-size:12px;line-height:1.5;vertical-align:top;white-space:nowrap">${esc(
       label
-    )}</td><td style="padding:6px 0;color:#1c1512;font:14px/1.6 Helvetica,Arial,sans-serif">${esc(
+    )}</td><td style="padding:7px 0;color:#1c1512;font-family:${TEXT};font-size:14px;line-height:1.6">${esc(
       value
     ).replace(/\n/g, "<br>")}</td></tr>`;
 
   const group = (title: string, rows: string) =>
-    `<h3 style="margin:26px 0 8px;font:600 12px/1 Helvetica,Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#90422C">${title}</h3><table cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse">${rows}</table>`;
+    `<h3 style="margin:28px 0 6px;font-family:${DISPLAY};font-style:italic;font-weight:600;font-size:15px;line-height:1;letter-spacing:.06em;color:#90422C">${title}</h3>
+<div style="height:1px;background:#e7ddc9;margin-bottom:10px"></div>
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse">${rows}</table>`;
 
-  return `<div style="background:#FFF4E3;padding:28px">
-<div style="max-width:640px;margin:0 auto;background:#fff;border:1px solid #e7ddc9;border-radius:14px;padding:28px">
-<p style="margin:0 0 4px;font:600 12px/1 Helvetica,Arial,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#8a8378">New website brief</p>
-<h2 style="margin:0;font:700 24px/1.25 Georgia,serif;color:#3B2114">${esc(b.businessName)}</h2>
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${FONT_STYLE}</head>
+<body style="margin:0;padding:0;background:#FFF4E3">
+<div style="background:#FFF4E3;padding:28px 20px">
+<div class="brief-card" style="max-width:640px;margin:0 auto;background:#ffffff;border:1px solid #e7ddc9;border-radius:14px;padding:30px">
+<p style="margin:0 0 10px;font-family:${TEXT};font-size:11px;line-height:1;letter-spacing:.2em;text-transform:uppercase;color:#8a8378">Range of View Studios &middot; New website brief</p>
+<h2 class="brief-title" style="margin:0;font-family:${DISPLAY};font-style:italic;font-weight:800;font-size:30px;line-height:1.2;color:#3B2114">${esc(
+    b.businessName
+  )}</h2>
 ${group(
     "Who",
     row("Name", b.name) +
@@ -199,10 +228,16 @@ ${group(
       row("Budget", val(b.budget))
   )}
 ${group("Notes", row("Anything else", val(b.notes)))}
-<p style="margin:26px 0 0;font:12px/1.5 Helvetica,Arial,sans-serif;color:#8a8378">Submitted from ${esc(
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%;margin-top:30px">
+<tr><td style="padding-top:16px;border-top:1px solid #e7ddc9">
+<a href="mailto:${esc(b.email)}" style="display:inline-block;background:#90422C;color:#FFF4E3;text-decoration:none;border-radius:999px;padding:12px 26px;font-family:${DISPLAY};font-style:italic;font-weight:600;font-size:14px;letter-spacing:.03em">Reply to ${esc(
+      b.name.split(" ")[0] || "them"
+    )}</a>
+<p style="margin:14px 0 0;font-family:${TEXT};font-size:12px;line-height:1.5;color:#8a8378">Submitted from ${esc(
     val(b.page) === "—" ? "/web/brief" : (b.page as string)
   )}</p>
-</div></div>`;
+</td></tr></table>
+</div></div></body></html>`;
 }
 
 async function timedFetch(url: string, init: RequestInit, timeout = 10000) {
