@@ -1,8 +1,9 @@
 "use client";
 
 // Mid-page entry point to /web/brief. Sits after pricing, where a visitor has
-// just seen numbers and is deciding whether to raise their hand. The pitch is
-// the trade: a few minutes of answers for a real scope and a demo direction.
+// just seen numbers and is deciding whether to raise their hand, so the pitch
+// answers the question they already have: what does my budget actually buy.
+// The chips carry what we ask for, so the body copy never restates them.
 
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
@@ -45,15 +46,14 @@ export default function BriefCTASection() {
                             className="text-white font-bold italic leading-tight mb-4"
                             style={{ fontFamily: HEADING, fontSize: "clamp(1.75rem, 3.4vw, 2.75rem)" }}
                         >
-                            Give us the vision, get a demo direction
+                            Three screens. Then we tell you what your budget buys.
                         </h2>
                         <p
                             className="text-white/50 leading-relaxed max-w-xl mb-6"
                             style={{ fontFamily: BODY, fontSize: "clamp(0.9375rem, 1.3vw, 1.0625rem)" }}
                         >
-                            Start with your link, pick the job the site has to do, tell us the numbers. Three
-                            screens and you&apos;re done. A person reads it and replies within a business day with
-                            a scope and a demo direction.
+                            Paste your link, pick the job the site has to do, and give us a range. A person
+                            reads every brief and replies within one business day.
                         </p>
                         <ul className="flex flex-wrap gap-2">
                             {COVERED.map((c) => (
