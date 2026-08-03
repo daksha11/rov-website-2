@@ -28,19 +28,12 @@ export const metadata: Metadata = {
 const HEADING = "Norwige, sans-serif";
 const BODY = "'Roboto', sans-serif";
 
+// Titles only. Each one has to land on its own, so they read as three
+// promises rather than three headings waiting for a paragraph.
 const PROMISES = [
-    {
-        title: "We look before we ask",
-        body: "Your link tells us your industry, your market, and what you're up against. No point making you type what we can read.",
-    },
-    {
-        title: "A person reads it",
-        body: "Not a form that lands in a CRM and dies. We reply within one business day with our honest read on the project.",
-    },
-    {
-        title: "You get a direction",
-        body: "Roughly what it takes, what your budget actually buys, and what a demo of your site would look like.",
-    },
+    "We read your site before we reply",
+    "A person answers within a day",
+    "You get a scope, not a pitch",
 ];
 
 export default function WebBriefPage() {
@@ -108,30 +101,27 @@ export default function WebBriefPage() {
                         >
                             What happens next
                         </span>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
                             {PROMISES.map((p, i) => (
-                                <div key={p.title}>
+                                <div key={p} className="border-t border-white/[0.09] pt-5">
                                     <span
-                                        className="block text-[#EA9A61] text-sm mb-2 tabular-nums"
+                                        className="block text-[#EA9A61] text-xs mb-3 tabular-nums tracking-[0.2em]"
                                         style={{ fontFamily: BODY }}
                                     >
                                         0{i + 1}
                                     </span>
                                     <h2
-                                        className="text-white text-lg font-bold italic mb-2"
-                                        style={{ fontFamily: HEADING }}
+                                        className="text-white font-bold italic leading-snug"
+                                        style={{ fontFamily: HEADING, fontSize: "clamp(1.25rem, 1.9vw, 1.6rem)" }}
                                     >
-                                        {p.title}
+                                        {p}
                                     </h2>
-                                    <p className="text-white/45 text-sm leading-relaxed" style={{ fontFamily: BODY }}>
-                                        {p.body}
-                                    </p>
                                 </div>
                             ))}
                         </div>
 
                         <p className="text-white/35 text-sm mt-10 leading-relaxed" style={{ fontFamily: BODY }}>
-                            Would rather talk it through?{" "}
+                            Would you rather talk it through?{" "}
                             <a
                                 href="https://cal.com/rov-studios-imhphw/15min"
                                 target="_blank"
