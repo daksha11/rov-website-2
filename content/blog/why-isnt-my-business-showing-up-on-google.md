@@ -8,7 +8,7 @@ authorRole: "Co-Founder & Systems Architect"
 authorUrl: "https://www.rovstudios.com/about"
 date: "2026-07-01"
 dateModified: "2026-07-02"
-category: "Web Design"
+category: "Local Visibility"
 tags: ["local SEO", "Google Business Profile", "Atlanta", "search visibility", "GEO"]
 featured: false
 readingTime: 8

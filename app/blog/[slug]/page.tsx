@@ -5,7 +5,7 @@ import { getPostBySlug, getRelatedPosts, getAllPosts } from "@/lib/blog";
 import { BlogPostHeader } from "@/components/blog/BlogPostHeader";
 import { BlogPostBody } from "@/components/blog/BlogPostBody";
 import { BlogPostCTA } from "@/components/blog/BlogPostCTA";
-// import { RelatedPosts } from "@/components/blog/RelatedPosts";
+import { RelatedPosts } from "@/components/blog/RelatedPosts";
 import { BlogPostingSchema } from "@/components/blog/BlogPostingSchema";
 import { BreadcrumbSchema } from "@/components/schema/BreadcrumbSchema";
 import { FAQPageSchema } from "@/components/schema/FAQPageSchema";
@@ -112,8 +112,11 @@ export default async function BlogPostPage({
         <BlogPostBody htmlContent={post.htmlContent ?? ""} />
         {post.faqs && post.faqs.length > 0 && <BlogFAQ faqs={post.faqs} />}
         <BlogPostCTA slug={post.slug} />
-        {/* TODO: Re-enable RelatedPosts when blog has 20+ posts */}
-        {/* <RelatedPosts posts={related} /> */}
+        {/* Renders nothing when the category has no siblings, so it is safe to
+            leave on. Was gated on "20+ posts" while every post either redirected
+            away or had a custom page, which meant this route rendered nothing at
+            all and the rail could never fire. */}
+        <RelatedPosts posts={related} />
       </article>
 
       <NavigationDock />
