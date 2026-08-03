@@ -15,7 +15,7 @@ const GRADIENT =
 const GRADIENT_SHADOW =
     "3px 4px 4px 0 rgba(255, 244, 227, 0.15) inset, 0 4.385px 4.385px 0 rgba(0, 0, 0, 0.25)";
 
-const COVERED = ["Your link", "The goal", "Sites you love", "Budget and timeline"];
+const COVERED = ["Your link", "The goal", "Budget and timeline"];
 
 export default function BriefCTASection() {
     const ref = useRef<HTMLElement>(null);
@@ -51,9 +51,9 @@ export default function BriefCTASection() {
                             className="text-white/50 leading-relaxed max-w-xl mb-6"
                             style={{ fontFamily: BODY, fontSize: "clamp(0.9375rem, 1.3vw, 1.0625rem)" }}
                         >
-                            Start with your link. Four short steps on what the site has to do and the work
-                            you actually like, then we tell you what your budget buys. A person reads it and
-                            replies within a business day with a scope and a demo direction.
+                            Start with your link, pick the job the site has to do, tell us the numbers. Three
+                            screens and you&apos;re done. A person reads it and replies within a business day with
+                            a scope and a demo direction.
                         </p>
                         <ul className="flex flex-wrap gap-2">
                             {COVERED.map((c) => (

@@ -76,10 +76,9 @@ export default function WebBriefPage() {
                             className="text-white/55 leading-relaxed max-w-xl"
                             style={{ fontFamily: BODY, fontSize: "clamp(1rem, 1.6vw, 1.125rem)" }}
                         >
-                            Most agencies open with a sales call. We&apos;d rather start with your answers.
-                            Four short steps: your link, the job the site has to do, the work you actually
-                            like, and what you&apos;re working with. Under two minutes, and you get our read
-                            on the project at the end.
+                            Most agencies open with a sales call. We&apos;d rather start with your answers. Three
+                            screens: your link, the job the site has to do, and the numbers. About a minute,
+                            and you get our read on the project at the end.
                         </p>
                     </div>
                 </section>

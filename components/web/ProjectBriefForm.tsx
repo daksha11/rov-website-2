@@ -34,15 +34,6 @@ const GOALS = [
   { key: "rebuild", label: "Fix what's broken", sub: "Slow, dated, hard to update, invisible on Google" },
 ];
 
-// Six, not twelve. Enough to place them on the map, few enough to scan.
-const VIBES = [
-  "Clean and minimal",
-  "Bold and loud",
-  "Warm and human",
-  "Premium and polished",
-  "Playful",
-  "Dark and moody",
-];
 
 const TIMELINES = [
   "ASAP, we're behind",
@@ -103,12 +94,12 @@ const COPY_STATUS = [
   "Nothing written, we need help",
 ];
 
+// Three screens, then send. Anything that isn't a link, the job, or the
+// numbers has moved behind the gate into the optional panel.
 const STEPS = [
   { title: "Where are we starting?", sub: "One link tells us more than a page of questions." },
-  { title: "What does it need to do?", sub: "The job, not the features. We'll handle those." },
-  { title: "What should it feel like?", sub: "This is the part that makes your demo look like yours." },
-  { title: "What are we working with?", sub: "So we scope something real instead of guessing." },
-  { title: "Where do we send it?", sub: "Last step. Then you get our read on it." },
+  { title: "What does it need to do?", sub: "Pick one. The job, not the features." },
+  { title: "Last step", sub: "The numbers and where to send our read." },
 ];
 
 // The payoff. Honest ranges tied to what they told us, not a fake quote.
@@ -151,7 +142,6 @@ type Data = {
   goal: string;
   successMetric: string;
   references: string;
-  vibe: string[];
   avoid: string;
   budget: string;
   timeline: string;
@@ -175,7 +165,6 @@ const EMPTY: Data = {
   goal: "",
   successMetric: "",
   references: "",
-  vibe: [],
   avoid: "",
   budget: "",
   timeline: "",
@@ -206,7 +195,7 @@ export default function ProjectBriefForm() {
   const set = <K extends keyof Data>(key: K, value: Data[K]) =>
     setData((p) => ({ ...p, [key]: value }));
 
-  const toggle = (key: "pages" | "features" | "vibe", value: string) =>
+  const toggle = (key: "pages" | "features", value: string) =>
     setData((p) => {
       const current = p[key];
       return {
@@ -224,7 +213,7 @@ export default function ProjectBriefForm() {
     if (step === 0) {
       return data.noSite ? data.businessName.trim().length > 0 : data.website.trim().length > 0;
     }
-    if (step === 4) return data.name.trim().length > 0 && emailValid;
+    if (step === 2) return data.name.trim().length > 0 && emailValid;
     return true;
   }, [step, data.noSite, data.website, data.businessName, data.name, emailValid]);
 
@@ -263,7 +252,6 @@ export default function ProjectBriefForm() {
       goal: data.goal,
       successMetric: data.successMetric,
       references: data.references,
-      vibe: data.vibe,
       avoid: data.avoid,
       budget: data.budget,
       timeline: data.timeline,
@@ -382,12 +370,39 @@ export default function ProjectBriefForm() {
               Want a sharper demo? &rarr;
             </span>
             <span className="block text-white/40 text-sm" style={{ fontFamily: BODY }}>
-              Four more optional questions about pages, features, and what you already have. Skip
-              it and we&apos;ll cover this on the call instead.
+              Tell us the sites you love, what to avoid, and what you already have. This is what
+              makes the demo look like yours instead of generic.
             </span>
           </button>
         ) : (
           <div className="rounded-xl border border-white/[0.1] bg-white/[0.02] p-5 md:p-6 space-y-6">
+            <Field
+              label="Sites you love"
+              hint="two or three links, any industry. The most useful thing you can give us."
+            >
+              <TextArea
+                value={data.references}
+                onChange={(v) => set("references", v)}
+                placeholder={"stripe.com\naesop.com\nthat one competitor: example.com"}
+                rows={3}
+              />
+            </Field>
+            <Field label="What should we absolutely not do?" hint="fastest way to a demo you like">
+              <TextArea
+                value={data.avoid}
+                onChange={(v) => set("avoid", v)}
+                placeholder="No stock photos of people shaking hands. No sliders. Don't bury the phone number."
+                rows={2}
+              />
+            </Field>
+            <Field label="Six months in, what makes this worth it?">
+              <TextArea
+                value={data.successMetric}
+                onChange={(v) => set("successMetric", v)}
+                placeholder="Eight to ten quote requests a month instead of two."
+                rows={2}
+              />
+            </Field>
             <Field label="Pages you think you need" hint="rough guess is fine, we'll propose the rest">
               <ChipGroup options={PAGES} selected={data.pages} onToggle={(v) => toggle("pages", v)} />
             </Field>
@@ -470,7 +485,7 @@ export default function ProjectBriefForm() {
           Step {step + 1} of {STEPS.length}
         </span>
         <span className="text-[11px] text-white/30" style={{ fontFamily: BODY }}>
-          Under 2 minutes
+          About a minute
         </span>
       </div>
 
@@ -537,98 +552,50 @@ export default function ProjectBriefForm() {
             </div>
           )}
 
-          {/* ── 1: The job. ── */}
+          {/* ── 1: The job. One click, auto-advances. ── */}
           {step === 1 && (
-            <div className="space-y-6">
-              <Field label="What's the primary job of this site?">
-                <div className="space-y-3">
-                  {GOALS.map((g) => (
-                    <OptionRow
-                      key={g.key}
-                      label={g.label}
-                      sub={g.sub}
-                      selected={data.goal === g.label}
-                      onClick={() => set("goal", data.goal === g.label ? "" : g.label)}
-                    />
-                  ))}
-                </div>
-              </Field>
-
-              <Field
-                label="Six months in, what makes this worth it?"
-                hint="optional, but the most useful thing you can tell us"
-              >
-                <TextArea
-                  value={data.successMetric}
-                  onChange={(v) => set("successMetric", v)}
-                  placeholder="Eight to ten quote requests a month instead of two, and nobody says 'I couldn't find your prices.'"
-                  rows={3}
+            <div className="space-y-3">
+              {GOALS.map((g) => (
+                <OptionRow
+                  key={g.key}
+                  label={g.label}
+                  sub={g.sub}
+                  selected={data.goal === g.label}
+                  onClick={() => {
+                    set("goal", g.label);
+                    setStep(2);
+                    scrollToTop();
+                  }}
                 />
-              </Field>
-            </div>
-          )}
-
-          {/* ── 2: Taste. The demo fuel. ── */}
-          {step === 2 && (
-            <div className="space-y-6">
-              <Field
-                label="Sites you love"
-                hint="two or three links, any industry. Competitors welcome."
-              >
-                <TextArea
-                  value={data.references}
-                  onChange={(v) => set("references", v)}
-                  placeholder={"stripe.com\naesop.com\nthat one competitor: example.com"}
-                  rows={3}
-                />
-              </Field>
-
-              <Field label="How should yours feel?" hint="pick two or three">
-                <ChipGroup options={VIBES} selected={data.vibe} onToggle={(v) => toggle("vibe", v)} />
-              </Field>
-
-              <Field label="What should we absolutely not do?" hint="fastest way to a demo you like">
-                <TextArea
-                  value={data.avoid}
-                  onChange={(v) => set("avoid", v)}
-                  placeholder="No stock photos of people shaking hands. No sliders. Don't bury the phone number."
-                  rows={3}
-                />
-              </Field>
-            </div>
-          )}
-
-          {/* ── 3: Qualification. ── */}
-          {step === 3 && (
-            <div className="space-y-5">
-              <Field label="Budget range" hint="our website projects start at $2,500">
-                <Select
-                  value={data.budget}
-                  onChange={(v) => set("budget", v)}
-                  placeholder="Pick a range"
-                  options={BUDGETS}
-                />
-              </Field>
-
-              <Field label="Timeline">
-                <Select
-                  value={data.timeline}
-                  onChange={(v) => set("timeline", v)}
-                  placeholder="When do you want this live?"
-                  options={TIMELINES}
-                />
-              </Field>
-
-              <p className="text-white/25 text-xs leading-relaxed pt-1" style={{ fontFamily: BODY }}>
-                Straight numbers here save us both a call. We scope to the range you pick, and tell
-                you honestly if what you want costs more than that.
+              ))}
+              <p className="text-white/25 text-xs leading-relaxed pt-2" style={{ fontFamily: BODY }}>
+                Not sure? Pick the closest one. We&apos;ll sort out the rest together.
               </p>
             </div>
           )}
 
-          {/* ── 4: The gate. ── */}
-          {step === 4 && (
+          {/* ── 2: Numbers and contact, together. The gate. ── */}
+          {step === 2 && (
             <div className="space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <Field label="Budget range" hint="projects start at $2,500">
+                  <Select
+                    value={data.budget}
+                    onChange={(v) => set("budget", v)}
+                    placeholder="Pick a range"
+                    options={BUDGETS}
+                  />
+                </Field>
+                <Field label="Timeline" hint="roughly">
+                  <Select
+                    value={data.timeline}
+                    onChange={(v) => set("timeline", v)}
+                    placeholder="When do you want this live?"
+                    options={TIMELINES}
+                  />
+                </Field>
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <Field label="Your name" required>
                   <TextInput
@@ -637,7 +604,6 @@ export default function ProjectBriefForm() {
                     placeholder="First and last"
                     maxLength={120}
                     autoComplete="name"
-                    autoFocus
                     invalid={touched && !data.name.trim()}
                   />
                   {touched && !data.name.trim() && <ErrorText>Who are we replying to?</ErrorText>}
