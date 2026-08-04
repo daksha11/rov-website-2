@@ -2,15 +2,17 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Mic, Waves } from "lucide-react";
+import { Mic, Waves, Layers, Users } from "lucide-react";
+import { useEffectiveRole } from "@/components/music/RoleContext";
 
 const HEADING = "Norwige, sans-serif";
 const BODY = "'Roboto', sans-serif";
 const spring = { type: "spring" as const, stiffness: 100, damping: 20 };
 
-// Two-path fork. Visitors self-select: come record in the room, or send stems
-// to be mixed. Each card scrolls to the relevant pricing block below.
-const paths = [
+// Two-path fork. The second question, after RoleGate asks who they are.
+// Artists sort by where their song currently is. Managers sort by scale,
+// because "record vs stems" is the wrong axis when you run a roster.
+const artistPaths = [
   {
     id: "record",
     icon: Mic,
@@ -33,9 +35,35 @@ const paths = [
   },
 ];
 
+const managerPaths = [
+  {
+    id: "mixing",
+    icon: Layers,
+    kicker: "One artist, one release",
+    title: "Start with a record",
+    body: "Send us one artist's stems and see how we work before anything else. Full mix and master back in 48 hours, at the intro rate.",
+    price: "First 3 at $50",
+    sub: "Per artist, no commitment",
+    cta: "See mixing pricing",
+  },
+  {
+    id: "foundation",
+    icon: Users,
+    kicker: "The whole roster",
+    title: "Build the backend",
+    body: "Splits, metadata, release hubs, EPKs, and art systems, built the same way for every artist you manage. One system, one point of contact.",
+    price: "Foundation, per artist",
+    sub: "Then release cycles on cadence",
+    cta: "See what it covers",
+  },
+];
+
 export default function PathFork() {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const role = useEffectiveRole();
+  const isManager = role === "manager";
+  const paths = isManager ? managerPaths : artistPaths;
 
   const goTo = (id: string) => {
     const el = document.getElementById(id);
@@ -56,7 +84,7 @@ export default function PathFork() {
           className="block text-center text-xs uppercase tracking-[0.3em] text-[#EA9A61] mb-3"
           style={{ fontFamily: BODY }}
         >
-          Two ways in
+          {isManager ? "Two ways to start" : "Two ways in"}
         </motion.span>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -65,7 +93,7 @@ export default function PathFork() {
           className="text-center text-white text-3xl md:text-4xl lg:text-5xl font-bold italic mb-10 md:mb-12"
           style={{ fontFamily: HEADING }}
         >
-          Where are you starting?
+          {isManager ? "How do you want to begin?" : "Where are you starting?"}
         </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">

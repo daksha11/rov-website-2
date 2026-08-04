@@ -1,6 +1,6 @@
 // app/layout.tsx
 import type { Metadata } from "next";
-import { Inter, DM_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 // import dynamic from "next/dynamic"; // chatbot hidden for now
 import Script from "next/script";
@@ -10,14 +10,10 @@ import ClarityProvider from "@/components/providers/ClarityProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
-// DM Sans self-hosted via next/font (replaces the render-blocking Google Fonts
-// @import in globals.css). Exposed as --font-dm-sans; used by TagorePartnership.
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  variable: "--font-dm-sans",
-  display: "swap",
-});
+// DM Sans was loaded here for TagorePartnership only. That section came off the
+// music page, so the font is no longer requested on any route. If Tagore ever
+// returns, re-add the DM_Sans next/font load and the --font-dm-sans variable;
+// until then its var() reference falls back to system sans harmlessly.
 
 // Dynamically import the chat widget (client-only) — hidden for now
 // const ChatWidget = dynamic(() => import("@/components/providers/ChatWidget"), {
@@ -106,7 +102,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} ${inter.variable} ${dmSans.variable}`}>
+      <body className={`${inter.className} ${inter.variable}`}>
         <ClarityProvider />
         <OrganizationSchema />
         {/* Google Analytics */}

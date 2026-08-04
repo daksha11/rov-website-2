@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { MusicNav } from "@/components/music/MusicNav";
 import MusicFooter from "@/components/music/MusicFooter";
+import { RoleProvider } from "@/components/music/RoleContext";
+import RoleGate from "@/components/music/RoleGate";
+import RoleChip from "@/components/music/RoleChip";
+import RoleOnly from "@/components/music/RoleOnly";
 import SoundHero from "@/components/sound/SoundHero";
 import Gallery from "@/components/sections/Gallery";
 import TestimonialsSection from "@/components/common/TestimonialsSection";
@@ -47,7 +51,11 @@ const MusicPlayer = dynamic(() => import("@/components/sound/MusicPlayer"), {
 
 const PathFork = dynamic(() => import("@/components/sound/PathFork"));
 
+const ReadinessAudit = dynamic(() => import("@/components/sound/ReadinessAudit"));
+
 const IntroOffer = dynamic(() => import("@/components/sound/IntroOffer"));
+
+const FoundationOffer = dynamic(() => import("@/components/sound/FoundationOffer"));
 
 const StudioSection = dynamic(() => import("@/components/sound/StudioSection"), {
     loading: () => (
@@ -86,8 +94,6 @@ const SamSuenFeature = dynamic(() => import("@/components/sound/SamSuenFeature")
     ssr: false,
 });
 
-const TagorePartnership = dynamic(() => import("@/components/sound/TagorePartnership"));
-
 const FAQSection = dynamic(() => import("@/components/common/FAQSection"), {
     loading: () => (
         <div className="bg-black min-h-[40vh] flex items-center justify-center">
@@ -98,7 +104,9 @@ const FAQSection = dynamic(() => import("@/components/common/FAQSection"), {
 
 export default function Page() {
     return (
-        <>
+        // Role state wraps the whole page: the gate sets it, and sections read
+        // it to swap copy and reorder proof.
+        <RoleProvider>
             <ServiceSchema
                 name="Sound Engineering & Music Production"
                 description="Professional sound engineering, mixing, and mastering services. Mix and master starting at $50/song with 48-hour turnaround."
@@ -113,15 +121,9 @@ export default function Page() {
             <BreadcrumbSchema baseUrl={MUSIC_URL} items={[
                 { name: "Range of View Music", url: "" },
             ]} />
-            <FAQPageSchema faqs={[
-                { question: "How much does mixing and mastering cost?", answer: "Start at $50/song for your first 3 songs, mix and master included. After that, subscriptions run $145/mo for 5 songs (under $30/song), $300/mo for 12, and $500/mo for 18 with 24-hour priority turnaround. Need just one song? One-off pricing is $100/song. The subscription discount exists because consistency goes both ways. You commit to dropping, we commit to the rate." },
-                { question: "How long does it take to get my song mixed and mastered?", answer: "48 hours for all subscription tiers. 24 hours for Pro. 72 hours for one-off work. Clock starts when stems pass the quality check, Monday through Friday." },
-                { question: "What do you need from me to mix my track?", answer: "Stems exported from your DAW: dry vocals (no reverb, no compression), beat stems or a stereo beat file, and any reference tracks. Email to stems@rovstudios.com. We run a quality check before mixing. If something is off, we tell you before we start." },
-                { question: "What counts as a revision?", answer: "One round of feedback notes (louder vocals, more low end, soften the hi-hats). We rework the track. 2 revisions included per song on all tiers and one-offs. Additional revisions are $65 each. Re-recording or rearranging the song counts as a new submission." },
-                { question: "Can I cancel my subscription?", answer: "Yes, anytime. Cancellation is effective at the end of your current billing cycle. No refunds for partial months. If you reactivate within 90 days, your original rate is guaranteed." },
-                { question: "Do you do one-off work without a subscription?", answer: "$100 for a single mix and master, 72-hour turnaround, 2 revisions included. Cover art, visualizers, and merch design are also available without a subscription." },
-                { question: "Can you help with cover art and visuals?", answer: "Yes. Cover art is $50 for subscribers ($75 one-off). Lyric visualizers are $40 for subscribers ($60 one-off). Merch design is $65 for subscribers ($95 one-off). Or bundle all three in the Creative Pack for $125/mo and save $120." },
-            ]} />
+            {/* Fed from the same data as the visible FAQ below, so the two can
+                never drift apart. Google wants schema to match what renders. */}
+            <FAQPageSchema faqs={soundFaqItems} />
             <VideoSchema
                 name="Stars Collide Music Video"
                 description="Stars Collide official music video, mixed and mastered by Range of View Studios sound engineering team."
@@ -154,6 +156,17 @@ export default function Page() {
             {/* 02.5 — Two-path fork (record vs send stems) */}
             <PathFork />
 
+            {/* 02.6 — Artist Readiness Audit. Sits before pricing on purpose:
+                someone who just scored 3/10 reads the $50 offer differently
+                than someone who arrived cold. */}
+            <ReadinessAudit />
+
+            {/* 02.7 — Managers get the artist-development proof early. It's the
+                only asset that shows we can run a career, not just a song. */}
+            <RoleOnly roles={["manager"]} fallbackVisible={false}>
+                <SamSuenFeature />
+            </RoleOnly>
+
             {/* 03 — $50 Intro Offer */}
             <IntroOffer />
 
@@ -162,6 +175,11 @@ export default function Page() {
 
             {/* 05 — Quote questionnaire + personalized savings (replaces tiers, add-ons, and the standalone calculator) */}
             <QuoteEstimator />
+
+            {/* 05.5 — Foundation / Release Cycle / Development. The rung between
+                a $149 finished single and full artist development, and where
+                the readiness audit sends people. */}
+            <FoundationOffer />
 
             {/* 08 — Studio Setup (hidden) */}
             {/* <StudioSetupSection /> */}
@@ -180,11 +198,11 @@ export default function Page() {
             {/* 10.1 — Testimonials */}
             <TestimonialsSection testimonials={soundTestimonials} variant="sound" />
 
-            {/* 10.3 — Sam Suen: in-house artist development proof */}
-            <SamSuenFeature />
-
-            {/* 10.5 — Tagore Studios Partnership */}
-            <TagorePartnership />
+            {/* 10.3 — Sam Suen: shown here for everyone except managers, who
+                already saw it above. */}
+            <RoleOnly roles={["artist", "other"]}>
+                <SamSuenFeature />
+            </RoleOnly>
 
             {/* 11 — FAQ */}
             <FAQSection items={soundFaqItems} />
@@ -192,6 +210,8 @@ export default function Page() {
             {/* Music-branded footer + nav (rovmusic shell) */}
             <MusicFooter />
             <MusicNav />
-        </>
+            <RoleChip />
+            <RoleGate />
+        </RoleProvider>
     );
 }

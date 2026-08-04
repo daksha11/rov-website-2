@@ -186,6 +186,9 @@ export default function SamSuenFeature() {
 
             {/* CTA → full case study */}
             <div>
+              {/* Stays /sound/sam-suen on purpose. On the music host this 308s
+                  to /sam-suen (one hop), but /sam-suen only exists there, so
+                  linking direct would 404 in dev and on rovstudios. */}
               <Link
                 href="/sound/sam-suen"
                 className="inline-flex items-center gap-3 px-6 py-3 rounded-full transition-opacity hover:opacity-90"
