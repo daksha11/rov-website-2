@@ -6,6 +6,7 @@ import ServiceLeadSection from "@/components/sections/ServiceLeadSection";
 import ProjectStrip from "@/components/sections/ProjectStrip";
 import CrossSellNudges from "@/components/common/CrossSellNudges";
 import BrandHero from "@/components/brand/BrandHero";
+import GradientButton from "@/components/brand/GradientButton";
 import { brandFaqItems } from "@/data/faq";
 import { brandSteps } from "@/data/approach-steps";
 
@@ -22,6 +23,10 @@ const BrandPricingTiers = dynamic(() => import("@/components/brand/BrandPricingT
     loading: () => <div className="bg-black min-h-[40vh]" />,
 });
 
+const BrandWorkGallery = dynamic(() => import("@/components/brand/BrandWorkGallery"), {
+    loading: () => <div className="bg-black min-h-[50vh]" />,
+});
+
 const OurApproachSection = dynamic(() => import("@/components/common/OurApproachSection"), {
     loading: () => <div className="bg-black min-h-[40vh]" />,
 });
@@ -30,34 +35,14 @@ const FAQSection = dynamic(() => import("@/components/common/FAQSection"), {
     loading: () => <div className="bg-black min-h-[40vh]" />,
 });
 
-// The five moments of the Full View. Practice areas answer "how"; these answer
-// "what changes for me", so they lead.
-const MOMENTS: { name: string; line: string; detail: string }[] = [
-    {
-        name: "Found",
-        line: "They can actually find you.",
-        detail: "Search, maps, and the profile you never finished filling out. If you are invisible here, nothing downstream matters.",
-    },
-    {
-        name: "Captured",
-        line: "The visit turns into a contact.",
-        detail: "A site that asks for the right thing at the right moment, on a form that works on a phone in one hand.",
-    },
-    {
-        name: "Answered",
-        line: "Someone replies before they move on.",
-        detail: "Speed is the experience. A reply in thirty seconds and a reply in three hours are different businesses to the person waiting.",
-    },
-    {
-        name: "Nurtured",
-        line: "You stay in the room without nagging.",
-        detail: "Sequences that sound like you wrote them, sent because something happened, not because a calendar said Tuesday.",
-    },
-    {
-        name: "Kept",
-        line: "They come back, and they tell someone.",
-        detail: "Receipts, thank-you pages, and review requests that look like the same company they chose in the first place.",
-    },
+// The five moments of the Full View. One line each: the page already argues the
+// point twice over in the demo, so this section is a map rather than an essay.
+const MOMENTS: { name: string; line: string }[] = [
+    { name: "Found", line: "They can actually find you." },
+    { name: "Captured", line: "The visit turns into a contact." },
+    { name: "Answered", line: "Someone replies before they move on." },
+    { name: "Nurtured", line: "You stay in the room without nagging." },
+    { name: "Kept", line: "They come back, and they tell someone." },
 ];
 
 // What actually gets delivered, split by the two halves most studios treat as
@@ -91,29 +76,29 @@ const DELIVERABLES: { group: string; items: string[] }[] = [
 // pointed one direction, so this page gets them on day one.
 const GUIDES: { href: string; title: string; blurb: string }[] = [
     {
+        href: "/report",
+        title: "Get a free visibility report",
+        blurb: "We audit your surfaces by hand and send back what to fix first.",
+    },
+    {
         href: "/blog/creative-studios-atlanta",
-        title: "Creative studios in Atlanta: the complete guide",
-        blurb: "What a studio actually does, how to judge one, and what the work costs in 2026.",
+        title: "Creative studios in Atlanta",
+        blurb: "What a studio does, how to judge one, what it costs.",
     },
     {
         href: "/blog/creative-studio-vs-agency-vs-freelancer",
         title: "Studio vs. agency vs. freelancer",
-        blurb: "Cost, speed, range, and accountability compared, so you can pick the right one for the job.",
+        blurb: "Cost, speed, range, accountability. Which one you need.",
     },
     {
         href: "/blog/dkm-corp-brand-identity",
-        title: "Building a global brand identity: DKM Corp",
-        blurb: "A full identity and website rebuild, run across Atlanta and India. Every decision documented.",
+        title: "A global identity: DKM Corp",
+        blurb: "Full rebuild across four countries, every decision documented.",
     },
     {
         href: "/web/how-much-does-a-website-cost-in-atlanta",
-        title: "How much does a website cost in Atlanta?",
-        blurb: "Real 2026 prices, what moves them, and what a cheap site really costs you later.",
-    },
-    {
-        href: "/report",
-        title: "Get a free visibility report",
-        blurb: "We audit your surfaces by hand and send back the gaps, what each costs you, and what to fix first.",
+        title: "What a website costs in Atlanta",
+        blurb: "Real 2026 prices and what moves them.",
     },
 ];
 
@@ -127,11 +112,15 @@ export default function BrandContent() {
             {/* The demo carries the argument, so it runs before the prose does. */}
             <TouchpointToggle />
 
+            <BrandWorkGallery />
+
             <BrandStats />
 
-            {/* ── THE GAP: the wedge argument ── */}
-            <section id="the-gap" className="relative px-6 py-24 md:px-12 md:py-32 lg:px-16">
-                <div className="mx-auto max-w-5xl">
+            {/* ── THE GAP ──
+                The demo already made this argument visually, so this is one
+                sentence and a pull quote, not the essay it used to be. */}
+            <section id="the-gap" className="relative px-6 py-20 md:px-12 md:py-28 lg:px-16">
+                <div className="mx-auto max-w-4xl text-center">
                     <p
                         className="mb-6 text-xs uppercase tracking-[0.3em]"
                         style={{ color: "rgba(255,244,227,0.3)", fontFamily: "Norwige, sans-serif" }}
@@ -139,83 +128,55 @@ export default function BrandContent() {
                         The gap
                     </p>
                     <h2
-                        className="max-w-3xl text-[clamp(1.9rem,4.4vw,3.4rem)] leading-[1.14] text-white"
+                        className="text-[clamp(1.9rem,4.6vw,3.5rem)] leading-[1.14] text-white"
                         style={{ fontFamily: "NorwigeHeroItalic, sans-serif" }}
                     >
-                        Design studios make beautiful things that sit still. Automation shops make
-                        working things that look cheap.
+                        Design studios make beautiful things that sit still.
+                        <br className="hidden md:block" /> Automation shops make working things that look
+                        cheap.
                     </h2>
-
-                    <div className="mt-12 grid gap-6 md:grid-cols-2">
-                        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-7">
-                            <h3 className="mb-3 text-lg text-white" style={{ fontFamily: "Norwige, sans-serif" }}>
-                                What you were sold
-                            </h3>
-                            <p className="text-[0.9375rem] leading-relaxed text-white/55">
-                                A logo, a palette, a guidelines document, and a website. All of it good.
-                                All of it stopping at the moment a customer actually becomes a customer.
-                            </p>
-                        </div>
-                        <div className="rounded-2xl border border-[#EA9A61]/25 bg-[#EA9A61]/[0.06] p-7">
-                            <h3 className="mb-3 text-lg text-white" style={{ fontFamily: "Norwige, sans-serif" }}>
-                                What they actually see
-                            </h3>
-                            <p className="text-[0.9375rem] leading-relaxed text-white/70">
-                                A plain-text confirmation from a tool you set up once. A receipt with a
-                                stretched logo. A thank-you page that says &ldquo;Success!&rdquo; and nothing
-                                else. A review request three weeks late.
-                            </p>
-                        </div>
-                    </div>
-
-                    <p className="mt-12 max-w-2xl text-[1.05rem] leading-relaxed text-white/70">
-                        Agencies do identity. Software does email. Almost nobody does both, so the seam
-                        between them is where the money leaks. Not in the traffic.{" "}
-                        <span className="text-white">
-                            The automated email that goes out at 11pm should look like it came from the
-                            same company as the website.
-                        </span>{" "}
-                        That only happens when the same people build both.
+                    <p className="mx-auto mt-8 max-w-xl text-[1.05rem] leading-relaxed text-white/60">
+                        The 11pm automated email should look like it came from the same company as the
+                        website. That only happens when the same people build both.
                     </p>
                 </div>
             </section>
 
-            {/* ── THE FULL VIEW: five moments ── */}
-            <section className="relative px-6 py-24 md:px-12 md:py-32 lg:px-16">
+            {/* ── THE FULL VIEW: five moments, one line each ── */}
+            <section className="relative px-6 pb-20 md:px-12 md:pb-28 lg:px-16">
                 <div className="mx-auto max-w-6xl">
                     <p
                         className="mb-6 text-xs uppercase tracking-[0.3em]"
                         style={{ color: "rgba(255,244,227,0.3)", fontFamily: "Norwige, sans-serif" }}
                     >
-                        The Full View
-                    </p>
-                    <h2
-                        className="mb-5 max-w-3xl text-[clamp(1.9rem,4.4vw,3.4rem)] leading-[1.14] text-white"
-                        style={{ fontFamily: "NorwigeHeroItalic, sans-serif" }}
-                    >
-                        Five moments, and the gaps between them
-                    </h2>
-                    <p className="mb-14 max-w-2xl text-[0.9375rem] leading-relaxed text-white/50">
-                        Most shops see one slice. These are the five points where someone meets your
-                        business, and every one of them either sounds like you or doesn&apos;t.
+                        The Full View · five moments
                     </p>
 
-                    <ol className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
                         {MOMENTS.map((moment, i) => (
                             <li
                                 key={moment.name}
-                                className="rounded-2xl border border-white/10 bg-white/[0.03] p-7 transition-colors hover:border-[#EA9A61]/30"
+                                className="group rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-all hover:-translate-y-1 hover:border-[#EA9A61]/40"
                             >
                                 <span
-                                    className="mb-4 block text-xs uppercase tracking-[0.24em] text-[#EA9A61]/70"
+                                    className="mb-3 block text-[2rem] font-semibold italic leading-none"
+                                    style={{
+                                        fontFamily: "Norwige, sans-serif",
+                                        background: "linear-gradient(90deg, #FF8904 0%, #F54900 100%)",
+                                        backgroundClip: "text",
+                                        WebkitBackgroundClip: "text",
+                                        WebkitTextFillColor: "transparent",
+                                    }}
+                                >
+                                    {String(i + 1).padStart(2, "0")}
+                                </span>
+                                <h3
+                                    className="mb-2 text-base text-white"
                                     style={{ fontFamily: "Norwige, sans-serif" }}
                                 >
-                                    {String(i + 1).padStart(2, "0")} · {moment.name}
-                                </span>
-                                <h3 className="mb-3 text-lg leading-snug text-white" style={{ fontFamily: "Norwige, sans-serif" }}>
-                                    {moment.line}
+                                    {moment.name}
                                 </h3>
-                                <p className="text-sm leading-relaxed text-white/55">{moment.detail}</p>
+                                <p className="text-sm leading-snug text-white/50">{moment.line}</p>
                             </li>
                         ))}
                     </ol>
@@ -264,6 +225,13 @@ export default function BrandContent() {
                         ))}
                     </div>
 
+                    {/* Mid-page CTA, where they've just seen the scope. */}
+                    <div className="mt-12 flex flex-wrap items-center gap-4">
+                        <GradientButton href="/report">Get a free audit</GradientButton>
+                        <GradientButton href="#start" variant="ghost">
+                            Talk it through
+                        </GradientButton>
+                    </div>
                 </div>
             </section>
 
@@ -282,15 +250,15 @@ export default function BrandContent() {
                     >
                         Read before you hire anyone
                     </p>
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         {GUIDES.map((guide) => (
                             <Link
                                 key={guide.href}
                                 href={guide.href}
-                                className="group block rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-colors hover:border-[#EA9A61]/40 hover:bg-white/[0.06] md:p-7"
+                                className="group block rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-all hover:-translate-y-1 hover:border-[#EA9A61]/40 hover:bg-white/[0.06]"
                             >
                                 <h3
-                                    className="mb-2 text-lg text-white md:text-xl"
+                                    className="mb-2 text-base text-white md:text-lg"
                                     style={{ fontFamily: "Norwige, sans-serif" }}
                                 >
                                     {guide.title}

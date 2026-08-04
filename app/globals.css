@@ -486,6 +486,41 @@ body {
   border-radius: inherit;
 }
 
+/* Primary CTA used across /brand. The gradient is drawn at 220% width so
+   shifting background-position on hover moves the colour through the button
+   instead of just lightening it. Pairs with .cta-shine for the sweep. */
+.brand-cta {
+  background-image: linear-gradient(
+    115deg,
+    #42201c 0%,
+    #a64d2b 26%,
+    #b16937 48%,
+    #ea9a61 68%,
+    #ffb877 84%,
+    #ea9a61 100%
+  );
+  background-size: 220% 100%;
+  background-position: 0% 50%;
+  box-shadow:
+    0 4px 20px rgba(160, 90, 40, 0.38),
+    inset 0 1px 0 rgba(255, 244, 227, 0.22);
+  transition: background-position 0.55s ease, box-shadow 0.35s ease, transform 0.3s ease;
+}
+
+.brand-cta:hover {
+  background-position: 100% 50%;
+  box-shadow:
+    0 8px 34px rgba(234, 154, 97, 0.5),
+    inset 0 1px 0 rgba(255, 244, 227, 0.3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-cta,
+  .brand-cta:hover {
+    transition: none;
+  }
+}
+
 /* --- COMPONENT STYLES --- */
 /* React-H5-Audio-Player */
 .rhap_container {

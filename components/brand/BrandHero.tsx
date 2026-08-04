@@ -13,8 +13,8 @@
 // that has not been laid out yet never renders a black box.
 
 import { useRef, useEffect, useCallback } from "react";
-import Link from "next/link";
 import { motion } from "framer-motion";
+import GradientButton from "./GradientButton";
 
 const HEADING = "Norwige, sans-serif";
 const BODY = "Roboto, sans-serif";
@@ -266,25 +266,10 @@ export default function BrandHero() {
                     transition={{ duration: 0.8, delay: 0.54 }}
                     className="mt-10 flex flex-wrap items-center justify-center gap-4"
                 >
-                    <Link
-                        href="#start"
-                        className="cta-shine rounded-full px-8 py-4 text-[0.8rem] font-bold uppercase tracking-[0.1em] text-white transition-transform hover:scale-[1.03]"
-                        style={{
-                            background:
-                                "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)",
-                            boxShadow: "0 4px 24px rgba(160,90,40,0.45)",
-                            fontFamily: BODY,
-                        }}
-                    >
-                        Start with an audit →
-                    </Link>
-                    <Link
-                        href="#see-it"
-                        className="rounded-full border-[1.5px] border-white/55 px-8 py-4 text-[0.8rem] font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-white/[0.08]"
-                        style={{ fontFamily: BODY }}
-                    >
+                    <GradientButton href="/report">Get a free audit</GradientButton>
+                    <GradientButton href="#see-it" variant="ghost">
                         See the difference
-                    </Link>
+                    </GradientButton>
                 </motion.div>
             </div>
         </section>
