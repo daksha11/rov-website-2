@@ -11,21 +11,33 @@
 //      so the form is testable before wiring, and surfaces an honest
 //      error instead of pretending to have captured the lead.
 //
+// Separately and always: the lead is added to the Klaviyo "ROV web leads" list,
+// the same one app/api/leads and app/api/web/brief use. Best-effort, never
+// blocks or fails the submission.
+//
 // Env:
-//   LEAD_WEBHOOK_URL     https://...           (optional)
-//   RESEND_API_KEY       re_...                (optional)
-//   LEAD_TO_EMAIL        you@example.com       (optional; default below)
-//   LEAD_FROM_EMAIL      leads@rovstudios.com  (optional; Resend path)
+//   LEAD_WEBHOOK_URL       https://...           (optional)
+//   RESEND_API_KEY         re_...                (optional)
+//   LEAD_TO_EMAIL          you@example.com       (optional; default below)
+//   LEAD_FROM_EMAIL        leads@rovstudios.com  (optional; Resend path)
+//   KLAVIYO_PRIVATE_KEY    pk_...                (required for the list add)
+//   KLAVIYO_LEADS_LIST_ID  XXXXXX                (optional; defaults to WGRd8Q)
 // ─────────────────────────────────────────────────────────────
 
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { subscribeToKlaviyo } from "@/utils/klaviyo";
 
 export const runtime = "nodejs";
 export const maxDuration = 15;
 
 const DEFAULT_TO_EMAIL = "admin@pursuenetworking.com";
 const DEFAULT_FROM_EMAIL = "leads@rovstudios.com";
+
+// Same "ROV web leads" list the other business forms use, so every B2B lead
+// lands in one place regardless of which page captured it. Matches
+// app/api/leads/route.ts. Override with KLAVIYO_LEADS_LIST_ID.
+const LEADS_LIST_ID = process.env.KLAVIYO_LEADS_LIST_ID || "WGRd8Q";
 
 const bodySchema = z.object({
   name: z.string().trim().min(1).max(120),
@@ -142,10 +154,22 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Add to the Klaviyo business-leads list alongside the email. Non-fatal:
+  // subscribeToKlaviyo never throws and the email is the primary delivery, so a
+  // Klaviyo hiccup must not fail the submission.
+  const klaviyoPromise = subscribeToKlaviyo({
+    listId: LEADS_LIST_ID,
+    email: lead.email,
+    name: lead.name,
+    source: `industries:${lead.icpSlug || "unknown"}`,
+  });
+
   try {
     const delivered = webhookUrl
       ? await deliverWebhook(webhookUrl, lead)
       : await deliverResend(resendKey as string, lead);
+
+    await klaviyoPromise; // best-effort; result logged inside the helper
 
     if (delivered) return NextResponse.json({ ok: true });
 
