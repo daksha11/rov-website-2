@@ -15,6 +15,19 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (host.includes(MUSIC_HOST)) {
+    // Each domain advertises its own crawl rules and URL set. app/robots.ts and
+    // app/sitemap.ts are rovstudios-only, so the music host gets its own pair.
+    if (pathname === "/robots.txt") {
+      return NextResponse.rewrite(new URL("/music-robots.txt", request.url));
+    }
+    if (pathname === "/sitemap.xml") {
+      return NextResponse.rewrite(new URL("/music-sitemap.xml", request.url));
+    }
+    // The studios-only sitemaps belong to one host. Serving them here would put
+    // rovstudios URLs behind a rovmusic address, so send crawlers to the source.
+    if (pathname === "/sitemap-index.xml" || pathname === "/video-sitemap.xml") {
+      return NextResponse.redirect(`https://www.rovstudios.com${pathname}`, 308);
+    }
     // Serve the music (sound) page at the music-domain root.
     if (pathname === "/") {
       return NextResponse.rewrite(new URL("/sound", request.url));
@@ -28,14 +41,21 @@ export async function middleware(request: NextRequest) {
       const stripped = pathname.slice("/sound".length) || "/";
       return NextResponse.redirect(new URL(stripped, request.url), 308);
     }
-  } else if (
-    host.includes(STUDIOS_HOST) &&
-    (pathname === "/sound" || pathname.startsWith("/sound/"))
-  ) {
-    // Migration: the sound pages now live on rovmusic.com. Scoped to the
-    // production studios domain so /sound stays testable on localhost.
-    const stripped = pathname.slice("/sound".length) || "/";
-    return NextResponse.redirect(`https://www.rovmusic.com${stripped}`, 308);
+  } else if (host.includes(STUDIOS_HOST)) {
+    if (pathname === "/sound" || pathname.startsWith("/sound/")) {
+      // Migration: the sound pages now live on rovmusic.com. Scoped to the
+      // production studios domain so /sound stays testable on localhost.
+      const stripped = pathname.slice("/sound".length) || "/";
+      return NextResponse.redirect(`https://www.rovmusic.com${stripped}`, 308);
+    }
+    // The music crawl files are only meant to be reachable on the music host.
+    // They exist as real routes in this app, so close the studios-side door.
+    if (pathname === "/music-sitemap.xml") {
+      return NextResponse.redirect("https://www.rovmusic.com/sitemap.xml", 308);
+    }
+    if (pathname === "/music-robots.txt") {
+      return NextResponse.redirect("https://www.rovmusic.com/robots.txt", 308);
+    }
   }
 
   try {
