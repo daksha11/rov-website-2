@@ -47,6 +47,11 @@ const bodySchema = z.object({
   // optional deepening they can fill in after, which arrives as a follow-up.
   stage: z.enum(["initial", "details"]).optional(),
 
+  // What our own crawl found on their site, carried through from screen 1 so
+  // the brief email shows what they were shown.
+  siteTitle: short,
+  siteFindings: tags,
+
   // 1. Business
   website: short,
   industry: short,
@@ -122,6 +127,8 @@ function briefToText(b: Brief) {
     "",
     `BUSINESS`,
     `Business: ${briefLabel(b)}`,
+    `Site title: ${val(b.siteTitle)}`,
+    `What we found: ${list(b.siteFindings)}`,
     `Current site: ${val(b.website)}`,
     `Industry: ${val(b.industry)}`,
     `Location / service area: ${val(b.location)}`,
@@ -220,6 +227,8 @@ ${group(
 ${group(
     "Business",
     row("Current site", val(b.website)) +
+      row("Site title", val(b.siteTitle)) +
+      row("What we found", list(b.siteFindings)) +
       row("Industry", val(b.industry)) +
       row("Location", val(b.location))
   )}

@@ -2,17 +2,29 @@
 
 // Project brief for /web/brief.
 //
-// Architecture: the form splits at the conversion point. Four short screens ask
-// only what we act on (their URL, the goal, their taste, budget and timeline),
-// then a name-and-email gate submits the lead. Everything heavier lives *after*
-// that gate, in an optional deepening step, where a drop-off costs us nothing
-// because the lead is already captured.
+// Architecture: the form splits at the conversion point. Three short screens
+// ask only what we act on (their URL, the goal, budget and contact), and the
+// name-and-email gate on the last one submits the lead. Everything heavier
+// lives *after* that gate in an optional deepening step, where a drop-off
+// costs us nothing because the lead is already captured.
 //
-// The reveal between the two halves is the trade: they hand us taste, we hand
-// back a read on their project instead of a thank-you page.
+// Screen 1 is the hinge. Pasting a link runs /api/web/site-check, which reads
+// their actual HTML and reports back two to four concrete gaps, each with a
+// line on why it matters. That teaches before it asks, which is the whole
+// point: a visitor who understands why a booking link matters gives a better
+// brief than one who doesn't. The findings ride along into the email.
 
-import { useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+
+type Finding = { key: string; label: string; why: string; tone: "gap" | "ok" };
+type SiteCheck = {
+  title: string;
+  description: string;
+  favicon: string;
+  finalUrl: string;
+  findings: Finding[];
+};
 
 const HEADING = "Norwige, sans-serif";
 const BODY = "'Roboto', sans-serif";
@@ -191,6 +203,24 @@ export default function ProjectBriefForm() {
   // Second, optional submission after the gate.
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [detailsStatus, setDetailsStatus] = useState<Status>("idle");
+  // Screen 1's read of their site. "failed" is not an error state we show:
+  // an unreachable site just means we advance with nothing to teach.
+  const [siteStatus, setSiteStatus] = useState<"idle" | "loading" | "done" | "failed">("idle");
+  const [site, setSite] = useState<SiteCheck | null>(null);
+
+  const reduceMotion = useReducedMotion();
+  // Focus lands on the new step heading so keyboard and screen reader users
+  // are not stranded at the top of the document after each advance.
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const didMount = useRef(false);
+
+  useEffect(() => {
+    if (!didMount.current) {
+      didMount.current = true;
+      return;
+    }
+    headingRef.current?.focus();
+  }, [step]);
 
   const set = <K extends keyof Data>(key: K, value: Data[K]) =>
     setData((p) => ({ ...p, [key]: value }));
@@ -226,14 +256,47 @@ export default function ProjectBriefForm() {
     }
   }
 
+  const advance = () => {
+    setTouched(false);
+    setStep((s) => Math.min(s + 1, STEPS.length - 1));
+    scrollToTop();
+  };
+
+  // Screen 1 has an extra beat: the first Continue reads their site and shows
+  // what we found, the second moves on. Any failure skips straight ahead, so a
+  // blocked or dead site never traps someone in the form.
+  async function checkSite() {
+    setSiteStatus("loading");
+    try {
+      const res = await fetch("/api/web/site-check", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: data.website }),
+      });
+      const json = await res.json().catch(() => ({ ok: false }));
+      if (json.ok && Array.isArray(json.findings)) {
+        setSite(json as SiteCheck);
+        setSiteStatus("done");
+        return;
+      }
+      setSiteStatus("failed");
+      advance();
+    } catch {
+      setSiteStatus("failed");
+      advance();
+    }
+  }
+
   const goNext = () => {
     if (!stepValid) {
       setTouched(true);
       return;
     }
-    setTouched(false);
-    setStep((s) => Math.min(s + 1, STEPS.length - 1));
-    scrollToTop();
+    if (step === 0 && !data.noSite && siteStatus === "idle") {
+      void checkSite();
+      return;
+    }
+    advance();
   };
 
   const goBack = () => {
@@ -249,6 +312,8 @@ export default function ProjectBriefForm() {
       email: data.email,
       businessName: data.businessName,
       website: data.noSite ? "No site yet" : data.website,
+      siteTitle: site?.title || "",
+      siteFindings: site ? site.findings.map((f) => f.label) : [],
       goal: data.goal,
       successMetric: data.successMetric,
       references: data.references,
@@ -352,6 +417,49 @@ export default function ProjectBriefForm() {
             </p>
           )}
         </div>
+
+        {/* The read they can't get anywhere else: what we saw on their site,
+            tied to the goal they picked. This is the line worth forwarding. */}
+        {site && site.findings.length > 0 && (
+          <div className="rounded-xl border border-white/[0.1] bg-white/[0.02] p-5 md:p-6 mb-6">
+            <span
+              className="block text-[11px] uppercase tracking-[0.25em] text-white/40 mb-3"
+              style={{ fontFamily: BODY }}
+            >
+              Where we&apos;d start
+            </span>
+            <p className="text-white/70 text-sm leading-relaxed mb-4" style={{ fontFamily: BODY }}>
+              {goal ? (
+                <>
+                  You said the job is <span className="text-white">{goal.label.toLowerCase()}</span>, and
+                  the first thing we noticed on your site was{" "}
+                  <span className="text-white">{site.findings[0].label.toLowerCase()}</span>. That is
+                  where we&apos;d start.
+                </>
+              ) : (
+                <>
+                  The first thing we noticed on your site was{" "}
+                  <span className="text-white">{site.findings[0].label.toLowerCase()}</span>. That is
+                  where we&apos;d start.
+                </>
+              )}
+            </p>
+            <ul className="space-y-1.5">
+              {site.findings.map((f) => (
+                <li
+                  key={f.key}
+                  className="text-white/45 text-xs flex items-start gap-2"
+                  style={{ fontFamily: BODY }}
+                >
+                  <span className="text-[#EA9A61] mt-[3px]" aria-hidden>
+                    &middot;
+                  </span>
+                  {f.label}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* Optional deepening. The lead is already in, so this is pure upside. */}
         {detailsStatus === "success" ? (
@@ -481,7 +589,12 @@ export default function ProjectBriefForm() {
         ))}
       </div>
       <div className="flex items-center justify-between mb-7">
-        <span className="text-[11px] uppercase tracking-[0.22em] text-white/35" style={{ fontFamily: BODY }}>
+        <span
+          role="status"
+          aria-live="polite"
+          className="text-[11px] uppercase tracking-[0.22em] text-white/35"
+          style={{ fontFamily: BODY }}
+        >
           Step {step + 1} of {STEPS.length}
         </span>
         <span className="text-[11px] text-white/30" style={{ fontFamily: BODY }}>
@@ -492,12 +605,17 @@ export default function ProjectBriefForm() {
       <AnimatePresence mode="wait">
         <motion.div
           key={step}
-          initial={{ opacity: 0, x: 18 }}
+          initial={reduceMotion ? false : { opacity: 0, x: 18 }}
           animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -18 }}
-          transition={{ duration: 0.22 }}
+          exit={reduceMotion ? { opacity: 0 } : { opacity: 0, x: -18 }}
+          transition={{ duration: reduceMotion ? 0 : 0.22 }}
         >
-          <h2 className="text-white text-2xl md:text-3xl font-bold italic" style={{ fontFamily: HEADING }}>
+          <h2
+            ref={headingRef}
+            tabIndex={-1}
+            className="text-white text-2xl md:text-3xl font-bold italic outline-none"
+            style={{ fontFamily: HEADING }}
+          >
             {STEPS[step].title}
           </h2>
           <p className="text-white/45 text-sm mt-1.5 mb-7" style={{ fontFamily: BODY }}>
@@ -511,8 +629,17 @@ export default function ProjectBriefForm() {
                 <Field label="Your current website" hint="paste it even if you hate it, that's useful too">
                   <TextInput
                     value={data.website}
-                    onChange={(v) => set("website", v)}
+                    onChange={(v) => {
+                      set("website", v);
+                      // Editing the link invalidates whatever we read before.
+                      if (siteStatus !== "idle") {
+                        setSiteStatus("idle");
+                        setSite(null);
+                      }
+                    }}
                     placeholder="yourbusiness.com"
+                    type="url"
+                    inputMode="url"
                     autoFocus
                     invalid={touched && !data.website.trim()}
                   />
@@ -545,10 +672,84 @@ export default function ProjectBriefForm() {
                 {data.noSite ? "Actually, we do have a site" : "We don't have a site yet"}
               </button>
 
-              <p className="text-white/25 text-xs leading-relaxed pt-2" style={{ fontFamily: BODY }}>
-                We look at it before we reply. Half of what most forms ask, we can read off the site
-                itself.
-              </p>
+              {/* What our crawl found. The teaching beat: each line says why it
+                  matters, so they answer the rest of the form better informed. */}
+              <AnimatePresence>
+                {siteStatus === "done" && site && (
+                  <motion.div
+                    initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: reduceMotion ? 0 : 0.3 }}
+                    className="rounded-xl border border-[#EA9A61]/25 bg-[#EA9A61]/[0.04] p-4 md:p-5"
+                  >
+                    <div className="flex items-center gap-2.5 mb-4">
+                      {site.favicon && (
+                        // Their own favicon, straight off their server. Not worth
+                        // routing through next/image for a 16px third-party icon.
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={site.favicon}
+                          alt=""
+                          width={18}
+                          height={18}
+                          className="rounded-sm shrink-0"
+                          onError={(e) => {
+                            e.currentTarget.style.display = "none";
+                          }}
+                        />
+                      )}
+                      <span className="text-white text-sm font-semibold truncate" style={{ fontFamily: BODY }}>
+                        {site.title || data.website}
+                      </span>
+                    </div>
+
+                    {site.findings.length > 0 ? (
+                      <>
+                        <span
+                          className="block text-[11px] uppercase tracking-[0.22em] text-[#EA9A61] mb-3"
+                          style={{ fontFamily: BODY }}
+                        >
+                          {site.findings.length} thing{site.findings.length > 1 ? "s" : ""} we noticed
+                        </span>
+                        <ul className="space-y-3.5">
+                          {site.findings.map((f) => (
+                            <li key={f.key}>
+                              <span
+                                className="block text-white text-sm font-semibold mb-0.5"
+                                style={{ fontFamily: HEADING }}
+                              >
+                                {f.label}
+                              </span>
+                              <span
+                                className="block text-white/45 text-xs leading-relaxed"
+                                style={{ fontFamily: BODY }}
+                              >
+                                {f.why}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                        <p className="text-white/30 text-xs mt-4 leading-relaxed" style={{ fontFamily: BODY }}>
+                          None of this is a scolding. It is what we would fix first, and it is why the
+                          next question matters.
+                        </p>
+                      </>
+                    ) : (
+                      <p className="text-white/50 text-sm leading-relaxed" style={{ fontFamily: BODY }}>
+                        The basics are all in place here. That means we get to spend the budget on the
+                        work that moves the needle instead of the plumbing.
+                      </p>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {siteStatus !== "done" && (
+                <p className="text-white/25 text-xs leading-relaxed pt-2" style={{ fontFamily: BODY }}>
+                  We read it before we reply. Half of what most forms ask, we can get off the site
+                  itself.
+                </p>
+              )}
             </div>
           )}
 
@@ -577,24 +778,23 @@ export default function ProjectBriefForm() {
           {/* ── 2: Numbers and contact, together. The gate. ── */}
           {step === 2 && (
             <div className="space-y-5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <Field label="Budget range" hint="projects start at $2,500">
-                  <Select
-                    value={data.budget}
-                    onChange={(v) => set("budget", v)}
-                    placeholder="Pick a range"
-                    options={BUDGETS}
-                  />
-                </Field>
-                <Field label="Timeline" hint="roughly">
-                  <Select
-                    value={data.timeline}
-                    onChange={(v) => set("timeline", v)}
-                    placeholder="When do you want this live?"
-                    options={TIMELINES}
-                  />
-                </Field>
-              </div>
+              <Field label="Budget range" hint="projects start at $2,500">
+                <ChoiceChips
+                  name="budget"
+                  value={data.budget}
+                  onChange={(v) => set("budget", v)}
+                  options={BUDGETS}
+                />
+              </Field>
+
+              <Field label="Timeline" hint="roughly">
+                <ChoiceChips
+                  name="timeline"
+                  value={data.timeline}
+                  onChange={(v) => set("timeline", v)}
+                  options={TIMELINES}
+                />
+              </Field>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <Field label="Your name" required>
@@ -678,7 +878,7 @@ export default function ProjectBriefForm() {
         <motion.button
           type="button"
           onClick={isGate ? submit : goNext}
-          disabled={status === "submitting"}
+          disabled={status === "submitting" || siteStatus === "loading"}
           whileTap={{ scale: 0.98 }}
           transition={spring}
           className="cta-shine text-center text-white font-semibold rounded-full transition-transform duration-300 hover:scale-[1.03] disabled:opacity-70 cursor-pointer"
@@ -688,7 +888,11 @@ export default function ProjectBriefForm() {
             ? status === "submitting"
               ? "Sending…"
               : "Send the brief →"
-            : "Continue →"}
+            : siteStatus === "loading"
+              ? "Reading your site…"
+              : step === 0 && siteStatus === "idle" && !data.noSite
+                ? "Check my site →"
+                : "Continue →"}
         </motion.button>
       </div>
     </div>
@@ -744,6 +948,7 @@ function TextInput({
   autoComplete,
   autoFocus,
   invalid,
+  inputMode,
   // Mirrors the server schema so a long answer never comes back as a 400.
   maxLength = 160,
 }: {
@@ -755,10 +960,12 @@ function TextInput({
   autoFocus?: boolean;
   invalid?: boolean;
   maxLength?: number;
+  inputMode?: "url" | "email" | "tel" | "text";
 }) {
   return (
     <input
       type={type}
+      inputMode={inputMode}
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
@@ -840,6 +1047,46 @@ function Select({
       >
         <polyline points="6 9 12 15 18 9" />
       </svg>
+    </div>
+  );
+}
+
+// Single-select chips. Replaces a native <select> on the final screen: one tap
+// instead of a scroll wheel on mobile, and every option visible at once.
+// Radio semantics so arrow keys and screen readers behave.
+function ChoiceChips({
+  name,
+  value,
+  onChange,
+  options,
+}: {
+  name: string;
+  value: string;
+  onChange: (v: string) => void;
+  options: string[];
+}) {
+  return (
+    <div role="radiogroup" aria-label={name} className="flex flex-wrap gap-2">
+      {options.map((o) => {
+        const on = value === o;
+        return (
+          <button
+            key={o}
+            type="button"
+            role="radio"
+            aria-checked={on}
+            onClick={() => onChange(on ? "" : o)}
+            className={`rounded-full border px-3.5 py-2.5 text-sm text-left transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EA9A61]/60 ${
+              on
+                ? "border-[#EA9A61]/60 bg-[#EA9A61]/[0.12] text-white"
+                : "border-white/[0.1] bg-white/[0.02] text-white/60 hover:border-white/25 hover:text-white/85"
+            }`}
+            style={{ fontFamily: BODY }}
+          >
+            {o}
+          </button>
+        );
+      })}
     </div>
   );
 }
