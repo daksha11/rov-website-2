@@ -5,8 +5,22 @@ import Footer from "@/components/sections/Footer";
 import ServiceLeadSection from "@/components/sections/ServiceLeadSection";
 import ProjectStrip from "@/components/sections/ProjectStrip";
 import CrossSellNudges from "@/components/common/CrossSellNudges";
+import BrandHero from "@/components/brand/BrandHero";
 import { brandFaqItems } from "@/data/faq";
 import { brandSteps } from "@/data/approach-steps";
+
+// Below-fold and interactive pieces, split out of the initial bundle.
+const BrandStats = dynamic(() => import("@/components/brand/BrandStats"), {
+    loading: () => <div className="bg-black min-h-[40vh]" />,
+});
+
+const TouchpointToggle = dynamic(() => import("@/components/brand/TouchpointToggle"), {
+    loading: () => <div className="bg-black min-h-[60vh]" />,
+});
+
+const BrandPricingTiers = dynamic(() => import("@/components/brand/BrandPricingTiers"), {
+    loading: () => <div className="bg-black min-h-[40vh]" />,
+});
 
 const OurApproachSection = dynamic(() => import("@/components/common/OurApproachSection"), {
     loading: () => <div className="bg-black min-h-[40vh]" />,
@@ -106,80 +120,14 @@ const GUIDES: { href: string; title: string; blurb: string }[] = [
 export default function BrandContent() {
     return (
         <main className="min-h-screen bg-black text-white relative overflow-x-hidden">
-            {/* ── HERO ── */}
-            <section className="relative flex min-h-[92vh] flex-col items-center justify-center overflow-hidden px-6 py-28 text-center md:px-12">
-                {/* CSS-only ember light splashes. No canvas, no WebGL. */}
-                <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-0"
-                    style={{
-                        background: `
-                            radial-gradient(ellipse 1100px 900px at 22% 22%, rgba(234,154,97,0.28) 0%, transparent 55%),
-                            radial-gradient(ellipse 1000px 900px at 78% 58%, rgba(177,105,55,0.22) 0%, transparent 55%)
-                        `,
-                    }}
-                />
-
-                <div className="relative z-10 flex flex-col items-center">
-                    <span
-                        className="mb-10 inline-flex items-center gap-2 rounded-full px-5 py-2 text-[0.72rem] font-semibold uppercase tracking-[0.14em]"
-                        style={{
-                            background: "rgba(126,42,12,0.20)",
-                            border: "1px solid rgba(202,53,0,0.30)",
-                            color: "#E8914A",
-                        }}
-                    >
-                        <span aria-hidden="true">✦</span>
-                        Brand Identity &amp; Experience
-                    </span>
-
-                    <h1
-                        className="max-w-4xl text-[clamp(2.6rem,7vw,6rem)] font-extrabold leading-[1.06] tracking-[-0.01em] text-white"
-                        style={{ fontFamily: "TestSohne-Extrafett, Norwige, sans-serif" }}
-                    >
-                        Your brand stops at the logo.
-                        <span
-                            className="mt-2 block text-[clamp(2.4rem,6.4vw,5.4rem)] font-normal leading-[1.14]"
-                            style={{
-                                fontFamily: "NorwigeHeroItalic, sans-serif",
-                                background: "linear-gradient(90deg, #FF8904 0%, #F54900 100%)",
-                                backgroundClip: "text",
-                                WebkitBackgroundClip: "text",
-                                WebkitTextFillColor: "transparent",
-                            }}
-                        >
-                            Your customers don&apos;t.
-                        </span>
-                    </h1>
-
-                    <p className="mt-8 max-w-xl text-[clamp(0.95rem,1.6vw,1.1rem)] leading-relaxed text-white/60">
-                        Most businesses buy a logo, then send a confirmation email that looks like a
-                        2009 receipt. We build the identity and the places it has to survive.
-                    </p>
-
-                    <div className="mt-11 flex flex-wrap items-center justify-center gap-4">
-                        <Link
-                            href="#start"
-                            className="rounded-full px-8 py-4 text-[0.8rem] font-bold uppercase tracking-[0.1em] text-white transition-transform hover:scale-[1.03]"
-                            style={{
-                                background:
-                                    "linear-gradient(132deg, #EA9A61 4.77%, #B16937 27.26%, #A64D2B 50.09%, #42201C 76.74%)",
-                                boxShadow: "0 4px 24px rgba(160,90,40,0.45)",
-                            }}
-                        >
-                            Start with an audit →
-                        </Link>
-                        <Link
-                            href="#the-gap"
-                            className="rounded-full border-[1.5px] border-white/55 px-8 py-4 text-[0.8rem] font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-white/[0.08]"
-                        >
-                            See the gap
-                        </Link>
-                    </div>
-                </div>
-            </section>
+            <BrandHero />
 
             <ProjectStrip />
+
+            {/* The demo carries the argument, so it runs before the prose does. */}
+            <TouchpointToggle />
+
+            <BrandStats />
 
             {/* ── THE GAP: the wedge argument ── */}
             <section id="the-gap" className="relative px-6 py-24 md:px-12 md:py-32 lg:px-16">
@@ -316,15 +264,11 @@ export default function BrandContent() {
                         ))}
                     </div>
 
-                    <p className="mt-10 max-w-2xl text-[0.9375rem] leading-relaxed text-white/45">
-                        Projects start at $2,500 and we don&apos;t discount below it. A focused refresh
-                        for an established business usually lands between $2,500 and $6,000; a full
-                        identity with the touchpoints wired up runs higher depending on how many
-                        surfaces you actually have. We&apos;ll give you a real number after the audit,
-                        and we&apos;ll say plainly if you need less than you think.
-                    </p>
                 </div>
             </section>
+
+            {/* ── PRICING ── */}
+            <BrandPricingTiers />
 
             {/* ── APPROACH ── */}
             <OurApproachSection steps={brandSteps} />
