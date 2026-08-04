@@ -113,7 +113,9 @@ What we are confident about is the finding that was consistent in all nine: the 
 
 If you operate near the trail, the useful exercise is to open your own website and search it for the word "Beltline." Most people are surprised.
 
-We put together a page on [what we do for businesses along the Beltline](/industries/beltline-atlanta) if you want the fuller version, and the [broader guide to why businesses stay invisible on Google](/web/why-isnt-my-business-showing-up-on-google) covers the six causes underneath this one.
+If you would rather we did it, we run this same audit on request and send it back free: [get your visibility report](/report). Same process as the nine above, on your business.
+
+We also put together a page on [what we do for businesses along the Beltline](/industries/beltline-atlanta), and the [broader guide to why businesses stay invisible on Google](/web/why-isnt-my-business-showing-up-on-google) covers the six causes underneath this one.
 
 ## Frequently Asked Questions
 

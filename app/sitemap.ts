@@ -68,6 +68,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'monthly',
             priority: 0.9,
         },
+        // The single funnel CTA. Every article, post, and bio link lands here.
+        {
+            url: `${baseUrl}/report`,
+            lastModified: '2026-08-03',
+            changeFrequency: 'monthly',
+            priority: 0.9,
+        },
         {
             url: `${baseUrl}/web/brief`,
             lastModified: '2026-08-01',

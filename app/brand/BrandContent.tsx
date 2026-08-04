@@ -96,6 +96,11 @@ const GUIDES: { href: string; title: string; blurb: string }[] = [
         title: "How much does a website cost in Atlanta?",
         blurb: "Real 2026 prices, what moves them, and what a cheap site really costs you later.",
     },
+    {
+        href: "/report",
+        title: "Get a free visibility report",
+        blurb: "We audit your surfaces by hand and send back the gaps, what each costs you, and what to fix first.",
+    },
 ];
 
 export default function BrandContent() {

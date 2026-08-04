@@ -521,6 +521,8 @@ export default function ArticleBody() {
             {[
               { href: "/casestudy/bando", label: "Full TheBando case study", desc: "How we took a buried ordering page to 91,060 views with no ad spend. Every decision, every number." },
               { href: "/web", label: "ROV Studios web design services", desc: "How we build Atlanta websites Google trusts and customers convert on. Pricing, timeline, process." },
+              { href: "/report", label: "Get a free visibility report", desc: "We run these six checks on your site by hand and send back what we find, plus what to fix first." },
+              { href: "/blog/beltline-atlanta-visibility-audit", label: "We audited 9 Beltline businesses", desc: "Nine businesses, 2.5M visitors a year walking past, and not one claims the Beltline on its own site." },
               { href: "/web/how-much-does-a-website-cost-in-atlanta", label: "How much does a website cost in Atlanta?", desc: "Real 2026 pricing, what drives the cost, and why the cheapest site is the one you pay for twice." },
               { href: "/web/real-estate-agent-website-atlanta", label: "Real estate agent websites in Atlanta", desc: "Why agents lose deals after the lead comes in, and the website and follow-up system that fixes it." },
               { href: "/ai-automation", label: "AI automations for Atlanta businesses", desc: "Missed call text-back, automatic review requests, follow-up sequences. Visibility that runs itself." },
