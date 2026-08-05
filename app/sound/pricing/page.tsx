@@ -4,6 +4,9 @@ import MusicFooter from "@/components/music/MusicFooter";
 import { IntakeProvider } from "@/components/music/IntakeContext";
 import PricingTable from "@/components/sound/PricingTable";
 import { BreadcrumbSchema } from "@/components/schema/BreadcrumbSchema";
+import { MusicOfferSchema } from "@/components/schema/MusicOfferSchema";
+import FAQSection from "@/components/common/FAQSection";
+import { soundFaqItems } from "@/data/faq";
 
 // The full rate card. On the music host this lives at rovmusic.com/pricing
 // (see middleware.ts); /sound/pricing serves it everywhere else, so all SEO
@@ -38,7 +41,13 @@ export default function Page() {
                 { name: "Range of View Music", url: "" },
                 { name: "Pricing", url: "/pricing" },
             ]} />
+            {/* Priced offers, generated from the same rate card the table renders.
+                No FAQPageSchema here on purpose: the home page already emits it,
+                and duplicating FAQ schema across two URLs is discouraged. The FAQ
+                still renders visibly below, where a pricing page wants it. */}
+            <MusicOfferSchema baseUrl={MUSIC_URL} />
             <PricingTable />
+            <FAQSection items={soundFaqItems} />
             <MusicFooter />
             <MusicNav />
         </IntakeProvider>

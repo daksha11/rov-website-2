@@ -133,13 +133,16 @@ export default function CareerGaps() {
           className="text-white/35 text-sm md:text-base leading-relaxed max-w-2xl"
           style={{ fontFamily: BODY }}
         >
-          {/* PRICING REVIEW: this range is the only number in the section, and
-              it replaces the old per-item menu. Confirm the floor and ceiling
-              against what these actually go out at. */}
-          Most single pieces land between{" "}
-          <span className="text-white/70">$40 and $300</span> depending on the release.
-          We quote it with the rollout rather than off a menu, because a cover for a
-          one-off and a cover for a six-single run are different jobs.
+          {/* The only numbers in the section, and they replace the old per-item
+              menu. Kept deliberately loose: these are anchors, not a price list,
+              and the real figures live on /pricing. */}
+          Single pieces start at <span className="text-white/70">$40</span>, a cover
+          art system runs <span className="text-white/70">$150</span>, and a full
+          content run is <span className="text-white/70">$750</span>. The whole
+          backend, site and EPK included, is{" "}
+          <span className="text-white/70">$500</span> once. We scope it against the
+          release rather than off a menu, because a cover for a one-off and a cover
+          for a six-single run are different jobs.
         </motion.p>
       </div>
     </section>

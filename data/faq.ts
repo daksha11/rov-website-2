@@ -3,7 +3,7 @@ import type { FaqItem } from "@/components/common/FAQSection";
 export const webFaqItems: FaqItem[] = [
     {
         question: "How much does a website cost?",
-        answer: "Our website projects typically range from $2,000 to $10,000+ depending on the scope and features you need. A simple 5-page business website with custom design starts around $2,000, while more complex sites with e-commerce, custom functionality, or extensive content can go higher. Every project is different, so we provide a detailed proposal after understanding your specific goals, timeline, and requirements. We're transparent about pricing from the start and work with you to find the right balance between your vision and budget."
+        answer: "Our projects run from $2,500 to $10,000 depending on scope. A focused fix for one part of the customer journey starts at $2,500; a full build that wires the whole path together, site plus lead capture plus follow-up, runs $5,000 to $10,000. Anything larger we phase into stages so you see value before the whole thing is finished. Every project is different, so we provide a detailed proposal after understanding your goals and timeline, and our full price list is published at /pricing rather than held back for a call."
     },
     {
         question: "How long does it take to build a website?",
@@ -84,8 +84,12 @@ export const soundFaqItems: FaqItem[] = [
         answer: "Your first mix is $50, so you can hear the work before committing to anything. After that a single song is $65, or you can prepay a pack and bring the rate down: 3 songs for $165 ($55 each), 6 for $270 ($45 each), or 12 for $480 ($40 each). Packs never expire. Mastering is always included and every song comes with 2 revisions. Full trackouts (beat stems plus vocals) are quoted on the number of stems, so send us your project details for an exact number."
     },
     {
+        question: "How much does it cost to record at your Atlanta studio?",
+        answer: "Studio time is $65 an hour, and every rate includes the full mix and master. Book a block and it drops: 2 hours is $120, 4 hours is $200, which works out to $50 an hour. Most rooms in Atlanta charge you $75 to $120 an hour and then bill mixing separately, so a finished song here usually costs less than the room time alone somewhere else. Students record at $40 an hour with a valid ID, same room, same gear, same engineer."
+    },
+    {
         question: "How long does it take to get my song mixed and mastered?",
-        answer: "Turnaround is 2 days from the time we receive your properly labeled stems and any notes. If you're recording with us in-house, your song is also mixed and mastered within 2 days after the session. If you're on a tight schedule for a rollout, let us know and we'll plan the timeline with you."
+        answer: "48 hours from the time we receive your properly labeled stems and any notes. If you're recording with us in-house, your song is mixed and mastered within 48 hours of the session too. If you're on a tight schedule for a rollout, tell us and we'll plan the timeline with you."
     },
     {
         question: "What do you need from me to mix my track properly?",
@@ -102,6 +106,14 @@ export const soundFaqItems: FaqItem[] = [
     {
         question: "Can you help with cover art, rollouts, and visuals for my release?",
         answer: "Yes, this is where we really go full service. Cover art is sold as a system rather than one image at a time: $150 for the system plus your first cover, then $40 for every cover after, which is what makes six singles look like they belong together instead of six unrelated images. Beyond that we do content runs (20 shorts plus 5 lyric videos for $750), websites, EPKs, merch, tracklists, and full rollout assets. We're set up to take you from recording to release, so you don't have to piece together a different person for every part of your rollout."
+    },
+    {
+        question: "What is Foundation, and do I need it?",
+        answer: "Foundation is everything a career needs that a mix doesn't cover, built once for $500 and yours forever. It includes an artist website on your own domain, lead capture and booking forms, an EPK as both a live page and a PDF you can forward, a release hub that captures fan emails on every drop, your metadata master sheet so your songs never land on a duplicate Spotify profile, a split sheet system so nobody fights over a song that starts working, a tech rider and input list for shows, and a stem vault we hold and back up for you. Bought piece by piece that runs well over a thousand dollars, and most artists never buy any of it. You don't need it to send us a song, but a mix makes one song better and this is what makes a catalog worth something."
+    },
+    {
+        question: "What don't you do?",
+        answer: "No label services, no radio promo, no booking agency, and no publishing administration. We refer out for publishing admin and for anything contractual, because you want a lawyer for that, not a studio. We'd rather tell you plainly than take money for something we're not the right people to run."
     }
 ];
 

@@ -29,10 +29,12 @@ const SONGS = [
   { key: "7+", label: "7 or more", low: 7, high: 10 },
 ] as const;
 
+// Matches the live rate card. The old three (cover $50/$75, visualizer $40/$60,
+// merch $65/$95) were retired with the add-on menu: covers are now sold as a
+// system, and visualizers live inside the content run rather than standalone.
 const EXTRAS = [
-  { key: "cover", label: "Cover art", plan: 50, standalone: 75 },
-  { key: "visualizer", label: "Lyric visualizer", plan: 40, standalone: 60 },
-  { key: "merch", label: "Merch design", plan: 65, standalone: 95 },
+  { key: "cover", label: "Cover art", plan: 40, standalone: 150 },
+  { key: "content", label: "Short-form content", plan: 750, standalone: 750 },
 ] as const;
 
 const CADENCE = [
@@ -454,8 +456,8 @@ export default function QuoteEstimator() {
                 )}
 
                 {/* The plan they just described, made buyable. Without this the
-                    estimator opens a loop it can't close: it quotes the
-                    subscription rate, then offers only a phone call. */}
+                    estimator opens a loop it cannot close: it quotes the
+                    pack rate, then offers only a phone call. */}
                 {plan && (
                   <div className="rounded-xl border border-[#EA9A61]/25 bg-[#EA9A61]/[0.05] p-4 md:p-5 mb-6">
                     <span

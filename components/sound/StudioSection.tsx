@@ -321,7 +321,7 @@ function RecordingRates() {
           </CalBookButton>
         </motion.div>
 
-        {/* Finished Single bundle — featured */}
+        {/* 4-hour block — featured */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
