@@ -29,6 +29,10 @@ export const webFaqItems: FaqItem[] = [
 
 export const aiAutomationFaqItems: FaqItem[] = [
     {
+        question: "How much does AI automation cost?",
+        answer: "Our projects run $2,500 to $10,000, same as the rest of the studio. One automation off your plate, a single workflow done properly, starts at $2,500. Wiring several together so the whole path after an enquiry runs on its own is $5,000 to $10,000. Ongoing work after launch is a retainer from $1,000 a month, and we bring that up during scoping rather than at handoff. The full price list is published at /pricing."
+    },
+    {
         question: "How long does it take to build and launch an AI automation?",
         answer: "Most projects go from discovery to launch within 4 to 8 weeks. Simpler automations can be live even sooner. We move fast because we've done this enough times to know exactly what needs to happen and in what order."
     },
@@ -118,6 +122,10 @@ export const soundFaqItems: FaqItem[] = [
 ];
 
 export const videoFaqItems: FaqItem[] = [
+    {
+        question: "How much does video production cost?",
+        answer: "Shoot days start at $500, priced to the day, with the edit scoped to what you actually need. Property and listing work starts at $500 per property. Video is the one thing we price by the day rather than as a project, because a shoot day is a different product from a build. If the footage is part of a wider piece of work, that sits in our normal $2,500 to $10,000 project range. The full price list is published at /pricing."
+    },
     {
         question: "What types of video production services do you offer?",
         answer: "We handle everything in-house. Pre-production planning, shot lists, actual filming, editing, color grading, final delivery. The whole thing. Brand videos, promo content, social media stuff, real estate walkthroughs, drone footage. Whatever you need, we manage it so the final product actually feels like one cohesive piece."

@@ -29,7 +29,10 @@ const tiers: Tier[] = [
     label: "Launchpad",
     name: "Launchpad",
     tier: "The site",
-    price: 2000,
+    // Was $2,000, which sat below the $2,500 hard floor in the locked
+    // commercials and made the price appear to climb as a visitor went from
+    // here to /web/brief. See lib/pricing.ts, the single source.
+    price: 2500,
     priceSub: "One-time project fee",
     tagline: "You still close the deals. The site makes sure they find you.",
     bestFor: "Businesses that need a professional web presence that converts",
@@ -280,7 +283,7 @@ export default function WebPricingTiers() {
           <span className="hidden md:block w-px h-4 bg-white/10" />
           <span className="text-white/30 text-xs uppercase tracking-[0.15em]">
             ROV:{" "}
-            <span className="text-[#EA9A61] font-semibold">$2,000 – $5,000</span>
+            <span className="text-[#EA9A61] font-semibold">$2,500 – $10,000</span>
           </span>
         </motion.div>
       </div>

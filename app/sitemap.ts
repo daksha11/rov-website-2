@@ -68,6 +68,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'monthly',
             priority: 0.9,
         },
+        // Published pricing. "How much does X cost in Atlanta" is already one of
+        // our strongest search patterns, and this is the page that answers it
+        // for the studio as a whole.
+        {
+            url: `${baseUrl}/pricing`,
+            lastModified: '2026-08-05',
+            changeFrequency: 'monthly',
+            priority: 0.9,
+        },
         // The single funnel CTA. Every article, post, and bio link lands here.
         {
             url: `${baseUrl}/report`,
