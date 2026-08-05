@@ -20,6 +20,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { subscribeToKlaviyo } from "@/utils/klaviyo";
+import { leadRateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 15;
@@ -315,6 +316,11 @@ async function deliverResend(apiKey: string, brief: Brief) {
 }
 
 export async function POST(req: NextRequest) {
+  // Generous enough for the two legitimate posts one visitor makes here: the
+  // gated brief, then the optional deepening afterwards.
+  const limit = leadRateLimit(req, "web-brief");
+  if (!limit.ok) return rateLimitResponse(limit);
+
   let parsed;
   try {
     parsed = bodySchema.safeParse(await req.json());

@@ -20,6 +20,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { subscribeToKlaviyo } from "@/utils/klaviyo";
+import { leadRateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 15;
@@ -44,6 +45,15 @@ const bodySchema = z.object({
   // Optional Klaviyo list override. Website forms omit it (→ ROV web leads);
   // the /card scan passes the From-Cards list so IRL and web leads stay split.
   klaviyoListId: z.string().trim().max(20).optional(),
+  // First-touch attribution, captured client-side by lib/lead-analytics and
+  // sent with every form. Optional so an older cached bundle still submits.
+  utm_source: z.string().trim().max(120).optional(),
+  utm_medium: z.string().trim().max(120).optional(),
+  utm_campaign: z.string().trim().max(120).optional(),
+  utm_term: z.string().trim().max(120).optional(),
+  utm_content: z.string().trim().max(120).optional(),
+  referrer: z.string().trim().max(200).optional(),
+  landing_page: z.string().trim().max(300).optional(),
   // Honeypot — real users never fill this. Bots do.
   company: z.string().max(0).optional(),
 });
@@ -73,11 +83,19 @@ async function deliverResend(apiKey: string, lead: Lead) {
   const to = process.env.LEAD_TO_EMAIL || DEFAULT_TO_EMAIL;
   const from = process.env.LEAD_FROM_EMAIL || DEFAULT_FROM_EMAIL;
 
+  // Attribution only earns space in the email when there is something to say.
+  const attribution = [
+    lead.utm_source && `Campaign: ${lead.utm_source} / ${lead.utm_medium || "n/a"} / ${lead.utm_campaign || "n/a"}`,
+    lead.referrer && `Came from: ${lead.referrer}`,
+    lead.landing_page && lead.landing_page !== lead.page && `Landed on: ${lead.landing_page}`,
+  ].filter(Boolean) as string[];
+
   const lines = [
     `Name: ${lead.name}`,
     `Email: ${lead.email}`,
     `Source: ${lead.source}`,
     `Page: ${lead.page || "n/a"}`,
+    ...attribution,
     "",
     "What they're working on:",
     lead.message || "(none)",
@@ -98,6 +116,9 @@ async function deliverResend(apiKey: string, lead: Lead) {
 }
 
 export async function POST(req: NextRequest) {
+  const limit = leadRateLimit(req, "leads");
+  if (!limit.ok) return rateLimitResponse(limit);
+
   let parsed;
   try {
     parsed = bodySchema.safeParse(await req.json());

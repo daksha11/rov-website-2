@@ -20,6 +20,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { subscribeToKlaviyo } from "@/utils/klaviyo";
+import { leadRateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 15;
@@ -36,6 +37,12 @@ const bodySchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  // Generous on purpose: this route serves the /card QR flow, where a whole
+  // room of people scanning at an event shares one wifi IP. A list add is also
+  // cheap to undo, unlike a lost handshake.
+  const limit = leadRateLimit(req, "klaviyo-subscribe", 25);
+  if (!limit.ok) return rateLimitResponse(limit);
+
   let parsed;
   try {
     parsed = bodySchema.safeParse(await req.json());

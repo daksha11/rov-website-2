@@ -6,7 +6,8 @@
 // webhook, SMTP, ...) is a config change, not a code change:
 //   1. LEAD_WEBHOOK_URL  — if set, POST the lead JSON to it.
 //   2. RESEND_API_KEY    — else, if set, email the lead via Resend
-//      to LEAD_TO_EMAIL (default admin@pursuenetworking.com).
+//      to LEAD_TO_EMAIL (default rangeofviewmusic@gmail.com, the same inbox
+//      every other rovstudios.com form delivers to).
 //   3. neither set        — 503 { ok:false, code:"not_configured" }
 //      so the form is testable before wiring, and surfaces an honest
 //      error instead of pretending to have captured the lead.
@@ -16,10 +17,10 @@
 // blocks or fails the submission.
 //
 // Env:
-//   LEAD_WEBHOOK_URL       https://...           (optional)
-//   RESEND_API_KEY         re_...                (optional)
-//   LEAD_TO_EMAIL          you@example.com       (optional; default below)
-//   LEAD_FROM_EMAIL        leads@rovstudios.com  (optional; Resend path)
+//   LEAD_WEBHOOK_URL       https://...            (optional)
+//   RESEND_API_KEY         re_...                 (optional)
+//   LEAD_TO_EMAIL          you@example.com        (optional; default below)
+//   LEAD_FROM_EMAIL        onboarding@resend.dev  (optional; Resend path)
 //   KLAVIYO_PRIVATE_KEY    pk_...                (required for the list add)
 //   KLAVIYO_LEADS_LIST_ID  XXXXXX                (optional; defaults to WGRd8Q)
 // ─────────────────────────────────────────────────────────────
@@ -27,12 +28,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { subscribeToKlaviyo } from "@/utils/klaviyo";
+import { leadRateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 15;
 
-const DEFAULT_TO_EMAIL = "admin@pursuenetworking.com";
-const DEFAULT_FROM_EMAIL = "leads@rovstudios.com";
+// One inbox for every rovstudios.com lead, matching app/api/leads and
+// app/api/web/brief. Override with LEAD_TO_EMAIL.
+const DEFAULT_TO_EMAIL = "rangeofviewmusic@gmail.com";
+// Resend rejects senders on unverified domains, which would fail this route
+// outright rather than degrading. Stay on the sandbox sender until
+// rovstudios.com is verified in Resend, then set LEAD_FROM_EMAIL once and
+// every lead route picks it up.
+const DEFAULT_FROM_EMAIL = "onboarding@resend.dev";
 
 // Same "ROV web leads" list the other business forms use, so every B2B lead
 // lands in one place regardless of which page captured it. Matches
@@ -46,6 +54,10 @@ const bodySchema = z.object({
   phone: z.string().trim().max(40).optional().or(z.literal("")),
   message: z.string().trim().max(500).optional().or(z.literal("")),
   icpSlug: z.string().trim().max(80).optional(),
+  // What the page's calculator estimated for them, when they ran it. This is
+  // the lead telling you what the problem is worth in their own numbers, so it
+  // goes near the top of the email.
+  estimate: z.string().trim().max(160).optional(),
   utmSource: z.string().trim().max(120).optional(),
   utmMedium: z.string().trim().max(120).optional(),
   utmCampaign: z.string().trim().max(120).optional(),
@@ -88,6 +100,7 @@ async function deliverResend(apiKey: string, lead: Lead) {
     `Email: ${lead.email}`,
     `Phone: ${lead.phone || "—"}`,
     `ICP page: ${lead.icpSlug || "—"}`,
+    ...(lead.estimate ? [`Their own estimate: ${lead.estimate}`] : []),
     `UTM: ${lead.utmSource || "—"} / ${lead.utmMedium || "—"} / ${lead.utmCampaign || "—"}`,
     "",
     "What they need:",
@@ -112,6 +125,9 @@ async function deliverResend(apiKey: string, lead: Lead) {
 }
 
 export async function POST(req: NextRequest) {
+  const limit = leadRateLimit(req, "industries-lead");
+  if (!limit.ok) return rateLimitResponse(limit);
+
   let parsed;
   try {
     parsed = bodySchema.safeParse(await req.json());
