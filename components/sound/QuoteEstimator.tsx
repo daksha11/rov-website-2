@@ -1,9 +1,11 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import { CONSULT_BOOKING_URL, checkout, checkoutHref, type CheckoutKey } from "@/data/soundPricing";
 import CalBookButton from "@/components/sound/CalBookButton";
+import { useIntake } from "@/components/music/IntakeContext";
+import RoleInline from "@/components/music/RoleInline";
 
 const HEADING = "Norwige, sans-serif";
 const BODY = "'Roboto', sans-serif";
@@ -114,6 +116,18 @@ const PLAN_BLURB: Record<string, string> = {
 export default function QuoteEstimator() {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const { audit, setEstimate } = useIntake();
+
+  // If they already took the readiness audit, we know whether cover art is a
+  // gap, so asking again is a wasted question. Pre-select from what they told
+  // us and skip the step entirely. This is the whole point of the shared store.
+  const auditKnowsExtras = !!audit;
+  const extrasFromAudit = useMemo<Set<ExtraKey>>(() => {
+    if (!audit) return new Set();
+    const preset = new Set<ExtraKey>();
+    if (audit.missing.includes("covers")) preset.add("cover");
+    return preset;
+  }, [audit]);
 
   const [step, setStep] = useState(0); // 0..3 questions, 4 = result
   const [answers, setAnswers] = useState<Answers>({
@@ -126,9 +140,28 @@ export default function QuoteEstimator() {
   // "What do you pay per song now?" — powers the personalized savings reveal.
   const [payNow, setPayNow] = useState(150);
 
+  // Apply the audit's answers once storage has loaded.
+  useEffect(() => {
+    if (!auditKnowsExtras) return;
+    setAnswers((p) => (p.extras.size ? p : { ...p, extras: new Set(extrasFromAudit) }));
+  }, [auditKnowsExtras, extrasFromAudit]);
+
   const est = useMemo(() => computeEstimate(answers), [answers]);
 
   const plan = useMemo(() => (est ? recommendedPlan(answers) : null), [answers, est]);
+
+  // Write the finished estimate back to the shared profile, so leads and the
+  // rest of the page see one picture of this visitor rather than two.
+  useEffect(() => {
+    if (step !== 4 || !est) return;
+    setEstimate({
+      need: answers.need ?? "",
+      songs: answers.songs ?? "",
+      extras: Array.from(answers.extras),
+      cadence: answers.cadence ?? "",
+      plan,
+    });
+  }, [step, est, answers, plan, setEstimate]);
 
   const savings = useMemo(() => {
     if (!est) return null;
@@ -145,7 +178,8 @@ export default function QuoteEstimator() {
   };
   const setSongs = (songs: SongKey) => {
     setAnswers((p) => ({ ...p, songs }));
-    setStep(2);
+    // Step 2 is the extras question. Skip it when the audit already told us.
+    setStep(auditKnowsExtras ? 3 : 2);
   };
   const toggleExtra = (key: ExtraKey) =>
     setAnswers((p) => {
@@ -222,7 +256,7 @@ export default function QuoteEstimator() {
           className="text-white/50 text-sm md:text-base mb-10 text-center max-w-lg mx-auto"
           style={{ fontFamily: BODY }}
         >
-          Four quick questions and we&apos;ll ballpark your price. Every project is different, so we lock the exact number together.
+          {auditKnowsExtras ? "Three" : "Four"} quick questions and we&apos;ll ballpark your price. Every project is different, so we lock the exact number together.
         </motion.p>
 
         {/* Card */}
@@ -304,7 +338,7 @@ export default function QuoteEstimator() {
 
             {/* ── Step 3: Cadence ── */}
             {step === 3 && (
-              <StepShell key="s3" title={STEP_TITLES[3]} onBack={() => setStep(2)}>
+              <StepShell key="s3" title={STEP_TITLES[3]} onBack={() => setStep(auditKnowsExtras ? 1 : 2)}>
                 {CADENCE.map((c) => (
                   <OptionRow
                     key={c.key}

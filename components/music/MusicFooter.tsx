@@ -5,6 +5,7 @@ import { Instagram } from "lucide-react";
 // not the unattached generic 15-minute call.
 import { CAL_LINKS, CONTACT_EMAIL } from "@/data/soundPricing";
 import CalBookButton from "@/components/sound/CalBookButton";
+import FooterRoleSwitch from "@/components/music/FooterRoleSwitch";
 
 // Music-branded footer for rovmusic.com. Mirrors the studios footer's visual
 // language (black, Norwige headings, ROV logo) but drops the B2B service links,
@@ -109,9 +110,12 @@ export default function MusicFooter() {
 
       {/* Bottom bar */}
       <div className="px-6 md:px-12 py-6 border-t border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
-        <p className="text-white/40 text-xs md:text-sm" style={{ fontFamily: "Roboto, sans-serif" }}>
-          © {new Date().getFullYear()} Range of View. Atlanta, GA.
-        </p>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-5">
+          <p className="text-white/40 text-xs md:text-sm" style={{ fontFamily: "Roboto, sans-serif" }}>
+            © {new Date().getFullYear()} Range of View. Atlanta, GA.
+          </p>
+          <FooterRoleSwitch />
+        </div>
         <a
           href="https://www.rovstudios.com"
           target="_blank"

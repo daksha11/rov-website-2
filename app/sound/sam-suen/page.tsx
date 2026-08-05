@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { MusicNav } from "@/components/music/MusicNav";
 import MusicFooter from "@/components/music/MusicFooter";
+import { IntakeProvider } from "@/components/music/IntakeContext";
 import SamSuenCaseStudy from "@/components/sound/SamSuenCaseStudy";
 import { BreadcrumbSchema } from "@/components/schema/BreadcrumbSchema";
 
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
     return (
-        <>
+        <IntakeProvider>
             <BreadcrumbSchema baseUrl={MUSIC_URL} items={[
                 { name: "Range of View Music", url: "" },
                 { name: "Sam Suen", url: "/sam-suen" },
@@ -41,6 +42,6 @@ export default function Page() {
             <SamSuenCaseStudy />
             <MusicFooter />
             <MusicNav />
-        </>
+        </IntakeProvider>
     );
 }

@@ -12,7 +12,7 @@ import { motion, useInView } from "framer-motion";
 import { CONSULT_BOOKING_URL, checkoutHref } from "@/data/soundPricing";
 import { FOUNDATION_PRICE } from "@/data/artistReadiness";
 import CalBookButton from "@/components/sound/CalBookButton";
-import { useEffectiveRole } from "@/components/music/RoleContext";
+import { useEffectiveRole } from "@/components/music/IntakeContext";
 
 const HEADING = "Norwige, sans-serif";
 const BODY = "'Roboto', sans-serif";

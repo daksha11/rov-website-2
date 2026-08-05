@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { MusicNav } from "@/components/music/MusicNav";
 import MusicFooter from "@/components/music/MusicFooter";
-import { RoleProvider } from "@/components/music/RoleContext";
+import { IntakeProvider } from "@/components/music/IntakeContext";
 import RoleGate from "@/components/music/RoleGate";
-import RoleChip from "@/components/music/RoleChip";
+import RoleToast from "@/components/music/RoleToast";
 import SoundHero from "@/components/sound/SoundHero";
 // Gallery and VideoShowcaseSection now render inside CareerGaps, where they
 // serve as the evidence for the full-service claim instead of sitting in the
@@ -69,6 +69,9 @@ const CareerGaps = dynamic(() => import("@/components/sound/CareerGaps"), {
 
 const ClosingCTA = dynamic(() => import("@/components/sound/ClosingCTA"));
 
+// Renders only for the "behind the scenes" role, which used to be a dead end.
+const CollaboratorCard = dynamic(() => import("@/components/sound/CollaboratorCard"));
+
 const StudioSection = dynamic(() => import("@/components/sound/StudioSection"), {
     loading: () => (
         <div className="bg-black min-h-[40vh] flex items-center justify-center">
@@ -110,7 +113,7 @@ export default function Page() {
     return (
         // Role state wraps the whole page: the gate sets it, and sections read
         // it to swap copy and reorder proof.
-        <RoleProvider>
+        <IntakeProvider>
             <ServiceSchema
                 name="Sound Engineering & Music Production"
                 description="Professional sound engineering, mixing, and mastering services. Mix and master from $40 a song with 48-hour turnaround. First mix is $50."
@@ -193,6 +196,10 @@ export default function Page() {
             {/* 09 — Artist Readiness Audit                  [#audit]  */}
             <ReadinessAudit />
 
+            {/* 09.5 — Collaborators get routes instead of a quiz. Self-hides
+                for artists and managers.            [#collaborate] */}
+            <CollaboratorCard />
+
             {/* 10 — Foundation / Release Cycle / Development [#foundation] */}
             <FoundationOffer />
 
@@ -215,8 +222,8 @@ export default function Page() {
             {/* Music-branded footer + nav (rovmusic shell) */}
             <MusicFooter />
             <MusicNav />
-            <RoleChip />
+            <RoleToast />
             <RoleGate />
-        </RoleProvider>
+        </IntakeProvider>
     );
 }

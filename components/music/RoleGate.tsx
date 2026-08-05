@@ -2,17 +2,23 @@
 
 // First-visit role gate for rovmusic.com. Three cards: artist, manager,
 // collaborator. The answer is remembered, so this fires once per visitor and
-// never again unless they reopen it from RoleChip.
+// never again unless they reopen it from RoleInline or the footer.
 //
 // Deliberate restraint: it waits ~700ms so it doesn't fight the hero video for
 // attention or main-thread time, it can be dismissed without answering, and
 // dismissing does NOT persist a role (the page just falls back to artist copy).
-// Answering scrolls to the readiness audit, which is the whole point of asking.
+// Answering scrolls to the fork and fires a brief toast, which is all the
+// confirmation this needs; there is no persistent role badge anywhere.
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Mic2, Users, Palette, X } from "lucide-react";
-import { type Role, useRole } from "@/components/music/RoleContext";
+import {
+  OPEN_GATE_EVENT,
+  type Role,
+  useIntake,
+} from "@/components/music/IntakeContext";
+import { ROLE_CHOSEN_EVENT } from "@/components/music/RoleToast";
 
 const HEADING = "Norwige, sans-serif";
 const BODY = "'Roboto', sans-serif";
@@ -31,9 +37,9 @@ const OPTIONS: {
 const REVEAL_DELAY_MS = 700;
 
 export default function RoleGate() {
-  const { role, ready, setRole } = useRole();
+  const { role, ready, setRole } = useIntake();
   const [open, setOpen] = useState(false);
-  // Set by RoleChip's "change" affordance via a custom event.
+  // Set when reopened from an inline switcher rather than on first visit.
   const [forced, setForced] = useState(false);
 
   // First visit only: no stored role, and only after the hero has settled.
@@ -43,14 +49,14 @@ export default function RoleGate() {
     return () => clearTimeout(t);
   }, [ready, role]);
 
-  // Reopening from the chip.
+  // Reopening from RoleInline or the footer.
   useEffect(() => {
     const reopen = () => {
       setForced(true);
       setOpen(true);
     };
-    window.addEventListener("rovmusic:open-role-gate", reopen);
-    return () => window.removeEventListener("rovmusic:open-role-gate", reopen);
+    window.addEventListener(OPEN_GATE_EVENT, reopen);
+    return () => window.removeEventListener(OPEN_GATE_EVENT, reopen);
   }, []);
 
   useEffect(() => {
@@ -66,13 +72,15 @@ export default function RoleGate() {
     setRole(next);
     setOpen(false);
     setForced(false);
+    // Brief confirmation, then it leaves. Replaces the old always-on chip.
+    window.dispatchEvent(new CustomEvent(ROLE_CHOSEN_EVENT, { detail: next }));
     // Drop them at the fork, not the audit. The fork is the real sorting
     // mechanism and it opens the song funnel, which is the revenue path;
     // the audit sits deeper in Act 3 and the fork links down to it.
-    // Collaborators aren't being sorted, so they just stay in the hero.
-    if (next === "other") return;
+    // Collaborators get their own section rather than the song funnel.
+    const target = next === "other" ? "collaborate" : "start";
     window.setTimeout(() => {
-      document.getElementById("start")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      document.getElementById(target)?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 380);
   };
 

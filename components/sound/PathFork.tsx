@@ -3,7 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Mic, Waves, Layers, Users } from "lucide-react";
-import { useEffectiveRole } from "@/components/music/RoleContext";
+import { useEffectiveRole } from "@/components/music/IntakeContext";
 
 const HEADING = "Norwige, sans-serif";
 const BODY = "'Roboto', sans-serif";
@@ -41,8 +41,8 @@ const managerPaths = [
     icon: Layers,
     kicker: "One artist, one release",
     title: "Start with a record",
-    body: "Send us one artist's stems and see how we work before anything else. Full mix and master back in 48 hours, at the intro rate.",
-    price: "First 3 at $50",
+    body: "Send us one artist's stems and see how we work before anything else. Full mix and master back in 48 hours. Their first one is $50.",
+    price: "First mix $50",
     sub: "Per artist, no commitment",
     cta: "See mixing pricing",
   },
@@ -156,7 +156,7 @@ export default function PathFork() {
             onClick={() => goTo("audit")}
             className="text-[#EA9A61]/85 hover:text-[#EA9A61] underline underline-offset-4 decoration-[#EA9A61]/30 hover:decoration-[#EA9A61]/70 transition-colors cursor-pointer"
           >
-            Take the 40-second audit
+            Take the 20-second audit
           </button>
         </motion.p>
       </div>

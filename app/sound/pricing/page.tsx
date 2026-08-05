@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { MusicNav } from "@/components/music/MusicNav";
 import MusicFooter from "@/components/music/MusicFooter";
-import { RoleProvider } from "@/components/music/RoleContext";
+import { IntakeProvider } from "@/components/music/IntakeContext";
 import PricingTable from "@/components/sound/PricingTable";
 import { BreadcrumbSchema } from "@/components/schema/BreadcrumbSchema";
 
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
     return (
-        <RoleProvider>
+        <IntakeProvider>
             <BreadcrumbSchema baseUrl={MUSIC_URL} items={[
                 { name: "Range of View Music", url: "" },
                 { name: "Pricing", url: "/pricing" },
@@ -41,6 +41,6 @@ export default function Page() {
             <PricingTable />
             <MusicFooter />
             <MusicNav />
-        </RoleProvider>
+        </IntakeProvider>
     );
 }
