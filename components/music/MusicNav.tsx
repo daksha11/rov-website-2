@@ -3,7 +3,11 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Mail, Instagram, X } from "lucide-react";
-import { BOOKING_URL, CONTACT_EMAIL } from "@/data/soundPricing";
+// "book" points at the paid Studio Session, the thing people actually book.
+// The generic 15-minute BOOKING_URL is shared with the studios side and isn't
+// attached to anything we sell here.
+import { CAL_LINKS, CONTACT_EMAIL } from "@/data/soundPricing";
+import CalBookButton from "@/components/sound/CalBookButton";
 
 // Minimal floating dock for rovmusic.com. Deliberately trimmed vs the studios
 // NavigationDock: no CTRL A, no B2B services menu, no account login. Structured
@@ -44,14 +48,12 @@ export function MusicNav({ className }: { className?: string }) {
           </Link>
 
           <span className="hidden sm:inline text-white/30 text-[10px] md:text-base mx-0.5">|</span>
-          <a
-            href={BOOKING_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+          <CalBookButton
+            calLink={CAL_LINKS.hourlySession}
             className="px-2 min-h-[44px] flex items-center text-white/80 hover:text-white transition-colors text-[12px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
           >
             book
-          </a>
+          </CalBookButton>
 
           <span className="hidden sm:inline text-white/30 text-[10px] md:text-base mx-0.5">|</span>
           <button

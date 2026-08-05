@@ -5,9 +5,10 @@ import MusicFooter from "@/components/music/MusicFooter";
 import { RoleProvider } from "@/components/music/RoleContext";
 import RoleGate from "@/components/music/RoleGate";
 import RoleChip from "@/components/music/RoleChip";
-import RoleOnly from "@/components/music/RoleOnly";
 import SoundHero from "@/components/sound/SoundHero";
-import Gallery from "@/components/sections/Gallery";
+// Gallery and VideoShowcaseSection now render inside CareerGaps, where they
+// serve as the evidence for the full-service claim instead of sitting in the
+// back half as decoration.
 import TestimonialsSection from "@/components/common/TestimonialsSection";
 import { soundTestimonials } from "@/data/testimonials";
 import { soundFaqItems } from "@/data/faq";
@@ -57,6 +58,17 @@ const IntroOffer = dynamic(() => import("@/components/sound/IntroOffer"));
 
 const FoundationOffer = dynamic(() => import("@/components/sound/FoundationOffer"));
 
+// Holds the cover gallery and video showcase, so it carries their weight.
+const CareerGaps = dynamic(() => import("@/components/sound/CareerGaps"), {
+    loading: () => (
+        <div className="bg-black min-h-[40vh] flex items-center justify-center">
+            <div className="text-white/60 text-sm">Loading...</div>
+        </div>
+    ),
+});
+
+const ClosingCTA = dynamic(() => import("@/components/sound/ClosingCTA"));
+
 const StudioSection = dynamic(() => import("@/components/sound/StudioSection"), {
     loading: () => (
         <div className="bg-black min-h-[40vh] flex items-center justify-center">
@@ -67,14 +79,6 @@ const StudioSection = dynamic(() => import("@/components/sound/StudioSection"), 
 
 const QuoteEstimator = dynamic(() => import("@/components/sound/QuoteEstimator"));
 // const StudioSetupSection = dynamic(() => import("@/components/sound/StudioSetup"));
-
-const VideoShowcaseSection = dynamic(() => import("@/components/sound/VideoShowcaseSection"), {
-    loading: () => (
-        <div className="bg-black min-h-[40vh] flex items-center justify-center">
-            <div className="text-white/60 text-sm">Loading...</div>
-        </div>
-    ),
-});
 
 const DDKFeatureTestimonial = dynamic(() => import("@/components/sound/DDKFeatureTestimonial"), {
     loading: () => (
@@ -145,67 +149,68 @@ export default function Page() {
                 baseUrl={MUSIC_URL}
             />
 
+            {/* ════ ACT 1 · PROOF ════════════════════════════════════
+                Nothing is asked for here. Establish that the sound is real
+                before any price is on screen. */}
+
             {/* 01 — Hero */}
             <SoundHero />
 
-            {/* 02 — Music Player */}
+            {/* 02 — Before/after player: proof of the sound */}
             <div className="bg-black">
                 <MusicPlayer />
             </div>
 
-            {/* 02.5 — Two-path fork (record vs send stems) */}
-            <PathFork />
-
-            {/* 02.6 — Artist Readiness Audit. Sits before pricing on purpose:
-                someone who just scored 3/10 reads the $50 offer differently
-                than someone who arrived cold. */}
-            <ReadinessAudit />
-
-            {/* 02.7 — Managers get the artist-development proof early. It's the
-                only asset that shows we can run a career, not just a song. */}
-            <RoleOnly roles={["manager"]} fallbackVisible={false}>
-                <SamSuenFeature />
-            </RoleOnly>
-
-            {/* 03 — $50 Intro Offer */}
-            <IntroOffer />
-
-            {/* 04 — Studio Recording + Calculator */}
-            <StudioSection />
-
-            {/* 05 — Quote questionnaire + personalized savings (replaces tiers, add-ons, and the standalone calculator) */}
-            <QuoteEstimator />
-
-            {/* 05.5 — Foundation / Release Cycle / Development. The rung between
-                a $149 finished single and full artist development, and where
-                the readiness audit sends people. */}
-            <FoundationOffer />
-
-            {/* 08 — Studio Setup (hidden) */}
-            {/* <StudioSetupSection /> */}
-
-            {/* 08 — Artwork Gallery */}
-            <div className="bg-black">
-                <Gallery />
-            </div>
-
-            {/* 09 — Video Showcase */}
-            <VideoShowcaseSection />
-
-            {/* 10 — DDK Featured Testimonial */}
+            {/* 03 — DDK: proof of reputation. Paired with the player on
+                purpose, they're the strongest thirty seconds on the site. */}
             <DDKFeatureTestimonial />
 
-            {/* 10.1 — Testimonials */}
+            {/* ════ ACT 2 · THE SONG ═════════════════════════════════
+                $50 to $500. Everything here is self-serve: Stripe for what
+                you send, Cal-with-payment for what you book. No forms. */}
+
+            {/* 04 — Two-path fork (record vs send stems) */}
+            <PathFork />
+
+            {/* 05 — $50 Intro Offer                         [#mixing] */}
+            <IntroOffer />
+
+            {/* 06 — Studio rates, the room, value props     [#record] */}
+            <StudioSection />
+
+            {/* 07 — Quote questionnaire + savings           [#quote]  */}
+            <QuoteEstimator />
+
+            {/* ════ ACT 3 · THE CAREER ═══════════════════════════════
+                Consultative. Breadth first, then their specific gap, then
+                the package that closes it, then the proof it works. */}
+
+            {/* 08 — Whatever's missing: the full-service claim, shown as
+                work rather than a price menu. Holds the cover gallery and
+                the video showcase, which had no job in the old tail. */}
+            <CareerGaps />
+
+            {/* 09 — Artist Readiness Audit                  [#audit]  */}
+            <ReadinessAudit />
+
+            {/* 10 — Foundation / Release Cycle / Development [#foundation] */}
+            <FoundationOffer />
+
+            {/* 11 — Sam Suen: this is Act 3's proof, not general proof.
+                Brand, site, sound, and stage for one artist is a Foundation
+                and Development case study, so it sits under them. */}
+            <SamSuenFeature />
+
+            {/* ════ ACT 4 · CLOSE ════════════════════════════════════ */}
+
+            {/* 12 — Testimonials (speed and process, i.e. objections) */}
             <TestimonialsSection testimonials={soundTestimonials} variant="sound" />
 
-            {/* 10.3 — Sam Suen: shown here for everyone except managers, who
-                already saw it above. */}
-            <RoleOnly roles={["artist", "other"]}>
-                <SamSuenFeature />
-            </RoleOnly>
-
-            {/* 11 — FAQ */}
+            {/* 13 — FAQ */}
             <FAQSection items={soundFaqItems} />
+
+            {/* 14 — The ending the page never had */}
+            <ClosingCTA />
 
             {/* Music-branded footer + nav (rovmusic shell) */}
             <MusicFooter />

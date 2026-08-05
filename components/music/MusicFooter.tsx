@@ -1,7 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Instagram } from "lucide-react";
-import { BOOKING_URL, CONTACT_EMAIL } from "@/data/soundPricing";
+// Same reasoning as MusicNav: "start a session" is the paid Studio Session,
+// not the unattached generic 15-minute call.
+import { CAL_LINKS, CONTACT_EMAIL } from "@/data/soundPricing";
+import CalBookButton from "@/components/sound/CalBookButton";
 
 // Music-branded footer for rovmusic.com. Mirrors the studios footer's visual
 // language (black, Norwige headings, ROV logo) but drops the B2B service links,
@@ -94,15 +97,13 @@ export default function MusicFooter() {
           >
             BOOK
           </h3>
-          <a
-            href={BOOKING_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+          <CalBookButton
+            calLink={CAL_LINKS.hourlySession}
             className="inline-flex items-center justify-center w-fit px-6 py-3 rounded-full text-sm uppercase tracking-wide transition-colors hover:bg-white/5"
             style={{ fontFamily: "'Neue Montreal', sans-serif", border: "1px solid rgba(234,154,97,0.6)", letterSpacing: "0.08em" }}
           >
             Start a session
-          </a>
+          </CalBookButton>
         </div>
       </div>
 

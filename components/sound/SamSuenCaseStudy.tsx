@@ -4,7 +4,10 @@ import { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
-import { BOOKING_URL } from "@/data/soundPricing";
+// This page sells artist development, which is consultative, so its CTA is the
+// quote call rather than the generic 15-minute booking.
+import { CONSULT_BOOKING_URL } from "@/data/soundPricing";
+import CalBookButton from "@/components/sound/CalBookButton";
 
 const HEADING = "Norwige, sans-serif";
 const MONO = "'DM Mono', monospace";
@@ -895,10 +898,8 @@ export default function SamSuenCaseStudy() {
               Every catalog starts with one song.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
-              <a
-                href={BOOKING_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+              <CalBookButton
+                calLink={CONSULT_BOOKING_URL}
                 className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full transition-opacity hover:opacity-90"
                 style={{ background: BROWN_GRADIENT, boxShadow: BROWN_SHADOW }}
               >
@@ -911,7 +912,7 @@ export default function SamSuenCaseStudy() {
                 <span aria-hidden style={{ color: "#FFF4E3" }}>
                   →
                 </span>
-              </a>
+              </CalBookButton>
               <Link
                 href="/sound"
                 className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full transition-colors hover:bg-[rgba(234,154,97,0.12)]"

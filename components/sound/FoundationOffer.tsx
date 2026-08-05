@@ -148,8 +148,12 @@ export default function FoundationOffer() {
               ))}
             </ul>
 
-            <a
-              href={checkoutHref("foundation")}
+            {/* Intake, not checkout. A Foundation build needs their exact name
+                spelling, catalog, domain, and photos before anything starts, so
+                a buy button would only collect money we can't act on yet. It
+                was also silently degrading to a mailto with no Stripe link set. */}
+            <CalBookButton
+              calLink={CONSULT_BOOKING_URL}
               className="cta-shine block w-full text-center text-white font-semibold rounded-full transition-transform duration-300 hover:scale-[1.03]"
               style={{
                 fontFamily: HEADING,
@@ -160,7 +164,14 @@ export default function FoundationOffer() {
                 boxShadow: GRADIENT_SHADOW,
               }}
             >
-              Start Foundation &rarr;
+              Start with a call &rarr;
+            </CalBookButton>
+            <a
+              href={checkoutHref("foundation")}
+              className="mt-3 block text-center text-white/40 hover:text-white/70 text-xs transition-colors"
+              style={{ fontFamily: BODY }}
+            >
+              Or send us your details
             </a>
           </motion.div>
 

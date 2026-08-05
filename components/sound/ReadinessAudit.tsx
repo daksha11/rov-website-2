@@ -302,6 +302,14 @@ export default function ReadinessAudit() {
                           >
                             {m.consequence}
                           </p>
+                          {/* Every gap answers itself. Without this the audit
+                              is a diagnosis with no fix attached. */}
+                          <p
+                            className="mt-2.5 pl-3 border-l text-[#EA9A61]/85 text-xs leading-relaxed"
+                            style={{ fontFamily: BODY, borderColor: "rgba(234,154,97,0.28)" }}
+                          >
+                            {m.deliverable}
+                          </p>
                         </li>
                       ))}
                     </ul>

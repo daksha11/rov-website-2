@@ -66,11 +66,13 @@ export default function RoleGate() {
     setRole(next);
     setOpen(false);
     setForced(false);
-    // Collaborators have nothing to audit, so only artists and managers get
-    // walked down to it.
+    // Drop them at the fork, not the audit. The fork is the real sorting
+    // mechanism and it opens the song funnel, which is the revenue path;
+    // the audit sits deeper in Act 3 and the fork links down to it.
+    // Collaborators aren't being sorted, so they just stay in the hero.
     if (next === "other") return;
     window.setTimeout(() => {
-      document.getElementById("audit")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      document.getElementById("start")?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 380);
   };
 

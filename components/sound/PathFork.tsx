@@ -73,7 +73,8 @@ export default function PathFork() {
   return (
     <section
       ref={ref}
-      className="relative bg-black"
+      id="start"
+      className="scroll-mt-24 relative bg-black"
       style={{ padding: "clamp(48px, 8vw, 90px) clamp(16px, 5vw, 60px)" }}
     >
       <div className="max-w-5xl mx-auto">
@@ -138,6 +139,26 @@ export default function PathFork() {
             );
           })}
         </div>
+
+        {/* Third door, deliberately quiet. The readiness audit lives further
+            down in Act 3 so it doesn't interrupt the song funnel, which means
+            it needs an entry point up here for anyone who isn't sure yet. */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ ...spring, delay: 0.45 }}
+          className="text-center text-white/35 text-sm mt-7"
+          style={{ fontFamily: BODY }}
+        >
+          {isManager ? "Not sure where the roster stands? " : "Not sure where you're at? "}
+          <button
+            type="button"
+            onClick={() => goTo("audit")}
+            className="text-[#EA9A61]/85 hover:text-[#EA9A61] underline underline-offset-4 decoration-[#EA9A61]/30 hover:decoration-[#EA9A61]/70 transition-colors cursor-pointer"
+          >
+            Take the 40-second audit
+          </button>
+        </motion.p>
       </div>
     </section>
   );

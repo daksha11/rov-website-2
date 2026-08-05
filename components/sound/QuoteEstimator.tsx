@@ -2,7 +2,7 @@
 
 import { useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView } from "framer-motion";
-import { CONSULT_BOOKING_URL } from "@/data/soundPricing";
+import { CONSULT_BOOKING_URL, checkout, checkoutHref, type CheckoutKey } from "@/data/soundPricing";
 import CalBookButton from "@/components/sound/CalBookButton";
 
 const HEADING = "Norwige, sans-serif";
@@ -83,6 +83,31 @@ function computeEstimate(a: Answers) {
   return { low, high, ongoing, isMix, songsMid, perSongMid };
 }
 
+// The estimator used to quote a number and then hand everyone a phone call,
+// including people who'd just told us they drop music regularly. That's the
+// subscription conversation, and the plans existed in data but had no surface
+// anywhere on the site. This maps an answered questionnaire onto the thing
+// they can actually buy.
+//
+// Recording ("record") stays consultative: the room is booked, not subscribed.
+function recommendedPlan(a: Answers, ongoing: boolean): CheckoutKey | null {
+  if (a.need === "record") return null;
+  const s = SONGS.find((x) => x.key === a.songs);
+  if (!s) return null;
+
+  if (!ongoing) return "oneoff";
+  if (s.high <= 5) return "sub_starter";
+  if (s.high <= 12) return "sub_standard";
+  return "sub_pro";
+}
+
+const PLAN_BLURB: Record<string, string> = {
+  oneoff: "One song, mixed and mastered, 72-hour turnaround with 2 revisions. No commitment.",
+  sub_starter: "5 songs a month, 48-hour turnaround, 2 revisions each. Cancel any time.",
+  sub_standard: "12 songs a month, 48-hour turnaround. The rate drops because the cadence is steady.",
+  sub_pro: "18 songs a month with 24-hour priority. For artists releasing on a real schedule.",
+};
+
 export default function QuoteEstimator() {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -99,6 +124,11 @@ export default function QuoteEstimator() {
   const [payNow, setPayNow] = useState(150);
 
   const est = useMemo(() => computeEstimate(answers), [answers]);
+
+  const plan = useMemo(
+    () => (est ? recommendedPlan(answers, est.ongoing) : null),
+    [answers, est]
+  );
 
   const savings = useMemo(() => {
     if (!est) return null;
@@ -149,7 +179,14 @@ export default function QuoteEstimator() {
     return { need, songs, extras, cadence, estimate };
   }, [answers, est]);
 
-  const STEP_TITLES = ["What do you need?", "How many songs?", "Any extras?", "How often?"];
+  // Step 3 is worded as part of the release rather than an add-on menu, to
+  // match how the rest of the site now talks about this work.
+  const STEP_TITLES = [
+    "What do you need?",
+    "How many songs?",
+    "Anything else for the release?",
+    "How often?",
+  ];
 
   return (
     <section
@@ -242,7 +279,7 @@ export default function QuoteEstimator() {
 
             {/* ── Step 2: Extras ── */}
             {step === 2 && (
-              <StepShell key="s2" title={STEP_TITLES[2]} subtitle="Pick any, or skip." onBack={() => setStep(1)}>
+              <StepShell key="s2" title={STEP_TITLES[2]} subtitle="Pick what you don't have yet, or skip." onBack={() => setStep(1)}>
                 <div className="space-y-3">
                   {EXTRAS.map((e) => (
                     <OptionRow
@@ -379,6 +416,56 @@ export default function QuoteEstimator() {
                         We&apos;d match that rate, with the master and 2 revisions included instead of billed separately.
                       </p>
                     )}
+                  </div>
+                )}
+
+                {/* The plan they just described, made buyable. Without this the
+                    estimator opens a loop it can't close: it quotes the
+                    subscription rate, then offers only a phone call. */}
+                {plan && (
+                  <div className="rounded-xl border border-[#EA9A61]/25 bg-[#EA9A61]/[0.05] p-4 md:p-5 mb-6">
+                    <span
+                      className="block text-[10px] uppercase tracking-[0.25em] text-[#EA9A61] mb-2"
+                      style={{ fontFamily: BODY }}
+                    >
+                      Sounds like
+                    </span>
+                    <div className="flex items-baseline justify-between gap-3 mb-2">
+                      <span
+                        className="text-white text-lg md:text-xl font-bold italic"
+                        style={{ fontFamily: HEADING }}
+                      >
+                        {checkout[plan].label.replace(/\s*\(.*\)$/, "")}
+                      </span>
+                      <span
+                        className="shrink-0 text-white text-xl md:text-2xl font-bold italic tabular-nums"
+                        style={{ fontFamily: HEADING }}
+                      >
+                        {money(checkout[plan].amount)}
+                        <span className="text-white/35 text-sm font-normal not-italic">
+                          /{checkout[plan].unit}
+                        </span>
+                      </span>
+                    </div>
+                    <p
+                      className="text-white/50 text-xs leading-relaxed mb-4"
+                      style={{ fontFamily: BODY }}
+                    >
+                      {PLAN_BLURB[plan]}
+                    </p>
+                    <a
+                      href={checkoutHref(plan)}
+                      className="block w-full text-center text-white font-semibold rounded-full border border-[#EA9A61]/40 hover:bg-[#EA9A61]/[0.12] transition-all duration-300"
+                      style={{
+                        fontFamily: HEADING,
+                        padding: "12px",
+                        fontSize: "13px",
+                        letterSpacing: "0.05em",
+                        background: "rgba(234,154,97,0.06)",
+                      }}
+                    >
+                      {checkout[plan].unit === "mo" ? "Start this plan" : "Send this song"} &rarr;
+                    </a>
                   </div>
                 )}
 
