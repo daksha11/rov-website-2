@@ -131,7 +131,9 @@ export const READINESS_ITEMS: ReadinessItem[] = [
     consequence:
       "Six singles that look like six unrelated images reads as somebody posting songs. Six that clearly belong together reads as somebody building a catalog. Same music, different perception, and perception is most of what gets a curator to take a second look.",
     deliverable: "A one page art spec plus a template file. Cover one is a design job, covers two through ten are an hour.",
-    piecemeal: 75,
+    // The system plus first cover, priced as a unit. Buying covers one at a
+    // time is the expensive way and it's what produces a scattered page.
+    piecemeal: 150,
   },
   {
     key: "epk",
@@ -201,8 +203,11 @@ export function tierFor(haveCount: number): Tier {
 // Priced piece by piece vs. one Foundation build. Only items with a real
 // `piecemeal` number are summed, hence "at least" in the copy.
 //
-// NEEDS ANDI: confirm before this goes live.
-export const FOUNDATION_PRICE = 950;
+// Set to $500 per Andi, Aug 2026. Deliberately an aggressive land-grab price:
+// at ~30 songs/month capacity, mixing tops out near $1,500/mo, so three
+// Foundation sales equal the entire mixing business for a fraction of the
+// hours. Worth revisiting upward once the first handful sell.
+export const FOUNDATION_PRICE = 500;
 
 export function piecemealTotal(missingKeys: string[]): number {
   return READINESS_ITEMS.filter((i) => missingKeys.includes(i.key)).reduce(

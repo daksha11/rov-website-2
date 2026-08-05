@@ -102,7 +102,7 @@ export default function IntroOffer() {
             className="text-white text-xl md:text-2xl lg:text-3xl font-bold italic mb-6"
             style={{ fontFamily: HEADING }}
           >
-            Mix &amp; master. First 3 songs. No commitment.
+            Your first mix &amp; master. No commitment.
           </p>
 
           {/* Feature bullets */}
@@ -124,7 +124,7 @@ export default function IntroOffer() {
           </ul>
 
           <a
-            href={checkoutHref("intro")}
+            href={checkoutHref("mix_first")}
             className="cta-shine inline-flex items-center gap-2 text-white font-semibold transition-all duration-300 hover:scale-105"
             style={{
               fontFamily: HEADING,
@@ -143,7 +143,8 @@ export default function IntroOffer() {
             className="text-white/40 text-[clamp(0.7rem,1.5vw,0.75rem)] md:text-xs mt-6 leading-relaxed max-w-md mx-auto lg:mx-0"
             style={{ fontFamily: BODY }}
           >
-            First 3 songs only, per artist. Same finished sound as every paid record we release.
+            One per artist. Same finished sound as every paid record we release. After that
+            it&apos;s $65 a song, or as low as $40 in a pack.
           </p>
         </motion.div>
       </div>

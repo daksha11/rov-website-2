@@ -24,18 +24,18 @@ const MUSIC_URL = "https://www.rovmusic.com";
 export const metadata: Metadata = {
     title: { absolute: "Mixing & Mastering in Atlanta | Range of View Music" },
     description:
-        "Professional sound engineering, mixing, and mastering by Range of View Music. Mix and master starting at $50/song. 48-hour turnaround. Atlanta.",
+        "Professional sound engineering, mixing, and mastering by Range of View Music. Mix and master from $40 a song, first one $50. Atlanta studio time from $50/hr with mixing included. 48-hour turnaround.",
     alternates: { canonical: MUSIC_URL },
     openGraph: {
         title: "Mixing & Mastering in Atlanta | Range of View Music",
-        description: "Professional mixing, mastering, and sound engineering. Start at $50/song.",
+        description: "Professional mixing, mastering, and sound engineering. From $40 a song, first one $50.",
         url: MUSIC_URL,
         images: [{ url: `${MUSIC_URL}/og/og-sound.webp`, width: 1200, height: 630, alt: "Range of View Music studio" }],
     },
     twitter: {
         card: "summary_large_image",
         title: "Mixing & Mastering in Atlanta | Range of View Music",
-        description: "Professional mixing, mastering, and sound engineering. Start at $50/song.",
+        description: "Professional mixing, mastering, and sound engineering. From $40 a song, first one $50.",
         images: [`${MUSIC_URL}/og/og-sound.webp`],
     },
 };
@@ -113,11 +113,11 @@ export default function Page() {
         <RoleProvider>
             <ServiceSchema
                 name="Sound Engineering & Music Production"
-                description="Professional sound engineering, mixing, and mastering services. Mix and master starting at $50/song with 48-hour turnaround."
+                description="Professional sound engineering, mixing, and mastering services. Mix and master from $40 a song with 48-hour turnaround. First mix is $50."
                 serviceType="Sound Engineering"
                 url=""
                 image="/og/og-sound.webp"
-                offerDescription="First 3 songs at $50/song, mix and master included"
+                offerDescription="First mix at $50, then $65 a song or as low as $40 in a prepaid pack. Mix and master included."
                 baseUrl={MUSIC_URL}
                 providerName="Range of View Music"
                 providerUrl={MUSIC_URL}

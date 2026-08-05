@@ -21,47 +21,88 @@ export const CONSULT_BOOKING_URL = "rov-studios-imhphw/quote-call";
 export const CAL_LINKS = {
   /** "Studio Session" event — 1 hour, $60. */
   hourlySession: "rov-studios-imhphw/studio-session",
-  /** "Finished Single" event — record, mix & master, $149. */
+  /**
+   * Block session event. Was the $149 "Finished Single", retired once hourly
+   * went to $65 with mix and master included, which made a 2-hour block ($120)
+   * cheaper than the bundle. Rename this Cal event to "4-Hour Block, $200".
+   */
   finishedSingle: "rov-studios-imhphw/finished-single",
 };
 
 export type CheckoutKey =
-  | "intro"
-  | "oneoff"
-  | "foundation"
-  | "sub_starter"
-  | "sub_standard"
-  | "sub_pro"
-  | "addon_cover"
-  | "addon_visualizer"
-  | "addon_merch"
-  | "creative_pack";
+  // Mixing: stems sent to us. Prepaid packs, no spend-based formula.
+  | "mix_first"
+  | "mix_single"
+  | "mix_3"
+  | "mix_6"
+  | "mix_12"
+  // Recording: in the room. Mix and master included at every rate.
+  | "rec_hour"
+  | "rec_2hr"
+  | "rec_4hr"
+  // Creative
+  | "cover_system"
+  | "cover_extra"
+  | "shorts"
+  // The backend build
+  | "foundation";
 
 interface CheckoutItem {
   /** Human label used in the fallback email subject. */
   label: string;
   /** Price in USD (for reference / display). */
   amount: number;
-  /** "song" | "mo" — billing unit. */
-  unit: "song" | "mo";
+  /** Billing unit, drives the "/song", "/hr" suffix in the UI. */
+  unit: "song" | "hr" | "mo" | "flat";
+  /** How many songs/hours the item covers. Used for per-unit math. */
+  qty?: number;
   /** Stripe Payment Link. Empty string = not live yet, falls back to email. */
   payUrl: string;
 }
 
+// ─────────────────────────────────────────────────────────────────
+// Rate card. Packs replaced the old spend-based discount ("10% cheaper
+// every $50 spent"), which had two problems: it was uncomputable for a
+// customer, and its 6+ floor made 5 songs cost more than 6 by accident.
+//
+// Packs are deliberately monotonic per-song ($65 → $55 → $45 → $40). The
+// remaining inversions (5 singles cost more than the 6-pack, 11 more than
+// the 12-pack) are intentional upsell nudges and are shown as such.
+//
+// A membership tier is planned but deliberately NOT here yet. Pricing one
+// before packs reveal real per-artist volume would be a guess.
+// ─────────────────────────────────────────────────────────────────
 export const checkout: Record<CheckoutKey, CheckoutItem> = {
-  intro: { label: "$50 Intro (first 3 songs)", amount: 50, unit: "song", payUrl: "https://buy.stripe.com/14A6oG1Fg6Uv503aawfMA01" },
-  oneoff: { label: "One-off mix & master", amount: 100, unit: "song", payUrl: "https://buy.stripe.com/6oUdR8fw6emX1NR3M8fMA02" },
-  // Foundation is the artist-backend build (see data/artistReadiness.ts).
-  // Keep `amount` in sync with FOUNDATION_PRICE there.
-  foundation: { label: "Foundation (artist backend build)", amount: 950, unit: "song", payUrl: "" },
-  sub_starter: { label: "Starter subscription (5 songs/mo)", amount: 145, unit: "mo", payUrl: "" },
-  sub_standard: { label: "Standard subscription (12 songs/mo)", amount: 300, unit: "mo", payUrl: "" },
-  sub_pro: { label: "Pro subscription (18 songs/mo, 24hr)", amount: 500, unit: "mo", payUrl: "" },
-  addon_cover: { label: "Cover Art", amount: 75, unit: "song", payUrl: "" },
-  addon_visualizer: { label: "Lyric Visualizer", amount: 60, unit: "song", payUrl: "" },
-  addon_merch: { label: "Merch Design", amount: 95, unit: "song", payUrl: "" },
-  creative_pack: { label: "Creative Pack (cover + visualizer + merch)", amount: 125, unit: "mo", payUrl: "" },
+  // ── Mixing ──
+  mix_first: { label: "First mix & master ($50 intro)", amount: 50, unit: "song", qty: 1, payUrl: "https://buy.stripe.com/14A6oG1Fg6Uv503aawfMA01" },
+  mix_single: { label: "Mix & master, single song", amount: 65, unit: "song", qty: 1, payUrl: "" },
+  mix_3: { label: "Mix & master, 3-pack", amount: 165, unit: "flat", qty: 3, payUrl: "" },
+  mix_6: { label: "Mix & master, 6-pack", amount: 270, unit: "flat", qty: 6, payUrl: "" },
+  mix_12: { label: "Mix & master, 12-pack", amount: 480, unit: "flat", qty: 12, payUrl: "" },
+
+  // ── Recording (mix & master included) ──
+  rec_hour: { label: "Studio session, hourly", amount: 65, unit: "hr", qty: 1, payUrl: "" },
+  rec_2hr: { label: "Studio session, 2-hour block", amount: 120, unit: "flat", qty: 2, payUrl: "" },
+  rec_4hr: { label: "Studio session, 4-hour block", amount: 200, unit: "flat", qty: 4, payUrl: "" },
+
+  // ── Creative ──
+  // Sold as a system, not a unit: cover one is a design job, covers two
+  // through ten are an hour each once the rule exists.
+  cover_system: { label: "Cover art system + first cover", amount: 150, unit: "flat", qty: 1, payUrl: "" },
+  cover_extra: { label: "Additional cover (system in place)", amount: 40, unit: "song", qty: 1, payUrl: "" },
+  shorts: { label: "20 shorts + 5 lyric videos", amount: 750, unit: "flat", payUrl: "" },
+
+  // ── The backend build ──
+  // Keep `amount` in sync with FOUNDATION_PRICE in data/artistReadiness.ts.
+  foundation: { label: "Foundation (artist backend build)", amount: 500, unit: "flat", payUrl: "" },
 };
+
+/** Per-song or per-hour rate for a pack, used for the "$X a song" line. */
+export function unitRate(key: CheckoutKey): number | null {
+  const item = checkout[key];
+  if (!item?.qty) return null;
+  return Math.round(item.amount / item.qty);
+}
 
 /**
  * Returns the href for a checkout CTA. If a Stripe Payment Link is set for the

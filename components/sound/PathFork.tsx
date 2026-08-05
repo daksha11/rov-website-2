@@ -19,8 +19,8 @@ const artistPaths = [
     kicker: "Come to the studio",
     title: "Record with us",
     body: "Book the room and an engineer. Track your song, walk out mixed and mastered the same week. One rate covers all of it.",
-    price: "From $60/hr",
-    sub: "Finished single from $149",
+    price: "From $50/hr",
+    sub: "Mix & master included",
     cta: "See recording rates",
   },
   {
@@ -28,9 +28,9 @@ const artistPaths = [
     icon: Waves,
     kicker: "Already recorded",
     title: "Send your stems",
-    body: "Export your stems and email them over. Full mix and master back in 48 hours. First 3 songs are $50 each, no commitment.",
-    price: "First 3 at $50",
-    sub: "Then one-off or subscribe",
+    body: "Export your stems and email them over. Full mix and master back in 48 hours. Your first one is $50, so you hear the work before committing to anything.",
+    price: "First mix $50",
+    sub: "Then $65, or $40 in a pack",
     cta: "See mixing pricing",
   },
 ];

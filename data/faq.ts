@@ -81,7 +81,7 @@ export const aiAutomationFaqItems: FaqItem[] = [
 export const soundFaqItems: FaqItem[] = [
     {
         question: "How much do you charge for mixing and mastering?",
-        answer: "Your first 3 songs are $50 each, full mix and master included, no commitment. After that you can go one-off at $100 a song, or subscribe from as low as $25 a song ($145/mo for 5 songs up to $500/mo for 18 with 24-hour priority). Mastering is always included, and every song comes with 2 revisions. Full trackouts (beat stems plus vocals) are quoted based on the number of stems, send us your project details for an exact number."
+        answer: "Your first mix is $50, so you can hear the work before committing to anything. After that a single song is $65, or you can prepay a pack and bring the rate down: 3 songs for $165 ($55 each), 6 for $270 ($45 each), or 12 for $480 ($40 each). Packs never expire. Mastering is always included and every song comes with 2 revisions. Full trackouts (beat stems plus vocals) are quoted on the number of stems, so send us your project details for an exact number."
     },
     {
         question: "How long does it take to get my song mixed and mastered?",
@@ -93,7 +93,7 @@ export const soundFaqItems: FaqItem[] = [
     },
     {
         question: "Do you offer discounts for multiple songs or full projects?",
-        answer: "Yes. The more consistently you drop, the less you pay. Subscriptions bring mixing and mastering down to $25 to $29 a song ($145/mo for 5, $300 for 12, $500 for 18 with 24-hour priority). Bringing a full EP or project at once? Tell us the track count and timeline and we'll lock in a package rate."
+        answer: "Yes, and you don't have to ask for it. Prepaid packs drop the rate automatically: $55 a song at 3, $45 at 6, and $40 at 12. There's no formula to track and nothing to negotiate, the price is the price. One thing worth knowing: five singles cost more than the 6-pack, so if you're near a pack size, take the pack. Bringing a full EP or project at once? Tell us the track count and timeline and we'll quote it."
     },
     {
         question: "What makes your mixes stand out on streaming platforms?",
@@ -101,7 +101,7 @@ export const soundFaqItems: FaqItem[] = [
     },
     {
         question: "Can you help with cover art, rollouts, and visuals for my release?",
-        answer: "Yes, this is where we really go full service. Beyond mixing and mastering, we can create cover art, website pages or microsites, merch designs, tracklists, and full rollout assets. If you need music videos or visual content to support the release, we can handle that too. We're set up to take you from recording to release, so you don't have to piece together a different person for every part of your rollout."
+        answer: "Yes, this is where we really go full service. Cover art is sold as a system rather than one image at a time: $150 for the system plus your first cover, then $40 for every cover after, which is what makes six singles look like they belong together instead of six unrelated images. Beyond that we do content runs (20 shorts plus 5 lyric videos for $750), websites, EPKs, merch, tracklists, and full rollout assets. We're set up to take you from recording to release, so you don't have to piece together a different person for every part of your rollout."
     }
 ];
 

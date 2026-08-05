@@ -67,7 +67,7 @@ export default function ClosingCTA() {
           className="flex flex-col sm:flex-row items-center justify-center gap-3"
         >
           <a
-            href={checkoutHref("intro")}
+            href={checkoutHref("mix_first")}
             className="cta-shine inline-flex items-center justify-center gap-2 text-white font-semibold transition-transform duration-300 hover:scale-105 w-full sm:w-auto"
             style={{
               fontFamily: HEADING,

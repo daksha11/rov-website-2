@@ -294,7 +294,7 @@ function RecordingRates() {
             Studio Time
           </span>
           <div className="flex items-baseline gap-1 mb-1">
-            <span className="text-white text-4xl md:text-5xl font-bold italic" style={{ fontFamily: HEADING_FONT }}>$60</span>
+            <span className="text-white text-4xl md:text-5xl font-bold italic" style={{ fontFamily: HEADING_FONT }}>$65</span>
             <span className="text-white/30 text-sm" style={{ fontFamily: BODY_FONT }}>/hr</span>
           </div>
           <span className="text-[#EA9A61] text-xs uppercase tracking-[0.15em] mb-6" style={{ fontFamily: BODY_FONT }}>
@@ -335,17 +335,17 @@ function RecordingRates() {
             Best Deal
           </span>
           <span className="text-[clamp(0.7rem,1.5vw,0.75rem)] uppercase tracking-[0.2em] text-white/40 mb-4" style={{ fontFamily: BODY_FONT }}>
-            Finished Single
+            4-Hour Block
           </span>
           <div className="flex items-baseline gap-2 mb-1">
-            <span className="text-white text-4xl md:text-5xl font-bold italic" style={{ fontFamily: HEADING_FONT }}>$149</span>
-            <span className="text-white/30 text-sm line-through" style={{ fontFamily: BODY_FONT }}>$300+</span>
+            <span className="text-white text-4xl md:text-5xl font-bold italic" style={{ fontFamily: HEADING_FONT }}>$200</span>
+            <span className="text-white/30 text-sm line-through" style={{ fontFamily: BODY_FONT }}>$260</span>
           </div>
           <span className="text-[#EA9A61] text-xs uppercase tracking-[0.15em] mb-6" style={{ fontFamily: BODY_FONT }}>
-            Record, mix &amp; master, done
+            $50/hr, mix &amp; master included
           </span>
           <ul className="flex-1 space-y-2 mb-6">
-            {["Up to 2 hours of tracking", "Full mix and master included", "48-hour turnaround", "One finished, release-ready song"].map((f) => (
+            {["Four hours in the room, your lowest rate", "Full mix and master on everything tracked", "48-hour turnaround", "Usually two to three finished songs"].map((f) => (
               <li key={f} className="flex items-start gap-2 text-white/50 text-sm" style={{ fontFamily: BODY_FONT }}>
                 <span className="text-[#EA9A61] mt-0.5 shrink-0">&#10003;</span>
                 {f}
@@ -353,7 +353,7 @@ function RecordingRates() {
             ))}
           </ul>
           <p className="text-white/55 text-xs italic mb-6 leading-relaxed" style={{ fontFamily: BODY_FONT }}>
-            Elsewhere: room time plus a separate <span className="text-white/70 not-italic">$150+</span> mix plus a <span className="text-white/70 not-italic">$75</span> master.
+            Elsewhere, four hours of room time alone runs <span className="text-white/70 not-italic">$300+</span>, then a separate <span className="text-white/70 not-italic">$150+</span> mix and a <span className="text-white/70 not-italic">$75</span> master per song.
           </p>
           <CalBookButton
             calLink={CAL_LINKS.finishedSingle}

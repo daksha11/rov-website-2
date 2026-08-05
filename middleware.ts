@@ -8,7 +8,7 @@ const STUDIOS_HOST = "rovstudios";
 
 // Music-site subpages that live under app/sound/ but get clean top-level
 // URLs on the music host (rovmusic.com/sam-suen ← app/sound/sam-suen).
-const MUSIC_SUBPAGES = ["/sam-suen"];
+const MUSIC_SUBPAGES = ["/sam-suen", "/pricing"];
 
 export async function middleware(request: NextRequest) {
   const host = (request.headers.get("host") || "").toLowerCase();

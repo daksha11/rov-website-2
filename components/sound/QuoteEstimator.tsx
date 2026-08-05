@@ -64,10 +64,13 @@ function computeEstimate(a: Answers) {
   const isMix = a.need === "mix";
   const ongoing = a.cadence === "ongoing";
 
-  // Per-song base. Recording is a finished single ($149, mix+master included).
-  // Mixing: intro $50/song low end one-off, $100 standalone high; ongoing ~$25-29.
-  const baseLow = isMix ? (ongoing ? 25 : 50) : 149;
-  const baseHigh = isMix ? (ongoing ? 29 : 100) : 149;
+  // Per-song base, matching the pack rate card in data/soundPricing.ts.
+  // Mixing: $50 first mix up to $65 single one-off; $40 (12-pack) to $55
+  // (3-pack) when they're releasing on a cadence.
+  // Recording: a finished song is roughly a 2-hour block, $120 at the block
+  // rate up to $130 hourly, mix and master included either way.
+  const baseLow = isMix ? (ongoing ? 40 : 50) : 120;
+  const baseHigh = isMix ? (ongoing ? 55 : 65) : 130;
 
   const selected = EXTRAS.filter((e) => a.extras.has(e.key));
   const extrasLow = selected.reduce((sum, e) => sum + e.plan, 0);
@@ -83,29 +86,29 @@ function computeEstimate(a: Answers) {
   return { low, high, ongoing, isMix, songsMid, perSongMid };
 }
 
-// The estimator used to quote a number and then hand everyone a phone call,
-// including people who'd just told us they drop music regularly. That's the
-// subscription conversation, and the plans existed in data but had no surface
-// anywhere on the site. This maps an answered questionnaire onto the thing
-// they can actually buy.
+// The estimator used to quote a number and then hand everyone a phone call.
+// This maps an answered questionnaire onto the pack they can actually buy.
 //
-// Recording ("record") stays consultative: the room is booked, not subscribed.
-function recommendedPlan(a: Answers, ongoing: boolean): CheckoutKey | null {
+// Recording ("record") stays consultative: the room is booked, not prepaid in
+// packs, so those visitors go to the booking flow instead.
+function recommendedPlan(a: Answers): CheckoutKey | null {
   if (a.need === "record") return null;
   const s = SONGS.find((x) => x.key === a.songs);
   if (!s) return null;
 
-  if (!ongoing) return "oneoff";
-  if (s.high <= 5) return "sub_starter";
-  if (s.high <= 12) return "sub_standard";
-  return "sub_pro";
+  // Match on the top of their range, so someone saying "4 to 6" gets the
+  // 6-pack rather than being under-sold a 3-pack they'd blow through.
+  if (s.high <= 1) return "mix_single";
+  if (s.high <= 3) return "mix_3";
+  if (s.high <= 6) return "mix_6";
+  return "mix_12";
 }
 
 const PLAN_BLURB: Record<string, string> = {
-  oneoff: "One song, mixed and mastered, 72-hour turnaround with 2 revisions. No commitment.",
-  sub_starter: "5 songs a month, 48-hour turnaround, 2 revisions each. Cancel any time.",
-  sub_standard: "12 songs a month, 48-hour turnaround. The rate drops because the cadence is steady.",
-  sub_pro: "18 songs a month with 24-hour priority. For artists releasing on a real schedule.",
+  mix_single: "One song, mixed and mastered, 48-hour turnaround with 2 revisions. First one is $50.",
+  mix_3: "Three songs at $55 each. Prepaid, use them whenever you're ready.",
+  mix_6: "Six songs at $45 each. Buying five? This costs less than five singles.",
+  mix_12: "Twelve songs at $40 each, the lowest per-song rate we do. Prepaid, no expiry.",
 };
 
 export default function QuoteEstimator() {
@@ -125,10 +128,7 @@ export default function QuoteEstimator() {
 
   const est = useMemo(() => computeEstimate(answers), [answers]);
 
-  const plan = useMemo(
-    () => (est ? recommendedPlan(answers, est.ongoing) : null),
-    [answers, est]
-  );
+  const plan = useMemo(() => (est ? recommendedPlan(answers) : null), [answers, est]);
 
   const savings = useMemo(() => {
     if (!est) return null;
@@ -442,9 +442,11 @@ export default function QuoteEstimator() {
                         style={{ fontFamily: HEADING }}
                       >
                         {money(checkout[plan].amount)}
-                        <span className="text-white/35 text-sm font-normal not-italic">
-                          /{checkout[plan].unit}
-                        </span>
+                        {checkout[plan].unit !== "flat" && (
+                          <span className="text-white/35 text-sm font-normal not-italic">
+                            /{checkout[plan].unit}
+                          </span>
+                        )}
                       </span>
                     </div>
                     <p
@@ -464,7 +466,7 @@ export default function QuoteEstimator() {
                         background: "rgba(234,154,97,0.06)",
                       }}
                     >
-                      {checkout[plan].unit === "mo" ? "Start this plan" : "Send this song"} &rarr;
+                      {(checkout[plan].qty ?? 1) > 1 ? "Get this pack" : "Send this song"} &rarr;
                     </a>
                   </div>
                 )}

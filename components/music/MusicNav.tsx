@@ -39,6 +39,14 @@ export function MusicNav({ className }: { className?: string }) {
           </Link>
 
           <span className="hidden sm:inline text-white/30 text-[10px] md:text-base mx-0.5">|</span>
+          <Link
+            href="/sound/pricing"
+            className="px-2 min-h-[44px] flex items-center text-white/80 hover:text-white transition-colors text-[12px] sm:text-[13px] md:text-[17px] uppercase tracking-wide whitespace-nowrap"
+          >
+            pricing
+          </Link>
+
+          <span className="hidden sm:inline text-white/30 text-[10px] md:text-base mx-0.5">|</span>
           {/* Root-relative so it works from /sam-suen too, not just the home page. */}
           <Link
             href="/#audit"

@@ -1,7 +1,7 @@
 "use client";
 
 // Foundation, Release Cycle, Development. The three products from the internal
-// "Artist Backend" doc, and the missing rung between a $149 finished single and
+// "Artist Backend" doc, and the missing rung between a finished song and
 // full artist development.
 //
 // This is where the readiness audit sends people, so it has to answer the
@@ -23,14 +23,21 @@ const GRADIENT_SHADOW =
   "3px 4px 4px 0 rgba(255, 244, 227, 0.15) inset, 0 4.385px 4.385px 0 rgba(0, 0, 0, 0.25)";
 
 const FOUNDATION_INCLUDES = [
-  "Split sheet system, signed the day the song is made",
-  "Metadata master sheet: every code, every exact spelling",
-  "Release hub on your own domain, with email capture",
-  "Cover art system, not one-off covers",
+  "Artist website on your own domain",
+  "Lead capture form and booking form, wired up",
   "EPK, live page plus a PDF you can forward",
+  "Release hub with email capture on every drop",
+  "Metadata master sheet: every code, every exact spelling",
+  "Split sheet system, signed the day the song is made",
   "Tech rider, input list, and stage plot",
   "Session and stem vault, held and backed up",
 ];
+
+// The boundary that keeps this from competing with rovstudios' web work.
+// Essentials is a fast, template-based artist site. Anything custom-designed,
+// multi-page, or transactional is a different job and gets quoted.
+const SCOPE_NOTE =
+  "Essentials covers a clean artist site built on our template, up to five sections, with your domain connected. Custom design, storefronts, or anything multi-page is a bigger build and we'll quote it.";
 
 // What we deliberately don't sell. Saying it plainly is the differentiator.
 const NOT_OURS = [
@@ -173,6 +180,12 @@ export default function FoundationOffer() {
             >
               Or send us your details
             </a>
+            <p
+              className="mt-4 pt-4 border-t border-white/[0.07] text-white/35 text-[11px] leading-relaxed"
+              style={{ fontFamily: BODY }}
+            >
+              {SCOPE_NOTE}
+            </p>
           </motion.div>
 
           {/* Release Cycle */}

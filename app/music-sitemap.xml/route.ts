@@ -9,7 +9,8 @@ export async function GET() {
     const baseUrl = "https://www.rovmusic.com";
 
     const pages = [
-        { path: "/", lastModified: "2026-08-04", changeFrequency: "monthly", priority: "1.0" },
+        { path: "/", lastModified: "2026-08-05", changeFrequency: "monthly", priority: "1.0" },
+        { path: "/pricing", lastModified: "2026-08-05", changeFrequency: "monthly", priority: "0.9" },
         { path: "/sam-suen", lastModified: "2026-08-04", changeFrequency: "monthly", priority: "0.8" },
     ];
 
