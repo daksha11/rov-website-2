@@ -5577,3 +5577,38 @@ input[type="range"]::-webkit-slider-thumb {
   .ctrla-strip-title { display: none; }
   .ctrla-strip { gap: 12px; }
 }
+
+/* ── rovmusic capability marquee ──────────────────────────────────
+   Two rows of kinetic type in the "whatever's missing" section. The track
+   renders its children twice and translates exactly -50%, so the loop is
+   seamless without JS measuring anything. */
+@keyframes rov-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+.rov-marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: rov-marquee linear infinite;
+}
+
+.rov-marquee-track--reverse {
+  animation-direction: reverse;
+}
+
+/* Pausing on hover lets someone actually read a capability they spotted. */
+.rov-marquee:hover .rov-marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rov-marquee-track {
+    animation: none;
+    transform: none;
+  }
+  .rov-marquee {
+    overflow-x: auto;
+  }
+}

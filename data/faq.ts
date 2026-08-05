@@ -85,7 +85,7 @@ export const soundFaqItems: FaqItem[] = [
     },
     {
         question: "How much does it cost to record at your Atlanta studio?",
-        answer: "Studio time is $65 an hour, and every rate includes the full mix and master. Book a block and it drops: 2 hours is $120, 4 hours is $200, which works out to $50 an hour. Most rooms in Atlanta charge you $75 to $120 an hour and then bill mixing separately, so a finished song here usually costs less than the room time alone somewhere else. Students record at $40 an hour with a valid ID, same room, same gear, same engineer."
+        answer: "Studio time is $65 an hour, and every rate includes the full mix and master. Book a block and it drops: 2 hours is $120, 4 hours is $200, which works out to $50 an hour. Most rooms in Atlanta charge you $75 to $120 an hour and then bill mixing separately, so a finished song here usually costs less than the room time alone somewhere else. Students may be eligible for additional discounts, so get in touch before booking."
     },
     {
         question: "How long does it take to get my song mixed and mastered?",
@@ -159,7 +159,7 @@ export const brandFaqItems: FaqItem[] = [
     },
     {
         question: "How much does brand identity work cost?",
-        answer: "Our floor is $2,500, and we don't discount below it. A focused identity refresh for an established business typically lands between $2,500 and $6,000. A full identity built from nothing, with naming, a complete system, and the customer-facing touchpoints wired up, generally runs $6,000 to $15,000 depending on how many surfaces need to be built. We'll give you a specific number after we understand how many touchpoints you actually have."
+        answer: "Our floor is $2,500 and we don't discount below it. A focused identity refresh for an established business lands between $2,500 and $4,500. A full identity with naming, a complete system, and the customer-facing touchpoints built and shipped runs $5,000 to $10,000 depending on how many surfaces need doing. If it's genuinely bigger than that we phase it rather than quoting one number nobody can sanity-check. The full price list is published at /pricing."
     },
     {
         question: "Do I need a rebrand, or just better touchpoints?",

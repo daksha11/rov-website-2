@@ -80,7 +80,6 @@ const StudioSection = dynamic(() => import("@/components/sound/StudioSection"), 
     ),
 });
 
-const QuoteEstimator = dynamic(() => import("@/components/sound/QuoteEstimator"));
 // const StudioSetupSection = dynamic(() => import("@/components/sound/StudioSetup"));
 
 const DDKFeatureTestimonial = dynamic(() => import("@/components/sound/DDKFeatureTestimonial"), {
@@ -178,11 +177,12 @@ export default function Page() {
             {/* 05 — $50 Intro Offer                         [#mixing] */}
             <IntroOffer />
 
-            {/* 06 — Studio rates, the room, value props     [#record] */}
+            {/* 06 — Studio rates, the room, value props     [#record]
+                The quote estimator used to sit after this. Retired: /pricing
+                answers "what does it cost" better than a four-question
+                ballpark, and two quizzes on one page was one too many. The
+                readiness audit below is now the only quiz. */}
             <StudioSection />
-
-            {/* 07 — Quote questionnaire + savings           [#quote]  */}
-            <QuoteEstimator />
 
             {/* ════ ACT 3 · THE CAREER ═══════════════════════════════
                 Consultative. Breadth first, then their specific gap, then

@@ -83,7 +83,7 @@ export default function PricingTable() {
         blurb="Every rate below includes the full mix and master. Most rooms in Atlanta charge you for the hour and then bill mixing separately. You leave here finished."
         rows={RECORDING}
         anchor="recording"
-        footnote="Students record at $40/hr with a valid ID. Same room, same gear, same engineer."
+        footnote="Students may be eligible for additional discounts. Get in touch."
       />
       <Section
         eyebrow="Creative"

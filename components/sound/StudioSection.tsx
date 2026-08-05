@@ -374,7 +374,7 @@ function RecordingRates() {
       </div>
 
       <p className="text-white/40 text-xs md:text-sm mt-6" style={{ fontFamily: BODY_FONT }}>
-        Students record at <span className="text-[#EA9A61]">$40/hr</span> with a valid ID. Same room, same gear, same engineer.
+        Students may be eligible for additional discounts. <span className="text-[#EA9A61]">Get in touch.</span>
       </p>
     </div>
   );
@@ -507,8 +507,7 @@ export default function StudioSection() {
               className="text-white/60 text-sm md:text-base leading-relaxed"
               style={{ fontFamily: BODY_FONT }}
             >
-              Talent shouldn&apos;t be gated by budget. Show your student ID and record at $40/hr,
-              full mix and master included. Same room, same gear, same engineer. No compromises.
+              Students may be eligible for additional discounts. Get in touch.
             </p>
           </div>
           <CalBookButton
