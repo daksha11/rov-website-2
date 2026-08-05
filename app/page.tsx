@@ -36,8 +36,11 @@ export default function Home() {
           infrastructure), and Aysegul Ikna (30% sales increase through digital transformation).
         </p>
         <p>
-          Web development projects range from $2,000 to $10,000+ with 6-8 week delivery
-          using Next.js. Video production covers brand videos, real estate walkthroughs,
+          Projects range from $2,500 to $10,000 with 6-8 week delivery using Next.js.
+          A focused fix for one part of the customer journey starts at $2,500, and a
+          full build that wires the whole path together runs $5,000 to $10,000. Anything
+          larger is phased into stages. Ongoing work is a retainer from $1,000 a month.
+          Video production covers brand videos, real estate walkthroughs,
           drone cinematography, and event coverage. Our AI automation solutions handle
           lead follow-up, appointment scheduling, customer support, and content generation
           with 4-8 week delivery.

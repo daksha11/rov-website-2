@@ -8,7 +8,8 @@
       "WebFetch(domain:thevictorianatlanta.com)",
       "WebFetch(domain:whatnow.com)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" --max-time 120 http://localhost:3000/_calcpreview)",
-      "Bash('C:\\\\Users\\\\ayush/.claude/skills/gstack/browse/dist/browse' click *)"
+      "Bash('C:\\\\Users\\\\ayush/.claude/skills/gstack/browse/dist/browse' click *)",
+      "Bash('C:\\\\Users\\\\ayush/.claude/skills/gstack/browse/dist/browse' console *)"
     ]
   }
 }

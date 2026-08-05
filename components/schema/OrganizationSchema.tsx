@@ -1,3 +1,5 @@
+import { DISCORD_INVITES } from "@/lib/ctrla/discord";
+
 export function OrganizationSchema() {
   const schema = {
     "@context": "https://schema.org",
@@ -18,7 +20,7 @@ export function OrganizationSchema() {
     sameAs: [
       "https://www.instagram.com/rangeofviewstudios/",
       "https://www.linkedin.com/company/range-of-view-studios/",
-      "https://discord.gg/GfzXdmu",
+      ...(DISCORD_INVITES.canonical ? [DISCORD_INVITES.canonical] : []),
       "https://www.reddit.com/user/rangeofviewstudios/",
     ],
     contactPoint: {

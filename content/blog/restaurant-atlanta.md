@@ -47,7 +47,7 @@ With the FIFA World Cup coming to Mercedes-Benz Stadium in 2026, the window to g
 
 **How much does a restaurant website redesign cost in Atlanta?**
 
-Most restaurant website redesigns through ROV Studios range from $3,000 to $15,000 depending on scope. TheBando's project included a full UX overhaul, new menu architecture, and mobile ordering rebuild. The result was a 689x increase in ordering traffic that paid for itself many times over within the first few months. We offer a free audit to identify what specifically needs to change before quoting anything.
+Restaurant projects through ROV Studios run $2,500 to $10,000 depending on scope. Fixing one thing that is clearly costing you, usually online ordering or a menu nobody can read on a phone, starts at $2,500. Rebuilding the whole path, site plus ordering plus the follow-up after the order, runs $5,000 to $10,000. Anything larger we phase into stages. TheBando's project included a full UX overhaul, new menu architecture, and mobile ordering rebuild, and produced a 689x increase in ordering traffic. We run a free audit to identify what specifically needs to change before quoting anything.
 
 **How long does a restaurant website redesign take?**
 

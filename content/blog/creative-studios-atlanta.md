@@ -42,7 +42,7 @@ There is no single best studio for everyone. The right one depends on what you n
 
 **How much does a creative studio cost in Atlanta?**
 
-In 2026, most Atlanta creative studio engagements run from around $3,000 for a focused brand identity to $50,000 or more for a full brand, website, and launch. A standalone small-business website typically lands between $2,000 and $15,000. Price is driven by scope, the number of disciplines involved, and how custom the work is, not by the studio's zip code.
+In 2026, most Atlanta creative studio engagements run from around $3,000 for a focused brand identity to $50,000 or more for a full brand, website, and launch. A standalone small-business website typically lands between $2,000 and $15,000. Range of View sits in the middle of that market on purpose: our projects run $2,500 to $10,000, with $2,500 to $4,500 for a focused fix and $5,000 to $10,000 for a full build across brand, site, and follow-up. Anything larger gets phased into stages. Price is driven by scope, the number of disciplines involved, and how custom the work is, not by the studio's zip code.
 
 **What is the difference between a creative studio and an agency?**
 

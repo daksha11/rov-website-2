@@ -1,8 +1,11 @@
 "use client";
 
 // Pricing for /brand, mirroring WebPricingTiers so the two service pages read
-// as one studio. Numbers come from the locked commercials: $2,500 hard floor,
-// refresh in the $2,500-$6,000 band, full identity with touchpoints above it.
+// as one studio. Numbers come from the locked commercials in lib/pricing.ts:
+// $2,500 hard floor, $10,000 ceiling, refresh in the $2,500-$4,500 band, full
+// identity with touchpoints above it. The ROV side of the comparison bar reads
+// FLOOR and CEILING directly rather than restating them, because the restated
+// version drifted to "$2,500 - $15,000" and outlived the cap by weeks.
 //
 // The market-rate bar uses the same MarketRateTooltip as /web, with real cited
 // sources. If a source cannot be pointed at, the number does not go on the page.
@@ -10,6 +13,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import MarketRateTooltip from "@/components/common/MarketRateTooltip";
+import { FLOOR, CEILING, range } from "@/lib/pricing";
 
 const HEADING = "Norwige, sans-serif";
 const BODY = "'Roboto', sans-serif";
@@ -254,7 +258,7 @@ export default function BrandPricingTiers() {
                     <span className="hidden h-4 w-px bg-white/10 md:block" />
                     <span className="text-xs uppercase tracking-[0.15em] text-white/30">
                         ROV:{" "}
-                        <span className="font-semibold text-[#EA9A61]">$2,500 – $15,000</span>
+                        <span className="font-semibold text-[#EA9A61]">{range(FLOOR, CEILING).replace(" to ", " – ")}</span>
                     </span>
                 </motion.div>
             </div>

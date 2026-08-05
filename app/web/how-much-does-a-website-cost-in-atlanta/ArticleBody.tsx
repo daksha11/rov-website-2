@@ -445,6 +445,31 @@ export default function ArticleBody() {
           <p style={{ fontSize: 17, lineHeight: 1.75, marginBottom: 20 }}>
             Sometimes the honest answer is that you do not need a full rebuild. Sometimes a few fixes and a better path do most of the work. We would rather tell you that than sell you a number. When a full build is the right call, we price it to the project and to the leak it is fixing: built to convert, not built to look expensive.
           </p>
+
+          {/* An article about what a website costs has to say what ours costs.
+              Anything vaguer reads as a page built to get you on a call. */}
+          <div style={{ background: "rgba(234,154,97,0.12)", border: "1px solid rgba(144,66,44,0.25)", borderRadius: 14, padding: "24px 28px", marginBottom: 24 }}>
+            <p style={{ fontFamily: "'Neue Montreal', sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "#90422C", margin: "0 0 14px" }}>
+              Our actual numbers
+            </p>
+            <ul style={{ margin: 0, paddingLeft: 20, fontSize: 16, lineHeight: 1.75 }}>
+              <li style={{ marginBottom: 8 }}>
+                <strong>$2,500 to $4,500</strong> fixes one thing that is clearly costing you, usually being invisible in search or a site that gets traffic and no enquiries.
+              </li>
+              <li style={{ marginBottom: 8 }}>
+                <strong>$5,000 to $10,000</strong> rebuilds the whole path: the site, the lead capture behind it, and the follow-up that goes out after someone enquires.
+              </li>
+              <li style={{ marginBottom: 8 }}>
+                <strong>$1,000 a month and up</strong> if you want us keeping it working after launch. No long lock-in.
+              </li>
+              <li>
+                <strong>$2,500 is the floor</strong> and we do not discount below it. Bigger than $10,000 and we phase it into stages so you see value before the whole thing is finished.
+              </li>
+            </ul>
+            <p style={{ fontSize: 15, lineHeight: 1.7, margin: "16px 0 0", color: "#3B2114" }}>
+              The full list is published at <Link href="/pricing" style={{ color: "#90422C", textDecoration: "underline", fontWeight: 600 }}>rovstudios.com/pricing</Link>. We put it on the internet rather than holding it back for a call.
+            </p>
+          </div>
           <p style={{ fontSize: 17, lineHeight: 1.75 }}>
             A website is also not the only lever. Once the site converts, <Link href="/ai-automation" style={{ color: "#90422C", textDecoration: "underline" }}>AI automations for Atlanta businesses</Link> keep the leads from leaking after the click: missed call text-back, review requests after every job, follow-up that runs without you. That is how <Link href="/web" style={{ color: "#90422C", textDecoration: "underline" }}>a website that works</Link> turns into a system that works.
           </p>

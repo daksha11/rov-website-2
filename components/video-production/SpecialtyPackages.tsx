@@ -3,6 +3,7 @@
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import MarketRateTooltip from "@/components/common/MarketRateTooltip";
+import { FLOOR, CEILING, fmt, range } from "@/lib/pricing";
 
 const HEADING = "Norwige, sans-serif";
 const BODY = "'Roboto', sans-serif";
@@ -369,10 +370,14 @@ export default function SpecialtyPackages() {
             </span>
           </MarketRateTooltip>
           <span className="hidden md:block w-px h-4 bg-white/10" />
+          {/* Day rates are the deliberate exception to the $2,500 floor: a shoot
+              day is a different product from a project. Both are shown so the
+              bar cannot be read as undercutting the floor. Project side reads
+              lib/pricing rather than restating it. */}
           <span className="text-white/30 text-xs uppercase tracking-[0.15em]">
             ROV:{" "}
             <span className="text-[#EA9A61] font-semibold">
-              $2,000 &ndash; $8,000
+              {fmt(500)}/day &middot; {range(FLOOR, CEILING).replace(" to ", " – ")} projects
             </span>
           </span>
         </motion.div>

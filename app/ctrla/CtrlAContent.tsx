@@ -8,6 +8,7 @@ import CosmicBackdrop from "./_components/CosmicBackdrop";
 import GooeyLogoMorph from "./_components/GooeyLogoMorph";
 import EditorialFooter from "./_components/EditorialFooter";
 import CtrlASignup from "./_components/CtrlASignup";
+import TheRoom from "./_components/TheRoom";
 import ShootingStars from "@/components/ui/shooting-stars";
 import { BrandKitFeature, VueClose } from "./_components/IssueSections";
 import { ed, Bleed, Rule, Label, Kicker, SweepText, Typewriter } from "./_components/editorial";
@@ -813,6 +814,11 @@ export default function CtrlAContent() {
 
       {/* Standing feature — recurs every volume */}
       <BrandKitFeature />
+
+      {/* THE ROOM — the Discord door. Sits here on purpose: the reader has
+          just come through the toolkits and the brand kit, so the work has
+          already argued for itself before we ask them to join anything. */}
+      <TheRoom />
 
       {/* ATL COMMUNITY — a door, not a section. The whole local field
           guide (Roots, events, the Map, Cookbook) lives on its own page at

@@ -3,6 +3,17 @@
 import { motion, useInView } from "framer-motion";
 import { useCallback, useRef } from "react";
 import MarketRateTooltip from "@/components/common/MarketRateTooltip";
+import { FLOOR, CEILING, TIERS, fmt, range } from "@/lib/pricing";
+
+// This component predated lib/pricing and carried its own numbers: a "From $500"
+// build fee, a $500 chatbot anchored against a struck-through $2,000, and a
+// $200/mo add-on. All three sat below the $2,500 floor, on the same page as an
+// FAQ answering "how much does AI automation cost?" with "$2,500 to $10,000".
+// A visitor scrolling one screen saw both. Numbers now come from lib/pricing.
+//
+// The struck-through anchor is gone on purpose: a fake discount contradicts a
+// published floor with no discount ladder under it.
+const FIX = TIERS[0];
 
 const HEADING = "Norwige, sans-serif";
 const BODY = "'Roboto', sans-serif";
@@ -176,13 +187,13 @@ export default function AIPricingTiers({ onUnlock }: { onUnlock?: () => void }) 
                       className="text-white text-3xl md:text-4xl font-bold italic leading-none block"
                       style={{ fontFamily: HEADING }}
                     >
-                      From $500
+                      {range(FLOOR, CEILING).replace(" to ", " – ")}
                     </span>
                     <span
                       className="text-xs block mt-1"
                       style={{ fontFamily: BODY, color: "rgba(255,255,255,0.4)" }}
                     >
-                      Build fee &middot; scoped per project &middot; + value-based retainer
+                      One workflow from {fmt(FLOOR)} &middot; the whole path wired together from {fmt(TIERS[1].priceFrom)} &middot; retainer optional
                     </span>
                   </div>
 
@@ -256,27 +267,21 @@ export default function AIPricingTiers({ onUnlock }: { onUnlock?: () => void }) 
                     className="text-white text-4xl md:text-[2.75rem] font-bold italic leading-none"
                     style={{ fontFamily: HEADING }}
                   >
-                    $500
-                  </span>
-                  <span
-                    className="text-sm line-through"
-                    style={{ fontFamily: BODY, color: "rgba(255,255,255,0.3)" }}
-                  >
-                    $2,000
+                    {fmt(FIX.priceFrom)}
                   </span>
                 </div>
                 <span
                   className="text-white/40 text-xs block mb-3"
                   style={{ fontFamily: BODY }}
                 >
-                  Fixed setup fee &middot; deploy in days
+                  Fixed project fee &middot; deploy in days
                 </span>
                 <div className="flex items-center flex-wrap gap-2">
                   <span
                     className="inline-flex items-center gap-1.5 rounded-full border border-[#EA9A61]/25 bg-[#EA9A61]/[0.06] px-3 py-1 text-xs text-[#EA9A61] font-semibold"
                     style={{ fontFamily: BODY }}
                   >
-                    + $200/mo
+                    + {fmt(200)}/mo
                   </span>
                   <span
                     className="text-[11px]"
@@ -330,7 +335,7 @@ export default function AIPricingTiers({ onUnlock }: { onUnlock?: () => void }) 
                 >
                   vs. $35K/yr for a receptionist.
                 </span>{" "}
-                $2,900/yr for a bot that never sleeps.
+                {fmt(FIX.priceFrom + 200 * 12)} in year one for a bot that never sleeps.
               </p>
               <a
                 href="https://cal.com/rov-studios-imhphw/15min"
@@ -427,7 +432,7 @@ export default function AIPricingTiers({ onUnlock }: { onUnlock?: () => void }) 
             </MarketRateTooltip>
           </div>
           <span className="text-[#EA9A61] text-sm font-semibold mt-1">
-            ROV Revenue OS: $5,000 build + $12,000/year = $17,000 total
+            ROV Revenue OS: {fmt(TIERS[1].priceFrom)} build + {fmt(12000)}/year = {fmt(TIERS[1].priceFrom + 12000)} total
           </span>
         </motion.div>
       </div>

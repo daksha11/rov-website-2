@@ -17,6 +17,7 @@
 import { useId, useState } from "react";
 import type { CSSProperties } from "react";
 import { trackFormError, trackFormSubmit, trackLead } from "@/lib/lead-analytics";
+import { DISCORD_INVITES } from "@/lib/ctrla/discord";
 
 type Theme = "dark" | "light";
 type Variant = "inline" | "band" | "stacked";
@@ -159,6 +160,32 @@ export default function CtrlASignup({
             <p style={{ fontFamily: SERIF, fontSize: "clamp(15px,1.7vw,18px)", lineHeight: 1.5, color: p.soft, margin: "6px 0 0" }}>
               {successBody}
             </p>
+            {/* The moment they've just said yes is the cheapest join you'll get.
+                Hidden entirely when no invite is configured. */}
+            {DISCORD_INVITES.signup && (
+              <a
+                href={DISCORD_INVITES.signup}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  marginTop: 14,
+                  fontFamily: MONO,
+                  fontSize: 11,
+                  letterSpacing: "0.22em",
+                  textTransform: "uppercase",
+                  color: p.accent,
+                  textDecoration: "none",
+                  borderBottom: `1px solid ${p.accent}`,
+                  paddingBottom: 3,
+                }}
+              >
+                The rest of it happens in Discord
+                <span aria-hidden>→</span>
+              </a>
+            )}
           </div>
         </div>
       </div>

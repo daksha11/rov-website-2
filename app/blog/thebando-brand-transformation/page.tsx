@@ -40,7 +40,7 @@ const FAQS = [
   },
   {
     q: "How much does a restaurant rebrand cost in Atlanta?",
-    a: "Most restaurant brand and website projects through ROV Studios range from $3,000 to $15,000 depending on scope. TheBando's project included brand work, new page architecture, and a mobile-first rebuild. We run a free audit first to see what the brand is already doing well and where it is getting flattened before we quote anything.",
+    a: "Restaurant brand and website projects through ROV Studios run $2,500 to $10,000 depending on scope. A focused fix on the one thing that is leaking starts at $2,500, and a full rebuild across brand, site, and ordering runs $5,000 to $10,000. Anything larger we phase into stages rather than quoting one number nobody can sanity-check. TheBando's project included brand work, new page architecture, and a mobile-first rebuild. We run a free audit first to see what the brand is already doing well and where it is getting flattened before we quote anything.",
   },
   {
     q: "Does brand identity affect how a restaurant website performs?",

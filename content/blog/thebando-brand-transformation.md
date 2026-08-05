@@ -75,7 +75,7 @@ Read the full [TheBando restaurant website redesign case study](/casestudy/bando
 
 ### How much does a restaurant website redesign cost?
 
-Most restaurant website redesigns cost between **$3,000 and $50,000**, depending on scope. The projects we handle at [ROV Studios](/web), an **Atlanta web design agency**, range from simple menu-and-ordering setups to complex builds with integrated ordering, custom menu systems, and full brand work. TheBando's project included significant UX overhaul and new page architecture. The ROI, a 689x increase in ordering page traffic, paid for the project many times over within the first few months.
+Across the market, restaurant website redesigns cost between **$3,000 and $50,000**, depending on scope and who you hire. At [ROV Studios](/web), an **Atlanta web design agency**, projects run **$2,500 to $10,000**: $2,500 to fix the one thing that is leaking, $5,000 to $10,000 to rebuild the whole path from menu-and-ordering setup through integrated ordering, custom menu systems, and full brand work. Anything larger we phase into stages. TheBando's project included significant UX overhaul and new page architecture. The ROI, a 689x increase in ordering page traffic, paid for the project many times over within the first few months.
 
 ### How long does a restaurant website redesign take?
 

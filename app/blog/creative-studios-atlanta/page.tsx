@@ -77,7 +77,7 @@ const FAQS = [
   },
   {
     q: "How much does a creative studio cost in Atlanta?",
-    a: "In 2026, most Atlanta creative studio engagements run from around $3,000 for a focused brand identity to $50,000 or more for a full brand, website, and launch. A standalone small-business website typically lands between $2,000 and $15,000. Price is driven by scope, the number of disciplines involved, and how custom the work is, not by the studio's zip code.",
+    a: "In 2026, most Atlanta creative studio engagements run from around $3,000 for a focused brand identity to $50,000 or more for a full brand, website, and launch. A standalone small-business website typically lands between $2,000 and $15,000. Range of View sits in the middle of that market on purpose: our projects run $2,500 to $10,000, with $2,500 to $4,500 for a focused fix and $5,000 to $10,000 for a full build across brand, site, and follow-up. Anything larger gets phased into stages. Price is driven by scope, the number of disciplines involved, and how custom the work is, not by the studio's zip code.",
   },
   {
     q: "What is the difference between a creative studio and an agency?",
@@ -452,14 +452,15 @@ export default function CreativeStudiosAtlantaPage() {
             What a creative studio costs in Atlanta
           </h2>
           <p style={{ fontSize: 15, color: "#B16937", marginBottom: 32, fontFamily: "'Neue Montreal', sans-serif" }}>
-            2026 ranges. Scope moves these more than any studio&apos;s address does.
+            What the Atlanta market charges in 2026, not our price list. Scope moves
+            these more than any studio&apos;s address does. Ours is further down.
           </p>
 
           <div style={{ overflowX: "auto", marginBottom: 32 }}>
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 15 }}>
               <thead>
                 <tr style={{ background: "#3B2114" }}>
-                  {["Engagement", "Typical range", "What it covers"].map((h) => (
+                  {["Engagement", "Atlanta market range", "What it covers"].map((h) => (
                     <th key={h} style={{ padding: "12px 16px", textAlign: "left", color: "#FFF4E3", fontFamily: "'Neue Montreal', sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" }}>{h}</th>
                   ))}
                 </tr>
@@ -480,6 +481,22 @@ export default function CreativeStudiosAtlantaPage() {
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* The table above is market data. On our own site that reads as our
+              price list unless we say otherwise, so we say otherwise. */}
+          <div style={{ background: "rgba(234,154,97,0.12)", border: "1px solid rgba(144,66,44,0.25)", borderRadius: 14, padding: "22px 24px", marginBottom: 32 }}>
+            <p style={{ fontFamily: "'Neue Montreal', sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "#90422C", margin: "0 0 10px" }}>
+              What we charge
+            </p>
+            <p style={{ fontSize: 17, lineHeight: 1.75, margin: 0 }}>
+              ROV projects run <strong>$2,500 to $10,000</strong>. $2,500 to $4,500 fixes the
+              one moment that is clearly costing you. $5,000 to $10,000 rebuilds the whole
+              path, brand through site through the follow-up that goes out after someone
+              enquires. Bigger than that and we phase it into stages rather than quoting one
+              number nobody can sanity-check. Ongoing work is a retainer from $1,000 a month.
+              The whole list is on our <Link href="/pricing" style={{ color: "#90422C", textDecoration: "underline", fontWeight: 600 }}>pricing page</Link>, not held back for a call.
+            </p>
           </div>
 
           <p style={{ fontSize: 17, lineHeight: 1.75 }}>

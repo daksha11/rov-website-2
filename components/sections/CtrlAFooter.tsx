@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Instagram } from "lucide-react";
+import { DISCORD_INVITES } from "@/lib/ctrla/discord";
 
 const CtrlAFooter = () => {
     return (
@@ -95,11 +96,12 @@ const CtrlAFooter = () => {
 
                             {/* Social Icons */}
                             <div className="flex items-center gap-4 mt-2">
+                                {DISCORD_INVITES.ctrlaFooter && (
                                 <a
-                                    href="https://discord.gg/GfzXdmu"
+                                    href={DISCORD_INVITES.ctrlaFooter}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    aria-label="Join ROV Studios on Discord"
+                                    aria-label="Join CTRL·A on Discord"
                                     className="w-10 h-10 rounded-full bg-[#4A4A4A] flex items-center justify-center hover:bg-[#5A5A5A] transition-colors"
                                 >
                                     <svg
@@ -111,6 +113,7 @@ const CtrlAFooter = () => {
                                         <path d="M524.5 69.5A1.5 1.5 0 0 0 523.7 69a485 485 0 0 0-120.4-37.2 1.8 1.8 0 0 0-1.9 1 337.2 337.2 0 0 0-15.1 31.2 447.4 447.4 0 0 0-134 0A309.4 309.4 0 0 0 237.2 33a1.9 1.9 0 0 0-1.9-1A483.6 483.6 0 0 0 116.4 69a1.7 1.7 0 0 0-.8.7C39.1 183.6 18.1 294.4 28.5 404.3a2.1 2.1 0 0 0 .8 1.3A487 487 0 0 0 177.2 480a1.9 1.9 0 0 0 2.1-.7 348.2 348.2 0 0 0 30-48.9 1.9 1.9 0 0 0-1-2.6 321.8 321.8 0 0 1-46-21.9 1.9 1.9 0 0 1-.2-3.2 251.7 251.7 0 0 0 9.1-7.1 1.9 1.9 0 0 1 2-.3c96.1 43.9 200.4 43.9 296 0a1.9 1.9 0 0 1 2 .3 235.5 235.5 0 0 0 9.1 7.1 1.9 1.9 0 0 1-.2 3.2 301 301 0 0 1-46 21.9 1.9 1.9 0 0 0-1 2.6 347.9 347.9 0 0 0 30 48.9 1.9 1.9 0 0 0 2.1.7A486.8 486.8 0 0 0 610.7 405a2 2 0 0 0 .8-1.3c10.4-109.8-10.6-220.6-87-334.2zM222.2 338.1c-23.4 0-42.6-21.5-42.6-47.8s18.9-47.8 42.6-47.8c23.7 0 42.9 21.5 42.6 47.8s-18.9 47.8-42.6 47.8zm195.6 0c-23.4 0-42.6-21.5-42.6-47.8s18.9-47.8 42.6-47.8 42.9 21.5 42.6 47.8-18.9 47.8-42.6 47.8z" />
                                     </svg>
                                 </a>
+                                )}
                                 <a
                                     href="https://www.instagram.com/rangeofviewstudios/"
                                     target="_blank"
