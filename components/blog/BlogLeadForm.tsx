@@ -9,7 +9,16 @@
 // Styling follows .claude/blog-design-standard.md: beige card, dark espresso
 // text, rust primary button. Never a dark/gradient CTA background.
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import {
+  attributionPayload,
+  captureAttribution,
+  trackBookingClick,
+  trackFormError,
+  trackFormStart,
+  trackFormSubmit,
+  trackLead,
+} from "@/lib/lead-analytics";
 
 const CREAM = "#FFF4E3";
 const ESPRESSO = "#3B2114";
@@ -113,7 +122,9 @@ export default function BlogLeadForm({
     border: c.inputBorder,
     borderRadius: 10,
     padding: "13px 16px",
-    fontSize: 15,
+    // 16px minimum: iOS Safari zooms the whole page on focus for anything
+    // smaller, which throws the reader out of the layout mid-form.
+    fontSize: 16,
     color: c.inputText,
     fontFamily: "inherit",
     outline: "none",
@@ -124,11 +135,27 @@ export default function BlogLeadForm({
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [error, setError] = useState("");
 
+  // Attribution is captured on mount rather than at submit, so the UTMs that
+  // brought them to this article survive even if they wander to another page.
+  useEffect(() => {
+    captureAttribution();
+  }, []);
+
+  // form_start fires once, on the first real interaction. Its ratio to
+  // generate_lead is the abandonment rate for this article's form.
+  const started = useRef(false);
+  function onFirstInteraction() {
+    if (started.current) return;
+    started.current = true;
+    trackFormStart(source);
+  }
+
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (status === "sending") return;
     const form = e.currentTarget;
     const fd = new FormData(form);
+    trackFormSubmit(source);
     setStatus("sending");
     setError("");
     try {
@@ -149,16 +176,20 @@ export default function BlogLeadForm({
           company: fd.get("company"),
           source: taggedSource,
           page: typeof window !== "undefined" ? window.location.pathname : "",
+          ...attributionPayload(),
         }),
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.ok) {
+        trackLead(source, { topic: topic || undefined });
         setStatus("sent");
       } else {
+        trackFormError(source, data.code || `http_${res.status}`);
         setStatus("error");
         setError(data.error || "Something went wrong. Please try again.");
       }
     } catch {
+      trackFormError(source, "network");
       setStatus("error");
       setError("Something went wrong. Please try again.");
     }
@@ -175,7 +206,9 @@ export default function BlogLeadForm({
     >
       <style>{`.rov-lead-input::placeholder { color: var(--rov-ph); opacity: 1; }`}</style>
       {status === "sent" ? (
-        <div style={{ textAlign: "center", padding: "24px 0" }}>
+        // role=status so screen readers announce the confirmation: the form
+        // they were filling has just been replaced out from under them.
+        <div role="status" aria-live="polite" style={{ textAlign: "center", padding: "24px 0" }}>
           <div
             style={{
               width: 56,
@@ -211,7 +244,11 @@ export default function BlogLeadForm({
             </p>
           </div>
 
-          <form onSubmit={onSubmit} style={{ maxWidth: 480, margin: "0 auto", display: "flex", flexDirection: "column", gap: 14 }}>
+          <form
+            onSubmit={onSubmit}
+            onFocusCapture={onFirstInteraction}
+            style={{ maxWidth: 480, margin: "0 auto", display: "flex", flexDirection: "column", gap: 14 }}
+          >
             {/* Honeypot — hidden from humans, bots fill it and get silently dropped. */}
             <input
               type="text"
@@ -285,6 +322,7 @@ export default function BlogLeadForm({
                 href={secondaryHref}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackBookingClick(source)}
                 style={{
                   display: "block",
                   textAlign: "center",
@@ -345,6 +383,7 @@ export default function BlogLeadForm({
                 href={secondaryHref}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackBookingClick(source)}
                 style={{
                   display: "block",
                   textAlign: "center",
@@ -368,6 +407,7 @@ export default function BlogLeadForm({
                 href={secondaryHref}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackBookingClick(source)}
                 style={{
                   textAlign: "center",
                   fontSize: 13,

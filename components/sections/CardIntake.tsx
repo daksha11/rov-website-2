@@ -8,10 +8,18 @@
 // leads) so the team sees the scan by email too. Visual language matches
 // StartProjectForm (dark espresso card).
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  attributionPayload,
+  captureAttribution,
+  trackFormError,
+  trackFormStart,
+  trackFormSubmit,
+  trackLead,
+} from "@/lib/lead-analytics";
 
 const ORANGE = "#EA9A61";
 const CREAM = "#FFF4E3";
@@ -27,6 +35,20 @@ const INTERESTS = ["Web", "Video", "AI Automation", "Not sure yet"];
 const SOURCE = "card:qr";
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
+// PLACEMENT
+// ─────────
+// One page, many printed things pointing at it. `?s=` says which one, so the
+// lead arrives tagged and you can tell a business card from a conference banner
+// without building a second page for each:
+//
+//   /card            → card:qr              (a plain card, the default)
+//   /card?s=andi     → card:qr:andi         (whose card it was)
+//   /card?s=render   → card:qr:render       (an event, a sticker, a flyer)
+//
+// Anything goes in: it is slugged and truncated before it is used, and it only
+// ever ends up in a source tag. Print a different QR per thing you hand out and
+// the reporting sorts itself.
+
 // IRL card scans go to the "ROV Business Leads (From Cards)" Klaviyo list,
 // kept separate from website form leads (ROV web leads). Override via env.
 const CARD_LIST_ID = process.env.NEXT_PUBLIC_KLAVIYO_CARD_LIST_ID || "SQRrEK";
@@ -39,6 +61,27 @@ export default function CardIntake() {
   const [error, setError] = useState("");
   // Carried into the booking embed so they don't retype what they just gave us.
   const [submitted, setSubmitted] = useState({ name: "", email: "" });
+  // Which physical thing they scanned. See PLACEMENT below.
+  const [placement, setPlacement] = useState("");
+
+  useEffect(() => {
+    captureAttribution();
+    // Read from window rather than useSearchParams: this page is static, and
+    // useSearchParams would opt it into dynamic rendering or force a Suspense
+    // boundary for a value that only affects a tag on the lead.
+    const s = new URLSearchParams(window.location.search).get("s");
+    if (s) setPlacement(slug(s).slice(0, 40));
+  }, []);
+
+  // form_start on first interaction, so GA shows how many scans reach the page
+  // versus actually start typing. That gap is the print piece's problem, not
+  // the form's, and it is worth being able to tell them apart.
+  const started = useRef(false);
+  const markStarted = () => {
+    if (started.current) return;
+    started.current = true;
+    trackFormStart(SOURCE);
+  };
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -47,10 +90,46 @@ export default function CardIntake() {
     const name = (fd.get("name") as string) || "";
     const email = fd.get("email") as string;
     const company = fd.get("company") as string;
-    const source = interest ? `${SOURCE}:${slug(interest)}` : SOURCE;
+    // card:qr → card:qr:andi → card:qr:andi:web. Placement first so every
+    // scan from one card groups together regardless of what they picked.
+    const source = [SOURCE, placement, interest ? slug(interest) : ""]
+      .filter(Boolean)
+      .join(":");
 
+    trackFormSubmit(SOURCE);
     setStatus("sending");
     setError("");
+
+    const leadBody = JSON.stringify({
+      name: name || "(no name given)",
+      email,
+      message: [
+        "Scanned the card.",
+        placement ? `Card/placement: ${placement}` : "",
+        interest ? `Curious about: ${interest}` : "",
+      ]
+        .filter(Boolean)
+        .join(" "),
+      source,
+      page: "/card",
+      company,
+      // Keep card scans out of the web-leads list; they belong in From-Cards.
+      klaviyoListId: CARD_LIST_ID,
+      ...attributionPayload(),
+    });
+
+    const postLead = () =>
+      fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: leadBody,
+      });
+
+    function succeed() {
+      trackLead(SOURCE, { interest: interest || undefined, placement: placement || undefined });
+      setSubmitted({ name, email });
+      setStatus("sent");
+    }
 
     try {
       const res = await fetch("/api/klaviyo/subscribe", {
@@ -65,30 +144,42 @@ export default function CardIntake() {
         }),
       });
       const data = await res.json().catch(() => ({}));
+
       if (res.ok && data.ok) {
-        setSubmitted({ name, email });
-        setStatus("sent");
+        succeed();
         // Best-effort heads-up in the shared leads inbox. Never blocks the
         // success state on this — the Klaviyo add is the whole point here.
-        fetch("/api/leads", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: name || "(no name given)",
-            email,
-            message: interest ? `Scanned the card. Curious about: ${interest}` : "Scanned the card.",
-            source,
-            page: "/card",
-            company,
-            // Keep card scans out of the web-leads list; they belong in From-Cards.
-            klaviyoListId: CARD_LIST_ID,
-          }),
-        }).catch(() => {});
-      } else {
-        setStatus("error");
-        setError(data.error || "Something went wrong. Please try again.");
+        postLead().catch(() => {});
+        return;
       }
+
+      // Klaviyo refused. This is the one form where the contact was standing in
+      // front of you thirty seconds ago, so losing them because a list API had
+      // a bad minute is unacceptable. The email route reaches the same inbox
+      // and re-attempts the list add server-side, so try it before giving up.
+      trackFormError(SOURCE, data.code || `http_${res.status}`);
+      const fallback = await postLead();
+      const fallbackData = await fallback.json().catch(() => ({}));
+      if (fallback.ok && fallbackData.ok) {
+        succeed();
+        return;
+      }
+
+      setStatus("error");
+      setError(data.error || "Something went wrong. Please try again.");
     } catch {
+      trackFormError(SOURCE, "network");
+      // Same reasoning for a dropped connection on the first call.
+      try {
+        const fallback = await postLead();
+        const fallbackData = await fallback.json().catch(() => ({}));
+        if (fallback.ok && fallbackData.ok) {
+          succeed();
+          return;
+        }
+      } catch {
+        /* both paths down; fall through to the error state */
+      }
       setStatus("error");
       setError("Something went wrong. Please try again.");
     }
@@ -151,7 +242,7 @@ export default function CardIntake() {
                 Let&apos;s continue the conversation.
               </h1>
 
-              <form onSubmit={onSubmit} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+              <form onSubmit={onSubmit} onFocusCapture={markStarted} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
                 <input type="text" name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }} />
 
                 {/* Primary, required field — larger, warm border, own label. This is the one action that matters. */}
@@ -227,6 +318,24 @@ export default function CardIntake() {
                   >
                     {status === "sending" ? "Sending..." : "Show me the work"}
                   </button>
+                  {/* Submitting subscribes them to a marketing list with
+                      explicit consent. Someone who scanned a business card to
+                      see a portfolio has not knowingly joined a mailing list,
+                      so say so. Every other form on the site carries a version
+                      of this line; this one shipped without it. */}
+                  <p
+                    style={{
+                      fontFamily: BODY,
+                      fontSize: 12,
+                      lineHeight: 1.5,
+                      color: "rgba(255,244,227,0.5)",
+                      textAlign: "center",
+                      margin: "12px 0 0",
+                    }}
+                  >
+                    We&apos;ll send over our work, and the occasional thing worth seeing. No spam,
+                    unsubscribe anytime.
+                  </p>
                 </div>
               </form>
             </motion.div>

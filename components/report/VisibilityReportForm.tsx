@@ -14,7 +14,18 @@
 // Andi and pushes to Klaviyo. The instant findings ride along in the message so
 // whoever builds the full report starts with context.
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  attributionPayload,
+  captureAttribution,
+  trackFormError,
+  trackFormStart,
+  trackFormStep,
+  trackFormSubmit,
+  trackLead,
+} from "@/lib/lead-analytics";
+
+const FORM_ID = "report:visibility";
 
 type Finding = { key: string; label: string; why: string; tone: "gap" | "ok" };
 type SiteCheck = { ok: true; title: string; findings: Finding[] };
@@ -36,11 +47,20 @@ export default function VisibilityReportForm() {
 
     const emailValid = emailRe.test(email.trim());
 
+    useEffect(() => {
+        captureAttribution();
+    }, []);
+
     async function runCheck() {
         if (!url.trim()) {
             setTouched(true);
             return;
         }
+        // The URL check is the real step 1 here: everyone who gets this far saw
+        // their own gaps, so the drop between this and the gate is the number
+        // that matters on this page.
+        trackFormStart(FORM_ID);
+        trackFormStep(FORM_ID, 1, "site-checked");
         setPhase("checking");
         setError("");
         try {
@@ -64,6 +84,7 @@ export default function VisibilityReportForm() {
             setTouched(true);
             return;
         }
+        trackFormSubmit(FORM_ID);
         setPhase("sending");
         setError("");
         const summary = site
@@ -80,11 +101,27 @@ export default function VisibilityReportForm() {
                     source: "report:visibility",
                     page: "/report",
                     message: `Visibility report requested for: ${url.trim()}\n\nInstant check:\n${summary}`,
+                    ...attributionPayload(),
                 }),
             });
-            if (!res.ok) throw new Error("failed");
+            // Every other form on the site checks the body, not just the status:
+            // the lead route answers 200 with ok:false in cases a bare res.ok
+            // would read as success, and this is the one form whose confirmation
+            // promises a hand-built report.
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok || !data.ok) {
+                trackFormError(FORM_ID, data.code || `http_${res.status}`);
+                setError(
+                    data.error ||
+                    "That didn't send. Email admin@pursuenetworking.com and we'll pick it up by hand."
+                );
+                setPhase("gate");
+                return;
+            }
+            trackLead(FORM_ID, { gaps: site ? site.findings.filter((f) => f.tone === "gap").length : undefined });
             setPhase("done");
         } catch {
+            trackFormError(FORM_ID, "network");
             setError("That didn't send. Email admin@pursuenetworking.com and we'll pick it up by hand.");
             setPhase("gate");
         }
@@ -92,7 +129,7 @@ export default function VisibilityReportForm() {
 
     if (phase === "done") {
         return (
-            <div className="rounded-2xl border border-[#EA9A61]/25 bg-[#EA9A61]/[0.06] p-8 md:p-10">
+            <div role="status" aria-live="polite" className="rounded-2xl border border-[#EA9A61]/25 bg-[#EA9A61]/[0.06] p-8 md:p-10">
                 <h2 className="mb-3 text-2xl text-white" style={{ fontFamily: HEADING }}>
                     Got it. Check your inbox.
                 </h2>
@@ -122,7 +159,7 @@ export default function VisibilityReportForm() {
                     disabled={phase !== "url"}
                     onChange={(e) => setUrl(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && phase === "url" && runCheck()}
-                    className="flex-1 rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-white placeholder-white/30 outline-none transition-colors focus:border-[#EA9A61]/60 disabled:opacity-60"
+                    className="flex-1 rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-base text-white placeholder-white/30 outline-none transition-colors focus:border-[#EA9A61]/60 disabled:opacity-60"
                     style={{ fontFamily: BODY }}
                 />
                 {phase === "url" && (
@@ -208,7 +245,7 @@ export default function VisibilityReportForm() {
                             autoComplete="name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-white placeholder-white/30 outline-none transition-colors focus:border-[#EA9A61]/60"
+                            className="rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-base text-white placeholder-white/30 outline-none transition-colors focus:border-[#EA9A61]/60"
                             style={{ fontFamily: BODY }}
                         />
                         <input
@@ -218,7 +255,7 @@ export default function VisibilityReportForm() {
                             autoComplete="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-white placeholder-white/30 outline-none transition-colors focus:border-[#EA9A61]/60"
+                            className="rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-base text-white placeholder-white/30 outline-none transition-colors focus:border-[#EA9A61]/60"
                             style={{ fontFamily: BODY }}
                         />
                     </div>

@@ -16,6 +16,7 @@
 
 import { useId, useState } from "react";
 import type { CSSProperties } from "react";
+import { trackFormError, trackFormSubmit, trackLead } from "@/lib/lead-analytics";
 
 type Theme = "dark" | "light";
 type Variant = "inline" | "band" | "stacked";
@@ -112,6 +113,7 @@ export default function CtrlASignup({
       setError("Enter a valid email address.");
       return;
     }
+    trackFormSubmit(source);
     setStatus("submitting");
     setError("");
     try {
@@ -123,13 +125,16 @@ export default function CtrlASignup({
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.ok) {
         klaviyoIdentify(value, source);
+        trackLead(source);
         setStatus("success");
         onSuccess?.(value);
         return;
       }
+      trackFormError(source, data.code || `http_${res.status}`);
       setStatus("error");
       setError(data.error || "Something went wrong. Please try again.");
     } catch {
+      trackFormError(source, "network");
       setStatus("error");
       setError("Network error. Please try again.");
     }

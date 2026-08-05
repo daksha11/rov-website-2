@@ -19,6 +19,7 @@ import {
   CTA_GLOW,
 } from "./shared";
 import { trackCalcEngage, trackCallClick } from "./analytics";
+import { saveEstimate } from "./estimate-store";
 
 const BOOKING_URL = "https://cal.com/rov-studios-imhphw/15min";
 const spring = { type: "spring" as const, stiffness: 100, damping: 20 };
@@ -240,6 +241,18 @@ export default function IndustryCalculator({
   const counted = useCountUp(result, hasResult, !!reduce);
   const perWeek = result / 52;
   const perMonth = result / 12;
+
+  // Hand the number to the lead form. Someone who fills the form after running
+  // this has effectively told us what the problem is worth to them, and that is
+  // the most useful line in the email. See ./estimate-store.
+  useEffect(() => {
+    if (!hasResult) return;
+    saveEstimate({
+      icpSlug,
+      value: fmtCurrency(result),
+      label: calculator.resultLabel,
+    });
+  }, [hasResult, result, icpSlug, calculator.resultLabel]);
 
   /**
    * The "N in 100" dot grid, lifted from the Beltline visibility report. It
@@ -799,25 +812,48 @@ export default function IndustryCalculator({
                     >
                       Start over
                     </button>
-                    <a
-                      href={BOOKING_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={() => trackCallClick(icpSlug)}
-                      className="cta-shine shrink-0 inline-flex items-center justify-center gap-2 text-white font-semibold transition-transform duration-300 hover:scale-105"
-                      style={{
-                        fontFamily: HEADING,
-                        borderRadius: 9999,
-                        background: CTA_GRADIENT,
-                        boxShadow: CTA_GLOW,
-                        padding: "13px 26px",
-                        fontSize: "13px",
-                        letterSpacing: "0.05em",
-                      }}
-                    >
-                      {isOpportunity ? "Go get it" : "Stop the leak"}{" "}
-                      <span aria-hidden>&rarr;</span>
-                    </a>
+                    {/* Two ways out, not one. This panel is peak motivation:
+                        they just watched a number count up. Booking a call was
+                        the only offered action, which is the highest-friction
+                        step on the page and loses everyone not ready to put
+                        time on a calendar. The form is the softer path, and it
+                        carries this number into the lead. */}
+                    <div className="flex shrink-0 flex-col-reverse gap-3 sm:flex-row sm:items-center">
+                      <a
+                        href="#lead"
+                        className="inline-flex items-center justify-center gap-2 font-semibold transition-colors"
+                        style={{
+                          fontFamily: HEADING,
+                          borderRadius: 9999,
+                          border: "1px solid rgba(255,255,255,0.25)",
+                          color: "rgba(255,255,255,0.85)",
+                          padding: "12px 24px",
+                          fontSize: "13px",
+                          letterSpacing: "0.05em",
+                        }}
+                      >
+                        Send me the breakdown
+                      </a>
+                      <a
+                        href={BOOKING_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => trackCallClick(icpSlug)}
+                        className="cta-shine shrink-0 inline-flex items-center justify-center gap-2 text-white font-semibold transition-transform duration-300 hover:scale-105"
+                        style={{
+                          fontFamily: HEADING,
+                          borderRadius: 9999,
+                          background: CTA_GRADIENT,
+                          boxShadow: CTA_GLOW,
+                          padding: "13px 26px",
+                          fontSize: "13px",
+                          letterSpacing: "0.05em",
+                        }}
+                      >
+                        {isOpportunity ? "Go get it" : "Stop the leak"}{" "}
+                        <span aria-hidden>&rarr;</span>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </motion.div>

@@ -3,8 +3,18 @@
 import { useEffect, useState } from "react";
 import { BODY, DEEP, EMBER, CREAM } from "./shared";
 import { readUtm, trackLeadSubmit, trackLeadSuccess } from "./analytics";
+import { readEstimate } from "./estimate-store";
+import {
+  attributionPayload,
+  captureAttribution,
+  trackFormError,
+  trackFormSubmit,
+  trackLead,
+} from "@/lib/lead-analytics";
 
 type Status = "idle" | "submitting" | "success" | "error";
+
+const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const inputStyle: React.CSSProperties = {
   width: "100%",
@@ -16,9 +26,25 @@ const inputStyle: React.CSSProperties = {
   color: DEEP,
   fontFamily: BODY,
   fontWeight: 300,
-  fontSize: 15.5,
+  // 16px minimum: iOS Safari zooms the page on focus below this.
+  fontSize: 16,
   outline: "none",
 };
+
+// Inline validation message. The form is noValidate, so this is the only
+// feedback a bad email gets before it reaches the server.
+function FieldError({ id, children }: { id: string; children?: string }) {
+  if (!children) return null;
+  return (
+    <p
+      id={id}
+      role="alert"
+      style={{ fontFamily: BODY, fontWeight: 400, fontSize: 13, color: "#8a2b1a", margin: "6px 0 0" }}
+    >
+      {children}
+    </p>
+  );
+}
 
 const labelStyle: React.CSSProperties = {
   display: "block",
@@ -33,6 +59,10 @@ const labelStyle: React.CSSProperties = {
 export function IndustryLeadForm({ icpSlug }: { icpSlug: string }) {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  // The form carries noValidate, so browser bubbles never fire and these
+  // messages are the only feedback a typo gets. Without them an invalid email
+  // round-trips to the server and comes back as a generic failure.
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [utm, setUtm] = useState<{
     utm_source?: string;
     utm_medium?: string;
@@ -41,6 +71,7 @@ export function IndustryLeadForm({ icpSlug }: { icpSlug: string }) {
 
   useEffect(() => {
     setUtm(readUtm());
+    captureAttribution();
   }, []);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -50,11 +81,31 @@ export function IndustryLeadForm({ icpSlug }: { icpSlug: string }) {
     const form = e.currentTarget;
     const data = new FormData(form);
 
+    // Validate before the network round-trip so a typo is corrected in place.
+    const next: Record<string, string> = {};
+    if (!String(data.get("name") || "").trim()) next.name = "We need a name to reply to.";
+    if (!String(data.get("business") || "").trim()) next.business = "What's the business called?";
+    const emailValue = String(data.get("email") || "").trim();
+    if (!emailValue) next.email = "We need an email to reach you.";
+    else if (!emailRe.test(emailValue)) next.email = "That email doesn't look right.";
+
+    setFieldErrors(next);
+    if (Object.keys(next).length > 0) {
+      const firstInvalid = form.querySelector<HTMLInputElement>(`[name="${Object.keys(next)[0]}"]`);
+      firstInvalid?.focus();
+      return;
+    }
+
     trackLeadSubmit(icpSlug);
+    trackFormSubmit(`industries:${icpSlug}`);
     setStatus("submitting");
     setErrorMsg("");
 
+    // What the page's calculator told them, if they ran it. Absent is normal.
+    const estimate = readEstimate(icpSlug);
+
     const payload = {
+      estimate: estimate ? `${estimate.value} ${estimate.label}` : undefined,
       name: String(data.get("name") || ""),
       business: String(data.get("business") || ""),
       email: String(data.get("email") || ""),
@@ -65,6 +116,9 @@ export function IndustryLeadForm({ icpSlug }: { icpSlug: string }) {
       utmSource: utm.utm_source,
       utmMedium: utm.utm_medium,
       utmCampaign: utm.utm_campaign,
+      // First-touch attribution, which survives navigation between the ad
+      // landing and this form in a way the current-URL read above does not.
+      ...attributionPayload(),
     };
 
     try {
@@ -77,16 +131,19 @@ export function IndustryLeadForm({ icpSlug }: { icpSlug: string }) {
 
       if (res.ok && json.ok) {
         trackLeadSuccess(icpSlug);
+        trackLead(`industries:${icpSlug}`, { icp_slug: icpSlug });
         setStatus("success");
         form.reset();
         return;
       }
 
+      trackFormError(`industries:${icpSlug}`, json.code || `http_${res.status}`);
       setStatus("error");
       setErrorMsg(
         json.error || "Something went wrong. Please try again, or email us directly."
       );
     } catch {
+      trackFormError(`industries:${icpSlug}`, "network");
       setStatus("error");
       setErrorMsg("Network error. Please try again, or email us directly.");
     }
@@ -121,13 +178,33 @@ export function IndustryLeadForm({ icpSlug }: { icpSlug: string }) {
           <label htmlFor="lf-name" style={labelStyle}>
             Your name
           </label>
-          <input id="lf-name" name="name" type="text" required autoComplete="name" style={inputStyle} />
+          <input
+            id="lf-name"
+            name="name"
+            type="text"
+            required
+            autoComplete="name"
+            aria-invalid={fieldErrors.name ? true : undefined}
+            aria-describedby={fieldErrors.name ? "lf-name-error" : undefined}
+            style={inputStyle}
+          />
+          <FieldError id="lf-name-error">{fieldErrors.name}</FieldError>
         </div>
         <div>
           <label htmlFor="lf-business" style={labelStyle}>
             Business name
           </label>
-          <input id="lf-business" name="business" type="text" required autoComplete="organization" style={inputStyle} />
+          <input
+            id="lf-business"
+            name="business"
+            type="text"
+            required
+            autoComplete="organization"
+            aria-invalid={fieldErrors.business ? true : undefined}
+            aria-describedby={fieldErrors.business ? "lf-business-error" : undefined}
+            style={inputStyle}
+          />
+          <FieldError id="lf-business-error">{fieldErrors.business}</FieldError>
         </div>
       </div>
 
@@ -136,7 +213,21 @@ export function IndustryLeadForm({ icpSlug }: { icpSlug: string }) {
           <label htmlFor="lf-email" style={labelStyle}>
             Email
           </label>
-          <input id="lf-email" name="email" type="email" required autoComplete="email" style={inputStyle} />
+          <input
+            id="lf-email"
+            name="email"
+            type="email"
+            required
+            autoComplete="email"
+            inputMode="email"
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
+            aria-invalid={fieldErrors.email ? true : undefined}
+            aria-describedby={fieldErrors.email ? "lf-email-error" : undefined}
+            style={inputStyle}
+          />
+          <FieldError id="lf-email-error">{fieldErrors.email}</FieldError>
         </div>
         <div>
           <label htmlFor="lf-phone" style={labelStyle}>

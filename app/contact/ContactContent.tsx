@@ -16,12 +16,19 @@ export default function ContactContent() {
         }}
       >
         <div style={{ maxWidth: 560, margin: "0 auto" }}>
+          {/* Topic chips only here. Every other placement already knows what
+              the reader came for (the article or service page scopes it), but
+              /contact is the one page that catches everyone, so a lead can
+              otherwise arrive with no indication of which practice area it
+              belongs to. The pick rides into the source tag and the email. */}
           <BlogLeadForm
             theme="dark"
             source="contact"
             heading="Let's talk."
             subheading="Tell us what you're working on. We reply within one business day, usually faster."
             messagePlaceholder="What are you trying to build or fix?"
+            topics={["Web", "Video", "AI Automation", "Brand", "Not sure yet"]}
+            topicsLabel="What do you need?"
             submitLabel="Send a message instead"
             secondaryHref="https://cal.com/rov-studios-imhphw/15min"
             secondaryLabel="Book a 15-minute call"
