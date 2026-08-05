@@ -26,7 +26,10 @@ const FAQSection = dynamic(() => import('@/components/common/FAQSection'), {
 });
 import TestimonialsSection from '@/components/common/TestimonialsSection';
 import { aiTestimonials } from '@/data/testimonials';
+import BriefCTASection from "@/components/common/BriefCTASection";
 import CrossSellNudges from "@/components/common/CrossSellNudges";
+import FullViewBand from "@/components/common/FullViewBand";
+import ReportCTABand from "@/components/common/ReportCTABand";
 import { aiAutomationFaqItems } from '@/data/faq';
 import { aiAutomationSteps } from '@/data/approach-steps';
 // Inline SVG components to avoid react-icons barrel import (saves ~200-500KB)
@@ -203,7 +206,12 @@ export default function AIAutomationContent() {
                         maxWidth: '520px',
                     }}
                 >
-                    Custom AI systems that save time and make money.
+                    {/* Was "custom AI systems that save time and make money", which sells
+                        the tool. This sells what the tool protects: the experience staying
+                        consistent after the visitor stops looking at the website. */}
+                    The follow-up that goes out at 11pm should sound like the people who
+                    built the website. We make the backend hold that standard, so nothing
+                    goes unanswered and nobody goes cold.
                 </motion.p>
 
                 {/* CTA Buttons */}
@@ -316,7 +324,11 @@ export default function AIAutomationContent() {
                         lineHeight: 1.7,
                     }}
                 >
-                    Our clients see tangible returns within the first 90 days. Here&apos;s what AI implementation delivers.
+                    {/* Retention framed as the mechanism behind numbers we can already
+                        cite, rather than as a separate claim we have no data for. */}
+                    The businesses that grow fastest are rarely the ones getting the most
+                    traffic. They are the ones who answer first and stay in touch after.
+                    That is what these systems protect.
                 </motion.p>
 
                 {/* Stats Grid */}
@@ -717,6 +729,24 @@ export default function AIAutomationContent() {
                 </div>
             </section>
 
+            {/* The counterpart to the band on /web. Same five moments, different
+                three lit, so someone who reads both pages sees one studio rather
+                than two product lines. */}
+            <FullViewBand
+                heading="The three moments that happen after they stop looking at your website"
+                intro="A site earns the enquiry. What happens in the next ten minutes, and the next ten weeks, decides whether it turns into money. This is the part most businesses do by hand until they stop having time to, and it is the part that quietly costs the most."
+                owns={["answered", "nurtured", "kept"]}
+                detail={{
+                    answered:
+                        "A reply goes out in under a minute, at 2pm or 2am, in your voice rather than a robot's.",
+                    nurtured:
+                        "The ones who are not ready yet get looked after until they are, without you remembering to.",
+                    kept:
+                        "Receipts, confirmations, and follow-ups that look like they came from the same company as the site.",
+                }}
+                closing="Design decides whether they trust you. This decides whether they stay."
+            />
+
             {/* Client Testimonials */}
             <TestimonialsSection testimonials={aiTestimonials} variant="ai" />
 
@@ -726,11 +756,24 @@ export default function AIAutomationContent() {
             {/* ROI Calculator — revealed by secret triple-click on pricing market bar */}
             {showROI && <AIROICalculator />}
 
+            {/* Brief entry point: straight after pricing, where they're deciding */}
+            <BriefCTASection service="ai-automation" />
+
             {/* Our Approach Section */}
             <OurApproachSection steps={aiAutomationSteps} />
 
             {/* Cross-Sell Nudges */}
             <CrossSellNudges currentService="ai-automation" />
+
+            {/* The report's AI-answers half is the part that lands here: this
+                audience already believes AI matters, they just haven't thought
+                about AI answering on their behalf. */}
+            <ReportCTABand
+                eyebrow="Free visibility report"
+                heading="What does AI say about your business?"
+                body="When someone asks ChatGPT or Google for a business like yours, something gets said, and most owners have never seen it. We check by hand and send back what comes up, where you are missing, and what to fix first."
+                cta="Get the free report"
+            />
 
             {/* FAQ Section */}
             <FAQSection items={aiAutomationFaqItems} />

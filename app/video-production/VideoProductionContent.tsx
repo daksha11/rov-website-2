@@ -5,6 +5,7 @@ import ServiceLeadSection from "@/components/sections/ServiceLeadSection";
 import ProjectStrip from "@/components/sections/ProjectStrip";
 import TestimonialsSection from "@/components/common/TestimonialsSection";
 import { videoTestimonials } from "@/data/testimonials";
+import BriefCTASection from "@/components/common/BriefCTASection";
 import CrossSellNudges from "@/components/common/CrossSellNudges";
 import { videoFaqItems } from "@/data/faq";
 import { videoProductionSteps } from "@/data/approach-steps";
@@ -75,6 +76,9 @@ export default function VideoProductionContent() {
             <CrossSellNudges currentService="video-production" />
 
             {/* FAQ Section */}
+            {/* Brief entry point, before the FAQ closes the page out. */}
+            <BriefCTASection service="video-production" />
+
             <FAQSection items={videoFaqItems} />
 
             {/* Closing lead form */}

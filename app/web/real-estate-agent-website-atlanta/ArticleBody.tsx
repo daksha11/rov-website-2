@@ -5,6 +5,7 @@ import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import BlogLeadForm from "@/components/blog/BlogLeadForm";
 import { FAQS } from "./content";
 
 const NavigationDock = dynamic(
@@ -517,58 +518,21 @@ export default function ArticleBody() {
           </div>
         </section>
 
-        {/* ── CTA ── */}
-        <section style={{
-          background: "#FFF4E3",
-          border: "1.5px solid rgba(59,33,20,0.15)",
-          borderRadius: 16,
-          padding: "48px 36px",
-          textAlign: "center",
-        }}>
-          <h2 style={{ fontFamily: "Norwige, sans-serif", fontSize: "clamp(24px, 4vw, 36px)", fontWeight: 400, marginBottom: 16, lineHeight: 1.2, color: "#3B2114" }}>
-            Want to see where your deals are leaking?
-          </h2>
-          <p style={{ fontSize: 16, lineHeight: 1.65, color: "rgba(59,33,20,0.7)", marginBottom: 32, maxWidth: 480, margin: "0 auto 32px" }}>
-            We run free audits for Atlanta agents. We check your site, how fast leads get a reply, and whether your follow-up runs on its own. Then we show you the leaks and what it takes to close them.
-          </p>
-          <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
-            <a
-              href="https://cal.com/rov-studios-imhphw/15min"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                background: "#90422C",
-                color: "#FFF4E3",
-                padding: "14px 28px",
-                borderRadius: 100,
-                fontFamily: "'Neue Montreal', sans-serif",
-                fontWeight: 700,
-                fontSize: 15,
-                textDecoration: "none",
-                display: "inline-block",
-              }}
-            >
-              Book a free audit
-            </a>
-            <Link
-              href="/web"
-              style={{
-                background: "transparent",
-                color: "#3B2114",
-                padding: "14px 28px",
-                borderRadius: 100,
-                fontFamily: "'Neue Montreal', sans-serif",
-                fontWeight: 600,
-                fontSize: 15,
-                textDecoration: "none",
-                display: "inline-block",
-                border: "1.5px solid rgba(59,33,20,0.25)",
-              }}
-            >
-              See our web services
-            </Link>
-          </div>
-        </section>
+        {/* ── CTA ──
+            A form, not just a booking link. This article ranks for high-intent
+            search, and asking a stranger to put a call on their calendar is a
+            much bigger step than leaving an email. Booking stays available as
+            an equal-weight second option for the ones who prefer it. */}
+        <BlogLeadForm
+          source="web:real-estate-agent-website-atlanta"
+          heading="Want to see where your deals are leaking?"
+          subheading="We run free audits for Atlanta agents. We check your site, how fast leads get a reply, and whether your follow-up runs on its own. Then we show you the leaks and what it takes to close them."
+          messagePlaceholder="How many listings are you running, and where do leads come in now?"
+          secondaryHref="https://cal.com/rov-studios-imhphw/15min"
+          secondaryLabel="Prefer to talk? Book a free audit"
+          secondaryVariant="button"
+          submitLabel="Send me the audit"
+        />
 
       </div>
       <NavigationDock />

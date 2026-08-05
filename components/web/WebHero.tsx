@@ -404,7 +404,14 @@ export default function WebHero() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7, delay: 0.7, ease: "easeOut" }}
                     >
-                        Websites designed with intention, built for impact, crafted to convert.
+                        {/* Was "designed with intention, built for impact, crafted to
+                            convert", which was written before the positioning existed and
+                            says nothing a competitor could not also say. This names the
+                            actual job: the site is where someone decides you are worth
+                            contacting, and what happens after that decides whether they
+                            stay. */}
+                        The site is where they decide you&apos;re worth it. We design that
+                        moment, then wire what happens next so nobody goes cold.
                     </motion.p>
 
                     {/* CTA Buttons */}
@@ -536,8 +543,9 @@ export default function WebHero() {
                         className="text-base sm:text-lg md:text-xl leading-relaxed max-w-[420px] md:ml-auto"
                         style={{ fontFamily: HEADING, fontStyle: "italic" }}
                     >
-                        Designed with intention. Built for impact. We craft websites that clearly
-                        communicate your brand and work harder for your business.
+                        Most sites lose people in the gap between looking good and actually
+                        working. We close it. Design people trust on sight, and the systems
+                        behind it that answer, follow up, and keep them.
                     </p>
                 </motion.div>
             </div>

@@ -1,20 +1,30 @@
 "use client";
 
-// Homepage intake as a short guided flow that GIVES value back: pick a service,
-// pick a scope, get an instant ballpark range (grounded in the real pricing on
-// our service pages), then leave contact details for the exact quote. The value
-// exchange (a real number) is what earns the questions, same pattern as the
-// music quote estimator. Posts to the shared /api/leads route with every answer
-// folded into the email so the lead arrives fully qualified.
+// Homepage intake: a light, two-step conversation starter. Pick the closest
+// service, then leave contact details and a note. Posts to the shared
+// /api/leads route with the service folded into the email so we can send a
+// quick, specific reply instead of a generic "thanks for reaching out".
 //
-// Ranges are TYPICAL bands pulled from:
-//   /web   WebPricingTiers (Launchpad $2k, Conversion Engine $5k) + FAQ ($2k-$10k+)
-//   /video SpecialtyPackages (Property from $500, Event custom) + cited market bands
-//   /ai    4-8 week delivery basis (project + retainer)
-// Shown as ranges, never hard prices, with a "free exact quote" framing.
+// NO PRICING HERE, deliberately. This used to show an instant ballpark, which
+// created two problems. It quoted a floor on the homepage that /web pricing
+// ($2,000) and /web/brief ($2,500) then contradicted, so the number climbed as
+// a visitor went deeper. And it made money the second thing we talked about,
+// before we knew anything about the job. Pricing lives on the service pages,
+// where it has the context to mean something; the homepage's only job is to
+// start the conversation.
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  attributionPayload,
+  captureAttribution,
+  trackBookingClick,
+  trackFormError,
+  trackFormStart,
+  trackFormStep,
+  trackFormSubmit,
+  trackLead,
+} from "@/lib/lead-analytics";
 
 const ORANGE = "#EA9A61";
 const CREAM = "#FFF4E3";
@@ -25,21 +35,11 @@ const BODY = "'Roboto', sans-serif";
 const CARD_BG = "linear-gradient(160deg, #1C1714 0%, #2A1D15 55%, #42201C 100%)";
 const BTN_BG = "linear-gradient(112deg, #42201C 6%, #A64D2B 40%, #B16937 68%, #EA9A61 98%)";
 
-type Estimate = {
-  label: string; // scope label
-  display: string; // "$2,000–$5,000" or "We'll scope it"
-  weeks: string; // "4-6 weeks"
-  note: string;
-  custom?: boolean; // true = no number, we scope it together
-};
-
 type Service = {
   id: string;
   label: string;
   blurb: string;
   icon: React.ReactNode;
-  scopePrompt: string;
-  scopes: Estimate[];
 };
 
 const SERVICES: Service[] = [
@@ -47,111 +47,88 @@ const SERVICES: Service[] = [
     id: "Web",
     label: "Web",
     blurb: "Sites & landing pages that convert",
-    scopePrompt: "What kind of site?",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
         <rect x="3" y="4" width="18" height="14" rx="2" />
         <path d="M3 9h18M8 18v2M16 18v2M6 20h12" />
       </svg>
     ),
-    scopes: [
-      { label: "Landing / one-pager", display: "$1,500–$3,000", weeks: "2-3 weeks", note: "One focused page built to convert." },
-      { label: "Multi-page site", display: "$2,000–$5,000", weeks: "4-6 weeks", note: "A full site, designed and built in Next.js." },
-      { label: "Site + lead systems", display: "$5,000–$10,000+", weeks: "6-8 weeks", note: "The site plus the systems that turn traffic into clients." },
-    ],
   },
   {
     id: "Video",
     label: "Video",
     blurb: "Brand films, drone, music videos",
-    scopePrompt: "What are we shooting?",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
         <rect x="3" y="6" width="14" height="12" rx="2" />
         <path d="M17 10l4-2v8l-4-2" />
       </svg>
     ),
-    scopes: [
-      { label: "Real estate / property", display: "$500–$2,000", weeks: "1-2 weeks", note: "Drone, walkthrough, and social-ready cuts." },
-      { label: "Brand film", display: "$2,000–$8,000", weeks: "3-5 weeks", note: "A story with a point of view, shot and cut." },
-      { label: "Music video", display: "$1,500–$6,000", weeks: "2-4 weeks", note: "Concept to final grade." },
-      { label: "Event coverage", display: "We'll scope it", weeks: "full-day", note: "Full-day shoot, highlight reel, and clips. Priced to the day.", custom: true },
-    ],
   },
   {
     id: "AI Automation",
     label: "AI Automation",
     blurb: "Cut the manual work that eats time",
-    scopePrompt: "How much are we automating?",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
         <rect x="5" y="8" width="14" height="11" rx="2" />
         <path d="M12 8V4M12 3a1 1 0 100 .01M9 13v1M15 13v1M4 14H2M22 14h-2" />
       </svg>
     ),
-    scopes: [
-      { label: "One automation", display: "$1,000–$3,000", weeks: "2-4 weeks", note: "One workflow off your plate: follow-up, scheduling, or support." },
-      { label: "A full system", display: "$3,000–$8,000", weeks: "4-8 weeks", note: "Several automations wired into how you already work." },
-      { label: "Not sure / ongoing", display: "We'll scope it", weeks: "varies", note: "We'll map where the time goes and price it to the work.", custom: true },
-    ],
   },
   {
     id: "Something else",
     label: "Something else",
     blurb: "Brand, strategy, or not sure yet",
-    scopePrompt: "",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="9" />
         <path d="M9.5 9.5a2.5 2.5 0 013.9-2c1.5 1 .6 2.6-.4 3.2-.7.4-1 .8-1 1.8M12 16v.01" />
       </svg>
     ),
-    scopes: [],
   },
 ];
 
 const SOURCE = "home:start-project";
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
-// Path steps depend on the service: "Something else" skips scope + estimate.
-type StepKey = "service" | "scope" | "estimate" | "contact";
+// Two screens: what they need, then how to reach them.
+type StepKey = "service" | "contact";
+const PATH: StepKey[] = ["service", "contact"];
 
 export default function StartProjectForm() {
   const [stepKey, setStepKey] = useState<StepKey>("service");
   const [service, setService] = useState<Service | null>(null);
-  const [estimate, setEstimate] = useState<Estimate | null>(null);
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [error, setError] = useState("");
 
-  const path: StepKey[] = service && service.id !== "Something else"
-    ? ["service", "scope", "estimate", "contact"]
-    : ["service", "contact"];
-  const stepIndex = path.indexOf(stepKey);
+  const stepIndex = PATH.indexOf(stepKey);
+
+  useEffect(() => {
+    captureAttribution();
+  }, []);
 
   function pickService(s: Service) {
+    if (!service) trackFormStart(SOURCE);
+    trackFormStep(SOURCE, 1, `service:${slug(s.label)}`);
     setService(s);
-    setEstimate(null);
-    setTimeout(() => setStepKey(s.id === "Something else" ? "contact" : "scope"), 180);
-  }
-
-  function pickScope(e: Estimate) {
-    setEstimate(e);
-    setTimeout(() => setStepKey("estimate"), 180);
+    setTimeout(() => setStepKey("contact"), 180);
   }
 
   async function onSubmit(ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault();
     if (status === "sending") return;
     const fd = new FormData(ev.currentTarget);
+    trackFormSubmit(SOURCE);
     setStatus("sending");
     setError("");
 
+    // Kept short on purpose: the service line plus their own words is enough
+    // to write a specific reply, which is the whole point of this form.
     const note = (fd.get("message") as string) || "";
     const message = [
       service ? `Service: ${service.label}` : "",
-      estimate ? `Scope: ${estimate.label}` : "",
-      estimate ? `Ballpark shown: ${estimate.display}${estimate.custom ? "" : ` (${estimate.weeks})`}` : "",
-      note ? `\nNote: ${note}` : "",
+      note ? `\nWhat they said:\n${note}` : "",
     ]
       .filter(Boolean)
       .join("\n")
@@ -168,15 +145,20 @@ export default function StartProjectForm() {
           company: fd.get("company"),
           source: service ? `${SOURCE}:${slug(service.label)}` : SOURCE,
           page: typeof window !== "undefined" ? window.location.pathname : "",
+          ...attributionPayload(),
         }),
       });
       const data = await res.json().catch(() => ({}));
-      if (res.ok && data.ok) setStatus("sent");
-      else {
+      if (res.ok && data.ok) {
+        trackLead(SOURCE, { service: service?.label });
+        setStatus("sent");
+      } else {
+        trackFormError(SOURCE, data.code || `http_${res.status}`);
         setStatus("error");
         setError(data.error || "Something went wrong. Please try again.");
       }
     } catch {
+      trackFormError(SOURCE, "network");
       setStatus("error");
       setError("Something went wrong. Please try again.");
     }
@@ -204,10 +186,10 @@ export default function StartProjectForm() {
             <span style={{ fontFamily: LABEL, fontSize: 12, letterSpacing: "0.18em", textTransform: "uppercase", color: ORANGE }}>Start a project</span>
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
               <span style={{ fontFamily: LABEL, fontSize: 12, color: "rgba(255,244,227,0.45)", letterSpacing: "0.1em" }}>
-                {String(stepIndex + 1).padStart(2, "0")} / {String(path.length).padStart(2, "0")}
+                {String(stepIndex + 1).padStart(2, "0")} / {String(PATH.length).padStart(2, "0")}
               </span>
               <div style={{ display: "flex", gap: 5, marginLeft: 6 }}>
-                {path.map((_, i) => (
+                {PATH.map((_, i) => (
                   <span key={i} style={{ height: 3, width: i === stepIndex ? 22 : 10, borderRadius: 3, background: i <= stepIndex ? ORANGE : "rgba(255,244,227,0.2)", transition: "all 0.3s" }} />
                 ))}
               </div>
@@ -216,7 +198,7 @@ export default function StartProjectForm() {
 
           <AnimatePresence mode="wait">
             {stepKey === "service" && (
-              <StepShell key="service" heading="What are you building?" sub="Pick the closest fit. We'll figure out the details together.">
+              <StepShell key="service" heading="What can we help with?" sub="Pick the closest fit. Nothing is locked in, it just tells us who should reply.">
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12 }}>
                   {SERVICES.map((s) => {
                     const active = service?.id === s.id;
@@ -234,59 +216,15 @@ export default function StartProjectForm() {
               </StepShell>
             )}
 
-            {stepKey === "scope" && service && (
-              <StepShell key="scope" heading={service.scopePrompt} sub="Close enough is fine. This is just so the number we show you means something.">
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12 }}>
-                  {service.scopes.map((sc) => {
-                    const active = estimate?.label === sc.label;
-                    return (
-                      <button key={sc.label} type="button" onClick={() => pickScope(sc)} style={serviceCard(active)}>
-                        <span>
-                          <span style={{ display: "block", fontFamily: HEADING, fontSize: 16, color: CREAM, marginBottom: 3 }}>{sc.label}</span>
-                          <span style={{ display: "block", fontFamily: BODY, fontSize: 12.5, color: "rgba(255,244,227,0.5)", lineHeight: 1.4 }}>{sc.note}</span>
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-                <div style={{ marginTop: 24 }}>
-                  <BackButton onClick={() => setStepKey("service")} />
-                </div>
-              </StepShell>
-            )}
-
-            {stepKey === "estimate" && service && estimate && (
-              <StepShell key="estimate" heading={estimate.custom ? "Here's how we'd price it" : "Your ballpark"} sub="A real range from projects like yours, not a random number. Your exact quote is always free.">
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 22 }}>
-                  <Recap items={[service.label, estimate.label]} />
-                </div>
-
-                <div style={{ textAlign: "center", padding: "clamp(20px, 4vw, 32px)", borderRadius: 16, background: "rgba(234,154,97,0.06)", border: "1px solid rgba(234,154,97,0.25)", marginBottom: 24 }}>
-                  <div style={{ fontFamily: HEADING, fontSize: "clamp(2.4rem, 8vw, 4rem)", lineHeight: 1, color: ORANGE, marginBottom: 10 }}>
-                    {estimate.display}
-                  </div>
-                  {!estimate.custom && (
-                    <div style={{ fontFamily: LABEL, fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,244,227,0.6)", marginBottom: 12 }}>
-                      {estimate.weeks}
-                    </div>
-                  )}
-                  <p style={{ fontFamily: BODY, fontSize: 14.5, color: "rgba(255,244,227,0.7)", lineHeight: 1.55, maxWidth: 440, margin: "0 auto" }}>{estimate.note}</p>
-                </div>
-
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
-                  <BackButton onClick={() => setStepKey("scope")} />
-                  <button type="button" onClick={() => setStepKey("contact")} style={primaryBtn}>
-                    {estimate.custom ? "Get my quote" : "Get my exact quote"} &rarr;
-                  </button>
-                </div>
-              </StepShell>
-            )}
-
             {stepKey === "contact" && (
-              <StepShell key="contact" heading="Where do we send it?" sub="We reply within one business day, usually faster.">
-                {(service || estimate) && (
+              <StepShell
+                key="contact"
+                heading="Tell us what you're after."
+                sub="A couple of lines is plenty. We read every one and write back personally, within one business day."
+              >
+                {service && (
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 20 }}>
-                    <Recap items={[service?.label, estimate?.label, estimate ? estimate.display : ""].filter(Boolean) as string[]} />
+                    <Recap items={[service.label]} />
                   </div>
                 )}
 
@@ -296,19 +234,28 @@ export default function StartProjectForm() {
                     <input type="text" name="name" required maxLength={120} placeholder="Your name" aria-label="Your name" style={inputStyle} />
                     <input type="email" name="email" required maxLength={254} placeholder="Email" aria-label="Email" style={inputStyle} />
                   </div>
-                  <textarea name="message" rows={3} maxLength={800} placeholder="Anything else we should know? (optional)" aria-label="Anything else we should know" style={{ ...inputStyle, resize: "vertical", minHeight: 80 }} />
+                  {/* The one field that shapes our reply, so it leads rather
+                      than trailing as an afterthought. */}
+                  <textarea
+                    name="message"
+                    rows={3}
+                    maxLength={800}
+                    placeholder="What are you trying to build or fix?"
+                    aria-label="What are you trying to build or fix?"
+                    style={{ ...inputStyle, resize: "vertical", minHeight: 88 }}
+                  />
 
                   {status === "error" && <p style={{ fontFamily: BODY, fontSize: 13, color: ORANGE, margin: 0, fontWeight: 600 }}>{error}</p>}
 
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginTop: 4 }}>
-                    <BackButton onClick={() => setStepKey(service && service.id !== "Something else" ? "estimate" : "service")} />
+                    <BackButton onClick={() => setStepKey("service")} />
                     <button type="submit" disabled={status === "sending"} style={{ ...primaryBtn, opacity: status === "sending" ? 0.7 : 1, cursor: status === "sending" ? "wait" : "pointer" }}>
-                      {status === "sending" ? "Sending..." : "Send it over"}
+                      {status === "sending" ? "Sending..." : "Start the conversation"}
                     </button>
                   </div>
 
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, marginTop: 8 }}>
-                    <a href="https://cal.com/rov-studios-imhphw/15min" target="_blank" rel="noopener noreferrer" style={{ fontFamily: LABEL, fontSize: 13, color: "rgba(255,244,227,0.6)", textDecoration: "underline" }}>
+                    <a href="https://cal.com/rov-studios-imhphw/15min" target="_blank" rel="noopener noreferrer" onClick={() => trackBookingClick(SOURCE)} style={{ fontFamily: LABEL, fontSize: 13, color: "rgba(255,244,227,0.6)", textDecoration: "underline" }}>
                       Prefer to talk? Book a free call
                     </a>
                     <p style={{ fontFamily: BODY, fontSize: 12, color: "rgba(255,244,227,0.4)", margin: 0 }}>No newsletter, no spam. Just a real reply from the team.</p>
@@ -355,7 +302,7 @@ function BackButton({ onClick }: { onClick: () => void }) {
 
 function SuccessState({ service }: { service: string }) {
   return (
-    <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} style={{ textAlign: "center", padding: "20px 0", position: "relative", zIndex: 1 }}>
+    <motion.div role="status" aria-live="polite" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} style={{ textAlign: "center", padding: "20px 0", position: "relative", zIndex: 1 }}>
       <div style={{ width: 60, height: 60, borderRadius: "50%", background: "rgba(234,154,97,0.12)", border: `1.5px solid ${ORANGE}`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 22px" }}>
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={ORANGE} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <polyline points="20 6 9 17 4 12" />
@@ -363,7 +310,8 @@ function SuccessState({ service }: { service: string }) {
       </div>
       <h2 style={{ fontFamily: HEADING, fontSize: "clamp(1.6rem, 4vw, 2.2rem)", fontWeight: 400, color: CREAM, marginBottom: 12 }}>Got it. We&apos;ll be in touch.</h2>
       <p style={{ fontFamily: BODY, fontSize: 15, color: "rgba(255,244,227,0.65)", lineHeight: 1.6, maxWidth: 440, margin: "0 auto" }}>
-        {service ? `Thanks for the ${service.toLowerCase()} details. ` : ""}We&apos;ll send your exact quote within one business day, usually faster.
+        {service ? `Thanks for the ${service.toLowerCase()} note. ` : ""}A real person is reading it now
+        and will write back within one business day, usually faster.
       </p>
     </motion.div>
   );
@@ -390,7 +338,8 @@ const inputStyle: React.CSSProperties = {
   border: "1.5px solid rgba(255,244,227,0.18)",
   borderRadius: 10,
   padding: "13px 16px",
-  fontSize: 15,
+  // 16px minimum: anything smaller makes iOS Safari zoom the page on focus.
+  fontSize: 16,
   color: CREAM,
   fontFamily: BODY,
   outline: "none",

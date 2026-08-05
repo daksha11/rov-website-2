@@ -2,9 +2,13 @@
 
 // Homepage conversion section: the only place on the homepage a visitor can
 // actually start a conversation (the rest is case-study links + footer mailto).
-// Dark espresso-gradient theme on the black homepage. The intake itself is a
-// short guided questionnaire (StartProjectForm) that pre-qualifies the lead
-// before we ever get on a call.
+// Dark espresso-gradient theme on the black homepage.
+//
+// This deliberately does NOT quote prices. It used to show an instant ballpark,
+// which set a floor on the homepage that the service pages and /web/brief then
+// contradicted, and it front-loaded money before we knew anything about the
+// job. The homepage's job is to start a conversation; the pricing conversation
+// belongs on the service pages and in our reply.
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
@@ -54,7 +58,8 @@ export default function StartProjectSection() {
               margin: "0 auto",
             }}
           >
-            Answer two quick questions and get an instant ballpark on cost and timeline. Your exact quote is always free.
+            Tell us what you&apos;re working on. A real person reads it and writes back within one
+            business day, usually faster.
           </p>
         </motion.div>
 

@@ -266,7 +266,10 @@ export default function BrandHero() {
                     transition={{ duration: 0.8, delay: 0.54 }}
                     className="mt-10 flex flex-wrap items-center justify-center gap-4"
                 >
-                    <GradientButton href="/report">Get a free audit</GradientButton>
+                    {/* Converts on this page. The visibility report is a search
+                        and AI-answers offer, which is the wrong promise to make
+                        to someone here to think about identity. */}
+                    <GradientButton href="#start">Start a brand project</GradientButton>
                     <GradientButton href="#see-it" variant="ghost">
                         See the difference
                     </GradientButton>

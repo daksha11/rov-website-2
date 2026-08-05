@@ -4,6 +4,7 @@ import { NavigationDock } from "@/components/sections/NavDoc";
 import Footer from "@/components/sections/Footer";
 import ServiceLeadSection from "@/components/sections/ServiceLeadSection";
 import ProjectStrip from "@/components/sections/ProjectStrip";
+import BriefCTASection from "@/components/common/BriefCTASection";
 import CrossSellNudges from "@/components/common/CrossSellNudges";
 import BrandHero from "@/components/brand/BrandHero";
 import GradientButton from "@/components/brand/GradientButton";
@@ -76,9 +77,9 @@ const DELIVERABLES: { group: string; items: string[] }[] = [
 // pointed one direction, so this page gets them on day one.
 const GUIDES: { href: string; title: string; blurb: string }[] = [
     {
-        href: "/report",
-        title: "Get a free visibility report",
-        blurb: "We audit your surfaces by hand and send back what to fix first.",
+        href: "/blog/thebando-brand-transformation",
+        title: "A brand rebuild that moved numbers",
+        blurb: "Identity, site, and ordering rebuilt. 689x more online orders in 139 days.",
     },
     {
         href: "/blog/creative-studios-atlanta",
@@ -225,10 +226,15 @@ export default function BrandContent() {
                         ))}
                     </div>
 
-                    {/* Mid-page CTA, where they've just seen the scope. */}
+                    {/* Mid-page CTA, where they've just seen the scope. Form
+                        first, booking as the real alternative: both buttons
+                        used to land in the same place. */}
                     <div className="mt-12 flex flex-wrap items-center gap-4">
-                        <GradientButton href="/report">Get a free audit</GradientButton>
-                        <GradientButton href="#start" variant="ghost">
+                        <GradientButton href="#start">Get a brand read</GradientButton>
+                        <GradientButton
+                            href="https://cal.com/rov-studios-imhphw/15min"
+                            variant="ghost"
+                        >
                             Talk it through
                         </GradientButton>
                     </div>
@@ -237,6 +243,9 @@ export default function BrandContent() {
 
             {/* ── PRICING ── */}
             <BrandPricingTiers />
+
+            {/* Brief entry point, right after the numbers. */}
+            <BriefCTASection service="brand" />
 
             {/* ── APPROACH ── */}
             <OurApproachSection steps={brandSteps} />
