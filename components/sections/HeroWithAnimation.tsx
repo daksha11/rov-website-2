@@ -213,25 +213,6 @@ const Logo = styled.div`
   }
 `;
 
-const Heading = styled.div`
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  text-align: right;
-  font-family: 'Norwige Light', sans-serif;
-  letter-spacing: 0.1em;
-  z-index: 20;
-  pointer-events: auto;
-
-  @media (max-width: 768px) {
-    top: 10px;
-    right: 10px;
-
-    div {
-      font-size: 1.5rem !important;
-    }
-  }
-`;
 
 function imageSequence(config: {
   urls: string[],
@@ -568,11 +549,6 @@ const HeroWithAnimation: React.FC = () => {
               alt="ROV Logo"
             />
           </Logo>
-          <Heading>
-            <div className="text-3xl md:text-5xl font-bold leading-tight md:leading-[1.2]">
-              CREATIVE<br />STUDIO
-            </div>
-          </Heading>
         </HeroOverlay>
 
         <TextOverlay $isVisible={dimOpacity < 1}>

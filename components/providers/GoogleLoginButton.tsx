@@ -110,7 +110,7 @@ export default function GoogleLoginButton() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [signInOpen, setSignInOpen] = useState(false);
-  const [menuPos, setMenuPos] = useState<{ bottom: number; right: number }>({ bottom: 0, right: 0 });
+  const [menuPos, setMenuPos] = useState<{ bottom?: number; top?: number; right: number }>({ bottom: 0, right: 0 });
   const menuRef = useRef<HTMLDivElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
 
@@ -209,11 +209,15 @@ export default function GoogleLoginButton() {
   function toggleMenu() {
     if (!menuOpen && btnRef.current) {
       const r = btnRef.current.getBoundingClientRect();
-      // Anchor the portaled menu just above the initials button.
-      setMenuPos({
-        bottom: Math.round(window.innerHeight - r.top + 12),
-        right: Math.round(Math.max(8, window.innerWidth - r.right)),
-      });
+      // Anchor the portaled menu just above the initials button, unless the
+      // button sits high in the viewport (the nav panel places it wherever it
+      // lands) — then flip below so the menu stays on screen.
+      const right = Math.round(Math.max(8, window.innerWidth - r.right));
+      setMenuPos(
+        r.top < 180
+          ? { top: Math.round(r.bottom + 12), right }
+          : { bottom: Math.round(window.innerHeight - r.top + 12), right }
+      );
     }
     setMenuOpen((prev) => !prev);
   }
@@ -296,7 +300,7 @@ export default function GoogleLoginButton() {
               ref={menuRef}
               style={{
                 position: "fixed",
-                bottom: menuPos.bottom,
+                ...(menuPos.top !== undefined ? { top: menuPos.top } : { bottom: menuPos.bottom }),
                 right: menuPos.right,
                 zIndex: 100000,
                 minWidth: "180px",
