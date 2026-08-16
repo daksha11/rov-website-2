@@ -10,6 +10,7 @@ export function HowToSchema({
   steps,
   totalTime,
   url,
+  baseUrl = "https://www.rovstudios.com",
 }: {
   name: string;
   description: string;
@@ -17,6 +18,9 @@ export function HowToSchema({
   /** ISO 8601 duration, e.g. "P6W" for six weeks. Optional. */
   totalTime?: string;
   url: string;
+  /** This app serves two domains. Music-host pages must not emit step anchors
+   *  pointing at rovstudios, or the steps resolve to URLs that do not exist. */
+  baseUrl?: string;
 }) {
   const schema = {
     "@context": "https://schema.org",
@@ -29,7 +33,7 @@ export function HowToSchema({
       position: i + 1,
       name: s.name,
       text: s.text,
-      url: `https://www.rovstudios.com${url}#step-${i + 1}`,
+      url: `${baseUrl}${url}#step-${i + 1}`,
     })),
   };
 

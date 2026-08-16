@@ -10,6 +10,19 @@ const STUDIOS_HOST = "rovstudios";
 // URLs on the music host (rovmusic.com/sam-suen ← app/sound/sam-suen).
 const MUSIC_SUBPAGES = ["/sam-suen", "/pricing"];
 
+// Music-site sections whose children also get clean top-level URLs, so
+// rovmusic.com/blog/<slug> serves app/sound/blog/<slug>. Exact-match alone
+// cannot cover a dynamic segment, which is why these are matched by prefix.
+const MUSIC_SUBTREES = ["/blog", "/toolkit", "/credits", "/atlanta-studios"];
+
+function musicSubtreeFor(pathname: string): string | null {
+  return (
+    MUSIC_SUBTREES.find(
+      (base) => pathname === base || pathname.startsWith(`${base}/`)
+    ) ?? null
+  );
+}
+
 export async function middleware(request: NextRequest) {
   const host = (request.headers.get("host") || "").toLowerCase();
   const { pathname } = request.nextUrl;
@@ -34,6 +47,10 @@ export async function middleware(request: NextRequest) {
     }
     // Clean URLs for music subpages: /sam-suen serves /sound/sam-suen.
     if (MUSIC_SUBPAGES.includes(pathname)) {
+      return NextResponse.rewrite(new URL(`/sound${pathname}`, request.url));
+    }
+    // Same idea for whole sections: /blog and /blog/<slug> serve /sound/blog*.
+    if (musicSubtreeFor(pathname)) {
       return NextResponse.rewrite(new URL(`/sound${pathname}`, request.url));
     }
     // Keep one canonical URL per page: /sound paths fold back on the music host.

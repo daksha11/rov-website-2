@@ -23,6 +23,12 @@ function formatDate(dateString: string): string {
 }
 
 export function BlogPostHeader({ post }: { post: BlogPost }) {
+  // Both hosts share this header. Only the wordmark and the author link differ,
+  // since "/" and "/blog" already resolve to the right domain via middleware.
+  const isMusic = post.site === "music";
+  const brandName = isMusic ? "ROV Music" : "ROV Studios";
+  const authorHref = post.authorUrl ?? (isMusic ? "/authors" : "/about");
+
   return (
     <section
       style={{
@@ -50,7 +56,7 @@ export function BlogPostHeader({ post }: { post: BlogPost }) {
             fontFamily: "'Neue Montreal', sans-serif",
           }}
         >
-          <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>ROV Studios</Link>
+          <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>{brandName}</Link>
           {" · "}
           <Link href="/blog" style={{ color: "inherit", textDecoration: "none" }}>Blog</Link>
           {post.category ? <>{" · "}{post.category}</> : null}
@@ -96,7 +102,7 @@ export function BlogPostHeader({ post }: { post: BlogPost }) {
               <Image src={getAuthorAvatar(post.author)} alt={post.author} fill sizes="32px" style={{ objectFit: "cover" }} />
             </div>
             <span>
-              <a href="/about" style={{ color: "#3B2114", textDecoration: "none" }}>{post.author}</a>
+              <a href={authorHref} style={{ color: "#3B2114", textDecoration: "none" }}>{post.author}</a>
               {post.authorRole ? <span style={{ color: "rgba(59,33,20,0.6)" }}>, {post.authorRole}</span> : null}
             </span>
           </div>

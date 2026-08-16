@@ -119,6 +119,32 @@ export default function ToolkitPageContent({ id }: { id: string }) {
         </section>
       )}
 
+      {/* The music kit has a commercial counterpart on rovmusic.com. That page is
+          the signal chain we run in paid sessions, written for an artist choosing
+          an engineer; this one is the open library. Different questions, so both
+          stay self-canonical and simply point at each other. */}
+      {id === "music" && (
+        <section style={{ background: "transparent", padding: "0 0 clamp(40px,6vw,72px)" }}>
+          <Bleed>
+            <Rule color={ed.hair} />
+            <a
+              href="https://www.rovmusic.com/toolkit"
+              style={{ display: "block", textDecoration: "none", paddingTop: 28 }}
+            >
+              <Kicker color={pageAccent}>Working with us</Kicker>
+              <h3 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(22px,3.2vw,38px)", letterSpacing: "-0.03em", lineHeight: 1, color: ed.ink, margin: "12px 0 10px" }}>
+                The chain we run on a paying record →
+              </h3>
+              <p style={{ fontFamily: ed.body, fontSize: "clamp(15px,1.7vw,19px)", lineHeight: 1.55, color: ed.inkSoft, margin: 0, maxWidth: 620 }}>
+                These are the picks. Over on ROV Music we walk the whole signal
+                path in order, capture to release, with the mistake that shows up
+                most often at each stage.
+              </p>
+            </a>
+          </Bleed>
+        </section>
+      )}
+
       {/* Prev / next toolkit */}
       <section style={{ background: "transparent", padding: "0 0 clamp(56px,8vw,104px)" }}>
         <Bleed>

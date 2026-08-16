@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import type { BlogPost } from "@/lib/types";
+import type { BlogPost, BlogSite } from "@/lib/types";
 
 const BLOG_DIR = path.join(process.cwd(), "content/blog");
 
@@ -36,6 +36,9 @@ function parseFrontmatter(slug: string, fileContent: string): BlogPost {
 
   return {
     slug,
+    // Anything that is not explicitly "music" belongs to studios. Defaulting the
+    // other way would publish a forgotten frontmatter field to the wrong domain.
+    site: data.site === "music" ? "music" : "studios",
     title: data.title ?? "",
     seoTitle: data.seoTitle ?? undefined,
     description: data.description ?? "",
@@ -56,7 +59,9 @@ function parseFrontmatter(slug: string, fileContent: string): BlogPost {
   };
 }
 
-export function getAllPosts(): BlogPost[] {
+/** Both blogs author into the same content/blog directory and are separated by
+ *  the `site` frontmatter field, so every read path has to filter by host. */
+function getPostsForSite(site: BlogSite): BlogPost[] {
   if (!ensureBlogDir()) return [];
 
   const files = fs.readdirSync(BLOG_DIR).filter((f) => f.endsWith(".md"));
@@ -67,14 +72,28 @@ export function getAllPosts(): BlogPost[] {
       const raw = fs.readFileSync(path.join(BLOG_DIR, filename), "utf-8");
       return parseFrontmatter(slug, raw);
     })
-    .filter((post) => post.published);
+    .filter((post) => post.published && post.site === site);
 
   posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return posts;
 }
 
-export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
+/** rovstudios.com posts. Every existing caller (the studios blog, /resources,
+ *  app/sitemap.ts) keeps its current behaviour because "studios" is the default. */
+export function getAllPosts(): BlogPost[] {
+  return getPostsForSite("studios");
+}
+
+/** rovmusic.com posts. Feeds app/sound/blog and app/music-sitemap.xml. */
+export function getMusicPosts(): BlogPost[] {
+  return getPostsForSite("music");
+}
+
+export async function getPostBySlug(
+  slug: string,
+  site: BlogSite = "studios"
+): Promise<BlogPost | null> {
   if (!ensureBlogDir()) return null;
 
   const filePath = path.join(BLOG_DIR, `${slug}.md`);
@@ -82,6 +101,11 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 
   const raw = fs.readFileSync(filePath, "utf-8");
   const post = parseFrontmatter(slug, raw);
+
+  // A slug is only reachable from its own host. Without this, a music post would
+  // still render at rovstudios.com/blog/<slug> on a direct hit, duplicating the
+  // page across both domains under two different canonicals.
+  if (post.site !== site) return null;
 
   // Extract FAQs from markdown before rendering
   post.faqs = parseFaqs(post.content);
@@ -109,21 +133,17 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   return post;
 }
 
-export function getPostSlugs(): string[] {
-  if (!ensureBlogDir()) return [];
-
-  return fs
-    .readdirSync(BLOG_DIR)
-    .filter((f) => f.endsWith(".md"))
-    .map((f) => f.replace(/\.md$/, ""));
+export function getPostSlugs(site: BlogSite = "studios"): string[] {
+  return getPostsForSite(site).map((post) => post.slug);
 }
 
 export function getRelatedPosts(
   category: string,
   currentSlug: string,
-  limit: number = 3
+  limit: number = 3,
+  site: BlogSite = "studios"
 ): BlogPost[] {
-  return getAllPosts()
+  return getPostsForSite(site)
     .filter((post) => post.category === category && post.slug !== currentSlug)
     .slice(0, limit);
 }

@@ -336,8 +336,16 @@ export interface Industry {
   htmlContent?: string;
 }
 
+/** Which host a post belongs to. This app serves two domains (see middleware.ts),
+ *  and each one has its own blog. "studios" is the default everywhere so a post
+ *  that forgets the frontmatter field can never leak onto the wrong domain. */
+export type BlogSite = "studios" | "music";
+
 export interface BlogPost {
   slug: string;
+  /** Set from the `site:` frontmatter field. Drives which /blog listing, sitemap,
+   *  and canonical host the post belongs to. Defaults to "studios". */
+  site: BlogSite;
   title: string;
   /** Optional shorter title for the <title> tag / OG (keeps SERP titles from
    *  truncating while the long, keyword-rich title stays as the on-page H1). */
