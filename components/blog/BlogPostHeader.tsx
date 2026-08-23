@@ -7,6 +7,7 @@ import { BlogPost } from "@/lib/types";
 const authorAvatars: Record<string, string> = {
   "Suchet Konda": "/teammembers/suchettm.webp",
   "Ayush Basu": "/teammembers/basutm2.webp",
+  "Sam Suen": "/teammembers/samsuentm.webp",
 };
 
 function getAuthorAvatar(author: string): string {
