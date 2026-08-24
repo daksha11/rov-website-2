@@ -39,6 +39,15 @@ export const metadata: Metadata = {
     },
 };
 
+// One Person node, referenced from every recording, so the graph resolves to a
+// single producer entity rather than six unconnected strings.
+const PRODUCER = {
+    "@type": "Person",
+    "@id": `${MUSIC_URL}/authors#ayush-basu`,
+    name: "Ayush Basu",
+    url: `${MUSIC_URL}/authors#ayush-basu`,
+} as const;
+
 function creditsSchema() {
     return {
         "@context": "https://schema.org",
@@ -53,6 +62,17 @@ function creditsSchema() {
                 url: credit.spotifyUrl,
                 sameAs: credit.spotifyUrl,
                 byArtist: { "@type": "MusicGroup", name: credit.artist },
+                // Production and writing are separate schema roles from being the
+                // studio that handled the file. Naming the person as producer and
+                // composer is a far stronger entity claim than a contributor org,
+                // and it ties every release back to the author page.
+                producer: PRODUCER,
+                recordingOf: {
+                    "@type": "MusicComposition",
+                    name: credit.title,
+                    composer: PRODUCER,
+                    lyricist: PRODUCER,
+                },
                 contributor: {
                     "@type": "Organization",
                     name: "Range of View Music",
@@ -101,10 +121,10 @@ export default function CreditsPage() {
                             className="mt-6 max-w-2xl text-lg leading-relaxed text-white/60"
                             style={{ fontFamily: BODY_FONT }}
                         >
-                            Every credit here is named and every release is linked, so you
-                            can go listen instead of taking our word for it. If a studio
-                            will not tell you whose records they worked on, that is worth
-                            noticing.
+                            Produced, written, and composed here before any of it was
+                            mixed. Every credit named, every release linked, so you can go
+                            listen instead of taking our word for it. If a studio will not
+                            tell you whose records they worked on, that is worth noticing.
                         </p>
                     </div>
                 </section>

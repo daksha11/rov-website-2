@@ -49,14 +49,14 @@ const authors: Author[] = [
         role: "Founder & audio engineer",
         avatar: "/teammembers/basutm2.webp",
         bio: [
-            "Runs Range of View, the studio behind both the music work and the brand, web, and video side. Mixes and masters out of Atlanta, and built the pricing model this studio publishes openly because he got tired of watching first-time artists guess at a budget.",
-            "Reaches for stock plugins before third-party ones, and will tell you a record needs re-recording rather than sell you a mix that cannot fix it.",
+            "Producer, writer, and engineer. Runs Range of View, the studio behind both the music work and the brand, web, and video side. Every record on the credits page was produced, written, and composed with him before it was ever mixed, which is the part most studios do not do at all.",
+            "Built the pricing model this studio publishes openly because he got tired of watching first-time artists guess at a budget. Reaches for stock plugins before third-party ones, and will tell you a record needs re-recording rather than sell you a mix that cannot fix it.",
         ],
         sameAs: [
             { label: "Range of View Studios", url: "https://www.rovstudios.com/about" },
             { label: "Instagram", url: "https://www.instagram.com/rangeofviewstudios/" },
         ],
-        writesAbout: "Pricing, the Atlanta scene, and how the business of a first record actually works",
+        writesAbout: "Production, pricing, the Atlanta scene, and how the business of a first record actually works",
     },
     {
         id: "sam-suen",

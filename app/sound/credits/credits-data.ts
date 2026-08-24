@@ -9,9 +9,14 @@
 // components/sound/MusicPlayer.tsx, so nothing here is a new disclosure. Every
 // spotifyUrl below is a real, live track link taken from that component.
 //
-// ROLES ARE CONSERVATIVE. The player demonstrates before/after audio, which
-// evidences mix and master. Where ROV did more than that, widen the role, but
-// only to what can actually be backed up.
+// ROLES confirmed by Ayush on 2026-08-24: he produced, wrote, and co-composed
+// on every title here, not only mixed and mastered them. That is a materially
+// stronger credit than the page originally claimed and it is modelled properly
+// in schema (producer + MusicComposition.composer), not just in display text.
+//
+// Writing and composition credits are also royalty claims. Keep these in step
+// with what is registered on the releases and with the split sheets; if a
+// registration ever disagrees with this page, the registration wins.
 
 export interface Credit {
     /** Track title as released. */
@@ -32,7 +37,7 @@ export const credits: Credit[] = [
     {
         title: "Back in Time",
         artist: "Sam Suen",
-        role: "Artist development, mix and master",
+        role: "Artist development, produced, written, composed, mixed and mastered",
         spotifyUrl: "https://open.spotify.com/track/7MC8JAS25hJWvFXClSzFND",
         cover: "/audio/covers/backintimecover.webp",
         featured: true,
@@ -40,7 +45,7 @@ export const credits: Credit[] = [
     {
         title: "Talk My Shit",
         artist: "DDK",
-        role: "Mix and master",
+        role: "Produced, written, composed, mixed and mastered",
         spotifyUrl: "https://open.spotify.com/track/5Wdqmd6QqHFivymlHbMWg7",
         cover: "/audio/covers/talkmyshitcover.webp",
         featured: true,
@@ -48,14 +53,14 @@ export const credits: Credit[] = [
     {
         title: "Martyr",
         artist: "DDK",
-        role: "Mix and master",
+        role: "Produced, written, composed, mixed and mastered",
         spotifyUrl: "https://open.spotify.com/track/2CDURlegHo60zais4SyNbN",
         cover: "/audio/covers/martyrcover.webp",
     },
     {
         title: "Give Me Your Love",
         artist: "Lorenzo Barns",
-        role: "Mix and master",
+        role: "Produced, written, composed, mixed and mastered",
         spotifyUrl: "https://open.spotify.com/track/38SRgJ4K6R1KaeX9YHRZVn",
         cover: "/audio/covers/gimmeyourlovecober.webp",
         featured: true,
@@ -63,14 +68,14 @@ export const credits: Credit[] = [
     {
         title: "Guap",
         artist: "Dafes",
-        role: "Mix and master",
+        role: "Produced, written, composed, mixed and mastered",
         spotifyUrl: "https://open.spotify.com/track/0xVvZTr5prKOC6Fv9aIfwU",
         cover: "/audio/covers/guapcover.webp",
     },
     {
         title: "YKWIW",
         artist: "Basu",
-        role: "Mix and master",
+        role: "Produced, written, composed, mixed and mastered",
         spotifyUrl: "https://open.spotify.com/track/5lsskTv7eUZYIbLTEtq1cz",
         cover: "/audio/covers/ykwiwcover.webp",
     },
