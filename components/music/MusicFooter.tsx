@@ -57,6 +57,9 @@ export default function MusicFooter() {
             <li>
               <Link href="/sam-suen" className="text-white/80 hover:text-white transition-colors">Sam Suen</Link>
             </li>
+            <li>
+              <Link href="/authors" className="text-white/80 hover:text-white transition-colors">Who we are</Link>
+            </li>
           </ul>
         </div>
 

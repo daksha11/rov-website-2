@@ -6,7 +6,7 @@ site: music
 description: "Mastering makes a good mix competitive and a bad mix loud. Here is what mastering actually does, what it cannot repair, and how to tell which one your record needs."
 author: "Sam Suen"
 authorRole: "Artist & engineer"
-authorUrl: "https://www.rovmusic.com/sam-suen"
+authorUrl: "https://www.rovmusic.com/authors#sam-suen"
 date: "2026-08-16"
 dateModified: "2026-08-16"
 category: "Sound Engineering"

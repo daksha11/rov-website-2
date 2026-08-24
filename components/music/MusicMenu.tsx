@@ -29,6 +29,7 @@ const SECONDARY = [
     { title: "Home", to: "/" },
     { title: "Pricing", to: "/pricing" },
     { title: "Sam Suen", to: "/sam-suen" },
+    { title: "Who we are", to: "/authors" },
 ];
 
 // Curated, not a feed: this is a client component so it cannot read the posts

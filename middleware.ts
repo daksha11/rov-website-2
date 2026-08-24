@@ -13,7 +13,7 @@ const MUSIC_SUBPAGES = ["/sam-suen", "/pricing"];
 // Music-site sections whose children also get clean top-level URLs, so
 // rovmusic.com/blog/<slug> serves app/sound/blog/<slug>. Exact-match alone
 // cannot cover a dynamic segment, which is why these are matched by prefix.
-const MUSIC_SUBTREES = ["/blog", "/toolkit", "/credits", "/atlanta-studios"];
+const MUSIC_SUBTREES = ["/blog", "/toolkit", "/credits", "/atlanta-studios", "/authors"];
 
 function musicSubtreeFor(pathname: string): string | null {
   return (

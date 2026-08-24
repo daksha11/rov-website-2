@@ -17,6 +17,7 @@ export async function GET() {
         { path: "/atlanta-studios", lastModified: "2026-08-05", changeFrequency: "monthly", priority: "0.9" },
         { path: "/toolkit", lastModified: "2026-08-05", changeFrequency: "monthly", priority: "0.9" },
         { path: "/credits", lastModified: "2026-08-05", changeFrequency: "monthly", priority: "0.9" },
+        { path: "/authors", lastModified: "2026-08-24", changeFrequency: "yearly", priority: "0.6" },
         { path: "/blog", lastModified: "2026-08-05", changeFrequency: "weekly", priority: "0.8" },
         { path: "/sam-suen", lastModified: "2026-08-04", changeFrequency: "monthly", priority: "0.8" },
     ];

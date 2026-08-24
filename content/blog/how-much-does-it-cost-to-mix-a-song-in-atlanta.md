@@ -6,7 +6,7 @@ site: music
 description: "Real numbers for mixing and mastering in Atlanta, why almost nobody publishes their rates, and what a first record should actually cost an independent artist."
 author: "Ayush Basu"
 authorRole: "Founder & audio engineer"
-authorUrl: "https://www.rovstudios.com/about"
+authorUrl: "https://www.rovmusic.com/authors#ayush-basu"
 date: "2026-08-16"
 dateModified: "2026-08-16"
 category: "Sound Engineering"
