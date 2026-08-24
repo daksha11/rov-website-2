@@ -100,6 +100,9 @@ const SamSuenFeature = dynamic(() => import("@/components/sound/SamSuenFeature")
     ssr: false,
 });
 
+// Narrative punctuation between the four acts. Light enough to import directly.
+const ActBreak = dynamic(() => import("@/components/sound/ActBreak"));
+
 const FAQSection = dynamic(() => import("@/components/common/FAQSection"), {
     loading: () => (
         <div className="bg-black min-h-[40vh] flex items-center justify-center">
@@ -171,6 +174,16 @@ export default function Page() {
                 $50 to $500. Everything here is self-serve: Stripe for what
                 you send, Cal-with-payment for what you book. No forms. */}
 
+            {/* 03.5 — The act break. Closes the proof act, names the price
+                before the offers do, and routes to /credits, which was only
+                reachable from the menu. */}
+            <ActBreak
+                act="Act two · the song"
+                line="That is what your record could sound like. Here is what it costs."
+                sub="Produced, written, mixed, and mastered here. Every rate below is published in full, and mix and master are included in every recording hour."
+                link={{ label: "Hear all six records, named and linked", href: "/credits" }}
+            />
+
             {/* 04 — Two-path fork (record vs send stems) */}
             <PathFork />
 
@@ -187,6 +200,17 @@ export default function Page() {
             {/* ════ ACT 3 · THE CAREER ═══════════════════════════════
                 Consultative. Breadth first, then their specific gap, then
                 the package that closes it, then the proof it works. */}
+
+            {/* 07.5 — The bridge, and the most important break on the page.
+                Going straight from a $50 mix to a career conversation is the
+                jump where people leave, because nothing explains why the
+                subject just changed. This says it in one line. */}
+            <ActBreak
+                act="Act three · the career"
+                line="A mix makes one song better. This is what makes a catalogue worth something."
+                sub="Most artists are not short a mix. They are short the artwork, the video, the release page, the splits, and the metadata that stops a song landing on a duplicate profile. Nobody sells that, so nobody buys it, and it is the reason good records disappear."
+                link={{ label: "See the whole path we run, capture to release", href: "/toolkit" }}
+            />
 
             {/* 08 — Whatever's missing: the full-service claim, shown as
                 work rather than a price menu. Holds the cover gallery and
@@ -209,6 +233,15 @@ export default function Page() {
             <SamSuenFeature />
 
             {/* ════ ACT 4 · CLOSE ════════════════════════════════════ */}
+
+            {/* 11.5 — Names the objection the close has to answer, so the
+                testimonials below read as evidence rather than decoration. */}
+            <ActBreak
+                act="Act four · the honest part"
+                line="We will tell you when the answer is not us."
+                sub="Sometimes a record needs a re-record rather than a mix, or a room bigger than ours. Saying so costs us the invoice and saves you three of them."
+                link={{ label: "How every Atlanta studio compares, including the ones we are not", href: "/atlanta-studios" }}
+            />
 
             {/* 12 — Testimonials (speed and process, i.e. objections) */}
             <TestimonialsSection testimonials={soundTestimonials} variant="sound" />
