@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { NavigationDock } from "@/components/sections/NavDoc";
 import EditorialFooter from "../_components/EditorialFooter";
 import GalleyFridge from "../_components/GalleyFridge";
 import GalleyScience from "../_components/GalleyScience";
@@ -29,7 +28,6 @@ export default function CookbookPageContent() {
 
   return (
     <div style={{ background: ed.ground, minHeight: "100vh", width: "100%", overflowX: "hidden", color: ed.ink }}>
-      <NavigationDock />
 
       {/* Signature accent bar — gold, full bleed */}
       <div aria-hidden style={{ height: 3, background: accent }} />

@@ -1393,6 +1393,451 @@ input[type="range"]::-webkit-slider-thumb {
   mix-blend-mode: overlay;
 }
 
+/* ── CTRL-A · Navigation ──────────────────────────────────────────
+   A glass bar over the night ground, and a cream panel that is the
+   deliberate inverse of the ROV menu. Small text is gold on the dark
+   bar and dark plum on the cream panel, per the CTRL-A standard. */
+
+:root { --ctrla-nav-h: clamp(56px, 7vw, 68px); }
+
+/* The bar is fixed and opaque, so every CTRL-A page needs its height back
+   as padding or the bar sits on top of the page's own masthead. */
+.ctrla-shell { padding-top: var(--ctrla-nav-h); }
+
+.ctrla-nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: var(--ctrla-nav-h);
+  padding: 0 clamp(14px, 4vw, 40px);
+  background: rgba(15, 8, 32, 0.55);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border-bottom: 1px solid rgba(240, 230, 224, 0.14);
+}
+.ctrla-nav-mark { display: inline-flex; align-items: center; text-decoration: none; }
+.ctrla-nav-right { display: flex; align-items: center; gap: clamp(10px, 1.6vw, 22px); }
+
+.ctrla-nav-link,
+.ctrla-nav-trigger,
+.ctrla-nav-signup {
+  font-family: "Neue Montreal", "Helvetica Neue", Arial, sans-serif;
+  font-size: clamp(10.5px, 1.1vw, 12.5px);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+}
+.ctrla-nav-link { color: #e3c24a; transition: color 0.2s ease; }
+.ctrla-nav-link:hover { color: #f0e6e0; }
+/* The quiz door is the one thing that can afford to disappear first. */
+@media (max-width: 560px) { .ctrla-nav-start { display: none; } }
+
+.ctrla-nav-signup {
+  color: #0f0820;
+  background: #e3c24a;
+  border: none;
+  border-radius: 999px;
+  padding: 9px clamp(14px, 1.8vw, 20px);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.ctrla-nav-signup:hover { background: #f0e6e0; transform: translateY(-1px); }
+
+.ctrla-nav-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #f0e6e0;
+  background: transparent;
+  border: 1px solid rgba(240, 230, 224, 0.24);
+  border-radius: 999px;
+  padding: 9px clamp(12px, 1.6vw, 18px);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.ctrla-nav-trigger:hover { border-color: #e3c24a; color: #e3c24a; }
+.ctrla-nav-burger { display: inline-flex; flex-direction: column; justify-content: space-between; width: 15px; height: 11px; }
+.ctrla-nav-burger span { display: block; height: 1.5px; width: 100%; background: currentColor; transition: transform 0.3s ease, opacity 0.3s ease; }
+.ctrla-nav-burger.is-open span:nth-child(1) { transform: translateY(4.7px) rotate(45deg); }
+.ctrla-nav-burger.is-open span:nth-child(2) { opacity: 0; }
+.ctrla-nav-burger.is-open span:nth-child(3) { transform: translateY(-4.7px) rotate(-45deg); }
+
+/* Shell + scrim */
+.ctrla-nav-shell {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+.ctrla-nav-shell.is-open { visibility: visible; opacity: 1; }
+.ctrla-nav-scrim {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  cursor: default;
+  background: rgba(10, 6, 20, 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* The cream panel */
+.ctrla-nav-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: min(460px, 100%);
+  background: #f0e6e0;
+  border-left: 1px solid rgba(22, 12, 40, 0.14);
+  box-shadow: -30px 0 80px rgba(0, 0, 0, 0.45);
+  transform: translateX(14px);
+  opacity: 0;
+  transition: transform 0.44s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.34s ease;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.ctrla-nav-shell.is-open .ctrla-nav-panel { transform: none; opacity: 1; }
+.ctrla-nav-panel-inner {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: calc(var(--ctrla-nav-h) + clamp(18px, 2.4vw, 28px)) clamp(20px, 3vw, 34px) clamp(20px, 3vw, 30px);
+}
+
+.ctrla-nav-eyebrow {
+  font-family: "Neue Montreal", "Helvetica Neue", Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.ctrla-nav-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(22, 12, 40, 0.14);
+  padding: clamp(13px, 1.7vw, 18px) 0;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: padding-left 0.25s ease;
+}
+.ctrla-nav-item:first-of-type { margin-top: clamp(14px, 2vw, 20px); border-top: 1px solid rgba(22, 12, 40, 0.14); }
+.ctrla-nav-item:hover { padding-left: 8px; }
+.ctrla-nav-item-title {
+  font-family: "Neue Montreal", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 800;
+  font-size: clamp(24px, 3.4vw, 34px);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #160c28;
+}
+.ctrla-nav-item.is-active .ctrla-nav-item-title { color: #4e3d73; }
+.ctrla-nav-item-meta {
+  font-family: "Neue Montreal", "Helvetica Neue", Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(22, 12, 40, 0.6);
+  white-space: nowrap;
+}
+@media (max-width: 420px) { .ctrla-nav-item-meta { display: none; } }
+
+.ctrla-nav-kits { display: flex; flex-direction: column; padding: 4px 0 10px; }
+.ctrla-nav-kit {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 0 9px 4px;
+  text-decoration: none;
+  font-family: "Neue Montreal", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  font-size: clamp(15px, 1.8vw, 18px);
+  letter-spacing: -0.01em;
+  color: rgba(22, 12, 40, 0.84);
+  transition: padding-left 0.22s ease, color 0.2s ease;
+}
+.ctrla-nav-kit:hover { padding-left: 12px; color: #160c28; }
+.ctrla-nav-kit-dot { width: 9px; height: 9px; border-radius: 999px; flex-shrink: 0; }
+
+.ctrla-nav-secondary { display: flex; flex-wrap: wrap; gap: 8px 20px; padding: clamp(14px, 2vw, 20px) 0; }
+.ctrla-nav-sub {
+  font-family: "Neue Montreal", "Helvetica Neue", Arial, sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: rgba(22, 12, 40, 0.7);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.ctrla-nav-sub:hover { color: #160c28; border-bottom-color: rgba(22, 12, 40, 0.4); }
+
+.ctrla-nav-block { padding: clamp(14px, 2vw, 20px) 0; border-top: 1px solid rgba(22, 12, 40, 0.14); }
+.ctrla-nav-meta-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.ctrla-nav-socials { display: flex; align-items: center; gap: 14px; }
+.ctrla-nav-socials a { color: rgba(22, 12, 40, 0.6); transition: color 0.2s ease; }
+.ctrla-nav-socials a:hover { color: #4e3d73; }
+
+.ctrla-nav-foot {
+  margin-top: auto;
+  padding-top: clamp(14px, 2vw, 20px);
+  border-top: 1px solid rgba(22, 12, 40, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.ctrla-nav-rov {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: clamp(13px, 1.5vw, 15px);
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #160c28;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.ctrla-nav-rov:hover { color: #4e3d73; }
+/* GoogleLoginButton themes itself for dark CTRL-A grounds, so its trigger
+   is near-white. On the cream panel that is illegible; restate it here to
+   match the panel's small-caps rather than fork the shared component. */
+.ctrla-nav-login button {
+  color: rgba(22, 12, 40, 0.66) !important;
+  font-family: "Neue Montreal", "Helvetica Neue", Arial, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.22em !important;
+  text-transform: uppercase;
+}
+.ctrla-nav-login button:hover { color: #160c28 !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ctrla-nav-panel,
+  .ctrla-nav-item,
+  .ctrla-nav-kit,
+  .ctrla-nav-signup { transition: none; }
+  .ctrla-nav-item:hover,
+  .ctrla-nav-kit:hover { padding-left: 0; }
+}
+
+/* ── CTRL-A · Start (the intake quiz) ─────────────────────────────
+   House language, not a form: full-bleed accent panels for the craft
+   pick, hairline editorial rows for everything after. No cards, no
+   boxes. Layout and motion live here; only the per-craft accent is
+   passed in from the component as --acc. */
+
+/* Question 01 — four full-height panels that expand under the cursor. */
+.ctrla-panels {
+  display: flex;
+  width: 100%;
+  /* Sized so the headline, the panels, and the Next button all fit above
+     the fold on a laptop. Taller panels push the primary action off-screen. */
+  height: min(52vh, 520px);
+  border-top: 1px solid rgba(240, 230, 224, 0.16);
+  border-bottom: 1px solid rgba(240, 230, 224, 0.16);
+  overflow: hidden;
+}
+.ctrla-panel {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  border: none;
+  border-right: 1px solid rgba(240, 230, 224, 0.16);
+  background: transparent;
+  cursor: pointer;
+  padding: clamp(16px, 2vw, 26px) 0;
+  color: var(--acc);
+  transition: flex-grow 0.5s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease;
+  overflow: hidden;
+}
+.ctrla-panel:last-child { border-right: none; }
+.ctrla-panels:hover .ctrla-panel:hover { flex-grow: 2.2; }
+.ctrla-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 30%, var(--acc) 260%);
+  opacity: 0.16;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.ctrla-panel:hover::before { opacity: 0.34; }
+.ctrla-panel[aria-pressed="true"]::before { opacity: 0.85; }
+.ctrla-panel[aria-pressed="true"] { background: color-mix(in srgb, var(--acc) 22%, transparent); }
+/* Picked panels take the accent as a full-width cap, so a choice is legible
+   at a glance instead of reading as a slightly lighter column. */
+.ctrla-panel[aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--acc);
+}
+.ctrla-panel:focus-visible { outline: 2px solid #e3c24a; outline-offset: -4px; }
+
+/* The craft name, set vertically so it reads up the panel. */
+.ctrla-panel-name {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-weight: 800;
+  font-size: clamp(30px, 5.6vw, 80px);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  white-space: nowrap;
+}
+/* The order stamp and its rule, at the foot of the panel. */
+.ctrla-panel-meta {
+  position: absolute;
+  bottom: clamp(14px, 2vw, 22px);
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+}
+.ctrla-panel-art {
+  position: absolute;
+  top: clamp(14px, 2vw, 26px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(38px, 5vw, 68px);
+  opacity: 0.5;
+  transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.ctrla-panel:hover .ctrla-panel-art { opacity: 0.9; transform: translateX(-50%) translateY(-4px); }
+.ctrla-panel[aria-pressed="true"] .ctrla-panel-art { opacity: 1; }
+
+/* Phones: the panels lie down into four bars, type back to horizontal. */
+@media (max-width: 760px) {
+  .ctrla-panels { flex-direction: column; height: auto; }
+  .ctrla-panel {
+    border-right: none;
+    border-bottom: 1px solid rgba(240, 230, 224, 0.16);
+    padding: clamp(16px, 4vw, 22px) clamp(16px, 5vw, 24px);
+    min-height: 84px;
+    display: flex;
+    align-items: center;
+  }
+  .ctrla-panel:last-child { border-bottom: none; }
+  .ctrla-panels:hover .ctrla-panel:hover { flex-grow: 1; }
+  .ctrla-panel-name { writing-mode: horizontal-tb; transform: none; font-size: clamp(26px, 8vw, 40px); }
+  .ctrla-panel-art { top: 50%; left: auto; right: clamp(16px, 5vw, 24px); transform: translateY(-50%); width: 40px; }
+  .ctrla-panel:hover .ctrla-panel-art { transform: translateY(-50%); }
+  /* On a bar, the order stamp belongs beside the name, not floating in the
+     middle of the row where the desktop column layout leaves it. */
+  .ctrla-panel-meta {
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: auto;
+    margin-right: clamp(52px, 16vw, 72px);
+    gap: 10px;
+  }
+}
+
+/* Questions 02 to 04, and the reveal — editorial rows on hairlines. */
+.ctrla-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: clamp(22px, 2.6vw, 34px) 1fr auto;
+  align-items: center;
+  gap: clamp(12px, 2.2vw, 28px);
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(240, 230, 224, 0.16);
+  padding: clamp(18px, 2.6vw, 34px) clamp(2px, 0.6vw, 8px);
+  cursor: pointer;
+  color: inherit;
+  transition: background 0.3s ease, padding-left 0.3s ease;
+}
+.ctrla-row:first-of-type { border-top: 1px solid rgba(240, 230, 224, 0.16); }
+.ctrla-row:hover { background: rgba(240, 230, 224, 0.045); padding-left: clamp(8px, 1.4vw, 18px); }
+.ctrla-row:focus-visible { outline: 2px solid #e3c24a; outline-offset: -3px; }
+.ctrla-row-node {
+  width: clamp(13px, 1.4vw, 17px);
+  height: clamp(13px, 1.4vw, 17px);
+  border-radius: 999px;
+  border: 2px solid currentColor;
+  justify-self: start;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+.ctrla-row[aria-pressed="true"] .ctrla-row-node {
+  background: currentColor;
+  box-shadow: 0 0 0 5px rgba(227, 194, 74, 0.14);
+}
+.ctrla-row-cta { opacity: 0; transition: opacity 0.25s ease, transform 0.25s ease; }
+.ctrla-row:hover .ctrla-row-cta,
+.ctrla-row[aria-pressed="true"] .ctrla-row-cta { opacity: 1; }
+.ctrla-row:hover .ctrla-row-cta { transform: translateX(4px); }
+
+.ctrla-start-text-btn:hover { color: #f0e6e0 !important; }
+.ctrla-start-door-arrow { transition: transform 0.2s ease; display: inline-block; }
+.ctrla-start-door:hover .ctrla-start-door-arrow { transform: translateX(6px); }
+.ctrla-start-door:focus-visible { outline: 2px solid #e3c24a; outline-offset: 3px; }
+
+.ctrla-invite-backdrop {
+  position: fixed;
+  inset: 0;
+  /* Above the nav bar (1001), since it is a modal and the bar must not
+     float on top of it. */
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(18px, 5vw, 40px);
+  background: rgba(10, 6, 20, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  animation: ctrla-invite-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes ctrla-invite-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.ctrla-invite-card {
+  animation: ctrla-invite-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes ctrla-invite-rise {
+  from { opacity: 0; transform: translateY(18px) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ctrla-panel,
+  .ctrla-panel-art,
+  .ctrla-row,
+  .ctrla-row-cta { transition: none; }
+  .ctrla-panels:hover .ctrla-panel:hover { flex-grow: 1; }
+  .ctrla-row:hover { padding-left: clamp(2px, 0.6vw, 8px); }
+  .ctrla-start-door:hover .ctrla-start-door-arrow { transform: none; }
+  .ctrla-invite-backdrop,
+  .ctrla-invite-card { animation: none; }
+}
+
 /* Page-wide film grain for the CTRL-A issue — a faint magazine texture that
    sits over the whole page (fixed, so it reads like film grain, not wallpaper).
    Kept very low so text stays crisp. */

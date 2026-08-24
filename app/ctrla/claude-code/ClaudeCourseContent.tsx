@@ -5,8 +5,8 @@
 // A living, visual, interactive course on building with Claude
 // Code. Cream light theme (matches the Development toolkit it
 // links from). Structure follows the standalone-page convention:
-// NavigationDock -> accent bar -> back-nav -> hero -> numbered
-// chapters -> FAQ -> CTA -> footer.
+// accent bar -> back-nav -> hero -> numbered chapters -> FAQ ->
+// CTA -> footer. The nav itself is mounted once in app/ctrla/layout.
 //
 // Three real interactive centerpieces:
 //   1. Model Picker      · click a task, the right model lights up
@@ -21,7 +21,6 @@
 import { useEffect, useMemo, useState } from "react";
 import type { ReactNode, CSSProperties } from "react";
 import { motion } from "framer-motion";
-import { NavigationDock } from "@/components/sections/NavDoc";
 import EditorialFooter from "../_components/EditorialFooter";
 import { edLight as ed, Bleed, Kicker, Label, Rule } from "../_components/editorial";
 import CtrlASignup from "../_components/CtrlASignup";
@@ -419,7 +418,6 @@ export default function ClaudeCourseContent() {
 
   return (
     <div style={{ background: ed.ground, minHeight: "100vh", width: "100%", overflowX: "hidden", color: ed.ink }}>
-      <NavigationDock />
 
       {/* Signature accent bar */}
       <div aria-hidden style={{ height: 3, background: PLUM }} />

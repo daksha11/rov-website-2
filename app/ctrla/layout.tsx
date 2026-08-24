@@ -1,3 +1,6 @@
+import StartInvite from "./_components/StartInvite";
+import CtrlANav from "./_components/CtrlANav";
+
 export default function CtrlALayout({ children }: { children: React.ReactNode }) {
   return (
     <>
@@ -25,7 +28,15 @@ export default function CtrlALayout({ children }: { children: React.ReactNode })
           `,
         }}
       />
-      {children}
+      {/* The issue's own nav, mounted once here so every CTRL-A route gets
+          it and none of them mount the site-wide ROV NavigationDock. */}
+      <CtrlANav />
+      {/* Holds the fixed bar's height so no page renders underneath it. */}
+      <div className="ctrla-shell">{children}</div>
+      {/* The one-time offer to take the intake quiz. Mounted here so it can
+          appear anywhere in the issue; it silences itself for good once the
+          reader answers or dismisses it. */}
+      <StartInvite />
     </>
   );
 }

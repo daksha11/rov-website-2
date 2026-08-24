@@ -10,7 +10,6 @@
 // ═══════════════════════════════════════════════════════
 
 import { useEffect } from "react";
-import { NavigationDock } from "@/components/sections/NavDoc";
 import CosmicBackdrop from "../../_components/CosmicBackdrop";
 import EditorialFooter from "../../_components/EditorialFooter";
 import { ed, Bleed, Rule, Label, Kicker } from "../../_components/editorial";
@@ -42,7 +41,6 @@ export default function VolArchiveContent({ n }: { n: number }) {
   return (
     <div style={{ background: "transparent", minHeight: "100vh", width: "100%", overflowX: "hidden" }}>
       <CosmicBackdrop />
-      <NavigationDock />
 
       {/* Signature gold accent bar */}
       <div aria-hidden style={{ height: 3, background: ed.gold, position: "relative", zIndex: 5 }} />

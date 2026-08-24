@@ -8,7 +8,6 @@
 // ═══════════════════════════════════════════════════════
 
 import { useEffect } from "react";
-import { NavigationDock } from "@/components/sections/NavDoc";
 import EditorialFooter from "../_components/EditorialFooter";
 import CosmicBackdrop from "../_components/CosmicBackdrop";
 import { FeatureStory } from "../_components/DreamAsiaSections";
@@ -32,7 +31,6 @@ export default function DreamAsiaFeatureContent() {
   return (
     <div style={{ background: "transparent", minHeight: "100vh", width: "100%", overflowX: "hidden" }}>
       <CosmicBackdrop />
-      <NavigationDock />
 
       {/* Back-nav masthead */}
       <div style={{ background: "transparent", position: "relative", zIndex: 5 }}>

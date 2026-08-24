@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { NavigationDock } from "@/components/sections/NavDoc";
 import EditorialFooter from "../../_components/EditorialFooter";
 import ToolkitAtmosphere from "../../_components/ToolkitAtmosphere";
 import { ToolkitDetail } from "../../_components/Toolkits";
@@ -47,7 +46,6 @@ export default function ToolkitPageContent({ id }: { id: string }) {
   return (
     <div className="ctrla-light" style={{ background: "transparent", minHeight: "100vh", width: "100%", overflowX: "clip" }}>
       <ToolkitAtmosphere />
-      <NavigationDock />
 
       {/* Signature accent bar — this sector's colour, full bleed */}
       <div aria-hidden style={{ height: 3, background: pageAccent }} />

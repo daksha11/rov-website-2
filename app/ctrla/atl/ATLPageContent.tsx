@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { NavigationDock } from "@/components/sections/NavDoc";
 import EditorialFooter from "../_components/EditorialFooter";
 import Cookbook from "../_components/Cookbook";
 import { ATLRoots, ATLMap, ATLBroll, ATLCustoms, type AtlStamp } from "../_components/ATLSections";
@@ -69,7 +68,6 @@ export default function ATLPageContent() {
 
   return (
     <div style={{ background: ed.ground, minHeight: "100vh", width: "100%", overflowX: "hidden", color: ed.ink }}>
-      <NavigationDock />
 
       {/* Signature accent bar — gold, full bleed */}
       <div aria-hidden style={{ height: 3, background: accent }} />

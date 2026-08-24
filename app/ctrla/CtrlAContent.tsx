@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { NavigationDock } from "@/components/sections/NavDoc";
 import CosmicBackdrop from "./_components/CosmicBackdrop";
 import GooeyLogoMorph from "./_components/GooeyLogoMorph";
 import EditorialFooter from "./_components/EditorialFooter";
@@ -248,6 +247,32 @@ function Cover() {
                   }}
                 >
                   Or try the Brand Kit Generator <span aria-hidden>→</span>
+                </a>
+              </div>
+
+              {/* The permanent door to the intake quiz. Deliberately quiet:
+                  the auto-invite does the asking, so this only has to catch
+                  the reader who dismissed it and changed their mind. */}
+              <div style={{ marginTop: "clamp(14px,1.8vw,20px)" }}>
+                <a
+                  href="/ctrla/start"
+                  className="ctrla-start-text-btn"
+                  style={{
+                    fontFamily: ed.mono,
+                    fontSize: "clamp(11px,1.2vw,13px)",
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                    color: ed.inkFaint,
+                    textDecoration: "none",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 8,
+                  }}
+                >
+                  Not sure where to start? Four questions{" "}
+                  <span aria-hidden style={{ color: ed.gold }}>
+                    →
+                  </span>
                 </a>
               </div>
             </div>
@@ -787,7 +812,6 @@ export default function CtrlAContent() {
     <div style={{ background: "transparent", minHeight: "100vh", width: "100%", overflowX: "hidden" }}>
       <CosmicBackdrop />
       {loading && <CtrlALoader onDone={dismissLoader} />}
-      <NavigationDock />
 
       {/* Lock In — persistent focus-space access, summonable from anywhere */}
       <LockInChip />

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { NavigationDock } from "@/components/sections/NavDoc";
 import EditorialFooter from "../_components/EditorialFooter";
 import CreditsPanel from "../_components/CreditsPanel";
 import { ed, Bleed, Rule, Label, Kicker } from "../_components/editorial";
@@ -26,7 +25,6 @@ export default function CreditsPageContent() {
 
   return (
     <div style={{ background: ed.ground, minHeight: "100vh", width: "100%", overflowX: "hidden", color: ed.ink }}>
-      <NavigationDock />
 
       <div aria-hidden style={{ height: 3, background: accent }} />
 

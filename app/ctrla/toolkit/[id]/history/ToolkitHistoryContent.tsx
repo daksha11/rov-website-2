@@ -12,7 +12,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode, CSSProperties } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { NavigationDock } from "@/components/sections/NavDoc";
 import EditorialFooter from "../../../_components/EditorialFooter";
 import ToolkitAtmosphere from "../../../_components/ToolkitAtmosphere";
 import {
@@ -248,7 +247,6 @@ export default function ToolkitHistoryContent({ id }: { id: string }) {
   return (
     <div className="ctrla-light" style={{ background: "transparent", minHeight: "100vh", width: "100%", overflowX: "hidden" }}>
       <ToolkitAtmosphere />
-      <NavigationDock />
 
       {/* Signature accent bar */}
       <div aria-hidden style={{ height: 3, background: pageAccent }} />

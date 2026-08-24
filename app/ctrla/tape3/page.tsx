@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Tape3Content from "./Tape3Content";
-import { NavigationDock } from "@/components/sections/NavDoc";
 import Footer from "@/components/sections/Footer";
 
 export const metadata: Metadata = {
@@ -27,7 +26,6 @@ export default function Tape3Page() {
         <>
             <Tape3Content />
             <Footer />
-            <NavigationDock />
         </>
     );
 }

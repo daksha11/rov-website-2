@@ -11,7 +11,6 @@
 
 import { useEffect } from "react";
 import type { ReactNode } from "react";
-import { NavigationDock } from "@/components/sections/NavDoc";
 import EditorialFooter from "../../_components/EditorialFooter";
 import { ed, Bleed, Rule, Label, Kicker } from "../../_components/editorial";
 
@@ -218,7 +217,6 @@ export default function LicenseContent() {
 
   return (
     <div style={{ background: ed.ground, minHeight: "100vh", width: "100%", overflowX: "hidden", color: ed.ink }}>
-      <NavigationDock />
       <div aria-hidden style={{ height: 3, background: ed.gold }} />
 
       {/* Back-nav masthead */}
