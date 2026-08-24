@@ -17,18 +17,26 @@ import { credits } from "@/app/sound/credits/credits-data";
 // Replaced the old bottom dock, which could only ever hold four links and left
 // /toolkit, /credits, /atlanta-studios and /blog unreachable from the chrome.
 
-// The pages that carry the weight. Biggest type, only accent color.
+// Ordered as the artist's journey, not as a list of what we built: hear the
+// difference, see it is real, understand the process, find out the price.
+// Titles are in artist language. "The Chain" and "Journal" were internal words
+// that told a visitor nothing.
+//
+// /atlanta-studios is deliberately NOT here. It sends readers to Patchwerk and
+// Meadowlark by design, which is right for cold search traffic landing on it
+// and wrong for someone already on this site. It stays linked from the posts
+// and from pricing, where the comparison is the point.
 const PRIMARY = [
-    { title: "The Chain", to: "/toolkit", note: "How a record moves through our room, stage by stage" },
-    { title: "Credits", to: "/credits", note: "Every record named and linked. Go listen" },
-    { title: "Atlanta Studios", to: "/atlanta-studios", note: "The honest comparison, including the rooms we are not" },
-    { title: "Journal", to: "/blog", note: "Session notes, plugin breakdowns, release strategy" },
+    { title: "Hear the difference", to: "/credits", note: "Every record named and linked. Go listen for yourself" },
+    { title: "How we make records", to: "/toolkit", note: "Produced, written, mixed, mastered. The whole path" },
+    { title: "What it costs", to: "/pricing", note: "Published in full, because you should not have to ask" },
+    { title: "Free record audit", to: "/#audit", note: "Tell us where the song is stuck. We will tell you honestly" },
 ];
 
 const SECONDARY = [
     { title: "Home", to: "/" },
-    { title: "Pricing", to: "/pricing" },
     { title: "Sam Suen", to: "/sam-suen" },
+    { title: "Guides", to: "/blog" },
     { title: "Who we are", to: "/authors" },
 ];
 
@@ -220,12 +228,12 @@ export function MusicMenu({ className }: { className?: string }) {
                                     ))}
                                     <li>
                                         <Link
-                                            href="/#audit"
+                                            href="/atlanta-studios"
                                             onClick={close}
                                             style={DISPLAY}
                                             className="inline-block text-[14px] md:text-[15px] font-bold uppercase tracking-[0.2em] text-white/75 hover:text-white transition-colors focus-visible:outline-none focus-visible:text-[#EA9A61]"
                                         >
-                                            Free audit
+                                            ATL studios
                                         </Link>
                                     </li>
                                 </ul>
