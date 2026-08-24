@@ -9,7 +9,7 @@ import { BlogPostingSchema } from "@/components/blog/BlogPostingSchema";
 import { BreadcrumbSchema } from "@/components/schema/BreadcrumbSchema";
 import { FAQPageSchema } from "@/components/schema/FAQPageSchema";
 import { BlogFAQ } from "@/components/blog/BlogFAQ";
-import { MusicNav } from "@/components/music/MusicNav";
+import { MusicMenu } from "@/components/music/MusicMenu";
 import MusicFooter from "@/components/music/MusicFooter";
 import { IntakeProvider } from "@/components/music/IntakeContext";
 
@@ -112,7 +112,7 @@ export default async function MusicBlogPostPage({
             </article>
 
             <MusicFooter />
-            <MusicNav />
+            <MusicMenu />
         </IntakeProvider>
     );
 }

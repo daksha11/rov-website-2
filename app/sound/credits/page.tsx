@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { MusicNav } from "@/components/music/MusicNav";
+import { MusicMenu } from "@/components/music/MusicMenu";
 import MusicFooter from "@/components/music/MusicFooter";
 import { IntakeProvider } from "@/components/music/IntakeContext";
 import { BreadcrumbSchema } from "@/components/schema/BreadcrumbSchema";
@@ -316,7 +316,7 @@ export default function CreditsPage() {
             </main>
 
             <MusicFooter />
-            <MusicNav />
+            <MusicMenu />
         </IntakeProvider>
     );
 }

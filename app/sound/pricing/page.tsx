@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { MusicNav } from "@/components/music/MusicNav";
+import { MusicMenu } from "@/components/music/MusicMenu";
 import MusicFooter from "@/components/music/MusicFooter";
 import { IntakeProvider } from "@/components/music/IntakeContext";
 import PricingTable from "@/components/sound/PricingTable";
@@ -49,7 +49,7 @@ export default function Page() {
             <PricingTable />
             <FAQSection items={soundFaqItems} />
             <MusicFooter />
-            <MusicNav />
+            <MusicMenu />
         </IntakeProvider>
     );
 }

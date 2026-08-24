@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { MusicNav } from "@/components/music/MusicNav";
+import { MusicMenu } from "@/components/music/MusicMenu";
 import MusicFooter from "@/components/music/MusicFooter";
 import { IntakeProvider } from "@/components/music/IntakeContext";
 import SamSuenCaseStudy from "@/components/sound/SamSuenCaseStudy";
@@ -41,7 +41,7 @@ export default function Page() {
             ]} />
             <SamSuenCaseStudy />
             <MusicFooter />
-            <MusicNav />
+            <MusicMenu />
         </IntakeProvider>
     );
 }

@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Instagram } from "lucide-react";
-// Same reasoning as MusicNav: "start a session" is the paid Studio Session,
-// not the unattached generic 15-minute call.
+// "Start a session" is the paid Studio Session, not the unattached generic
+// 15-minute call.
 import { CAL_LINKS, CONTACT_EMAIL } from "@/data/soundPricing";
 import CalBookButton from "@/components/sound/CalBookButton";
 import FooterRoleSwitch from "@/components/music/FooterRoleSwitch";
@@ -34,9 +34,10 @@ export default function MusicFooter() {
       </div>
 
       {/* Columns */}
-      <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8 px-6 md:px-12 pb-16">
-        {/* Services */}
-        <div className="flex flex-col gap-3 pl-0 md:pl-8">
+      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-6 md:px-12 pb-16">
+        {/* Studio. These were plain text before, which left /toolkit, /credits,
+            /atlanta-studios and /blog unreachable from the footer entirely. */}
+        <div className="flex flex-col gap-3 pl-0 md:pl-8 lg:pl-0">
           <h3
             className="text-2xl md:text-4xl uppercase tracking-wider mb-2 font-bold"
             style={{ fontFamily: "Norwige, sans-serif" }}
@@ -44,10 +45,39 @@ export default function MusicFooter() {
             STUDIO
           </h3>
           <ul className="flex flex-col gap-1 text-base md:text-xl" style={{ fontFamily: "Roboto, sans-serif" }}>
-            <li className="text-white/80">Mixing</li>
-            <li className="text-white/80">Mastering</li>
-            <li className="text-white/80">Recording</li>
-            <li className="text-white/80">Cover Art &amp; Visuals</li>
+            <li>
+              <Link href="/pricing" className="text-white/80 hover:text-white transition-colors">Pricing</Link>
+            </li>
+            <li>
+              <Link href="/toolkit" className="text-white/80 hover:text-white transition-colors">How we mix</Link>
+            </li>
+            <li>
+              <Link href="/credits" className="text-white/80 hover:text-white transition-colors">Credits</Link>
+            </li>
+            <li>
+              <Link href="/sam-suen" className="text-white/80 hover:text-white transition-colors">Sam Suen</Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Read */}
+        <div className="flex flex-col gap-3">
+          <h3
+            className="text-2xl md:text-4xl uppercase tracking-wider mb-2 font-bold"
+            style={{ fontFamily: "Norwige, sans-serif" }}
+          >
+            READ
+          </h3>
+          <ul className="flex flex-col gap-1 text-base md:text-xl" style={{ fontFamily: "Roboto, sans-serif" }}>
+            <li>
+              <Link href="/blog" className="text-white/80 hover:text-white transition-colors">The journal</Link>
+            </li>
+            <li>
+              <Link href="/atlanta-studios" className="text-white/80 hover:text-white transition-colors">Atlanta studios</Link>
+            </li>
+            <li>
+              <Link href="/blog/how-much-does-it-cost-to-mix-a-song-in-atlanta" className="text-white/80 hover:text-white transition-colors">What a mix costs</Link>
+            </li>
           </ul>
         </div>
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
-import { MusicNav } from "@/components/music/MusicNav";
+import { MusicMenu } from "@/components/music/MusicMenu";
 import MusicFooter from "@/components/music/MusicFooter";
 import { IntakeProvider } from "@/components/music/IntakeContext";
 import RoleGate from "@/components/music/RoleGate";
@@ -221,7 +221,7 @@ export default function Page() {
 
             {/* Music-branded footer + nav (rovmusic shell) */}
             <MusicFooter />
-            <MusicNav />
+            <MusicMenu />
             <RoleToast />
             <RoleGate />
         </IntakeProvider>

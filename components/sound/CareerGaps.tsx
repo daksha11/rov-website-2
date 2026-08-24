@@ -147,7 +147,7 @@ export default function CareerGaps() {
           {/* The pricing line used to float alone below the visuals, reading as a
               stray paragraph. It belongs here, as a link to the real card. */}
           <Link
-            href="/sound/pricing"
+            href="/pricing"
             className="group shrink-0 inline-flex items-center gap-2 text-[#EA9A61]/85 hover:text-[#EA9A61] text-sm font-semibold transition-colors whitespace-nowrap"
             style={{ fontFamily: HEADING, letterSpacing: "0.03em" }}
           >

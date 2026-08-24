@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getMusicPosts } from "@/lib/blog";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { BreadcrumbSchema } from "@/components/schema/BreadcrumbSchema";
-import { MusicNav } from "@/components/music/MusicNav";
+import { MusicMenu } from "@/components/music/MusicMenu";
 import MusicFooter from "@/components/music/MusicFooter";
 import { IntakeProvider } from "@/components/music/IntakeContext";
 
@@ -88,7 +88,7 @@ export default function MusicBlogPage() {
             </section>
 
             <MusicFooter />
-            <MusicNav />
+            <MusicMenu />
         </IntakeProvider>
     );
 }
