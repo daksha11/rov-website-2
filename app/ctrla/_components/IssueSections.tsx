@@ -7,6 +7,7 @@
 
 import Image from "next/image";
 import { ed, Bleed, Rule, Label, Kicker, SweepText } from "./editorial";
+import Vue from "./vue/Vue";
 import { taste, onRepeat, artForm, spotlight, events, eventSources, eventsCover, vueClose } from "../data";
 
 // ── Taste — the throughline manifesto ──────────────────
@@ -622,9 +623,11 @@ export function CondensedEvents() {
 export function VueClose() {
   return (
     <section style={{ background: "transparent", padding: "clamp(40px,6vw,88px) 0" }}>
+      {/* The positioning context is the body, not the section, so Vue's feet
+          land on the rule rather than on the section's bottom padding. */}
+      <div className="ctrla-vue-close">
       <Bleed>
-        {/* Vue mascot illustration goes here (skipped for now) */}
-        <div style={{ maxWidth: 660, borderLeft: `3px solid ${ed.plum}`, paddingLeft: "clamp(20px,3vw,40px)" }}>
+        <div className="ctrla-vue-close-copy" style={{ maxWidth: 660, borderLeft: `3px solid ${ed.plum}`, paddingLeft: "clamp(20px,3vw,40px)" }}>
           <Kicker color={ed.gold} style={{ marginBottom: 20 }}>{vueClose.eyebrow}</Kicker>
           <p style={{ fontFamily: ed.body, fontSize: "clamp(16px,1.9vw,21px)", lineHeight: 1.7, color: ed.ink, margin: "0 0 24px" }}>
             {vueClose.body}
@@ -644,6 +647,26 @@ export function VueClose() {
           <Label color={ed.inkSoft}>{vueClose.signature}</Label>
         </div>
       </Bleed>
+
+      {/* Vue leans in from the edge of the page, not from inside the gutter —
+          she sits outside <Bleed> on purpose, flush to the section's right
+          edge, so the cut in the art lands on the browser edge and the arm she
+          does not have is simply out of frame. */}
+      <Vue
+        className="ctrla-vue-close-figure"
+        pose="leaning"
+        bleed
+        height="clamp(220px, 28vw, 400px)"
+        mood="calm"
+      />
+
+      {/* The line she is braced over. Last child, so `bottom: 0` on the figure
+          sets her down exactly on it. */}
+      <Bleed>
+        <div aria-hidden style={{ height: 1, background: ed.hair }} />
+      </Bleed>
+      </div>
     </section>
   );
 }
+

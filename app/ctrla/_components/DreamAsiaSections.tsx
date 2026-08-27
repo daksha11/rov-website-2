@@ -22,6 +22,7 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { ed, Bleed, Rule, Label, Kicker } from "./editorial";
+import { VueBust } from "./vue/Vue";
 import { currentVolume, type Volume } from "../_volumes";
 import type {
   Bts,
@@ -173,26 +174,15 @@ function MediaBlock({
 function VueNote({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) {
   return (
     <div style={{ display: "flex", gap: 14, alignItems: "flex-start", maxWidth: 460 }}>
-      {/* Vue mascot drop-in slot */}
-      <span
-        aria-hidden
-        style={{
-          flexShrink: 0,
-          width: 38,
-          height: 38,
-          borderRadius: "50%",
-          border: `1px solid ${ed.amber}`,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontFamily: ed.mono,
-          fontSize: 8,
-          letterSpacing: "0.1em",
-          color: ed.amber,
-        }}
-      >
-        VUE
-      </span>
+      {/* Vue herself, as the byline on her own pull-quote. `focused` because
+          she is reading the line to you, not announcing it. */}
+      <VueBust
+        pose="pointing"
+        colorway={dark ? "purple" : "clay"}
+        size={38}
+        mood="focused"
+        style={{ border: `1px solid ${ed.amber}` }}
+      />
       <p
         style={{
           fontFamily: ed.serif,

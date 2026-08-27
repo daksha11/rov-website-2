@@ -13,6 +13,10 @@ import MedicineCabinet from "../../_components/MedicineCabinet";
 import { Component as MusicReactiveHero } from "@/components/ui/music-reactive-hero-section";
 // Toolkit pages run the LIGHT theme — the airy, cream reveal from the loader.
 import { edLight as ed, Bleed, Rule, Label, Kicker, legibleAccent } from "../../_components/editorial";
+import Vue from "../../_components/vue/Vue";
+import VueAside from "../../_components/vue/VueAside";
+import VueHandoff from "../../_components/vue/VueHandoff";
+import { vueNarration } from "../../_components/vue/narration";
 import { toolkitSections } from "../../data";
 import { currentVolume } from "../../_volumes";
 
@@ -42,6 +46,9 @@ export default function ToolkitPageContent({ id }: { id: string }) {
 
   // Gold is illegible on the cream light theme — remap the sector accent.
   const pageAccent = legibleAccent(section.accentColor);
+  // Vue narrates the sector in three beats. A toolkit with no lines written
+  // yet simply renders without her rather than with a placeholder.
+  const vue = vueNarration(id);
 
   return (
     <div className="ctrla-light" style={{ background: "transparent", minHeight: "100vh", width: "100%", overflowX: "clip" }}>
@@ -71,6 +78,34 @@ export default function ToolkitPageContent({ id }: { id: string }) {
         </div>
       )}
 
+      {/* BEAT 1 — Vue opens the sector. She stands before the craft guide, so
+          the first voice on the page is the guide's, not the tool list's. The
+          thread draws from her palm to the line she is saying. */}
+      {vue && (
+        <section style={{ background: "transparent", padding: "clamp(20px,3vw,40px) 0 clamp(8px,1.5vw,20px)" }}>
+          <Bleed>
+            <VueHandoff pose="showing" theme={ed} height={240}>
+              <Kicker color={pageAccent}>Vue · {section.title}</Kicker>
+              <p
+                data-vue-target
+                style={{
+                  fontFamily: ed.serif,
+                  fontStyle: "italic",
+                  fontWeight: 400,
+                  fontSize: "clamp(19px,2.6vw,34px)",
+                  lineHeight: 1.28,
+                  color: ed.ink,
+                  margin: "clamp(12px,1.6vw,18px) 0 0",
+                  maxWidth: 720,
+                }}
+              >
+                {vue.open}
+              </p>
+            </VueHandoff>
+          </Bleed>
+        </section>
+      )}
+
       {/* Music, Design, and Web Dev sectors open with the founder's craft
           guide, above the tools. Each is Part 01; the stations are Part 02. */}
       {id === "music" && <MusicGuide accent={pageAccent} />}
@@ -81,6 +116,15 @@ export default function ToolkitPageContent({ id }: { id: string }) {
       {/* Flagship sectors with curated Signals get the immersive Stations
           experience; the rest fall back to the editorial detail for now.
           `tk-stations` is the shared jump-nav anchor for Part 02. */}
+      {/* BEAT 2 — Vue hands over to the tool list itself. */}
+      {vue && (
+        <section style={{ background: "transparent", padding: "clamp(18px,2.6vw,34px) 0 0" }}>
+          <Bleed>
+            <VueAside theme={ed} eyebrow="Vue · on the kit">{vue.stations}</VueAside>
+          </Bleed>
+        </section>
+      )}
+
       <div id="tk-stations" style={{ scrollMarginTop: 56 }}>
         {section.signals ? <ToolkitStations section={section} theme={ed} hideKicker={id === "music" || id === "design" || id === "web-dev" || id === "video"} /> : <ToolkitDetail section={section} />}
       </div>
@@ -140,6 +184,27 @@ export default function ToolkitPageContent({ id }: { id: string }) {
               </p>
             </a>
           </Bleed>
+        </section>
+      )}
+
+      {/* BEAT 3 — Vue signs off the sector, leaning in from the page edge the
+          way she closes the magazine. `bleed` is not optional on this pose:
+          the art has no arm on the side the edge is meant to cover. */}
+      {vue && (
+        <section style={{ background: "transparent", padding: "clamp(24px,4vw,56px) 0 0" }}>
+          <div className="ctrla-vue-close">
+          <Bleed>
+            <div className="ctrla-vue-close-copy" style={{ maxWidth: 620 }}>
+              <VueAside theme={ed} pose="pointing" mood="calm" eyebrow={`Vue · ${section.title}, signing off`}>
+                {vue.close}
+              </VueAside>
+            </div>
+          </Bleed>
+          <Vue className="ctrla-vue-close-figure" pose="leaning" colorway="clay" bleed height="clamp(200px, 26vw, 360px)" mood="calm" />
+          <Bleed>
+            <div aria-hidden style={{ height: 1, background: ed.hair }} />
+          </Bleed>
+          </div>
         </section>
       )}
 

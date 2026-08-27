@@ -4424,6 +4424,66 @@ input[type="range"]::-webkit-slider-thumb {
   transform: scaleY(0);
   transition: transform 0.14s linear;
 }
+/* Vue's closing note. She is anchored to the right edge of the page and
+   clipped by it (see the `edge` entry for the `leaning` pose) so the side of
+   the art that has no arm reads as being behind the edge rather than missing.
+   On desktop she overlaps the copy column's empty right half; below 900px the
+   copy is full width, so she drops underneath it and still bleeds off. */
+.ctrla-vue-close {
+  position: relative;
+  /* Vue is absolutely positioned against this box's bottom edge, so the box
+     has to be at least as tall as she is or she overflows upward into the
+     section above. The copy sits at the bottom, beside her feet. */
+  min-height: clamp(220px, 28vw, 400px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+/* Bleed sets `margin: 0 auto`, and auto cross-axis margins switch a flex item
+   from stretch to shrink-to-fit — which silently narrows the copy column to
+   its content width. Give the in-flow children a full-width basis so Bleed
+   centres against the page the way it does everywhere else. */
+.ctrla-vue-close > *:not(.ctrla-vue-close-figure) {
+  width: 100%;
+}
+.ctrla-vue-close-figure {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+@media (max-width: 900px) {
+  .ctrla-vue-close-figure {
+    position: static;
+    margin-left: auto;
+    margin-bottom: -1px;
+  }
+  .ctrla-vue-close-copy { margin-bottom: clamp(16px, 4vw, 32px); }
+}
+
+/* Vue handing off to a section. `showing` faces right, so Vue leads and the
+   copy follows; the gold thread is drawn between them by VueHandoff. */
+.ctrla-vue-handoff {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 4vw, 56px);
+}
+.ctrla-vue-handoff-figure { flex-shrink: 0; }
+@media (max-width: 900px) {
+  .ctrla-vue-handoff { display: block; }
+  .ctrla-vue-handoff-figure { display: none; }
+}
+
+/* Vue riding the progress rail. Offset clear of the section numbers, and
+   pinned to the fill head so she descends as the issue is read. */
+.ctrla-spine-rider {
+  position: absolute;
+  left: calc(50% + 24px);
+  transform: translateY(-50%);
+  z-index: 2;
+  pointer-events: none;
+  transition: top 0.14s linear;
+}
 .ctrla-spine-list {
   position: relative;
   list-style: none;
@@ -4485,7 +4545,7 @@ input[type="range"]::-webkit-slider-thumb {
   .ctrla-spine { display: flex; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .ctrla-spine, .ctrla-spine-fill, .ctrla-spine-num { transition: none; }
+  .ctrla-spine, .ctrla-spine-fill, .ctrla-spine-num, .ctrla-spine-rider { transition: none; }
 }
 
 /* Mobile progress hairline — 2px gold bar pinned at the very top. */

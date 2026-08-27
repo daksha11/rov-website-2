@@ -11,6 +11,8 @@ import TheRoom from "./_components/TheRoom";
 import ShootingStars from "@/components/ui/shooting-stars";
 import { BrandKitFeature, VueClose } from "./_components/IssueSections";
 import { ed, Bleed, Rule, Label, Kicker, SweepText, Typewriter } from "./_components/editorial";
+import { VueBust } from "./_components/vue/Vue";
+import VueHandoff from "./_components/vue/VueHandoff";
 import { toolkitSections } from "./data";
 import { currentVolume } from "./_volumes";
 
@@ -426,7 +428,16 @@ function Spine() {
   const [engaged, setEngaged] = useState(false);
   const [progress, setProgress] = useState(0);
   const [active, setActive] = useState(0);
+  // Vue rides the rail. She perks up for a beat each time the reader crosses
+  // into a new section, then settles — the rail already knows when that is.
+  const [noticed, setNoticed] = useState(false);
   const raf = useRef(0);
+
+  useEffect(() => {
+    setNoticed(true);
+    const t = setTimeout(() => setNoticed(false), 1400);
+    return () => clearTimeout(t);
+  }, [active]);
 
   useEffect(() => {
     const measure = () => {
@@ -483,6 +494,15 @@ function Spine() {
         <div className="ctrla-spine-track" aria-hidden>
           <div className="ctrla-spine-fill" style={{ transform: `scaleY(${progress})` }} />
         </div>
+        {/* Vue at the head of the fill, descending the rail as you read. The
+            track insets 6px top and bottom, so she rides the same span. */}
+        <span
+          className="ctrla-spine-rider"
+          aria-hidden
+          style={{ top: `calc(6px + (100% - 12px) * ${progress})` }}
+        >
+          <VueBust pose="pointing" size={34} mood={noticed ? "alert" : "calm"} />
+        </span>
         <ol className="ctrla-spine-list">
           {CONTENTS.map((c, i) => (
             <li key={c.n}>
@@ -558,13 +578,19 @@ function CraftPathways() {
   return (
     <section id="paths" style={{ background: "transparent", padding: "clamp(36px,5vw,72px) 0", scrollMarginTop: 0 }}>
       <Bleed>
-        <Kicker color={ed.gold}>Choose your path</Kicker>
-        <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(38px,6.6vw,96px)", letterSpacing: "-0.03em", lineHeight: 0.9, color: ed.ink, margin: "clamp(12px,1.6vw,18px) 0 0" }}>
-          Which one<br />are you?
-        </h2>
-        <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontWeight: 400, fontSize: "clamp(18px,2.4vw,32px)", lineHeight: 1.26, color: ed.gold, margin: "clamp(14px,1.8vw,22px) 0 0", maxWidth: 640 }}>
-          Four crafts, four ways through CTRL-A. Follow the one you make in.
-        </p>
+        {/* The one moment on the page where the reader has to choose a
+            direction, so it is the one that gets the guide. Vue stands to the
+            left of the question and a gold thread draws from her open hand to
+            it — the hand-off, used once. */}
+        <VueHandoff pose="showing" height={280}>
+          <Kicker color={ed.gold}>Choose your path</Kicker>
+          <h2 style={{ fontFamily: ed.grotesque, fontWeight: 800, fontSize: "clamp(38px,6.6vw,96px)", letterSpacing: "-0.03em", lineHeight: 0.9, color: ed.ink, margin: "clamp(12px,1.6vw,18px) 0 0" }}>
+            Which one<br />are you?
+          </h2>
+          <p style={{ fontFamily: ed.serif, fontStyle: "italic", fontWeight: 400, fontSize: "clamp(18px,2.4vw,32px)", lineHeight: 1.26, color: ed.gold, margin: "clamp(14px,1.8vw,22px) 0 0", maxWidth: 640 }}>
+            Four crafts, four ways through CTRL-A. Follow the one you make in.
+          </p>
+        </VueHandoff>
 
         <div style={{ position: "relative", marginTop: "clamp(24px,3.2vw,44px)" }}>
           {/* The trail spine — a colour-graded line linking the four routes */}

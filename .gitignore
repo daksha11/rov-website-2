@@ -49,3 +49,7 @@ content/sales/reports/_system/_batch/
 content/sales/reports/beltline--*.html
 content/sales/reports/beltline--*.pdf
 content/sales/reports/beltline-visibility-report.pdf
+
+# full-res illustration masters (Vue mascot poses etc.) — ship the optimized
+# webp in public/, keep the originals out of the repo and off the CDN
+/.asset-originals/
