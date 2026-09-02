@@ -13,7 +13,7 @@
 //   - `look.palette` drives the procedural material: [deep, mid, glow].
 // ═══════════════════════════════════════════════════════
 
-export type BodyKind = "sun" | "planet" | "moon" | "asteroid" | "comet";
+export type BodyKind = "sun" | "planet" | "moon" | "asteroid" | "comet" | "station";
 
 export interface CelestialBody {
   id: string;
@@ -261,6 +261,22 @@ export const BODIES: CelestialBody[] = [
       blurb: "Everyone whose hands are on this volume.",
       href: "/ctrla/credits",
       narrationKey: "credits",
+    },
+  },
+
+  // ── Station: the deep-space outpost ──────────────────
+  {
+    id: "hub",
+    kind: "station",
+    label: "Community Hub",
+    orbit: { radius: 260, speed: 0.0015, phase: 2.1 },
+    size: 4.5,
+    look: { palette: [NIGHT, "#57616B", "#8AA6C1"], seed: 404 },
+    stop: {
+      headline: "The Station",
+      blurb: "Connect with other creatives in the CTRL·A network.",
+      href: "/ctrla/community",
+      narrationKey: "hub",
     },
   },
 

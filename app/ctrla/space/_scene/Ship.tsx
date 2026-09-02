@@ -26,6 +26,9 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { BODIES, bodyById, restPosition, type CelestialBody } from "../_map/map";
 import { FLIGHT, dockRange } from "../_map/flight";
 import { frame, useSpace } from "../_state/useSpace";
+import { Line2 } from "three/examples/jsm/lines/Line2.js";
+import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
+import { LineGeometry } from "three/examples/jsm/lines/LineGeometry.js";
 
 export { dockRange };
 
@@ -62,13 +65,17 @@ function spawn(): { pos: THREE.Vector3; heading: number } {
 export default function Ship() {
   const group = useRef<THREE.Group>(null);
   const engine = useRef<THREE.Sprite>(null);
+  const hullRef = useRef<THREE.Mesh>(null);
   const { camera } = useThree();
 
   // ── frame state ──
+  // The ship manages its own physics state locally. It only writes out to
+  // the global frame state so the HUD can read it without tearing.
   const start = useMemo(spawn, []);
   const pos = useRef(start.pos.clone());
   const vel = useRef(new THREE.Vector3());
-  const heading = useRef(start.heading); // 0 faces -z, toward the sun from the pad
+  const heading = useRef(start.heading);
+  const pitch = useRef(0);
   const roll = useRef(0);
   const camRoll = useRef(0);
   const keys = useRef(new Set<string>());
@@ -84,6 +91,31 @@ export default function Ship() {
   const fwd = useMemo(() => new THREE.Vector3(), []);
   const tmp = useMemo(() => new THREE.Vector3(), []);
   const up = useMemo(() => new THREE.Vector3(0, 1, 0), []);
+
+  // ── engine trails ──
+  const TRAIL_LENGTH = 60;
+  const trailHistoryL = useRef<Float32Array>(new Float32Array(TRAIL_LENGTH * 3));
+  const trailHistoryR = useRef<Float32Array>(new Float32Array(TRAIL_LENGTH * 3));
+  const trailInited = useRef(false);
+
+  const trailLineL = useMemo(() => {
+    const geo = new LineGeometry();
+    geo.setPositions(new Float32Array(TRAIL_LENGTH * 3));
+    const mat = new LineMaterial({ color: 0xE3C24A, transparent: true, opacity: 0.7, linewidth: 3, worldUnits: true });
+    const line = new Line2(geo, mat);
+    line.frustumCulled = false;
+    line.computeLineDistances();
+    return line;
+  }, []);
+  const trailLineR = useMemo(() => {
+    const geo = new LineGeometry();
+    geo.setPositions(new Float32Array(TRAIL_LENGTH * 3));
+    const mat = new LineMaterial({ color: 0xE3C24A, transparent: true, opacity: 0.7, linewidth: 3, worldUnits: true });
+    const line = new Line2(geo, mat);
+    line.frustumCulled = false;
+    line.computeLineDistances();
+    return line;
+  }, []);
 
   // Engine glow texture: a soft radial gold dot, drawn once.
   const glowTex = useMemo(() => {
@@ -159,9 +191,12 @@ export default function Ship() {
     }
 
     // ── input ──
-    let thrust = k.has("w") || k.has("arrowup") ? 1 : 0;
-    const brake = k.has("s") || k.has("arrowdown") || k.has(" ");
-    let yaw = (k.has("a") || k.has("arrowleft") ? 1 : 0) - (k.has("d") || k.has("arrowright") ? 1 : 0);
+    // WASD = forward / brake / turn left / turn right
+    // Up/Down arrows = gentle vertical rise/descend
+    let thrust = k.has("w") ? 1 : 0;
+    const brakeInput = k.has("s") || k.has(" ");
+    let yaw = (k.has("a") ? 1 : 0) - (k.has("d") ? 1 : 0);
+    const verticalInput = (k.has("arrowup") ? 1 : 0) - (k.has("arrowdown") ? 1 : 0);
     let boost = k.has("shift");
     const manualYaw = yaw !== 0;
 
@@ -177,8 +212,6 @@ export default function Ship() {
         const want = Math.atan2(-dx, -dz);
         const diff = wrapAngle(want - heading.current);
         yaw = THREE.MathUtils.clamp(diff * 3, -1, 1);
-        // Thrust only when roughly facing the target; the envelope does the
-        // braking on approach.
         thrust = Math.abs(diff) < 0.5 ? THREE.MathUtils.clamp((dist - dockRange(body.size)) / 40, 0.15, 1) : 0;
         boost = false;
         if (dist < dockRange(body.size) * 0.95) {
@@ -190,22 +223,10 @@ export default function Ship() {
       }
     }
 
-    // ── fly-by-wire: holding W with no turn input eases toward the waypoint ──
-    const wp = state.route[state.step] ?? null;
-    if (!ap && !docked && thrust > 0 && !manualYaw && wp) {
-      const target = frame.bodyPositions.get(wp);
-      if (target) {
-        const want = Math.atan2(-(target.x - pos.current.x), -(target.z - pos.current.z));
-        const diff = wrapAngle(want - heading.current);
-        yaw = THREE.MathUtils.clamp(diff * 1.5, -1, 1) * 0.3;
-      }
-    }
-
     // ── approach envelope: the speed cap falls as a body gets close ──
-    // Only while closing on it. Leaving a planet (or the spawn pad next to
-    // the sun) is never throttled, or the first thing a pilot feels is mud.
     let cap: number = boost ? MAX_SPEED_BOOST : MAX_SPEED;
     let inEnvelope = false;
+    let heat = 0;
     if (nearest && !docked) {
       const dr = dockRange(nearest.size);
       const env = dr * ENVELOPE;
@@ -218,11 +239,15 @@ export default function Ship() {
         const t = THREE.MathUtils.clamp((nearestD - dr) / (env - dr), 0, 1);
         cap = THREE.MathUtils.lerp(PARK_SPEED, MAX_SPEED, t * t);
         boost = false;
+        if (nearest.kind === 'planet') {
+           const currentSpeed = vel.current.length();
+           heat = THREE.MathUtils.clamp((currentSpeed - PARK_SPEED) / (MAX_SPEED - PARK_SPEED), 0, 1) * Math.sin(t * Math.PI);
+        }
       }
     }
     frame.approachId = inEnvelope && nearest ? nearest.id : null;
 
-    // ── flight model ──
+    // ── flight model (planar + gentle vertical) ──
     if (docked) {
       thrust = 0;
       yaw = 0;
@@ -230,20 +255,41 @@ export default function Ship() {
     const speedNow = vel.current.length();
     const turnRate = THREE.MathUtils.lerp(TURN_SLOW, TURN_FAST, speedNow / MAX_SPEED_BOOST);
     heading.current += yaw * turnRate * dt;
+    // Forward vector stays on the XZ plane
     fwd.set(-Math.sin(heading.current), 0, -Math.cos(heading.current));
 
     const boosting = boost && thrust > 0 && !docked;
     if (boosting) frame.boosted = true;
     const accel = boost ? ACCEL_BOOST : ACCEL;
     if (thrust > 0) vel.current.addScaledVector(fwd, accel * thrust * dt);
+
+    // Gentle vertical movement via arrow keys (much slower than horizontal)
+    const VERTICAL_SPEED = 12;
+    if (verticalInput !== 0 && !docked) {
+      vel.current.y += verticalInput * VERTICAL_SPEED * dt;
+    }
+    // Vertical damping — always ease back toward Y=0 plane gently
+    vel.current.y *= Math.exp(-2.0 * dt);
+
     // Coasting bleeds speed slowly; braking bleeds it fast.
-    vel.current.multiplyScalar(Math.exp(-(brake ? 4.5 : 0.9) * dt));
-    let speed = vel.current.length();
+    const horizSpeed = Math.hypot(vel.current.x, vel.current.z);
+    if (horizSpeed > 0) {
+      const damp = Math.exp(-(brakeInput ? 4.5 : 0.9) * dt);
+      vel.current.x *= damp;
+      vel.current.z *= damp;
+    }
+    
+    // Anti-drift: lock horizontal velocity to face direction
+    let speed = Math.hypot(vel.current.x, vel.current.z);
+    if (speed > 0 && !docked) {
+      vel.current.x = fwd.x * speed;
+      vel.current.z = fwd.z * speed;
+    }
+
     if (speed > cap) {
-      // Ease onto the cap rather than clamping, so the envelope feels like
-      // drag, not a wall.
       const eased = THREE.MathUtils.lerp(speed, cap, 1 - Math.exp(-6 * dt));
-      vel.current.multiplyScalar(eased / speed);
+      vel.current.x *= eased / speed;
+      vel.current.z *= eased / speed;
       speed = eased;
     }
 
@@ -277,16 +323,20 @@ export default function Ship() {
         if (!p) continue;
         const min = b.size * 1.35 + 1.2;
         const dx = pos.current.x - p.x;
+        const dy = pos.current.y - (p.y || 0);
         const dz = pos.current.z - p.z;
-        const d = Math.hypot(dx, dz);
+        const d = Math.hypot(dx, dy, dz);
         if (d < min && d > 1e-4) {
           const nx = dx / d;
+          const ny = dy / d;
           const nz = dz / d;
           pos.current.x = p.x + nx * min;
+          pos.current.y = (p.y || 0) + ny * min;
           pos.current.z = p.z + nz * min;
-          const inward = vel.current.x * nx + vel.current.z * nz;
+          const inward = vel.current.x * nx + vel.current.y * ny + vel.current.z * nz;
           if (inward < 0) {
             vel.current.x -= nx * inward * 1.4;
+            vel.current.y -= ny * inward * 1.4;
             vel.current.z -= nz * inward * 1.4;
           }
         }
@@ -300,6 +350,13 @@ export default function Ship() {
       const push = (r - WORLD_RADIUS) * 0.8;
       vel.current.x -= (pos.current.x / r) * push * dt;
       vel.current.z -= (pos.current.z / r) * push * dt;
+    }
+    
+    // Ceiling/Floor
+    const CEILING = 200;
+    if (Math.abs(pos.current.y) > CEILING) {
+      const push = (Math.abs(pos.current.y) - CEILING) * 0.8;
+      vel.current.y -= Math.sign(pos.current.y) * push * dt;
     }
 
     // Bank into turns, and a touch more when fast.
@@ -316,6 +373,52 @@ export default function Ship() {
     if (engine.current) {
       const s = 1.2 + thrust * (boost ? 3.2 : 2.0) + speed / MAX_SPEED;
       engine.current.scale.set(s, s, 1);
+    }
+
+    // ── engine trails ──
+    // Two yellow lines from the wing tips trailing behind the ship
+    {
+      const h = heading.current;
+      const cosH = Math.cos(h);
+      const sinH = Math.sin(h);
+      // Wing tip offsets in local space (mirrored on X), then rotated by heading
+      const offsetX = 2.4; // wing tip X offset
+      const offsetZ = 2.2; // behind the hull center
+      // Left exhaust world position
+      const lx = pos.current.x + (-offsetX * cosH - offsetZ * -sinH);
+      const ly = pos.current.y - 0.15;
+      const lz = pos.current.z + (-offsetX * sinH + offsetZ * cosH);
+      // Right exhaust world position
+      const rx = pos.current.x + (offsetX * cosH - offsetZ * -sinH);
+      const ry = pos.current.y - 0.15;
+      const rz = pos.current.z + (offsetX * sinH + offsetZ * cosH);
+
+      const hL = trailHistoryL.current;
+      const hR = trailHistoryR.current;
+
+      if (!trailInited.current) {
+        // Fill entire trail with current position
+        for (let i = 0; i < TRAIL_LENGTH; i++) {
+          hL[i * 3] = lx; hL[i * 3 + 1] = ly; hL[i * 3 + 2] = lz;
+          hR[i * 3] = rx; hR[i * 3 + 1] = ry; hR[i * 3 + 2] = rz;
+        }
+        trailInited.current = true;
+      }
+
+      // Shift trail: move everything back one slot, newest at index 0
+      hL.copyWithin(3, 0, (TRAIL_LENGTH - 1) * 3);
+      hL[0] = lx; hL[1] = ly; hL[2] = lz;
+      hR.copyWithin(3, 0, (TRAIL_LENGTH - 1) * 3);
+      hR[0] = rx; hR[1] = ry; hR[2] = rz;
+
+      if (trailLineL) {
+        (trailLineL.geometry as LineGeometry).setPositions(Array.from(hL));
+        trailLineL.computeLineDistances();
+      }
+      if (trailLineR) {
+        (trailLineR.geometry as LineGeometry).setPositions(Array.from(hR));
+        trailLineR.computeLineDistances();
+      }
     }
 
     // ── docking: the ring, and the magnetic fill ──
@@ -362,8 +465,8 @@ export default function Ship() {
       camTarget.copy(pos.current).addScaledVector(fwd, -dist).setY(height);
       camera.position.lerp(camTarget, 1 - Math.exp(-4.5 * dt));
       // Boost shake: a small, fast wobble that rises with the boost and
-      // settles as soon as Shift lifts.
-      shake.current = THREE.MathUtils.lerp(shake.current, boosting ? 1 : 0, 1 - Math.exp(-(boosting ? 5 : 9) * dt));
+      // settles as soon as Shift lifts. Plus reentry heat shake.
+      shake.current = THREE.MathUtils.lerp(shake.current, boosting ? 1 : (heat * 2.5), 1 - Math.exp(-(boosting ? 5 : 9) * dt));
       if (shake.current > 0.01) {
         const t = clock.elapsedTime;
         const a = shake.current * 0.16;
@@ -391,12 +494,19 @@ export default function Ship() {
       fpsAcc.current.frames = 0;
       fpsAcc.current.t = 0;
     }
+
+    if (hullRef.current) {
+      const mat = hullRef.current.material as THREE.MeshStandardMaterial;
+      mat.emissive.setHex(0xff3300);
+      mat.emissiveIntensity = THREE.MathUtils.lerp(mat.emissiveIntensity, heat * 2.5, 0.1);
+    }
   });
 
   return (
+  <>
     <group ref={group}>
       {/* Hull: a low-poly dart, nose toward -z. Paper white like the helmet. */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]}>
+      <mesh ref={hullRef} rotation={[-Math.PI / 2, 0, 0]}>
         <coneGeometry args={[1.15, 5.2, 6]} />
         <meshStandardMaterial color="#F0E6E0" flatShading roughness={0.6} />
       </mesh>
@@ -425,5 +535,10 @@ export default function Ship() {
       {/* A small local light so the hull reads even far from the sun. */}
       <pointLight position={[0, 2, 1]} intensity={0.6} distance={14} color="#E3C24A" />
     </group>
+
+    {/* Engine trails: two yellow lines in world space */}
+    <primitive object={trailLineL} />
+    <primitive object={trailLineR} />
+  </>
   );
 }

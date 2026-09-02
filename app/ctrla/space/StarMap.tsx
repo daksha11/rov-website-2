@@ -21,7 +21,7 @@ const R = 250; // half the viewBox, world units
 /** Static positions at t=0, so the map is a stable picture, not a clock. */
 function layout() {
   const pos = new Map<string, { x: number; y: number }>();
-  const rank = { sun: 0, planet: 1, comet: 2, asteroid: 3, moon: 4 } as const;
+  const rank = { sun: 0, planet: 1, comet: 2, asteroid: 3, moon: 4, station: 5 } as const;
   for (const b of [...BODIES].sort((a, c) => rank[a.kind] - rank[c.kind])) {
     const p = b.parent ? pos.get(b.parent) ?? { x: 0, y: 0 } : { x: 0, y: 0 };
     pos.set(b.id, { x: p.x + Math.cos(b.orbit.phase) * b.orbit.radius, y: p.y + Math.sin(b.orbit.phase) * b.orbit.radius });

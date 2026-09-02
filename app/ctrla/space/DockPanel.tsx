@@ -17,6 +17,7 @@ const KIND_LABEL: Record<CelestialBody["kind"], string> = {
   moon: "Moon",
   asteroid: "Asteroid",
   comet: "Comet",
+  station: "Station",
 };
 
 export default function DockPanel({
