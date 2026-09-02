@@ -1,4 +1,5 @@
 import StartInvite from "./_components/StartInvite";
+import CtrlAPathSync from "./_components/CtrlAPathSync";
 import CtrlANav from "./_components/CtrlANav";
 
 export default function CtrlALayout({ children }: { children: React.ReactNode }) {
@@ -37,6 +38,8 @@ export default function CtrlALayout({ children }: { children: React.ReactNode })
           appear anywhere in the issue; it silences itself for good once the
           reader answers or dismisses it. */}
       <StartInvite />
+      {/* Profile and progress follow the person once they sign in. */}
+      <CtrlAPathSync />
     </>
   );
 }

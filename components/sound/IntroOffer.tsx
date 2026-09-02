@@ -144,7 +144,7 @@ export default function IntroOffer() {
             style={{ fontFamily: BODY }}
           >
             One per artist. Same finished sound as every paid record we release. After that
-            it&apos;s $65 a song, or as low as $40 in a pack.
+            it&apos;s $100 a song, or as low as $58 in a pack.
           </p>
         </motion.div>
       </div>

@@ -6117,3 +6117,409 @@ input[type="range"]::-webkit-slider-thumb {
     overflow-x: auto;
   }
 }
+
+/* ═══════════════════════════════════════════════════════
+   CTRL-A · SPACE — the HUD, the dock panel, the star map.
+   All DOM over the canvas. Small text is gold on the dark ground, per the
+   CTRL-A rule; surfaces are editorial (rules and type), never cards.
+   ═══════════════════════════════════════════════════════ */
+.ctrla-space { font-family: var(--font-inter), 'Inter', system-ui, sans-serif; color: #F0E6E0; }
+/* Grain over the canvas. Deliberately NOT the magazine's .ctrla-grain: that
+   one is mix-blend-mode: overlay, which forces the compositor to blend the
+   noise over the full WebGL frame at device resolution, every frame. Plain
+   alpha at low opacity is one cheap textured quad and reads nearly the same
+   on the night ground. */
+.ctrla-space-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  opacity: 0.11;
+  transform: translateZ(0);
+}
+/* While the ship is up, the nav loses its glass: a backdrop blur over a
+   live canvas is a full-width blur pass every frame. Same scrim, opaque. */
+html[data-ctrla-space] .ctrla-nav-bar {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: rgba(15, 8, 32, 0.86);
+}
+/* Speed streaks: a static conic pattern masked to the edges, faded in by
+   the HUD as the ship passes cruise speed. Plain alpha, no blend mode. */
+.ctrla-space-streaks {
+  position: fixed;
+  inset: -12%;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  background: repeating-conic-gradient(from 0deg at 50% 50%, transparent 0deg 5deg, rgba(227, 194, 74, 0.15) 5deg 5.5deg);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 40%, #000 82%);
+  mask-image: radial-gradient(circle at 50% 50%, transparent 40%, #000 82%);
+}
+/* Landing wipe: the planet's own colour fills the frame while the camera
+   dives, then the page opens. */
+.ctrla-space-landing {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  animation: ctrla-space-fade 0.95s cubic-bezier(0.6, 0, 0.9, 0.4) both;
+}
+/* Photo mode: HUD off, nav off, a thin gold frame and a caption. */
+html[data-ctrla-photo] .ctrla-nav-bar { opacity: 0; pointer-events: none; }
+html[data-ctrla-photo] .ctrla-space-chips,
+html[data-ctrla-photo] .ctrla-space-prompt,
+html[data-ctrla-photo] .ctrla-space-meter,
+html[data-ctrla-photo] .ctrla-space-toast,
+html[data-ctrla-photo] .ctrla-space-masthead { display: none; }
+.ctrla-space-frame {
+  position: fixed;
+  inset: 22px;
+  z-index: 6;
+  border: 1px solid rgba(227, 194, 74, 0.55);
+  pointer-events: none;
+  animation: ctrla-space-fade 0.4s ease both;
+}
+.ctrla-space-frame span {
+  position: absolute;
+  bottom: 14px;
+  background: #0F0820;
+  padding: 0 8px;
+}
+.ctrla-space-frame span:first-child { left: 18px; }
+.ctrla-space-frame span:last-child { right: 18px; opacity: 0.7; }
+/* Vue, the guide: the full figure standing at the bottom-left of the
+   cockpit, her bubble beside her hand. With nothing to say she sinks to a
+   peek (helmet only); a click brings her back up. */
+.ctrla-space-guide {
+  position: fixed;
+  left: clamp(10px, 2.5vw, 40px);
+  bottom: 0;
+  z-index: 6;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  pointer-events: none;
+}
+.ctrla-space-vue {
+  display: block;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.5));
+}
+.ctrla-space-guide[data-peek="true"] .ctrla-space-vue {
+  transform: translateY(62%);
+  filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0)) brightness(0.85);
+}
+.ctrla-space-guide[data-peek="true"] .ctrla-space-vue:hover { transform: translateY(50%); filter: none; }
+.ctrla-space-bubble {
+  position: relative;
+  pointer-events: auto;
+  max-width: 400px;
+  margin-bottom: 118px;
+  animation: ctrla-space-rise 0.35s ease both;
+  padding: 12px 16px 12px;
+  background: rgba(15, 8, 32, 0.86);
+  border: 1px solid rgba(227, 194, 74, 0.45);
+  border-left: 3px solid #4E3D73;
+}
+.ctrla-space-bubble::after {
+  content: "";
+  position: absolute;
+  left: -4px;
+  bottom: 18px;
+  width: 6px;
+  height: 6px;
+  background: #4E3D73;
+  transform: rotate(45deg);
+}
+.ctrla-space-bubble p {
+  margin: 0;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.35;
+  color: #F0E6E0;
+}
+.ctrla-space-bubble > .ctrla-space-kicker { display: block; margin-top: 8px; }
+.ctrla-space-replies { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.ctrla-space-replies button {
+  padding: 7px 11px;
+  background: none;
+  border: 1px solid rgba(227, 194, 74, 0.5);
+  color: #E3C24A;
+  font-family: 'Neue Montreal', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.ctrla-space-replies button:hover { background: #E3C24A; color: #0F0820; }
+/* Edge-of-screen arrow to the lit waypoint. Positioned by a rAF in the HUD. */
+.ctrla-space-arrow {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+  will-change: transform;
+}
+.ctrla-space-arrow svg { width: 22px; height: 22px; }
+/* Magnetic dock fill under the prompt */
+.ctrla-space-fill {
+  display: block;
+  width: 180px;
+  height: 2px;
+  margin: 8px auto 0;
+  background: rgba(227, 194, 74, 0.2);
+}
+.ctrla-space-fill i {
+  display: block;
+  height: 100%;
+  background: #E3C24A;
+  transition: width 0.13s linear;
+}
+.ctrla-space-chip[data-current="true"] { border-color: #E3C24A; }
+.ctrla-space-chip-n { color: #E3C24A; opacity: 0.7; font-variant-numeric: tabular-nums; }
+html[data-ctrla-photo] .ctrla-space-guide,
+html[data-ctrla-photo] .ctrla-space-arrow { display: none !important; }
+.ctrla-space-kicker {
+  font-family: 'Neue Montreal', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #E3C24A;
+}
+.ctrla-space-masthead {
+  position: fixed;
+  top: 76px;
+  left: clamp(18px, 5vw, 64px);
+  right: clamp(18px, 5vw, 64px);
+  display: flex;
+  justify-content: space-between;
+  z-index: 5;
+  pointer-events: none;
+}
+.ctrla-space-chips {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 5;
+  padding: 6px;
+  border: 1px solid rgba(240, 230, 224, 0.14);
+  /* No backdrop-filter here: blurring a live canvas re-runs every frame and
+     costs more than the whole 3D scene. A denser scrim reads the same. */
+  background: rgba(15, 8, 32, 0.78);
+}
+.ctrla-space-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 13px;
+  background: none;
+  border: 1px solid transparent;
+  color: #F0E6E0;
+  font-family: 'Neue Montreal', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.ctrla-space-chip:hover { border-color: rgba(227, 194, 74, 0.5); }
+.ctrla-space-chip[data-active="true"] { background: rgba(227, 194, 74, 0.12); border-color: #E3C24A; }
+.ctrla-space-chip-dot { width: 7px; height: 7px; border-radius: 999px; flex-shrink: 0; }
+.ctrla-space-chip-dist { color: #E3C24A; font-variant-numeric: tabular-nums; opacity: 0.85; }
+.ctrla-space-prompt {
+  position: fixed;
+  left: 50%;
+  bottom: 96px;
+  transform: translateX(-50%);
+  z-index: 5;
+  font-family: 'Neue Montreal', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #E3C24A;
+  pointer-events: none;
+  animation: ctrla-space-rise 0.35s ease both;
+}
+.ctrla-space-prompt strong { color: #F0E6E0; font-weight: 700; }
+.ctrla-space kbd, .ctrla-space-map kbd {
+  display: inline-block;
+  min-width: 18px;
+  padding: 2px 6px;
+  margin-right: 6px;
+  border: 1px solid rgba(227, 194, 74, 0.6);
+  border-radius: 3px;
+  font: 700 10px/1.4 'Neue Montreal', 'Helvetica Neue', Arial, sans-serif;
+  color: #E3C24A;
+  text-align: center;
+  letter-spacing: 0.06em;
+}
+.ctrla-space-keys { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-bottom: 30px; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(240,230,224,0.8); }
+.ctrla-space-meter {
+  position: fixed;
+  right: clamp(18px, 5vw, 64px);
+  top: 104px;
+  display: flex;
+  gap: 14px;
+  z-index: 5;
+  font-family: 'Neue Montreal', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #E3C24A;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+.ctrla-space-toast {
+  position: fixed;
+  left: clamp(18px, 5vw, 64px);
+  bottom: 104px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 380px;
+  z-index: 5;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-size: 17px;
+  color: #F0E6E0;
+  animation: ctrla-space-rise 0.4s ease both;
+  pointer-events: none;
+}
+.ctrla-space-dock {
+  position: fixed;
+  inset: 0;
+  z-index: 8;
+  display: grid;
+  place-items: center;
+  background: rgba(15, 8, 32, 0.82);
+  animation: ctrla-space-fade 0.3s ease both;
+}
+.ctrla-space-dock-inner {
+  width: min(92vw, 760px);
+  padding: clamp(24px, 3vw, 44px) clamp(24px, 3.5vw, 52px);
+  border-left: 3px solid #4E3D73;
+  animation: ctrla-space-rise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.ctrla-space-enter {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 22px;
+  background: #E3C24A;
+  color: #0F0820;
+  font-family: 'Neue Montreal', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 0;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.ctrla-space-enter:hover { transform: translateX(2px); }
+.ctrla-space-ghost {
+  background: none;
+  border: 0;
+  padding: 12px 4px;
+  color: #F0E6E0;
+  font-family: 'Neue Montreal', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(240, 230, 224, 0.3);
+}
+.ctrla-space-ghost:hover { border-bottom-color: #E3C24A; }
+.ctrla-space-map-wrap { width: min(90vw, 780px); }
+.ctrla-space-map--overlay .ctrla-space-map-svg { width: 100%; height: min(70vh, 640px); }
+.ctrla-space-map--page { max-width: 960px; margin: 0 auto; padding: 96px clamp(18px, 5vw, 64px) 80px; }
+.ctrla-space-map--page .ctrla-space-map-svg { width: 100%; height: auto; margin-top: 32px; }
+.ctrla-space-pin circle { transition: filter 0.2s; }
+.ctrla-space-pin:hover circle { filter: drop-shadow(0 0 6px rgba(227, 194, 74, 0.8)); }
+@keyframes ctrla-space-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes ctrla-space-fade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .ctrla-space-prompt, .ctrla-space-toast, .ctrla-space-dock, .ctrla-space-dock-inner { animation: none; }
+}
+
+/* Contributors: the byline block at the foot of a toolkit. */
+.ctrla-contrib-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 80px);
+  padding-top: clamp(28px, 3.6vw, 52px);
+}
+@media (max-width: 760px) {
+  .ctrla-contrib-grid { grid-template-columns: 1fr; }
+}
+.ctrla-contrib-ask:hover span:first-child { text-decoration: underline; text-underline-offset: 4px; }
+
+/* Your path: the line (nav bar), the strip (mastheads, reveals, the menu). */
+.ctrla-yourpath-line {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  text-decoration: none;
+  font-family: 'Neue Montreal', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #F0E6E0;
+  white-space: nowrap;
+}
+.ctrla-yourpath-line:hover span:nth-child(2) { text-decoration: underline; text-underline-offset: 4px; }
+.ctrla-yourpath-strip {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 10px 0;
+}
+.ctrla-yourpath-dots { display: inline-flex; gap: 6px; }
+.ctrla-yourpath-dots i {
+  display: block;
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  border: 1.5px solid;
+  transition: transform 0.2s;
+}
+.ctrla-yourpath-dots i[data-next="true"] { transform: scale(1.35); }
+.ctrla-nav-panel .ctrla-yourpath-strip { padding: 4px 0 18px; border-bottom: 1px solid rgba(22, 12, 40, 0.16); margin-bottom: 14px; }
+
+/* The door from the magazine into Space: one editorial line under the index. */
+.ctrla-space-door {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px clamp(4px, 1vw, 14px);
+  border-bottom: 1px solid rgba(240, 230, 224, 0.16);
+  text-decoration: none;
+  color: #F0E6E0;
+}
+.ctrla-space-door em { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-size: clamp(16px, 1.8vw, 22px); color: #F0E6E0; }
+.ctrla-space-door span { font-family: 'Neue Montreal', 'Helvetica Neue', Arial, sans-serif; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: #E3C24A; white-space: nowrap; transition: transform 0.2s; }
+.ctrla-space-door:hover span { transform: translateX(4px); }

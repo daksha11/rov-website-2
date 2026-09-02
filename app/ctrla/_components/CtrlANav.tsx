@@ -27,6 +27,8 @@ import GoogleLoginButton from "@/components/providers/GoogleLoginButton";
 import CtrlASignup from "./CtrlASignup";
 import { ed, edLight, legibleAccent } from "./editorial";
 import { toolkitSections } from "../data";
+import YourPath from "./YourPath";
+import { useCtrlAPath } from "@/lib/ctrla/progress";
 
 /** The ROV wordmark is type, not an asset — matched to the main nav. */
 const ROV_DISPLAY = { fontFamily: "'Norwige Light', sans-serif" } as const;
@@ -74,6 +76,8 @@ export default function CtrlANav() {
   const [open, setOpen] = useState(false);
   const [kitsOpen, setKitsOpen] = useState(false);
   const time = useAtlantaTime();
+  const path = useCtrlAPath();
+  const hasPath = path.ready && !!path.craft;
 
   // Hover opens on pointer devices; a click pins it so the panel survives
   // the cursor leaving. Touch only ever uses the click path.
@@ -149,9 +153,15 @@ export default function CtrlANav() {
         </Link>
 
         <div className="ctrla-nav-right">
-          <Link href="/ctrla/start" className="ctrla-nav-link ctrla-nav-start">
-            Start here
-          </Link>
+          {hasPath ? (
+            <span className="ctrla-nav-start">
+              <YourPath variant="line" />
+            </span>
+          ) : (
+            <Link href="/ctrla/start" className="ctrla-nav-link ctrla-nav-start">
+              Start here
+            </Link>
+          )}
 
           <button
             type="button"
@@ -206,6 +216,9 @@ export default function CtrlANav() {
             <span className="ctrla-nav-eyebrow" style={{ color: edLight.inkFaint }}>
               Menu
             </span>
+
+            {/* The path, first. Nothing renders without a profile. */}
+            <YourPath variant="strip" theme="light" onNavigate={close} />
 
             {/* Toolkits, expanding in place to the four crafts */}
             <button

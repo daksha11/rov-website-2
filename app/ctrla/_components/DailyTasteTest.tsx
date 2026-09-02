@@ -1,5 +1,8 @@
 "use client";
 
+import { markDone } from "@/lib/ctrla/progress";
+import { readProfile } from "@/lib/ctrla/profile";
+
 // ═══════════════════════════════════════════════════════
 // CTRL-A — THE DAILY (taste test)
 // One judgment call per day, same for everyone. Pick the sharper
@@ -112,6 +115,8 @@ export default function DailyTasteTest() {
       }
       const r: Reveal = data;
       setReveal(r);
+      // The path: one answer is the habit starting. Shared "work" stop.
+      markDone(readProfile()?.crafts[0] ?? "music", "work", { daily: challenge.date });
       try {
         localStorage.setItem(playedKey(challenge.date), JSON.stringify(r));
       } catch {

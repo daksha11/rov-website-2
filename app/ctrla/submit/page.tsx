@@ -13,6 +13,9 @@ import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
 import type { FormConfig } from "@/lib/ctrla/community";
 import { C, NEUE, NORWIGE, card } from "./_components/theme";
+import { GOOD_FIRST, submitHref } from "@/lib/ctrla/contribute";
+import { CRAFT_LABEL } from "@/lib/ctrla/path";
+import type { CraftSlug } from "@/lib/ctrla/profile";
 
 const supabase = createClient();
 
@@ -50,8 +53,11 @@ export default function ContributeHub() {
           Add to CTRL-A
         </h1>
         <p style={{ margin: 0, fontSize: 15, color: C.soft, lineHeight: 1.6, maxWidth: 560 }}>
-          Two ways in. Make the toolkits sharper, or put your own work in the magazine.
+          Two ways in. Make the toolkits sharper, or put your own work in the magazine. Reviewed weekly; approved work ships with your name on it.{" "}
+          <Link href="/ctrla/changelog" style={{ color: C.gold, textDecoration: "none", borderBottom: `1px solid ${C.gold}` }}>See what changed</Link>
         </p>
+
+        <GoodFirst />
 
         {!loaded ? (
           <p style={{ marginTop: 28, fontSize: 12, color: C.faint, letterSpacing: "0.18em", textTransform: "uppercase" }}>Loading…</p>
@@ -74,6 +80,31 @@ export default function ContributeHub() {
         )}
       </div>
     </main>
+  );
+}
+
+function GoodFirst() {
+  const crafts = Object.keys(GOOD_FIRST) as CraftSlug[];
+  return (
+    <section style={{ marginTop: 32 }}>
+      <p style={{ margin: 0, fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: C.gold, fontWeight: 700 }}>Good first contribution</p>
+      <h2 style={{ margin: "6px 0 6px", fontFamily: NORWIGE, fontWeight: 700, fontSize: 24, color: C.cream }}>Small, true, and yours</h2>
+      <p style={{ margin: "0 0 16px", fontSize: 14, color: C.faint, lineHeight: 1.6, maxWidth: 560 }}>
+        The things a person who just walked the path can hand back. Pick your craft.
+      </p>
+      <div style={{ display: "grid", gap: 10, gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))" }}>
+        {crafts.map((craft) => (
+          <div key={craft} style={{ ...card, padding: "16px 18px" }}>
+            <span style={{ display: "block", fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: C.gold, fontWeight: 700, marginBottom: 8 }}>{CRAFT_LABEL[craft]}</span>
+            {GOOD_FIRST[craft].slice(0, 3).map((a) => (
+              <Link key={a.title} href={submitHref(a.type, craft)} style={{ display: "block", fontSize: 13.5, color: C.cream, textDecoration: "none", lineHeight: 1.4, padding: "6px 0", borderTop: `1px solid ${C.hair}` }}>
+                {a.title} <span style={{ color: C.gold }}>→</span>
+              </Link>
+            ))}
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 

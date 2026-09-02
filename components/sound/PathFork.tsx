@@ -30,7 +30,7 @@ const artistPaths = [
     title: "Send your stems",
     body: "Export your stems and email them over. Full mix and master back in 48 hours. Your first one is $50, so you hear the work before committing to anything.",
     price: "First mix $50",
-    sub: "Then $65, or $40 in a pack",
+    sub: "Then $100, or $58 in a pack",
     cta: "See mixing pricing",
   },
 ];

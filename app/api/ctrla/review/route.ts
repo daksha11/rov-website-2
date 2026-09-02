@@ -139,6 +139,23 @@ export async function POST(req: NextRequest) {
     .single();
   const authorEmail = (sub?.profiles as { email?: string } | null)?.email;
 
+  // The path: an approved submission is the "Show" stop, confirmed by an
+  // editor. Craft from the submission's toolkit, else the author's profile.
+  if ((body.status === "approved" || body.status === "featured") && sub?.author_id) {
+    const { data: authorRow } = await admin.from("profiles").select("ctrla_profile").eq("id", sub.author_id).maybeSingle();
+    const profileCraft = (authorRow?.ctrla_profile as { crafts?: string[] } | null)?.crafts?.[0];
+    const craft = (sub.toolkit_slug as string | null) || profileCraft || null;
+    if (craft) {
+      const { error: progressErr } = await admin
+        .from("ctrla_progress")
+        .upsert(
+          { user_id: sub.author_id, craft, stop: "show", source: "review", evidence: { submission_id: body.submissionId } },
+          { onConflict: "user_id,craft,stop", ignoreDuplicates: true }
+        );
+      if (progressErr) console.error("ctrla_progress show error:", progressErr.message);
+    }
+  }
+
   // Pay the author for a good outcome. Deduped per submission+status so a
   // re-review (or approve-then-feature) never double-pays for the same rung.
   const awardAction = AWARD_FOR[body.status as "approved" | "featured"];

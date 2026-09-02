@@ -104,7 +104,7 @@ export default async function MusicBlogPostPage({
                     slug={post.slug}
                     sourcePrefix="music-blog"
                     heading="Got a record that deserves a real mix?"
-                    subheading="Mix and master from $40 a song, first one $50. Send us the session and we'll tell you honestly what it needs."
+                    subheading="Mix and master from $58 a song, first one $50. Send us the session and we'll tell you honestly what it needs."
                     messagePlaceholder="The song, where it's at, and what you want it to sound like..."
                     secondaryLabel="Prefer to talk? Book a call"
                 />

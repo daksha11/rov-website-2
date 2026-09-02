@@ -141,7 +141,10 @@ function MessageText({ text }: { text: string }) {
     if (headingMatch) {
       const level = headingMatch[1].length;
       const headingText = headingMatch[2];
-      const HeadingTag = `h${Math.min(level + 2, 6)}` as keyof JSX.IntrinsicElements;
+      // Narrowed on purpose: `keyof JSX.IntrinsicElements` now includes
+      // react-three-fiber's scene elements, whose required props make the
+      // union unusable as a dynamic HTML tag.
+      const HeadingTag = `h${Math.min(level + 2, 6)}` as "h3" | "h4" | "h5" | "h6";
 
       blocks.push(
         <HeadingTag

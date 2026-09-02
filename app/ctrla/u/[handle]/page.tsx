@@ -18,6 +18,7 @@ import {
   TYPE_META,
   type WallRow,
 } from "@/lib/ctrla/community";
+import { RANK_META, rankFor } from "@/lib/ctrla/contribute";
 
 export const revalidate = 60;
 
@@ -80,8 +81,18 @@ export default async function PublicProfilePage({
     .order("created_at", { ascending: false });
   const wall = (wallData ?? []) as WallRow[];
 
+  // The path, public and count-only: which stops, never the evidence.
+  const { data: progressData } = await supabase
+    .from("ctrla_public_progress")
+    .select("craft, stop")
+    .eq("user_id", profile.id);
+  const progress = (progressData ?? []) as { craft: string; stop: string }[];
+  const finished = progress.some((p) => p.stop === "finish");
+  const stopsDone = new Set(progress.map((p) => p.stop)).size;
+
   const name = profile.full_name || profile.handle;
   const featured = wall.filter((w) => w.status === "featured").length;
+  const rank = RANK_META[rankFor({ approved: wall.length, featured, finished })];
   const toolkitsTouched = new Set(wall.map((w) => w.toolkit_slug).filter(Boolean)).size;
   const links = Object.entries(profile.links ?? {}).filter(([, v]) => typeof v === "string" && v.startsWith("http"));
 
@@ -128,6 +139,10 @@ export default async function PublicProfilePage({
           )}
           <h1 style={{ margin: "10px 0 0", fontFamily: NORWIGE, fontWeight: 700, fontSize: "clamp(26px,5vw,36px)", lineHeight: 1.1 }}>{name}</h1>
           <p style={{ margin: 0, fontSize: 13, color: C.gold, fontWeight: 600 }}>@{profile.handle}</p>
+          <p style={{ margin: "6px 0 0", fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: C.faint, fontWeight: 600 }}>
+            <span style={{ color: C.gold }}>{rank.label}</span>
+            {stopsDone > 0 && <> · {stopsDone} of 5 stops</>}
+          </p>
           {profile.bio && (
             <p style={{ margin: "8px 0 0", fontSize: 14.5, color: C.soft, lineHeight: 1.6, maxWidth: 420 }}>{profile.bio}</p>
           )}

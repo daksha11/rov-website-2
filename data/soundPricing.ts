@@ -19,12 +19,12 @@ export const CONSULT_BOOKING_URL = "rov-studios-imhphw/quote-call";
 // event collects payment at booking). Empty = the CTA falls back to
 // BOOKING_URL (the Cal.com 15-min booking) so nothing breaks in the meantime.
 export const CAL_LINKS = {
-  /** "Studio Session" event — 1 hour, $60. */
+  /** "Studio Session" event — 1 hour, $80, stems included. */
   hourlySession: "rov-studios-imhphw/studio-session",
   /**
-   * Block session event. Was the $149 "Finished Single", retired once hourly
-   * went to $65 with mix and master included, which made a 2-hour block ($120)
-   * cheaper than the bundle. Rename this Cal event to "4-Hour Block, $200".
+   * Block session event. Was the $149 "Finished Single", retired when hourly
+   * absorbed it. Now the 4-hour block at $300 ($75/hr). Rename this Cal event
+   * to "4-Hour Block, $300".
    */
   finishedSingle: "rov-studios-imhphw/finished-single",
 };
@@ -36,7 +36,8 @@ export type CheckoutKey =
   | "mix_3"
   | "mix_6"
   | "mix_12"
-  // Recording: in the room. Mix and master included at every rate.
+  // Recording: in the room. You leave with your stems; mixing is priced
+  // separately so an efficient session never becomes unpaid mix work.
   | "rec_hour"
   | "rec_2hr"
   | "rec_4hr"
@@ -65,7 +66,7 @@ interface CheckoutItem {
 // every $50 spent"), which had two problems: it was uncomputable for a
 // customer, and its 6+ floor made 5 songs cost more than 6 by accident.
 //
-// Packs are deliberately monotonic per-song ($65 → $55 → $45 → $40). The
+// Packs are deliberately monotonic per-song ($100 → $83 → $67 → $58). The
 // remaining inversions (5 singles cost more than the 6-pack, 11 more than
 // the 12-pack) are intentional upsell nudges and are shown as such.
 //
@@ -75,15 +76,15 @@ interface CheckoutItem {
 export const checkout: Record<CheckoutKey, CheckoutItem> = {
   // ── Mixing ──
   mix_first: { label: "First mix & master ($50 intro)", amount: 50, unit: "song", qty: 1, payUrl: "https://buy.stripe.com/14A6oG1Fg6Uv503aawfMA01" },
-  mix_single: { label: "Mix & master, single song", amount: 65, unit: "song", qty: 1, payUrl: "" },
-  mix_3: { label: "Mix & master, 3-pack", amount: 165, unit: "flat", qty: 3, payUrl: "" },
-  mix_6: { label: "Mix & master, 6-pack", amount: 270, unit: "flat", qty: 6, payUrl: "" },
-  mix_12: { label: "Mix & master, 12-pack", amount: 480, unit: "flat", qty: 12, payUrl: "" },
+  mix_single: { label: "Mix & master, single song", amount: 100, unit: "song", qty: 1, payUrl: "" },
+  mix_3: { label: "Mix & master, 3-pack", amount: 250, unit: "flat", qty: 3, payUrl: "" },
+  mix_6: { label: "Mix & master, 6-pack", amount: 400, unit: "flat", qty: 6, payUrl: "" },
+  mix_12: { label: "Mix & master, 12-pack", amount: 700, unit: "flat", qty: 12, payUrl: "" },
 
-  // ── Recording (mix & master included) ──
-  rec_hour: { label: "Studio session, hourly", amount: 65, unit: "hr", qty: 1, payUrl: "" },
-  rec_2hr: { label: "Studio session, 2-hour block", amount: 120, unit: "flat", qty: 2, payUrl: "" },
-  rec_4hr: { label: "Studio session, 4-hour block", amount: 200, unit: "flat", qty: 4, payUrl: "" },
+  // ── Recording (stems included) ──
+  rec_hour: { label: "Studio session, hourly", amount: 80, unit: "hr", qty: 1, payUrl: "" },
+  rec_2hr: { label: "Studio session, 2-hour block (minimum)", amount: 160, unit: "flat", qty: 2, payUrl: "" },
+  rec_4hr: { label: "Studio session, 4-hour block", amount: 300, unit: "flat", qty: 4, payUrl: "" },
 
   // ── Creative ──
   // Sold as a system, not a unit: cover one is a design job, covers two

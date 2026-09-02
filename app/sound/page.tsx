@@ -24,18 +24,18 @@ const MUSIC_URL = "https://www.rovmusic.com";
 export const metadata: Metadata = {
     title: { absolute: "Mixing & Mastering in Atlanta | Range of View Music" },
     description:
-        "Professional sound engineering, mixing, and mastering by Range of View Music. Mix and master from $40 a song, first one $50. Atlanta studio time from $50/hr with mixing included. 48-hour turnaround.",
+        "Professional sound engineering, mixing, and mastering by Range of View Music. Mix and master from $58 a song, first one $50. Atlanta studio time from $80/hr with your stems included. 48-hour turnaround.",
     alternates: { canonical: MUSIC_URL },
     openGraph: {
         title: "Mixing & Mastering in Atlanta | Range of View Music",
-        description: "Professional mixing, mastering, and sound engineering. From $40 a song, first one $50.",
+        description: "Professional mixing, mastering, and sound engineering. From $58 a song, first one $50.",
         url: MUSIC_URL,
         images: [{ url: `${MUSIC_URL}/og/og-sound.webp`, width: 1200, height: 630, alt: "Range of View Music studio" }],
     },
     twitter: {
         card: "summary_large_image",
         title: "Mixing & Mastering in Atlanta | Range of View Music",
-        description: "Professional mixing, mastering, and sound engineering. From $40 a song, first one $50.",
+        description: "Professional mixing, mastering, and sound engineering. From $58 a song, first one $50.",
         images: [`${MUSIC_URL}/og/og-sound.webp`],
     },
 };
@@ -118,11 +118,11 @@ export default function Page() {
         <IntakeProvider>
             <ServiceSchema
                 name="Sound Engineering & Music Production"
-                description="Professional sound engineering, mixing, and mastering services. Mix and master from $40 a song with 48-hour turnaround. First mix is $50."
+                description="Professional sound engineering, mixing, and mastering services. Mix and master from $58 a song with 48-hour turnaround. First mix is $50."
                 serviceType="Sound Engineering"
                 url=""
                 image="/og/og-sound.webp"
-                offerDescription="First mix at $50, then $65 a song or as low as $40 in a prepaid pack. Mix and master included."
+                offerDescription="First mix at $50, then $100 a song, or as low as $58 in a prepaid pack. Studio time is $80/hr with stems included."
                 baseUrl={MUSIC_URL}
                 providerName="Range of View Music"
                 providerUrl={MUSIC_URL}

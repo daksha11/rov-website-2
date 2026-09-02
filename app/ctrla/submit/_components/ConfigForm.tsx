@@ -33,7 +33,13 @@ type Values = Record<string, unknown>;
 
 export default function ConfigForm({ config, userId }: { config: FormConfig; userId: string }) {
   const { points } = useCredits();
-  const [values, setValues] = useState<Values>({});
+  const [values, setValues] = useState<Values>(() => {
+    // Good-first links arrive as /ctrla/submit/tool?toolkit=music.
+    if (typeof window === "undefined") return {};
+    const slug = new URLSearchParams(window.location.search).get("toolkit");
+    const field = config.fields.find((f) => f.kind === "toolkit");
+    return slug && field && TOOLKITS.some((t) => t.slug === slug) ? { [field.key]: slug } : {};
+  });
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);

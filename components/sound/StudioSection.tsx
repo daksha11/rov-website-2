@@ -244,8 +244,8 @@ function ValueAccordion() {
 const recordingFeatures = [
   "A real engineer in the room, not a rented room",
   "UAD, Waves, FabFilter, Neumann mics, Focusrite pres",
-  "Mixed and mastered in 48 hours",
-  "Walk out with a release-ready record",
+  "Walk out with your labeled stems, same day",
+  "Mix and master available that week, from $100",
 ];
 
 function RecordingRates() {
@@ -294,11 +294,11 @@ function RecordingRates() {
             Studio Time
           </span>
           <div className="flex items-baseline gap-1 mb-1">
-            <span className="text-white text-4xl md:text-5xl font-bold italic" style={{ fontFamily: HEADING_FONT }}>$65</span>
+            <span className="text-white text-4xl md:text-5xl font-bold italic" style={{ fontFamily: HEADING_FONT }}>$80</span>
             <span className="text-white/30 text-sm" style={{ fontFamily: BODY_FONT }}>/hr</span>
           </div>
           <span className="text-[#EA9A61] text-xs uppercase tracking-[0.15em] mb-6" style={{ fontFamily: BODY_FONT }}>
-            Mix &amp; master included
+            Stems included
           </span>
           <ul className="flex-1 space-y-2 mb-6">
             {recordingFeatures.map((f) => (
@@ -309,7 +309,7 @@ function RecordingRates() {
             ))}
           </ul>
           <p className="text-white/55 text-xs italic mb-6 leading-relaxed" style={{ fontFamily: BODY_FONT }}>
-            Comparable Atlanta rooms run <span className="text-white/70 not-italic line-through">$75&ndash;120/hr</span> and bill mixing separately.
+            Comparable Atlanta rooms run <span className="text-white/70 not-italic line-through">$75&ndash;120/hr</span>. You leave with your labeled stems the same day.
           </p>
           <CalBookButton
             calLink={CAL_LINKS.hourlySession}
@@ -338,11 +338,11 @@ function RecordingRates() {
             4-Hour Block
           </span>
           <div className="flex items-baseline gap-2 mb-1">
-            <span className="text-white text-4xl md:text-5xl font-bold italic" style={{ fontFamily: HEADING_FONT }}>$200</span>
-            <span className="text-white/30 text-sm line-through" style={{ fontFamily: BODY_FONT }}>$260</span>
+            <span className="text-white text-4xl md:text-5xl font-bold italic" style={{ fontFamily: HEADING_FONT }}>$300</span>
+            <span className="text-white/30 text-sm line-through" style={{ fontFamily: BODY_FONT }}>$320</span>
           </div>
           <span className="text-[#EA9A61] text-xs uppercase tracking-[0.15em] mb-6" style={{ fontFamily: BODY_FONT }}>
-            $50/hr, mix &amp; master included
+            $75/hr, stems included
           </span>
           <ul className="flex-1 space-y-2 mb-6">
             {["Four hours in the room, your lowest rate", "Full mix and master on everything tracked", "48-hour turnaround", "Usually two to three finished songs"].map((f) => (

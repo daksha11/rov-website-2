@@ -9,6 +9,7 @@ import Toaster from "@/components/brand-kit/Toaster";
 import { useBrandKitStore } from "@/lib/brand-kit/store";
 import { KIT_SHARE_PARAM, decodeKit } from "@/lib/brand-kit/share";
 import { useLeadSync } from "@/hooks/useLeadSync";
+import SignInGate, { useSession } from "@/app/ctrla/_components/SignInGate";
 import { createClient } from "@/utils/supabase/client";
 import type { BrandKitData } from "@/lib/brand-kit/types";
 
@@ -20,6 +21,8 @@ export default function BrandKitBuilderLayout({
   // Once a user signs in to build a kit, sync them into the CTRL-A email
   // list (best-effort, deduped). No added friction to the builder flow.
   useLeadSync("brand-kit");
+  // Building a kit counts, so it needs an account (decided 2026-09-01).
+  const session = useSession();
 
   // The store persists to localStorage but skips automatic hydration to keep
   // the first client render matching the SSR defaults. Rehydrate after mount
@@ -51,6 +54,18 @@ export default function BrandKitBuilderLayout({
       if (kit) useBrandKitStore.getState().loadKit(kit);
     });
   }, []);
+
+  if (session !== "in") {
+    return (
+      <main style={{ background: "#0F0820", minHeight: "100vh", padding: "120px clamp(18px,5vw,64px) 80px" }}>
+        <div style={{ maxWidth: 960, margin: "0 auto" }}>
+          <SignInGate title="Sign in to build your kit." reason="Your kit saves to your account and follows you. Colours, type, and a logo rule, in one sitting, free." cta="Continue with Google">
+            {null}
+          </SignInGate>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <div className="brandkit-cosmic dash-ground min-h-[100dvh] flex flex-col text-[#F0E6E0]">

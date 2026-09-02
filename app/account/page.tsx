@@ -1,5 +1,9 @@
 "use client";
 
+import YourPath from "@/app/ctrla/_components/YourPath";
+import ForgetPath from "@/app/ctrla/_components/ForgetPath";
+import Rank from "@/app/ctrla/_components/Rank";
+
 /**
  * /account · the profile that IS the dashboard.
  * One scrolling surface for every signed-in user: identity up top
@@ -266,6 +270,11 @@ export default function AccountPage() {
           {userId && <SavedKits userId={userId} />}
 
           {/* ── Credits — earn & spend detail (balance lives in the HUD) ── */}
+          <div style={{ marginBottom: 28 }}>
+            <Rank approved={contribCount} featured={featuredCount} />
+            <YourPath variant="full" />
+            <ForgetPath />
+          </div>
           <WalletCard points={points} hideBalance />
 
           {/* ── Recent activity (the wallet ledger) ── */}

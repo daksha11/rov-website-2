@@ -27,6 +27,8 @@ const DELAY_MS = 6000;
 
 /** Routes that get to do their job uninterrupted. */
 const QUIET_ROUTES = [
+  "/ctrla/space",
+  "/ctrla/finish",
   "/ctrla/start",
   "/ctrla/the-fold",
   "/ctrla/submit",

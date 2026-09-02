@@ -1,5 +1,7 @@
 "use client";
 
+import YourPath from "../_components/YourPath";
+
 // ═══════════════════════════════════════════════════════
 // CTRL-A — START
 // The intake quiz, set as part of the magazine rather than as a form.
@@ -652,6 +654,10 @@ export default function StartContent() {
                     ))}
                   </div>
 
+                  <div style={{ marginTop: "clamp(26px,3.4vw,46px)" }}>
+                    <YourPath variant="strip" />
+                  </div>
+
                   <p
                     style={{
                       fontFamily: ed.mono,
@@ -662,7 +668,7 @@ export default function StartContent() {
                       margin: "clamp(20px,2.6vw,30px) 0 0",
                     }}
                   >
-                    Saved on this device. Nothing sent anywhere.{" "}
+                    Saved on this device. Sign in and it follows you.{" "}
                     <button
                       type="button"
                       onClick={restart}

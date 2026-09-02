@@ -128,13 +128,13 @@ export const tiers: StudioTier[] = [
 /** Our own numbers, mirrored from data/soundPricing.ts. Keep in sync. */
 export const ourRates: { label: string; price: string; note?: string }[] = [
     { label: "First mix and master", price: "$50", note: "Intro rate, one song" },
-    { label: "Mix and master, single song", price: "$65" },
-    { label: "Mix and master, 3-pack", price: "$165", note: "$55 a song" },
-    { label: "Mix and master, 6-pack", price: "$270", note: "$45 a song" },
-    { label: "Mix and master, 12-pack", price: "$480", note: "$40 a song" },
-    { label: "Studio session, hourly", price: "$65", note: "Mix and master included" },
-    { label: "Studio session, 2-hour block", price: "$120", note: "$60 an hour" },
-    { label: "Studio session, 4-hour block", price: "$200", note: "$50 an hour" },
+    { label: "Mix and master, single song", price: "$100" },
+    { label: "Mix and master, 3-pack", price: "$250", note: "$83 a song" },
+    { label: "Mix and master, 6-pack", price: "$400", note: "$67 a song" },
+    { label: "Mix and master, 12-pack", price: "$700", note: "$58 a song" },
+    { label: "Studio session, hourly", price: "$80", note: "Stems included" },
+    { label: "Studio session, 2-hour block", price: "$160", note: "Two-hour minimum" },
+    { label: "Studio session, 4-hour block", price: "$300", note: "$75 an hour" },
 ];
 
 export const chooseSteps: { question: string; answer: string }[] = [
@@ -169,12 +169,12 @@ export const studiosFaqs: { question: string; answer: string }[] = [
     {
         question: "How much does a recording studio cost in Atlanta?",
         answer:
-            "Most Atlanta studios quote rather than publish, so there is no single public number. Studio rental marketplaces list Atlanta rooms averaging around $102 an hour, with budget listings closer to $35 to $55. Range of View Music publishes its full rate card: $65 an hour with mix and master included, or $200 for a four-hour block, which works out at $50 an hour.",
+            "Most Atlanta studios quote rather than publish, so there is no single public number. Studio rental marketplaces list Atlanta rooms averaging around $102 an hour, with budget listings closer to $35 to $55. Range of View Music publishes its full rate card: $80 an hour with your stems included, or $300 for a four-hour block, which works out at $75 an hour.",
     },
     {
         question: "How much does it cost to mix and master a song in Atlanta?",
         answer:
-            "It varies widely and most engineers quote per project. Our published rate is $50 for a first song, $65 for a single song after that, and down to $40 a song on a 12-song pack. A dedicated mastering specialist working on major-label records will be substantially more.",
+            "It varies widely and most engineers quote per project. Our published rate is $50 for a first song, $100 for a single song after that, and down to $58 a song on a 12-song pack. A dedicated mastering specialist working on major-label records will be substantially more.",
     },
     {
         question: "Why do so few Atlanta studios list their prices?",

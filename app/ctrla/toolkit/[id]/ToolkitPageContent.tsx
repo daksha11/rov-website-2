@@ -18,6 +18,10 @@ import VueAside from "../../_components/vue/VueAside";
 import VueHandoff from "../../_components/vue/VueHandoff";
 import { vueNarration } from "../../_components/vue/narration";
 import { toolkitSections } from "../../data";
+import { markDone } from "@/lib/ctrla/progress";
+import type { CraftSlug } from "@/lib/ctrla/profile";
+import YourPath from "../../_components/YourPath";
+import Contributors from "../../_components/Contributors";
 import { currentVolume } from "../../_volumes";
 
 export default function ToolkitPageContent({ id }: { id: string }) {
@@ -25,6 +29,19 @@ export default function ToolkitPageContent({ id }: { id: string }) {
   const section = toolkitSections[index];
   const prev = toolkitSections[(index - 1 + toolkitSections.length) % toolkitSections.length];
   const next = toolkitSections[(index + 1) % toolkitSections.length];
+
+  // The path: reading to the end marks the "Learn" stop for this craft.
+  useEffect(() => {
+    const onScroll = () => {
+      const end = document.documentElement.scrollHeight - window.innerHeight - 320;
+      if (window.scrollY >= end) {
+        markDone(id as CraftSlug, "learn");
+        window.removeEventListener("scroll", onScroll);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [id]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -69,6 +86,9 @@ export default function ToolkitPageContent({ id }: { id: string }) {
           </div>
         </Bleed>
         <Rule color={ed.hair} />
+        <Bleed style={{ padding: "10px clamp(18px,5vw,64px)" }}>
+          <YourPath variant="strip" theme="light" craft={id as CraftSlug} />
+        </Bleed>
       </div>
 
       {/* Music sector: slim inline audio strip — the Fold loop, reactive */}
@@ -208,8 +228,11 @@ export default function ToolkitPageContent({ id }: { id: string }) {
         </section>
       )}
 
+      {/* Who improved this kit, and what to hand back first. */}
+      <Contributors craft={id as CraftSlug} />
+
       {/* Prev / next toolkit */}
-      <section style={{ background: "transparent", padding: "0 0 clamp(56px,8vw,104px)" }}>
+      <section style={{ background: "transparent", padding: "clamp(40px,6vw,88px) 0 clamp(56px,8vw,104px)" }}>
         <Bleed>
           <Rule color={ed.hair} />
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, paddingTop: "clamp(24px,3vw,36px)", flexWrap: "wrap" }}>

@@ -1,5 +1,8 @@
 "use client";
 
+import { markDone } from "@/lib/ctrla/progress";
+import { readProfile } from "@/lib/ctrla/profile";
+
 // ═══════════════════════════════════════════════════════
 // THE FOLD — immersive work session
 // Opening a session transforms the whole screen: the browse chrome
@@ -251,6 +254,8 @@ export default function FoldSession({
         setRunning(false);
         if (mode === "focus") {
           setSessions((s) => s + 1);
+          // The path: a finished session is the "Work" stop.
+          markDone(readProfile()?.crafts[0] ?? "music", "work", { fold: true });
           setMode("break");
           chime("down"); // focus → break: a soft settle
         } else {

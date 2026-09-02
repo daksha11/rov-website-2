@@ -17,6 +17,8 @@ import { usePoints } from "@/hooks/brand-kit/usePoints";
 import { COSTS } from "@/lib/credits/config";
 import ContactUsModal from "@/components/brand-kit/ContactUsModal";
 import AuthModal from "@/components/brand-kit/AuthModal";
+import { markDone } from "@/lib/ctrla/progress";
+import { readProfile } from "@/lib/ctrla/profile";
 
 const EXPORT_COST = COSTS["brand-kit-export"];
 
@@ -84,6 +86,9 @@ export default function ExportStep() {
 
       // Fire the reliable server-side export event (best-effort, non-blocking).
       fetch("/api/ctrla/brand-kit/exported", { method: "POST" }).catch(() => {});
+
+      // The path: an exported kit is the "Look" stop, for every craft.
+      markDone(readProfile()?.crafts[0] ?? "design", "look", { kit: fileName });
 
       pushToast(`${EXPORT_COST} points have been deducted`, "success");
     } catch (err) {

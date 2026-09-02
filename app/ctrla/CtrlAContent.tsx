@@ -1,5 +1,8 @@
 "use client";
 
+import YourPath from "./_components/YourPath";
+import { useCtrlAPath } from "@/lib/ctrla/progress";
+
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -78,6 +81,11 @@ function Masthead() {
 // ═══════════════════════════════════════════════════════
 
 function Cover() {
+  // A visitor with a path gets pointed at their next stop, not the fork.
+  const path = useCtrlAPath();
+  const hasPath = path.ready && !!path.craft;
+  const ctaHref = hasPath ? (path.next ? path.next.href : "/ctrla/submit") : "#paths";
+  const ctaLabel = hasPath ? (path.next ? `Next · ${path.next.verb}: ${path.next.title}` : "Path done · show more") : "Find your path";
   return (
     <section style={{ background: "transparent", padding: "clamp(24px,4vw,44px) 0 clamp(20px,3vw,36px)" }}>
       <Bleed>
@@ -202,7 +210,7 @@ function Cover() {
             {/* Emphasized primary CTA — send a cold visitor straight to the paths */}
             <div style={{ marginTop: "clamp(22px,2.8vw,36px)" }}>
               <a
-                href="#paths"
+                href={ctaHref}
                 className="ctrla-cover-cta"
                 style={{
                   fontFamily: ed.mono,
@@ -221,7 +229,7 @@ function Cover() {
                   boxShadow: "0 14px 38px -10px rgba(227,194,74,0.55)",
                 }}
               >
-                Find your path <span aria-hidden>→</span>
+                {ctaLabel} <span aria-hidden>→</span>
               </a>
 
               {/* Secondary — an outlined button, emphasized but subordinate to the solid primary */}
@@ -753,6 +761,12 @@ function Contents() {
             ))}
           </div>
         )}
+        {/* The other way through this volume. A plain anchor on purpose: no
+            prefetch, so the magazine never downloads a byte of the ship. */}
+        <a href="/ctrla/space" className="ctrla-space-door">
+          <em>Prefer to fly? This volume is also a solar system.</em>
+          <span>Explore in space →</span>
+        </a>
       </Bleed>
     </section>
   );
@@ -847,6 +861,10 @@ export default function CtrlAContent() {
 
       <Masthead />
       <Cover />
+      {/* Anyone who answered the quiz sees their five stops before anything else. */}
+      <Bleed>
+        <YourPath variant="full" />
+      </Bleed>
 
       {/* Cover sentinel — the Spine engages once this scrolls out */}
       <div id="ctrla-cover-end" aria-hidden style={{ position: "relative", height: 0 }} />
